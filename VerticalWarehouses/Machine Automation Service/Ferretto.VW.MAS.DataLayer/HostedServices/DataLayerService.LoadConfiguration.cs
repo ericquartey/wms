@@ -285,7 +285,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     BayNumber.None);
                                 dataContext.InstructionDefinitions.Add(instruction);
 
-                                foreach (var bay in machine.Bays)
+                                foreach (var bay in machine.Bays.Where(b => b.Number != BayNumber.ElevatorBay))
                                 {
                                     //instruction = new InstructionDefinition(
                                     //    instructionDevice,
@@ -396,7 +396,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                     BayNumber.None);
                                 dataContext.InstructionDefinitions.Add(instruction);
 
-                                foreach (var bay in machine.Bays)
+                                foreach (var bay in machine.Bays.Where(b => b.Number != BayNumber.ElevatorBay))
                                 {
                                     //instruction = new InstructionDefinition(
                                     //    instructionDevice,
@@ -763,7 +763,7 @@ namespace Ferretto.VW.MAS.DataLayer
                                 instruction.IsSystem = true;
                                 dataContext.InstructionDefinitions.Add(instruction);
 
-                                foreach (var bay in machine.Bays)
+                                foreach (var bay in machine.Bays.Where(b => b.Number != BayNumber.ElevatorBay))
                                 {
                                     instruction = new InstructionDefinition(
                                         instructionDevice,

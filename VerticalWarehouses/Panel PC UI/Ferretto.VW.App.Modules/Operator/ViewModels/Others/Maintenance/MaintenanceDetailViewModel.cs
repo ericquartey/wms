@@ -458,7 +458,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewModels
         {
             try
             {
-                var can = !this.allInstructions.Any(s => s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring)
+                var can = !this.allInstructions.Any(s => (s.InstructionStatus == MachineServiceStatus.Expired || s.InstructionStatus == MachineServiceStatus.Expiring) && s.Definition.BayNumber != BayNumber.ElevatorBay)
                     && (this.Service?.ServiceStatus == MachineServiceStatus.Expired
                         || this.Service?.ServiceStatus == MachineServiceStatus.Expiring
                         || (this.Service?.ServiceStatus == MachineServiceStatus.Valid && this.IsAdmin));
