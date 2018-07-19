@@ -31,170 +31,137 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Xpf.Accordion.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Accordion.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Accordion.v18.1.Design, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Accordion.v18.1.Design.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Controls.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Controls.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Core.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Core.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Grid.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Grid.v18.1.Core, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Grid.v18.1.Core.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.DXStyle.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.DXStyle.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.HybridApp.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.HybridApp.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.LightGray.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.LightGray.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.MetropolisDark.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.MetropolisDark.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.MetropolisLight.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.MetropolisLight.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2007Black.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2007Black.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2007Blue.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2007Blue.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2007Silver.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2007Silver.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2010Black.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2010Black.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2010Blue.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2010Blue.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2010Silver.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2010Silver.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2013.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2013.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2013DarkGray.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2013DarkGray.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2013LightGray.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2013LightGray.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016Black.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016Black.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016BlackSE.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016BlackSE.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016Colorful.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016Colorful.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016ColorfulSE.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016ColorfulSE.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016DarkGraySE.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016DarkGraySE.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016White.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016White.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016WhiteSE.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016WhiteSE.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Seven.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Seven.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.TouchlineDark.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.TouchlineDark.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.VS2010.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.VS2010.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.VS2017Blue.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.VS2017Blue.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.VS2017Dark.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.VS2017Dark.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.VS2017Light.v18.1, Version=18.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.VS2017Light.v18.1.dll</HintPath>
-	  <Private>True</Private>
-    </Reference>  
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
