@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ItemsControl x:Name="MenuContent"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" prism:RegionManager.RegionName="Layout.MenuBar"  />
-        <ItemsControl x:Name="MainContent"  Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" prism:RegionManager.RegionName="Catalog.Items"  />
+        <ItemsControl x:Name="MainContent"  Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" prism:RegionManager.RegionName="Catalog.Items" />
         <ItemsControl x:Name="StatusBarContent" Grid.Row="2"  prism:RegionManager.RegionName="Layout.StatusBar"  />
     </Grid>
 </Window>
