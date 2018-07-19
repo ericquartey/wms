@@ -4,8 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.App", "App\Ferretto.WMS.App.csproj", "{69935FFE-3DC9-47C4-9192-D925D043C137}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9D9ECC03-073A-43F7-BED8-568CF67AB8AD} = {9D9ECC03-073A-43F7-BED8-568CF67AB8AD}
+		{965F447E-A8A3-42FA-9EDB-E90F677437AE} = {965F447E-A8A3-42FA-9EDB-E90F677437AE}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Themes", "Themes\Ferretto.WMS.Themes.csproj", "{9377DBC4-ED82-46D9-90B1-9F7DF787E5E1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0D3E44FD-B369-4B85-AEBE-17A754D71C8D} = {0D3E44FD-B369-4B85-AEBE-17A754D71C8D}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{12BF6A8D-AC9B-4ECE-B134-FB3644430056}"
 EndProject

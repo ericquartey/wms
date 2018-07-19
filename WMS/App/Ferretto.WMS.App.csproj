@@ -86,18 +86,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
+    <Compile Include="Shell.xaml.cs">
+      <DependentUpon>Shell.xaml</DependentUpon>
+    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Bootstrapper.cs" />
+    <Page Include="Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -127,6 +127,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\BLL\Ferretto.Common.BLL.csproj">
+      <Project>{0d3e44fd-b369-4b85-aebe-17a754d71c8d}</Project>
+      <Name>Ferretto.Common.BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Themes\Ferretto.WMS.Themes.csproj">
       <Project>{9377dbc4-ed82-46d9-90b1-9f7df787e5e1}</Project>
       <Name>Ferretto.WMS.Themes</Name>
