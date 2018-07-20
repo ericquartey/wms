@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.App", "App\Ferretto.WMS.App.csproj", "{69935FFE-3DC9-47C4-9192-D925D043C137}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.App", "WMS\App\Ferretto.WMS.App.csproj", "{69935FFE-3DC9-47C4-9192-D925D043C137}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9D9ECC03-073A-43F7-BED8-568CF67AB8AD} = {9D9ECC03-073A-43F7-BED8-568CF67AB8AD}
 		{965F447E-A8A3-42FA-9EDB-E90F677437AE} = {965F447E-A8A3-42FA-9EDB-E90F677437AE}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Themes", "Themes\Ferretto.WMS.Themes.csproj", "{9377DBC4-ED82-46D9-90B1-9F7DF787E5E1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Themes", "WMS\Themes\Ferretto.WMS.Themes.csproj", "{9377DBC4-ED82-46D9-90B1-9F7DF787E5E1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0D3E44FD-B369-4B85-AEBE-17A754D71C8D} = {0D3E44FD-B369-4B85-AEBE-17A754D71C8D}
 	EndProjectSection
@@ -18,13 +18,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{12BF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C870AE6-46DD-493B-BAD9-FDEFE22ECA1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.BLL", "..\Common\BLL\Ferretto.Common.BLL.csproj", "{0D3E44FD-B369-4B85-AEBE-17A754D71C8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.BLL", "Common\BLL\Ferretto.Common.BLL.csproj", "{0D3E44FD-B369-4B85-AEBE-17A754D71C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.DAL", "..\Common\DAL\Ferretto.Common.DAL.csproj", "{FFA86958-4597-4D8D-8E13-4B6F70F1A6F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.DAL", "Common\DAL\Ferretto.Common.DAL.csproj", "{FFA86958-4597-4D8D-8E13-4B6F70F1A6F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Comp.Catalog", "Modules\Ferretto.WMS.Comp.Catalog\Ferretto.WMS.Comp.Catalog.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Comp.Catalog", "WMS\Modules\Ferretto.WMS.Comp.Catalog\Ferretto.WMS.Comp.Catalog.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Comp.Layout", "Modules\Ferretto.WMS.Comp.Layout\Ferretto.WMS.Comp.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Comp.Layout", "WMS\Modules\Ferretto.WMS.Comp.Layout\Ferretto.WMS.Comp.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
