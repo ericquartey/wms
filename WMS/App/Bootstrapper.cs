@@ -18,7 +18,7 @@ namespace Ferretto.WMS.App
 
       ModuleCatalog moduleCatalog = (ModuleCatalog)this.ModuleCatalog;
 
-      #region Catalog
+      #region Module Catalog
       moduleCatalog.AddModule(new ModuleInfo()
       {
         ModuleName = "Catalog",        

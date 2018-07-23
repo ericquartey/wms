@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Ferretto.WMS.Comp.Layout.LayoutView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:prism="http://www.codeplex.com/prism"   
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ItemsControl x:Name="MenuContent"  Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" prism:RegionManager.RegionName="Layout.Menu"  />
+        <ItemsControl x:Name="MainContent"  Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" prism:RegionManager.RegionName="Catalog.ItemsAndDetails" />
+        <ItemsControl x:Name="StatusBarContent" Grid.Row="2"  prism:RegionManager.RegionName="Layout.StatusBar"  />
+    </Grid>
+</UserControl>

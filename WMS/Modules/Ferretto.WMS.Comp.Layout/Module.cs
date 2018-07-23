@@ -22,7 +22,9 @@ namespace Ferretto.WMS.Comp.Layout
     public void Initialize()
     {
       var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Modules.Layout.MenuBar)}", typeof(MenuView));
+
+      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Modules.Layout.MainContent)}", typeof(LayoutView));
+      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Modules.Layout.Menu)}", typeof(MenuView));
     }
 
     #endregion
