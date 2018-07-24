@@ -1,0 +1,645 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FerrettoWarehouse.Model.Area">
+    <Position X="0.5" Y="3.25" Width="2" />
+    <Members>
+      <Property Name="Aisles" Hidden="true" />
+      <Property Name="AreaItems" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemLists" Hidden="true" />
+      <Property Name="LoadingUnitRanges" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAAAAAAAAAAAgAQAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Area.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.Aisle">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <Members>
+      <Property Name="AisleCellsTypes" Hidden="true" />
+      <Property Name="AisleLoadingUnitTypes" Hidden="true" />
+      <Property Name="AreaId" Hidden="true" />
+      <Property Name="Cells" Hidden="true" />
+      <Property Name="CellsGroups" Hidden="true" />
+      <Property Name="CellTotals" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AEACABAAAAAAAAgAAAJAAAQgAAAAAAAAIAAAAQgAAAA=</HashCode>
+      <FileName>Aisle.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Area" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.Cell">
+    <Position X="5.5" Y="3.25" Width="1.75" />
+    <Members>
+      <Property Name="AisleId" Hidden="true" />
+      <Property Name="CellStatusId" Hidden="true" />
+      <Property Name="CellTypeId" Hidden="true" />
+      <Property Name="FirstCellsGroups" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LastCellsGroups" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+    </Members>
+    <AssociationLine Name="CellStatus" Type="FerrettoWarehouse.Model.CellStatus" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="6.875" Y="3.25" />
+        <Point X="6.875" Y="2.875" />
+        <Point X="8.125" Y="2.875" />
+        <Point X="8.125" Y="2.103" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CellType" Type="FerrettoWarehouse.Model.CellType" FixedFromPoint="true">
+      <Path>
+        <Point X="6.938" Y="5.891" />
+        <Point X="6.938" Y="9" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.944" Y="0.12" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIQCAAQgAAAAgAgEgAJAAAAgAgAAAAAAAAkBAAABAAg=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Aisle" />
+      <Property Name="CellStatus" />
+      <Property Name="CellType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellType">
+    <Position X="5.5" Y="9" Width="1.75" />
+    <Members>
+      <Property Name="CellConfigurationCellTypes" Hidden="true" />
+      <Property Name="CellHeightClassId" Hidden="true" />
+      <Property Name="Cells" Hidden="true" />
+      <Property Name="CellSizeClassId" Hidden="true" />
+      <Property Name="CellTotals" Hidden="true" />
+      <Property Name="CellTypeAisles" Hidden="true" />
+      <Property Name="CellWeightClassId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <AssociationLine Name="CellWeightClass" Type="FerrettoWarehouse.Model.CellWeightClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="9.188" />
+        <Point X="5.125" Y="9.188" />
+        <Point X="5.125" Y="7.994" />
+        <Point X="3.75" Y="7.994" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAABgBABAAApAAAAAAAAAACgAAAAAAAAAAAA=</HashCode>
+      <FileName>CellType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CellHeightClass" />
+      <Property Name="CellWeightClass" />
+      <Property Name="CellSizeClass" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellHeightClass">
+    <Position X="2.25" Y="10.75" Width="1.5" />
+    <Members>
+      <Property Name="CellTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIACAAAAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>CellHeightClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellSizeClass">
+    <Position X="2.25" Y="9" Width="1.5" />
+    <Members>
+      <Property Name="CellTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAAAgAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellSizeClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellWeightClass">
+    <Position X="2.25" Y="7.25" Width="1.5" />
+    <Members>
+      <Property Name="CellTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CIACACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellWeightClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellConfigurationCellType">
+    <Position X="8.25" Y="9" Width="2" />
+    <Members>
+      <Property Name="CellConfigurationId" Hidden="true" />
+      <Property Name="CellTypeId" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIAAACAAAAAAAAAEAAAAAAAgAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellConfigurationCellType.cs</FileName>
+      <NewMemberFileName>CellConfigurationCellPositionLoadingUnitType.cs</NewMemberFileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CellConfiguration" />
+      <Property Name="CellType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.LoadingUnitHeightClass">
+    <Position X="16.75" Y="7.25" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAECA=</HashCode>
+      <FileName>LoadingUnitHeightClass.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitTypes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.LoadingUnitSizeClass">
+    <Position X="16.75" Y="4.75" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAkAAAAAgAAAEBAAAAAAAAAACAAAAAAACI=</HashCode>
+      <FileName>LoadingUnitSizeClass.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitTypes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.LoadingUnitWeightClass">
+    <Position X="16.75" Y="3" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAACACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>LoadingUnitWeightClass.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitTypes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellPosition">
+    <Position X="11.75" Y="4.75" Width="1.75" />
+    <Members>
+      <Property Name="CellConfigurationCellPositionLoadingUnitTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAgQAAgAAAAAAAAAQAAAAAAADAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellPosition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.LoadingUnit">
+    <Position X="8" Y="3.25" Width="2.5" />
+    <Members>
+      <Property Name="CellId" Hidden="true" />
+      <Property Name="CellPositionId" Hidden="true" />
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitStatusId" Hidden="true" />
+      <Property Name="LoadingUnitTypeId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="LoadingUnitStatus" Type="FerrettoWarehouse.Model.LoadingUnitStatus">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.447" Y="0.143" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>wAAKBAKEBAAAAAACQEpwQCAAAGAAAAAAAESAAAEAAAA=</HashCode>
+      <FileName>LoadingUnit.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Cell" />
+      <Property Name="CellPosition" />
+      <Property Name="LoadingUnitType" />
+      <Property Name="LoadingUnitStatus" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellConfiguration">
+    <Position X="11.75" Y="8.75" Width="2.25" />
+    <Members>
+      <Property Name="CellConfigurationCellPositionLoadingUnitTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.LoadingUnitType">
+    <Position X="12" Y="3" Width="3" />
+    <Members>
+      <Property Name="CellConfigurationCellPositionLoadingUnitTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitHeightClassId" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+      <Property Name="LoadingUnitSizeClassId" Hidden="true" />
+      <Property Name="LoadingUnitTypeAisles" Hidden="true" />
+      <Property Name="LoadingUnitWeightClassId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="LoadingUnitHeightClass" Type="FerrettoWarehouse.Model.LoadingUnitHeightClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.812" Y="4.296" />
+        <Point X="14.812" Y="7.994" />
+        <Point X="16.75" Y="7.994" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="LoadingUnitWeightClass" Type="FerrettoWarehouse.Model.LoadingUnitWeightClass" FixedToPoint="true">
+      <Path>
+        <Point X="15" Y="3.312" />
+        <Point X="16.75" Y="3.312" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="LoadingUnitSizeClass" Type="FerrettoWarehouse.Model.LoadingUnitSizeClass" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15" Y="4.125" />
+        <Point X="16.06" Y="4.125" />
+        <Point X="16.06" Y="6.75" />
+        <Point X="16.75" Y="6.75" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.014" Y="-0.323" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AgACAAggAACgAAAAAAAAAQAgAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>LoadingUnitType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitHeightClass" />
+      <Property Name="LoadingUnitWeightClass" />
+      <Property Name="LoadingUnitSizeClass" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellConfigurationCellPositionLoadingUnitType">
+    <Position X="11" Y="7" Width="3.25" />
+    <Members>
+      <Property Name="CellConfigurationId" Hidden="true" />
+      <Property Name="CellPositionId" Hidden="true" />
+      <Property Name="LoadingUnitTypeId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="LoadingUnitType" Type="FerrettoWarehouse.Model.LoadingUnitType" FixedFromPoint="true">
+      <Path>
+        <Point X="13.938" Y="7" />
+        <Point X="13.938" Y="4.296" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAIACIAAAAAAAAEAAAQQAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellConfigurationCellPositionLoadingUnitType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CellPosition" />
+      <Property Name="CellConfiguration" />
+      <Property Name="LoadingUnitType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellsGroup">
+    <Position X="5.5" Y="1" Width="1.5" />
+    <Members>
+      <Property Name="AisleId" Hidden="true" />
+      <Property Name="FirstCellId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LastCellId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="LastCell" Type="FerrettoWarehouse.Model.Cell">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.807" Y="0.487" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAEAAAAQAEgAAAAgAAABAAAAAAAAgQAAAAAAA=</HashCode>
+      <FileName>CellsGroup.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Aisle" />
+      <Property Name="FirstCell" />
+      <Property Name="LastCell" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellStatus">
+    <Position X="7.5" Y="1" Width="1.25" />
+    <Members>
+      <Property Name="Cells" Hidden="true" />
+      <Property Name="CellTotals" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAJAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.LoadingUnitStatus">
+    <Position X="9.5" Y="1" Width="1.75" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAgAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>LoadingUnitStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.DefaultCompartment">
+    <Position X="16.75" Y="0.75" Width="1.75" />
+    <Members>
+      <Property Name="CompartmentTypeId" Hidden="true" />
+      <Property Name="DefaultLoadingUnitId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <AssociationLine Name="CompartmentType" Type="FerrettoWarehouse.Model.CompartmentType">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.015" Y="1.264" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAABAAAAAAAACAEAAAAAAABAAAAAQAAMAAAA=</HashCode>
+      <FileName>DefaultCompartment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="DefaultLoadingUnit" />
+      <Property Name="CompartmentType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.DefaultLoadingUnit">
+    <Position X="12.25" Y="0.75" Width="2.75" />
+    <Members>
+      <Property Name="DefaultCompartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypeId" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACBAIAgAAQAAAAAAAQAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>DefaultLoadingUnit.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CompartmentType">
+    <Position X="19.5" Y="9" Width="2" />
+    <Members>
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="DefaultCompartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAhAAgAAAAQAAAAEAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CompartmentType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.Compartment">
+    <Position X="19.5" Y="2" Width="2.25" />
+    <Members>
+      <Property Name="CompartmentStatusId" Hidden="true" />
+      <Property Name="CompartmentTypeId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemId" Hidden="true" />
+      <Property Name="LoadingUnitId" Hidden="true" />
+      <Property Name="MaterialStatusId" Hidden="true" />
+      <Property Name="PackageTypeId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="LoadingUnit" Type="FerrettoWarehouse.Model.LoadingUnit" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.5" Y="2.466" />
+        <Point X="18.987" Y="2.466" />
+        <Point X="18.987" Y="0.569" />
+        <Point X="9.125" Y="0.569" />
+        <Point X="9.125" Y="3.25" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CompartmentType" Type="FerrettoWarehouse.Model.CompartmentType" FixedFromPoint="true">
+      <Path>
+        <Point X="20.812" Y="7.334" />
+        <Point X="20.812" Y="9" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.47" Y="0.11" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>YABCAAAsBABAgAACgBosYEAEgAgAAEAAAACIAIJAEAA=</HashCode>
+      <FileName>Compartment.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnit" />
+      <Property Name="CompartmentType" />
+      <Property Name="Item" />
+      <Property Name="MaterialStatus" />
+      <Property Name="PackageType" />
+      <Property Name="CompartmentStatus" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CompartmentStatus">
+    <Position X="19.75" Y="0.5" Width="1.75" />
+    <Members>
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CompartmentStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.Item">
+    <Position X="22.75" Y="5.25" Width="2.25" />
+    <Members>
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemAreas" Hidden="true" />
+      <Property Name="ItemListRows" Hidden="true" />
+      <Property Name="ItemManagementTypeId" Hidden="true" />
+      <Property Name="MeasureUnitId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="MeasureUnit" Type="FerrettoWarehouse.Model.MeasureUnit" FixedFromPoint="true">
+      <Path>
+        <Point X="23" Y="10.007" />
+        <Point X="23" Y="10.5" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="ItemManagementType" Type="FerrettoWarehouse.Model.ItemManagementType" FixedFromPoint="true">
+      <Path>
+        <Point X="24.812" Y="10.007" />
+        <Point X="24.812" Y="10.5" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>YgAiAAAEhAQABAACQAsoAEBIQAAQABACBQAAAAEAAAA=</HashCode>
+      <FileName>Item.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="MeasureUnit" />
+      <Property Name="ItemManagementType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.CellTypeAisle">
+    <Position X="3.25" Y="5.25" Width="1.5" />
+    <Members>
+      <Property Name="AisleId" Hidden="true" />
+      <Property Name="CellTypeId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <AssociationLine Name="CellType" Type="FerrettoWarehouse.Model.CellType" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="4" Y="6.546" />
+        <Point X="4" Y="7.057" />
+        <Point X="6.438" Y="7.057" />
+        <Point X="6.438" Y="9" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAAAAAAAAgAAAAABgAAAAACAAAAgAAAAAAAA=</HashCode>
+      <FileName>CellTypeAisle.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Aisle" />
+      <Property Name="CellType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.ItemList">
+    <Position X="26.25" Y="7.5" Width="2.25" />
+    <Members>
+      <Property Name="AreaId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemListRows" Hidden="true" />
+      <Property Name="ItemListStatusId" Hidden="true" />
+      <Property Name="ItemListTypeId" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>wAACAABEAAAgBAAEAAAoAAAIAAECQAAEJAAAAUAgAAA=</HashCode>
+      <FileName>ItemList.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ItemListType" />
+      <Property Name="ItemListStatus" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.ItemListStatus">
+    <Position X="29.75" Y="10.25" Width="1.5" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemLists" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ItemListStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.ItemListRow">
+    <Position X="26" Y="3.75" Width="2.5" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemId" Hidden="true" />
+      <Property Name="ItemListId" Hidden="true" />
+      <Property Name="ItemListRowStatusId" Hidden="true" />
+      <Property Name="MaterialStatusId" Hidden="true" />
+      <Property Name="PackageTypeId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="Item" Type="FerrettoWarehouse.Model.Item" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="26" Y="4.576" />
+        <Point X="25.502" Y="4.576" />
+        <Point X="25.502" Y="7.629" />
+        <Point X="25" Y="7.629" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.096" Y="-0.326" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>QAACAAAIAAEAABBBgBIogAAMAAgAAEAAAAEAIAAAAAA=</HashCode>
+      <FileName>ItemListRow.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ItemList" />
+      <Property Name="Item" />
+      <Property Name="MaterialStatus" />
+      <Property Name="PackageType" />
+      <Property Name="ItemListRowStatus" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.ItemListRowStatus">
+    <Position X="30" Y="5" Width="1.75" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemListRows" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ItemListRowStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.ItemListType">
+    <Position X="29.75" Y="8.75" Width="1.5" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemLists" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ItemListType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.MeasureUnit">
+    <Position X="22" Y="10.5" Width="1.5" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="Items" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MeasureUnit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.ItemManagementType">
+    <Position X="24" Y="10.5" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="Items" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ItemManagementType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.MaterialStatus">
+    <Position X="23.25" Y="3.75" Width="1.5" />
+    <Members>
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemListRows" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAQAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MaterialStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FerrettoWarehouse.Model.PackageType">
+    <Position X="26" Y="2" Width="1.5" />
+    <Members>
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemListRows" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAQAAIAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PackageType.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
