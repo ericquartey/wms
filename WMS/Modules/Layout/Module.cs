@@ -4,16 +4,16 @@ using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace Ferretto.WMS.Comp.Layout
+namespace Ferretto.WMS.Modules.Layout
 {
-  public class Layout : IModule
+  public class Module : IModule
   {
     #region IModule Members
 
     public IUnityContainer Container { get; private set; }
     public IRegionManager RegionManager { get; private set; }
 
-    public Layout(IUnityContainer container, IRegionManager regionManager)
+    public Module(IUnityContainer container, IRegionManager regionManager)
     {
       Container = container;
       RegionManager = regionManager;
@@ -23,8 +23,8 @@ namespace Ferretto.WMS.Comp.Layout
     {
       var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
 
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Modules.Layout.MainContent)}", typeof(LayoutView));
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Modules.Layout.Menu)}", typeof(MenuView));
+      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Common.BLL.Modules.Layout.MainContent)}", typeof(LayoutView));
+      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Common.BLL.Modules.Layout.Menu)}", typeof(MenuView));
     }
 
     #endregion

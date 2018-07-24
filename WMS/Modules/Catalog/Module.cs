@@ -4,27 +4,28 @@ using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace Ferretto.WMS.Comp.Catalog
+namespace Ferretto.WMS.Modules.Catalog
 {
-  public class Catalog : IModule
-  {
-    #region IModule Members
-
-    public IUnityContainer Container { get; private set; }
-    public IRegionManager RegionManager { get; private set; }
-
-    public Catalog(IUnityContainer container, IRegionManager regionManager)
+    public class Module : IModule
     {
-      Container = container;
-      RegionManager = regionManager;
-    }
+        #region IModule Members
 
-    public void Initialize()
-    {
-      var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();            
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Modules.Catalog.ItemsAndDetails)}", typeof(ItemsView));
-    }
+        public IUnityContainer Container { get; private set; }
+        public IRegionManager RegionManager { get; private set; }
 
-    #endregion
-  }
+        public Module(IUnityContainer container, IRegionManager regionManager)
+        {
+            Container = container;
+            RegionManager = regionManager;
+        }
+
+        public void Initialize()
+        {
+            var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+            regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Common.BLL.Modules.Catalog.ItemsAndDetails)}", typeof(ItemsAndDetailsView));
+
+        }
+
+        #endregion
+    }
 }

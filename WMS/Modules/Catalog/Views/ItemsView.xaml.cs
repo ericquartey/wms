@@ -1,10 +1,7 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.WMS.Comp.Catalog
+namespace Ferretto.WMS.Modules.Catalog
 {
-  /// <summary>
-  /// Logica di interazione per ItemsView.xaml
-  /// </summary>
   public partial class ItemsView : UserControl
   {
     public ItemsView()

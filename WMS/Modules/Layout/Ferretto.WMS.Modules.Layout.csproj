@@ -7,8 +7,8 @@
     <ProjectGuid>{965F447E-A8A3-42FA-9EDB-E90F677437AE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ferretto.WMS.Comp.Layout</RootNamespace>
-    <AssemblyName>Ferretto.WMS.Comp.Layout</AssemblyName>
+    <RootNamespace>Ferretto.WMS.Modules.Layout</RootNamespace>
+    <AssemblyName>Ferretto.WMS.Modules.Layout</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

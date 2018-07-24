@@ -1,14 +1,15 @@
 ﻿namespace Ferretto.Common.BLL
 {
-  public class Modules
+  static public class Modules
   {
-    
-    public class Catalog
+    static public class Catalog
     {
       public const string ItemsAndDetails = "ItemsAndDetails";
+      public const string Items = "Items";
+      public const string ItemDetails = "ItemDetails";
     }
 
-    public class Layout
+    static public class Layout
     {
       public const string MainContent = "MainContent";
       public const string MenuOutlook = "MenuOutlook";
