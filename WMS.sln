@@ -22,9 +22,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.BLL", "Comm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.DAL", "Common\DAL\Ferretto.Common.DAL.csproj", "{FFA86958-4597-4D8D-8E13-4B6F70F1A6F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Comp.Catalog", "WMS\Modules\Ferretto.WMS.Comp.Catalog\Ferretto.WMS.Comp.Catalog.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Modules.Catalog", "WMS\Modules\Ferretto.WMS.Modules.Catalog\Ferretto.WMS.Modules.Catalog.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Comp.Layout", "WMS\Modules\Ferretto.WMS.Comp.Layout\Ferretto.WMS.Comp.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Modules.Layout", "WMS\Modules\Ferretto.WMS.Modules.Layout\Ferretto.WMS.Modules.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Controls", "Common\Controls\Ferretto.Common.Controls\Ferretto.Common.Controls.csproj", "{0DDBD6DC-1F23-4F52-849D-94DA9E5F1B12}"
 EndProject
