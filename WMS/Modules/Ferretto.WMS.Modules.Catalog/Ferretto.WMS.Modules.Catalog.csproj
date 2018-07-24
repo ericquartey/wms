@@ -145,8 +145,8 @@
     <Compile Include="Views\ItemDetailsView.xaml.cs">
       <DependentUpon>ItemDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemsAndDetails.xaml.cs">
-      <DependentUpon>ItemsAndDetails.xaml</DependentUpon>
+    <Compile Include="Views\ItemsAndDetailsView.xaml.cs">
+      <DependentUpon>ItemsAndDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemsView.xaml.cs">
       <DependentUpon>ItemsView.xaml</DependentUpon>
@@ -163,7 +163,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ItemsAndDetails.xaml">
+    <Page Include="Views\ItemsAndDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
