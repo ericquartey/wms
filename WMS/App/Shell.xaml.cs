@@ -5,12 +5,9 @@ using System.Windows;
 
 namespace Ferretto.WMS.App
 {
-  /// <summary>
-  /// Logica di interazione per Shell.xaml
-  /// </summary>
   public partial class Shell : Window
   {
-    public IModuleManager moduleManager;
+    private IModuleManager moduleManager;
     private IRegionManager regionManager;
 
     public Shell()
@@ -22,9 +19,9 @@ namespace Ferretto.WMS.App
       : this()
     {
       this.moduleManager = moduleManager;
-      this.regionManager = regionManager;      
-      this.moduleManager.LoadModule(nameof(Modules.Catalog));
-      this.moduleManager.LoadModule(nameof(Modules.Layout));
+      this.regionManager = regionManager;
+      this.moduleManager.LoadModule(nameof(Modules.Layout)); 
+      this.moduleManager.LoadModule(nameof(Modules.Catalog)); // To be removed when dinamically loaded from layout module.      
     }
   }
 }

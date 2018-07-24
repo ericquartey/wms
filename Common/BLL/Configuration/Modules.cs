@@ -5,13 +5,14 @@
     
     public class Catalog
     {
-      public const string Items = "Items";
+      public const string ItemsAndDetails = "ItemsAndDetails";
     }
 
     public class Layout
     {
+      public const string MainContent = "MainContent";
       public const string MenuOutlook = "MenuOutlook";
-      public const string MenuBar = "MenuBar";
+      public const string Menu = "Menu";
     }
   }
 }
