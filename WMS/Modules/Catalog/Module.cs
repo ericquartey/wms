@@ -22,7 +22,10 @@ namespace Ferretto.WMS.Modules.Catalog
         public void Initialize()
         {
             var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+
             regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Common.BLL.Modules.Catalog.ItemsAndDetails)}", typeof(ItemsAndDetailsView));
+            regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Common.BLL.Modules.Catalog.Items)}", typeof(ItemsView));
+            regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Common.BLL.Modules.Catalog.ItemDetails)}", typeof(ItemDetailsView));
 
         }
 

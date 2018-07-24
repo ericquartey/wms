@@ -5,13 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:prism="http://www.codeplex.com/prism"   
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="Green">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <ItemsControl x:Name="Items"  Grid.Row="0" prism:RegionManager.RegionName="Catalog.Items" />
-        <ItemsControl x:Name="ItemDetails"  Grid.Row="1" prism:RegionManager.RegionName="Catalog.ItemDetails" />
+        <ItemsControl Grid.Row="0" x:Name="Items" prism:RegionManager.RegionName="Catalog.Items" />
+        <GridSplitter Grid.Row="1"  HorizontalAlignment="Stretch" />
+        <ItemsControl Grid.Row="2" x:Name="ItemDetails"  prism:RegionManager.RegionName="Catalog.ItemDetails" />
     </Grid>
 </UserControl>

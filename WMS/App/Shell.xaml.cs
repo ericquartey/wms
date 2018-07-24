@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.BLL;
-using Prism.Modularity;
+﻿using Prism.Modularity;
 using Prism.Regions;
 using System.Windows;
 
@@ -20,8 +19,8 @@ namespace Ferretto.WMS.App
     {
       this.moduleManager = moduleManager;
       this.regionManager = regionManager;
-      this.moduleManager.LoadModule(nameof(Modules.Layout)); 
-      this.moduleManager.LoadModule(nameof(Modules.Catalog)); // To be removed when dinamically loaded from layout module.      
+      this.moduleManager.LoadModule(nameof(Common.BLL.Modules.Layout)); 
+      this.moduleManager.LoadModule(nameof(Common.BLL.Modules.Catalog)); // TODO remove when dinamically loaded from layout module.      
     }
   }
 }
