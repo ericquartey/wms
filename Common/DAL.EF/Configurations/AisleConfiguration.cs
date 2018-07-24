@@ -1,0 +1,21 @@
+﻿using Ferretto.Common.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace Ferretto.Common.DAL.EF.Configurations
+{
+    public class AisleConfiguration : IEntityTypeConfiguration<Aisle>
+    {
+        public void Configure(EntityTypeBuilder<Aisle> builder)
+        {
+            builder.HasKey(a => a.Id);
+
+            builder.Property(a => a.Name).IsRequired();
+
+            builder.HasOne(a => a.Area)
+                .WithMany(a => a.Aisles)
+                .HasForeignKey(a => a.AreaId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        }
+    }
+}
