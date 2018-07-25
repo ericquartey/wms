@@ -8,46 +8,46 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="30"/>
-        </Grid.RowDefinitions>
-        <dxa:AccordionControl x:Name="accordion"
-                                  ExpandMode="SingleOrNone"
-                                  VerticalScrollBarVisibility="Auto"
-                                  CollapsedItemClickAction="Select"
-                                  SummaryItemHeader="All Filters"
-                                  IsCollapseButtonVisible="True"
-                                  ShowSearchControl="True"
-                                  BorderThickness="0">
-            <dxa:AccordionItem Header="File" ShowInCollapsedMode="True">
-                <dxa:AccordionItem Header="Import" IsExpanded="True"/>
-                <dxa:AccordionItem Header="Export"/>
-                <dxa:AccordionItem Header="Stampa"/>
-                <dxa:AccordionItem Header="Esci"/>
-            </dxa:AccordionItem>
-            <dxa:AccordionItem Header="{x:Static r:Resource.Menu_Catalog}" ShowInCollapsedMode="True">
-                <dxa:AccordionItem Header="Articoli" IsExpanded="True"/>
-                <dxa:AccordionItem Header="Celle"/>
-                <dxa:AccordionItem Header="Udc"/>
-                <dxa:AccordionItem Header="Scomparti"/>
-                <dxa:AccordionItem Header="Udc Predefinite"/>
-            </dxa:AccordionItem>
-            <dxa:AccordionItem Header="Liste" ShowInCollapsedMode="True">
-                <dxa:AccordionItem Header="Liste"/>
-                <dxa:AccordionItem Header="Packing List"/>
-            </dxa:AccordionItem>
-            <dxa:AccordionItem Header="Varie" ShowInCollapsedMode="True">
-                <dxa:AccordionItem Header="Articoli sotto scorta"/>
-                <dxa:AccordionItem Header="Compattazione articoli"/>
-                <dxa:AccordionItem Header="Abbinamento articolo scomparti"/>
-                <dxa:AccordionItem Header="Inventario"/>
-                <dxa:AccordionItem Header="Stato occupazione corridoi"/>
-                <dxa:AccordionItem Header="Saturazione UDC"/>
-            </dxa:AccordionItem>
-            <dxa:AccordionItem Header="Help"  ShowInCollapsedMode="True" />
+  <Grid>
+    <Grid.RowDefinitions>   
+      <RowDefinition />
+      <RowDefinition Height="30"/>
+    </Grid.RowDefinitions>
+    <dxa:AccordionControl x:Name="accordion"
+      ExpandMode="SingleOrNone"
+      VerticalScrollBarVisibility="Auto"
+      CollapsedItemClickAction="Select"
+      SummaryItemHeader="All Filters"
+      IsCollapseButtonVisible="True"
+      ShowSearchControl="True"
+      BorderThickness="0">
+      <dxa:AccordionItem Header="{x:Static r:Resources.Nav_File}" ShowInCollapsedMode="True">
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_File_Import}" IsExpanded="True"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_File_Export}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_File_Print}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_File_Exit}"/>
+      </dxa:AccordionItem>
+      <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Catalog}" ShowInCollapsedMode="True">
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Catalog_Items}" IsExpanded="True"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Catalog_Cells}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Catalog_LoadingUnits}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Catalog_Compartments}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Catalog_DefaultLoadingUnits}"/>
+      </dxa:AccordionItem>
+      <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Lists}" ShowInCollapsedMode="True">
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Lists_Lists}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_PackingLists}"/>
+      </dxa:AccordionItem>
+      <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Others}" ShowInCollapsedMode="True">
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Others_UnderStock_Items}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Others_Reserved_Compartments}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Others_Items_Compacting}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Others_Inventory}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Others_Aisles_Status}"/>
+        <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Others_Loading_Units_Saturation}"/>
+      </dxa:AccordionItem>
+      <dxa:AccordionItem Header="{x:Static r:Resources.Nav_Help}"  ShowInCollapsedMode="True" />
 
-        </dxa:AccordionControl>
-    </Grid>
+    </dxa:AccordionControl>
+  </Grid>
 </UserControl>
