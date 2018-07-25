@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{69935FFE-3DC9-47C4-9192-D925D043C137}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Ferretto.WMS.UI</RootNamespace>
-    <AssemblyName>Ferretto.WMS.UI</AssemblyName>
+    <RootNamespace>Ferretto.WMS.App</RootNamespace>
+    <AssemblyName>Ferretto.WMS.App</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,8 +52,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.5.6\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
@@ -123,8 +123,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -133,12 +134,18 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\BLL\Ferretto.Common.BLL.csproj">
-      <Project>{0d3e44fd-b369-4b85-aebe-17a754d71c8d}</Project>
-      <Name>Ferretto.Common.BLL</Name>
+    <ProjectReference Include="..\..\Common\DAL.Interfaces\Ferretto.Common.DAL.Interfaces.csproj">
+      <Project>{650c48cd-255c-4ae6-b3b0-7c4a06550c66}</Project>
+      <Name>Ferretto.Common.DAL.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Configuration\Ferretto.Common.Configuration.csproj">
+      <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
+      <Name>Ferretto.Common.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Themes\Ferretto.WMS.Themes.csproj">
       <Project>{9377dbc4-ed82-46d9-90b1-9f7df787e5e1}</Project>

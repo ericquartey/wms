@@ -1,4 +1,6 @@
-﻿namespace Ferretto.Common.BLL
+﻿using System;
+
+namespace Ferretto.Common.Configuration
 {
   static public class Modules
   {
@@ -14,6 +16,15 @@
       public const string MainContent = "MainContent";
       public const string MenuOutlook = "MenuOutlook";
       public const string Menu = "Menu";
+    }
+
+    static public class DataAccess
+    {
+     
+    }
+
+    static public class BusinessLogic
+    {
     }
   }
 }

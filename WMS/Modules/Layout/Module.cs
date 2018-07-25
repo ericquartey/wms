@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.BLL;
-using Microsoft.Practices.ServiceLocation;
+﻿using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -22,9 +21,8 @@ namespace Ferretto.WMS.Modules.Layout
     public void Initialize()
     {
       var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
-
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Common.BLL.Modules.Layout.MainContent)}", typeof(LayoutView));
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Layout)}.{nameof(Common.BLL.Modules.Layout.Menu)}", typeof(MenuView));
+      regionManager.RegisterViewWithRegion($"{nameof(Layout)}.{nameof(Ferretto.Common.Configuration.Modules.Layout.MainContent)}", typeof(LayoutView));
+      regionManager.RegisterViewWithRegion($"{nameof(Layout)}.{nameof(Ferretto.Common.Configuration.Modules.Layout.Menu)}", typeof(MenuView));
     }
 
     #endregion

@@ -1,34 +1,32 @@
-﻿using Ferretto.Common.BLL;
-using Microsoft.Practices.ServiceLocation;
+﻿using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-    public class Module : IModule
+  public class Module : IModule
+  {
+    #region IModule Members
+
+    public IUnityContainer Container { get; private set; }
+    public IRegionManager RegionManager { get; private set; }
+
+    public Module(IUnityContainer container, IRegionManager regionManager)
     {
-        #region IModule Members
-
-        public IUnityContainer Container { get; private set; }
-        public IRegionManager RegionManager { get; private set; }
-
-        public Module(IUnityContainer container, IRegionManager regionManager)
-        {
-            Container = container;
-            RegionManager = regionManager;
-        }
-
-        public void Initialize()
-        {
-            var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
-
-            regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Common.BLL.Modules.Catalog.ItemsAndDetails)}", typeof(ItemsAndDetailsView));
-            regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Common.BLL.Modules.Catalog.Items)}", typeof(ItemsView));
-            regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Common.BLL.Modules.Catalog.ItemDetails)}", typeof(ItemDetailsView));
-
-        }
-
-        #endregion
+      Container = container;
+      RegionManager = regionManager;
     }
+
+    public void Initialize()
+    {
+      var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();
+
+      regionManager.RegisterViewWithRegion($"{nameof(Catalog)}.{nameof(Common.Configuration.Modules.Catalog.ItemsAndDetails)}", typeof(ItemsAndDetailsView));
+      regionManager.RegisterViewWithRegion($"{nameof(Catalog)}.{nameof(Common.Configuration.Modules.Catalog.Items)}", typeof(ItemsView));
+      regionManager.RegisterViewWithRegion($"{nameof(Catalog)}.{nameof(Common.Configuration.Modules.Catalog.ItemDetails)}", typeof(ItemDetailsView));
+    }
+
+    #endregion
+  }
 }

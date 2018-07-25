@@ -21,7 +21,7 @@ namespace Ferretto.WMS.App
       #region Module Catalog
       moduleCatalog.AddModule(new ModuleInfo()
       {
-        ModuleName = "Catalog",        
+        ModuleName = "Catalog",
         ModuleType = "Ferretto.WMS.Modules.Catalog.Module, Ferretto.WMS.Modules.Catalog, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null",
         InitializationMode = InitializationMode.OnDemand
       });
@@ -29,6 +29,18 @@ namespace Ferretto.WMS.App
       {
         ModuleName = "Layout",
         ModuleType = "Ferretto.WMS.Modules.Layout.Module, Ferretto.WMS.Modules.Layout, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null",
+        InitializationMode = InitializationMode.OnDemand
+      });
+      moduleCatalog.AddModule(new ModuleInfo()
+      {
+        ModuleName = nameof(Common.Configuration.Modules.DataAccess),
+        ModuleType = "Ferretto.Common.DAL.EF.Module, Ferretto.Common.DAL.EF, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null",
+        InitializationMode = InitializationMode.OnDemand
+      });
+      moduleCatalog.AddModule(new ModuleInfo()
+      {
+        ModuleName = nameof(Common.Configuration.Modules.BusinessLogic),
+        ModuleType = "Ferretto.Common.BLL.Module, Ferretto.Common.BLL, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null",
         InitializationMode = InitializationMode.OnDemand
       });
       #endregion
