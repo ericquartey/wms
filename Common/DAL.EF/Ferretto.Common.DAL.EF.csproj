@@ -229,6 +229,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Configuration\Ferretto.Common.Configuration.csproj">
+      <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
+      <Name>Ferretto.Common.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DAL.Interfaces\Ferretto.Common.DAL.Interfaces.csproj">
       <Project>{650c48cd-255c-4ae6-b3b0-7c4a06550c66}</Project>
       <Name>Ferretto.Common.DAL.Interfaces</Name>

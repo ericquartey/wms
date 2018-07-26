@@ -5,6 +5,8 @@ using Prism.Regions;
 
 namespace Ferretto.WMS.Modules.Layout
 {
+  [Module(ModuleName = nameof(Common.Configuration.Modules.Layout), OnDemand = true)]
+  [ModuleDependency(nameof(Common.Configuration.Modules.BusinessLogic))]
   public class Module : IModule
   {
     #region IModule Members
