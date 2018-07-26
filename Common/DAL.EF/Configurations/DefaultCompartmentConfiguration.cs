@@ -10,8 +10,6 @@ namespace Ferretto.Common.DAL.EF.Configurations
         {
             builder.HasKey(d => d.Id);
 
-            builder.Property(d => d.Image)
-                .HasColumnType("image");
             builder.Property(d => d.Note)
                 .HasColumnType("text");
 

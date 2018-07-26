@@ -8,7 +8,7 @@ namespace Ferretto.Common.Models
         public int Id { get; set; }
         public int LoadingUnitTypeId { get; set; }
         public Pairing CellPairing { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public int DefaultHandlingParametersCorrection { get; set; }
 
         public LoadingUnitType LoadingUnitType { get; set; }
