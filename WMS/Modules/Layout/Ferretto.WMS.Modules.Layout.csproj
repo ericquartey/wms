@@ -36,7 +36,7 @@
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016White.v18.1, Version=18.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\..\..\Temp\Devexpress_BinFolder\Bin\Framework\DevExpress.Xpf.Themes.Office2016White.v18.1.dll</HintPath>
+      <HintPath>..\..\..\Libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016White.v18.1.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
