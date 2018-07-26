@@ -21,6 +21,12 @@ namespace Ferretto.Common.DAL.EF.Configurations
                 .HasColumnType("text");
             builder.Property(l => l.CreationDate)
                 .HasDefaultValueSql("GETDATE()");
+            builder.Property(l => l.InCycleCount)
+                .HasDefaultValue(0);
+            builder.Property(l => l.OutCycleCount)
+                .HasDefaultValue(0);
+            builder.Property(l => l.OtherCycleCount)
+                .HasDefaultValue(0);
 
             builder.HasOne(l => l.Cell)
                 .WithMany(c => c.LoadingUnits)

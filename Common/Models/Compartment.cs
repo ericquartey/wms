@@ -18,7 +18,7 @@ namespace Ferretto.Common.Models
         public int? PackageTypeId { get; set; }
         public string Lot { get; set; }
         public string RegistrationNumber { get; set; }
-        public int MaxCapacity { get; set; }
+        public int? MaxCapacity { get; set; }
         public int Stock { get; set; }
         public int ReservedForPick { get; set; }
         public int ReservedToStore { get; set; }
@@ -29,12 +29,12 @@ namespace Ferretto.Common.Models
         public DateTime? FirstStoreDate { get; set; }
         public DateTime? LastStoreDate { get; set; }
         public DateTime? LastPickDate { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public int XPosition { get; set; }
-        public int YPosition { get; set; }
-        public int LaserPointerCoordinate1 { get; set; }
-        public int LaserPointerCoordinate2 { get; set; }
+        public int? Width { get; set; }
+        public int? Height { get; set; }
+        public int? XPosition { get; set; }
+        public int? YPosition { get; set; }
+        public int? LaserPointerCoordinate1 { get; set; }
+        public int? LaserPointerCoordinate2 { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
         public CompartmentType CompartmentType { get; set; }

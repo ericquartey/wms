@@ -17,7 +17,7 @@ namespace Ferretto.Common.Models
         public int LoadingUnitStatusId { get; set; }
         public ReferenceType Reference { get; set; }
         public AbcClass Class { get; set; }
-        public int HandlingParametersCorrection { get; set; }
+        public int? HandlingParametersCorrection { get; set; }
         public int InCycleCount { get; set; }
         public int OutCycleCount { get; set; }
         public int OtherCycleCount { get; set; }
