@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.WMS.Comp.Layout
+namespace Ferretto.WMS.Modules.Layout
 {
   /// <summary>
   /// Interaction logic for LayoutView.xaml

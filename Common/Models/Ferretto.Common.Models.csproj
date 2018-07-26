@@ -85,13 +85,10 @@
     <Compile Include="ReferenceType.cs" />
     <Compile Include="Side.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Diagrams\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Diagrams\All.cd" />
     <Content Include="Diagrams\CellsAndPositions.cd" />
-    <Content Include="FerrettoWarehouse.Model.Complex.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
