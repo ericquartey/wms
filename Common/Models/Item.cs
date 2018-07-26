@@ -28,7 +28,7 @@ namespace Ferretto.Common.Models
         public DateTime? InventoryDate { get; set; }
         public DateTime? LastPickDate { get; set; }
         public DateTime? LastStoreDate { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public string Note { get; set; }
 
         public MeasureUnit MeasureUnit { get; set; }

@@ -10,7 +10,7 @@ namespace Ferretto.Common.Models
         public int CompartmentTypeId { get; set; }
         public int XPosition { get; set; }
         public int YPosition { get; set; }
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
         public string Note { get; set; }
 
         public DefaultLoadingUnit DefaultLoadingUnit { get; set; }

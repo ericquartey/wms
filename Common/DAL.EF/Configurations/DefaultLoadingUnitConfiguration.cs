@@ -10,9 +10,6 @@ namespace Ferretto.Common.DAL.EF.Configurations
         {
             builder.HasKey(d => d.Id);
 
-            builder.Property(c => c.Image)
-                .HasColumnType("image");
-
             builder.HasOne(d => d.LoadingUnitType)
                 .WithMany(l => l.DefaultLoadingUnits)
                 .HasForeignKey(d => d.LoadingUnitTypeId)

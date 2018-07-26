@@ -16,8 +16,6 @@ namespace Ferretto.Common.DAL.EF.Configurations
             builder.Property(i => i.Code).IsRequired();
             builder.Property(i => i.Class)
                 .HasColumnType("char(1)");
-            builder.Property(i => i.Image)
-                .HasColumnType("image");
             builder.Property(i => i.Note)
                 .HasColumnType("text");
             builder.Property(i => i.CreationDate)
