@@ -174,5 +174,8 @@
     <Folder Include="Themes\Light\Common\" />
     <Folder Include="Themes\Light\Custom\" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Articolo1.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

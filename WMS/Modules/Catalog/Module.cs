@@ -21,8 +21,10 @@ namespace Ferretto.WMS.Comp.Catalog
 
     public void Initialize()
     {
+      this.Container.RegisterType<IItemDetailsViewModel, ItemDetailsViewModel>();
+      this.Container.RegisterType<IItemViewModel, ItemViewModel>();            
       var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();            
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Modules.Catalog.ItemsAndDetails)}", typeof(ItemsView));
+      regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Modules.Catalog.ItemsAndDetails)}", typeof(ItemsAndDetailsView));
     }
 
     #endregion
