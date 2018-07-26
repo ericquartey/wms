@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.WMS.Comp.Layout
+namespace Ferretto.WMS.Modules.Layout
 {
   /// <summary>
   /// Logica di interazione per MenuView.xaml
