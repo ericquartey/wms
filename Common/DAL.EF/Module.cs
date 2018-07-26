@@ -21,7 +21,6 @@ namespace Ferretto.Common.DAL.EF
     public void Initialize()
     {
       Container.RegisterType<Interfaces.IItemsRepository, ItemsRepository>();
-      Container.RegisterType<Interfaces.IRepository<Item>, ItemsRepository>();
     }
   }
 }

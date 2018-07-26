@@ -7,9 +7,9 @@ namespace Ferretto.Common.BLL.Services
 {
   public class ItemsService : IItemsService
   {
-    private readonly IRepository<Item> repository;
+    private readonly IItemsRepository repository;
 
-    public ItemsService(IRepository<Item> repository)
+    public ItemsService(IItemsRepository repository)
     {
       this.repository = repository;
     }
