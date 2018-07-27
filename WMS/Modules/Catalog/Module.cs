@@ -1,5 +1,4 @@
-﻿using Ferretto.WMS.Comp.Catalog;
-using Microsoft.Practices.ServiceLocation;
+﻿using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;

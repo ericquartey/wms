@@ -1,4 +1,4 @@
-﻿namespace Ferretto.WMS.Comp.Catalog
+﻿namespace Ferretto.WMS.Modules.Catalog
 {
   public interface IItemViewModel
   {

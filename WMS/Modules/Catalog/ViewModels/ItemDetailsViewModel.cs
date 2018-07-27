@@ -7,7 +7,7 @@ using System;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Ferretto.WMS.Comp.Catalog
+namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemDetailsViewModel : BindableBase, IItemDetailsViewModel
   {

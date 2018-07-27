@@ -1,12 +1,11 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.Generic;
 
-namespace Ferretto.WMS.Comp.Catalog
+namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemViewModel : BindableBase, IItemViewModel
   {
@@ -48,7 +47,6 @@ namespace Ferretto.WMS.Comp.Catalog
 
     public ItemViewModel()
     {
-
       this.InitializeData();
     }
 

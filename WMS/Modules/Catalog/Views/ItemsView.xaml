@@ -30,8 +30,7 @@
             <dxg:GridColumn Width="300*"
                             FieldName="Description"
                             Header="Descrizione" />
-            <!--DisplayMemberBinding="{Binding Path=Type, Converter={StaticResource EnumTypeConverter}}"-->
-            <dxg:GridColumn Width="100*"                            
+            <dxg:GridColumn Width="100*"
                             FieldName="Class"
                             Header="Classe di appartenenza" />
             <dxg:GridColumn Width="100*"
