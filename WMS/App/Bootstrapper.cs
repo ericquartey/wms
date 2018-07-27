@@ -9,30 +9,19 @@ namespace Ferretto.WMS.App
   {
     protected override DependencyObject CreateShell()
     {
-      return  this.Container.TryResolve<Shell>();
+      return this.Container.TryResolve<Shell>();
+    }
+
+    protected override IModuleCatalog CreateModuleCatalog()
+    {
+      return new DirectoryModuleCatalog() { ModulePath = @".\" };
     }
 
     protected override void ConfigureModuleCatalog()
     {
       base.ConfigureModuleCatalog();
 
-      ModuleCatalog moduleCatalog = (ModuleCatalog)this.ModuleCatalog;
-
-      #region Module Catalog
-      moduleCatalog.AddModule(new ModuleInfo()
-      {
-        ModuleName = "Catalog",        
-        ModuleType = "Ferretto.WMS.Comp.Catalog.Catalog,Ferretto.WMS.Comp.Catalog, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null",
-        InitializationMode = InitializationMode.OnDemand
-      });
-      moduleCatalog.AddModule(new ModuleInfo()
-      {
-        ModuleName = "Layout",
-        ModuleType = "Ferretto.WMS.Comp.Layout.Layout, Ferretto.WMS.Comp.Layout, Version = 1.0.0.0, Culture = neutral, PublicKeyToken = null",
-        InitializationMode = InitializationMode.OnDemand
-      });
-      #endregion
-
+      (this.ModuleCatalog as DirectoryModuleCatalog)?.Load();
     }
 
     protected override void InitializeShell()

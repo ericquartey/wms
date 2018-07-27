@@ -7,8 +7,8 @@
     <ProjectGuid>{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ferretto.WMS.Comp.Catalog</RootNamespace>
-    <AssemblyName>Ferretto.WMS.Comp.Catalog</AssemblyName>
+    <RootNamespace>Ferretto.WMS.Modules.Catalog</RootNamespace>
+    <AssemblyName>Ferretto.WMS.Modules.Catalog</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\NLog.4.5.7\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -100,10 +103,6 @@
       <HintPath>..\..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NLog.4.5.6\lib\net45\NLog.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
@@ -157,6 +156,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
@@ -175,17 +177,21 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\BLL\Ferretto.Common.BLL.csproj">
-      <Project>{0d3e44fd-b369-4b85-aebe-17a754d71c8d}</Project>
-      <Name>Ferretto.Common.BLL</Name>
+    <ProjectReference Include="..\..\..\Common\Models\Ferretto.Common.Models.csproj">
+      <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
+      <Name>Ferretto.Common.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj">
+      <Project>{2586c34c-da26-4143-8359-21d8a42b8462}</Project>
+      <Name>Ferretto.Common.BLL.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Common\Configuration\Ferretto.Common.Configuration.csproj">
+      <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
+      <Name>Ferretto.Common.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj">
       <Project>{0DDBD6DC-1F23-4F52-849D-94DA9E5F1B12}</Project>
       <Name>Ferretto.Common.Controls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\Common\Models\Ferretto.Common.Models.csproj">
-      <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
-      <Name>Ferretto.Common.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://www.codeplex.com/prism"
-    Title="Shell"
+    xmlns:r ="clr-namespace:Ferretto.WMS.App.Properties"
+    Title="{x:Static r:Resources.Application_Title}"
     mc:Ignorable="d">
     <Grid>
         <ContentControl x:Name="MainContent" prism:RegionManager.RegionName="Layout.MainContent" />
