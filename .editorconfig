@@ -4,9 +4,11 @@ root = true
 # All files
 [*]
 indent_style = space
+trim_trailing_whitespace = true
+insert_final_newline = true
 
 # Code files
-[*.{cs,csx,vb,vbx}]
+[*.cs]
 indent_size = 2
 end_of_line = crlf
 
@@ -16,11 +18,11 @@ indent_size = 2
 
 # .NET code style settings
 
-[*.{cs,vb}]
+[*.cs]
 ## Organize usings
 dotnet_sort_system_directives_first = true
 
-## "This." and "Me." qualifiers
+## "this." and "Me." qualifiers
 dotnet_style_qualification_for_field = false:error
 dotnet_style_qualification_for_property = false:error
 dotnet_style_qualification_for_method = false:error
@@ -77,8 +79,7 @@ csharp_style_conditional_delegate_call = false:suggestion
 ## Code block preferences
 csharp_prefer_braces = true:error
 
-# C-Sharp formatting settings
-
+## C-Sharp formatting settings
 csharp_new_line_before_open_brace = all
 csharp_new_line_before_else = true:error
 csharp_new_line_before_catch = true:error
@@ -116,22 +117,26 @@ dotnet_naming_symbols.fields_and_params.applicable_accessibilities = *
 dotnet_naming_symbols.general.applicable_kinds           = class,struct,enum,property,method,event,namespace,delegate
 dotnet_naming_symbols.general.applicable_accessibilities = *
 
-### constants
-dotnet_naming_symbols.constants.applicable_kinds           = field
-dotnet_naming_symbols.constants.applicable_accessibilities = *
-dotnet_naming_symbols.constants.required_modifiers         = const
+### constant_fields
+dotnet_naming_symbols.constant_fields.applicable_kinds   = field
+dotnet_naming_symbols.constant_fields.required_modifiers = const
 
 ## Styles
 ### pascal_case_style
 dotnet_naming_style.pascal_case_style.capitalization = pascal_case
 
-### camle_case_style
-dotnet_naming_style.camle_case_style.capitalization = camel_case
+### camel_case_style
+dotnet_naming_style.camel_case_style.capitalization = camel_case
 
 ### upper_case_style
 dotnet_naming_style.upper_case_style.capitalization = all_upper
 dotnet_naming_style.upper_case_style.word_separator = _
 
+## Rules
+## Constants with all CAPS
+dotnet_naming_rule.uppercase_for_constants.symbols  = constant_fields
+dotnet_naming_rule.uppercase_for_constants.style    = upper_case_style
+dotnet_naming_rule.uppercase_for_constants.severity = error
 
 ## Pascal Case for Classes, Methods, etc
 dotnet_naming_rule.pascal_case_for_general_symbols.symbols  = general
@@ -140,10 +145,5 @@ dotnet_naming_rule.pascal_case_for_general_symbols.severity = error
 
 # Camel Casing for stack variables, private members fields and method arguments
 dotnet_naming_rule.camel_case_for_fields_and_params.symbols  = fields_and_params
-dotnet_naming_rule.camel_case_for_fields_and_params.style    = camle_case_style
+dotnet_naming_rule.camel_case_for_fields_and_params.style    = camel_case_style
 dotnet_naming_rule.camel_case_for_fields_and_params.severity = error
-
-# Constants with all CAPS
-dotnet_naming_rule.uppercase_for_constants.symbols  = constants
-dotnet_naming_rule.uppercase_for_constants.style    = uppercase_style
-dotnet_naming_rule.uppercase_for_constants.severity = error
