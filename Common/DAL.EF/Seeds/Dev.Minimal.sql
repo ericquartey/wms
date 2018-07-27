@@ -1,3 +1,5 @@
+BEGIN TRANSACTION;
+
 -- Areas / Aisles
 SET IDENTITY_INSERT Areas ON;
 INSERT INTO Areas (Id, Name) VALUES (1, 'Area Traslo');
@@ -62,8 +64,8 @@ INSERT INTO CellWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1,
 SET IDENTITY_INSERT CellWeightClasses OFF;
 
 SET IDENTITY_INSERT CellTypes ON;
-INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (1, 2, 1, 1, 'Cella Europallet, max altezza 1300mm, max peso 1000kg');
-INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (2, 1, 1, 1, 'Cella Europallet, max altezza 1700mm, max peso 1000kg');
+INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (1, 2, 1, 1, 'Cella Europallet, max altezza 1700mm, max peso 1000kg');
+INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (2, 1, 1, 1, 'Cella Europallet, max altezza 1300mm, max peso 1000kg');
 SET IDENTITY_INSERT CellTypes OFF;
 
 SET IDENTITY_INSERT Cells ON;
@@ -404,8 +406,8 @@ INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VAL
 SET IDENTITY_INSERT LoadingUnitHeightClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitTypes ON;
-INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (1, 1, 1, 1, 'Europallet, max altezza 1700mm, max peso 1000kg');
-INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (2, 2, 1, 1, 'Europallet, max altezza 1300mm, max peso 1000kg');
+INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (1, 2, 1, 1, 'Europallet, max altezza 1700mm, max peso 1000kg');
+INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (2, 1, 1, 1, 'Europallet, max altezza 1300mm, max peso 1000kg');
 SET IDENTITY_INSERT LoadingUnitTypes OFF;
 
 INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (1, 1);
@@ -435,7 +437,7 @@ INSERT INTO PackageTypes (Id, Description) VALUES (1, 'Sciolto');
 INSERT INTO PackageTypes (Id, Description) VALUES (2, 'Confezioni piccole');
 INSERT INTO PackageTypes (Id, Description) VALUES (3, 'Confezioni medie');
 INSERT INTO PackageTypes (Id, Description) VALUES (4, 'Scatole');
-SET IDENTITY_INSERT PackageTypes OFF; 
+SET IDENTITY_INSERT PackageTypes OFF;
 
 SET IDENTITY_INSERT CompartmentStatuses ON;
 INSERT INTO CompartmentStatuses (Id, Description) VALUES (1, 'Libero');
@@ -477,3 +479,5 @@ INSERT INTO ItemListRowStatuses (Id, Description) VALUES (3, 'Completata');
 INSERT INTO ItemListRowStatuses (Id, Description) VALUES (4, 'Incompleta');
 INSERT INTO ItemListRowStatuses (Id, Description) VALUES (5, 'Sospesa');
 SET IDENTITY_INSERT ItemListRowStatuses OFF;
+
+COMMIT;
