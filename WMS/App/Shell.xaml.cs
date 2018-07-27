@@ -25,7 +25,7 @@ namespace Ferretto.WMS.App
       this.moduleManager.LoadModule(nameof(Modules.BusinessLogic));   // TODO: remove the static LoadModules below when we will have the dynamic loading 
 
       this.moduleManager.LoadModule(nameof(Modules.Layout));
-    
+
       this.moduleManager.LoadModule(nameof(Modules.Catalog));         // TODO: remove the static LoadModules below when we will have the dynamic loading    
 
     }
