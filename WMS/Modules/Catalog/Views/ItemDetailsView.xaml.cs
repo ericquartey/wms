@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.ServiceLocation;
+﻿using Ferretto.WMS.Comp.Catalog;
+using Microsoft.Practices.ServiceLocation;
 using System.Windows.Controls;
 
 namespace Ferretto.WMS.Modules.Catalog

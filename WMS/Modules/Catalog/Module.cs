@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.ServiceLocation;
+﻿using Ferretto.WMS.Comp.Catalog;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -25,7 +26,7 @@ namespace Ferretto.WMS.Modules.Catalog
       this.Container.RegisterType<IItemDetailsViewModel, ItemDetailsViewModel>();
       this.Container.RegisterType<IItemViewModel, ItemViewModel>();            
       var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();            
-      regionManager.RegisterViewWithRegion($"{nameof(Modules.Catalog)}.{nameof(Modules.Catalog.ItemsAndDetails)}", typeof(ItemsAndDetailsView));
+      regionManager.RegisterViewWithRegion($"{nameof(Common.Configuration.Modules.Catalog)}.{nameof(Common.Configuration.Modules.Catalog.ItemsAndDetails)}", typeof(ItemsAndDetailsView));
     }
 
     #endregion

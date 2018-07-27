@@ -4,9 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:prism="http://www.codeplex.com/prism"
-    xmlns:r ="clr-namespace:Ferretto.WMS.App.Properties"
-    Title="{x:Static r:Resources.Application_Title}"
+    xmlns:prism="http://www.codeplex.com/prism"        
     mc:Ignorable="d">
     <Grid>
         <ContentControl x:Name="MainContent" prism:RegionManager.RegionName="Layout.MainContent" />
