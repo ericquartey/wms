@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Controls.Services;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Events;
@@ -47,19 +48,15 @@ namespace Ferretto.WMS.Comp.Catalog
 
     public ItemViewModel()
     {
+
       this.InitializeData();
     }
 
     #region Methods
     private void InitializeData()
     {
-      var items = new List<Item>();
-      Item item = new Item() { Class = AbcClass.A, Id = 1, Description = "test", Height = 10, Width = 20 };
-      Item item1 = new Item() { Class = AbcClass.A, Id = 2, Description = "test1", Height = 100, Width = 50 };
-      items.Add(item);
-      items.Add(item1);
-      this.Items = items;
-
+      var itemService = ServiceLocator.Current.GetInstance<IItemsService>();
+      this.Items = itemService.GetItems();    
     }
     
     public void NotifySelectionChanged()
