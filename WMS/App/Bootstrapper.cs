@@ -1,4 +1,8 @@
-﻿using Prism.Modularity;
+﻿using DevExpress.Xpf.Docking;
+using DevExpress.Xpf.Prism;
+using Microsoft.Practices.ServiceLocation;
+using Prism.Modularity;
+using Prism.Regions;
 using Prism.Unity;
 using System;
 using System.Windows;
@@ -22,6 +26,17 @@ namespace Ferretto.WMS.App
       base.ConfigureModuleCatalog();
 
       (this.ModuleCatalog as DirectoryModuleCatalog)?.Load();
+    }
+
+    protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
+    {
+      RegionAdapterMappings mappings = base.ConfigureRegionAdapterMappings();
+      if (mappings != null)
+      {
+        var factory = ServiceLocator.Current.GetInstance<IRegionBehaviorFactory>();
+        mappings.RegisterMapping(typeof(LayoutPanel), AdapterFactory.Make<RegionAdapterBase<LayoutPanel>>(factory));
+      }
+      return mappings;
     }
 
     protected override void InitializeShell()

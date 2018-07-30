@@ -1,11 +1,12 @@
-﻿using Ferretto.Common.Configuration;
+﻿using DevExpress.Xpf.Core;
+using Ferretto.Common.Configuration;
 using Prism.Modularity;
 using Prism.Regions;
 using System.Windows;
 
 namespace Ferretto.WMS.App
 {
-  public partial class Shell : Window
+  public partial class Shell : DXWindow
   {
     private IModuleManager moduleManager;
     private IRegionManager regionManager;
