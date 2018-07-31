@@ -19,49 +19,49 @@ namespace Ferretto.WMS.Modules.Catalog
       }
       set
       {
-        if (this.Items != value)
+        if (Items != value)
         {
-          this.items = value;
-          this.RaisePropertyChanged();
+          items = value;
+          RaisePropertyChanged();
         }
       }
     }
 
-    private object selectedItem;
-    public object SelectedItem
+    private Common.Models.Item selectedItem;
+    public Common.Models.Item SelectedItem
     {
       get
       {
-        return this.selectedItem;
+        return selectedItem;
       }
       set
       {
-        if (this.selectedItem != value)
+        if (selectedItem != value)
         {
-          this.selectedItem = value;          
-          this.RaisePropertyChanged();
-          this.NotifySelectionChanged();
+          selectedItem = value;          
+          RaisePropertyChanged();
+          NotifySelectionChanged();
         }
       }
     }
 
     public ItemViewModel()
     {
-      this.InitializeData();
+      InitializeData();
     }
 
     #region Methods
     private void InitializeData()
     {
       var itemService = ServiceLocator.Current.GetInstance<IItemsService>();
-      this.Items = itemService.GetItems();    
+      Items = itemService.GetItems();    
     }
     
     public void NotifySelectionChanged()
     {
       var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
       var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
-      navigationCompletedEvent.Publish(this.selectedItem);
+      navigationCompletedEvent.Publish(selectedItem);
     }
     #endregion
   }

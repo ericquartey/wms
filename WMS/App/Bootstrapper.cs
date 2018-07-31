@@ -13,7 +13,7 @@ namespace Ferretto.WMS.App
   {
     protected override DependencyObject CreateShell()
     {
-      return this.Container.TryResolve<Shell>();
+      return Container.TryResolve<Shell>();
     }
 
     protected override IModuleCatalog CreateModuleCatalog()
@@ -25,7 +25,7 @@ namespace Ferretto.WMS.App
     {
       base.ConfigureModuleCatalog();
 
-      (this.ModuleCatalog as DirectoryModuleCatalog)?.Load();
+      (ModuleCatalog as DirectoryModuleCatalog)?.Load();
     }
 
     protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.App
     {
       base.InitializeShell();
 
-      App.Current.MainWindow = (Window)this.Shell;
+      App.Current.MainWindow = (Window)Shell;
       App.Current.MainWindow.Show();
     }
   }
