@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.DAL.EF.Configurations
 {
-    public class ItemListRowStatusConfiguration : IEntityTypeConfiguration<ItemListRowStatus>
+  public class ItemListRowStatusConfiguration : IEntityTypeConfiguration<ItemListRowStatus>
+  {
+    public void Configure(EntityTypeBuilder<ItemListRowStatus> builder)
     {
-        public void Configure(EntityTypeBuilder<ItemListRowStatus> builder)
-        {
-            builder.HasKey(i => i.Id);
+      builder.HasKey(i => i.Id);
 
-            builder.Property(i => i.Description).IsRequired();
-        }
+      builder.Property(i => i.Description).IsRequired();
     }
+  }
 }

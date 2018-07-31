@@ -4,27 +4,27 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.DAL.EF.Configurations
 {
-    public class CellConfigurationCellPositionLoadingUnitTypeConfiguration : IEntityTypeConfiguration<CellConfigurationCellPositionLoadingUnitType>
+  public class CellConfigurationCellPositionLoadingUnitTypeConfiguration : IEntityTypeConfiguration<CellConfigurationCellPositionLoadingUnitType>
+  {
+    public void Configure(EntityTypeBuilder<CellConfigurationCellPositionLoadingUnitType> builder)
     {
-        public void Configure(EntityTypeBuilder<CellConfigurationCellPositionLoadingUnitType> builder)
-        {
-            builder.HasKey(c => new { c.CellPositionId, c.CellConfigurationId, c.LoadingUnitTypeId });
+      builder.HasKey(c => new { c.CellPositionId, c.CellConfigurationId, c.LoadingUnitTypeId });
 
-            builder.Property(c => c.Priority)
-                .HasDefaultValue(1);
+      builder.Property(c => c.Priority)
+          .HasDefaultValue(1);
 
-            builder.HasOne(c => c.CellPosition)
-                .WithMany(c => c.CellConfigurationCellPositionLoadingUnitTypes)
-                .HasForeignKey(c => c.CellPositionId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(c => c.CellConfiguration)
-                .WithMany(c => c.CellConfigurationCellPositionLoadingUnitTypes)
-                .HasForeignKey(c => c.CellConfigurationId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(c => c.LoadingUnitType)
-                .WithMany(l => l.CellConfigurationCellPositionLoadingUnitTypes)
-                .HasForeignKey(c => c.LoadingUnitTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-        }
+      builder.HasOne(c => c.CellPosition)
+          .WithMany(c => c.CellConfigurationCellPositionLoadingUnitTypes)
+          .HasForeignKey(c => c.CellPositionId)
+          .OnDelete(DeleteBehavior.ClientSetNull);
+      builder.HasOne(c => c.CellConfiguration)
+          .WithMany(c => c.CellConfigurationCellPositionLoadingUnitTypes)
+          .HasForeignKey(c => c.CellConfigurationId)
+          .OnDelete(DeleteBehavior.ClientSetNull);
+      builder.HasOne(c => c.LoadingUnitType)
+          .WithMany(l => l.CellConfigurationCellPositionLoadingUnitTypes)
+          .HasForeignKey(c => c.LoadingUnitTypeId)
+          .OnDelete(DeleteBehavior.ClientSetNull);
     }
+  }
 }

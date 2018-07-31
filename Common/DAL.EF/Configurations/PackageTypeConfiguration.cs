@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.DAL.EF.Configurations
 {
-    public class PackageTypeConfiguration : IEntityTypeConfiguration<PackageType>
+  public class PackageTypeConfiguration : IEntityTypeConfiguration<PackageType>
+  {
+    public void Configure(EntityTypeBuilder<PackageType> builder)
     {
-        public void Configure(EntityTypeBuilder<PackageType> builder)
-        {
-            builder.HasKey(p => p.Id);
+      builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Description).IsRequired();
-        }
+      builder.Property(p => p.Description).IsRequired();
     }
+  }
 }
