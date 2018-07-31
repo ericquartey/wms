@@ -21,6 +21,7 @@ namespace Ferretto.Common.DAL.EF
 
     public void Initialize()
     {
+      Container.RegisterType<Interfaces.IUnitOfWork, UnitOfWork>();
       Container.RegisterType<Interfaces.IItemsRepository, ItemsRepository>();
       Container.RegisterType<Interfaces.IImageRepository, ImageFileRepository>();
     }

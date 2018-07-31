@@ -17,7 +17,5 @@ namespace Ferretto.Common.DAL.Interfaces
     void Update(TEntity entity);
 
     void Delete(TEntity entity);
-
-    void SaveChanges();
   }
 }

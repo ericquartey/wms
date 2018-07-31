@@ -53,11 +53,6 @@ namespace Ferretto.Common.DAL.EF
       throw new NotImplementedException();
     }
 
-    public void SaveChanges()
-    {
-      throw new NotImplementedException();
-    }
-
     public void Update(ImageSource entity)
     {
       throw new NotImplementedException();

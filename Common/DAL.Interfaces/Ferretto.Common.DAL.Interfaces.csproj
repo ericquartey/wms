@@ -46,6 +46,7 @@
     <Compile Include="IRepository.cs" />
     <Compile Include="IItemsRepository.cs" />
     <Compile Include="IRepositoryIdentity.cs" />
+    <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
