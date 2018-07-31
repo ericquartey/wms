@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.DAL.EF
 {
-  public class Repository<T> : Interfaces.IRepository<T> where T : class
+  public class Repository<T> : IDisposable, Interfaces.IRepository<T> where T : class
   {
     protected readonly DbContext dbContext;
 
@@ -44,6 +44,14 @@ namespace Ferretto.Common.DAL.EF
     public void SaveChanges()
     {
       dbContext.SaveChanges();
+    }
+
+    void IDisposable.Dispose()
+    {
+      if (dbContext != null)
+      {
+        dbContext.Dispose();
+      }
     }
   }
 }

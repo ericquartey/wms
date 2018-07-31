@@ -1,16 +1,17 @@
-﻿using Ferretto.Common.Controls.Services;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Events;
 using Prism.Mvvm;
 using System;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemDetailsViewModel : BindableBase, IItemDetailsViewModel
   {
+    private readonly IImageService imageService;
 
     #region Properties
     private Item item;
@@ -36,9 +37,10 @@ namespace Ferretto.WMS.Modules.Catalog
     #endregion
 
     #region Ctor
-    public ItemDetailsViewModel()
+    public ItemDetailsViewModel(IImageService imageService)
     {
-      this.Initialize();
+      Initialize();
+      this.imageService = imageService;
     }
     #endregion
 
@@ -48,16 +50,18 @@ namespace Ferretto.WMS.Modules.Catalog
       // Subscribe
       var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
       var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
-      navigationCompletedEvent.Subscribe(OnItemSelectionChanged, ThreadOption.UIThread);
+      navigationCompletedEvent.Subscribe(item => OnItemSelectionChanged(item), ThreadOption.UIThread);
     }
 
     private void OnItemSelectionChanged(object selectedItemObj)
     {
-      this.Item = selectedItemObj as Item;
-      if (this.item != null)
+      if (selectedItemObj is Item selectedItem && selectedItem.Image != null)
       {
-        // TBD later       
-        this.ImgArticle = new BitmapImage(new Uri("pack://application:,,,/Ferretto.WMS.Themes;component/Images/Articolo1.jpg"));
+        ImgArticle = imageService.GetImage(selectedItem.Image);
+      }
+      else
+      {
+        ImgArticle = null;
       }
     }
     #endregion

@@ -7,6 +7,7 @@ namespace Ferretto.WMS.Modules.Layout
 {
   [Module(ModuleName = nameof(Common.Configuration.Modules.Layout), OnDemand = true)]
   [ModuleDependency(nameof(Common.Configuration.Modules.BusinessLogic))]
+  [ModuleDependency(nameof(Common.Configuration.Modules.Catalog))]
   public class Module : IModule
   {
     #region IModule Members
