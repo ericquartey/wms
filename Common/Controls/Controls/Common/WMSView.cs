@@ -21,8 +21,7 @@ namespace Ferretto.Common.Controls
 
     #region Ctor
     public WMSView()
-    {
-      this.Loaded -= WMSView_Loaded;
+    {      
       this.Loaded += WMSView_Loaded;
     }
     #endregion
@@ -52,10 +51,8 @@ namespace Ferretto.Common.Controls
         this.DataContext = navigationService.GetViewModelByName(this.GetAttachedViewModel());
       }
 
-      if (this.DataContext != null)
-      {
-        ((INavigableViewModel)this.DataContext).OnAppear();
-      }
+      ((INavigableViewModel)this.DataContext)?.OnAppear();
+     
     }
     #endregion
 
