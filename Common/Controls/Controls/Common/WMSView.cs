@@ -41,7 +41,7 @@ namespace Ferretto.Common.Controls
         this.DataContext = navigationService.GetViewModelByMapId(this.MapId);
       }
       
-      else if (this.IsChildrenOfMainView())
+      else if (this.IsChildOfMainView())
       {
         // Is children of WMSView       
         this.DataContext = navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());        
@@ -49,7 +49,7 @@ namespace Ferretto.Common.Controls
       else
       {
         // Stand alone case
-        this.DataContext = navigationService.GetViewModelByName($"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFIX}");
+        this.DataContext = navigationService.GetViewModelByName(this.GetAttachedViewModel());
       }
 
       if (this.DataContext != null)
@@ -60,7 +60,7 @@ namespace Ferretto.Common.Controls
     #endregion
 
     #region Methods
-    private bool IsChildrenOfMainView()
+    private bool IsChildOfMainView()
     {      
       return (LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WMSView) != null);     
     }
@@ -81,9 +81,13 @@ namespace Ferretto.Common.Controls
       {
         return true;
       }
-      var dataContextName = this.DataContext.GetType().ToString();
-      var viewModelToBeAttached = $"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFIX}";
-      return (viewModelToBeAttached.Equals(dataContextName) == false);
+      var dataContextName = this.DataContext.GetType().ToString();      
+      return (GetAttachedViewModel().Equals(dataContextName) == false);
+    }
+
+    private string GetAttachedViewModel()
+    {
+      return $"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFIX}";
     }
     #endregion
   }

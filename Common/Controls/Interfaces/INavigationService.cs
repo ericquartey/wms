@@ -5,8 +5,8 @@
     void Register<TItemsView, TItemsViewModel>() where TItemsViewModel : INavigableViewModel
                                                  where TItemsView : INavigableView;
     INavigableViewModel RegisterAndGetViewModel(string viewName, string token);
-    INavigableViewModel GetViewModelByName(string viewModelname);
-    INavigableViewModel GetViewModelByMapId(string viewModelname);
+    INavigableViewModel GetViewModelByName(string viewModelName);
+    INavigableViewModel GetViewModelByMapId(string viewModelName);
     void Appear<TViewModel>();
     void Appear(string module, string viewModel);
     void Disappear<TViewModel>();

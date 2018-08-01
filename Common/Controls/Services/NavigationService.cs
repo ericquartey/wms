@@ -62,8 +62,8 @@ namespace Ferretto.Common.Controls.Services
       }
       catch (Exception ex)
       {
-        var msg = $"Navigation service error on Appear, {module}.{viewModelName}:{ex.Message}";
-        throw new Exception(msg);
+        var msg = $"Navigation service error on Appear, {module}.{viewModelName}";
+        throw new Exception(msg, ex);
       }
     }
 
@@ -178,6 +178,7 @@ namespace Ferretto.Common.Controls.Services
       var names = this.GetViewModelNames(viewModelName);
       return ServiceLocator.Current.GetInstance<INavigableViewModel>(names.viewModelName);
     }
+
     public INavigableViewModel GetViewModelByMapId(string mapId)
     {
       if (string.IsNullOrEmpty(mapId))
@@ -217,6 +218,7 @@ namespace Ferretto.Common.Controls.Services
       }
       return this.registrations[fullViewName];
     }
+
     private string GetStateNotChanged(string moduleViewName, ViewModelBind vmbind)
     {
       string state = null;
@@ -231,6 +233,7 @@ namespace Ferretto.Common.Controls.Services
       }
       return state;
     }
+
     private bool IsViewModelNameValid(string viewModelName)
     {
       if (string.IsNullOrEmpty(viewModelName))
@@ -243,6 +246,7 @@ namespace Ferretto.Common.Controls.Services
       }
       return true;
     }
+
     private void AddToregion(string moduleViewName)
     {
       var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
@@ -251,35 +255,42 @@ namespace Ferretto.Common.Controls.Services
       WMSMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);      
       regionManager.AddToRegion(moduleViewName, registeredView);
     }
+
     private (string module, string viewModelName) GetViewModelNames(string viewModelName)
     {
       return GetViewModelNameSplitted(viewModelName);
     }
+
     private (string module, string viewModelName) GetViewModelNames<TViewModel>()
     {
       var type = typeof(TViewModel);
       var viewModelName = type.ToString();
       return GetViewModelNameSplitted(viewModelName);
     }
+
     private (string module, string viewModelName) GetViewModelNameSplitted(string viewModelName)
     {
       var vm = viewModelName.Replace($"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.", "");
       var vmSplit = vm.Split('.');
       return (vmSplit[0], vmSplit[1]);
     }
+
     private (string module, string viewModelName) GetViewModelNameSplitted(Uri uri)
     {
       var vmSplit = uri.ToString().Split('/');
       return (vmSplit[0], vmSplit[1]);
     }
+
     private string GetName(string viewModelName)
     {
       return viewModelName.TrimEnd(Configuration.Common.VIEWMODEL_SUFIX.ToCharArray());
     }
+
     private string GetViewName(string module, string regionName)
     {
-      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}View";
+      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Configuration.Common.MODEL_SUFIX}";
     }
+
     private void LoadModule(string moduleName)
     {
       IModuleCatalog catalog = container.Resolve<IModuleCatalog>();
