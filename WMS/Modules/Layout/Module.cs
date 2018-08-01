@@ -16,8 +16,8 @@ namespace Ferretto.WMS.Modules.Layout
 
     public Module(IUnityContainer container, IRegionManager regionManager)
     {
-      Container = container;
-      RegionManager = regionManager;
+      this.Container = container;
+      this.RegionManager = regionManager;
     }
 
     public void Initialize()

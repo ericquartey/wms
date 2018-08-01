@@ -16,8 +16,9 @@ namespace Ferretto.Common.BLL
 
     public void Initialize()
     {
-      Container.RegisterType<Common.BLL.Interfaces.IItemsService, Common.BLL.Services.ItemsService>();
-      Container.RegisterType<Common.BLL.Interfaces.IEventService, Common.BLL.Services.EventService();
+      Container.RegisterType<Interfaces.IItemsService, Services.ItemsService>();
+      Container.RegisterType<Interfaces.IImageService, Services.ImageService>();
+      Container.RegisterType<Interfaces.IEventService, Services.EventService();
     }
   }
 }

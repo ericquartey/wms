@@ -2,18 +2,16 @@
 
 namespace Ferretto.Common.DAL.Interfaces
 {
-  public interface IRepository<T>
+  public interface IRepository<TEntity, in TId> where TEntity : class
   {
-    T GetById(int id);
+    TEntity GetById(TId id);
 
-    IEnumerable<T> List();
+    IEnumerable<TEntity> List();
 
-    void Insert(T entity);
+    void Insert(TEntity entity);
 
-    void Update(T entity);
+    void Update(TEntity entity);
 
-    void Delete(T entity);
-
-    void SaveChanges();
+    void Delete(TEntity entity);
   }
 }

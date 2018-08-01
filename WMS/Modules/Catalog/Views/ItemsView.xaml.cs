@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Modules.Catalog
   {
     public ItemsView()
     {
-      InitializeComponent();      
+      InitializeComponent();
       this.DataContext = ServiceLocator.Current.GetInstance<IItemViewModel>();
     }
   }

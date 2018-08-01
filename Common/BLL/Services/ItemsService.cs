@@ -16,7 +16,7 @@ namespace Ferretto.Common.BLL.Services
 
     public IEnumerable<Item> GetItems()
     {
-      return repository.List();
+      return this.repository.List();
     }
   }
 }
