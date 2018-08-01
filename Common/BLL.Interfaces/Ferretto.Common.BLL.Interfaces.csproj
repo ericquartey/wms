@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IEventService.cs" />
+    <Compile Include="IEventArgs.cs" />
     <Compile Include="IItemsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
