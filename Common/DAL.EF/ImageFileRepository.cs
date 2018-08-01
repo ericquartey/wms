@@ -24,13 +24,11 @@ namespace Ferretto.Common.DAL.EF
 
     public void Delete(ImageSource entity)
     {
-      // TODO consider renaming instead of deleting
       throw new NotImplementedException(); 
     }
 
     public ImageSource GetById(string id)
     {
-      // TODO consider caching images if there are preformance issues
       var uri = new Uri(ImageDirectoryUri, id);
       
       if (!ImageDirectoryUri.IsBaseOf(uri))
