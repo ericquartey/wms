@@ -241,6 +241,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Seeds\Dev.Minimal.sql" />
+    <Content Include="StoredProcedures\InsertionCellLookup.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
