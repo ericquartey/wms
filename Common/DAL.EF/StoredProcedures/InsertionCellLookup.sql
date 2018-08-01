@@ -18,7 +18,7 @@ BEGIN
 			@CellTypeId INT
 
 	-- Fetch current item class
-	SELECT @ItemClass = Class FROM Items WHERE Id=@ItemId
+	SELECT @ItemClass = ClassId FROM Items WHERE Id=@ItemId
 	--PRINT 'Item class: ' + @ItemClass
 
 	-- Find compatible CellTypes
@@ -48,7 +48,7 @@ BEGIN
 			)
 			AND Aisles.AreaId IN (
 				SELECT ItemsAreas.AreaId FROM ItemsAreas WHERE ItemsAreas.ItemId=@ItemId
-			) 
+			)
 			GROUP BY Aisles.Id
 			ORDER BY
 				COALESCE(SUM(COALESCE(Compartments.Stock, 0) - COALESCE(Compartments.ReservedForPick, 0) + COALESCE(Compartments.ReservedToStore, 0)), 0),
@@ -72,13 +72,13 @@ BEGIN
 			)
 			GROUP BY Aisles.Id
 			ORDER BY
-				SUM(CASE WHEN LoadingUnits.Id IS NOT NULL AND Cells.Class=@ItemClass THEN 1 ELSE 0 END),
+				SUM(CASE WHEN LoadingUnits.Id IS NOT NULL AND Cells.ClassId=@ItemClass THEN 1 ELSE 0 END),
 				SUM(CASE WHEN LoadingUnits.Id IS NOT NULL THEN 1 ELSE 0 END),
 				AisleId
 	END
 
 Look_for_position:
-	
+
 	OPEN AislesCursor
 	FETCH NEXT FROM AislesCursor INTO @AisleId
 	WHILE @@FETCH_STATUS = 0
@@ -99,14 +99,14 @@ Look_for_position:
 			FROM Cells C
 			  LEFT JOIN LoadingUnits LU ON C.Id=LU.CellId
 			  LEFT JOIN CellConfigurationCellPositionLoadingUnitTypes CCCPLUT_Busy
-				ON CCCPLUT_Busy.CellPositionId=LU.CellPositionId 
+				ON CCCPLUT_Busy.CellPositionId=LU.CellPositionId
 				   AND LU.LoadingUnitTypeId=CCCPLUT_Busy.LoadingUnitTypeId
 			  JOIN CellTypes CT ON C.CellTypeId = CT.Id
 			  JOIN CellConfigurationCellTypes CCCT ON CT.Id = CCCT.CellTypeId
 			  JOIN CellConfigurations CC ON CCCT.CellConfigurationId = CC.Id
 			  JOIN CellConfigurationCellPositionLoadingUnitTypes CCCPLUT_Available on CC.Id = CCCPLUT_Available.CellConfigurationId AND CCCPLUT_Available.LoadingUnitTypeId=@LoadingUnitTypeId
 			WHERE C.AisleId=@AisleId
-				  AND C.Class=@ItemClass
+				  AND C.ClassId=@ItemClass
 				  AND C.CellTypeId=@CellTypeId
 				  AND (CCCPLUT_Busy.CellConfigurationId IS NULL OR CCCPLUT_Busy.CellConfigurationId=CC.Id) -- same configuration
 				  AND (LU.CellPositionId IS NULL OR LU.CellPositionId<>CCCPLUT_Available.CellPositionId) -- different position
@@ -114,7 +114,7 @@ Look_for_position:
 			  C.Priority,
 			  CCCT.Priority,
 			  CCCPLUT_Available.Priority
-			
+
 			IF @@ROWCOUNT = 0
 			BEGIN
 				PRINT '-- Not found in this CellTypeId... trying next!'
@@ -123,7 +123,7 @@ Look_for_position:
 			ELSE
 			BEGIN
 				PRINT '-- Found CellId: ' + CONVERT(VARCHAR, @OutputCellId) + ', CellPositionId: ' + CONVERT(VARCHAR, @OutputCellPositionId)
-				
+
 				CLOSE CompatibleCellTypesCursor
 				CLOSE AislesCursor
 
@@ -142,9 +142,9 @@ Look_for_position:
 
 	-- manage item declassification
 	IF @AllowDeclass=1 AND @ItemClass<>'C'
-	BEGIN 
+	BEGIN
 		IF @ItemClass='A'
-		BEGIN 
+		BEGIN
 			SET @ItemClass='B'
 		END
 		ELSE
@@ -154,10 +154,10 @@ Look_for_position:
 				SET @ItemClass='C'
 			END
 		END
-		PRINT '-- Item declassed to class: ' + @ItemClass 
+		PRINT '-- Item declassed to class: ' + @ItemClass
 		GOTO Look_for_position
 	END
-	
+
 	DEALLOCATE CompatibleCellTypesCursor
 	DEALLOCATE AislesCursor
 
@@ -165,7 +165,6 @@ Look_for_position:
 	SET @OutputErrorMessage = 'Cell not found'
 	RETURN -1
 END
-GO
 
 
 
@@ -178,25 +177,25 @@ DELETE FROM LoadingUnits;
 
 
 /*
-DECLARE @ItemId INT = 3,
+DECLARE @ItemId INT = 1,
         @ItemQuantity INT = 1,
         @LoadingUnitTypeId INT = 1,
         @AllowDeclass BIT = 0,
         @ExecResult INT,
-        @OutputAisleId INT, 
-        @OutputCellId INT, 
-        @OutputCellPositionId INT, 
+        @OutputAisleId INT,
+        @OutputCellId INT,
+        @OutputCellPositionId INT,
         @OutputErrorMessage NVARCHAR(255),
         @ItemClass CHAR(1),
         @LoadingUnitId INT,
         @CompartmentId INT;
 
-EXEC @ExecResult = InsertionCellLookup @ItemId=@ItemId, 
+EXEC @ExecResult = InsertionCellLookup @ItemId=@ItemId,
                                        @LoadingUnitTypeId=@LoadingUnitTypeId,
-                                       @AllowDeclass=@AllowDeclass, 
-                                       @OutputAisleId=@OutputAisleId OUTPUT, 
-                                       @OutputCellId=@OutputCellId OUTPUT, 
-                                       @OutputCellPositionId=@OutputCellPositionId OUTPUT, 
+                                       @AllowDeclass=@AllowDeclass,
+                                       @OutputAisleId=@OutputAisleId OUTPUT,
+                                       @OutputCellId=@OutputCellId OUTPUT,
+                                       @OutputCellPositionId=@OutputCellPositionId OUTPUT,
                                        @OutputErrorMessage=@OutputErrorMessage OUTPUT;
 IF @ExecResult<>0
 BEGIN
@@ -209,9 +208,9 @@ BEGIN
 	PRINT 'CellId: ' + CONVERT(VARCHAR, @OutputCellId);
 	PRINT 'CellPositionId: ' + CONVERT(VARCHAR, @OutputCellPositionId);
 
-	SELECT @ItemClass = Class FROM Items WHERE Id=@ItemId;
+	SELECT @ItemClass = ClassId FROM Items WHERE Id=@ItemId;
 
-	INSERT INTO LoadingUnits (Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, Class)
+	INSERT INTO LoadingUnits (Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, ClassId)
 	VALUES ('', @OutputCellId, 1, @OutputCellPositionId, @LoadingUnitTypeId, 1600, 900, 3, 'M', @ItemClass);
 	SET @LoadingUnitId = @@IDENTITY;
 	UPDATE LoadingUnits SET Code='UDC' + CONVERT(VARCHAR, @LoadingUnitId) WHERE Id=@LoadingUnitId;

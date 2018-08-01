@@ -1,10 +1,15 @@
-﻿namespace Ferretto.Common.Models
+﻿using System.Collections.Generic;
+
+namespace Ferretto.Common.Models
 {
   // Classe ABC
-  public enum AbcClass
+  public partial class AbcClass
   {
-    A = 'A',
-    B = 'B',
-    C = 'C'
+    public string Id { get; set; }
+    public string Description { get; set; }
+
+    public List<Cell> Cells { get; set; }
+    public List<Item> Items { get; set; }
+    public List<LoadingUnit> LoadingUnits { get; set; }
   }
 }

@@ -7,6 +7,7 @@ namespace Ferretto.Common.DAL.EF
 {
   public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext
   {
+    public virtual DbSet<AbcClass> AbcClasses { get; set; }
     public virtual DbSet<Aisle> Aisles { get; set; }
     public virtual DbSet<Area> Areas { get; set; }
     public virtual DbSet<Cell> Cells { get; set; }
@@ -59,6 +60,7 @@ namespace Ferretto.Common.DAL.EF
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+      modelBuilder.ApplyConfiguration(new AbcClassConfiguration());
       modelBuilder.ApplyConfiguration(new AisleConfiguration());
       modelBuilder.ApplyConfiguration(new AreaConfiguration());
       modelBuilder.ApplyConfiguration(new Configurations.CellConfiguration());

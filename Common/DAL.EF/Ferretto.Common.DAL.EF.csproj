@@ -172,6 +172,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\AbcClassConfiguration.cs" />
     <Compile Include="Configurations\AisleConfiguration.cs" />
     <Compile Include="Configurations\AreaConfiguration.cs" />
     <Compile Include="Configurations\CellConfiguration.cs" />

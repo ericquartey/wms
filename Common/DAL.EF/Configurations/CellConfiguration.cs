@@ -12,13 +12,17 @@ namespace Ferretto.Common.DAL.EF.Configurations
 
       builder.Property(c => c.Floor).IsRequired();
       builder.Property(c => c.Column).IsRequired();
-      builder.Property(c => c.Class).IsRequired()
+      builder.Property(c => c.ClassId).IsRequired()
           .HasColumnType("char(1)");
       builder.Property(c => c.Side).IsRequired()
           .HasColumnType("char(1)");
       builder.Property(c => c.Priority)
           .HasDefaultValue(1);
 
+      builder.HasOne(c => c.AbcClass)
+          .WithMany(a => a.Cells)
+          .HasForeignKey(c => c.ClassId)
+          .OnDelete(DeleteBehavior.ClientSetNull);
       builder.HasOne(c => c.Aisle)
           .WithMany(a => a.Cells)
           .HasForeignKey(c => c.AisleId)
