@@ -7,7 +7,6 @@ namespace Ferretto.WMS.Modules.Layout
 {
   [Module(ModuleName = nameof(Common.Configuration.Modules.Layout), OnDemand = true)]
   [ModuleDependency(nameof(Common.Configuration.Modules.BusinessLogic))]
-  [ModuleDependency(nameof(Common.Configuration.Modules.Catalog))]
   public class Module : IModule
   {
     #region IModule Members
@@ -17,8 +16,8 @@ namespace Ferretto.WMS.Modules.Layout
 
     public Module(IUnityContainer container, IRegionManager regionManager)
     {
-      Container = container;
-      RegionManager = regionManager;
+      this.Container = container;
+      this.RegionManager = regionManager;
     }
 
     public void Initialize()

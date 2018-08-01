@@ -17,21 +17,21 @@ namespace Ferretto.WMS.Modules.Catalog
     private Item item;
     public Item Item
     {
-      get { return item; }
+      get { return this.item; }
       set
       {
-        item = value;
-        RaisePropertyChanged(nameof(Item));
+        this.item = value;
+        RaisePropertyChanged(nameof(this.Item));
       }
     }
     private ImageSource imgArticle;
     public ImageSource ImgArticle
     {
-      get { return imgArticle; }
+      get { return this.imgArticle; }
       set
       {
-        imgArticle = value;
-        RaisePropertyChanged(nameof(ImgArticle));
+        this.imgArticle = value;
+        RaisePropertyChanged(nameof(this.ImgArticle));
       }
     }
     #endregion
@@ -57,11 +57,11 @@ namespace Ferretto.WMS.Modules.Catalog
     {
       if (selectedItemObj is Item selectedItem && selectedItem.Image != null)
       {
-        ImgArticle = imageService.GetImage(selectedItem.Image);
+        this.ImgArticle = this.imageService.GetImage(selectedItem.Image);
       }
       else
       {
-        ImgArticle = null;
+        this.ImgArticle = null;
       }
     }
     #endregion

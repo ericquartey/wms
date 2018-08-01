@@ -9,19 +9,18 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemViewModel : BindableBase, IItemViewModel
   {
-
     private IEnumerable<object> items;
     public IEnumerable<object> Items
     {
       get
       {
-        return items;
+        return this.items;
       }
       set
       {
-        if (Items != value)
+        if (this.Items != value)
         {
-          items = value;
+          this.items = value;
           RaisePropertyChanged();
         }
       }
@@ -32,13 +31,13 @@ namespace Ferretto.WMS.Modules.Catalog
     {
       get
       {
-        return selectedItem;
+        return this.selectedItem;
       }
       set
       {
-        if (selectedItem != value)
+        if (this.selectedItem != value)
         {
-          selectedItem = value;          
+          this.selectedItem = value;          
           RaisePropertyChanged();
           NotifySelectionChanged();
         }
@@ -54,14 +53,14 @@ namespace Ferretto.WMS.Modules.Catalog
     private void InitializeData()
     {
       var itemService = ServiceLocator.Current.GetInstance<IItemsService>();
-      Items = itemService.GetItems();    
+      this.Items = itemService.GetItems();    
     }
     
     public void NotifySelectionChanged()
     {
       var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
       var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
-      navigationCompletedEvent.Publish(selectedItem);
+      navigationCompletedEvent.Publish(this.selectedItem);
     }
     #endregion
   }

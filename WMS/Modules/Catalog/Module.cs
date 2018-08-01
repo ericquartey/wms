@@ -16,14 +16,14 @@ namespace Ferretto.WMS.Modules.Catalog
 
     public Module(IUnityContainer container, IRegionManager regionManager)
     {
-      Container = container;
-      RegionManager = regionManager;
+      this.Container = container;
+      this.RegionManager = regionManager;
     }
 
     public void Initialize()
     {
-      Container.RegisterType<IItemDetailsViewModel, ItemDetailsViewModel>();
-      Container.RegisterType<IItemViewModel, ItemViewModel>();            
+      this.Container.RegisterType<IItemDetailsViewModel, ItemDetailsViewModel>();
+      this.Container.RegisterType<IItemViewModel, ItemViewModel>();            
       var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();            
       regionManager.RegisterViewWithRegion($"{nameof(Common.Configuration.Modules.Catalog)}.{nameof(Common.Configuration.Modules.Catalog.ItemDetails)}", typeof(ItemDetailsView));
       regionManager.RegisterViewWithRegion($"{nameof(Common.Configuration.Modules.Catalog)}.{nameof(Common.Configuration.Modules.Catalog.Items)}", typeof(ItemsView));

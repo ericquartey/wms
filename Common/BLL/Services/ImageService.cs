@@ -20,7 +20,7 @@ namespace Ferretto.Common.BLL.Services
         throw new ArgumentException("The parameter cannot be null or whitespace.", nameof(pathName));
       }
 
-      return imageRepository.GetById(pathName);
+      return this.imageRepository.GetById(pathName);
     }
   }
 }

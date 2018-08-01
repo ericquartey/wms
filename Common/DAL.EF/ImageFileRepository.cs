@@ -29,9 +29,9 @@ namespace Ferretto.Common.DAL.EF
 
     public ImageSource GetById(string id)
     {
-      var uri = new Uri(ImageDirectoryUri, id);
+      var uri = new Uri(this.ImageDirectoryUri, id);
       
-      if (!ImageDirectoryUri.IsBaseOf(uri))
+      if (!this.ImageDirectoryUri.IsBaseOf(uri))
       {
         throw new ArgumentException(
           "The specified path is not contained in the image directory.",

@@ -26,34 +26,34 @@ namespace Ferretto.Common.DAL.EF
 
     public T GetById(int id)
     {
-      return unitOfWork.Context.Set<T>().Find(id);
+      return this.unitOfWork.Context.Set<T>().Find(id);
     }
 
     public IEnumerable<T> List()
     {
-      return unitOfWork.Context.Set<T>().AsEnumerable();
+      return this.unitOfWork.Context.Set<T>().AsEnumerable();
     }
 
     public void Insert(T entity)
     {
-      unitOfWork.Context.Set<T>().Add(entity);
+      this.unitOfWork.Context.Set<T>().Add(entity);
     }
 
     public void Update(T entity)
     {
-      unitOfWork.Context.Entry(entity).State = EntityState.Modified;
+      this.unitOfWork.Context.Entry(entity).State = EntityState.Modified;
     }
   
     public void Delete(T entity)
     {
-      unitOfWork.Context.Set<T>().Remove(entity);
+      this.unitOfWork.Context.Set<T>().Remove(entity);
     }
 
     void IDisposable.Dispose()
     {
-      if (unitOfWork is IDisposable)
+      if (this.unitOfWork is IDisposable disposable)
       {
-        unitOfWork.Dispose();
+        disposable.Dispose();
       }
     }
   }

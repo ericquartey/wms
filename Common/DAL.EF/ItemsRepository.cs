@@ -15,7 +15,7 @@ namespace Ferretto.Common.DAL.EF
 
     public IEnumerable<Item> List(int skip, int take)
     {
-      return unitOfWork.Context.Items
+      return this.unitOfWork.Context.Items
         .Skip(skip)
         .Take(take)
         .AsEnumerable();

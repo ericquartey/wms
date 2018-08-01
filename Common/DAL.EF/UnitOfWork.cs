@@ -18,22 +18,17 @@ namespace Ferretto.Common.DAL.EF
         throw new ArgumentNullException(nameof(context));
       }
 
-      Context = context;
+      this.Context = context;
     }
 
     public void Commit()
     {
-      Context.SaveChanges();
+      this.Context.SaveChanges();
     }
 
     void IDisposable.Dispose()
     {
-      Context.Dispose();
-    }
-
-    internal void Dispose()
-    {
-      throw new NotImplementedException();
+      this.Context?.Dispose();
     }
   }
 }
