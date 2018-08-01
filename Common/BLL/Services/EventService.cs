@@ -2,7 +2,7 @@
 using Ferretto.Common.BLL.Interfaces;
 using Prism.Events;
 
-namespace Ferretto.Common.BLL
+namespace Ferretto.Common.BLL.Services
 {
   public class EventService : IEventService
   {
@@ -23,9 +23,9 @@ namespace Ferretto.Common.BLL
       GetEventBus<TEventArgs>().Subscribe(action, ThreadOption.BackgroundThread, keepSubscriberReferenceAlive, x => string.IsNullOrEmpty(x.Token) || x.Token == token);
     }
 
-    public void Unusbscribe<T>(Action<T> action) where T : IEventArgs
+    public void Unusbscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
     {
-      GetEventBus<T>().Unsubscribe(action);
+      GetEventBus<TEventArgs>().Unsubscribe(action);
     }
 
     private PubSubEvent<TEventArgs> GetEventBus<TEventArgs>() where TEventArgs : IEventArgs
