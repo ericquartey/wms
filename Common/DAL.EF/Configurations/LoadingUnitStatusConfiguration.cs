@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.DAL.EF.Configurations
 {
-    public class LoadingUnitStatusConfiguration : IEntityTypeConfiguration<LoadingUnitStatus>
+  public class LoadingUnitStatusConfiguration : IEntityTypeConfiguration<LoadingUnitStatus>
+  {
+    public void Configure(EntityTypeBuilder<LoadingUnitStatus> builder)
     {
-        public void Configure(EntityTypeBuilder<LoadingUnitStatus> builder)
-        {
-            builder.HasKey(l => l.Id);
+      builder.HasKey(l => l.Id);
 
-            builder.Property(l => l.Description).IsRequired();
-        }
+      builder.Property(l => l.Description).IsRequired();
     }
+  }
 }

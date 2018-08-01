@@ -27,6 +27,6 @@ namespace Ferretto.WMS.Modules.Layout
       regionManager.RegisterViewWithRegion($"{nameof(Layout)}.{nameof(Ferretto.Common.Configuration.Modules.Layout.Menu)}", typeof(MenuView));
     }
 
-    #endregion
+    #endregion 
   }
 }

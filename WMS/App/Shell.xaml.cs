@@ -1,11 +1,12 @@
-﻿using Ferretto.Common.Configuration;
+﻿using DevExpress.Xpf.Core;
+using Ferretto.Common.Configuration;
 using Prism.Modularity;
 using Prism.Regions;
 using System.Windows;
 
 namespace Ferretto.WMS.App
 {
-  public partial class Shell : Window
+  public partial class Shell : DXWindow
   {
     private IModuleManager moduleManager;
     private IRegionManager regionManager;
@@ -25,7 +26,7 @@ namespace Ferretto.WMS.App
       this.moduleManager.LoadModule(nameof(Modules.BusinessLogic));   // TODO: remove the static LoadModules below when we will have the dynamic loading 
 
       this.moduleManager.LoadModule(nameof(Modules.Layout));
-    
+
       this.moduleManager.LoadModule(nameof(Modules.Catalog));         // TODO: remove the static LoadModules below when we will have the dynamic loading    
 
     }

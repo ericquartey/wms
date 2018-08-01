@@ -1,12 +1,14 @@
-﻿using System.Windows.Controls;
+﻿using Microsoft.Practices.ServiceLocation;
+using System.Windows.Controls;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-    public partial class ItemDetailsView : UserControl
+  public partial class ItemDetailsView : UserControl
+  {
+    public ItemDetailsView()
     {
-        public ItemDetailsView()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
+      this.DataContext = ServiceLocator.Current.GetInstance<IItemDetailsViewModel>();
     }
+  }
 }
