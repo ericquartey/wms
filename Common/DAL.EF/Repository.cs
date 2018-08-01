@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Ferretto.Common.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,43 +8,53 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.DAL.EF
 {
-  public class Repository<T> : Interfaces.IRepository<T> where T : class
+  public class Repository<T> : IDisposable, Interfaces.IRepositoryInt<T> where T : class
   {
-    protected readonly DbContext dbContext;
+    protected readonly UnitOfWork unitOfWork;
 
-    public Repository(DbContext dbContext)
+    public Repository(IUnitOfWork unitOfWork)
     {
-      this.dbContext = dbContext;
+      if (unitOfWork is UnitOfWork unitOfWorkEf)
+      {
+        this.unitOfWork = unitOfWorkEf;
+      }
+      else
+      {
+        throw new ArgumentException("Injected Unit of Work for Entity Framework repository is not valid.", nameof(unitOfWork));
+      }
     }
 
     public T GetById(int id)
     {
-      return dbContext.Set<T>().Find(id);
+      return this.unitOfWork.Context.Set<T>().Find(id);
     }
 
     public IEnumerable<T> List()
     {
-      return dbContext.Set<T>().AsEnumerable();
+      return this.unitOfWork.Context.Set<T>().AsEnumerable();
     }
 
     public void Insert(T entity)
     {
-      dbContext.Set<T>().Add(entity);
+      this.unitOfWork.Context.Set<T>().Add(entity);
     }
 
     public void Update(T entity)
     {
-      dbContext.Entry(entity).State = EntityState.Modified;
+      this.unitOfWork.Context.Entry(entity).State = EntityState.Modified;
     }
   
     public void Delete(T entity)
     {
-      dbContext.Set<T>().Remove(entity);
+      this.unitOfWork.Context.Set<T>().Remove(entity);
     }
 
-    public void SaveChanges()
+    void IDisposable.Dispose()
     {
-      dbContext.SaveChanges();
+      if (this.unitOfWork is IDisposable disposable)
+      {
+        disposable.Dispose();
+      }
     }
   }
 }

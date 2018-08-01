@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
 namespace Ferretto.Common.BLL
@@ -21,7 +16,8 @@ namespace Ferretto.Common.BLL
 
     public void Initialize()
     {
-      Container.RegisterType<Common.BLL.Interfaces.IItemsService, Common.BLL.Services.ItemsService>();
+      Container.RegisterType<Interfaces.IItemsService, Services.ItemsService>();
+      Container.RegisterType<Interfaces.IImageService, Services.ImageService>();
     }
   }
 }

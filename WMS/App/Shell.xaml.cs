@@ -8,8 +8,8 @@ namespace Ferretto.WMS.App
 {
   public partial class Shell : DXWindow
   {
-    private IModuleManager moduleManager;
-    private IRegionManager regionManager;
+    private readonly IModuleManager moduleManager;
+    private readonly IRegionManager regionManager;
 
     public Shell()
     {
@@ -22,13 +22,13 @@ namespace Ferretto.WMS.App
       this.moduleManager = moduleManager;
       this.regionManager = regionManager;
 
-      this.moduleManager.LoadModule(nameof(Modules.DataAccess));      // TODO: remove the static LoadModules below when we will have the dynamic loading 
-      this.moduleManager.LoadModule(nameof(Modules.BusinessLogic));   // TODO: remove the static LoadModules below when we will have the dynamic loading 
+      // Load dependency modyles
+      // TODO this needs to be removed when we will be loading modules dynamically
+      this.moduleManager.LoadModule(nameof(Modules.Catalog));
 
+      // Load the root module of the application
       this.moduleManager.LoadModule(nameof(Modules.Layout));
-
-      this.moduleManager.LoadModule(nameof(Modules.Catalog));         // TODO: remove the static LoadModules below when we will have the dynamic loading    
-
+   
     }
   }
 }

@@ -16,12 +16,14 @@ namespace Ferretto.Common.DAL.EF
 
     public Module(IUnityContainer container)
     {
-      Container = container;
+      this.Container = container;
     }
 
     public void Initialize()
     {
-      Container.RegisterType<Interfaces.IItemsRepository, ItemsRepository>();
+      this.Container.RegisterType<Interfaces.IUnitOfWork, UnitOfWork>();
+      this.Container.RegisterType<Interfaces.IItemsRepository, ItemsRepository>();
+      this.Container.RegisterType<Interfaces.IImageRepository, ImageFileRepository>();
     }
   }
 }

@@ -9,26 +9,25 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemViewModel : BindableBase, IItemViewModel
   {
-
     private IEnumerable<object> items;
     public IEnumerable<object> Items
     {
       get
       {
-        return items;
+        return this.items;
       }
       set
       {
         if (this.Items != value)
         {
           this.items = value;
-          this.RaisePropertyChanged();
+          RaisePropertyChanged();
         }
       }
     }
 
-    private object selectedItem;
-    public object SelectedItem
+    private Common.Models.Item selectedItem;
+    public Common.Models.Item SelectedItem
     {
       get
       {
@@ -39,15 +38,15 @@ namespace Ferretto.WMS.Modules.Catalog
         if (this.selectedItem != value)
         {
           this.selectedItem = value;          
-          this.RaisePropertyChanged();
-          this.NotifySelectionChanged();
+          RaisePropertyChanged();
+          NotifySelectionChanged();
         }
       }
     }
 
     public ItemViewModel()
     {
-      this.InitializeData();
+      InitializeData();
     }
 
     #region Methods
