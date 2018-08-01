@@ -2,7 +2,8 @@
 
 namespace Ferretto.Common.DAL.Interfaces
 {
-  public interface IImageRepository : IRepositoryIdentity<ImageSource, string>
+  public interface IImageRepository : IRepositoryString<ImageSource>
   {
+
   }
 }

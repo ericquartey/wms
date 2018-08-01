@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.DAL.EF
 {
-  public class Repository<T> : IDisposable, Interfaces.IRepository<T> where T : class
+  public class Repository<T> : IDisposable, Interfaces.IRepositoryInt<T> where T : class
   {
     protected readonly UnitOfWork unitOfWork;
 

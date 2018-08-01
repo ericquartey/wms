@@ -43,9 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IImageRepository.cs" />
-    <Compile Include="IRepository.cs" />
+    <Compile Include="IRepositoryString.cs" />
+    <Compile Include="IRepositoryInt.cs" />
     <Compile Include="IItemsRepository.cs" />
-    <Compile Include="IRepositoryIdentity.cs" />
+    <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
