@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.BLL
+﻿namespace Ferretto.Common.BLL.Interfaces
 {
   public interface IEventArgs
   {
