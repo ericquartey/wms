@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IImageService.cs" />
+    <Compile Include="IEventService.cs" />
+    <Compile Include="IEventArgs.cs" />
     <Compile Include="IItemsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

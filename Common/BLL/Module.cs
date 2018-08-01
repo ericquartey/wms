@@ -11,13 +11,14 @@ namespace Ferretto.Common.BLL
 
     public Module(IUnityContainer container)
     {
-      Container = container;
+      this.Container = container;
     }
 
     public void Initialize()
     {
-      Container.RegisterType<Interfaces.IItemsService, Services.ItemsService>();
-      Container.RegisterType<Interfaces.IImageService, Services.ImageService>();
+      this.Container.RegisterType<Interfaces.IItemsService, Services.ItemsService>();
+      this.Container.RegisterType<Interfaces.IImageService, Services.ImageService>();
+      this.Container.RegisterType<Interfaces.IEventService, Services.EventService>();
     }
   }
 }
