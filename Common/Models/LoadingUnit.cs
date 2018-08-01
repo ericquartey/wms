@@ -14,7 +14,7 @@ namespace Ferretto.Common.Models
     public int LoadingUnitTypeId { get; set; }
     public int Height { get; set; }
     public int Weight { get; set; }
-    public int LoadingUnitStatusId { get; set; }
+    public string LoadingUnitStatusId { get; set; }
     public ReferenceType Reference { get; set; }
     public string ClassId { get; set; }
     public int? HandlingParametersCorrection { get; set; }

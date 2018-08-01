@@ -390,11 +390,9 @@ SET IDENTITY_INSERT CellPositions OFF;
 
 
 -- Loading Units
-SET IDENTITY_INSERT LoadingUnitStatuses ON;
-INSERT INTO LoadingUnitStatuses (Id, Description) VALUES (1, 'Impegnata');
-INSERT INTO LoadingUnitStatuses (Id, Description) VALUES (2, 'Bloccata');
-INSERT INTO LoadingUnitStatuses (Id, Description) VALUES (3, 'Disponibile');
-SET IDENTITY_INSERT LoadingUnitStatuses OFF;
+INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('I', 'Impegnata');
+INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('B', 'Bloccata');
+INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('D', 'Disponibile');
 
 SET IDENTITY_INSERT LoadingUnitWeightClasses ON;
 INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Pallet peso max 1000kg', 0, 1000);
@@ -426,7 +424,7 @@ INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellC
 
 SET IDENTITY_INSERT LoadingUnits ON;
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, ClassId)
-VALUES (1, 'UDC1', 1, 1, 1, 1, 1600, 900, 3, 'M', 'A');
+VALUES (1, 'UDC1', 1, 1, 1, 1, 1600, 900, 'I', 'M', 'A');
 SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments

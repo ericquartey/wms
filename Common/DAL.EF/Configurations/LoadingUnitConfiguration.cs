@@ -17,6 +17,8 @@ namespace Ferretto.Common.DAL.EF.Configurations
           .HasColumnType("char(1)");
       builder.Property(l => l.Reference).IsRequired()
           .HasColumnType("char(1)");
+      builder.Property(l => l.LoadingUnitStatusId).IsRequired()
+          .HasColumnType("char(1)");
       builder.Property(l => l.Note)
           .HasColumnType("text");
       builder.Property(l => l.CreationDate)
