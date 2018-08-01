@@ -1,0 +1,337 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Ferretto.Common.Controls.Interfaces;
+using Microsoft.Practices.ServiceLocation;
+using Microsoft.Practices.Unity;
+using Prism.Modularity;
+using Prism.Regions;
+
+namespace Ferretto.Common.Controls.Services
+{
+  public class NavigationService : INavigationService
+  {
+    #region Fields
+    private readonly IRegionManager regionManager;
+    private readonly IUnityContainer container;
+    private readonly Dictionary<string, ViewModelBind> registrations = new Dictionary<string, ViewModelBind>();
+    #endregion
+
+    #region Ctor
+    public NavigationService(IUnityContainer unityContainer, IRegionManager regionManager)
+    {
+      this.container = unityContainer;
+      this.regionManager = regionManager;
+    }
+    #endregion
+
+    #region Public methods
+
+    #region Appear
+    public void Appear(Uri uri)
+    {
+      var (module, viewModelName) = this.GetViewModelNameSplitted(uri);
+      this.Appear(module, viewModelName);
+    }
+
+    public void Appear<TViewModel>()
+    {
+      var (module, viewModelName) = this.GetViewModelNames<TViewModel>();
+      this.Appear(module, viewModelName);
+    }
+
+    public void Appear(string module, string viewModelName)
+    {
+      try
+      {
+        if (this.IsViewModelNameValid(viewModelName) == false)
+        {
+          return;
+        }        
+
+        this.LoadModule(module);
+
+        var name = this.GetName(viewModelName);
+        var moduleViewName = this.GetViewName(module, name);
+
+        var instanceModuleViewName = this.CheckAddRegion(moduleViewName);
+
+        var region = regionManager.Regions[instanceModuleViewName];
+        var view = region.Views.FirstOrDefault(v => v.GetType().ToString().Equals(moduleViewName));
+        region.Activate(view);
+      }
+      catch (Exception ex)
+      {
+        var msg = $"Navigation service error on Appear, {module}.{viewModelName}";
+        throw new Exception(msg, ex);
+      }
+    }
+
+    private string CheckAddRegion(string moduleViewName)
+    {
+      var viewModelBind = this.GetViewModdelBind(moduleViewName);
+      var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";      
+      if (regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
+      {
+        // Map Prism region to current layout
+        this.AddToregion(instanceModuleViewName);
+        return instanceModuleViewName;
+      }
+
+      var idStateNotChanged = this.GetStateNotChanged(moduleViewName, viewModelBind);
+      if (idStateNotChanged != null)
+      {
+        // View state is not chaaged, activate this id
+        instanceModuleViewName = $"{moduleViewName}.{idStateNotChanged}";
+      }
+      else 
+      {
+        // View state is changed, register new instance of same view type
+        var newRegId = viewModelBind.GetNewId();
+        instanceModuleViewName = $"{moduleViewName}.{newRegId}";
+        container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, instanceModuleViewName);
+        container.RegisterType(typeof(INavigableView), viewModelBind.View, instanceModuleViewName);
+        // Map cloned type to current layout          
+        this.AddToregion(instanceModuleViewName);       
+      }
+   
+      return instanceModuleViewName;
+    }
+    #endregion
+
+    #region Disappear
+    public void Disappear(Uri uri)
+    {
+      var vmSplitted = this.GetViewModelNameSplitted(uri);
+      this.Appear(vmSplitted.module, vmSplitted.viewModelName);
+    }
+
+    public void Disappear<TViewModel>()
+    {
+      var viewModelnames = this.GetViewModelNames<TViewModel>();
+      this.Appear(viewModelnames.module, viewModelnames.viewModelName);
+    }
+
+    public void Disappear(string module, string viewModelName)
+    {
+      try
+      {
+        if (this.IsViewModelNameValid(viewModelName) == false)
+        {
+          return;
+        }
+        var regionName = this.GetName(viewModelName);
+        var moduleViewName = this.GetViewName(module, regionName);
+
+        throw new Exception("Disappear need to be implemented");
+        // Get corrent mapid
+        var moduleRegionName = $"{module}.{regionName}.1";        
+        if (regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
+        {
+          return;
+        }   
+         
+        IRegion region = this.regionManager.Regions[moduleRegionName];
+        var viewToRemove = region.GetView(moduleViewName);
+        if (viewToRemove != null)
+        {
+          region.Remove(viewToRemove);
+        }
+      }
+      catch (Exception ex)
+      {
+        var msg = $"Navigation service error on Disappear, {module}.{viewModelName}:{ex.Message}";
+        throw new Exception(msg);
+      }
+    }
+    #endregion
+
+    public void Register<TItemsView, TItemsViewModel>() where TItemsViewModel : INavigableViewModel
+                                                        where TItemsView : INavigableView
+    {
+      var newRegId = this.GetNewRegistrationId<TItemsView, TItemsViewModel>();
+      this.container.RegisterType<INavigableViewModel, TItemsViewModel>(newRegId);
+      this.container.RegisterType<INavigableView, TItemsView>(newRegId);
+    }
+
+    public INavigableViewModel RegisterAndGetViewModel(string viewName, string token)
+    {
+      if (this.registrations.ContainsKey(viewName) == false)
+      {
+        return null;
+      }
+      var viewModelBind = this.registrations[viewName];
+      // Generate random mapId
+      string mapId = System.Guid.NewGuid().ToString("N");
+      container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, mapId);
+      var vm = ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
+      vm.Token = token;
+      return vm;
+    }
+
+    public INavigableViewModel GetViewModelByName(string viewModelName)
+    {
+      if (this.IsViewModelNameValid(viewModelName) == false)
+      {
+        return null;
+      }
+      var names = this.GetViewModelNames(viewModelName);
+      return ServiceLocator.Current.GetInstance<INavigableViewModel>(names.viewModelName);
+    }
+
+    public INavigableViewModel GetViewModelByMapId(string mapId)
+    {
+      if (string.IsNullOrEmpty(mapId))
+      {
+        return null;
+      }
+      return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
+    }
+    #endregion
+
+    #region Private methods
+    private string GetNewRegistrationId<TItemsView, TItemsViewModel>()
+                                        where TItemsView : INavigableView
+                                        where TItemsViewModel : INavigableViewModel
+    {
+      string newId = null;
+      ViewModelBind viewModelBind = null;
+      string fullViewName = typeof(TItemsView).ToString();
+      if (this.registrations.ContainsKey(fullViewName) == false)
+      {
+        viewModelBind = new ViewModelBind(typeof(TItemsView), typeof(TItemsViewModel));
+        this.registrations.Add(fullViewName, viewModelBind);
+      }
+      else
+      {
+        viewModelBind = this.registrations[fullViewName];
+        newId = viewModelBind.GetNewId();
+      }
+      newId = $"{typeof(TItemsView)}.{viewModelBind.GetNewId()}";
+      return newId;
+    }
+    private ViewModelBind GetViewModdelBind(string fullViewName)
+    {
+      if (this.registrations.ContainsKey(fullViewName) == false)
+      {
+        return null;
+      }
+      return this.registrations[fullViewName];
+    }
+
+    private string GetStateNotChanged(string moduleViewName, ViewModelBind vmbind)
+    {
+      string state = null;
+      foreach (var id in vmbind.Ids)
+      {
+        var viewModel = ServiceLocator.Current.GetInstance<INavigableViewModel>($"{moduleViewName}.{id}");
+        if (string.IsNullOrEmpty(viewModel.StateId))
+        {
+          state = id;
+          break;
+        }
+      }
+      return state;
+    }
+
+    private bool IsViewModelNameValid(string viewModelName)
+    {
+      if (string.IsNullOrEmpty(viewModelName))
+      {
+        return false;
+      }
+      if (viewModelName.EndsWith(Configuration.Common.VIEWMODEL_SUFIX) == false)
+      {
+        return false;
+      }
+      return true;
+    }
+
+    private void AddToregion(string moduleViewName)
+    {
+      var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
+      registeredView.Token = moduleViewName;
+      registeredView.MapId = moduleViewName;
+      WMSMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);      
+      regionManager.AddToRegion(moduleViewName, registeredView);
+    }
+
+    private (string module, string viewModelName) GetViewModelNames(string viewModelName)
+    {
+      return GetViewModelNameSplitted(viewModelName);
+    }
+
+    private (string module, string viewModelName) GetViewModelNames<TViewModel>()
+    {
+      var type = typeof(TViewModel);
+      var viewModelName = type.ToString();
+      return GetViewModelNameSplitted(viewModelName);
+    }
+
+    private (string module, string viewModelName) GetViewModelNameSplitted(string viewModelName)
+    {
+      var vm = viewModelName.Replace($"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.", "");
+      var vmSplit = vm.Split('.');
+      return (vmSplit[0], vmSplit[1]);
+    }
+
+    private (string module, string viewModelName) GetViewModelNameSplitted(Uri uri)
+    {
+      var vmSplit = uri.ToString().Split('/');
+      return (vmSplit[0], vmSplit[1]);
+    }
+
+    private string GetName(string viewModelName)
+    {
+      return g.Replace(viewModelName, string.Empty);      
+    }
+
+    static Regex g = new Regex($"{Common.Configuration.Common.VIEWMODEL_SUFIX}$", RegexOptions.Compiled);
+
+    private string GetViewName(string module, string regionName)
+    {
+      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Configuration.Common.MODEL_SUFIX}";
+    }
+
+    private void LoadModule(string moduleName)
+    {
+      IModuleCatalog catalog = this.container.Resolve<IModuleCatalog>();
+      var module = (catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName));
+      if (module.State == ModuleState.NotStarted)
+      {
+        IModuleManager moduleManager = this.container.Resolve<IModuleManager>();
+        moduleManager.LoadModule(moduleName);
+      }
+    }
+    #endregion
+
+    #region Helper class
+    class ViewModelBind
+    {
+      #region Properties
+      public Type View { get; set; }
+      public Type ViewModel { get; set; }
+
+      public List<string> Ids { get; set; }
+      #endregion
+
+      #region Ctor
+      public ViewModelBind(Type View, Type ViewModel)
+      {
+        this.View = View;
+        this.ViewModel = ViewModel;
+        this.Ids = new List<string>();
+      }
+      #endregion
+
+      public string GetNewId()
+      {
+        var newId = (this.Ids.Count() + 1).ToString();
+        this.Ids.Add(newId);
+        return newId;
+      }
+    }
+    #endregion
+  }
+}
