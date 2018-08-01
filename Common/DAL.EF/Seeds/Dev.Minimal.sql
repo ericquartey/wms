@@ -2,20 +2,20 @@ BEGIN TRANSACTION;
 
 -- Areas / Aisles
 SET IDENTITY_INSERT Areas ON;
-INSERT INTO Areas (Id, Name) VALUES (1, 'Area Traslo');
+INSERT INTO Areas (Id, Name) VALUES (1, 'Traslo Area');
 SET IDENTITY_INSERT Areas OFF;
 
 SET IDENTITY_INSERT Aisles ON;
-INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (1, 'Corridoio 1', 1, 5, 10);
-INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (2, 'Corridoio 2', 1, 5, 10);
-INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (3, 'Corridoio 3', 1, 5, 10);
+INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (1, 'Aisle 1', 1, 5, 10);
+INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (2, 'Aisle 2', 1, 5, 10);
+INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (3, 'Aisle 3', 1, 5, 10);
 SET IDENTITY_INSERT Aisles OFF;
 
 
 --Items
-INSERT INTO AbcClasses (Id, Description) VALUES ('A', 'Class A');
-INSERT INTO AbcClasses (Id, Description) VALUES ('B', 'Class B');
-INSERT INTO AbcClasses (Id, Description) VALUES ('C', 'Class C');
+INSERT INTO AbcClasses (Id, Description) VALUES ('A', 'A Class');
+INSERT INTO AbcClasses (Id, Description) VALUES ('B', 'B Class');
+INSERT INTO AbcClasses (Id, Description) VALUES ('C', 'C Class');
 
 SET IDENTITY_INSERT ItemManagementTypes ON;
 INSERT INTO ItemManagementTypes (Id, Description) VALUES (1, 'FIFO');
@@ -23,7 +23,7 @@ INSERT INTO ItemManagementTypes (Id, Description) VALUES (2, 'Volume');
 SET IDENTITY_INSERT ItemManagementTypes OFF;
 
 SET IDENTITY_INSERT MeasureUnits ON;
-INSERT INTO MeasureUnits (Id, Description) VALUES (1, 'Pz');
+INSERT INTO MeasureUnits (Id, Description) VALUES (1, 'Pieces');
 SET IDENTITY_INSERT MeasureUnits OFF;
 
 SET IDENTITY_INSERT Items ON;
@@ -45,18 +45,18 @@ INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, 1);
 
 -- Cells
 SET IDENTITY_INSERT CellStatuses ON;
-INSERT INTO CellStatuses (Id, Description) VALUES (1, 'Vuota');
-INSERT INTO CellStatuses (Id, Description) VALUES (2, 'Impegnata');
-INSERT INTO CellStatuses (Id, Description) VALUES (3, 'Piena');
-INSERT INTO CellStatuses (Id, Description) VALUES (4, 'Pieno su pieno');
-INSERT INTO CellStatuses (Id, Description) VALUES (5, 'Vuoto su vuoto');
-INSERT INTO CellStatuses (Id, Description) VALUES (6, 'Smezzata');
-INSERT INTO CellStatuses (Id, Description) VALUES (7, 'Disabilitata');
+INSERT INTO CellStatuses (Id, Description) VALUES (1, 'Empty');
+INSERT INTO CellStatuses (Id, Description) VALUES (2, 'Reserved');
+INSERT INTO CellStatuses (Id, Description) VALUES (3, 'Full');
+INSERT INTO CellStatuses (Id, Description) VALUES (4, 'Full over Full');
+INSERT INTO CellStatuses (Id, Description) VALUES (5, 'Empty over Empty');
+INSERT INTO CellStatuses (Id, Description) VALUES (6, 'Halved');
+INSERT INTO CellStatuses (Id, Description) VALUES (7, 'Disabled');
 SET IDENTITY_INSERT CellStatuses OFF;
 
 SET IDENTITY_INSERT CellHeightClasses ON;
-INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (1, 'Cella max altezza 1300mm', 0, 1300);
-INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (2, 'Cella max altezza 1700mm', 1300, 1700);
+INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (1, 'Cell 1300mm height max', 0, 1300);
+INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (2, 'Cell 1700mm height max', 1300, 1700);
 SET IDENTITY_INSERT CellHeightClasses OFF;
 
 SET IDENTITY_INSERT CellSizeClasses ON;
@@ -64,12 +64,12 @@ INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (1, 'Europal
 SET IDENTITY_INSERT CellSizeClasses OFF;
 
 SET IDENTITY_INSERT CellWeightClasses ON;
-INSERT INTO CellWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Cella peso max 1000kg', 0, 1000);
+INSERT INTO CellWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Cell 1000kg weight max', 0, 1000);
 SET IDENTITY_INSERT CellWeightClasses OFF;
 
 SET IDENTITY_INSERT CellTypes ON;
-INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (1, 2, 1, 1, 'Cella Europallet, max altezza 1700mm, max peso 1000kg');
-INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (2, 1, 1, 1, 'Cella Europallet, max altezza 1300mm, max peso 1000kg');
+INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (1, 2, 1, 1, 'Cell Europallet, 1700mm height max, 1000kg weight max');
+INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (2, 1, 1, 1, 'Cell Europallet, 1300mm height max, 1000kg weight max');
 SET IDENTITY_INSERT CellTypes OFF;
 
 SET IDENTITY_INSERT Cells ON;
@@ -376,8 +376,8 @@ INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, Cel
 SET IDENTITY_INSERT Cells OFF;
 
 SET IDENTITY_INSERT CellConfigurations ON;
-INSERT INTO CellConfigurations (Id, Description) VALUES (1, '1 pallet alto presente');
-INSERT INTO CellConfigurations (Id, Description) VALUES (2, '1 pallet basso presente');
+INSERT INTO CellConfigurations (Id, Description) VALUES (1, '1 tall pallet present');
+INSERT INTO CellConfigurations (Id, Description) VALUES (2, '1 short pallet present');
 SET IDENTITY_INSERT CellConfigurations OFF;
 
 INSERT INTO CellConfigurationCellTypes (CellConfigurationId, CellTypeId, Priority) VALUES (1, 1, 1);
@@ -385,17 +385,17 @@ INSERT INTO CellConfigurationCellTypes (CellConfigurationId, CellTypeId, Priorit
 INSERT INTO CellConfigurationCellTypes (CellConfigurationId, CellTypeId, Priority) VALUES (2, 2, 1);
 
 SET IDENTITY_INSERT CellPositions ON;
-INSERT INTO CellPositions (Id, XOffset, YOffset, ZOffset, Description) VALUES (1, null, null, null, 'Posizione pallet centrato su cella');
+INSERT INTO CellPositions (Id, XOffset, YOffset, ZOffset, Description) VALUES (1, null, null, null, 'Pallet centered over cell');
 SET IDENTITY_INSERT CellPositions OFF;
 
 
 -- Loading Units
-INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('I', 'Impegnata');
-INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('B', 'Bloccata');
-INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('D', 'Disponibile');
+INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('U', 'Used');
+INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('B', 'Blocked');
+INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('A', 'Available');
 
 SET IDENTITY_INSERT LoadingUnitWeightClasses ON;
-INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Pallet peso max 1000kg', 0, 1000);
+INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Pallet 1000kg weight max', 0, 1000);
 SET IDENTITY_INSERT LoadingUnitWeightClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitSizeClasses ON;
@@ -403,13 +403,13 @@ INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, L
 SET IDENTITY_INSERT LoadingUnitSizeClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitHeightClasses ON;
-INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (1, 'Pallet altezza max 1300mm', 0, 1300);
-INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (2, 'Pallet altezza max 1700mm', 1300, 1700);
+INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (1, 'Pallet 1300mm height max', 0, 1300);
+INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (2, 'Pallet 1700mm height max', 1300, 1700);
 SET IDENTITY_INSERT LoadingUnitHeightClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitTypes ON;
-INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (1, 2, 1, 1, 'Europallet, max altezza 1700mm, max peso 1000kg');
-INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (2, 1, 1, 1, 'Europallet, max altezza 1300mm, max peso 1000kg');
+INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (1, 2, 1, 1, 'Europallet, 1700mm height max, 1000kg weight max');
+INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (2, 1, 1, 1, 'Europallet, 1300mm height max, 1000kg weight max');
 SET IDENTITY_INSERT LoadingUnitTypes OFF;
 
 INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (1, 1);
@@ -429,30 +429,30 @@ SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments
 SET IDENTITY_INSERT MaterialStatuses ON;
-INSERT INTO MaterialStatuses (Id, Description) VALUES (1, 'Disponibile');
-INSERT INTO MaterialStatuses (Id, Description) VALUES (2, 'Attesa verifica');
-INSERT INTO MaterialStatuses (Id, Description) VALUES (3, 'Scaduto');
-INSERT INTO MaterialStatuses (Id, Description) VALUES (4, 'Bloccato');
+INSERT INTO MaterialStatuses (Id, Description) VALUES (1, 'Available');
+INSERT INTO MaterialStatuses (Id, Description) VALUES (2, 'Awaiting verification');
+INSERT INTO MaterialStatuses (Id, Description) VALUES (3, 'Expired');
+INSERT INTO MaterialStatuses (Id, Description) VALUES (4, 'Blocked');
 SET IDENTITY_INSERT MaterialStatuses OFF;
 
 SET IDENTITY_INSERT PackageTypes ON;
-INSERT INTO PackageTypes (Id, Description) VALUES (1, 'Sciolto');
-INSERT INTO PackageTypes (Id, Description) VALUES (2, 'Confezioni piccole');
-INSERT INTO PackageTypes (Id, Description) VALUES (3, 'Confezioni medie');
-INSERT INTO PackageTypes (Id, Description) VALUES (4, 'Scatole');
+INSERT INTO PackageTypes (Id, Description) VALUES (1, 'Free');
+INSERT INTO PackageTypes (Id, Description) VALUES (2, 'Small packs');
+INSERT INTO PackageTypes (Id, Description) VALUES (3, 'Medium packs');
+INSERT INTO PackageTypes (Id, Description) VALUES (4, 'Boxes');
 SET IDENTITY_INSERT PackageTypes OFF;
 
 SET IDENTITY_INSERT CompartmentStatuses ON;
-INSERT INTO CompartmentStatuses (Id, Description) VALUES (1, 'Libero');
-INSERT INTO CompartmentStatuses (Id, Description) VALUES (2, 'Occupato');
-INSERT INTO CompartmentStatuses (Id, Description) VALUES (3, 'Vuoto');
-INSERT INTO CompartmentStatuses (Id, Description) VALUES (4, 'Pieno');
-INSERT INTO CompartmentStatuses (Id, Description) VALUES (5, 'Impegnato');
-INSERT INTO CompartmentStatuses (Id, Description) VALUES (6, 'Disabilitato');
+INSERT INTO CompartmentStatuses (Id, Description) VALUES (1, 'Free');
+INSERT INTO CompartmentStatuses (Id, Description) VALUES (2, 'Used');
+INSERT INTO CompartmentStatuses (Id, Description) VALUES (3, 'Empty');
+INSERT INTO CompartmentStatuses (Id, Description) VALUES (4, 'Full');
+INSERT INTO CompartmentStatuses (Id, Description) VALUES (5, 'Reserved');
+INSERT INTO CompartmentStatuses (Id, Description) VALUES (6, 'Disabled');
 SET IDENTITY_INSERT CompartmentStatuses OFF;
 
 SET IDENTITY_INSERT CompartmentTypes ON;
-INSERT INTO CompartmentTypes (Id, Description, Width, Height) VALUES (1, 'Pallet Intero', 800, 1200);
+INSERT INTO CompartmentTypes (Id, Description, Width, Height) VALUES (1, 'Full-pallet compartment', 800, 1200);
 SET IDENTITY_INSERT CompartmentTypes OFF;
 
 SET IDENTITY_INSERT Compartments ON;
@@ -462,25 +462,25 @@ SET IDENTITY_INSERT Compartments OFF;
 
 -- ItemLists
 SET IDENTITY_INSERT ItemListTypes ON;
-INSERT INTO ItemListTypes (Id, Description) VALUES (1, 'Prelievo');
-INSERT INTO ItemListTypes (Id, Description) VALUES (2, 'Versamento');
-INSERT INTO ItemListTypes (Id, Description) VALUES (3, 'Inventario');
+INSERT INTO ItemListTypes (Id, Description) VALUES (1, 'Pick');
+INSERT INTO ItemListTypes (Id, Description) VALUES (2, 'Put');
+INSERT INTO ItemListTypes (Id, Description) VALUES (3, 'Inventory');
 SET IDENTITY_INSERT ItemListTypes OFF;
 
 SET IDENTITY_INSERT ItemListStatuses ON;
-INSERT INTO ItemListStatuses (Id, Description) VALUES (1, 'Attesa');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (2, 'Esecuzione');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (3, 'Completata');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (4, 'Incompleta');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (5, 'Sospesa');
+INSERT INTO ItemListStatuses (Id, Description) VALUES (1, 'Waiting');
+INSERT INTO ItemListStatuses (Id, Description) VALUES (2, 'Executing');
+INSERT INTO ItemListStatuses (Id, Description) VALUES (3, 'Completed');
+INSERT INTO ItemListStatuses (Id, Description) VALUES (4, 'Incomplete');
+INSERT INTO ItemListStatuses (Id, Description) VALUES (5, 'Suspended');
 SET IDENTITY_INSERT ItemListStatuses OFF;
 
 SET IDENTITY_INSERT ItemListRowStatuses ON;
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (1, 'Attesa');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (2, 'Esecuzione');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (3, 'Completata');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (4, 'Incompleta');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (5, 'Sospesa');
+INSERT INTO ItemListRowStatuses (Id, Description) VALUES (1, 'Waiting');
+INSERT INTO ItemListRowStatuses (Id, Description) VALUES (2, 'Executing');
+INSERT INTO ItemListRowStatuses (Id, Description) VALUES (3, 'Completed');
+INSERT INTO ItemListRowStatuses (Id, Description) VALUES (4, 'Incomplete');
+INSERT INTO ItemListRowStatuses (Id, Description) VALUES (5, 'Suspended');
 SET IDENTITY_INSERT ItemListRowStatuses OFF;
 
 COMMIT;
