@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -283,8 +284,10 @@ namespace Ferretto.Common.Controls.Services
 
     private string GetName(string viewModelName)
     {
-      return viewModelName.TrimEnd(Configuration.Common.VIEWMODEL_SUFIX.ToCharArray());
+      return g.Replace(viewModelName, string.Empty);      
     }
+
+    static Regex g = new Regex($"{Common.Configuration.Common.VIEWMODEL_SUFIX}$", RegexOptions.Compiled);
 
     private string GetViewName(string module, string regionName)
     {
@@ -293,11 +296,11 @@ namespace Ferretto.Common.Controls.Services
 
     private void LoadModule(string moduleName)
     {
-      IModuleCatalog catalog = container.Resolve<IModuleCatalog>();
+      IModuleCatalog catalog = this.container.Resolve<IModuleCatalog>();
       var module = (catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName));
       if (module.State == ModuleState.NotStarted)
       {
-        IModuleManager moduleManager = container.Resolve<IModuleManager>();
+        IModuleManager moduleManager = this.container.Resolve<IModuleManager>();
         moduleManager.LoadModule(moduleName);
       }
     }
