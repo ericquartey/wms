@@ -141,7 +141,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\IItemDetailsViewModel.cs" />
     <Compile Include="Interfaces\IItemViewModel.cs" />
-    <Compile Include="Module.cs" />
+    <Compile Include="CatalogModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemViewModel.cs" />
