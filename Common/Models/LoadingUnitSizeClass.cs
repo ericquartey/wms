@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe Dimensione Udc
-  public partial class LoadingUnitSizeClass
+  public sealed class LoadingUnitSizeClass
   {
     public int Id { get; set; }
     public string Description { get; set; }

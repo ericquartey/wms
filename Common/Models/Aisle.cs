@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Corridoio
-  public partial class Aisle
+  public sealed class Aisle
   {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -18,5 +18,6 @@ namespace Ferretto.Common.Models
     public List<LoadingUnitTypeAisle> AisleLoadingUnitTypes { get; set; }
     public List<CellTotal> CellTotals { get; set; }
     public List<CellsGroup> CellsGroups { get; set; }
+    public List<Machine> Machines { get; set; }
   }
 }

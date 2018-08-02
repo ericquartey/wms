@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe Dimensione Cella
-  public partial class CellSizeClass
+  public sealed class CellSizeClass
   {
     public int Id { get; set; }
     public string Description { get; set; }

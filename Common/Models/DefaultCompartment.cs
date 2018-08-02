@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Scomparti predefiniti
-  public partial class DefaultCompartment
+  public sealed class DefaultCompartment
   {
     public int Id { get; set; }
     public int DefaultLoadingUnitId { get; set; }

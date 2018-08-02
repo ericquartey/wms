@@ -175,6 +175,8 @@
     <Compile Include="Configurations\AbcClassConfiguration.cs" />
     <Compile Include="Configurations\AisleConfiguration.cs" />
     <Compile Include="Configurations\AreaConfiguration.cs" />
+    <Compile Include="Configurations\BayConfiguration.cs" />
+    <Compile Include="Configurations\BayTypeConfiguration.cs" />
     <Compile Include="Configurations\CellConfiguration.cs" />
     <Compile Include="Configurations\CellConfigurationCellPositionLoadingUnitTypeConfiguration.cs" />
     <Compile Include="Configurations\CellConfigurationCellTypeConfiguration.cs" />
@@ -209,11 +211,21 @@
     <Compile Include="Configurations\LoadingUnitTypeAisleConfiguration.cs" />
     <Compile Include="Configurations\LoadingUnitTypeConfiguration.cs" />
     <Compile Include="Configurations\LoadingUnitWeightClassConfiguration.cs" />
+    <Compile Include="Configurations\MachineConfiguration.cs" />
+    <Compile Include="Configurations\MachineTypeConfiguration.cs" />
     <Compile Include="Configurations\MaterialStatusConfiguration.cs" />
     <Compile Include="Configurations\MeasureUnitConfiguration.cs" />
+    <Compile Include="Configurations\MissionConfiguration.cs" />
+    <Compile Include="Configurations\MissionStatusConfiguration.cs" />
+    <Compile Include="Configurations\MissionTypeConfiguration.cs" />
     <Compile Include="Configurations\PackageTypeConfiguration.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="ItemsRepository.cs" />
+    <Compile Include="Migrations\20180802154218_Initial.cs" />
+    <Compile Include="Migrations\20180802154218_Initial.designer.cs">
+      <DependentUpon>20180802154218_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\DbContextModelSnapshot.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />

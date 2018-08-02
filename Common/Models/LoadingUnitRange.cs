@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Range Udc
-  public partial class LoadingUnitRange
+  public sealed class LoadingUnitRange
   {
     public int Id { get; set; }
     public int AreaId { get; set; }

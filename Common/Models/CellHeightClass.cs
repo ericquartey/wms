@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe Altezza Cella
-  public partial class CellHeightClass
+  public sealed class CellHeightClass
   {
     public int Id { get; set; }
     public string Description { get; set; }

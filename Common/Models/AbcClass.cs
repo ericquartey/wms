@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe ABC
-  public partial class AbcClass
+  public sealed class AbcClass
   {
     public string Id { get; set; }
     public string Description { get; set; }

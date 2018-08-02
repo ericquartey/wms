@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Stato Cella
-  public partial class CellStatus
+  public sealed class CellStatus
   {
     public int Id { get; set; }
     public string Description { get; set; }

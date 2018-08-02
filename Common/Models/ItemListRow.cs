@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.Common.Models
 {
   // Riga di Lista Articoli
-  public partial class ItemListRow
+  public sealed class ItemListRow
   {
     public int Id { get; set; }
     public int ItemListId { get; set; }
@@ -29,5 +30,7 @@ namespace Ferretto.Common.Models
     public MaterialStatus MaterialStatus { get; set; }
     public PackageType PackageType { get; set; }
     public ItemListRowStatus ItemListRowStatus { get; set; }
+
+    public List<Mission> Missions { get; set; }
   }
 }

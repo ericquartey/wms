@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Tipo Udc
-  public partial class LoadingUnitType
+  public sealed class LoadingUnitType
   {
     public int Id { get; set; }
     public int LoadingUnitHeightClassId { get; set; }

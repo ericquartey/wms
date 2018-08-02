@@ -10,6 +10,8 @@ namespace Ferretto.Common.DAL.EF
     public virtual DbSet<AbcClass> AbcClasses { get; set; }
     public virtual DbSet<Aisle> Aisles { get; set; }
     public virtual DbSet<Area> Areas { get; set; }
+    public virtual DbSet<Bay> Bays { get; set; }
+    public virtual DbSet<BayType> BayTypes { get; set; }
     public virtual DbSet<Cell> Cells { get; set; }
     public virtual DbSet<Models.CellConfiguration> CellConfigurations { get; set; }
     public virtual DbSet<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes { get; set; }
@@ -44,8 +46,13 @@ namespace Ferretto.Common.DAL.EF
     public virtual DbSet<LoadingUnitType> LoadingUnitTypes { get; set; }
     public virtual DbSet<LoadingUnitTypeAisle> LoadingUnitTypesAisles { get; set; }
     public virtual DbSet<LoadingUnitWeightClass> LoadingUnitWeightClasses { get; set; }
+    public virtual DbSet<Machine> Machines { get; set; }
+    public virtual DbSet<MachineType> MachineTypes { get; set; }
     public virtual DbSet<MaterialStatus> MaterialStatuses { get; set; }
     public virtual DbSet<MeasureUnit> MeasureUnits { get; set; }
+    public virtual DbSet<Mission> Missions { get; set; }
+    public virtual DbSet<MissionStatus> MissionStatuses { get; set; }
+    public virtual DbSet<MissionType> MissionTypes { get; set; }
     public virtual DbSet<PackageType> PackageTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -63,6 +70,8 @@ namespace Ferretto.Common.DAL.EF
       modelBuilder.ApplyConfiguration(new AbcClassConfiguration());
       modelBuilder.ApplyConfiguration(new AisleConfiguration());
       modelBuilder.ApplyConfiguration(new AreaConfiguration());
+      modelBuilder.ApplyConfiguration(new BayConfiguration());
+      modelBuilder.ApplyConfiguration(new BayTypeConfiguration());
       modelBuilder.ApplyConfiguration(new Configurations.CellConfiguration());
       modelBuilder.ApplyConfiguration(new CellConfigurationConfiguration());
       modelBuilder.ApplyConfiguration(new CellConfigurationCellPositionLoadingUnitTypeConfiguration());
@@ -97,8 +106,13 @@ namespace Ferretto.Common.DAL.EF
       modelBuilder.ApplyConfiguration(new LoadingUnitTypeConfiguration());
       modelBuilder.ApplyConfiguration(new LoadingUnitTypeAisleConfiguration());
       modelBuilder.ApplyConfiguration(new LoadingUnitWeightClassConfiguration());
+      modelBuilder.ApplyConfiguration(new MachineConfiguration());
+      modelBuilder.ApplyConfiguration(new MachineTypeConfiguration());
       modelBuilder.ApplyConfiguration(new MaterialStatusConfiguration());
       modelBuilder.ApplyConfiguration(new MeasureUnitConfiguration());
+      modelBuilder.ApplyConfiguration(new MissionConfiguration());
+      modelBuilder.ApplyConfiguration(new MissionStatusConfiguration());
+      modelBuilder.ApplyConfiguration(new MissionTypeConfiguration());
       modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
     }
   }

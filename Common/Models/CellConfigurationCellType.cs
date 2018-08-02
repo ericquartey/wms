@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Configurazione Cella - Tipo Cella
-  public partial class CellConfigurationCellType
+  public sealed class CellConfigurationCellType
   {
     public int CellConfigurationId { get; set; }
     public int CellTypeId { get; set; }

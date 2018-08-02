@@ -2,12 +2,12 @@
 
 namespace Ferretto.Common.Models
 {
-  // Stato Udc
-  public sealed class LoadingUnitStatus
+  // Stato Missione
+  public sealed class MissionStatus
   {
     public string Id { get; set; }
     public string Description { get; set; }
 
-    public List<LoadingUnit> LoadingUnits { get; set; }
+    public List<Mission> Missions { get; set; }
   }
 }

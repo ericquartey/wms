@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe Peso Cella
-  public partial class CellWeightClass
+  public sealed class CellWeightClass
   {
     public int Id { get; set; }
     public string Description { get; set; }

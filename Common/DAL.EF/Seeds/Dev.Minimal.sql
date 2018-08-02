@@ -424,7 +424,7 @@ INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellC
 
 SET IDENTITY_INSERT LoadingUnits ON;
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, ClassId)
-VALUES (1, 'UDC1', 1, 1, 1, 1, 1600, 900, 'I', 'M', 'A');
+VALUES (1, 'UDC1', 1, 1, 1, 1, 1600, 900, 'U', 'M', 'A');
 SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments
@@ -482,5 +482,43 @@ INSERT INTO ItemListRowStatuses (Id, Description) VALUES (3, 'Completed');
 INSERT INTO ItemListRowStatuses (Id, Description) VALUES (4, 'Incomplete');
 INSERT INTO ItemListRowStatuses (Id, Description) VALUES (5, 'Suspended');
 SET IDENTITY_INSERT ItemListRowStatuses OFF;
+
+
+-- Bays
+INSERT INTO BayTypes (Id, Description) VALUES ('I', 'Input Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('O', 'Output Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('P', 'Picking Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('L', 'Traslo load Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('U', 'Traslo unload Bay');
+
+SET IDENTITY_INSERT Bays ON;
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description) VALUES (1, 'P', 1, 'Singola baia di Pick');
+SET IDENTITY_INSERT Bays OFF;
+
+
+-- Missions
+INSERT INTO MissionStatuses (Id, Description) VALUES ('W', 'Waiting');
+INSERT INTO MissionStatuses (Id, Description) VALUES ('E', 'Executing');
+INSERT INTO MissionStatuses (Id, Description) VALUES ('C', 'Completed');
+
+INSERT INTO MissionTypes (Id, Description) VALUES ('PK', 'Pick');
+INSERT INTO MissionTypes (Id, Description) VALUES ('PT', 'Put');
+INSERT INTO MissionTypes (Id, Description) VALUES ('RO', 'Reorder');
+INSERT INTO MissionTypes (Id, Description) VALUES ('BP', 'Bypass');
+INSERT INTO MissionTypes (Id, Description) VALUES ('IN', 'Inventory');
+INSERT INTO MissionTypes (Id, Description) VALUES ('RP', 'Replace');
+
+
+-- Machines
+INSERT INTO MachineTypes (Id, Description) VALUES ('T', 'Traslo');
+INSERT INTO MachineTypes (Id, Description) VALUES ('S', 'Shuttle');
+INSERT INTO MachineTypes (Id, Description) VALUES ('H', 'Handling');
+INSERT INTO MachineTypes (Id, Description) VALUES ('L', 'LGV');
+INSERT INTO MachineTypes (Id, Description) VALUES ('V', 'Vertimag');
+
+SET IDENTITY_INSERT Machines ON;
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber) VALUES (1, 1, 'T', 'Traslo 1', '1234567890');
+SET IDENTITY_INSERT Machines OFF;
+
 
 COMMIT;

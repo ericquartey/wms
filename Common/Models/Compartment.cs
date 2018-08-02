@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.Common.Models
 {
   // Scomparto
-  public partial class Compartment
+  public sealed class Compartment
   {
     public int Id { get; set; }
     public string Code { get; set; }
@@ -42,5 +43,7 @@ namespace Ferretto.Common.Models
     public MaterialStatus MaterialStatus { get; set; }
     public PackageType PackageType { get; set; }
     public CompartmentStatus CompartmentStatus { get; set; }
+
+    public List<Mission> Missions { get; set; }
   }
 }

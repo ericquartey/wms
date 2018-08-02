@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Tipo Cella
-  public partial class CellType
+  public sealed class CellType
   {
     public int Id { get; set; }
     public int CellHeightClassId { get; set; }

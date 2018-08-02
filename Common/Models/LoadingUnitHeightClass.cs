@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe Altezza Udc
-  public partial class LoadingUnitHeightClass
+  public sealed class LoadingUnitHeightClass
   {
     public int Id { get; set; }
     public string Description { get; set; }

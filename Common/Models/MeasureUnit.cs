@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Unità di Misura
-  public partial class MeasureUnit
+  public sealed class MeasureUnit
   {
     public int Id { get; set; }
     public string Description { get; set; }

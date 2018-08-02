@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe Peso Udc
-  public partial class LoadingUnitWeightClass
+  public sealed class LoadingUnitWeightClass
   {
     public int Id { get; set; }
     public string Description { get; set; }
