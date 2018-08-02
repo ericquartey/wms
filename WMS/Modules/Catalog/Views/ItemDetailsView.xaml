@@ -1,5 +1,6 @@
-﻿<UserControl
+﻿<ctrls:WMSView
     x:Class="Ferretto.WMS.Modules.Catalog.ItemDetailsView"
+    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -28,7 +29,7 @@
                                     IsReadOnly="True"                                    
                                     EditValue="{Binding Path=Item.Id, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
-                            
+
                             <StackPanel Margin="0,0,0,2" Orientation="Horizontal">
                                 <TextBlock MinWidth="150" Text="Codice Articolo" />
                                 <dxe:TextEdit
@@ -257,4 +258,4 @@
         </ScrollViewer>
 
     </Grid>
-</UserControl>
+</ctrls:WMSView>

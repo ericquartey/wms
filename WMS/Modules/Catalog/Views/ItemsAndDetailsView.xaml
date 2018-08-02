@@ -1,11 +1,13 @@
-﻿<UserControl x:Class="Ferretto.WMS.Modules.Catalog.ItemsAndDetailsView"
+﻿<ctrls:WMSView x:Class="Ferretto.WMS.Modules.Catalog.ItemsAndDetailsView"
+             xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:localctrls="clr-namespace:Ferretto.WMS.Modules.Catalog"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+            Title="Anagrafica articoli">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -18,4 +20,4 @@
             <localctrls:ItemDetailsView/>
         </ContentControl>
     </Grid>
-</UserControl>
+</ctrls:WMSView>

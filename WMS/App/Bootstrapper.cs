@@ -44,7 +44,7 @@ namespace Ferretto.WMS.App
       base.InitializeShell();
 
       App.Current.MainWindow = (Window)this.Shell;
-      App.Current.MainWindow.Show();
+      App.Current.MainWindow.Show();    
     }
   }
 }
