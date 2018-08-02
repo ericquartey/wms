@@ -18,6 +18,7 @@ namespace Ferretto.WMS.Modules.Layout
     {
       this.navigationService = navigationService;
     }
+
     private void AppearItem()
     {      
       this.navigationService.Appear(nameof(Common.Configuration.Modules.Catalog), Common.Configuration.Modules.Catalog.ITEMSANDDETAILS);
