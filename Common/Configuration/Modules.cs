@@ -7,16 +7,16 @@ namespace Ferretto.Common.Configuration.Modules
 {
     public static class Catalog
     {
-      public static readonly string ItemsAndDetails = "ItemsAndDetails";
-      public static readonly string Items = "Items";
-      public static readonly string ItemDetails = "ItemDetails";
+      public const string ItemsAndDetails = "ItemsAndDetails";
+      public const string Items = "Items";
+      public const string ItemDetails = "ItemDetails";
     }
 
     public static class Layout
     {
-      public static readonly string MainContent = "MainContent";
-      public static readonly string MenuOutlook = "MenuOutlook";
-      public static readonly string Menu = "Menu";
+      public const string MainContent = "MainContent";
+      public const string MenuOutlook = "MenuOutlook";
+      public const string Menu = "Menu";
     }
 
     static public class DataAccess

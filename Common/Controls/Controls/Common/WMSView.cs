@@ -29,12 +29,12 @@ namespace Ferretto.Common.Controls
     #region Event
     private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
     {
-      if (!this.IsWrongDataContext())
+      if (this.IsWrongDataContext() == false)
       {
         return;
       }
 
-      if (!string.IsNullOrEmpty(this.MapId))
+      if (string.IsNullOrEmpty(this.MapId) == false)
       {
         // Is Main WMSView registered
         this.DataContext = this.navigationService.GetViewModelByMapId(this.MapId);
@@ -78,13 +78,14 @@ namespace Ferretto.Common.Controls
       {
         return true;
       }
+
       var dataContextName = this.DataContext.GetType().ToString();      
-      return (!GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture));
+      return !GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
     }
 
     private string GetAttachedViewModel()
     {
-      return $"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFIX}";
+      return $"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFFIX}";
     }
     #endregion
   }

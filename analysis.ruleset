@@ -664,6 +664,7 @@
     <Rule Id="S109" Action="Warning" />
     <Rule Id="S110" Action="Warning" />
     <Rule Id="S1109" Action="Warning" />
+    <Rule Id="S1125" Action="None" />
     <Rule Id="S113" Action="Warning" />
     <Rule Id="S1145" Action="Warning" />
     <Rule Id="S1147" Action="Warning" />
@@ -708,7 +709,6 @@
     <Rule Id="S2325" Action="Warning" />
     <Rule Id="S2330" Action="Warning" />
     <Rule Id="S2333" Action="Warning" />
-    <Rule Id="S2339" Action="Warning" />
     <Rule Id="S2342" Action="Warning" />
     <Rule Id="S2357" Action="Warning" />
     <Rule Id="S2360" Action="Warning" />

@@ -44,7 +44,7 @@ namespace Ferretto.Common.Controls.Services
     public void Appear(string module, string viewModelName)
     {
       
-        if (!IsViewModelNameValid(viewModelName))
+        if (IsViewModelNameValid(viewModelName) == false)
         {
           return;
         }        
@@ -65,7 +65,7 @@ namespace Ferretto.Common.Controls.Services
     {
       var viewModelBind = this.GetViewModdelBind(moduleViewName);
       var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";      
-      if (!this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName))
+      if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
       {
         // Map Prism region to current layout
         this.AddToregion(instanceModuleViewName);
@@ -121,7 +121,7 @@ namespace Ferretto.Common.Controls.Services
       Justification = "Method is not yet fully implemented")]
     public void Disappear(string module, string viewModelName)
     {
-        if (!IsViewModelNameValid(viewModelName))
+        if (IsViewModelNameValid(viewModelName) == false)
         {
           return;
         }
@@ -132,7 +132,7 @@ namespace Ferretto.Common.Controls.Services
 
         // Get corrent mapid
         var moduleRegionName = $"{module}.{regionName}.1";        
-        if (!this.regionManager.Regions.ContainsRegionWithName(moduleRegionName))
+        if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
         {
           return;
         }   
@@ -156,7 +156,7 @@ namespace Ferretto.Common.Controls.Services
 
     public INavigableViewModel RegisterAndGetViewModel(string viewName, string token)
     {
-      if (!this.registrations.ContainsKey(viewName))
+      if (this.registrations.ContainsKey(viewName) == false)
       {
         return null;
       }
@@ -171,7 +171,7 @@ namespace Ferretto.Common.Controls.Services
 
     public INavigableViewModel GetViewModelByName(string viewModelName)
     {
-      if (!IsViewModelNameValid(viewModelName))
+      if (IsViewModelNameValid(viewModelName) == false)
       {
         return null;
       }
@@ -197,7 +197,7 @@ namespace Ferretto.Common.Controls.Services
       string newId = null;
       ViewModelBind viewModelBind = null;
       var fullViewName = typeof(TItemsView).ToString();
-      if (!this.registrations.ContainsKey(fullViewName))
+      if (this.registrations.ContainsKey(fullViewName) == false)
       {
         viewModelBind = new ViewModelBind(typeof(TItemsView), typeof(TItemsViewModel));
         this.registrations.Add(fullViewName, viewModelBind);
@@ -212,7 +212,7 @@ namespace Ferretto.Common.Controls.Services
     }
     private ViewModelBind GetViewModdelBind(string fullViewName)
     {
-      if (!this.registrations.ContainsKey(fullViewName))
+      if (this.registrations.ContainsKey(fullViewName) == false)
       {
         return null;
       }
@@ -239,7 +239,7 @@ namespace Ferretto.Common.Controls.Services
         return false;
       }
 
-      if (!viewModelName.EndsWith(Configuration.Common.VIEWMODEL_SUFIX, System.StringComparison.InvariantCulture))
+      if (viewModelName.EndsWith(Configuration.Common.VIEWMODEL_SUFFIX, System.StringComparison.InvariantCulture) == false)
       {
         return false;
       }
@@ -286,11 +286,11 @@ namespace Ferretto.Common.Controls.Services
       return g.Replace(viewModelName, string.Empty);      
     }
 
-    static Regex g = new Regex($"{Common.Configuration.Common.VIEWMODEL_SUFIX}$", RegexOptions.Compiled);
+    static Regex g = new Regex($"{Common.Configuration.Common.VIEWMODEL_SUFFIX}$", RegexOptions.Compiled);
 
     private static string GetViewName(string module, string regionName)
     {
-      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Configuration.Common.MODEL_SUFIX}";
+      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Configuration.Common.MODEL_SUFFIX}";
     }
 
     private void LoadModule(string moduleName)
