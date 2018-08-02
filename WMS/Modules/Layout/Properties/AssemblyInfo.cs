@@ -19,6 +19,9 @@ using System.Runtime.InteropServices;
 // COM, impostare su true l'attributo ComVisible per tale tipo.
 [assembly: ComVisible(false)]
 
+// Assembly marked as CLS Compliant because it exposes externally visible types.
+[assembly: System.CLSCompliant(true)]
+
 // Se il progetto viene esposto a COM, il GUID seguente verrà utilizzato come ID della libreria dei tipi
 [assembly: Guid("965f447e-a8a3-42fa-9edb-e90f677437ae")]
 
