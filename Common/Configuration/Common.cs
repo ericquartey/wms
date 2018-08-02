@@ -2,9 +2,9 @@
 {
   static public class Common
   {
-    public const string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.WMS.Modules";
-    public const string VIEWMODEL_SUFIX = "ViewModel";
-    public const string VIEW_SUFIX = "View";
-    public const string MODEL_SUFIX = "Model";        
+    public static readonly string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.WMS.Modules";
+    public static readonly string VIEWMODEL_SUFIX = "ViewModel";
+    public static readonly string VIEW_SUFIX = "View";
+    public static readonly string MODEL_SUFIX = "Model";        
   }
 }

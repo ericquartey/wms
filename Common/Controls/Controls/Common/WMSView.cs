@@ -7,7 +7,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-  public partial class WMSView : UserControl, INavigableView
+  public class WMSView : UserControl, INavigableView
   {
     #region Fields
     private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
@@ -20,35 +20,35 @@ namespace Ferretto.Common.Controls
     #endregion
 
     #region Ctor
-    public WMSView()
+    protected WMSView()
     {      
-      this.Loaded += WMSView_Loaded;
+      this.Loaded += this.WMSView_Loaded;
     }
     #endregion
 
     #region Event
     private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
     {
-      if (this.IsWrongDataContext() == false)
+      if (!this.IsWrongDataContext())
       {
         return;
       }
 
-      if (string.IsNullOrEmpty(this.MapId) == false)
+      if (!string.IsNullOrEmpty(this.MapId))
       {
         // Is Main WMSView registered
-        this.DataContext = navigationService.GetViewModelByMapId(this.MapId);
+        this.DataContext = this.navigationService.GetViewModelByMapId(this.MapId);
       }
       
       else if (this.IsChildOfMainView())
       {
         // Is children of WMSView       
-        this.DataContext = navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());        
+        this.DataContext = this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());        
       }
       else
       {
         // Stand alone case
-        this.DataContext = navigationService.GetViewModelByName(this.GetAttachedViewModel());
+        this.DataContext = this.navigationService.GetViewModelByName(this.GetAttachedViewModel());
       }
 
       ((INavigableViewModel)this.DataContext)?.OnAppear();
@@ -79,7 +79,7 @@ namespace Ferretto.Common.Controls
         return true;
       }
       var dataContextName = this.DataContext.GetType().ToString();      
-      return (GetAttachedViewModel().Equals(dataContextName) == false);
+      return (!GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture));
     }
 
     private string GetAttachedViewModel()

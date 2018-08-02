@@ -6,10 +6,10 @@
                                                  where TItemsView : INavigableView;
     INavigableViewModel RegisterAndGetViewModel(string viewName, string token);
     INavigableViewModel GetViewModelByName(string viewModelName);
-    INavigableViewModel GetViewModelByMapId(string viewModelName);
+    INavigableViewModel GetViewModelByMapId(string mapId);
     void Appear<TViewModel>();
-    void Appear(string module, string viewModel);
+    void Appear(string module, string viewModelName);
     void Disappear<TViewModel>();
-    void Disappear(string module, string viewModel);
+    void Disappear(string module, string viewModelName);
   }
 }

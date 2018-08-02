@@ -4,6 +4,7 @@
   <Words>
     <Recognized>
       <Word>Ferretto</Word>
+      <Word>FiFo</Word>
     </Recognized>
   </Words>
   
@@ -12,7 +13,6 @@
       <Acronym>WMS</Acronym>
       <Acronym>DAL</Acronym>
       <Acronym>BLL</Acronym>
-      <Acronym>FiFo</Acronym>
     </CasingExceptions>
   </Acronyms>
   

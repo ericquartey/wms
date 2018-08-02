@@ -1,8 +1,7 @@
 ﻿using DevExpress.Xpf.Core;
-using Ferretto.Common.Configuration;
+using Ferretto.Common.Configuration.Modules;
 using Prism.Modularity;
 using Prism.Regions;
-using System.Windows;
 
 namespace Ferretto.WMS.App
 {
@@ -24,10 +23,10 @@ namespace Ferretto.WMS.App
 
       // Load dependency modyles
       // TODO this needs to be removed when we will be loading modules dynamically
-      this.moduleManager.LoadModule(nameof(Modules.Catalog));
+      this.moduleManager.LoadModule(nameof(Catalog));
 
       // Load the root module of the application
-      this.moduleManager.LoadModule(nameof(Modules.Layout));
+      this.moduleManager.LoadModule(nameof(Layout));
    
     }
   }

@@ -1,21 +1,22 @@
-﻿using System;
+﻿/*
+ * Copyright (c) FerrettoGroup. All Rights Reserved.
+ */
+using System;
 
-namespace Ferretto.Common.Configuration
+namespace Ferretto.Common.Configuration.Modules
 {
-  static public class Modules
-  {
-    static public class Catalog
+    public static class Catalog
     {
-      public const string ItemsAndDetails = "ItemsAndDetails";
-      public const string Items = "Items";
-      public const string ItemDetails = "ItemDetails";
+      public static readonly string ItemsAndDetails = "ItemsAndDetails";
+      public static readonly string Items = "Items";
+      public static readonly string ItemDetails = "ItemDetails";
     }
 
-    static public class Layout
+    public static class Layout
     {
-      public const string MainContent = "MainContent";
-      public const string MenuOutlook = "MenuOutlook";
-      public const string Menu = "Menu";
+      public static readonly string MainContent = "MainContent";
+      public static readonly string MenuOutlook = "MenuOutlook";
+      public static readonly string Menu = "Menu";
     }
 
     static public class DataAccess
@@ -26,5 +27,4 @@ namespace Ferretto.Common.Configuration
     static public class BusinessLogic
     {
     }
-  }
 }
