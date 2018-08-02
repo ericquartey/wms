@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Classe Dimensione Udc
-  public partial class LoadingUnitSizeClass
+  public sealed class LoadingUnitSizeClass
   {
     public int Id { get; set; }
     public string Description { get; set; }
@@ -14,6 +14,6 @@ namespace Ferretto.Common.Models
     public int? BayForksUnthread { get; set; }
     public int? CellForksUnthread { get; set; }
 
-    public List<LoadingUnitType> LoadingUnitTypes { get; set; }
+    public IEnumerable<LoadingUnitType> LoadingUnitTypes { get; set; }
   }
 }

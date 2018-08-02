@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Articolo-Area
-  public partial class ItemArea
+  public sealed class ItemArea
   {
     public int ItemId { get; set; }
     public int AreaId { get; set; }

@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Configurazione Cella - Posizione in Cella - Tipo Udc
-  public partial class CellConfigurationCellPositionLoadingUnitType
+  public sealed class CellConfigurationCellPositionLoadingUnitType
   {
     public int CellPositionId { get; set; }
     public int CellConfigurationId { get; set; }

@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Totali Celle
-  public partial class CellTotal
+  public sealed class CellTotal
   {
     public int Id { get; set; }
     public int AisleId { get; set; }

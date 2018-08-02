@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Corridoio
-  public partial class Aisle
+  public sealed class Aisle
   {
     public int Id { get; set; }
     public string Name { get; set; }
@@ -13,10 +13,10 @@ namespace Ferretto.Common.Models
 
     public Area Area { get; set; }
 
-    public List<Cell> Cells { get; set; }
-    public List<CellTypeAisle> AisleCellsTypes { get; set; }
-    public List<LoadingUnitTypeAisle> AisleLoadingUnitTypes { get; set; }
-    public List<CellTotal> CellTotals { get; set; }
-    public List<CellsGroup> CellsGroups { get; set; }
+    public IEnumerable<Cell> Cells { get; set; }
+    public IEnumerable<CellTypeAisle> AisleCellsTypes { get; set; }
+    public IEnumerable<LoadingUnitTypeAisle> AisleLoadingUnitTypes { get; set; }
+    public IEnumerable<CellTotal> CellTotals { get; set; }
+    public IEnumerable<CellsGroup> CellsGroups { get; set; }
   }
 }

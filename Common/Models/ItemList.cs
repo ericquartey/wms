@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Ferretto.Common.Models
 {
   // Lista Articoli
-  public partial class ItemList
+  public sealed class ItemList
   {
     public int Id { get; set; }
     public string Code { get; set; }
@@ -28,6 +28,6 @@ namespace Ferretto.Common.Models
     public ItemListStatus ItemListStatus { get; set; }
     public Area Area { get; set; }
 
-    public List<ItemListRow> ItemListRows { get; set; }
+    public IEnumerable<ItemListRow> ItemListRows { get; set; }
   }
 }
