@@ -21,10 +21,6 @@ namespace Ferretto.WMS.App
       this.moduleManager = moduleManager;
       this.regionManager = regionManager;
 
-      // Load dependency modyles
-      // TODO this needs to be removed when we will be loading modules dynamically
-      this.moduleManager.LoadModule(nameof(Catalog));
-
       // Load the root module of the application
       this.moduleManager.LoadModule(nameof(Layout));
    

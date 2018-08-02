@@ -1,11 +1,8 @@
-﻿using System.Windows.Controls;
+﻿using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  /// <summary>
-  /// Interaction logic for LayoutView.xaml
-  /// </summary>
-  public partial class LayoutView : UserControl
+  public partial class LayoutView : WMSView
   {
     public LayoutView()
     {

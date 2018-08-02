@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
@@ -39,16 +38,9 @@ namespace Ferretto.Common.Controls
         // Is Main WMSView registered
         this.DataContext = this.navigationService.GetViewModelByMapId(this.MapId);
       }
-      
-      else if (this.IsChildOfMainView())
-      {
-        // Is children of WMSView       
-        this.DataContext = this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());        
-      }
       else
       {
-        // Stand alone case
-        this.DataContext = this.navigationService.GetViewModelByName(this.GetAttachedViewModel());
+        this.DataContext = this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());
       }
 
       ((INavigableViewModel)this.DataContext)?.OnAppear();
@@ -57,10 +49,6 @@ namespace Ferretto.Common.Controls
     #endregion
 
     #region Methods
-    private bool IsChildOfMainView()
-    {      
-      return (LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WMSView) != null);     
-    }
     private string GetMainViewToken()
     {
       string token = null;

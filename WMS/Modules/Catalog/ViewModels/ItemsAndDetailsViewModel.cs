@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Models;
-using Prism.Mvvm;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  class ItemsAndDetailsViewModel: BindableBase
+  class ItemsAndDetailsViewModel: BaseViewModel
   {
     private readonly IItemsService itemsService;
     

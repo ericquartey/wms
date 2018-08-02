@@ -1,15 +1,14 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using System.Windows.Media;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Events;
-using Prism.Mvvm;
-using System;
-using System.Windows.Media;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  public class ItemDetailsViewModel : BindableBase, IItemDetailsViewModel
+  public class ItemDetailsViewModel : BaseViewModel
   {
     private readonly IImageService imageService;
 
