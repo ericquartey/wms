@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.ServiceLocation;
+﻿using Ferretto.Common.Controls.Interfaces;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -13,20 +14,20 @@ namespace Ferretto.WMS.Modules.Catalog
 
     public IUnityContainer Container { get; private set; }
     public IRegionManager RegionManager { get; private set; }
+    private INavigationService navigationService;
 
-    public Module(IUnityContainer container, IRegionManager regionManager)
+    public Module(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
     {
       this.Container = container;
       this.RegionManager = regionManager;
+      this.navigationService = navigationService;
     }
 
     public void Initialize()
-    {
-      this.Container.RegisterType<IItemDetailsViewModel, ItemDetailsViewModel>();
-      this.Container.RegisterType<IItemViewModel, ItemViewModel>();            
-      var regionManager = ServiceLocator.Current.GetInstance<IRegionManager>();            
-      regionManager.RegisterViewWithRegion($"{nameof(Common.Configuration.Modules.Catalog)}.{nameof(Common.Configuration.Modules.Catalog.ItemDetails)}", typeof(ItemDetailsView));
-      regionManager.RegisterViewWithRegion($"{nameof(Common.Configuration.Modules.Catalog)}.{nameof(Common.Configuration.Modules.Catalog.Items)}", typeof(ItemsView));
+    {      
+      this.navigationService.Register<ItemsView, ItemsViewModel>();
+      this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
+      this.navigationService.Register<ItemsAndDetailsView, ItemsAndDetailsViewModel>();
     }
 
     #endregion
