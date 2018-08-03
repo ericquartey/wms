@@ -44,6 +44,8 @@
     <Compile Include="AbcClass.cs" />
     <Compile Include="Aisle.cs" />
     <Compile Include="Area.cs" />
+    <Compile Include="Bay.cs" />
+    <Compile Include="BayType.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="CellConfiguration.cs" />
     <Compile Include="CellConfigurationCellPositionLoadingUnitType.cs" />
@@ -78,8 +80,13 @@
     <Compile Include="LoadingUnitType.cs" />
     <Compile Include="LoadingUnitTypeAisle.cs" />
     <Compile Include="LoadingUnitWeightClass.cs" />
+    <Compile Include="Machine.cs" />
+    <Compile Include="MachineType.cs" />
     <Compile Include="MaterialStatus.cs" />
     <Compile Include="MeasureUnit.cs" />
+    <Compile Include="Mission.cs" />
+    <Compile Include="MissionStatus.cs" />
+    <Compile Include="MissionType.cs" />
     <Compile Include="PackageType.cs" />
     <Compile Include="Pairing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

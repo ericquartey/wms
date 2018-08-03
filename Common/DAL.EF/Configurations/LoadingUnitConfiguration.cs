@@ -18,9 +18,11 @@ namespace Ferretto.Common.DAL.EF.Configurations
       builder.HasIndex(l => l.Code).IsUnique();
 
       builder.Property(l => l.Code).IsRequired();
-      builder.Property(l => l.Class)
+      builder.Property(l => l.ClassId).IsRequired()
           .HasColumnType("char(1)");
       builder.Property(l => l.Reference).IsRequired()
+          .HasColumnType("char(1)");
+      builder.Property(l => l.LoadingUnitStatusId).IsRequired()
           .HasColumnType("char(1)");
       builder.Property(l => l.Note)
           .HasColumnType("text");
@@ -33,6 +35,10 @@ namespace Ferretto.Common.DAL.EF.Configurations
       builder.Property(l => l.OtherCycleCount)
           .HasDefaultValue(0);
 
+      builder.HasOne(l => l.AbcClass)
+        .WithMany(a => a.LoadingUnits)
+        .HasForeignKey(l => l.ClassId)
+        .OnDelete(DeleteBehavior.ClientSetNull);
       builder.HasOne(l => l.Cell)
           .WithMany(c => c.LoadingUnits)
           .HasForeignKey(l => l.CellId)

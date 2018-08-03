@@ -19,13 +19,17 @@ namespace Ferretto.Common.DAL.EF.Configurations
       builder.HasIndex(i => i.Code).IsUnique();
 
       builder.Property(i => i.Code).IsRequired();
-      builder.Property(i => i.Class)
+      builder.Property(i => i.ClassId).IsRequired()
           .HasColumnType("char(1)");
       builder.Property(i => i.Note)
           .HasColumnType("text");
       builder.Property(i => i.CreationDate)
           .HasDefaultValueSql("GETDATE()");
 
+      builder.HasOne(i => i.AbcClass)
+        .WithMany(a => a.Items)
+        .HasForeignKey(i => i.ClassId)
+        .OnDelete(DeleteBehavior.ClientSetNull);
       builder.HasOne(i => i.MeasureUnit)
           .WithMany(m => m.Items)
           .HasForeignKey(i => i.MeasureUnitId)
