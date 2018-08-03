@@ -5,7 +5,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  public class MenuViewModel : BaseViewModel
+  public class MenuViewModel : BaseNavigationViewModel
   {
     private ICommand cmdItem;
     public ICommand CmdItem
