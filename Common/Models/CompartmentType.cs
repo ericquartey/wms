@@ -10,7 +10,7 @@ namespace Ferretto.Common.Models
     public int? Width { get; set; }
     public int? Height { get; set; }
 
-    public List<Compartment> Compartments { get; set; }
-    public List<DefaultCompartment> DefaultCompartments { get; set; }
+    public IEnumerable<Compartment> Compartments { get; set; }
+    public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }
   }
 }

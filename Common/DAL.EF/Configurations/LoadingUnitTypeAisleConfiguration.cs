@@ -8,6 +8,11 @@ namespace Ferretto.Common.DAL.EF.Configurations
   {
     public void Configure(EntityTypeBuilder<LoadingUnitTypeAisle> builder)
     {
+      if (builder == null)
+      {
+        throw new System.ArgumentNullException(nameof(builder));
+      }
+
       builder.HasKey(l => new { l.AisleId, l.LoadingUnitTypeId });
 
       builder.HasOne(l => l.Aisle)

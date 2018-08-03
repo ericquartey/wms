@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.DAL.EF
 {
+  [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Major Code Smell",
+    "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+    Justification = "Class Designed as part of the Entity Framework")]
   public partial class DbContext : Microsoft.EntityFrameworkCore.DbContext
   {
     public virtual DbSet<AbcClass> AbcClasses { get; set; }
@@ -57,6 +61,11 @@ namespace Ferretto.Common.DAL.EF
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+      if (optionsBuilder == null)
+      {
+        throw new System.ArgumentNullException(nameof(optionsBuilder));
+      }
+
       if (!optionsBuilder.IsConfigured)
       {
         optionsBuilder.UseSqlServer(
@@ -65,8 +74,17 @@ namespace Ferretto.Common.DAL.EF
       }
     }
 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+      "Major Code Smell",
+      "CA1506",
+      Justification = "Class Designed as part of the Entity Framework")]
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+      if (modelBuilder == null)
+      {
+        throw new System.ArgumentNullException(nameof(modelBuilder));
+      }
+
       modelBuilder.ApplyConfiguration(new AbcClassConfiguration());
       modelBuilder.ApplyConfiguration(new AisleConfiguration());
       modelBuilder.ApplyConfiguration(new AreaConfiguration());

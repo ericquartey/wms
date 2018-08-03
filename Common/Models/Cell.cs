@@ -24,10 +24,10 @@ namespace Ferretto.Common.Models
     public CellStatus CellStatus { get; set; }
     public CellType CellType { get; set; }
 
-    public List<LoadingUnit> LoadingUnits { get; set; }
-    public List<CellsGroup> FirstCellsGroups { get; set; }
-    public List<CellsGroup> LastCellsGroups { get; set; }
-    public List<Mission> SourceMissions { get; set; }
-    public List<Mission> DestinationMissions { get; set; }
+    public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
+    public IEnumerable<CellsGroup> FirstCellsGroups { get; set; }
+    public IEnumerable<CellsGroup> LastCellsGroups { get; set; }
+    public IEnumerable<Mission> SourceMissions { get; set; }
+    public IEnumerable<Mission> DestinationMissions { get; set; }
   }
 }

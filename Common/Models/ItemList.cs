@@ -28,7 +28,7 @@ namespace Ferretto.Common.Models
     public ItemListStatus ItemListStatus { get; set; }
     public Area Area { get; set; }
 
-    public List<ItemListRow> ItemListRows { get; set; }
-    public List<Mission> Missions { get; set; }
+    public IEnumerable<ItemListRow> ItemListRows { get; set; }
+    public IEnumerable<Mission> Missions { get; set; }
   }
 }

@@ -34,7 +34,7 @@ namespace Ferretto.Common.Models
     public LoadingUnitType LoadingUnitType { get; set; }
     public LoadingUnitStatus LoadingUnitStatus { get; set; }
 
-    public List<Compartment> Compartments { get; set; }
-    public List<Mission> Missions { get; set; }
+    public IEnumerable<Compartment> Compartments { get; set; }
+    public IEnumerable<Mission> Missions { get; set; }
   }
 }

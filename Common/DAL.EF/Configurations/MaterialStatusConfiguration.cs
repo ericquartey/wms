@@ -8,6 +8,11 @@ namespace Ferretto.Common.DAL.EF.Configurations
   {
     public void Configure(EntityTypeBuilder<MaterialStatus> builder)
     {
+      if (builder == null)
+      {
+        throw new System.ArgumentNullException(nameof(builder));
+      }
+
       builder.HasKey(m => m.Id);
 
       builder.Property(m => m.Description).IsRequired();

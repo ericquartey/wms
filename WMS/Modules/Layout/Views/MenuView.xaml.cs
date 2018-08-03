@@ -1,15 +1,14 @@
-﻿using System.Windows.Controls;
+﻿using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  /// <summary>
-  /// Logica di interazione per MenuView.xaml
-  /// </summary>
-  public partial class MenuView : UserControl
+  public partial class MenuView : WMSView
   {
+    
     public MenuView()
     {
       InitializeComponent();
+
     }
   }
 }

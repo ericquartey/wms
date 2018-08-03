@@ -13,6 +13,6 @@ namespace Ferretto.Common.Models
 
     public LoadingUnitType LoadingUnitType { get; set; }
 
-    public List<DefaultCompartment> DefaultCompartments { get; set; }
+    public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }
   }
 }

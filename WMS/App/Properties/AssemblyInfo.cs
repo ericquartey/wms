@@ -21,6 +21,9 @@ using System.Windows;
 // COM, impostare su true l'attributo ComVisible per tale tipo.
 [assembly: ComVisible(false)]
 
+// Assembly marked as CLS Compliant because it exposes externally visible types.
+[assembly: System.CLSCompliant(true)]
+
 //Per iniziare a creare applicazioni localizzabili, impostare
 //<UICulture>CultureYouAreCodingWith</UICulture> nel file .csproj
 //all'interno di un <PropertyGroup>.  Ad esempio, se si utilizza l'inglese (Stati Uniti)

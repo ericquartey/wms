@@ -8,6 +8,6 @@ namespace Ferretto.Common.Models
     public int Id { get; set; }
     public string Description { get; set; }
 
-    public List<Compartment> Compartments { get; set; }
+    public IEnumerable<Compartment> Compartments { get; set; }
   }
 }

@@ -8,6 +8,11 @@ namespace Ferretto.Common.DAL.EF.Configurations
   {
     public void Configure(EntityTypeBuilder<ItemListRow> builder)
     {
+      if (builder == null)
+      {
+        throw new System.ArgumentNullException(nameof(builder));
+      }
+
       builder.HasKey(i => i.Id);
 
       builder.HasIndex(i => i.Code).IsUnique();

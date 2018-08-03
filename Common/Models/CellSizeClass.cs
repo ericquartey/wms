@@ -10,6 +10,6 @@ namespace Ferretto.Common.Models
     public int Width { get; set; }
     public int Length { get; set; }
 
-    public List<CellType> CellTypes { get; set; }
+    public IEnumerable<CellType> CellTypes { get; set; }
   }
 }

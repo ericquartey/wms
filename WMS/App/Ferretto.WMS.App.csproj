@@ -24,6 +24,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -76,7 +77,7 @@
     </Reference>
     <Reference Include="DevExpress.Xpf.Ribbon.v18.1">
       <HintPath>..\..\libraries\DevExpresss18.1.4\Bin\Framework\DevExpress.Xpf.Ribbon.v18.1.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpf.Themes.Office2016White.v18.1">
       <HintPath>..\.\libraries\DevExpress.18.1.4\DevExpress.Xpf.Themes.Office2016White.v18.1.dll</HintPath>
@@ -197,6 +198,11 @@
       <Project>{9377dbc4-ed82-46d9-90b1-9f7df787e5e1}</Project>
       <Name>Ferretto.WMS.Themes</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">
+      <Link>Properties\CustomDictionary.xml</Link>
+    </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

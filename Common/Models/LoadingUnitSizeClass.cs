@@ -14,6 +14,6 @@ namespace Ferretto.Common.Models
     public int? BayForksUnthread { get; set; }
     public int? CellForksUnthread { get; set; }
 
-    public List<LoadingUnitType> LoadingUnitTypes { get; set; }
+    public IEnumerable<LoadingUnitType> LoadingUnitTypes { get; set; }
   }
 }

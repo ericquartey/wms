@@ -11,7 +11,7 @@ namespace Ferretto.Common.Models
     public int? ZOffset { get; set; }
     public string Description { get; set; }
 
-    public List<LoadingUnit> LoadingUnits { get; set; }
-    public List<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes { get; set; }
+    public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
+    public IEnumerable<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes { get; set; }
   }
 }

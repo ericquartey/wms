@@ -8,9 +8,9 @@ namespace Ferretto.Common.Models
     public int Id { get; set; }
     public string Name { get; set; }
 
-    public List<LoadingUnitRange> LoadingUnitRanges { get; set; }
-    public List<Aisle> Aisles { get; set; }
-    public List<ItemArea> AreaItems { get; set; }
-    public List<ItemList> ItemLists { get; set; }
+    public IEnumerable<LoadingUnitRange> LoadingUnitRanges { get; set; }
+    public IEnumerable<Aisle> Aisles { get; set; }
+    public IEnumerable<ItemArea> AreaItems { get; set; }
+    public IEnumerable<ItemList> ItemLists { get; set; }
   }
 }

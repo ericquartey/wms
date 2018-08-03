@@ -10,6 +10,6 @@ namespace Ferretto.Common.Models
     public int MinHeight { get; set; }
     public int MaxHeight { get; set; }
 
-    public List<CellType> CellTypes { get; set; }
+    public IEnumerable<CellType> CellTypes { get; set; }
   }
 }

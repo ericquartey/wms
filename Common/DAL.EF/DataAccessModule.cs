@@ -10,18 +10,20 @@ using System.Threading.Tasks;
 namespace Ferretto.Common.DAL.EF
 {
   [Module(ModuleName = nameof(Configuration.Modules.DataAccess))]
-  public class Module : IModule
+  public class DataAccessModule : IModule
   {
     public IUnityContainer Container { get; private set; }
 
-    public Module(IUnityContainer container)
+    public DataAccessModule(IUnityContainer container)
     {
-      Container = container;
+      this.Container = container;
     }
 
     public void Initialize()
     {
-      Container.RegisterType<Interfaces.IItemsRepository, ItemsRepository>();
+      this.Container.RegisterType<Interfaces.IUnitOfWork, UnitOfWork>();
+      this.Container.RegisterType<Interfaces.IItemsRepository, ItemsRepository>();
+      this.Container.RegisterType<Interfaces.IImageRepository, ImageFileRepository>();
     }
   }
 }

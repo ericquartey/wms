@@ -8,7 +8,7 @@ namespace Ferretto.Common.Models
     public int Id { get; set; }
     public string Description { get; set; }
 
-    public List<Cell> Cells { get; set; }
-    public List<CellTotal> CellTotals { get; set; }
+    public IEnumerable<Cell> Cells { get; set; }
+    public IEnumerable<CellTotal> CellTotals { get; set; }
   }
 }
