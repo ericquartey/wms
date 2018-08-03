@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Configuration
+﻿namespace Ferretto.Common.Utils
 {
   public static class Common
   {

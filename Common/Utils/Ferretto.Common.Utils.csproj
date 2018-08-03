@@ -7,8 +7,8 @@
     <ProjectGuid>{C361D00D-E5D7-4FBD-ADEC-B965C34FFDD7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ferretto.Common.Configuration</RootNamespace>
-    <AssemblyName>Ferretto.Common.Configuration</AssemblyName>
+    <RootNamespace>Ferretto.Common.Utils</RootNamespace>
+    <AssemblyName>Ferretto.Common.Utils</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

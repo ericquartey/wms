@@ -4,8 +4,8 @@ using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-  [Module(ModuleName = nameof(Configuration.Modules.BusinessLogic))]
-  [ModuleDependency(nameof(Configuration.Modules.DataAccess))]
+  [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
+  [ModuleDependency(nameof(Utils.Modules.DataAccess))]
   public class BusinessLogicModule : IModule
   {
     public IUnityContainer Container { get; private set; }

@@ -1,9 +1,6 @@
-﻿/*
- * Copyright (c) FerrettoGroup. All Rights Reserved.
- */
-using System;
+﻿using System;
 
-namespace Ferretto.Common.Configuration.Modules
+namespace Ferretto.Common.Utils.Modules
 {
     public static class Catalog
     {
@@ -21,7 +18,7 @@ namespace Ferretto.Common.Configuration.Modules
 
     static public class DataAccess
     {
-     
+
     }
 
     static public class BusinessLogic

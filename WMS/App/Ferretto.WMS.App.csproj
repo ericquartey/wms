@@ -190,9 +190,9 @@
       <Project>{650c48cd-255c-4ae6-b3b0-7c4a06550c66}</Project>
       <Name>Ferretto.Common.DAL.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\Configuration\Ferretto.Common.Configuration.csproj">
+    <ProjectReference Include="..\..\Common\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
-      <Name>Ferretto.Common.Configuration</Name>
+      <Name>Ferretto.Common.Utils</Name>
     </ProjectReference>
     <ProjectReference Include="..\Themes\Ferretto.WMS.Themes.csproj">
       <Project>{9377dbc4-ed82-46d9-90b1-9f7df787e5e1}</Project>

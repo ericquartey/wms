@@ -4,7 +4,7 @@ using Ferretto.Common.DAL.Interfaces;
 
 namespace Ferretto.Common.Modules.DAL.EF
 {
-  [Module(ModuleName = nameof(Configuration.Modules.DataAccess))]
+  [Module(ModuleName = nameof(Utils.Modules.DataAccess))]
   public class DataAccessModule : IModule
   {
     public IUnityContainer Container { get; private set; }

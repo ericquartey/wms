@@ -43,11 +43,11 @@ namespace Ferretto.Common.Controls.Services
 
     public void Appear(string module, string viewModelName)
     {
-      
+
         if (IsViewModelNameValid(viewModelName) == false)
         {
           return;
-        }        
+        }
 
         this.LoadModule(module);
 
@@ -64,7 +64,7 @@ namespace Ferretto.Common.Controls.Services
     private string CheckAddRegion(string moduleViewName)
     {
       var viewModelBind = this.GetViewModdelBind(moduleViewName);
-      var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";      
+      var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";
       if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
       {
         // Map Prism region to current layout
@@ -78,17 +78,17 @@ namespace Ferretto.Common.Controls.Services
         // View state is not chaaged, activate this id
         instanceModuleViewName = $"{moduleViewName}.{idStateNotChanged}";
       }
-      else 
+      else
       {
         // View state is changed, register new instance of same view type
         var newRegId = viewModelBind.GetNewId();
         instanceModuleViewName = $"{moduleViewName}.{newRegId}";
         this.container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, instanceModuleViewName);
         this.container.RegisterType(typeof(INavigableView), viewModelBind.View, instanceModuleViewName);
-        // Map cloned type to current layout          
-        this.AddToregion(instanceModuleViewName);       
+        // Map cloned type to current layout
+        this.AddToregion(instanceModuleViewName);
       }
-   
+
       return instanceModuleViewName;
     }
     #endregion
@@ -131,12 +131,12 @@ namespace Ferretto.Common.Controls.Services
         throw new NotSupportedException("Disappear need to be implemented");
 
         // Get corrent mapid
-        var moduleRegionName = $"{module}.{regionName}.1";        
+        var moduleRegionName = $"{module}.{regionName}.1";
         if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
         {
           return;
-        }   
-         
+        }
+
         var region = this.regionManager.Regions[moduleRegionName];
         var viewToRemove = region.GetView(moduleViewName);
         if (viewToRemove != null)
@@ -239,7 +239,7 @@ namespace Ferretto.Common.Controls.Services
         return false;
       }
 
-      if (viewModelName.EndsWith(Configuration.Common.VIEWMODEL_SUFFIX, System.StringComparison.InvariantCulture) == false)
+      if (viewModelName.EndsWith(Utils.Common.VIEWMODEL_SUFFIX, System.StringComparison.InvariantCulture) == false)
       {
         return false;
       }
@@ -252,7 +252,7 @@ namespace Ferretto.Common.Controls.Services
       var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
       registeredView.Token = moduleViewName;
       registeredView.MapId = moduleViewName;
-      WMSMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);      
+      WMSMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);
       this.regionManager.AddToRegion(moduleViewName, registeredView);
     }
 
@@ -270,7 +270,7 @@ namespace Ferretto.Common.Controls.Services
 
     private static  (string module, string viewModelName) GetViewModelNameSplitted(string viewModelName)
     {
-      var vm = viewModelName.Replace($"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.", "");
+      var vm = viewModelName.Replace($"{Utils.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.", "");
       var vmSplit = vm.Split('.');
       return (vmSplit[0], vmSplit[1]);
     }
@@ -283,14 +283,14 @@ namespace Ferretto.Common.Controls.Services
 
     private static string GetName(string viewModelName)
     {
-      return g.Replace(viewModelName, string.Empty);      
+      return g.Replace(viewModelName, string.Empty);
     }
 
-    static Regex g = new Regex($"{Common.Configuration.Common.VIEWMODEL_SUFFIX}$", RegexOptions.Compiled);
+    static Regex g = new Regex($"{Common.Utils.Common.VIEWMODEL_SUFFIX}$", RegexOptions.Compiled);
 
     private static string GetViewName(string module, string regionName)
     {
-      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Configuration.Common.VIEW_SUFFIX}";
+      return $"{Utils.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Utils.Common.VIEW_SUFFIX}";
     }
 
     private void LoadModule(string moduleName)

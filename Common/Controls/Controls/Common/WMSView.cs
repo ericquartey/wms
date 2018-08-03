@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
 
     #region Ctor
     protected WMSView()
-    {      
+    {
       this.Loaded += this.WMSView_Loaded;
     }
     #endregion
@@ -44,7 +44,7 @@ namespace Ferretto.Common.Controls
       }
 
       ((INavigableViewModel)this.DataContext)?.OnAppear();
-     
+
     }
     #endregion
 
@@ -59,7 +59,7 @@ namespace Ferretto.Common.Controls
       }
       return token;
     }
-    
+
     private bool IsWrongDataContext()
     {
       if (this.DataContext == null)
@@ -67,13 +67,13 @@ namespace Ferretto.Common.Controls
         return true;
       }
 
-      var dataContextName = this.DataContext.GetType().ToString();      
+      var dataContextName = this.DataContext.GetType().ToString();
       return !GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
     }
 
     private string GetAttachedViewModel()
     {
-      return $"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFFIX}";
+      return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
     }
     #endregion
   }
