@@ -6,7 +6,7 @@ using Ferretto.Common.Models;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  class ItemsAndDetailsViewModel: BaseViewModel
+  class ItemsAndDetailsViewModel: BaseNavigationViewModel
   {
     private readonly IItemsService itemsService;
     

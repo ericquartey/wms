@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  public class ItemsViewModel : BaseViewModel
+  public class ItemsViewModel : BaseNavigationViewModel
   {
     private IEnumerable<object> items;
     public IEnumerable<object> Items
