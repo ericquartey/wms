@@ -8,7 +8,7 @@ namespace Ferretto.Common.Controls
     public string StateId { get; set; }
     public string Token { get; set; }
 
-    protected BaseViewModel()
+    protected BaseNavigationViewModel()
     {
 
     }
