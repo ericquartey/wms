@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Riga di Lista Articoli
-  public partial class ItemListRow
+  public sealed class ItemListRow
   {
     public int Id { get; set; }
     public int ItemListId { get; set; }

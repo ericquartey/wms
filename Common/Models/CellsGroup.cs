@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Gruppi celle
-  public partial class CellsGroup
+  public sealed class CellsGroup
   {
     public int Id { get; set; }
     public int AisleId { get; set; }

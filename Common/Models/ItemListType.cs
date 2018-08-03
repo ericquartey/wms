@@ -3,11 +3,11 @@
 namespace Ferretto.Common.Models
 {
   // Tipo Lista Articoli
-  public partial class ItemListType
+  public sealed class ItemListType
   {
     public int Id { get; set; }
     public string Description { get; set; }
 
-    public List<ItemList> ItemLists { get; set; }
+    public IEnumerable<ItemList> ItemLists { get; set; }
   }
 }

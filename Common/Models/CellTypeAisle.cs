@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Tipo Cella-Corridoio
-  public partial class CellTypeAisle
+  public sealed class CellTypeAisle
   {
     public int Id { get; set; }
     public int AisleId { get; set; }

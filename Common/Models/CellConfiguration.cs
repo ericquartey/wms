@@ -3,12 +3,12 @@
 namespace Ferretto.Common.Models
 {
   // Configurazione Cella
-  public partial class CellConfiguration
+  public sealed class CellConfiguration
   {
     public int Id { get; set; }
     public string Description { get; set; }
 
-    public List<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes { get; set; }
-    public List<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
+    public IEnumerable<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes { get; set; }
+    public IEnumerable<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
   }
 }

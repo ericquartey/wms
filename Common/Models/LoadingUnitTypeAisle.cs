@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Models
 {
   // Tipo Udc - Corridoio
-  public partial class LoadingUnitTypeAisle
+  public sealed class LoadingUnitTypeAisle
   {
     public int AisleId { get; set; }
     public int LoadingUnitTypeId { get; set; }

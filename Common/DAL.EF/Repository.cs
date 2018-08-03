@@ -49,7 +49,7 @@ namespace Ferretto.Common.DAL.EF
       this.unitOfWork.Context.Set<T>().Remove(entity);
     }
 
-    void IDisposable.Dispose()
+    public virtual void Dispose()
     {
       if (this.unitOfWork is IDisposable disposable)
       {
