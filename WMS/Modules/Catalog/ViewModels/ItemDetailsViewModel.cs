@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  public class ItemDetailsViewModel : BaseViewModel
+  public class ItemDetailsViewModel : BaseNavigationViewModel
   {
     private readonly IImageService imageService;
 

@@ -29,5 +29,6 @@ namespace Ferretto.Common.Models
     public Area Area { get; set; }
 
     public IEnumerable<ItemListRow> ItemListRows { get; set; }
+    public IEnumerable<Mission> Missions { get; set; }
   }
 }

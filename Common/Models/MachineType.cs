@@ -2,12 +2,12 @@
 
 namespace Ferretto.Common.Models
 {
-  // Stato Udc
-  public sealed class LoadingUnitStatus
+  // Tipo Macchina
+  public sealed class MachineType
   {
     public string Id { get; set; }
     public string Description { get; set; }
 
-    public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
+    public List<Machine> Machines { get; set; }
   }
 }

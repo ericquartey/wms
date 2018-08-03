@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.Common.Models
 {
@@ -42,5 +43,7 @@ namespace Ferretto.Common.Models
     public MaterialStatus MaterialStatus { get; set; }
     public PackageType PackageType { get; set; }
     public CompartmentStatus CompartmentStatus { get; set; }
+
+    public List<Mission> Missions { get; set; }
   }
 }

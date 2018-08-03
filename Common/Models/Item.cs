@@ -9,7 +9,7 @@ namespace Ferretto.Common.Models
     public int Id { get; set; }
     public string Code { get; set; }
     public string Description { get; set; }
-    public AbcClass? Class { get; set; }
+    public string ClassId { get; set; }
     public int? MeasureUnitId { get; set; }
     public int? Width { get; set; }
     public int? Length { get; set; }
@@ -31,11 +31,14 @@ namespace Ferretto.Common.Models
     public string Image { get; set; }
     public string Note { get; set; }
 
+    public AbcClass AbcClass { get; set; }
     public MeasureUnit MeasureUnit { get; set; }
     public ItemManagementType ItemManagementType { get; set; }
 
     public IEnumerable<Compartment> Compartments { get; set; }
     public IEnumerable<ItemArea> ItemAreas { get; set; }
     public IEnumerable<ItemListRow> ItemListRows { get; set; }
+
+    public IEnumerable<Mission> Missions { get; set; }
   }
 }

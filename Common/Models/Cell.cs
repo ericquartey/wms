@@ -16,9 +16,10 @@ namespace Ferretto.Common.Models
     public int? ZCoordinate { get; set; }
     public int Priority { get; set; }
     public int? CellTypeId { get; set; }
-    public AbcClass Class { get; set; }
+    public string ClassId { get; set; }
     public int CellStatusId { get; set; }
 
+    public AbcClass AbcClass { get; set; }
     public Aisle Aisle { get; set; }
     public CellStatus CellStatus { get; set; }
     public CellType CellType { get; set; }
@@ -26,5 +27,7 @@ namespace Ferretto.Common.Models
     public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
     public IEnumerable<CellsGroup> FirstCellsGroups { get; set; }
     public IEnumerable<CellsGroup> LastCellsGroups { get; set; }
+    public IEnumerable<Mission> SourceMissions { get; set; }
+    public IEnumerable<Mission> DestinationMissions { get; set; }
   }
 }

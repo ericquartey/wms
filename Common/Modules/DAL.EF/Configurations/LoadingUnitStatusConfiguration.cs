@@ -15,6 +15,7 @@ namespace Ferretto.Common.Modules.DAL.EF.Configurations
 
       builder.HasKey(l => l.Id);
 
+      builder.Property(l => l.Id).HasColumnType("char(1)");
       builder.Property(l => l.Description).IsRequired();
     }
   }

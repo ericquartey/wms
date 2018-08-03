@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  public class LayoutViewModel : BaseViewModel
+  public class LayoutViewModel : BaseNavigationViewModel
   {    
     #region Ctor
     public LayoutViewModel()
