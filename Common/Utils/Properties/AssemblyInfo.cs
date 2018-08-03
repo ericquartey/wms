@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Ferretto.Common.DAL.Interfaces")]
+[assembly: AssemblyTitle("Ferretto.Common.Utils")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("FerrettoGroup")]
-[assembly: AssemblyProduct("Ferretto.Common.DAL.Interfaces")]
+[assembly: AssemblyProduct("Ferretto.Common.Utils")]
 [assembly: AssemblyCopyright("Copyright © FerrettoGroup 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 [assembly: System.CLSCompliant(true)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("650c48cd-255c-4ae6-b3b0-7c4a06550c66")]
+[assembly: Guid("c361d00d-e5d7-4fbd-adec-b965c34ffdd7")]
 
 // Version information for an assembly consists of the following four values:
 //

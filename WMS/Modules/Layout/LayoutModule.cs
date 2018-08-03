@@ -7,8 +7,8 @@ using Prism.Regions;
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  [Module(ModuleName = nameof(Common.Configuration.Modules.Layout), OnDemand = true)]
-  [ModuleDependency(nameof(Common.Configuration.Modules.BusinessLogic))]
+  [Module(ModuleName = nameof(Common.Utils.Modules.Layout), OnDemand = true)]
+  [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
   public class LayoutModule : IModule
   {
     #region IModule Members
@@ -30,8 +30,8 @@ namespace Ferretto.WMS.Modules.Layout
       navigationService.Register<LayoutView, LayoutViewModel>();
       navigationService.Register<MenuView, MenuViewModel>();
 
-      this.RegionManager.RegisterViewWithRegion($"{nameof(Common.Configuration.Modules.Layout)}.{Common.Configuration.Modules.Layout.REGION_MAINCONTENT}", typeof(LayoutView));
-      this.RegionManager.RegisterViewWithRegion($"{nameof(Common.Configuration.Modules.Layout)}.{Common.Configuration.Modules.Layout.REGION_MENU}", typeof(MenuView));
+      this.RegionManager.RegisterViewWithRegion($"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}", typeof(LayoutView));
+      this.RegionManager.RegisterViewWithRegion($"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
     }
 
     #endregion 

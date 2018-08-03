@@ -6,8 +6,8 @@ using Prism.Regions;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  [Module(ModuleName = nameof(Common.Configuration.Modules.Catalog), OnDemand = true)]
-  [ModuleDependency(nameof(Common.Configuration.Modules.BusinessLogic))]
+  [Module(ModuleName = nameof(Common.Utils.Modules.Catalog), OnDemand = true)]
+  [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
   public class CatalogModule : IModule
   {
     #region IModule Members

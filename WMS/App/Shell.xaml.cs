@@ -1,5 +1,5 @@
 ﻿using DevExpress.Xpf.Core;
-using Ferretto.Common.Configuration.Modules;
+using Ferretto.Common.Utils.Modules;
 using Prism.Modularity;
 using Prism.Regions;
 
@@ -23,7 +23,7 @@ namespace Ferretto.WMS.App
 
       // Load the root module of the application
       this.moduleManager.LoadModule(nameof(Layout));
-   
+
     }
   }
 }

@@ -163,9 +163,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Configuration\Ferretto.Common.Configuration.csproj">
+    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
-      <Name>Ferretto.Common.Configuration</Name>
+      <Name>Ferretto.Common.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

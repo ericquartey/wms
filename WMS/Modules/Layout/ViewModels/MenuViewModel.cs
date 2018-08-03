@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Modules.Layout
     public ICommand CmdItem
     {
       get { return this.cmdItem ?? (this.cmdItem = new DelegateCommand(this.AppearItem)); }
-    }   
+    }
 
     INavigationService navigationService;
     public MenuViewModel(INavigationService navigationService)
@@ -20,8 +20,8 @@ namespace Ferretto.WMS.Modules.Layout
     }
 
     private void AppearItem()
-    {      
-      this.navigationService.Appear(nameof(Common.Configuration.Modules.Catalog), Common.Configuration.Modules.Catalog.ITEMSANDDETAILS);
+    {
+      this.navigationService.Appear(nameof(Common.Utils.Modules.Catalog), Common.Utils.Modules.Catalog.ITEMSANDDETAILS);
     }
   }
 }
