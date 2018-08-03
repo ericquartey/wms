@@ -18,9 +18,14 @@ namespace Ferretto.Common.BLL.Services
       GetEventBus<TEventArgs>()?.Publish(eventArgs);
     }
 
-    public void Subscribe<TEventArgs>(Action<TEventArgs> action, string token = "", bool keepSubscriberReferenceAlive = false) where TEventArgs : IEventArgs
+    public void Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive) where TEventArgs : IEventArgs
     {
       GetEventBus<TEventArgs>().Subscribe(action, ThreadOption.BackgroundThread, keepSubscriberReferenceAlive, x => string.IsNullOrEmpty(x.Token) || x.Token == token);
+    }
+
+    public void Subscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
+    {
+      GetEventBus<TEventArgs>().Subscribe(action, ThreadOption.BackgroundThread);
     }
 
     public void Unusbscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
@@ -30,7 +35,7 @@ namespace Ferretto.Common.BLL.Services
 
     private PubSubEvent<TEventArgs> GetEventBus<TEventArgs>() where TEventArgs : IEventArgs
     {
-      return eventAggregator.GetEvent<PubSubEvent<TEventArgs>>();
+      return this.eventAggregator.GetEvent<PubSubEvent<TEventArgs>>();
     }
   }
 }

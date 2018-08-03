@@ -23,13 +23,12 @@ namespace Ferretto.Common.Controls
     #region Methods
     public void RegisterView(string regionName, string title)
     {
-      LayoutPanel layoutPanel = new LayoutPanel();
+      var layoutPanel = new LayoutPanel();
       layoutPanel.Caption = title;
       RegionManager.SetRegionName(layoutPanel, regionName);
-      DocumentGroup mainGroup = this.FindName("MainDocumentGroup") as DocumentGroup;
-      if (mainGroup == null)
+      if (!(this.FindName("MainDocumentGroup") is DocumentGroup mainGroup))
       {
-        throw new System.Exception("Error retrieving documentGroup from WMSMainDockLayoutManager");
+        throw new System.InvalidOperationException("Error retrieving document group from the Main Layout Manager");
       }
       mainGroup.Add(layoutPanel);
     }

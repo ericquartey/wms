@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Scomparto
-  public partial class Compartment
+  public sealed class Compartment
   {
     public int Id { get; set; }
     public string Code { get; set; }

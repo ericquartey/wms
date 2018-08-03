@@ -8,6 +8,11 @@ namespace Ferretto.Common.DAL.EF.Configurations
   {
     public void Configure(EntityTypeBuilder<CellConfigurationCellType> builder)
     {
+      if (builder == null)
+      {
+        throw new System.ArgumentNullException(nameof(builder));
+      }
+
       builder.HasKey(c => new { c.CellConfigurationId, c.CellTypeId });
 
       builder.Property(c => c.Priority)

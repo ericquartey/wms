@@ -3,13 +3,19 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-  public abstract class BaseViewModel : BindableBase, INavigableViewModel
+  public class BaseViewModel : BindableBase, INavigableViewModel
   {
     public string StateId { get; set; }
     public string Token { get; set; }
 
+    protected BaseViewModel()
+    {
+
+    }
+
     public virtual void OnAppear()
     {
+
     }
   }
 }

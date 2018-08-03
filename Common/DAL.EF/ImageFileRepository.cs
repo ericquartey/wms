@@ -12,9 +12,9 @@ namespace Ferretto.Common.DAL.EF
   public class ImageFileRepository : Interfaces.IImageRepository
   {
     // TODO make the images directory configurable (https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/139)
-    private static readonly string imagesDirectoryName = "images\\"; 
+    private const string imagesDirectoryName = "images\\"; 
 
-    private Uri ImageDirectoryUri
+    private static Uri ImageDirectoryUri
     {
       get
       {
@@ -24,14 +24,14 @@ namespace Ferretto.Common.DAL.EF
 
     public void Delete(ImageSource entity)
     {
-      throw new NotImplementedException(); 
+      throw new NotSupportedException(); 
     }
 
     public ImageSource GetById(string id)
     {
-      var uri = new Uri(this.ImageDirectoryUri, id);
+      var uri = new Uri(ImageDirectoryUri, id);
       
-      if (!this.ImageDirectoryUri.IsBaseOf(uri))
+      if (!ImageDirectoryUri.IsBaseOf(uri))
       {
         throw new ArgumentException(
           "The specified path is not contained in the image directory.",
@@ -43,17 +43,17 @@ namespace Ferretto.Common.DAL.EF
 
     public void Insert(ImageSource entity)
     {
-      throw new NotImplementedException();
+      throw new NotSupportedException();
     }
 
     public IEnumerable<ImageSource> List()
     {
-      throw new NotImplementedException();
+      throw new NotSupportedException();
     }
 
     public void Update(ImageSource entity)
     {
-      throw new NotImplementedException();
+      throw new NotSupportedException();
     }
   }
 }

@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Tipo Cella
-  public partial class CellType
+  public sealed class CellType
   {
     public int Id { get; set; }
     public int CellHeightClassId { get; set; }
@@ -15,9 +15,9 @@ namespace Ferretto.Common.Models
     public CellWeightClass CellWeightClass { get; set; }
     public CellSizeClass CellSizeClass { get; set; }
 
-    public List<Cell> Cells { get; set; }
-    public List<CellTypeAisle> CellTypeAisles { get; set; }
-    public List<CellTotal> CellTotals { get; set; }
-    public List<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
+    public IEnumerable<Cell> Cells { get; set; }
+    public IEnumerable<CellTypeAisle> CellTypeAisles { get; set; }
+    public IEnumerable<CellTotal> CellTotals { get; set; }
+    public IEnumerable<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
   }
 }

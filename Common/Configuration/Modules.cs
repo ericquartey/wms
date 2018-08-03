@@ -1,17 +1,18 @@
-﻿using System;
+﻿/*
+ * Copyright (c) FerrettoGroup. All Rights Reserved.
+ */
+using System;
 
-namespace Ferretto.Common.Configuration
+namespace Ferretto.Common.Configuration.Modules
 {
-  static public class Modules
-  {
-    static public class Catalog
+    public static class Catalog
     {
       public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
       public const string ITEMS = "ItemsViewModel";
       public const string ITEMDETAILS = "ItemDetailsViewModel";
     }
 
-    static public class Layout
+    public static class Layout
     {
       public const string REGION_MAINCONTENT = "MainContent";
       public const string MENUOUTLOOK = "MenuOutlook";
@@ -26,5 +27,4 @@ namespace Ferretto.Common.Configuration
     static public class BusinessLogic
     {
     }
-  }
 }

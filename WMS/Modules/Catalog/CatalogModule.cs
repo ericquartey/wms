@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   [Module(ModuleName = nameof(Common.Configuration.Modules.Catalog), OnDemand = true)]
   [ModuleDependency(nameof(Common.Configuration.Modules.BusinessLogic))]
-  public class Module : IModule
+  public class CatalogModule : IModule
   {
     #region IModule Members
 
@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Modules.Catalog
     public IRegionManager RegionManager { get; private set; }
     private INavigationService navigationService;
 
-    public Module(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
+    public CatalogModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
     {
       this.Container = container;
       this.RegionManager = regionManager;

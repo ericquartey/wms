@@ -3,7 +3,7 @@
 namespace Ferretto.Common.Models
 {
   // Udc predefinite
-  public partial class DefaultLoadingUnit
+  public sealed class DefaultLoadingUnit
   {
     public int Id { get; set; }
     public int LoadingUnitTypeId { get; set; }
@@ -13,6 +13,6 @@ namespace Ferretto.Common.Models
 
     public LoadingUnitType LoadingUnitType { get; set; }
 
-    public List<DefaultCompartment> DefaultCompartments { get; set; }
+    public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }
   }
 }

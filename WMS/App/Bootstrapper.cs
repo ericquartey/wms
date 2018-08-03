@@ -18,7 +18,7 @@ namespace Ferretto.WMS.App
 
     protected override IModuleCatalog CreateModuleCatalog()
     {
-      return new DirectoryModuleCatalog() { ModulePath = @".\" };
+      return new DirectoryModuleCatalog { ModulePath = @".\" };
     }
 
     protected override void ConfigureModuleCatalog()
@@ -30,7 +30,7 @@ namespace Ferretto.WMS.App
 
     protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
     {
-      RegionAdapterMappings mappings = base.ConfigureRegionAdapterMappings();
+      var mappings = base.ConfigureRegionAdapterMappings();
       if (mappings != null)
       {
         var factory = ServiceLocator.Current.GetInstance<IRegionBehaviorFactory>();

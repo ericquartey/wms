@@ -6,7 +6,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-  public partial class WMSView : UserControl, INavigableView
+  public class WMSView : UserControl, INavigableView
   {
     #region Fields
     private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
@@ -19,9 +19,9 @@ namespace Ferretto.Common.Controls
     #endregion
 
     #region Ctor
-    public WMSView()
+    protected WMSView()
     {      
-      this.Loaded += WMSView_Loaded;
+      this.Loaded += this.WMSView_Loaded;
     }
     #endregion
 
@@ -36,11 +36,11 @@ namespace Ferretto.Common.Controls
       if (string.IsNullOrEmpty(this.MapId) == false)
       {
         // Is Main WMSView registered
-        this.DataContext = navigationService.GetViewModelByMapId(this.MapId);
+        this.DataContext = this.navigationService.GetViewModelByMapId(this.MapId);
       }
       else
       {
-        this.DataContext = navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());
+        this.DataContext = this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());
       }
 
       ((INavigableViewModel)this.DataContext)?.OnAppear();
@@ -66,13 +66,14 @@ namespace Ferretto.Common.Controls
       {
         return true;
       }
+
       var dataContextName = this.DataContext.GetType().ToString();      
-      return (GetAttachedViewModel().Equals(dataContextName) == false);
+      return !GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
     }
 
     private string GetAttachedViewModel()
     {
-      return $"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFIX}";
+      return $"{this.GetType().ToString()}{Configuration.Common.MODEL_SUFFIX}";
     }
     #endregion
   }

@@ -5,11 +5,11 @@ namespace Ferretto.Common.BLL
 {
   [Module(ModuleName = nameof(Configuration.Modules.BusinessLogic))]
   [ModuleDependency(nameof(Configuration.Modules.DataAccess))]
-  public class Module : IModule
+  public class BusinessLogicModule : IModule
   {
     public IUnityContainer Container { get; private set; }
 
-    public Module(IUnityContainer container)
+    public BusinessLogicModule(IUnityContainer container)
     {
       this.Container = container;
     }

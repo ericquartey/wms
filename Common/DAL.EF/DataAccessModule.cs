@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace Ferretto.Common.DAL.EF
 {
   [Module(ModuleName = nameof(Configuration.Modules.DataAccess))]
-  public class Module : IModule
+  public class DataAccessModule : IModule
   {
     public IUnityContainer Container { get; private set; }
 
-    public Module(IUnityContainer container)
+    public DataAccessModule(IUnityContainer container)
     {
       this.Container = container;
     }

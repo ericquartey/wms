@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Ferretto.Common.Models
 {
   // Unità di Carico
-  public partial class LoadingUnit
+  public sealed class LoadingUnit
   {
     public int Id { get; set; }
     public string Code { get; set; }
@@ -33,6 +33,6 @@ namespace Ferretto.Common.Models
     public LoadingUnitType LoadingUnitType { get; set; }
     public LoadingUnitStatus LoadingUnitStatus { get; set; }
 
-    public List<Compartment> Compartments { get; set; }
+    public IEnumerable<Compartment> Compartments { get; set; }
   }
 }
