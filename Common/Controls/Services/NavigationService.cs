@@ -290,7 +290,7 @@ namespace Ferretto.Common.Controls.Services
 
     private static string GetViewName(string module, string regionName)
     {
-      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Configuration.Common.VIEW_SUFIX}";
+      return $"{Configuration.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Configuration.Common.VIEW_SUFFIX}";
     }
 
     private void LoadModule(string moduleName)
