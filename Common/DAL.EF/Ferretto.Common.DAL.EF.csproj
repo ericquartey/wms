@@ -221,11 +221,6 @@
     <Compile Include="Configurations\PackageTypeConfiguration.cs" />
     <Compile Include="DbContext.cs" />
     <Compile Include="ItemsRepository.cs" />
-    <Compile Include="Migrations\20180802154218_Initial.cs" />
-    <Compile Include="Migrations\20180802154218_Initial.designer.cs">
-      <DependentUpon>20180802154218_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\DbContextModelSnapshot.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
