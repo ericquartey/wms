@@ -5,11 +5,7 @@ namespace Ferretto.Common.Controls.Services
 {
   public class DialogService : IDialogService
   {
-    #region Ctor
-    public DialogService()
-    {
-    }
-    #endregion
+    private readonly DialogWindowView view = new DialogWindowView();
 
     #region Methods
     public DialogResult ShowMessage(
@@ -27,14 +23,17 @@ namespace Ferretto.Common.Controls.Services
         DialogType type,
         DialogButton buttons)
     {
-      var textMessageViewModel = new MessageViewModel()
+      var textMessageViewModel = new MessageViewModel
       {        
         Message = message,
         Title = title,
         Type = type,
         Buttons = buttons,
       };
-      textMessageViewModel.Appear();
+
+      this.view.DataContext = textMessageViewModel;
+      this.view.ShowDialogWindow(System.Windows.MessageBoxButton.OK);
+      //textMessageViewModel.Appear();
       return textMessageViewModel.Result;
     }
     #endregion

@@ -145,6 +145,9 @@
     <Compile Include="Controls\Common\Button.cs" />
     <Compile Include="Controls\Common\WMSDockLayoutManager.cs" />
     <Compile Include="Controls\Common\WMSView.cs" />
+    <Compile Include="Controls\DialogWindowView.xaml.cs">
+      <DependentUpon>DialogWindowView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -172,6 +175,12 @@
     <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Controls\DialogWindowView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
