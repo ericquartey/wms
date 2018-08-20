@@ -1,5 +1,4 @@
 ﻿using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
