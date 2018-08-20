@@ -5,7 +5,7 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public partial class ItemsAndDetailsView : WMSView
   {
-    public ItemsAndDetailsView(IDialogService dialogService)
+    public ItemsAndDetailsView()
     {
       InitializeComponent();
     }
