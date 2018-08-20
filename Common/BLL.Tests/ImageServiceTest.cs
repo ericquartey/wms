@@ -25,7 +25,6 @@ namespace Feretto.Common.Modules.BLL.Tests
     }
 
     [TestInitialize]
-    
     public void Initialize()
     {
       var mockImageRepository = new Mock<IImageRepository>();

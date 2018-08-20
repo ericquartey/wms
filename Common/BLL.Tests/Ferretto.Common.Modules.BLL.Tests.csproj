@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageServiceTest.cs" />
-    <Compile Include="InitializationTest.cs" />
+    <Compile Include="UnityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
