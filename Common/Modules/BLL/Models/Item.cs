@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Models;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-  public sealed class Item : IModel<int>, IItem
+  public sealed class Item : IItem
   {
     public int Id { get; set; }
     public string Code { get; set; }
     public string Description { get; set; }
-    public string ClassId { get; set; }
-    public int? MeasureUnitId { get; set; }
+    public AbcClass AbcClass { get; set; }
+    public MeasureUnit MeasureUnit { get; set; }
 
     private int? width;
     public int? Width

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ferretto.Common.Models;
 
 namespace Ferretto.Common.BLL.Interfaces.Models
 {
@@ -10,8 +6,8 @@ namespace Ferretto.Common.BLL.Interfaces.Models
   {
     string Code { get; set; }
     string Description { get; set; }
-    string ClassId { get; set; }
-    int? MeasureUnitId { get; set; }
+    AbcClass AbcClass { get; set; }
+    MeasureUnit MeasureUnit { get; set; }
     int? Width { get; set; }
     int? Length { get; set; }
     int? Height { get; set; }
