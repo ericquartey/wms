@@ -230,7 +230,7 @@
       <Project>{0ddbd6dc-1f23-4f52-849d-94da9e5f1b12}</Project>
       <Name>Ferretto.Common.Controls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Common\Models\Ferretto.Common.DAL.Models.csproj">
+    <ProjectReference Include="..\..\..\Common\DAL.Models\Ferretto.Common.DAL.Models.csproj">
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
       <Name>Ferretto.Common.DAL.Models</Name>
     </ProjectReference>
