@@ -1,5 +1,4 @@
-﻿using Ferretto.Common.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
@@ -13,6 +12,10 @@ namespace Ferretto.Common.BLL.Interfaces
       "Minor Code Smell",
       "CA0124:Properties should be preferred",
       Justification = "The method name implements the repository pattern naming convention.")]
-    IEnumerable<Item> GetItems();
+    IEnumerable<Models.IItem> GetAll();
+
+    Models.IItem GetById(int id);
+
+    Models.IItem Create(Models.IItem item);
   }
 }

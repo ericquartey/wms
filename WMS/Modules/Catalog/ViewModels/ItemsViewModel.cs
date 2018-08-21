@@ -53,7 +53,7 @@ namespace Ferretto.WMS.Modules.Catalog
     private void InitializeData()
     {
       var itemService = ServiceLocator.Current.GetInstance<IItemsService>();
-      this.Items = itemService.GetItems();    
+      this.Items = itemService.GetAll();    
     }
     
     public void NotifySelectionChanged()

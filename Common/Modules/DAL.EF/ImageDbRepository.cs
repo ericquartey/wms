@@ -5,7 +5,7 @@ using Ferretto.Common.DAL.Interfaces;
 
 namespace Ferretto.Common.Modules.DAL.EF
 {
-  // TODO not yet implemented (class set as abstract to avoid instantiation)
+  // TODO: not yet implemented (class set as abstract to avoid instantiation)
   // see https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/141
   public class ImageDbRepository : IImageRepository
   {
@@ -24,7 +24,7 @@ namespace Ferretto.Common.Modules.DAL.EF
       throw new NotSupportedException();
     }
 
-    public void Insert(ImageSource entity)
+    public ImageSource Insert(ImageSource entity)
     {
       throw new NotSupportedException();
     }

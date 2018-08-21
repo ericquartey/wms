@@ -20,6 +20,9 @@ namespace Ferretto.Common.Modules.BLL.Services
       this.Container.RegisterType<IItemsService, Services.ItemsService>();
       this.Container.RegisterType<IImageService, Services.ImageService>();
       this.Container.RegisterType<IEventService, Services.EventService>();
+      this.Container.RegisterType<IItemsService, ItemsService>();
+      this.Container.RegisterType<IImageService, ImageService>();
+      this.Container.RegisterType<IEventService, EventService>();
     }
   }
 }
