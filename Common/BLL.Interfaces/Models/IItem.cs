@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Models;
+﻿using Ferretto.Common.DAL.Models;
 
 namespace Ferretto.Common.BLL.Interfaces.Models
 {
