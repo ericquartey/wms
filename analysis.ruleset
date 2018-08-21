@@ -765,7 +765,6 @@
     <Rule Id="S4005" Action="Warning" />
     <Rule Id="S4017" Action="Warning" />
     <Rule Id="S4022" Action="Warning" />
-    <Rule Id="S4023" Action="Warning" />
     <Rule Id="S4025" Action="Warning" />
     <Rule Id="S4026" Action="Warning" />
     <Rule Id="S4027" Action="Warning" />
