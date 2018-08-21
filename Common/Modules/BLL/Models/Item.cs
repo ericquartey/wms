@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-  public sealed class Item : IModel<int>
+  public sealed class Item : IModel<int>, IItem
   {
     public int Id { get; set; }
     public string Code { get; set; }
