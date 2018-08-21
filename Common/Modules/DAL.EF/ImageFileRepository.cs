@@ -39,7 +39,7 @@ namespace Ferretto.Common.Modules.DAL.EF
       return new BitmapImage(uri);
     }
 
-    public void Insert(ImageSource entity)
+    public ImageSource Insert(ImageSource entity)
     {
       throw new NotSupportedException();
     }

@@ -34,9 +34,11 @@ namespace Ferretto.Common.Modules.DAL.EF
       return this.unitOfWork.Context.Set<T>().AsEnumerable();
     }
 
-    public void Insert(T entity)
+    public T Insert(T entity)
     {
       this.unitOfWork.Context.Set<T>().Add(entity);
+
+      return entity;
     }
 
     public void Update(T entity)

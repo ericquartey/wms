@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
-using Ferretto.Common.Models;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
@@ -15,11 +15,12 @@ namespace Ferretto.WMS.Modules.Catalog
       this.itemsService = itemsService;
     }
 
-    public IEnumerable<Item> Items
+    public IEnumerable<IItem> Items
     {
       get
       {
-        return this.itemsService.GetItems().ToList();
+        // FIXME: this is a temporary code for demonstration purposes and should not remain like this
+        return this.itemsService.GetAll().ToList();
       }
     }
   }

@@ -15,14 +15,8 @@ namespace Feretto.Common.Modules.BLL.Tests
   [TestCategory("Integration Test")]
   public class ImageServiceTest : UnityTest
   {
-    IImageService imageService;
+    private IImageService imageService;
     static readonly string imageFilePath = "image.png";
-    
-    [TestMethod]
-    public void ImageServiceUnitTest()
-    {
-      Assert.ThrowsException<InvalidOperationException>(() => this.imageService.GetImage(imageFilePath));
-    }
 
     [TestInitialize]
     public void Initialize()
@@ -35,6 +29,12 @@ namespace Feretto.Common.Modules.BLL.Tests
       container.RegisterType<IImageService, ImageService>();
 
       this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
+    }
+
+    [TestMethod]
+    public void TestGetImage()
+    {
+      Assert.ThrowsException<InvalidOperationException>(() => this.imageService.GetImage(imageFilePath));
     }
   }
 }

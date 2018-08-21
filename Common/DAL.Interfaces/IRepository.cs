@@ -8,7 +8,7 @@ namespace Ferretto.Common.DAL.Interfaces
 
     IEnumerable<TEntity> List();
 
-    void Insert(TEntity entity);
+    TEntity Insert(TEntity entity);
 
     void Update(TEntity entity);
 
