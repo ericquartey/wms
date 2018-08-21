@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Modules.Layout
       get { return this.cmdItem ?? (this.cmdItem = new DelegateCommand(this.AppearItem)); }
     }
 
-    INavigationService navigationService;
+    private readonly INavigationService navigationService;
     public MenuViewModel(INavigationService navigationService)
     {
       this.navigationService = navigationService;

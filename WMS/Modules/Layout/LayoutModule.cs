@@ -25,6 +25,7 @@ namespace Ferretto.WMS.Modules.Layout
     public void Initialize()
     {
       this.Container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
+      this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
 
       var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
       navigationService.Register<LayoutView, LayoutViewModel>();

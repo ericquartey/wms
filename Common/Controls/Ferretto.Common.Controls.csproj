@@ -188,7 +188,6 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Interfaces\INavigableViewModel.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
-    <Compile Include="ViewModels\MessageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controls\Custom\" />
