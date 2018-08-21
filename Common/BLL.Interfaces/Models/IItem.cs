@@ -11,5 +11,6 @@ namespace Ferretto.Common.BLL.Interfaces.Models
     int? Width { get; set; }
     int? Length { get; set; }
     int? Height { get; set; }
+    string Image { get; set; }
   }
 }

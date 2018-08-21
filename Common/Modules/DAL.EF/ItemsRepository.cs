@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.DAL.Interfaces;
-using Ferretto.Common.Models;
+using Ferretto.Common.DAL.Models;
 
 namespace Ferretto.Common.Modules.DAL.EF
 {

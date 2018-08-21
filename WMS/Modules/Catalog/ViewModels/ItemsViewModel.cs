@@ -26,8 +26,8 @@ namespace Ferretto.WMS.Modules.Catalog
       }
     }
 
-    private Common.Models.Item selectedItem;
-    public Common.Models.Item SelectedItem
+    private Common.DAL.Models.Item selectedItem;
+    public Common.DAL.Models.Item SelectedItem
     {
       get
       {

@@ -13,6 +13,8 @@ namespace Ferretto.Common.Modules.BLL.Models
     public AbcClass AbcClass { get; set; }
     public MeasureUnit MeasureUnit { get; set; }
 
+    public string Image { get; set; }
+
     private int? width;
     public int? Width
     {

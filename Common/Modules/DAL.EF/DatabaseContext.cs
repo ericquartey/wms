@@ -1,5 +1,5 @@
 ﻿using System.Configuration;
-using Ferretto.Common.Models;
+using Ferretto.Common.DAL.Models;
 using Ferretto.Common.Modules.DAL.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,7 +17,7 @@ namespace Ferretto.Common.Modules.DAL.EF
     public virtual DbSet<Bay> Bays { get; set; }
     public virtual DbSet<BayType> BayTypes { get; set; }
     public virtual DbSet<Cell> Cells { get; set; }
-    public virtual DbSet<Models.CellConfiguration> CellConfigurations { get; set; }
+    public virtual DbSet<Common.DAL.Models.CellConfiguration> CellConfigurations { get; set; }
     public virtual DbSet<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes { get; set; }
     public virtual DbSet<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
     public virtual DbSet<CellHeightClass> CellHeightClasses { get; set; }

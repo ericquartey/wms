@@ -1,8 +1,8 @@
 ﻿using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Events;
 
@@ -13,8 +13,8 @@ namespace Ferretto.WMS.Modules.Catalog
     private readonly IImageService imageService;
 
     #region Properties
-    private Item item;
-    public Item Item
+    private IItem item;
+    public IItem Item
     {
       get { return this.item; }
       set
@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private void OnItemSelectionChanged(object selectedItemObj)
     {
-      if (selectedItemObj is Item selectedItem && selectedItem.Image != null)
+      if (selectedItemObj is Common.BLL.Interfaces.Models.IItem selectedItem && selectedItem.Image != null)
       {
         this.ImgArticle = this.imageService.GetImage(selectedItem.Image);
       }
