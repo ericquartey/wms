@@ -183,8 +183,9 @@ namespace Ferretto.Common.Controls.Services
     {
       if (string.IsNullOrEmpty(mapId))
       {
-        return null;
+        throw new ArgumentException("The argument cannot be null or empty.", nameof(mapId));
       }
+
       return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
     }
     #endregion
@@ -316,10 +317,10 @@ namespace Ferretto.Common.Controls.Services
       #endregion
 
       #region Ctor
-      public ViewModelBind(Type View, Type ViewModel)
+      public ViewModelBind(Type view, Type viewModel)
       {
-        this.View = View;
-        this.ViewModel = ViewModel;
+        this.View = view;
+        this.ViewModel = viewModel;
         this.Ids = new List<string>();
       }
       #endregion

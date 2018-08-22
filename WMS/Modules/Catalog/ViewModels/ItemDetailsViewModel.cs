@@ -16,21 +16,22 @@ namespace Ferretto.WMS.Modules.Catalog
     private IItem item;
     public IItem Item
     {
-      get { return this.item; }
+      get => this.item;
       set
       {
         this.item = value;
-        RaisePropertyChanged(nameof(this.Item));
+        this.RaisePropertyChanged(nameof(this.Item));
       }
     }
+
     private ImageSource imgArticle;
     public ImageSource ImgArticle
     {
-      get { return this.imgArticle; }
+      get => this.imgArticle;
       set
       {
         this.imgArticle = value;
-        RaisePropertyChanged(nameof(this.ImgArticle));
+        this.RaisePropertyChanged(nameof(this.ImgArticle));
       }
     }
     #endregion
@@ -38,7 +39,7 @@ namespace Ferretto.WMS.Modules.Catalog
     #region Ctor
     public ItemDetailsViewModel(IImageService imageService)
     {
-      Initialize();
+      this.Initialize();
       this.imageService = imageService;
     }
     #endregion
@@ -49,7 +50,7 @@ namespace Ferretto.WMS.Modules.Catalog
       // Subscribe
       var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
       var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
-      navigationCompletedEvent.Subscribe(item => OnItemSelectionChanged(item), ThreadOption.UIThread);
+      navigationCompletedEvent.Subscribe(item => this.OnItemSelectionChanged(item), ThreadOption.UIThread);
     }
 
     private void OnItemSelectionChanged(object selectedItemObj)
