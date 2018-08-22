@@ -47,9 +47,11 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private void OnItemSelectionChanged(object selectedItemObj)
     {
-      if (selectedItemObj is Common.BLL.Interfaces.Models.IItem selectedItem && selectedItem.Image != null)
+  
+      if (selectedItemObj is IItem selectedItem)
       {
-        this.ImgArticle = this.imageService.GetImage(selectedItem.Image);
+        this.Item = selectedItem;
+        this.ImgArticle = selectedItem.Image != null ? this.imageService.GetImage(selectedItem.Image) : null;
       }
       else
       {
