@@ -43,7 +43,7 @@ namespace Ferretto.Common.Controls
         this.DataContext = this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());
       }
 
-      ((INavigableViewModel)this.DataContext)?.OnAppear();
+      ((INavigableViewModel)this.DataContext)?.Appear();
 
     }
     #endregion
