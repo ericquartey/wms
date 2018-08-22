@@ -179,6 +179,15 @@
     <Compile Include="Controls\Common\Button.cs" />
     <Compile Include="Controls\Common\WMSDockLayoutManager.cs" />
     <Compile Include="Controls\Common\WMSView.cs" />
+    <Compile Include="Controls\Custom\FlyoutContentTemplateSelector.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\Interface\IMenuItemViewModel.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\CustomMenuTileFlyoutPosition.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\TileBarContentControl.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuItem.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuViewModel.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\NavMenuTocuchControl.xaml.cs">
+      <DependentUpon>NavMenuTocuchControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -188,9 +197,13 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Interfaces\INavigableViewModel.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
+    <Compile Include="ViewModels\WMSGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\Custom\" />
+    <Page Include="Controls\Custom\NavMenuTouchControl\NavMenuTocuchControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -198,6 +211,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj">
+      <Project>{2586C34C-DA26-4143-8359-21D8A42B8462}</Project>
+      <Name>Ferretto.Common.BLL.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>

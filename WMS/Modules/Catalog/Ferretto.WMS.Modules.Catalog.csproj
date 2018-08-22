@@ -217,7 +217,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Models\Ferretto.Common.DAL.Models.csproj">
+    <ProjectReference Include="..\..\..\Common\DAL.Models\Ferretto.Common.DAL.Models.csproj">
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
       <Name>Ferretto.Common.DAL.Models</Name>
     </ProjectReference>

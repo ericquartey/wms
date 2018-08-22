@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -9,53 +10,41 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemsViewModel : BaseNavigationViewModel
   {
-    private IEnumerable<object> items;
-    public IEnumerable<object> Items
+    private readonly IItemsService itemService;
+    private IEnumerable<IItem> items;
+
+    public IEnumerable<IItem> Items
     {
-      get
-      {
-        return this.items;
-      }
+      get => this.items;
+      set => this.SetProperty(ref this.items, value);
+    }
+
+    private IItem selectedItem;
+    public IItem SelectedItem
+    {
+      get => this.selectedItem;
       set
       {
-        if (this.Items != value)
+        if (this.SetProperty(ref this.selectedItem, value))
         {
-          this.items = value;
-          RaisePropertyChanged();
+          this.NotifySelectionChanged();
         }
       }
     }
 
-    private Common.Models.Item selectedItem;
-    public Common.Models.Item SelectedItem
+    public ItemsViewModel(IItemsService itemService)
     {
-      get
-      {
-        return this.selectedItem;
-      }
-      set
-      {
-        if (this.selectedItem != value)
-        {
-          this.selectedItem = value;          
-          RaisePropertyChanged();
-          NotifySelectionChanged();
-        }
-      }
-    }
+      this.itemService = itemService;
 
-    public ItemsViewModel()
-    {
-      InitializeData();
+      this.InitializeData();
     }
 
     #region Methods
     private void InitializeData()
     {
-      var itemService = ServiceLocator.Current.GetInstance<IItemsService>();
-      this.Items = itemService.GetAll();    
+      this.Items = this.itemService.GetAll();
     }
-    
+
     public void NotifySelectionChanged()
     {
       var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();

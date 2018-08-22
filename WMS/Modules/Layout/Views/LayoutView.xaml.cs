@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Modules.Layout
   {
     public LayoutView()
     {
-      InitializeComponent();
+      this.InitializeComponent();
     }
   }
 }

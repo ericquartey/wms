@@ -115,7 +115,7 @@
       <Project>{650c48cd-255c-4ae6-b3b0-7c4a06550c66}</Project>
       <Name>Ferretto.Common.DAL.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Models\Ferretto.Common.DAL.Models.csproj">
+    <ProjectReference Include="..\..\DAL.Models\Ferretto.Common.DAL.Models.csproj">
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
       <Name>Ferretto.Common.DAL.Models</Name>
     </ProjectReference>

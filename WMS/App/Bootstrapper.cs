@@ -5,6 +5,7 @@ using Prism.Modularity;
 using Prism.Regions;
 using Prism.Unity;
 using System;
+using System.Configuration;
 using System.Windows;
 
 namespace Ferretto.WMS.App
@@ -18,7 +19,7 @@ namespace Ferretto.WMS.App
 
     protected override IModuleCatalog CreateModuleCatalog()
     {
-      return new DirectoryModuleCatalog { ModulePath = @".\" };
+      return new DirectoryModuleCatalog { ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"]  };
     }
 
     protected override void ConfigureModuleCatalog()
