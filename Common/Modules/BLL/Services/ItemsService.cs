@@ -27,7 +27,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
     public IItem Create(IItem item)
     {
-      return Mapper.Map<IItem>(this.repository.Insert(Mapper.Map<Common.Models.Item>(item)));
+      return Mapper.Map<IItem>(this.repository.Insert(Mapper.Map<DAL.Models.Item>(item)));
     }
   }
 }

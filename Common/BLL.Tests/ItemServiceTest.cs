@@ -29,7 +29,7 @@ namespace Feretto.Common.Modules.BLL.Tests
       Height = itemHeight
     };
 
-    private static readonly Ferretto.Common.Models.Item dalObject = new Ferretto.Common.Models.Item
+    private static readonly Ferretto.Common.DAL.Models.Item dalObject = new Ferretto.Common.DAL.Models.Item
     {
       Id = itemId,
       Description = itemDescription,
@@ -45,7 +45,7 @@ namespace Feretto.Common.Modules.BLL.Tests
       mockRepository.Setup(a => a.GetById(itemId)).Returns(dalObject);
 
       mockRepository.Setup(a => a.GetById(itemIdInvalid)).Returns(
-        new Ferretto.Common.Models.Item
+        new Ferretto.Common.DAL.Models.Item
         {
           Id = itemIdInvalid,
           Height = itemHeightInvalid

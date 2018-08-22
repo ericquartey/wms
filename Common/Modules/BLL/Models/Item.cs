@@ -1,7 +1,7 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Models;
+using Ferretto.Common.DAL.Models;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
@@ -12,6 +12,8 @@ namespace Ferretto.Common.Modules.BLL.Models
     public string Description { get; set; }
     public AbcClass AbcClass { get; set; }
     public MeasureUnit MeasureUnit { get; set; }
+
+    public string Image { get; set; }
 
     private int? width;
     public int? Width

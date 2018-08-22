@@ -6,8 +6,8 @@ namespace Ferretto.Common.Modules.BLL
   {
     public BusinessLogicAutoMapperProfile()
     {
-      this.CreateMap<Common.Models.Item, Common.BLL.Interfaces.Models.IItem>().As<Models.Item>();
-      this.CreateMap<Models.Item, Common.Models.Item>();
+      this.CreateMap<DAL.Models.Item, Common.BLL.Interfaces.Models.IItem>().As<Models.Item>();
+      this.CreateMap<Models.Item, DAL.Models.Item>();
     }
   }
 }
