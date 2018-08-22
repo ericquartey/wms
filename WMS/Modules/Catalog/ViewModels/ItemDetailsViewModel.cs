@@ -17,22 +17,14 @@ namespace Ferretto.WMS.Modules.Catalog
     public IItem Item
     {
       get => this.item;
-      set
-      {
-        this.item = value;
-        this.RaisePropertyChanged(nameof(this.Item));
-      }
+      set => this.SetProperty(ref this.item, value);
     }
 
     private ImageSource imgArticle;
     public ImageSource ImgArticle
     {
       get => this.imgArticle;
-      set
-      {
-        this.imgArticle = value;
-        this.RaisePropertyChanged(nameof(this.ImgArticle));
-      }
+      set => this.SetProperty(ref this.imgArticle, value);
     }
     #endregion
 

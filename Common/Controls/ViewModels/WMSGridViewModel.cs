@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
 using Prism.Mvvm;
 
@@ -25,15 +21,12 @@ namespace Ferretto.Common.Controls.ViewModels
       this.entityService.GetAll();
     }
 
-    public IEnumerable<TModel> Items
-    {
-      get { return this.entityService.GetAll(); }
-    }
+    public IEnumerable<TModel> Items => this.entityService.GetAll();
 
     public TModel SelectedItem
     {
-      get { return this.selectedItem; }
-      set { this.SetProperty(ref this.selectedItem, value); }
-    } 
+      get => this.selectedItem;
+      set => this.SetProperty(ref this.selectedItem, value);
+    }
   }
 }
