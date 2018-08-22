@@ -33,5 +33,5 @@ namespace Ferretto.Common.Controls
       mainGroup.Add(layoutPanel);
     }
     #endregion
-  }    
+  }
 }

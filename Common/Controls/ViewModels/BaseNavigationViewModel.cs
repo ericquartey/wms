@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-  public abstract class BaseNavigationViewModel : BindableBase, INavigableViewModel
+  public class BaseNavigationViewModel : BindableBase, INavigableViewModel
   {
     public string StateId { get; set; }
     public string Token { get; set; }
@@ -16,6 +16,7 @@ namespace Ferretto.Common.Controls
     public virtual void OnAppear()
     {
     }
+
     public void Appear()
     {
     }
