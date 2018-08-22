@@ -71,11 +71,10 @@ namespace Ferretto.Common.Controls
       }
 
       var canClose = true;
-      var tileBarItem2 = e.Source as TileBarItem;
       if (e.Source is TileBarItem tileBarItem)
       {
-        var dt = tileBarItem.DataContext as IMenuItemViewModel;
-        if (dt != null && dt.HasChildren == false)
+        if (tileBarItem.DataContext is IMenuItemViewModel dt &&
+            dt.HasChildren == false)                 
         {
           tileBarItem.Command?.Execute(null);
         }
