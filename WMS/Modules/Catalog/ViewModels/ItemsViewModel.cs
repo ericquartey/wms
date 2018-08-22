@@ -10,8 +10,15 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemsViewModel : BaseNavigationViewModel
   {
+    #region Fields
+
     private readonly IItemsService itemService;
+    private IItem selectedItem;
     private IEnumerable<IItem> items;
+
+    #endregion
+
+    #region Properties
 
     public IEnumerable<IItem> Items
     {
@@ -19,7 +26,6 @@ namespace Ferretto.WMS.Modules.Catalog
       set => this.SetProperty(ref this.items, value);
     }
 
-    private IItem selectedItem;
     public IItem SelectedItem
     {
       get => this.selectedItem;
@@ -32,6 +38,10 @@ namespace Ferretto.WMS.Modules.Catalog
       }
     }
 
+    #endregion
+
+    #region Constructors
+
     public ItemsViewModel(IItemsService itemService)
     {
       this.itemService = itemService;
@@ -39,7 +49,10 @@ namespace Ferretto.WMS.Modules.Catalog
       this.InitializeData();
     }
 
+    #endregion
+
     #region Methods
+
     private void InitializeData()
     {
       this.Items = this.itemService.GetAll();
@@ -51,6 +64,7 @@ namespace Ferretto.WMS.Modules.Catalog
       var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
       navigationCompletedEvent.Publish(this.selectedItem);
     }
+
     #endregion
   }
 }

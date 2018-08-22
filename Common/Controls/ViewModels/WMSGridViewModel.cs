@@ -1,33 +1,51 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Microsoft.Practices.ServiceLocation;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls.ViewModels
 {
   public class WmsGridViewModel<TModel, TId> : BindableBase where TModel : IModel<TId>
   {
-    private readonly IEntityService<TModel, TId> entityService;
+    #region Fields
 
-    protected WmsGridViewModel(IEntityService<TModel, TId> entityService)
+    private readonly IEntityService<TModel, TId> entityService;
+    private IEnumerable<TModel> items;
+    private TModel selectedItem;
+
+    #endregion
+
+    #region Constructors
+
+    protected WmsGridViewModel()
     {
-      this.entityService = entityService;
+      this.entityService = ServiceLocator.Current.GetInstance<IEntityService<TModel, TId>>();
 
       this.Initialize();
     }
+
+    #endregion
+
+    #region Methods
 
     private void Initialize()
     {
       this.items = this.entityService.GetAll();
     }
 
-    private IEnumerable<TModel> items;
+    #endregion
+
+    #region Properties
+
     public IEnumerable<TModel> Items => this.items;
 
-    private TModel selectedItem;
     public TModel SelectedItem
     {
       get => this.selectedItem;
       set => this.SetProperty(ref this.selectedItem, value);
     }
+
+    #endregion
   }
 }

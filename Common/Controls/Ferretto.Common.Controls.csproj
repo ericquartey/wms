@@ -177,8 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Common\Button.cs" />
-    <Compile Include="Controls\Common\WMSDockLayoutManager.cs" />
-    <Compile Include="Controls\Common\WMSView.cs" />
+    <Compile Include="Controls\Common\WmsDockLayoutManager.cs" />
+    <Compile Include="Controls\Common\WmsGridControl.cs" />
+    <Compile Include="Controls\Common\WmsView.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

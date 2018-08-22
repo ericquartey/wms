@@ -17,7 +17,7 @@
         <ContentControl x:Name="MenuContent"
                         Grid.Column="0"
                         prism:RegionManager.RegionName="Layout.Menu" />
-        <ctrls:WMSMainDockLayoutManager Grid.Column="1">
+        <ctrls:WmsMainDockLayoutManager Grid.Column="1">
             <dxdo:LayoutGroup Orientation="Vertical">
                 <dxdo:LayoutGroup ItemHeight="0.7*"
                                   Orientation="Horizontal">
@@ -25,6 +25,6 @@
                                         MDIStyle="Tabbed" />
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
-        </ctrls:WMSMainDockLayoutManager>
+        </ctrls:WmsMainDockLayoutManager>
     </Grid>
 </ctrls:WmsView>
