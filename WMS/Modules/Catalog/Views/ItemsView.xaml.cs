@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  public partial class ItemsView : WMSView
+  public partial class ItemsView : WmsView
   {
     public ItemsView()
     {

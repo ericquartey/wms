@@ -253,7 +253,7 @@ namespace Ferretto.Common.Controls.Services
       var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
       registeredView.Token = moduleViewName;
       registeredView.MapId = moduleViewName;
-      WMSMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);
+      WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);
       this.regionManager.AddToRegion(moduleViewName, registeredView);
     }
 

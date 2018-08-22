@@ -6,7 +6,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-  public class WMSView : UserControl, INavigableView
+  public class WmsView : UserControl, INavigableView
   {
     #region Fields
     private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
     #endregion
 
     #region Ctor
-    protected WMSView()
+    protected WmsView()
     {
       this.Loaded += this.WMSView_Loaded;
     }
@@ -52,10 +52,10 @@ namespace Ferretto.Common.Controls
     private string GetMainViewToken()
     {
       string token = null;
-      var parentMainView = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WMSView);
+      var parentMainView = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsView);
       if (parentMainView != null)
       {
-         token = ((WMSView)parentMainView).Token;
+         token = ((WmsView)parentMainView).Token;
       }
       return token;
     }
