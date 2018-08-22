@@ -47,7 +47,6 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private void OnItemSelectionChanged(object selectedItemObj)
     {
-  
       if (selectedItemObj is IItem selectedItem)
       {
         this.Item = selectedItem;
