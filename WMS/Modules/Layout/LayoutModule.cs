@@ -14,12 +14,12 @@ namespace Ferretto.WMS.Modules.Layout
     #region IModule Members
 
     public IUnityContainer Container { get; private set; }
-    public IRegionManager RegionManager { get; private set; }    
+    public IRegionManager RegionManager { get; private set; }
 
     public LayoutModule(IUnityContainer container, IRegionManager regionManager)
     {
       this.Container = container;
-      this.RegionManager = regionManager;      
+      this.RegionManager = regionManager;
     }
 
     public void Initialize()

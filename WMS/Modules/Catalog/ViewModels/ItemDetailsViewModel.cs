@@ -16,29 +16,22 @@ namespace Ferretto.WMS.Modules.Catalog
     private IItem item;
     public IItem Item
     {
-      get { return this.item; }
-      set
-      {
-        this.item = value;
-        RaisePropertyChanged(nameof(this.Item));
-      }
+      get => this.item;
+      set => this.SetProperty(ref this.item, value);
     }
+
     private ImageSource imgArticle;
     public ImageSource ImgArticle
     {
-      get { return this.imgArticle; }
-      set
-      {
-        this.imgArticle = value;
-        RaisePropertyChanged(nameof(this.ImgArticle));
-      }
+      get => this.imgArticle;
+      set => this.SetProperty(ref this.imgArticle, value);
     }
     #endregion
 
     #region Ctor
     public ItemDetailsViewModel(IImageService imageService)
     {
-      Initialize();
+      this.Initialize();
       this.imageService = imageService;
     }
     #endregion
@@ -49,14 +42,15 @@ namespace Ferretto.WMS.Modules.Catalog
       // Subscribe
       var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
       var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
-      navigationCompletedEvent.Subscribe(item => OnItemSelectionChanged(item), ThreadOption.UIThread);
+      navigationCompletedEvent.Subscribe(item => this.OnItemSelectionChanged(item), ThreadOption.UIThread);
     }
 
     private void OnItemSelectionChanged(object selectedItemObj)
     {
-      if (selectedItemObj is Common.BLL.Interfaces.Models.IItem selectedItem && selectedItem.Image != null)
+      if (selectedItemObj is IItem selectedItem)
       {
-        this.ImgArticle = this.imageService.GetImage(selectedItem.Image);
+        this.Item = selectedItem;
+        this.ImgArticle = selectedItem.Image != null ? this.imageService.GetImage(selectedItem.Image) : null;
       }
       else
       {

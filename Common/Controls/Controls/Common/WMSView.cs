@@ -68,7 +68,7 @@ namespace Ferretto.Common.Controls
       }
 
       var dataContextName = this.DataContext.GetType().ToString();
-      return !GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
+      return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
     }
 
     private string GetAttachedViewModel()

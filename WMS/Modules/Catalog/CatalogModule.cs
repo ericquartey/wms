@@ -1,5 +1,4 @@
 ﻿using Ferretto.Common.Controls.Interfaces;
-using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -14,7 +13,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
     public IUnityContainer Container { get; private set; }
     public IRegionManager RegionManager { get; private set; }
-    private INavigationService navigationService;
+    private readonly INavigationService navigationService;
 
     public CatalogModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
     {
@@ -24,7 +23,7 @@ namespace Ferretto.WMS.Modules.Catalog
     }
 
     public void Initialize()
-    {      
+    {
       this.navigationService.Register<ItemsView, ItemsViewModel>();
       this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
       this.navigationService.Register<ItemsAndDetailsView, ItemsAndDetailsViewModel>();
