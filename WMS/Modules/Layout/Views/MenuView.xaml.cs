@@ -8,7 +8,6 @@ namespace Ferretto.WMS.Modules.Layout
     public MenuView()
     {
       InitializeComponent();
-
     }
   }
 }

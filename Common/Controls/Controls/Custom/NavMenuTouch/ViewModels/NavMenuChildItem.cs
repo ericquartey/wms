@@ -10,6 +10,7 @@ namespace Ferretto.Common.Controls
     public TileNavMenuChildItem(string parentInfo)
     {
       this.Info = parentInfo;
+      this.Children = new ObservableCollection<NavMenuItem>();
     }
   }
 }

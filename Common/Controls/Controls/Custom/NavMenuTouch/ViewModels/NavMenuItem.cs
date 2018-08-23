@@ -1,26 +1,45 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Utils;
+using Ferretto.Common.Utils.Menu;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
   public class NavMenuItem : IMenuItemViewModel
-  {
+  {    
     #region Ctor
     public NavMenuItem()
     {
       this.Command = new DelegateCommand(this.CommandAction);     
     }
 
-    public NavMenuItem(System.String displayName, System.String backColor, System.String image, System.String moduleName, System.String viewName, ICommand command) : this()
+    public NavMenuItem(MainMenuItem item, string currBreadCrumb) : this()
     {
-      this.DisplayName = displayName;
-      this.BackColor = backColor;
-      this.Image = image;
-      this.ModuleName = moduleName;
-      this.ViewName = viewName;
-      this.Command = command;     
+      this.DisplayName = item.Name;
+      this.BackColor = item.BackGroundColor;
+      this.Image = item.Image;
+      this.ModuleName = item.ModuleName;
+      this.ViewName = item.ViewName;
+      this.AddChild(item.Children, currBreadCrumb);
+    }
+
+    private void AddChild(List<MainMenuItem> children, string currBreadCrumb)
+    {
+      if (children == null ||
+          children.Count == 0)
+      {
+        return;
+      }
+      var breadCrumb = $"{currBreadCrumb}\\{this.DisplayName}";
+      this.Child = new TileNavMenuChildItem(breadCrumb);
+      foreach (var child in children)
+      {
+        this.Child.Children.Add(new NavMenuItem(child, breadCrumb));
+      }
     }
     #endregion
 

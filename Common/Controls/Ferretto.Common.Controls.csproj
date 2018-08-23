@@ -176,7 +176,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Common\Button.cs" />
+    <Compile Include="Controls\Common\Button.cs" />  
+    <Compile Include="Controls\Custom\AccordionMenu\AccordionMenu.xaml.cs">
+      <DependentUpon>AccordionMenu.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Custom\AccordionMenu\MenuViewModel.cs" />
     <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -184,19 +189,21 @@
     <Compile Include="Controls\Common\WmsGridControl.cs" />
     <Compile Include="Controls\Common\WmsView.cs" />
     <Compile Include="Controls\Custom\FlyoutContentTemplateSelector.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouchControl\Interface\IMenuItemViewModel.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouchControl\CustomMenuTileFlyoutPosition.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouchControl\TileBarContentControl.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuItem.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuViewModel.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouchControl\NavMenuTouchControl.xaml.cs">
-      <DependentUpon>NavMenuTouchControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuChildItem.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouch\Interface\IMenuItemViewModel.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouch\CustomMenuTileFlyoutPosition.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouch\TileBarContentControl.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuItem.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuViewModel.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuChildItem.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
+    <Compile Include="Resources\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Navigation.cs" />
     <Compile Include="Services\NavigationService.cs" />
@@ -209,9 +216,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Custom\NavMenuTouchControl\NavMenuTouchControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Controls\Custom\AccordionMenu\AccordionMenu.xaml">
       <SubType>Designer</SubType>
+      <Generator>XamlIntelliSenseFileGenerator</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -233,6 +240,13 @@
     <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
