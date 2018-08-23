@@ -10,61 +10,6 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemsViewModel : BaseNavigationViewModel
   {
-    #region Fields
 
-    private readonly IItemsService itemService;
-    private IItem selectedItem;
-    private IEnumerable<IItem> items;
-
-    #endregion
-
-    #region Properties
-
-    public IEnumerable<IItem> Items
-    {
-      get => this.items;
-      set => this.SetProperty(ref this.items, value);
-    }
-
-    public IItem SelectedItem
-    {
-      get => this.selectedItem;
-      set
-      {
-        if (this.SetProperty(ref this.selectedItem, value))
-        {
-          this.NotifySelectionChanged();
-        }
-      }
-    }
-
-    #endregion
-
-    #region Constructors
-
-    public ItemsViewModel(IItemsService itemService)
-    {
-      this.itemService = itemService;
-
-      this.InitializeData();
-    }
-
-    #endregion
-
-    #region Methods
-
-    private void InitializeData()
-    {
-      this.Items = this.itemService.GetAll();
-    }
-
-    public void NotifySelectionChanged()
-    {
-      var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-      var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
-      navigationCompletedEvent.Publish(this.selectedItem);
-    }
-
-    #endregion
   }
 }

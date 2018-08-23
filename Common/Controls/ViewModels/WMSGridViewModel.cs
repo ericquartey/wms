@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
+using Prism.Events;
 using Prism.Mvvm;
 
-namespace Ferretto.Common.Controls.ViewModels
+namespace Ferretto.Common.Controls
 {
   public class WmsGridViewModel<TModel, TId> : BindableBase where TModel : IModel<TId>
   {
@@ -43,7 +45,19 @@ namespace Ferretto.Common.Controls.ViewModels
     public TModel SelectedItem
     {
       get => this.selectedItem;
-      set => this.SetProperty(ref this.selectedItem, value);
+      set
+      {
+        if (this.SetProperty(ref this.selectedItem, value))
+        {
+          this.NotifySelectionChanged();
+        }
+      }
+    }
+
+    protected void NotifySelectionChanged()
+    {
+      ServiceLocator.Current.GetInstance<IEventService>()
+        .Invoke(new ItemSelectionChangedEvent<TModel>(this.selectedItem));
     }
 
     #endregion
