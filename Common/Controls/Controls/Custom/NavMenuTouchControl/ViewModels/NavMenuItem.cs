@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -11,18 +10,17 @@ namespace Ferretto.Common.Controls
     #region Ctor
     public NavMenuItem()
     {
-      this.Command = new DelegateCommand(this.CommandAction);
+      this.Command = new DelegateCommand(this.CommandAction);     
     }
 
-    public NavMenuItem(System.String displayName, System.String backColor, System.String image, System.String moduleName, System.String viewName, ICommand command, ObservableCollection<NavMenuItem> children)
+    public NavMenuItem(System.String displayName, System.String backColor, System.String image, System.String moduleName, System.String viewName, ICommand command) : this()
     {
       this.DisplayName = displayName;
       this.BackColor = backColor;
       this.Image = image;
       this.ModuleName = moduleName;
       this.ViewName = viewName;
-      this.Command = command;
-      this.Children = children;
+      this.Command = command;     
     }
     #endregion
 
@@ -39,17 +37,15 @@ namespace Ferretto.Common.Controls
 
     public ICommand Command { get; set; }
 
-    public ObservableCollection<NavMenuItem> Children
-    {
-      get;
-      set;
-    }
+    public TileNavMenuChildItem Child { get; set; }
 
     public bool HasChildren
     {
       get
       {
-        return this.Children != null && this.Children.Count > 0;
+        return (this.Child != null &&
+                this.Child.Children != null &&
+                this.Child.Children.Count > 0);
       }
     }
     #endregion

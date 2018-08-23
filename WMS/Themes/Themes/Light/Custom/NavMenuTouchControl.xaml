@@ -284,28 +284,31 @@
         <Setter Property="FlyoutContentTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <dxnav:TileBar ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
+                    <Grid>
+                        <dxnav:TileBar ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                                    ItemColorMode="Inverted"
-                                   ItemsSource="{Binding Children, Mode=OneWay}"
+                                   ItemsSource="{Binding Child.Children, Mode=OneWay}"
                                    Orientation="Horizontal"
                                    ShowItemShadow="False">
-                        <dxnav:TileBar.ItemContainerStyle>
-                            <Style TargetType="dxnav:TileBarItem">
-                                <Setter Property="AllowGlyphTheming" Value="False" />
-                                <Setter Property="Content" Value="{Binding DisplayName}" />
-                                <Setter Property="Padding" Value="8,6,8,6" />
-                                <Setter Property="Command" Value="{Binding Command}" />
-                                <Setter Property="TileGlyph" Value="{Binding Image}" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding HasChildren}"
+                            <dxnav:TileBar.ItemContainerStyle>
+                                <Style TargetType="dxnav:TileBarItem">
+                                    <Setter Property="AllowGlyphTheming" Value="False" />
+                                    <Setter Property="Content" Value="{Binding DisplayName}" />
+                                    <Setter Property="Padding" Value="8,6,8,6" />
+                                    <Setter Property="Command" Value="{Binding Command}" />
+                                    <Setter Property="TileGlyph" Value="{Binding Image}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding HasChildren}"
                                                  Value="true">
-                                        <Setter Property="FlyoutContent" Value="{Binding Children}" />
-                                        <Setter Property="FlyoutContentTemplateSelector" Value="{StaticResource FlyoutContentTemplateSelector}" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </dxnav:TileBar.ItemContainerStyle>
-                    </dxnav:TileBar>
+                                            <Setter Property="FlyoutContent" Value="{Binding Child}" />
+                                            <Setter Property="FlyoutContentTemplateSelector" Value="{StaticResource FlyoutContentTemplateSelector}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </dxnav:TileBar.ItemContainerStyle>
+                        </dxnav:TileBar>
+                        <TextBlock VerticalAlignment="Top" Margin="5 5 0 0" Text="{Binding Child.Info}" Foreground="White" Focusable="False"/>
+                    </Grid>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
@@ -316,11 +319,13 @@
     </Style>
 
     <DataTemplate x:Key="FlyoutCollectionTemplate">
-        <ctrls:TileBarContentControl>
+        <ctrls:TileBarContentControl >
             <dxnav:TileBar ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
-                           ItemColorMode="Inverted"
-                           ItemContainerStyle="{StaticResource TileBarItemStyleExtended}"
-                           ItemsSource="{Binding}" />
+                                   ItemColorMode="Inverted"
+                                   ItemContainerStyle="{StaticResource TileBarItemStyleExtended}"
+                                   ItemsSource="{Binding Children}">
+            </dxnav:TileBar>
+            <TextBlock VerticalAlignment="Top" Margin="5 5 0 0" Text="{Binding Info}" Foreground="White" Focusable="False"/>
         </ctrls:TileBarContentControl>
     </DataTemplate>
 
