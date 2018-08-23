@@ -185,9 +185,10 @@
     <Compile Include="Controls\Custom\NavMenuTouchControl\TileBarContentControl.cs" />
     <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuItem.cs" />
     <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuViewModel.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouchControl\NavMenuTocuchControl.xaml.cs">
-      <DependentUpon>NavMenuTocuchControl.xaml</DependentUpon>
+    <Compile Include="Controls\Custom\NavMenuTouchControl\NavMenuTouchControl.xaml.cs">
+      <DependentUpon>NavMenuTouchControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuChildItem.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -200,7 +201,7 @@
     <Compile Include="ViewModels\WMSGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Custom\NavMenuTouchControl\NavMenuTocuchControl.xaml">
+    <Page Include="Controls\Custom\NavMenuTouchControl\NavMenuTouchControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

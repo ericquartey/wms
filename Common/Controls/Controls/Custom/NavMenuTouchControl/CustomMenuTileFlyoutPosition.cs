@@ -84,12 +84,14 @@ namespace Ferretto.Common.Controls
         }
       }
 
-      if (flyout != null &&
-          canClose)
+      if (canClose)
       {
-        flyout.Closed -= Flyout_Closed;
-        flyout.Closed += Flyout_Closed;
-        flyout.IsOpen = false;
+        if (flyout != null)
+        {
+          flyout.Closed -= Flyout_Closed;
+          flyout.Closed += Flyout_Closed;
+          flyout.IsOpen = false;
+        }
         e.Handled = true;
       }
     }
