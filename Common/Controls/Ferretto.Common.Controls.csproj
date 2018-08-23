@@ -177,6 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Common\Button.cs" />
+    <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Common\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\Common\WmsGridControl.cs" />
     <Compile Include="Controls\Common\WmsView.cs" />
@@ -202,6 +205,10 @@
     <Compile Include="ViewModels\WmsGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Custom\SplashScreen\SplashScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Custom\NavMenuTouchControl\NavMenuTouchControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

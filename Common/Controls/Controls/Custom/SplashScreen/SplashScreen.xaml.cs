@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.WMS.App
+namespace Ferretto.Common.Controls
 {
   public partial class SplashScreen : UserControl
   {
