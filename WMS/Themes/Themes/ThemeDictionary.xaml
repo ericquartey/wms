@@ -1,16 +1,15 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <ResourceDictionary.MergedDictionaries>
 
         <!--  Common  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Common.xaml" />
-        
+
         <!--  Custom  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouchControl.xaml" />
-        
+
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
