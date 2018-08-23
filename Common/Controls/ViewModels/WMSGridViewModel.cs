@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Events;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
@@ -20,7 +18,7 @@ namespace Ferretto.Common.Controls
 
     #region Constructors
 
-    protected WmsGridViewModel()
+    public WmsGridViewModel()
     {
       this.entityService = ServiceLocator.Current.GetInstance<IEntityService<TModel, TId>>();
 
