@@ -1,9 +1,8 @@
-﻿using Microsoft.Practices.Unity;
-using Prism.Modularity;
+﻿using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
-using AutoMapper;
 using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Modules.BLL.Models;
+using Microsoft.Practices.Unity;
+using Prism.Modularity;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -15,14 +14,16 @@ namespace Ferretto.Common.Modules.BLL.Services
 
     public BusinessLogicModule(IUnityContainer container)
     {
-      this.Container = container;
+      Container = container;
     }
 
     public void Initialize()
     {
-      this.Container.RegisterType<IItemsService, ItemsService>();
-      this.Container.RegisterType<IImageService, ImageService>();
-      this.Container.RegisterType<IEventService, EventService>();
+      Container.RegisterType<ItemsService>(new ContainerControlledLifetimeManager())
+        .RegisterType<IItemsService, ItemsService>()
+        .RegisterType<IEntityService<IItem, int>, ItemsService>();
+      Container.RegisterType<IImageService, ImageService>();
+      Container.RegisterType<IEventService, EventService>();
 
 
       // TODO: in the future we may need to so something more complex http://docs.automapper.org/en/stable/Dependency-injection.html
