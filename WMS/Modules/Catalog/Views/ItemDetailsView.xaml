@@ -1,4 +1,4 @@
-﻿<ctrls:WMSView x:Class="Ferretto.WMS.Modules.Catalog.ItemDetailsView"
+﻿<ctrls:WmsView x:Class="Ferretto.WMS.Modules.Catalog.ItemDetailsView"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
@@ -263,4 +263,4 @@
         </ScrollViewer>
 
     </Grid>
-</ctrls:WMSView>
+</ctrls:WmsView>

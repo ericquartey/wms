@@ -192,6 +192,7 @@
     <Compile Include="Views\ItemsAndDetailsView.xaml.cs">
       <DependentUpon>ItemsAndDetailsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ItemsGridControl.cs" />
     <Compile Include="Views\ItemsView.xaml.cs">
       <DependentUpon>ItemsView.xaml</DependentUpon>
     </Compile>
