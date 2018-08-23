@@ -176,14 +176,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Common\Button.cs" />
-    <Compile Include="Controls\Common\WMSDockLayoutManager.cs" />
-    <Compile Include="Controls\Common\WMSView.cs" />
+    <Compile Include="Controls\Common\Button.cs" />  
     <Compile Include="Controls\Custom\AccordionMenu\AccordionMenu.xaml.cs">
       <DependentUpon>AccordionMenu.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controls\Custom\AccordionMenu\MenuViewModel.cs" />
+    <Compile Include="Controls\Common\WmsDockLayoutManager.cs" />
+    <Compile Include="Controls\Common\WmsGridControl.cs" />
+    <Compile Include="Controls\Common\WmsView.cs" />
     <Compile Include="Controls\Custom\FlyoutContentTemplateSelector.cs" />
     <Compile Include="Controls\Custom\NavMenuTouch\Interface\IMenuItemViewModel.cs" />
     <Compile Include="Controls\Custom\NavMenuTouch\CustomMenuTileFlyoutPosition.cs" />
@@ -205,7 +206,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Interfaces\INavigableViewModel.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
-    <Compile Include="ViewModels\WMSGridViewModel.cs" />
+    <Compile Include="ViewModels\WmsGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\Custom\AccordionMenu\AccordionMenu.xaml">

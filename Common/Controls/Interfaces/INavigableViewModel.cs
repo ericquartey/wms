@@ -10,7 +10,6 @@ namespace Ferretto.Common.Controls.Interfaces
   {
     string Token { get; set; }
     string StateId { get; set; }
-    void OnAppear();
     void Appear();
     void Disappear();
   }

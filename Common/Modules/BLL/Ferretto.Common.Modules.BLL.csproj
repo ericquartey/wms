@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogicAutoMapperProfile.cs" />
+    <Compile Include="ModelExtensions.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="BusinessLogicModule.cs" />

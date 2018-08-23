@@ -10,44 +10,51 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemDetailsViewModel : BaseNavigationViewModel
   {
+    #region Fields
+
     private readonly IImageService imageService;
+    private IItem item;
+    private ImageSource imgArticle;
+
+    #endregion
 
     #region Properties
-    private IItem item;
+
     public IItem Item
     {
       get => this.item;
       set => this.SetProperty(ref this.item, value);
     }
 
-    private ImageSource imgArticle;
     public ImageSource ImgArticle
     {
       get => this.imgArticle;
       set => this.SetProperty(ref this.imgArticle, value);
     }
+
     #endregion
 
-    #region Ctor
+    #region Constructors
+
     public ItemDetailsViewModel(IImageService imageService)
     {
       this.Initialize();
       this.imageService = imageService;
     }
+
     #endregion
 
     #region Methods
+
     private void Initialize()
     {
-      // Subscribe
-      var eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-      var navigationCompletedEvent = eventAggregator.GetEvent<ItemSelectionChangedEvent>();
-      navigationCompletedEvent.Subscribe(item => this.OnItemSelectionChanged(item), ThreadOption.UIThread);
+      ServiceLocator.Current.GetInstance<IEventService>()
+        .Subscribe<ItemSelectionChangedEvent<IItem>>(eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
     }
 
-    private void OnItemSelectionChanged(object selectedItemObj)
+    private void OnItemSelectionChanged(IItem selectedItem)
     {
-      if (selectedItemObj is IItem selectedItem)
+      if (selectedItem != null)
       {
         this.Item = selectedItem;
         this.ImgArticle = selectedItem.Image != null ? this.imageService.GetImage(selectedItem.Image) : null;
@@ -57,6 +64,7 @@ namespace Ferretto.WMS.Modules.Catalog
         this.ImgArticle = null;
       }
     }
+
     #endregion
 
   }

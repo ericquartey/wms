@@ -15,22 +15,26 @@ namespace Ferretto.Common.Modules.BLL.Services
 
     public void Invoke<TEventArgs>(TEventArgs eventArgs) where TEventArgs : IEventArgs
     {
-      GetEventBus<TEventArgs>()?.Publish(eventArgs);
+      this.GetEventBus<TEventArgs>()?.Publish(eventArgs);
     }
 
-    public void Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive) where TEventArgs : IEventArgs
+    public void Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive, bool forceUiThread = false) where TEventArgs : IEventArgs
     {
-      GetEventBus<TEventArgs>().Subscribe(action, ThreadOption.BackgroundThread, keepSubscriberReferenceAlive, x => string.IsNullOrEmpty(x.Token) || x.Token == token);
+      this.GetEventBus<TEventArgs>().Subscribe(
+        action,
+        forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread,
+        keepSubscriberReferenceAlive,
+        x => string.IsNullOrEmpty(x.Token) || x.Token == token);
     }
 
-    public void Subscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
+    public void Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false) where TEventArgs : IEventArgs
     {
-      GetEventBus<TEventArgs>().Subscribe(action, ThreadOption.BackgroundThread);
+      this.GetEventBus<TEventArgs>().Subscribe(action, forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread);
     }
 
     public void Unusbscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
     {
-      GetEventBus<TEventArgs>().Unsubscribe(action);
+      this.GetEventBus<TEventArgs>().Unsubscribe(action);
     }
 
     private PubSubEvent<TEventArgs> GetEventBus<TEventArgs>() where TEventArgs : IEventArgs

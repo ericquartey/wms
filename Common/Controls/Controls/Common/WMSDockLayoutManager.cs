@@ -3,10 +3,10 @@ using Prism.Regions;
 
 namespace Ferretto.Common.Controls
 {
-  public class WMSMainDockLayoutManager : DockLayoutManager
+  public class WmsMainDockLayoutManager : DockLayoutManager
   {
     #region Static Property
-    public static WMSMainDockLayoutManager Current
+    public static WmsMainDockLayoutManager Current
     {
       get;
       private set;
@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
     #endregion
 
     #region Ctor
-    public WMSMainDockLayoutManager()
+    public WmsMainDockLayoutManager()
     {
       Current = this;
     }
@@ -33,5 +33,5 @@ namespace Ferretto.Common.Controls
       mainGroup.Add(layoutPanel);
     }
     #endregion
-  }    
+  }
 }

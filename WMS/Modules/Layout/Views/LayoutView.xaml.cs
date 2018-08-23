@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  public partial class LayoutView : WMSView
+  public partial class LayoutView : WmsView
   {
     public LayoutView()
     {
