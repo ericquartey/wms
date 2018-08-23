@@ -180,6 +180,16 @@
     <Compile Include="Controls\Common\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\Common\WmsGridControl.cs" />
     <Compile Include="Controls\Common\WmsView.cs" />
+    <Compile Include="Controls\Custom\FlyoutContentTemplateSelector.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\Interface\IMenuItemViewModel.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\CustomMenuTileFlyoutPosition.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\TileBarContentControl.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuItem.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuViewModel.cs" />
+    <Compile Include="Controls\Custom\NavMenuTouchControl\NavMenuTouchControl.xaml.cs">
+      <DependentUpon>NavMenuTouchControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Custom\NavMenuTouchControl\ViewModels\NavMenuChildItem.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -192,7 +202,10 @@
     <Compile Include="ViewModels\WmsGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\Custom\" />
+    <Page Include="Controls\Custom\NavMenuTouchControl\NavMenuTouchControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
