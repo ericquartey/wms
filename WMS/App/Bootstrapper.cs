@@ -4,7 +4,6 @@ using Microsoft.Practices.ServiceLocation;
 using Prism.Modularity;
 using Prism.Regions;
 using Prism.Unity;
-using System;
 using System.Configuration;
 using System.Windows;
 
@@ -44,8 +43,8 @@ namespace Ferretto.WMS.App
     {
       base.InitializeShell();
 
-      App.Current.MainWindow = (Window)this.Shell;
-      App.Current.MainWindow.Show();    
+      Application.Current.MainWindow = (Window)this.Shell;
+      Application.Current.MainWindow.Show();
     }
   }
 }

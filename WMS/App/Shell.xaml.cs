@@ -12,7 +12,14 @@ namespace Ferretto.WMS.App
 
     public Shell()
     {
-      InitializeComponent();
+      this.InitializeComponent();
+
+      this.Loaded += this.Shell_Loaded;
+    }
+
+    private void Shell_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+    {
+      DXSplashScreen.Close();
     }
 
     public Shell(IModuleManager moduleManager, IRegionManager regionManager)
@@ -23,7 +30,6 @@ namespace Ferretto.WMS.App
 
       // Load the root module of the application
       this.moduleManager.LoadModule(nameof(Layout));
-
     }
   }
 }
