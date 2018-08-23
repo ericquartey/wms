@@ -9,7 +9,7 @@ namespace Ferretto.WMS.App
     {
       base.OnStartup(e);
 
-      DXSplashScreen.Show<SplashScreen>();
+      DXSplashScreen.Show<Common.Controls.SplashScreen>();
 
       var bootstrapper = new Bootstrapper();
       bootstrapper.Run();

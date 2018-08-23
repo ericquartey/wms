@@ -223,6 +223,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj">
+      <Project>{0ddbd6dc-1f23-4f52-849d-94da9e5f1b12}</Project>
+      <Name>Ferretto.Common.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
