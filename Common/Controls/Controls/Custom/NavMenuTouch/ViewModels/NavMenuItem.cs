@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Input;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
+using Ferretto.Common.Utils.Menu;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
