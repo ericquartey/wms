@@ -1,20 +1,16 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
+﻿using System;
+using System.Collections.ObjectModel;
 using Ferretto.Common.Utils.Menu;
-using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.Layout
+namespace Ferretto.Common.Controls
 {
-  public class MenuViewModel : BaseNavigationViewModel
+  public class NavMenuViewModel
   {
-
-    public MenuViewModel()
+    public NavMenuViewModel()
     {
       this.Inizialize();
     }
-     
+
     private void Inizialize()
     {
       this.Items = new ObservableCollection<NavMenuItem>();
@@ -23,7 +19,12 @@ namespace Ferretto.WMS.Modules.Layout
       {
         this.Items.Add(new NavMenuItem(item, string.Empty));
       }
-    } 
+    }
+
+    public NavMenuViewModel(ObservableCollection<NavMenuItem> items)
+    {
+      this.Items = items;
+    }
 
     public ObservableCollection<NavMenuItem> Items
     {

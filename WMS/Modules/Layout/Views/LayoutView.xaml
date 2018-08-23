@@ -10,14 +10,15 @@
                d:DesignWidth="800"
                mc:Ignorable="d">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <ContentControl x:Name="MenuContent"
-                        Grid.Column="0"
-                        prism:RegionManager.RegionName="Layout.Menu" />
-        <ctrls:WMSMainDockLayoutManager Grid.Column="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <DockPanel LastChildFill="True">
+            <ContentControl x:Name="MenuContent"                            
+                            prism:RegionManager.RegionName="Layout.Menu" />
+        </DockPanel>
+        <ctrls:WMSMainDockLayoutManager Grid.Row="1">
             <dxdo:LayoutGroup Orientation="Vertical">
                 <dxdo:LayoutGroup ItemHeight="0.7*"
                                   Orientation="Horizontal">
