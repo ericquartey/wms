@@ -99,7 +99,7 @@ namespace Ferretto.Common.Controls.Services
     public void Disappear<TViewModel>()
     {
       var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
-      this.Appear(moduleName, viewModelName);
+      this.Disappear(moduleName, viewModelName);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
