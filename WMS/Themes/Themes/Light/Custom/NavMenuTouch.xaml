@@ -28,7 +28,7 @@
                             <ContentControl x:Name="PART_cc"
                                             Focusable="False">
                                 <Grid x:Name="PART_RenderGrid"
-                                      Margin="0,10,0,0"
+                                      Margin="0,0,0,0"
                                       FlowDirection="LeftToRight">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -286,6 +286,7 @@
                 <DataTemplate>
                     <Grid>
                         <dxnav:TileBar ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
+                                       Margin="185 0 0 0"
                                        ItemColorMode="Inverted"
                                        ItemsSource="{Binding Child.Children, Mode=OneWay}"
                                        Orientation="Horizontal"
@@ -307,7 +308,7 @@
                                 </Style>
                             </dxnav:TileBar.ItemContainerStyle>
                         </dxnav:TileBar>
-                        <TextBlock Margin="5,5,0,0"
+                        <TextBlock Margin="230,5,0,0"
                                    VerticalAlignment="Top"
                                    Focusable="False"
                                    Foreground="White"
@@ -328,7 +329,7 @@
                            ItemColorMode="Inverted"
                            ItemContainerStyle="{StaticResource TileBarItemStyleExtended}"
                            ItemsSource="{Binding Children}" />
-            <TextBlock Margin="5,5,0,0"
+            <TextBlock Margin="45,5,0,0"
                        VerticalAlignment="Top"
                        Focusable="False"
                        Foreground="White"

@@ -77,6 +77,7 @@ namespace Ferretto.Common.Controls
             dt.HasChildren == false)                 
         {
           tileBarItem.Command?.Execute(null);
+          e.Handled = true;
         }
         else
         {
@@ -91,8 +92,7 @@ namespace Ferretto.Common.Controls
           flyout.Closed -= Flyout_Closed;
           flyout.Closed += Flyout_Closed;
           flyout.IsOpen = false;
-        }
-        e.Handled = true;
+        }        
       }
     }
 

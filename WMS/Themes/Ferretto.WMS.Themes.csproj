@@ -8013,7 +8013,7 @@
     <Page Include="Themes\Light\Common.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Light\Custom\NavMenuTouchControl.xaml">
+    <Page Include="Themes\Light\Custom\NavMenuTouch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -8026,6 +8026,9 @@
       <Project>{0ddbd6dc-1f23-4f52-849d-94da9e5f1b12}</Project>
       <Name>Ferretto.Common.Controls</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\FGLogoVerticale2018.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
