@@ -8,7 +8,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Common.xaml" />
 
         <!--  Custom  -->
-        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouchControl.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouch.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

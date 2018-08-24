@@ -9,9 +9,18 @@
                d:DesignHeight="450"
                d:DesignWidth="800"
                mc:Ignorable="d">
-    <Grid>
+    <Grid Height="90">
+        <Image Width="192"
+               Height="68"
+               Margin="20,10,0,0"
+               Panel.ZIndex="1"
+               Focusable="False"
+               HorizontalAlignment="Left"
+               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogoVerticale2018.png" />
         <DockPanel Background="LightGray">
             <dxnav:TileBar x:Name="WMSTileNav"
+                           Background="Transparent"
+                       Padding="205 10 80 0"
                        ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                        AllowItemSelection="False"
                        DockPanel.Dock="Top"
@@ -24,7 +33,10 @@
                       Focusable="False"
                       HorizontalScrollBarVisibility="Disabled"
                       VerticalScrollBarVisibility="Auto" />
-
         </DockPanel>
+        <TextBlock Margin="0,35,25,0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Top"
+                   Text="NM logged" />
     </Grid>
 </ctrls:WmsView>
