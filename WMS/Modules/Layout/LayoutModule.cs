@@ -11,16 +11,24 @@ namespace Ferretto.WMS.Modules.Layout
   [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
   public class LayoutModule : IModule
   {
-    #region IModule Members
+    #region Members
 
     public IUnityContainer Container { get; private set; }
     public IRegionManager RegionManager { get; private set; }
+
+    #endregion
+
+    #region Constructors
 
     public LayoutModule(IUnityContainer container, IRegionManager regionManager)
     {
       this.Container = container;
       this.RegionManager = regionManager;
     }
+
+    #endregion
+
+    #region IModule Members
 
     public void Initialize()
     {
@@ -35,6 +43,6 @@ namespace Ferretto.WMS.Modules.Layout
       this.RegionManager.RegisterViewWithRegion($"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
     }
 
-    #endregion 
+    #endregion
   }
 }

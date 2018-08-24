@@ -18,7 +18,10 @@
             <localctrls:ItemsView />
         </ContentControl>
         <ContentControl Grid.Row="1">
+            <!--
+            temporarily remove the details view, since we will be refactoring this
             <localctrls:ItemDetailsView />
+            -->
         </ContentControl>
     </Grid>
 </ctrls:WmsView>

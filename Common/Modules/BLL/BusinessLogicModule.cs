@@ -27,7 +27,6 @@ namespace Ferretto.Common.Modules.BLL.Services
       this.Container.RegisterType<IImageService, ImageService>();
       this.Container.RegisterType<IEventService, EventService>();
 
-
       // TODO: in the future we may need to so something more complex http://docs.automapper.org/en/stable/Dependency-injection.html
       Mapper.Initialize(config => config.AddProfile<BusinessLogicAutoMapperProfile>());
       Mapper.Configuration.CompileMappings();
