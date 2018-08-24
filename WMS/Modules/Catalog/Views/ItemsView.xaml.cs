@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Modules.Catalog
   {
     public ItemsView()
     {
-      InitializeComponent();      
+      this.InitializeComponent();
     }
   }
 }
