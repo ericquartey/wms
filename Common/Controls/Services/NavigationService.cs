@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -29,53 +29,49 @@ namespace Ferretto.Common.Controls.Services
     #region Public methods
 
     #region Appear
-    public void Appear(Uri uri)
-    {
-      var (module, viewModelName) = GetViewModelNameSplitted(uri);
-      this.Appear(module, viewModelName);
-    }
 
     public void Appear<TViewModel>()
     {
-      var (module, viewModelName) = GetViewModelNames<TViewModel>();
-      this.Appear(module, viewModelName);
+      var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
+      this.Appear(moduleName, viewModelName);
     }
 
-    public void Appear(string module, string viewModelName)
+    public void Appear(string moduleName, string viewModelName)
     {
 
-        if (IsViewModelNameValid(viewModelName) == false)
+        if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
         {
           return;
         }
 
-        this.LoadModule(module);
+        this.LoadModule(moduleName);
 
-        var name = GetName(viewModelName);
-        var moduleViewName = GetViewName(module, name);
+        var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+        var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
 
         var instanceModuleViewName = this.CheckAddRegion(moduleViewName);
 
         var region = this.regionManager.Regions[instanceModuleViewName];
         var view = region.Views.FirstOrDefault(v => v.GetType().ToString().Equals(moduleViewName, StringComparison.InvariantCulture));
+
         region.Activate(view);
     }
 
     private string CheckAddRegion(string moduleViewName)
     {
-      var viewModelBind = this.GetViewModdelBind(moduleViewName);
+      var viewModelBind = this.GetViewModelBind(moduleViewName);
       var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";
       if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
       {
         // Map Prism region to current layout
-        this.AddToregion(instanceModuleViewName);
+        this.AddToRegion(instanceModuleViewName);
         return instanceModuleViewName;
       }
 
       var idStateNotChanged = GetStateNotChanged(moduleViewName, viewModelBind);
       if (idStateNotChanged != null)
       {
-        // View state is not chaaged, activate this id
+        // View state is not changed, activate this id
         instanceModuleViewName = $"{moduleViewName}.{idStateNotChanged}";
       }
       else
@@ -85,8 +81,9 @@ namespace Ferretto.Common.Controls.Services
         instanceModuleViewName = $"{moduleViewName}.{newRegId}";
         this.container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, instanceModuleViewName);
         this.container.RegisterType(typeof(INavigableView), viewModelBind.View, instanceModuleViewName);
+
         // Map cloned type to current layout
-        this.AddToregion(instanceModuleViewName);
+        this.AddToRegion(instanceModuleViewName);
       }
 
       return instanceModuleViewName;
@@ -99,39 +96,29 @@ namespace Ferretto.Common.Controls.Services
       "Major Code Smell",
       "S4144:Methods should not have identical implementations",
       Justification = "Method is not yet fully implemented")]
-    public void Disappear(Uri uri)
-    {
-      var (module, viewModelName) = GetViewModelNameSplitted(uri);
-      this.Appear(module, viewModelName);
-    }
-
-    [System.Diagnostics.CodeAnalysis.SuppressMessage(
-      "Major Code Smell",
-      "S4144:Methods should not have identical implementations",
-      Justification = "Method is not yet fully implemented")]
     public void Disappear<TViewModel>()
     {
-      var (module, viewModelName) = GetViewModelNames<TViewModel>();
-      this.Appear(module, viewModelName);
+      var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
+      this.Appear(moduleName, viewModelName);
     }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
       "Major Code Smell",
       "CA1804",
       Justification = "Method is not yet fully implemented")]
-    public void Disappear(string module, string viewModelName)
+    public void Disappear(string moduleName, string viewModelName)
     {
-        if (IsViewModelNameValid(viewModelName) == false)
+        if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
         {
           return;
         }
-        var regionName = GetName(viewModelName);
-        var moduleViewName = GetViewName(module, regionName);
+        var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+        var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
 
         throw new NotSupportedException("Disappear need to be implemented");
 
         // Get corrent mapid
-        var moduleRegionName = $"{module}.{regionName}.1";
+        var moduleRegionName = $"{moduleName}.{modelName}.1";
         if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
         {
           return;
@@ -171,11 +158,11 @@ namespace Ferretto.Common.Controls.Services
 
     public INavigableViewModel GetViewModelByName(string viewModelName)
     {
-      if (IsViewModelNameValid(viewModelName) == false)
+      if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
       {
         return null;
       }
-      var names = GetViewModelNames(viewModelName);
+      var names = MvvmNaming.GetViewModelNames(viewModelName);
       return ServiceLocator.Current.GetInstance<INavigableViewModel>(names.viewModelName);
     }
 
@@ -206,23 +193,19 @@ namespace Ferretto.Common.Controls.Services
       else
       {
         viewModelBind = this.registrations[fullViewName];
-        newId = viewModelBind.GetNewId(); // FIXME this assignment is useless
       }
       newId = $"{typeof(TItemsView)}.{viewModelBind.GetNewId()}";
       return newId;
     }
-    private ViewModelBind GetViewModdelBind(string fullViewName)
+
+    private ViewModelBind GetViewModelBind(string fullViewName)
     {
-      if (this.registrations.ContainsKey(fullViewName) == false)
-      {
-        return null;
-      }
-      return this.registrations[fullViewName];
+      return this.registrations.ContainsKey(fullViewName) ? this.registrations[fullViewName] : null;
     }
 
-    private static string GetStateNotChanged(string moduleViewName, ViewModelBind vmbind)
+    private static string GetStateNotChanged(string moduleViewName, ViewModelBind viewModelBind)
     {
-      foreach (var id in vmbind.Ids)
+      foreach (var id in viewModelBind.Ids)
       {
         var viewModel = ServiceLocator.Current.GetInstance<INavigableViewModel>($"{moduleViewName}.{id}");
         if (string.IsNullOrEmpty(viewModel.StateId))
@@ -233,22 +216,7 @@ namespace Ferretto.Common.Controls.Services
       return null;
     }
 
-    private static bool IsViewModelNameValid(string viewModelName)
-    {
-      if (string.IsNullOrEmpty(viewModelName))
-      {
-        return false;
-      }
-
-      if (viewModelName.EndsWith(Utils.Common.VIEWMODEL_SUFFIX, System.StringComparison.InvariantCulture) == false)
-      {
-        return false;
-      }
-
-      return true;
-    }
-
-    private void AddToregion(string moduleViewName)
+    private void AddToRegion(string moduleViewName)
     {
       var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
       registeredView.Token = moduleViewName;
@@ -257,57 +225,22 @@ namespace Ferretto.Common.Controls.Services
       this.regionManager.AddToRegion(moduleViewName, registeredView);
     }
 
-    private static (string module, string viewModelName) GetViewModelNames(string viewModelName)
-    {
-      return GetViewModelNameSplitted(viewModelName);
-    }
-
-    private static (string module, string viewModelName) GetViewModelNames<TViewModel>()
-    {
-      var type = typeof(TViewModel);
-      var viewModelName = type.ToString();
-      return GetViewModelNameSplitted(viewModelName);
-    }
-
-    private static  (string module, string viewModelName) GetViewModelNameSplitted(string viewModelName)
-    {
-      var vm = viewModelName.Replace($"{Utils.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.", "");
-      var vmSplit = vm.Split('.');
-      return (vmSplit[0], vmSplit[1]);
-    }
-
-    private static (string module, string viewModelName) GetViewModelNameSplitted(Uri uri)
-    {
-      var vmSplit = uri.ToString().Split('/');
-      return (vmSplit[0], vmSplit[1]);
-    }
-
-    private static string GetName(string viewModelName)
-    {
-      return g.Replace(viewModelName, string.Empty);
-    }
-
-    static Regex g = new Regex($"{Common.Utils.Common.VIEWMODEL_SUFFIX}$", RegexOptions.Compiled);
-
-    private static string GetViewName(string module, string regionName)
-    {
-      return $"{Utils.Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{module}.{regionName}{Utils.Common.VIEW_SUFFIX}";
-    }
-
     private void LoadModule(string moduleName)
     {
       var catalog = this.container.Resolve<IModuleCatalog>();
       var module = (catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName));
-      if (module.State == ModuleState.NotStarted)
+      if (module.State != ModuleState.NotStarted)
       {
-        var moduleManager = this.container.Resolve<IModuleManager>();
-        moduleManager.LoadModule(moduleName);
+        return;
       }
+
+      var moduleManager = this.container.Resolve<IModuleManager>();
+      moduleManager.LoadModule(moduleName);
     }
     #endregion
 
     #region Helper class
-    class ViewModelBind
+    private class ViewModelBind
     {
       #region Properties
       public Type View { get; set; }
