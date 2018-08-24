@@ -84,13 +84,7 @@
                 <Border Padding="5">
                     <ItemsControl>
                         <ItemsControl.Items>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock MinWidth="150"
-                                           Text="Unità di Misura" />
-                                <dxe:TextEdit Width="150"
-                                              EditValue="{Binding Path=Item.MeasureUnitId}"
-                                              IsReadOnly="True" />
-                            </StackPanel>
+
 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock MinWidth="150"
@@ -123,17 +117,7 @@
                                               IsReadOnly="False"
                                               VerticalScrollBarVisibility="Auto" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock MinWidth="150"
-                                           Text="Tipo gestione ID" />
-                                <dxe:TextEdit Width="150"
-                                              VerticalContentAlignment="Top"
-                                              AcceptsReturn="True"
-                                              EditValue="{Binding Path=Item.ItemManagementTypeId}"
-                                              IsReadOnly="False"
-                                              TextWrapping="Wrap"
-                                              VerticalScrollBarVisibility="Auto" />
-                            </StackPanel>
+
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock MinWidth="150"
                                            Text="Periodo FIFO in versamento" />
@@ -187,13 +171,7 @@
                                               EditValue="{Binding Path=Item.InventoryDate}"
                                               IsReadOnly="True" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock MinWidth="150"
-                                           Text="Quantita' minima di riordino" />
-                                <dxe:TextEdit Width="150"
-                                              EditValue="{Binding Path=Item.QuantitaMinimaDiRiordino}"
-                                              IsReadOnly="True" />
-                            </StackPanel>
+
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock MinWidth="150"
                                            Text="Peso unitario" />
