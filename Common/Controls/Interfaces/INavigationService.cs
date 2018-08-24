@@ -8,8 +8,8 @@
     INavigableViewModel GetViewModelByName(string viewModelName);
     INavigableViewModel GetViewModelByMapId(string mapId);
     void Appear<TViewModel>();
-    void Appear(string module, string viewModelName);
+    void Appear(string moduleName, string viewModelName);
     void Disappear<TViewModel>();
-    void Disappear(string module, string viewModelName);
+    void Disappear(string moduleName, string viewModelName);
   }
 }
