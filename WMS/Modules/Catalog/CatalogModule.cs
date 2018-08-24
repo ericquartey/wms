@@ -1,6 +1,4 @@
-﻿using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
+﻿using Ferretto.Common.Controls.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
