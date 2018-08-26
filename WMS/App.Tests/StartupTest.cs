@@ -32,10 +32,10 @@ namespace Ferretto.WMS.App.Tests
     [TestInitialize]
     public void Initialize()
     {
-      var applicationPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).FullName;
+      var applicationPath = Directory.GetParent(Assembly.GetExecutingAssembly().Location).Parent.FullName;
 
       var applicationFilePath = Path.Combine(applicationPath, "Ferretto.WMS.App.exe");
-
+     
       var appProcess = new Process();
       appProcess.StartInfo.WorkingDirectory = applicationPath;
       appProcess.StartInfo.FileName = applicationFilePath;
@@ -52,7 +52,7 @@ namespace Ferretto.WMS.App.Tests
     [TestMethod]
     [TestCategory("Smoke")]
     [TestCategory("End to end")]
-    public void TestWindowIsLoaded()
+    public void TestNavMenuIsLoaded()
     {
       var window = this.application.GetWindow(
         "Ferretto Warehouse Management System",
