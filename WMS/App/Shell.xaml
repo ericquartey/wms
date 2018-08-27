@@ -5,6 +5,8 @@
                  xmlns:dxcore="http://schemas.devexpress.com/winfx/2008/xaml/core"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:prism="http://www.codeplex.com/prism"
+                 xmlns:r="clr-namespace:Ferretto.WMS.App.Properties"
+                 Title="{x:Static r:Resources.Application_Title}"
                  mc:Ignorable="d">
     <Grid>
         <ContentControl x:Name="MainContent"

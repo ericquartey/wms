@@ -61,7 +61,7 @@ namespace Ferretto.WMS.App.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ferretto Warehuse Management System.
+        ///   Looks up a localized string similar to Ferretto Warehouse Management System.
         /// </summary>
         public static string Application_Title {
             get {
