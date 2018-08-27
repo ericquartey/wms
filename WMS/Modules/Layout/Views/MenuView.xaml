@@ -5,22 +5,22 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
-               xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"               
+               xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                d:DesignHeight="450"
                d:DesignWidth="800"
                mc:Ignorable="d">
     <Grid Height="90">
-        <Image Width="192"
-               Height="68"
+        <Image Width="110"
+               Height="39"
                Margin="20,10,0,0"
                Panel.ZIndex="1"
                Focusable="False"
                HorizontalAlignment="Left"
-               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogoVerticale2018.png" />
+               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogo.png" />
         <DockPanel Background="LightGray">
             <dxnav:TileBar x:Name="WMSTileNav"
                            Background="Transparent"
-                       Padding="205 10 80 0"
+                       Padding="125 10 80 0"
                        ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                        AllowItemSelection="False"
                        DockPanel.Dock="Top"
