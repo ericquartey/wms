@@ -44,7 +44,7 @@
                                             Grid.Row="1"
                                             Grid.Column="1"
                                             HorizontalAlignment="Stretch"
-                                            Background="{TemplateBinding Background}"
+                                            Background="{DynamicResource CommonDarkGrey}"
                                             BorderBrush="{TemplateBinding BorderBrush}"
                                             BorderThickness="{TemplateBinding BorderThickness}">
                                         <dxe:FlyoutContainerControl Margin="{TemplateBinding Padding}"
