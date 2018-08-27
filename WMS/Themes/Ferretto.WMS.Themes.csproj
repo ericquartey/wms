@@ -8031,4 +8031,5 @@
     <Resource Include="Images\FGLogoVerticale2018.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\cleanup.targets"/>
 </Project>
