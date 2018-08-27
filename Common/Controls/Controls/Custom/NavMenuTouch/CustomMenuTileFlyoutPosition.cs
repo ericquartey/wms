@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core.Native;
 using DevExpress.Xpf.Navigation;
+using DevExpress.Xpf.Navigation.Internal;
 
 namespace Ferretto.Common.Controls
 {
@@ -34,6 +36,16 @@ namespace Ferretto.Common.Controls
       {
         element.Loaded += Element_Loaded;
         element.PreviewMouseDown += PreviewMouseDown;
+        if (element.Parent != null)
+        {    // Is not first level /flyout                                                 
+          var grid = LayoutTreeHelper.GetVisualParents(dependencyObject)
+                       .OfType<Grid>().FirstOrDefault(x => x.Name == "PART_RenderGrid");
+          if (grid != null)
+          {   // Consider all flyout content
+            grid.PreviewMouseDown += GridParent_PreviewMouseDown;
+          }
+        }
+        
       }
     }
     #endregion
@@ -50,8 +62,38 @@ namespace Ferretto.Common.Controls
                           .FirstOrDefault() != null)
       {
         var flyout = (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase.FlyoutProperty);
-        flyout.Padding = new Thickness(0, -tileBar.ActualHeight, 0, 0);
+        // Change position of child tilebar
+        flyout.Padding = new Thickness(0, -(tileBar.ActualHeight - 10), 0, 0);
         flyout.UpdateLayout();
+      }
+    }
+
+    private static void GridParent_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+    {
+      if (!(sender is Grid grid))
+      {
+        return;
+      }
+      var tileBar = LayoutTreeHelper.GetVisualChildren(grid as DependencyObject)
+                          .OfType<TileBar>()
+                          .FirstOrDefault();
+      if (tileBar != null)
+      {
+        if (IsClickOnScroll(e.OriginalSource))
+        {
+          return;
+        }
+        var flyout = (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase.FlyoutProperty);
+        if (flyout != null)
+        {
+          tileBar.IsVisibleChanged -= Flyout_IsVisibleChanged;
+          tileBar.IsVisibleChanged += Flyout_IsVisibleChanged;
+          if ((e.Source is TileNavPaneContentControl) == false)
+          {
+            e.Handled = true;
+            flyout.IsOpen = false;
+          }
+        }
       }
     }
 
@@ -65,21 +107,31 @@ namespace Ferretto.Common.Controls
       var flyout = (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase.FlyoutProperty);
       if (flyout != null)
       {
-        ((FrameworkElement)(flyout.Content)).Opacity = 0;
         tileBar.IsVisibleChanged -= Flyout_IsVisibleChanged;
         tileBar.IsVisibleChanged += Flyout_IsVisibleChanged;
       }
 
-      var canClose = true;
+      bool canClose = true;
       if (e.Source is TileBarItem tileBarItem)
-      {
-        if (tileBarItem.DataContext is IMenuItemViewModel dt &&
-            dt.HasChildren == false)                 
+      {        
+        if (flyout != null)
+        {
+          ((FrameworkElement)(flyout.Content)).Opacity = 0;
+        }
+        var dt = tileBarItem.DataContext as IMenuItemViewModel;
+        if (dt != null && dt.HasChildren == false)
         {
           tileBarItem.Command?.Execute(null);
           e.Handled = true;
         }
         else
+        {
+          canClose = false;
+        }
+      }
+      else
+      {
+        if (IsClickOnScroll(e.OriginalSource))
         {
           canClose = false;
         }
@@ -92,7 +144,7 @@ namespace Ferretto.Common.Controls
           flyout.Closed -= Flyout_Closed;
           flyout.Closed += Flyout_Closed;
           flyout.IsOpen = false;
-        }        
+        }
       }
     }
 
@@ -116,6 +168,13 @@ namespace Ferretto.Common.Controls
     #endregion
 
     #region Methods
+    private static bool IsClickOnScroll(object originalSource)
+    {
+      return (LayoutTreeHelper.GetVisualParents(originalSource as UIElement)
+                                .OfType<DevExpress.Xpf.Controls.Primitives.ScrollableControlButton>()
+                                .FirstOrDefault() != null);
+    }
+
     private static void CloseParentFlyout(UIElement element)
     {
       if (element == null)
