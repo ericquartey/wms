@@ -113,8 +113,7 @@ namespace Ferretto.Common.Controls
 
       bool canClose = true;
       if (e.Source is TileBarItem tileBarItem)
-      {
-        Console.WriteLine("tilebar item");
+      {        
         if (flyout != null)
         {
           ((FrameworkElement)(flyout.Content)).Opacity = 0;
