@@ -24,6 +24,7 @@ namespace Ferretto.Common.Controls
       this.Image = item.Image;
       this.ModuleName = item.ModuleName;
       this.ViewName = item.ViewName;
+      this.IsRootLevel = string.IsNullOrEmpty(currBreadCrumb);
       this.AddChild(item.Children, currBreadCrumb);
     }
 
@@ -53,6 +54,8 @@ namespace Ferretto.Common.Controls
     public string ModuleName { get; set; }
 
     public string ViewName { get; set; }
+
+    public bool   IsRootLevel { get; set; }    
 
     public ICommand Command { get; set; }
 

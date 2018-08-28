@@ -156,8 +156,43 @@
         </Setter>
     </Style>
 
-    <ControlTemplate x:Key="TileBarItemArrowControlEmptyTemplate">
-        <Grid Background="Transparent" />
+    <ControlTemplate TargetType="dxnavi:TileBarItemArrowControl" x:Key="TileBarItemArrowControlEmptyTemplate">
+        <Grid Background="{TemplateBinding Background}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Path Grid.Column="1" x:Name="Glyph" Stretch="Fill"   Data="F1 M 0,0L 14.002,0L 7,7L 0,0 Z " Width="9" Height="5" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+                <Path.Style>
+                    <Style TargetType="Path">
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=HasChildren}" Value="true" />
+                                    <Condition Binding="{Binding Path=IsRootLevel}" Value="true" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Fill" Value="{DynamicResource  CommonTextLightForeground}" />
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding Path=HasChildren}" Value="true" />
+                                    <Condition Binding="{Binding Path=IsRootLevel}" Value="false" />
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Fill" Value="{DynamicResource  CommonDarkGrey}" />
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+                <Path.RenderTransform>
+                    <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="ArrowRotateTransform" >
+                    </RotateTransform>
+                </Path.RenderTransform>
+            </Path>
+        </Grid>
     </ControlTemplate>
 
     <ControlTemplate x:Key="{dxwuit:TileNavPaneElementsThemeKey ResourceKey=TileSelectorItemTemplate,
@@ -196,7 +231,11 @@
                         </dxnavi:TileButtonControl.Resources>
                     </dxnavi:TileButtonControl>
                     <dxnavi:TileBarItemArrowControl x:Name="PART_ArrowButton"
+                                                    Margin="0 0 10 0"
+                                                    BorderThickness="0"
+                                                    BorderBrush="Transparent"
                                                     Grid.Column="0"
+                                                    HorizontalAlignment="Stretch"
                                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                                     Background="Transparent"
@@ -277,7 +316,6 @@
 
     <Style x:Key="TileBarItemStyleExtended"
            TargetType="{x:Type dxnav:TileBarItem}">
-        <Setter Property="Content" Value="{Binding DisplayName}" />
         <Setter Property="Command" Value="{Binding Command}" />
         <Setter Property="AllowGlyphTheming" Value="False" />
         <Setter Property="FlyoutContent" Value="{Binding}" />
@@ -294,7 +332,13 @@
                             <dxnav:TileBar.ItemContainerStyle>
                                 <Style TargetType="dxnav:TileBarItem">
                                     <Setter Property="AllowGlyphTheming" Value="False" />
-                                    <Setter Property="Content" Value="{Binding DisplayName}" />
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <TextBlock x:Name="ChildBarItemTB" Text="{Binding DisplayName}" Foreground="{DynamicResource CommonDarkGrey}" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
                                     <Setter Property="Padding" Value="8,6,8,6" />
                                     <Setter Property="Command" Value="{Binding Command}" />
                                     <Setter Property="TileGlyph" Value="{Binding Image}" />
@@ -308,7 +352,7 @@
                                 </Style>
                             </dxnav:TileBar.ItemContainerStyle>
                         </dxnav:TileBar>
-                        <TextBlock Margin="230,5,0,0"
+                        <TextBlock Margin="5,5,0,0"
                                    VerticalAlignment="Top"
                                    Focusable="False"
                                    Foreground="White"
@@ -323,13 +367,27 @@
         <Setter Property="Background" Value="{Binding BackColor}" />
     </Style>
 
+    <Style x:Key="TileBarItemFirstLevelStyleExtended"
+               BasedOn="{StaticResource TileBarItemStyleExtended}"
+               TargetType="{x:Type dxnav:TileBarItem}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock x:Name="ChildBarItemTB"
+                                   Foreground="{DynamicResource CommonTextLightForeground}"
+                                   Text="{Binding DisplayName}" />
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <DataTemplate x:Key="FlyoutCollectionTemplate">
         <ctrls:TileBarContentControl>
             <dxnav:TileBar ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                            ItemColorMode="Inverted"
                            ItemContainerStyle="{StaticResource TileBarItemStyleExtended}"
                            ItemsSource="{Binding Children}" />
-            <TextBlock Margin="45,5,0,0"
+            <TextBlock Margin="-175,5,0,0"
                        VerticalAlignment="Top"
                        Focusable="False"
                        Foreground="White"

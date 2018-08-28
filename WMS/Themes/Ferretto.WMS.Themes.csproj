@@ -8030,6 +8030,14 @@
   <ItemGroup>
     <Resource Include="Images\FGLogoVerticale2018.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_help_gray_36dp.png" />
+    <Resource Include="Images\user_36dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ic_help_gray_24dp.png" />
+    <Resource Include="Images\user_24dp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\cleanup.targets"/>
+  <Import Project="..\..\cleanup.targets" />
 </Project>
