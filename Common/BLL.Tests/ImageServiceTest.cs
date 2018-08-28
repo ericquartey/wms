@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using Ferretto.Common.Utils.Testing;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.DAL.Interfaces;
 using Ferretto.Common.Modules.BLL.Services;
@@ -12,21 +13,23 @@ using Moq;
 namespace Feretto.Common.Modules.BLL.Tests
 {
   [TestClass]
-  [TestCategory("Integration Test")]
+  [TestCategory("Business")]
   public class ImageServiceTest : UnityTest
   {
     private IImageService imageService;
     static readonly string imageFilePath = "image.png";
 
     [TestInitialize]
-    public void Initialize()
+    public override void Initialize()
     {
+      base.Initialize();
+
       var mockImageRepository = new Mock<IImageRepository>();
       mockImageRepository
         .Setup(a => a.GetById(imageFilePath)).Throws<InvalidOperationException>();
 
-      container.RegisterInstance(mockImageRepository.Object);
-      container.RegisterType<IImageService, ImageService>();
+      this.Container.RegisterInstance(mockImageRepository.Object);
+      this.Container.RegisterType<IImageService, ImageService>();
 
       this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
     }
