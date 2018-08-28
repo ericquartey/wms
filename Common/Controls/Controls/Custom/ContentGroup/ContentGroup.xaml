@@ -16,6 +16,8 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0"
                Content="{Binding Path=Label}"
+               Foreground="{DynamicResource CommonTextHighlighted}"
+               TextBlock.FontWeight="DemiBold"
                Typography.Capitals="AllSmallCaps" />
         <dxdo:FlowLayoutControl Grid.Row="1">
             <ContentPresenter Content="{Binding InnerContent, ElementName=ctrlGroup}" />

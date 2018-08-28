@@ -7,6 +7,10 @@
 
     <SolidColorBrush x:Key="CommonDarkGrey"
                      Color="#525252" />
+
+    <SolidColorBrush x:Key="CommonTextHighlighted"
+                     Color="#400000" />
+
     <SolidColorBrush x:Key="CommonTextLightForeground"
                      Color="White" />
 
