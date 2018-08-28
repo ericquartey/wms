@@ -6,5 +6,6 @@
     <system:Boolean x:Key="False">False</system:Boolean>
 
     <SolidColorBrush x:Key="CommonDarkGrey" Color="#525252"></SolidColorBrush>
+    <SolidColorBrush x:Key="CommonTextLightForeground" Color="White" />
 
 </ResourceDictionary>
