@@ -39,8 +39,8 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Orientation="Horizontal">
-            <Image Width="40" Height="40" Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/user_36dp.png" />
-            <Image Width="40" Height="40" Margin="2,0,0,0"
+            <Image Width="36" Height="36" Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/user_36dp.png" />
+            <Image Width="36" Height="36" Margin="1,0,0,0"
                    Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/ic_help_gray_36dp.png" />
         </StackPanel>
     </Grid>
