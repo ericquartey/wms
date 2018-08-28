@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Nav_Configuration_AbcClasses" xml:space="preserve">
+    <value>ABC Classes</value>
+  </data>
   <data name="Nav_Catalog" xml:space="preserve">
     <value>Catalog</value>
   </data>
@@ -126,29 +129,32 @@
   <data name="Nav_Catalog_Compartments" xml:space="preserve">
     <value>Compartments</value>
   </data>
-  <data name="Nav_Catalog_DefaultLoadingUnits" xml:space="preserve">
-    <value>Default Loading Units</value>
-  </data>
   <data name="Nav_Catalog_Items" xml:space="preserve">
     <value>Items</value>
   </data>
   <data name="Nav_Catalog_LoadingUnits" xml:space="preserve">
     <value>Loading Units</value>
   </data>
-  <data name="Nav_File" xml:space="preserve">
-    <value>File</value>
+  <data name="Nav_Configuration_CellStatuses" xml:space="preserve">
+    <value>Cell Statuses</value>
   </data>
-  <data name="Nav_File_Exit" xml:space="preserve">
-    <value>Exit</value>
+  <data name="Nav_Configuration_CompartmentStatuses" xml:space="preserve">
+    <value>Compartment Statuses</value>
   </data>
-  <data name="Nav_File_Export" xml:space="preserve">
+  <data name="Nav_Configuration_CompartmentTypes" xml:space="preserve">
+    <value>Compartment Types</value>
+  </data>
+  <data name="Nav_Configuration" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="Nav_ImportExport" xml:space="preserve">
+    <value>Import/Export</value>
+  </data>
+  <data name="Nav_ImportExport_Export" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="Nav_File_Import" xml:space="preserve">
+  <data name="Nav_ImportExport_Import" xml:space="preserve">
     <value>Import</value>
-  </data>
-  <data name="Nav_File_Print" xml:space="preserve">
-    <value>Print</value>
   </data>
   <data name="Nav_Help" xml:space="preserve">
     <value>Help</value>
@@ -159,28 +165,43 @@
   <data name="Nav_Lists_Lists" xml:space="preserve">
     <value>Lists</value>
   </data>
+  <data name="Nav_Configuration_ListRowStatuses" xml:space="preserve">
+    <value>List Row Statuses</value>
+  </data>
+  <data name="Nav_Configuration_ListStatuses" xml:space="preserve">
+    <value>List Statuses</value>
+  </data>
+  <data name="Nav_Configuration_ListTypes" xml:space="preserve">
+    <value>List Types</value>
+  </data>
+  <data name="Nav_Configuration_LoadingUnitStatuses" xml:space="preserve">
+    <value>Loading Unit Statuses</value>
+  </data>
+  <data name="Nav_Machine_Status" xml:space="preserve">
+    <value>Machine Status</value>
+  </data>
+  <data name="Nav_Configuration_MachineTypes" xml:space="preserve">
+    <value>Machine Types</value>
+  </data>
+  <data name="Nav_Configuration_MaterialStatuses" xml:space="preserve">
+    <value>Material Statuses</value>
+  </data>
+  <data name="Nav_Configuration_MeasuringUnits" xml:space="preserve">
+    <value>Measuring Units</value>
+  </data>
   <data name="Nav_Others" xml:space="preserve">
     <value>Others</value>
-  </data>
-  <data name="Nav_Others_Aisles_Status" xml:space="preserve">
-    <value>Aisles Status</value>
   </data>
   <data name="Nav_Others_Inventory" xml:space="preserve">
     <value>Inventory</value>
   </data>
-  <data name="Nav_Others_Items_Compacting" xml:space="preserve">
-    <value>Items Compacting</value>
-  </data>
-  <data name="Nav_Others_Loading_Units_Saturation" xml:space="preserve">
-    <value>Loading Units Saturation</value>
-  </data>
-  <data name="Nav_Others_Reserved_Compartments" xml:space="preserve">
-    <value>Reserved Compartments</value>
+  <data name="Nav_Others_CompartmentsMapping" xml:space="preserve">
+    <value>Compartments Mapping</value>
   </data>
   <data name="Nav_Others_UnderStock_Items" xml:space="preserve">
     <value>Understock Items</value>
   </data>
-  <data name="Nav_PackingLists" xml:space="preserve">
-    <value>Packing Lists</value>
+  <data name="Nav_Configuration_PackageTypes" xml:space="preserve">
+    <value>Package Types</value>
   </data>
 </root>
