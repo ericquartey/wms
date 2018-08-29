@@ -196,6 +196,19 @@
     <Folder Include="Themes\Light\Common\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Icons\Ferretto\Menu\grey\cells.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\compartments_mapping.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\ic_arrow_downward_grey_24dp.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\ic_arrow_upward_grey_24dp.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\ic_build_grey_24dp.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\ic_list_grey_24dp.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\ic_trending_down_grey_24dp.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\ic_view_compact_grey_24dp.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\inventory.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\items.png" />
+    <Resource Include="Icons\Ferretto\Menu\grey\loading_unit.png" />
+    <Resource Include="Icons\Ferretto\Menu\white\dashboard.png" />
+    <Resource Include="Icons\Ferretto\Menu\white\manual_warehouse.png" />
     <Resource Include="Images\Articolo1.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -7973,13 +7986,6 @@
     <Resource Include="Icons\Material\toggle\ic_star_white_48dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Ferretto\Menu\Configuration.png" />
-    <Resource Include="Icons\Ferretto\Menu\Dashboard.png" />
-    <Resource Include="Icons\Ferretto\Menu\Diagnostics.png" />
-    <Resource Include="Icons\Ferretto\Menu\ManualWarehouse.png" />
-    <Resource Include="Icons\Ferretto\Menu\MasterData.png" />
-    <Resource Include="Icons\Ferretto\Menu\OperationsManagement.png" />
-    <Resource Include="Icons\Ferretto\Menu\Sales.png" />
     <Resource Include="Icons\Ferretto\Tiles\Channels.png" />
     <Resource Include="Icons\Ferretto\Tiles\Products.png" />
     <Resource Include="Icons\Ferretto\Tiles\Regions.png" />
@@ -8032,7 +8038,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\FGLogoVerticale2018.png" />
+    <Resource Include="Images\FGLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic_help_gray_36dp.png" />

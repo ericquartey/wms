@@ -131,19 +131,3 @@ dotnet_naming_style.camel_case_style.capitalization = camel_case
 ### upper_case_style
 dotnet_naming_style.upper_case_style.capitalization = all_upper
 dotnet_naming_style.upper_case_style.word_separator = _
-
-## Rules
-## Constants with all CAPS
-dotnet_naming_rule.uppercase_for_constants.symbols  = constant_fields
-dotnet_naming_rule.uppercase_for_constants.style    = upper_case_style
-dotnet_naming_rule.uppercase_for_constants.severity = error
-
-## Pascal Case for Classes, Methods, etc
-dotnet_naming_rule.pascal_case_for_general_symbols.symbols  = general
-dotnet_naming_rule.pascal_case_for_general_symbols.style    = pascal_case_style
-dotnet_naming_rule.pascal_case_for_general_symbols.severity = error
-
-# Camel Casing for stack variables, private members fields and method arguments
-dotnet_naming_rule.camel_case_for_fields_and_params.symbols  = fields_and_params
-dotnet_naming_rule.camel_case_for_fields_and_params.style    = camel_case_style
-dotnet_naming_rule.camel_case_for_fields_and_params.severity = error

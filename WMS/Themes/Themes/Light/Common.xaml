@@ -5,8 +5,16 @@
     <system:Boolean x:Key="True">True</system:Boolean>
     <system:Boolean x:Key="False">False</system:Boolean>
 
-    <SolidColorBrush x:Key="CommonDarkGrey" Color="#525252" />
-    <SolidColorBrush x:Key="CommonTextLightForeground" Color="White" />
-    <SolidColorBrush x:Key="CommonHighlight" Color="#E2001A" />
+    <SolidColorBrush x:Key="CommonDarkGrey"
+                     Color="#525252" />
+
+    <SolidColorBrush x:Key="CommonTextHighlighted"
+                     Color="#400000" />
+
+    <SolidColorBrush x:Key="CommonTextLightForeground" 
+                     Color="White" />
+    
+    <SolidColorBrush x:Key="CommonHighlight" 
+                     Color="#E2001A" />
 
 </ResourceDictionary>

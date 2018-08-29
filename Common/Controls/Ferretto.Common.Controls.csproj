@@ -176,12 +176,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\Common\Button.cs" />  
-    <Compile Include="Controls\Custom\AccordionMenu\AccordionMenu.xaml.cs">
-      <DependentUpon>AccordionMenu.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controls\Custom\AccordionMenu\MenuViewModel.cs" />
+    <Compile Include="Controls\Common\Button.cs" />
     <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -195,6 +190,9 @@
     <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuItem.cs" />
     <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuViewModel.cs" />
     <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuChildItem.cs" />
+    <Compile Include="Controls\Custom\ContentGroup\ContentGroup.xaml.cs">
+      <DependentUpon>ContentGroup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -216,9 +214,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\Custom\AccordionMenu\AccordionMenu.xaml">
+    <Page Include="Controls\Custom\ContentGroup\ContentGroup.xaml">
       <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -249,5 +247,5 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\cleanup.targets"/>
+  <Import Project="..\..\cleanup.targets" />
 </Project>
