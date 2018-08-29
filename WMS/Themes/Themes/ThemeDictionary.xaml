@@ -9,6 +9,7 @@
 
         <!--  Custom  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouch.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/ActionBarItem.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
