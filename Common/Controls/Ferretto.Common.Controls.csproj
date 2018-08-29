@@ -177,8 +177,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Common\Button.cs" />
-    <Compile Include="Controls\Custom\ActionBar\ActionBarControl.xaml.cs">
-      <DependentUpon>ActionBarControl.xaml</DependentUpon>
+    <Compile Include="Controls\Custom\ActionBar\ActionBar.xaml.cs">
+      <DependentUpon>ActionBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Custom\ActionBar\ActionBarItem.xaml.cs">
+      <DependentUpon>ActionBarItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
@@ -213,7 +216,11 @@
     <Compile Include="ViewModels\WmsGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Custom\ActionBar\ActionBarControl.xaml">
+    <Page Include="Controls\Custom\ActionBar\ActionBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Custom\ActionBar\ActionBarItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

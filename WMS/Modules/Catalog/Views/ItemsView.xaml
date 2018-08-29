@@ -11,8 +11,27 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <wms:ActionBar AllowCustomizationMenu="False"
+                       AllowQuickCustomization="False">
+            <wms:ActionBarItem BarItemDisplayMode="ContentAndGlyph"
+                               Content="Add"
+                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png"
+                               GlyphSize="Large" />
+            <wms:ActionBarItem BarItemDisplayMode="ContentAndGlyph"
+                               Content="Withdraw"
+                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_48dp.png"
+                               GlyphSize="Large" />
+            <wms:ActionBarItem BarItemDisplayMode="ContentAndGlyph"
+                               Content="Refresh"
+                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png"
+                               GlyphSize="Large" />
+        </wms:ActionBar>
         <catalog:ItemsGridControl x:Name="MainGridControl"
+                                  Grid.Row="1"
                                   MaxWidth="2000"
                                   MaxHeight="5000"
                                   Margin="3"
