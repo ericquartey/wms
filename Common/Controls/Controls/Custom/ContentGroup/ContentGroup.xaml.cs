@@ -4,7 +4,7 @@ using System.Windows.Markup;
 
 namespace Ferretto.Common.Controls
 {
-  [ContentProperty("InnerContent")]
+  [ContentProperty("ControlContent")]
   public partial class ContentGroup : UserControl
   {
     #region Constructors
@@ -18,13 +18,13 @@ namespace Ferretto.Common.Controls
 
     #region InnerContent Dependency Property
 
-    public static readonly DependencyProperty InnerContentProperty =
-       DependencyProperty.Register("InnerContent", typeof(object), typeof(ContentGroup));
+    public static readonly DependencyProperty ControlContentProperty =
+       DependencyProperty.Register(nameof(ControlContent), typeof(object), typeof(ContentGroup));
 
-    public object InnerContent
+    public object ControlContent
     {
-      get => this.GetValue(InnerContentProperty);
-      set => this.SetValue(InnerContentProperty, value);
+      get => this.GetValue(ControlContentProperty);
+      set => this.SetValue(ControlContentProperty, value);
     }
 
     #endregion
@@ -32,7 +32,7 @@ namespace Ferretto.Common.Controls
     #region Label Dependency Property
 
     public static readonly DependencyProperty LabelProperty =
-      DependencyProperty.Register("Label", typeof(string), typeof(ContentGroup));
+      DependencyProperty.Register(nameof(Label), typeof(string), typeof(ContentGroup));
 
     public string Label
     {
