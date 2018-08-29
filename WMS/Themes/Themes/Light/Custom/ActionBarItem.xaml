@@ -23,7 +23,7 @@
                 </Border>
                 <Border x:Name="PressedState"
                         cs:Name="Border_3029"
-                        Background="#7F2180C6"
+                        Background="{DynamicResource CommonHighlightLight}"
                         Opacity="0" />
                 <Border x:Name="IndeterminateState"
                         cs:Name="Border_3044"

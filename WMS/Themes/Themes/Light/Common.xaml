@@ -16,8 +16,11 @@
 
     <SolidColorBrush x:Key="CommonTextLightForeground"
                      Color="White" />
-    
-    <SolidColorBrush x:Key="CommonHighlight" 
+
+    <SolidColorBrush x:Key="CommonHighlight"
                      Color="#E2001A" />
+
+    <SolidColorBrush x:Key="CommonHighlightLight"
+                     Color="#dd8282" />
 
 </ResourceDictionary>
