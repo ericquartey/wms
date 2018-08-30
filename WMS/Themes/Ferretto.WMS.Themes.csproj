@@ -8057,6 +8057,12 @@
   <ItemGroup>
     <Resource Include="Icons\Ferretto\Logo\favicon.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Light\Custom\DateEdit.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Controls\baseline_calendar_today_black_18dp.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\cleanup.targets" />
 </Project>

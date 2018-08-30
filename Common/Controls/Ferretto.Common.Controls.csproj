@@ -183,6 +183,9 @@
     <Compile Include="Controls\Custom\ActionBar\ActionBarItem.xaml.cs">
       <DependentUpon>ActionBarItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
+      <DependentUpon>DateEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -196,6 +199,9 @@
     <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuItem.cs" />
     <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuViewModel.cs" />
     <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuChildItem.cs" />
+    <Compile Include="Controls\Custom\TextBox\TextBox.xaml.cs">
+      <DependentUpon>TextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\ContentGroup\ContentGroup.xaml.cs">
       <DependentUpon>ContentGroup.xaml</DependentUpon>
     </Compile>
@@ -224,9 +230,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Custom\DateEdit\DateEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Custom\SplashScreen\SplashScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Custom\TextBox\TextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Custom\ContentGroup\ContentGroup.xaml">
       <SubType>Designer</SubType>
