@@ -8,6 +8,7 @@
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     mc:Ignorable="cs">
 
+    <!--  ActionBarItem Template override  -->
     <ControlTemplate x:Key="{dxbt:BarItemBorderThemeKey ResourceKey=Normal,
                                                         ThemeName=Office2016White}"
                      TargetType="{x:Type dxb:ItemBorderControl}">
