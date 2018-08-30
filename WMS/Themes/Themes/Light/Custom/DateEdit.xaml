@@ -14,17 +14,7 @@
                     <Setter Property="dx:FocusHelper2.Focusable" Value="False" />
                     <Setter Property="Template">
                         <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ContentControl}">
-                                <!--<Border BorderBrush="#FF569DE5" BorderThickness="1" cs:Name="Border_0001">
-                                    <Border.Background>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0"
-                                                             cs:Name="LinearGradientBrush_0034">
-                                            <GradientStop Color="#FFDAECFC" Offset="0" cs:Name="GradientStop_0001" />
-                                            <GradientStop Color="#FFC4E0FC" Offset="1" cs:Name="GradientStop_0002" />
-                                        </LinearGradientBrush>
-                                    </Border.Background>
-                                </Border>-->
-                            </ControlTemplate>
+                            <ControlTemplate TargetType="{x:Type ContentControl}" />
                         </Setter.Value>
                     </Setter>
                 </Style>
@@ -99,26 +89,8 @@
                     <!--END WPF-->
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border x:Name="DefaultState" Padding="1" Grid.ColumnSpan="1" cs:Name="Border_0002">
-            <!--<Border x:Name="DefaultState" BorderBrush="#FFACACAC" BorderThickness="1" Padding="1" Grid.ColumnSpan="1"
-                    cs:Name="Border_0002">
-                <Border.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" cs:Name="LinearGradientBrush_0035">
-                        <GradientStop Color="#FFF0F0F0" Offset="0" cs:Name="GradientStop_0003" />
-                        <GradientStop Color="#FFE5E5E5" Offset="1" cs:Name="GradientStop_0004" />
-                    </LinearGradientBrush>
-                </Border.Background>-->
-            </Border>
-            <Border x:Name="HoverState" Padding="1" Grid.ColumnSpan="1" Opacity="0" cs:Name="Border_0003">
-            <!--<Border x:Name="HoverState" BorderBrush="#FF7EB4EA" BorderThickness="1" Padding="1" Grid.ColumnSpan="1"
-                    Opacity="0" cs:Name="Border_0003">
-                <Border.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0" cs:Name="LinearGradientBrush_0036">
-                        <GradientStop Color="#FFECF4FC" Offset="0" cs:Name="GradientStop_0005" />
-                        <GradientStop Color="#FFDCECFC" Offset="1" cs:Name="GradientStop_0006" />
-                    </LinearGradientBrush>
-                </Border.Background>-->
-            </Border>
+            <Border x:Name="DefaultState" Padding="1" Grid.ColumnSpan="1" cs:Name="Border_0002" />
+            <Border x:Name="HoverState" Padding="1" Grid.ColumnSpan="1" Opacity="0" cs:Name="Border_0003" />
             <ContentControl x:Name="pressed1" Style="{StaticResource PressedElementStyle}" Opacity="0" />
             <ContentControl x:Name="pressed2" Style="{StaticResource PressedElementStyle}" Visibility="Collapsed" />
             <Grid x:Name="Arrow" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="1"
