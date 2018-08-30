@@ -10,6 +10,7 @@
         <!--  Custom  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouch.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/DockLayoutManager.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/DateEdit.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

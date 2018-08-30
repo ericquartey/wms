@@ -177,6 +177,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Common\Button.cs" />
+    <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
+      <DependentUpon>DateEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -213,6 +216,10 @@
     <Compile Include="ViewModels\WmsGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Custom\DateEdit\DateEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Custom\SplashScreen\SplashScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
