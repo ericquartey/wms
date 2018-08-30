@@ -11,12 +11,8 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <wms:ActionBar AllowCustomizationMenu="False"
-                       AllowQuickCustomization="False">
+        <wms:ActionBar HorizontalAlignment="Left"
+                       Style="{DynamicResource ActionBarOveralyedWithGrid}">
             <wms:ActionBarItem Content="Add"
                                Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
             <wms:ActionBarItem Content="Withdraw"
@@ -25,7 +21,6 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png" />
         </wms:ActionBar>
         <catalog:ItemsGridControl x:Name="MainGridControl"
-                                  Grid.Row="1"
                                   MaxWidth="2000"
                                   MaxHeight="5000"
                                   Margin="3"
@@ -35,8 +30,10 @@
                                AllowGrouping="False"
                                AllowMoveColumnToDropArea="False"
                                NavigationStyle="Row"
+                               SearchPanelHorizontalAlignment="Right"
                                ShowGroupPanel="False"
-                               ShowIndicator="False" />
+                               ShowIndicator="False"
+                               ShowSearchPanelMode="Always" />
             </catalog:ItemsGridControl.View>
             <dxg:GridColumn Width="100*"
                             FieldName="Code"
