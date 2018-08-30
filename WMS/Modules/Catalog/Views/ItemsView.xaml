@@ -23,6 +23,8 @@
                                AllowMoveColumnToDropArea="False"
                                NavigationStyle="Row"
                                ShowGroupPanel="False"
+                               ShowSearchPanelMode="Always"
+                               SearchPanelHorizontalAlignment="Right"
                                ShowIndicator="False" />
             </catalog:ItemsGridControl.View>
             <dxg:GridColumn Width="100*"
