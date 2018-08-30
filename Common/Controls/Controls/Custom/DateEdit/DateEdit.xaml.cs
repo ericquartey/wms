@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls
     #region Dependency properties
 
     public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
-      "Label", typeof(string), typeof(DateEdit), new FrameworkPropertyMetadata(default(string)));
+      nameof(Label), typeof(string), typeof(DateEdit), new FrameworkPropertyMetadata(default(string)));
 
     public string Label
     {
@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls
     }
 
     public static readonly DependencyProperty EditValueProperty = DependencyProperty.Register(
-      "EditValue", typeof(DateTime?), typeof(DateEdit), new FrameworkPropertyMetadata(
+      nameof(EditValue), typeof(DateTime?), typeof(DateEdit), new FrameworkPropertyMetadata(
         null,
         FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
@@ -33,7 +33,7 @@ namespace Ferretto.Common.Controls
     }
 
     public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
-      "Mask", typeof(string), typeof(DateEdit), new FrameworkPropertyMetadata("d"));
+      nameof(Mask), typeof(string), typeof(DateEdit), new FrameworkPropertyMetadata("d"));
 
     public string Mask
     {
@@ -42,7 +42,7 @@ namespace Ferretto.Common.Controls
     }
 
     public static readonly DependencyProperty MaskTypeProperty = DependencyProperty.Register(
-      "MaskType", typeof(MaskType), typeof(DateEdit), new FrameworkPropertyMetadata(MaskType.DateTimeAdvancingCaret));
+      nameof(MaskType), typeof(MaskType), typeof(DateEdit), new FrameworkPropertyMetadata(MaskType.DateTimeAdvancingCaret));
 
     public MaskType MaskType
     {

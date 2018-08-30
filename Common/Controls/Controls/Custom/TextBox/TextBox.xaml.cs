@@ -11,7 +11,7 @@ namespace Ferretto.Common.Controls
     #region Dependency properties
 
     public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
-      "Label", typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
+      nameof(Label), typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
 
     public string Label
     {
@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
     }
 
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-      "Text", typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
+      nameof(Text), typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
 
     public string Text
     {
