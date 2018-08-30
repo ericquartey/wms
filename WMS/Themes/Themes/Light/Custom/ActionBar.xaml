@@ -1,0 +1,156 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cs="colorscheme_ignorable_uri"
+                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:dxbt="http://schemas.devexpress.com/winfx/2008/xaml/bars/themekeys"
+                    xmlns:dxcn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    mc:Ignorable="cs">
+
+    <!--  ActionBarItem Template override  -->
+    <ControlTemplate x:Key="{dxbt:BarItemBorderThemeKey ResourceKey=Normal,
+                                                        ThemeName=Office2016White}"
+                     TargetType="{x:Type dxb:ItemBorderControl}">
+        <Grid x:Name="Root"
+              SnapsToDevicePixels="True">
+            <Grid>
+                <Border x:Name="HoverState"
+                        Opacity="0">
+                    <Border x:Name="hover"
+                            cs:Name="Border_3028"
+                            Background="{DynamicResource CommonBackgroundHover}"
+                            Opacity="0" />
+                </Border>
+                <Border x:Name="PressedState"
+                        cs:Name="Border_3029"
+                        Background="{DynamicResource CommonHighlightLight}"
+                        Opacity="0" />
+                <Border x:Name="IndeterminateState"
+                        cs:Name="Border_3044"
+                        Background="#3F999999"
+                        Opacity="0" />
+                <Border x:Name="CustomizationState"
+                        cs:Name="Border_3031"
+                        Background="#FFFFFFFF"
+                        BorderBrush="#FF0072C6"
+                        BorderThickness="1"
+                        Opacity="0" />
+            </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="HideBorderSide">
+                    <VisualState x:Name="None" />
+                    <VisualState x:Name="Top">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="0,0,0,1"
+                                                           Storyboard.TargetName="Root"
+                                                           Storyboard.TargetProperty="Margin" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Right">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="0,0,1,0"
+                                                           Storyboard.TargetName="Root"
+                                                           Storyboard.TargetProperty="Margin" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Left">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="0"
+                                                           Storyboard.TargetName="Root"
+                                                           Storyboard.TargetProperty="Margin" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Bottom">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="0"
+                                                           Storyboard.TargetName="Root"
+                                                           Storyboard.TargetProperty="Margin" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="All" />
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="ArrowHideBorderSide">
+                    <VisualState x:Name="ArrowNone" />
+                    <VisualState x:Name="ArrowLeft" />
+                    <VisualState x:Name="ArrowTop" />
+                    <VisualState x:Name="ArrowRight" />
+                    <VisualState x:Name="ArrowBottom" />
+                    <VisualState x:Name="ArrowAll" />
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="ActiveState">
+                    <VisualState x:Name="Active">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="hover"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Inactive">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="hover"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0.5"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="State">
+                    <VisualState x:Name="Normal" />
+                    <VisualState x:Name="Hover">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Disabled" />
+                    <VisualState x:Name="Checked">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="HoverChecked">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Indeterminate">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="IndeterminateState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Focused" />
+                    <VisualState x:Name="Customization">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="CustomizationState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Grid>
+    </ControlTemplate>
+
+</ResourceDictionary>
