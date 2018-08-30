@@ -255,7 +255,8 @@
                         <Storyboard>
                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border2"
                                                            Storyboard.TargetProperty="(Control.Background)">
-                                <DiscreteObjectKeyFrame KeyTime="0" Value="{DynamicResource CommonHighlight}" />
+                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{DynamicResource CommonHighlight}" />
                             </ObjectAnimationUsingKeyFrames>
                             <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FlashBorder"
                                                            Storyboard.TargetProperty="(Control.Visibility)">
