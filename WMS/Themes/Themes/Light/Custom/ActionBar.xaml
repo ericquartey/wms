@@ -8,6 +8,22 @@
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     mc:Ignorable="cs">
 
+    <Style x:Key="ActionBarNotCustomizable"
+           TargetType="wms:ActionBar">
+        <Setter Property="AllowCustomizationMenu" Value="False" />
+        <Setter Property="AllowQuickCustomization" Value="False" />
+        <Setter Property="BarItemDisplayMode" Value="ContentAndGlyph" />
+        <Setter Property="GlyphSize" Value="Large" />
+    </Style>
+
+    <Style x:Key="ActionBarOveralyedWithGrid"
+           BasedOn="{StaticResource ActionBarNotCustomizable}"
+           TargetType="wms:ActionBar">
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Margin" Value="5,5" />
+        <Setter Property="Panel.ZIndex" Value="1000" />
+    </Style>
+
     <!--  ActionBarItem Template override  -->
     <ControlTemplate x:Key="{dxbt:BarItemBorderThemeKey ResourceKey=Normal,
                                                         ThemeName=Office2016White}"
