@@ -177,6 +177,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Common\Button.cs" />
+    <Compile Include="Controls\Custom\ActionBar\ActionBar.xaml.cs">
+      <DependentUpon>ActionBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Custom\ActionBar\ActionBarItem.xaml.cs">
+      <DependentUpon>ActionBarItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
@@ -216,6 +222,14 @@
     <Compile Include="ViewModels\WmsGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Custom\ActionBar\ActionBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Custom\ActionBar\ActionBarItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Custom\DateEdit\DateEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
