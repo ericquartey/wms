@@ -8023,7 +8023,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Light\Custom\ActionBarItem.xaml">
+    <Page Include="Themes\Light\Custom\ActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
