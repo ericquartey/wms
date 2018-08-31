@@ -183,8 +183,8 @@
     <Compile Include="Controls\Custom\ActionBar\ActionBarItem.xaml.cs">
       <DependentUpon>ActionBarItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
-      <DependentUpon>DateEdit.xaml</DependentUpon>
+    <Compile Include="Controls\Custom\ComboBox\ComboBox.xaml.cs">
+      <DependentUpon>ComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
@@ -231,6 +231,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Custom\DateEdit\DateEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Custom\ComboBox\ComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
