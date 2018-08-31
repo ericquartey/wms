@@ -32,7 +32,7 @@ namespace Ferretto.Common.Modules.BLL.Services
       this.GetEventBus<TEventArgs>().Subscribe(action, forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread);
     }
 
-    public void Unusbscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
+    public void Unsubscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
     {
       this.GetEventBus<TEventArgs>().Unsubscribe(action);
     }

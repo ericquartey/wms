@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -13,6 +13,24 @@ namespace Ferretto.Common.Controls
     private readonly IEntityService<TModel, TId> entityService;
     private IEnumerable<TModel> items;
     private TModel selectedItem;
+
+    #endregion
+
+    #region Properties
+
+    public IEnumerable<TModel> Items => this.items;
+
+    public TModel SelectedItem
+    {
+      get => this.selectedItem;
+      set
+      {
+        if (this.SetProperty(ref this.selectedItem, value))
+        {
+          this.NotifySelectionChanged();
+        }
+      }
+    }
 
     #endregion
 
@@ -32,24 +50,6 @@ namespace Ferretto.Common.Controls
     private void Initialize()
     {
       this.items = this.entityService.GetAll();
-    }
-
-    #endregion
-
-    #region Properties
-
-    public IEnumerable<TModel> Items => this.items;
-
-    public TModel SelectedItem
-    {
-      get => this.selectedItem;
-      set
-      {
-        if (this.SetProperty(ref this.selectedItem, value))
-        {
-          this.NotifySelectionChanged();
-        }
-      }
     }
 
     protected void NotifySelectionChanged()
