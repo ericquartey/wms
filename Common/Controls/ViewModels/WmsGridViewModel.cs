@@ -1,12 +1,13 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-  public class WmsGridViewModel<TModel, TId> : BindableBase where TModel : IModel<TId>
+  public class WmsGridViewModel<TModel, TId> : BindableBase, IWmsGridViewModel where TModel : IModel<TId>
   {
     #region Fields
 
@@ -48,6 +49,11 @@ namespace Ferretto.Common.Controls
     #region Methods
 
     private void Initialize()
+    {
+      this.RefreshGrid();
+    }
+
+    public void RefreshGrid()
     {
       this.items = this.entityService.GetAll();
     }
