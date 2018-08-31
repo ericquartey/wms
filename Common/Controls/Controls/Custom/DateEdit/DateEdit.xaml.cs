@@ -57,6 +57,7 @@ namespace Ferretto.Common.Controls
     public DateEdit()
     {
       this.InitializeComponent();
+      this.GridDateEdit.DataContext = this;
     }
 
     #endregion
