@@ -183,6 +183,9 @@
     <Compile Include="Controls\Custom\ActionBar\ActionBarItem.xaml.cs">
       <DependentUpon>ActionBarItem.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Custom\FilterBar\FilterBar.xaml.cs">
+      <DependentUpon>FilterBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -221,6 +224,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Custom\ActionBar\ActionBarItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Custom\FilterBar\FilterBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

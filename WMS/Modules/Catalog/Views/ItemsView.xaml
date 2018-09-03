@@ -11,51 +11,73 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <wms:ActionBar HorizontalAlignment="Left"
-                       Style="{DynamicResource ActionBarOveralyedWithGrid}">
-            <wms:ActionBarItem Content="Add"
-                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
-            <wms:ActionBarItem Content="Withdraw"
-                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_48dp.png" />
-            <wms:ActionBarItem Content="Refresh"
-                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png" />
-        </wms:ActionBar>
-        <catalog:ItemsGridControl x:Name="MainGridControl"
-                                  MaxWidth="2000"
-                                  MaxHeight="5000"
-                                  Margin="3"
-                                  SelectionMode="Row">
-            <catalog:ItemsGridControl.View>
-                <dxg:TableView AllowEditing="False"
-                               AllowGrouping="False"
-                               AllowMoveColumnToDropArea="False"
-                               NavigationStyle="Row"
-                               SearchPanelHorizontalAlignment="Right"
-                               ShowGroupPanel="False"
-                               ShowIndicator="False"
-                               ShowSearchPanelMode="Always" />
-            </catalog:ItemsGridControl.View>
-            <dxg:GridColumn Width="100*"
-                            FieldName="Code"
-                            Header="Codice" />
-            <dxg:GridColumn Width="300*"
-                            FieldName="Description"
-                            Header="Descrizione" />
-            <dxg:GridColumn Width="100*"
-                            FieldName="Class"
-                            Header="Classe di appartenenza" />
-            <dxg:GridColumn Width="100*"
-                            FieldName="_TotalQty"
-                            Header="Giacenza totale" />
-            <dxg:GridColumn Width="200*"
-                            FieldName="_HoldToPick"
-                            Header="Impegnato in prelievo" />
-            <dxg:GridColumn Width="200*"
-                            FieldName="_HoldToStore"
-                            Header="Impegnato in versamento" />
-            <dxg:GridColumn Width="200*"
-                            FieldName="Disponibilita"
-                            Header="_Available" />
-        </catalog:ItemsGridControl>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0">
+            <Expander x:Name="ExportExpander"
+                      ExpandDirection="Left">
+                <StackPanel Orientation="Horizontal">
+                    <wms:FilterBar Grid.Column="0"
+                                   Filters="{Binding Filters}" />
+
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+
+        <Grid Grid.Column="1">
+
+            <wms:ActionBar HorizontalAlignment="Left"
+                           Style="{DynamicResource ActionBarOveralyedWithGrid}">
+                <wms:ActionBarItem Content="Add"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
+                <wms:ActionBarItem Content="Withdraw"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_48dp.png" />
+                <wms:ActionBarItem Content="Refresh"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png" />
+            </wms:ActionBar>
+
+            <catalog:ItemsGridControl x:Name="MainGridControl"
+                                      MaxWidth="2000"
+                                      MaxHeight="5000"
+                                      Margin="3"
+                                      SelectionMode="Row">
+                <catalog:ItemsGridControl.View>
+                    <dxg:TableView AllowEditing="False"
+                                   AllowGrouping="False"
+                                   AllowMoveColumnToDropArea="False"
+                                   NavigationStyle="Row"
+                                   SearchPanelHorizontalAlignment="Right"
+                                   ShowGroupPanel="False"
+                                   ShowIndicator="False"
+                                   ShowSearchPanelMode="Always" />
+                </catalog:ItemsGridControl.View>
+                <dxg:GridColumn Width="100*"
+                                FieldName="Code"
+                                Header="Codice" />
+                <dxg:GridColumn Width="300*"
+                                FieldName="Description"
+                                Header="Descrizione" />
+                <dxg:GridColumn Width="100*"
+                                FieldName="Class"
+                                Header="Classe di appartenenza" />
+                <dxg:GridColumn Width="100*"
+                                FieldName="_TotalQty"
+                                Header="Giacenza totale" />
+                <dxg:GridColumn Width="200*"
+                                FieldName="_HoldToPick"
+                                Header="Impegnato in prelievo" />
+                <dxg:GridColumn Width="200*"
+                                FieldName="_HoldToStore"
+                                Header="Impegnato in versamento" />
+                <dxg:GridColumn Width="200*"
+                                FieldName="Disponibilita"
+                                Header="_Available" />
+            </catalog:ItemsGridControl>
+        </Grid>
+
     </Grid>
 </wms:WmsView>
