@@ -156,17 +156,26 @@
         </Setter>
     </Style>
 
-    <ControlTemplate TargetType="dxnavi:TileBarItemArrowControl" x:Key="TileBarItemArrowControlEmptyTemplate">
+    <ControlTemplate x:Key="TileBarItemArrowControlEmptyTemplate"
+                     TargetType="dxnavi:TileBarItemArrowControl">
         <Grid Background="{TemplateBinding Background}">
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Path Grid.Column="1" x:Name="Glyph" Stretch="Fill"   Data="F1 M 0,0L 14.002,0L 7,7L 0,0 Z " Width="9" Height="5" HorizontalAlignment="Center" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5">
+            <Path x:Name="Glyph"
+                  Grid.Column="1"
+                  Width="9"
+                  Height="5"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  Data="F1 M 0,0L 14.002,0L 7,7L 0,0 Z "
+                  RenderTransformOrigin="0.5,0.5"
+                  Stretch="Fill">
                 <Path.Style>
                     <Style TargetType="Path">
                         <Style.Triggers>
@@ -175,21 +184,20 @@
                                     <Condition Binding="{Binding Path=HasChildren}" Value="true" />
                                     <Condition Binding="{Binding Path=IsRootLevel}" Value="true" />
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Fill" Value="{DynamicResource  CommonTextLightForeground}" />
+                                <Setter Property="Fill" Value="{DynamicResource CommonTextLightForeground}" />
                             </MultiDataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=HasChildren}" Value="true" />
                                     <Condition Binding="{Binding Path=IsRootLevel}" Value="false" />
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Fill" Value="{DynamicResource  CommonDarkGrey}" />
+                                <Setter Property="Fill" Value="{DynamicResource CommonDarkGrey}" />
                             </MultiDataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Path.Style>
                 <Path.RenderTransform>
-                    <RotateTransform CenterX="0.5" CenterY="0.5" x:Name="ArrowRotateTransform" >
-                    </RotateTransform>
+                    <RotateTransform x:Name="ArrowRotateTransform" CenterX="0.5" CenterY="0.5" />
                 </Path.RenderTransform>
             </Path>
         </Grid>
@@ -231,14 +239,14 @@
                         </dxnavi:TileButtonControl.Resources>
                     </dxnavi:TileButtonControl>
                     <dxnavi:TileBarItemArrowControl x:Name="PART_ArrowButton"
-                                                    Margin="0 0 10 0"
-                                                    BorderThickness="0"
-                                                    BorderBrush="Transparent"
                                                     Grid.Column="0"
+                                                    Margin="0,0,10,0"
                                                     HorizontalAlignment="Stretch"
                                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                                     Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    BorderThickness="0"
                                                     IsChecked="{TemplateBinding IsChecked}"
                                                     Template="{StaticResource TileBarItemArrowControlEmptyTemplate}"
                                                     Visibility="{Binding IsFlyoutButtonVisible, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ResourceKey=boolToVisibilityConverter}}">
@@ -323,8 +331,8 @@
             <Setter.Value>
                 <DataTemplate>
                     <Grid>
-                        <dxnav:TileBar ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
-                                       Margin="185 0 0 0"
+                        <dxnav:TileBar Margin="185,0,0,0"
+                                       ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                                        ItemColorMode="Inverted"
                                        ItemsSource="{Binding Child.Children, Mode=OneWay}"
                                        Orientation="Horizontal"
@@ -335,7 +343,9 @@
                                     <Setter Property="ContentTemplate">
                                         <Setter.Value>
                                             <DataTemplate>
-                                                <TextBlock x:Name="ChildBarItemTB" Text="{Binding DisplayName}" Foreground="{DynamicResource CommonDarkGrey}" />
+                                                <TextBlock x:Name="ChildBarItemTB"
+                                                           Foreground="{DynamicResource CommonDarkGrey}"
+                                                           Text="{Binding DisplayName}" />
                                             </DataTemplate>
                                         </Setter.Value>
                                     </Setter>
@@ -368,14 +378,14 @@
     </Style>
 
     <Style x:Key="TileBarItemFirstLevelStyleExtended"
-               BasedOn="{StaticResource TileBarItemStyleExtended}"
-               TargetType="{x:Type dxnav:TileBarItem}">
+           BasedOn="{StaticResource TileBarItemStyleExtended}"
+           TargetType="{x:Type dxnav:TileBarItem}">
         <Setter Property="ContentTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <TextBlock x:Name="ChildBarItemTB"
-                                   Foreground="{DynamicResource CommonTextLightForeground}"
-                                   Text="{Binding DisplayName}" />
+                               Foreground="{DynamicResource CommonTextLightForeground}"
+                               Text="{Binding DisplayName}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>

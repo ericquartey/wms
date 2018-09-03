@@ -22,9 +22,7 @@ namespace Ferretto.Common.Controls
       obj.SetValue(EnabledProperty, value);
     }
 
-    #pragma warning disable IDE1006 // Naming Styles
     public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached(
-    #pragma warning restore IDE1006 // Naming Styles
         "Enabled",
         typeof(bool),
         typeof(CustomMenuTileFlyoutPosition),

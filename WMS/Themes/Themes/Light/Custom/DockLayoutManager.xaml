@@ -1,0 +1,372 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxcn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+                    xmlns:dxdot="http://schemas.devexpress.com/winfx/2008/xaml/docking/themekeys"
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/docking/themekeys"
+                    xmlns:ve="http://schemas.devexpress.com/winfx/2008/xaml/docking/visualelements">
+
+    <ControlTemplate x:Key="{dxdot:DocumentPaneElementsThemeKey ResourceKey=TabContainerTemplate,
+                                                                ThemeName=Office2016White}"
+                     TargetType="ve:DocumentTabContainer">
+        <ControlTemplate.Resources>
+            <ve:GroupCaptionLocationToDockConverter x:Key="groupCaptionLocationToDockConverter" />
+            <ve:TabHeaderCaptionLocationToDockConverter x:Key="tabHeaderCaptionLocationToDockConverter" />
+        </ControlTemplate.Resources>
+        <ve:DockingSplitLayoutPanel Margin="1"
+                                    ve:DockPane.HitTestType="Bounds"
+                                    Content1Location="{Binding CaptionLocation, Converter={StaticResource groupCaptionLocationToDockConverter}}"
+                                    DataContext="{Binding LayoutItem}"
+                                    SnapsToDevicePixels="True">
+            <ve:DockingSplitLayoutPanel.Resources>
+                <dx:ColorOverlayConverter x:Key="colorOverlayConveter" />
+                <SolidColorBrush x:Key="activeBrush"
+                                 Color="{Binding TabColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource colorOverlayConveter}, ConverterParameter=#FF999999}" />
+                <SolidColorBrush x:Key="inactiveBrush"
+                                 x:Name="SolidColorBrush_0017"
+                                 Color="#FFABABAB" />
+                <SolidColorBrush x:Key="coloredInctiveBrush"
+                                 Color="{Binding TabColor, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource colorOverlayConveter}, ConverterParameter=#3F808080}" />
+                <dxmvvm:ObjectToObjectConverter x:Key="BorderThicknessConverter"
+                                                DefaultTarget="1 0 1 1">
+                    <dxmvvm:MapItem Source="Bottom"
+                                    Target="1 1 1 0" />
+                    <dxmvvm:MapItem Source="Left"
+                                    Target="0 1 1 1" />
+                    <dxmvvm:MapItem Source="Right"
+                                    Target="1 1 0 1" />
+                </dxmvvm:ObjectToObjectConverter>
+                <dxmvvm:ObjectToObjectConverter x:Key="BackgroundMarginConverter"
+                                                DefaultTarget="0 4 0 0">
+                    <dxmvvm:MapItem Source="Bottom"
+                                    Target="0 0 0 4" />
+                    <dxmvvm:MapItem Source="Left"
+                                    Target="4 0 0 0" />
+                    <dxmvvm:MapItem Source="Right"
+                                    Target="0 0 4 0" />
+                </dxmvvm:ObjectToObjectConverter>
+                <dxmvvm:ObjectToObjectConverter x:Key="HeadersMarginConverter"
+                                                DefaultTarget="0 0 1 0">
+                    <dxmvvm:MapItem Source="Left"
+                                    Target="0 0 0 1" />
+                    <dxmvvm:MapItem Source="Right"
+                                    Target="0 0 0 1" />
+                </dxmvvm:ObjectToObjectConverter>
+            </ve:DockingSplitLayoutPanel.Resources>
+            <ve:DockingSplitLayoutPanel.Content1>
+                <ve:DockingSplitLayoutPanel x:Name="DockingSplitLayoutPanel_0001"
+                                            Margin="{Binding ActualTabPanelMargin, RelativeSource={RelativeSource TemplatedParent}}"
+                                            HorizontalAlignment="Stretch"
+                                            Background="Transparent"
+                                            Canvas.ZIndex="1"
+                                            ClipMargin="{Binding ActualClipMargin, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Content1Location="{Binding CaptionLocation, Converter={StaticResource tabHeaderCaptionLocationToDockConverter}}"
+                                            MaximizeContent1="True"
+                                            UseClipMargin="True">
+                    <ve:DockingSplitLayoutPanel.Content1>
+                        <ItemsPresenter x:Name="PART_HeadersPanelPresenter"
+                                        Margin="{Binding CaptionLocation, Converter={StaticResource HeadersMarginConverter}}" />
+                    </ve:DockingSplitLayoutPanel.Content1>
+                    <ve:DockingSplitLayoutPanel.Content2>
+                        <ve:TabHeaderControlBoxControl x:Name="PART_ControlBox"
+                                                       ve:DockPane.HitTestType="ControlBox"
+                                                       ve:TabHeaderControlBoxControl.Location="{Binding CaptionLocation}"
+                                                       ButtonHeight="18"
+                                                       ButtonStyle="{DynamicResource {dxdot:DocumentPaneElementsThemeKey ResourceKey=DocumentGroupButtonStyle,
+                                                                                                                         ThemeName=Office2016White}}"
+                                                       ButtonWidth="19"
+                                                       CloseButtonTemplate="{DynamicResource {dxdot:DocumentPaneElementsThemeKey ResourceKey=CloseButton,
+                                                                                                                                 ThemeName=Office2016White}}"
+                                                       DropDownButtonTemplate="{DynamicResource {dxdot:DocumentPaneElementsThemeKey ResourceKey=DropDownButton,
+                                                                                                                                    ThemeName=Office2016White}}"
+                                                       Foreground="#FFFFFFFF"
+                                                       LayoutItem="{Binding}"
+                                                       ScrollNextButtonTemplate="{DynamicResource {dxdot:DocumentPaneElementsThemeKey ResourceKey=ScrollNextButton,
+                                                                                                                                      ThemeName=Office2016White}}"
+                                                       ScrollPrevButtonTemplate="{DynamicResource {dxdot:DocumentPaneElementsThemeKey ResourceKey=ScrollPrevButton,
+                                                                                                                                      ThemeName=Office2016White}}" />
+                    </ve:DockingSplitLayoutPanel.Content2>
+                </ve:DockingSplitLayoutPanel>
+            </ve:DockingSplitLayoutPanel.Content1>
+            <ve:DockingSplitLayoutPanel.Content2>
+                <Grid x:Name="PART_SelectedPage"
+                      ve:DockPane.HitTestType="Content">
+                    <Border x:Name="background"
+                            BorderBrush="{DynamicResource CommonHighlight}"
+                            BorderThickness="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BackgroundMarginConverter}}" />
+                    <Border x:Name="coloredBackground"
+                            BorderBrush="{StaticResource activeBrush}"
+                            BorderThickness="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BackgroundMarginConverter}}" />
+                    <Border x:Name="HeaderPart"
+                            Margin="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BackgroundMarginConverter}}"
+                            ve:DockPane.HitTestType="Content"
+                            Background="{TemplateBinding ActualBackground}"
+                            BorderBrush="Transparent"
+                            BorderThickness="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BorderThicknessConverter}}">
+                        <ve:LayoutTabFastRenderPanel x:Name="PART_FastRenderPanel"
+                                                     ve:DockPane.HitTestType="Content" />
+                    </Border>
+
+                </Grid>
+            </ve:DockingSplitLayoutPanel.Content2>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="LocationStates">
+                    <VisualState x:Name="EmptyLocationState" />
+                    <VisualState x:Name="Top" />
+                    <VisualState x:Name="Bottom" />
+                    <VisualState x:Name="Left" />
+                    <VisualState x:Name="Right" />
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="ActiveStates">
+                    <VisualState x:Name="ActiveEmptyState" />
+                    <VisualState x:Name="Active" />
+                    <VisualState x:Name="Inactive">
+                        <Storyboard>
+                            <ColorAnimation x:Name="ColorAnimation_0002"
+                                            Storyboard.TargetName="background"
+                                            Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                            To="#FFABABAB"
+                                            Duration="0" />
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="coloredBackground"
+                                                           Storyboard.TargetProperty="BorderBrush">
+                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{StaticResource coloredInctiveBrush}" />
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Empty">
+                        <Storyboard>
+                            <ColorAnimation x:Name="ColorAnimation_0004"
+                                            Storyboard.TargetName="background"
+                                            Storyboard.TargetProperty="(BorderBrush).(SolidColorBrush.Color)"
+                                            To="Transparent"
+                                            Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="HeaderStates">
+                    <VisualState x:Name="HeaderVisible" />
+                    <VisualState x:Name="HeaderHidden">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Visibility="Collapsed"
+                                                           Storyboard.TargetName="PART_ControlBox"
+                                                           Storyboard.TargetProperty="Visibility" />
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="1"
+                                                           Storyboard.TargetName="HeaderPart"
+                                                           Storyboard.TargetProperty="BorderThickness" />
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="0"
+                                                           Storyboard.TargetName="HeaderPart"
+                                                           Storyboard.TargetProperty="Margin" />
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="0"
+                                                           Storyboard.TargetName="background"
+                                                           Storyboard.TargetProperty="BorderThickness" />
+                            <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Thickness="0"
+                                                           Storyboard.TargetName="coloredBackground"
+                                                           Storyboard.TargetProperty="BorderThickness" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </ve:DockingSplitLayoutPanel>
+        <ControlTemplate.Triggers>
+            <Trigger Property="dx:ThemeManager.IsTouchEnabled" Value="True">
+                <Setter TargetName="PART_ControlBox" Property="Margin" Value="0,0,12,0" />
+                <Setter TargetName="PART_ControlBox" Property="ButtonWidth" Value="44" />
+                <Setter TargetName="PART_ControlBox" Property="ButtonHeight" Value="44" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{dxt:DocumentPaneElementsThemeKey ThemeName=Office2016White,
+                                                              ResourceKey=PageHeader}"
+                     TargetType="ve:DocumentPaneItem">
+        <Grid x:Name="Grid"
+              Width="Auto"
+              Height="Auto"
+              Margin="0,0,0,0"
+              ve:DockPane.HitTestType="Header"
+              Visibility="{Binding Visibility}">
+            <ve:TabHeaderContainer BottomMargin="0,0,0,1"
+                                   BottomSelectedMargin="0,-1,0,0"
+                                   CaptionLocation="{Binding CaptionLocation, RelativeSource={RelativeSource TemplatedParent}}"
+                                   IsSelected="{Binding IsSelected, RelativeSource={RelativeSource TemplatedParent}}"
+                                   LeftMargin="1,0,0,0"
+                                   LeftSelectedMargin="0,0,-1,0"
+                                   RightMargin="0,0,1,0"
+                                   RightSelectedMargin="-1,0,0,0"
+                                   TopMargin="0,1,0,0"
+                                   TopSelectedMargin="0,0,0,-1">
+                <Border x:Name="TabItemHeader"
+                        Padding="1,1,1,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="#FF898989">
+                    <Border x:Name="Border2"
+                            Width="Auto"
+                            Height="Auto"
+                            Background="#ADADAD"
+                            CornerRadius="0,0,0,0" />
+                </Border>
+            </ve:TabHeaderContainer>
+            <Border Name="FlashBorder"
+                    Background="Orange"
+                    Opacity="0" />
+            <ve:TabHeaderTransformPanel CaptionLocation="{Binding CaptionLocation, RelativeSource={RelativeSource TemplatedParent}}"
+                                        CaptionOrientation="{Binding CaptionOrientation, RelativeSource={RelativeSource TemplatedParent}}">
+                <Grid x:Name="Content">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ve:TabCaptionControl x:Name="PART_CaptionControl"
+                                          Grid.Column="0"
+                                          Width="{Binding Path=TabCaptionWidth}"
+                                          Margin="9,4,9,2"
+                                          Foreground="#FF000000" />
+                    <ve:BaseControlBoxControl x:Name="PART_ControlBox"
+                                              Grid.Column="1"
+                                              Margin="-5,2,3,0"
+                                              ButtonHeight="16"
+                                              ButtonWidth="16"
+                                              CloseButtonTemplate="{DynamicResource {dxt:DocumentElementsThemeKey ResourceKey=ClosePageButton}}"
+                                              LayoutItem="{Binding}" />
+                </Grid>
+            </ve:TabHeaderTransformPanel>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border2"
+                                                           Storyboard.TargetProperty="(Control.Background)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <SolidColorBrush Color="#FFDCDCDC" />
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Normal" />
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="SelectionStates">
+                    <VisualState x:Name="EmptySelectionState" />
+                    <VisualState x:Name="Selected">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Border2"
+                                                           Storyboard.TargetProperty="(Control.Background)">
+                                <DiscreteObjectKeyFrame KeyTime="0"
+                                                        Value="{DynamicResource CommonHighlight}" />
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="FlashBorder"
+                                                           Storyboard.TargetProperty="(Control.Visibility)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Visibility>Collapsed</Visibility>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TabItemHeader"
+                                                           Storyboard.TargetProperty="(Border.Padding)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>0,0,0,0</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Unselected" />
+                </VisualStateGroup>
+                <VisualStateGroup x:Name="LocationStates">
+                    <VisualState x:Name="Top" />
+                    <VisualState x:Name="Bottom">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TabItemHeader"
+                                                           Storyboard.TargetProperty="(Border.Padding)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>1,0,1,1</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Grid"
+                                                           Storyboard.TargetProperty="(Control.Margin)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>0,0,-1,0</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_CaptionControl"
+                                                           Storyboard.TargetProperty="(Control.Margin)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>9,2,9,4</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Left">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TabItemHeader"
+                                                           Storyboard.TargetProperty="(Border.Padding)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>1,1,0,1</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Grid"
+                                                           Storyboard.TargetProperty="(Control.Margin)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>0,0,0,-1</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_CaptionControl"
+                                                           Storyboard.TargetProperty="(Control.Margin)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>9,3,9,3</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Right">
+                        <Storyboard>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="TabItemHeader"
+                                                           Storyboard.TargetProperty="(Border.Padding)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>0,1,1,1</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Grid"
+                                                           Storyboard.TargetProperty="(Control.Margin)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>0,0,0,-1</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PART_CaptionControl"
+                                                           Storyboard.TargetProperty="(Control.Margin)">
+                                <DiscreteObjectKeyFrame KeyTime="0">
+                                    <DiscreteObjectKeyFrame.Value>
+                                        <Thickness>9,3,9,3</Thickness>
+                                    </DiscreteObjectKeyFrame.Value>
+                                </DiscreteObjectKeyFrame>
+                            </ObjectAnimationUsingKeyFrames>
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Grid>
+    </ControlTemplate>
+
+</ResourceDictionary>

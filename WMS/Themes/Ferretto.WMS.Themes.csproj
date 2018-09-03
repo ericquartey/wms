@@ -192,9 +192,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Themes\Light\Common\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Icons\Ferretto\Menu\grey\cells.png" />
     <Resource Include="Icons\Ferretto\Menu\grey\compartments_mapping.png" />
@@ -8019,6 +8017,18 @@
     <Page Include="Themes\Light\Common.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Light\Common\DXWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Light\Custom\DockLayoutManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Light\Custom\ActionBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Light\Custom\NavMenuTouch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -8043,6 +8053,15 @@
   <ItemGroup>
     <Resource Include="Images\ic_help_gray_24dp.png" />
     <Resource Include="Images\user_24dp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Logo\favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Themes\Light\Custom\DateEdit.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Controls\baseline_calendar_today_black_18dp.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\cleanup.targets" />
