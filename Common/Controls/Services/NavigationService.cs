@@ -39,22 +39,22 @@ namespace Ferretto.Common.Controls.Services
     public void Appear(string moduleName, string viewModelName)
     {
 
-        if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
-        {
-          return;
-        }
+      if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
+      {
+        return;
+      }
 
-        this.LoadModule(moduleName);
+      this.LoadModule(moduleName);
 
-        var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
-        var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
+      var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+      var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
 
-        var instanceModuleViewName = this.CheckAddRegion(moduleViewName);
+      var instanceModuleViewName = this.CheckAddRegion(moduleViewName);
 
-        var region = this.regionManager.Regions[instanceModuleViewName];
-        var view = region.Views.FirstOrDefault(v => v.GetType().ToString().Equals(moduleViewName, StringComparison.InvariantCulture));
+      var region = this.regionManager.Regions[instanceModuleViewName];
+      var view = region.Views.FirstOrDefault(v => v.GetType().ToString().Equals(moduleViewName, StringComparison.InvariantCulture));
 
-        region.Activate(view);
+      region.Activate(view);
     }
 
     private string CheckAddRegion(string moduleViewName)
@@ -108,28 +108,28 @@ namespace Ferretto.Common.Controls.Services
       Justification = "Method is not yet fully implemented")]
     public void Disappear(string moduleName, string viewModelName)
     {
-        if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
-        {
-          return;
-        }
-        var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
-        var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
+      if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
+      {
+        return;
+      }
+      var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+      var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
 
-        throw new NotSupportedException("Disappear need to be implemented");
+      throw new NotSupportedException("Disappear need to be implemented");
 
-        // Get corrent mapid
-        var moduleRegionName = $"{moduleName}.{modelName}.1";
-        if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
-        {
-          return;
-        }
+      // Get corrent mapid
+      var moduleRegionName = $"{moduleName}.{modelName}.1";
+      if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
+      {
+        return;
+      }
 
-        var region = this.regionManager.Regions[moduleRegionName];
-        var viewToRemove = region.GetView(moduleViewName);
-        if (viewToRemove != null)
-        {
-          region.Remove(viewToRemove);
-        }
+      var region = this.regionManager.Regions[moduleRegionName];
+      var viewToRemove = region.GetView(moduleViewName);
+      if (viewToRemove != null)
+      {
+        region.Remove(viewToRemove);
+      }
     }
     #endregion
 
@@ -141,12 +141,22 @@ namespace Ferretto.Common.Controls.Services
       this.container.RegisterType<INavigableView, TItemsView>(newRegId);
     }
 
+    /// <summary>
+    /// Registers a new view model instance for the specified view.
+    /// </summary>
+    /// <param name="viewName">The type name of the view associated to the view model.</param>
+    /// <param name="token"></param>
+    /// <remarks>This method shall be called only after the Register method has been invoked to ensure there is an association registered between the view type and the view model type.
+    /// Multiple calls to this method are allowed and they will generate new instances of the view model.</remarks>
+    /// <returns>A new instance of the view model associated to the specified view.</returns>
     public INavigableViewModel RegisterAndGetViewModel(string viewName, string token)
     {
       if (this.registrations.ContainsKey(viewName) == false)
       {
-        return null;
+        throw new InvalidOperationException(
+          $"Before invoking the ({nameof(RegisterAndGetViewModel)}) method, the {nameof(Register)} method needs to be called in order to register an association between the specified view and a view model type.");
       }
+
       var viewModelBind = this.registrations[viewName];
       // Generate random mapId
       var mapId = Guid.NewGuid().ToString("N");
