@@ -202,6 +202,9 @@
     <Compile Include="Controls\Custom\TextBox\TextBox.xaml.cs">
       <DependentUpon>TextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
+      <DependentUpon>DateEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\ContentGroup\ContentGroup.xaml.cs">
       <DependentUpon>ContentGroup.xaml</DependentUpon>
     </Compile>

@@ -35,6 +35,7 @@ namespace Ferretto.Common.Controls
     public TextBox()
     {
       this.InitializeComponent();
+      this.GridTextBox.DataContext = this;
     }
 
     #endregion

@@ -7,7 +7,7 @@
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
              mc:Ignorable="d"
              d:DesignHeight="80" d:DesignWidth="300">
-    <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:TextBox}}">
+    <Grid x:Name="GridTextBox">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
