@@ -183,8 +183,8 @@
     <Compile Include="Controls\Custom\ActionBar\ActionBarItem.xaml.cs">
       <DependentUpon>ActionBarItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
-      <DependentUpon>DateEdit.xaml</DependentUpon>
+    <Compile Include="Controls\Custom\ComboBox\ComboBox.xaml.cs">
+      <DependentUpon>ComboBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Custom\Label\Label.xaml.cs">
       <DependentUpon>Label.xaml</DependentUpon>
@@ -205,11 +205,15 @@
     <Compile Include="Controls\Custom\TextBox\TextBox.xaml.cs">
       <DependentUpon>TextBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
+      <DependentUpon>DateEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\ContentGroup\ContentGroup.xaml.cs">
       <DependentUpon>ContentGroup.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
+    <Compile Include="Interfaces\IWmsGridViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Resources\Resources.Designer.cs">
@@ -234,6 +238,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Custom\DateEdit\DateEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Custom\ComboBox\ComboBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

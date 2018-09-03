@@ -13,4 +13,25 @@ namespace Ferretto.Common.Controls.Services
       this.SelectedItem = selectedItem;
     }
   }
+
+  public class RefreshItemsEvent : Prism.Events.PubSubEvent, IEventArgs
+  {
+    public string Token => null;
+
+    public RefreshItemsEvent()
+    {
+    }
+  }
+
+  public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
+  {
+    public TPayload ChangedItem { get; set; }
+
+    public string Token => null;
+
+    public ItemChangedEvent(TPayload changedItem)
+    {
+      this.ChangedItem = changedItem;
+    }
+  }
 }

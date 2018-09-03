@@ -1,5 +1,6 @@
 ﻿using System;
 using AutoMapper;
+using Ferretto.Common.Utils.Testing;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.DAL.Interfaces;
 using Ferretto.Common.Modules.BLL;
@@ -12,6 +13,7 @@ using Moq;
 namespace Feretto.Common.Modules.BLL.Tests
 {
   [TestClass]
+  [TestCategory("Business")]
   public class ItemServiceTest : UnityTest
   {
     private IItemsService itemsService;
@@ -37,8 +39,10 @@ namespace Feretto.Common.Modules.BLL.Tests
     };
 
     [TestInitialize]
-    public void Initialize()
+    public override void Initialize()
     {
+      base.Initialize();
+
       var mockRepository = new Mock<IItemsRepository>();
       mockRepository.SetReturnsDefault(dalObject);
 
@@ -52,8 +56,8 @@ namespace Feretto.Common.Modules.BLL.Tests
         }
       );
 
-      container.RegisterInstance(mockRepository.Object);
-      container.RegisterType<IItemsService, ItemsService>();
+      this.Container.RegisterInstance(mockRepository.Object);
+      this.Container.RegisterType<IItemsService, ItemsService>();
 
       this.itemsService = ServiceLocator.Current.GetInstance<IItemsService>();
 
