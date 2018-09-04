@@ -206,8 +206,8 @@
     <ControlTemplate x:Key="{dxwuit:TileNavPaneElementsThemeKey ResourceKey=TileSelectorItemTemplate,
                                                                 ThemeName=Office2016White}"
                      TargetType="dxnav:TileSelectorItem">
-        <Grid Width="{Binding Path=ActualWidth, ElementName=sizeManager}"
-              Height="{Binding Path=ActualHeight, ElementName=sizeManager}">
+        <Grid Width="{DynamicResource MenuTileWidth}"
+              Height="{DynamicResource MenuTileHeight}">
             <dx:DXBorder x:Name="Border"
                          Margin="{TemplateBinding ActualSelectionPadding}"
                          BorderBrush="{TemplateBinding BorderBrush}"
@@ -230,14 +230,7 @@
                                               Foreground="{TemplateBinding CalculatedForeground}"
                                               Glyph="{TemplateBinding TileGlyph}"
                                               HorizontalGlyphAlignment="{TemplateBinding HorizontalTileGlyphAlignment}"
-                                              VerticalGlyphAlignment="{TemplateBinding VerticalTileGlyphAlignment}">
-                        <dxnavi:TileButtonControl.Resources>
-                            <dxnavi:TileSizeManager x:Key="SizeManager"
-                                                    x:Name="sizeManager"
-                                                    Width="{Binding Width, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    Height="{Binding Height, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </dxnavi:TileButtonControl.Resources>
-                    </dxnavi:TileButtonControl>
+                                              VerticalGlyphAlignment="{TemplateBinding VerticalTileGlyphAlignment}" />
                     <dxnavi:TileBarItemArrowControl x:Name="PART_ArrowButton"
                                                     Grid.Column="0"
                                                     Margin="0,0,10,0"
@@ -331,7 +324,7 @@
             <Setter.Value>
                 <DataTemplate>
                     <Grid>
-                        <dxnav:TileBar Margin="185,0,0,0"
+                        <dxnav:TileBar Margin="0,0,0,0"
                                        ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                                        ItemColorMode="Inverted"
                                        ItemsSource="{Binding Child.Children, Mode=OneWay}"
@@ -340,13 +333,30 @@
                             <dxnav:TileBar.ItemContainerStyle>
                                 <Style TargetType="dxnav:TileBarItem">
                                     <Setter Property="AllowGlyphTheming" Value="False" />
-                                    <Setter Property="ContentTemplate">
+                                    <Setter Property="Template">
                                         <Setter.Value>
-                                            <DataTemplate>
-                                                <TextBlock x:Name="ChildBarItemTB"
-                                                           Foreground="{DynamicResource CommonDarkGrey}"
-                                                           Text="{Binding DisplayName}" />
-                                            </DataTemplate>
+                                            <ControlTemplate>
+                                                <Grid Background="{DynamicResource CommonTextLightForeground}"
+                                                      Height="{DynamicResource MenuTileHeight}"
+                                                      Width="{DynamicResource MenuTileWidth}">
+                                                    <Grid Margin="6">
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="*" />
+                                                            <RowDefinition Height="Auto" />
+                                                        </Grid.RowDefinitions>
+                                                        <Image Source="{Binding Image}"
+                                                               Height="24"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Top" />
+                                                        <TextBlock x:Name="ChildBarItemTB"
+                                                                   Grid.Row="1"
+                                                                   Foreground="{DynamicResource CommonDarkGrey}"
+                                                                   Text="{Binding DisplayName}"
+                                                                   VerticalAlignment="Bottom"
+                                                                   FontSize="{DynamicResource MenuFontSize}" />
+                                                    </Grid>
+                                                </Grid>
+                                            </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
                                     <Setter Property="Padding" Value="8,6,8,6" />
@@ -366,7 +376,8 @@
                                    VerticalAlignment="Top"
                                    Focusable="False"
                                    Foreground="White"
-                                   Text="{Binding Child.Info}" />
+                                   Text="{Binding Child.Info}"
+                                   FontSize="{DynamicResource MenuFontSize}" />
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
@@ -385,7 +396,8 @@
                 <DataTemplate>
                     <TextBlock x:Name="ChildBarItemTB"
                                Foreground="{DynamicResource CommonTextLightForeground}"
-                               Text="{Binding DisplayName}" />
+                               Text="{Binding DisplayName}"
+                               FontSize="{DynamicResource MenuFontSize}"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
