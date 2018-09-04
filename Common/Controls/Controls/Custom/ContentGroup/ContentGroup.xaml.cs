@@ -7,16 +7,7 @@ namespace Ferretto.Common.Controls
   [ContentProperty("ControlContent")]
   public partial class ContentGroup : UserControl
   {
-    #region Constructors
-
-    public ContentGroup()
-    {
-      this.InitializeComponent();
-    }
-
-    #endregion
-
-    #region InnerContent Dependency Property
+    #region Dependency properties
 
     public static readonly DependencyProperty ControlContentProperty =
        DependencyProperty.Register(nameof(ControlContent), typeof(object), typeof(ContentGroup));
@@ -27,10 +18,6 @@ namespace Ferretto.Common.Controls
       set => this.SetValue(ControlContentProperty, value);
     }
 
-    #endregion
-
-    #region Label Dependency Property
-
     public static readonly DependencyProperty LabelProperty =
       DependencyProperty.Register(nameof(Label), typeof(string), typeof(ContentGroup));
 
@@ -38,6 +25,16 @@ namespace Ferretto.Common.Controls
     {
       get => (string)this.GetValue(LabelProperty);
       set => this.SetValue(LabelProperty, value);
+    }
+
+    #endregion
+
+    #region Ctor
+
+    public ContentGroup()
+    {
+      this.InitializeComponent();
+      this.GridContentGroup.DataContext = this;
     }
 
     #endregion

@@ -16,7 +16,7 @@
         <Setter Property="GlyphSize" Value="Large" />
     </Style>
 
-    <Style x:Key="ActionBarOveralyedWithGrid"
+    <Style x:Key="ActionBarOverlayedWithGrid"
            BasedOn="{StaticResource ActionBarNotCustomizable}"
            TargetType="wms:ActionBar">
         <Setter Property="Width" Value="Auto" />

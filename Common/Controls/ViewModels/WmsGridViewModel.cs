@@ -1,18 +1,37 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-  public class WmsGridViewModel<TModel, TId> : BindableBase where TModel : IModel<TId>
+  public class WmsGridViewModel<TModel, TId> : BindableBase, IWmsGridViewModel where TModel : IModel<TId>
   {
     #region Fields
 
     private readonly IEntityService<TModel, TId> entityService;
     private IEnumerable<TModel> items;
     private TModel selectedItem;
+
+    #endregion
+
+    #region Properties
+
+    public IEnumerable<TModel> Items => this.items;
+
+    public TModel SelectedItem
+    {
+      get => this.selectedItem;
+      set
+      {
+        if (this.SetProperty(ref this.selectedItem, value))
+        {
+          this.NotifySelectionChanged();
+        }
+      }
+    }
 
     #endregion
 
@@ -31,25 +50,12 @@ namespace Ferretto.Common.Controls
 
     private void Initialize()
     {
-      this.items = this.entityService.GetAll();
+      this.RefreshGrid();
     }
 
-    #endregion
-
-    #region Properties
-
-    public IEnumerable<TModel> Items => this.items;
-
-    public TModel SelectedItem
+    public void RefreshGrid()
     {
-      get => this.selectedItem;
-      set
-      {
-        if (this.SetProperty(ref this.selectedItem, value))
-        {
-          this.NotifySelectionChanged();
-        }
-      }
+      this.items = this.entityService.GetAll();
     }
 
     protected void NotifySelectionChanged()

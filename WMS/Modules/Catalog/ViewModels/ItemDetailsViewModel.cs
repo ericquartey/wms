@@ -65,6 +65,14 @@ namespace Ferretto.WMS.Modules.Catalog
       }
     }
 
+    private void SaveItem()
+    {
+      // TODO: call data saving service
+
+      ServiceLocator.Current.GetInstance<IEventService>()
+        .Invoke(new ItemChangedEvent<IItem>(this.Item));
+    }
+
     #endregion
 
   }
