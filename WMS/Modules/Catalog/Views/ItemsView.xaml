@@ -19,7 +19,8 @@
 
         <StackPanel Grid.Column="0">
             <Expander x:Name="ExportExpander"
-                      ExpandDirection="Left">
+                      ExpandDirection="Left"
+                      IsExpanded="True">
                 <StackPanel Orientation="Horizontal">
                     <wms:FilterBar Grid.Column="0"
                                    Filters="{Binding Filters}" />

@@ -13,8 +13,39 @@
              mc:Ignorable="d">
     <Grid>
         <dxnav:TileBar x:Name="filterBar"
-                       ItemContainerStyle="{DynamicResource FilterBarItem}"
                        ItemsSource="{Binding Filters}"
-                       Orientation="Vertical" />
+                       Orientation="Vertical">
+            <dxnav:TileBar.ItemContainerStyle>
+                <Style TargetType="dxnav:TileBarItem">
+                    <Setter Property="Padding" Value="5,0,5,5" />
+                    <Setter Property="AllowGlyphTheming" Value="True" />
+                    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Background" Value="{DynamicResource CommonBackgroundHover}" />
+                    <Setter Property="ContentTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Grid.Column="0"
+                                           VerticalAlignment="Bottom"
+                                           Content="{Binding Name}" />
+                                    <Label Grid.Column="1"
+                                           HorizontalAlignment="Right"
+                                           Content="{Binding Count}"
+                                           FontSize="32" />
+                                </Grid>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+
+                    <Setter Property="TileGlyph" Value="{Binding Image}" />
+                </Style>
+            </dxnav:TileBar.ItemContainerStyle>
+        </dxnav:TileBar>
     </Grid>
 </UserControl>
