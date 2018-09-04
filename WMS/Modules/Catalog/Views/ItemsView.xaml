@@ -24,7 +24,8 @@
                                   MaxWidth="2000"
                                   MaxHeight="5000"
                                   Margin="3"
-                                  SelectionMode="Row">
+                                  SelectionMode="Row"
+                                  ShowBorder="False">
             <catalog:ItemsGridControl.View>
                 <dxg:TableView AllowEditing="False"
                                AllowGrouping="False"
@@ -35,6 +36,7 @@
                                ShowIndicator="False"
                                ShowSearchPanelMode="Always" />
             </catalog:ItemsGridControl.View>
+
             <dxg:GridColumn Width="100*"
                             FieldName="Code"
                             Header="Codice" />
