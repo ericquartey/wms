@@ -7,7 +7,6 @@
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
              mc:Ignorable="d"
              d:DesignHeight="80" d:DesignWidth="300">
-    <!--DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=local:Label}}"-->
     <Grid Name="LabelGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

@@ -55,7 +55,7 @@
                 </ctrls:ContentGroup>
 
                 <ctrls:ContentGroup Grid.Row="1"
-                                    Label="Warehousing Informations">
+                                    Label="Warehousing Information">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="120"
@@ -85,7 +85,7 @@
                                        Text="{Binding ReorderPoint}" />
                         <ctrls:TextBox Grid.Row="1"
                                        Grid.Column="0"
-                                       Label="Measure Unit"
+                                       Label="Unit of measurement"
                                        Text="{Binding MeasureUnit.Description}" />
                         <ctrls:TextBox Grid.Row="1"
                                        Grid.Column="2"
@@ -103,7 +103,7 @@
 
                 <ctrls:ContentGroup Grid.Row="1"
                                     Grid.Column="2"
-                                    Label="Physical Informations">
+                                    Label="Physical Information">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="120"
