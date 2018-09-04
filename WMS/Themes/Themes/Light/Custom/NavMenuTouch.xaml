@@ -1,4 +1,4 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -356,7 +356,8 @@
                                                                    Grid.Row="1"
                                                                    Foreground="{DynamicResource CommonDarkGrey}"
                                                                    Text="{Binding DisplayName}"
-                                                                   VerticalAlignment="Bottom"/>
+                                                                   VerticalAlignment="Bottom"
+                                                                   FontSize="{DynamicResource MenuFontSize}" />
                                                     </Grid>
                                                 </Grid>
                                             </ControlTemplate>
@@ -379,7 +380,8 @@
                                    VerticalAlignment="Top"
                                    Focusable="False"
                                    Foreground="White"
-                                   Text="{Binding Child.Info}" />
+                                   Text="{Binding Child.Info}"
+                                   FontSize="{DynamicResource MenuFontSize}" />
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
@@ -398,7 +400,8 @@
                 <DataTemplate>
                     <TextBlock x:Name="ChildBarItemTB"
                                Foreground="{DynamicResource CommonTextLightForeground}"
-                               Text="{Binding DisplayName}" />
+                               Text="{Binding DisplayName}"
+                               FontSize="{DynamicResource MenuFontSize}"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>
