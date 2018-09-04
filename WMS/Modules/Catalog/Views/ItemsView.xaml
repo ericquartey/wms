@@ -12,7 +12,7 @@
              mc:Ignorable="d">
     <Grid>
         <wms:ActionBar HorizontalAlignment="Left"
-                       Style="{DynamicResource ActionBarOveralyedWithGrid}">
+                       Style="{DynamicResource ActionBarOverlayedWithGrid}">
             <wms:ActionBarItem Content="Add"
                                Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
             <wms:ActionBarItem Content="Withdraw"
