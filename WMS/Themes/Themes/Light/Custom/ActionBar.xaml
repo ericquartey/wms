@@ -13,14 +13,14 @@
         <Setter Property="AllowCustomizationMenu" Value="False" />
         <Setter Property="AllowQuickCustomization" Value="False" />
         <Setter Property="BarItemDisplayMode" Value="ContentAndGlyph" />
-        <Setter Property="GlyphSize" Value="Large" />
+        <Setter Property="GlyphSize" Value="Small" />
     </Style>
 
     <Style x:Key="ActionBarOverlayedWithGrid"
            BasedOn="{StaticResource ActionBarNotCustomizable}"
            TargetType="wms:ActionBar">
         <Setter Property="Width" Value="Auto" />
-        <Setter Property="Margin" Value="5,5" />
+        <Setter Property="Margin" Value="5,15,0,0" />
         <Setter Property="Panel.ZIndex" Value="1000" />
     </Style>
 

@@ -14,11 +14,11 @@
         <wms:ActionBar HorizontalAlignment="Left"
                        Style="{DynamicResource ActionBarOverlayedWithGrid}">
             <wms:ActionBarItem Content="Add"
-                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
+                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_18dp.png" />
             <wms:ActionBarItem Content="Withdraw"
-                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_48dp.png" />
+                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_18dp.png" />
             <wms:ActionBarItem Content="Refresh"
-                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png" />
+                               Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_18dp.png" />
         </wms:ActionBar>
         <catalog:ItemsGridControl x:Name="MainGridControl"
                                   MaxWidth="2000"
