@@ -32,20 +32,27 @@
         <Grid Grid.Column="1">
 
             <wms:ActionBar HorizontalAlignment="Left"
-                           Style="{DynamicResource ActionBarOveralyedWithGrid}">
+                           Style="{DynamicResource ActionBarOverlayedWithGrid}">
                 <wms:ActionBarItem Content="Add"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
+                                   CustomGlyphSize="18,18"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_18dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="Withdraw"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_48dp.png" />
+                                   CustomGlyphSize="18,18"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_18dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="Refresh"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png" />
+                                   CustomGlyphSize="18,18"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_18dp.png"
+                                   GlyphSize="Custom" />
             </wms:ActionBar>
 
             <catalog:ItemsGridControl x:Name="MainGridControl"
                                       MaxWidth="2000"
                                       MaxHeight="5000"
                                       Margin="3"
-                                      SelectionMode="Row">
+                                      SelectionMode="Row"
+                                      ShowBorder="False">
                 <catalog:ItemsGridControl.View>
                     <dxg:TableView AllowEditing="False"
                                    AllowGrouping="False"
@@ -56,6 +63,7 @@
                                    ShowIndicator="False"
                                    ShowSearchPanelMode="Always" />
                 </catalog:ItemsGridControl.View>
+
                 <dxg:GridColumn Width="100*"
                                 FieldName="Code"
                                 Header="Codice" />
