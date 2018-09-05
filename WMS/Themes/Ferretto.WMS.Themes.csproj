@@ -192,7 +192,9 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Images\user_36dp_example.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Ferretto\Menu\grey\cells.png" />
     <Resource Include="Icons\Ferretto\Menu\grey\compartments_mapping.png" />

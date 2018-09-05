@@ -154,7 +154,7 @@ namespace Ferretto.Common.Controls.Services
       if (this.registrations.ContainsKey(viewName) == false)
       {
         throw new InvalidOperationException(
-          $"Before invoking the ({nameof(RegisterAndGetViewModel)}) method, the {nameof(Register)} method needs to be called in order to register an association between the specified view and a view model type.");
+          $"Before invoking the ({nameof(this.RegisterAndGetViewModel)}) method, the {nameof(this.Register)} method needs to be called in order to register an association between the specified view and a view model type.");
       }
 
       var viewModelBind = this.registrations[viewName];

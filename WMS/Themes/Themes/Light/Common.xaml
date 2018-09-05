@@ -17,13 +17,18 @@
     <SolidColorBrush x:Key="CommonTextLightForeground"
                      Color="White" />
 
-    <SolidColorBrush x:Key="CommonForeground" 
+    <SolidColorBrush x:Key="CommonForeground"
                      Color="White" />
 
-    <SolidColorBrush x:Key="CommonHighlight" 
+    <SolidColorBrush x:Key="CommonHighlight"
                      Color="#E2001A" />
 
     <SolidColorBrush x:Key="CommonHighlightLight"
                      Color="#dd8282" />
+
+    <system:Double x:Key="MenuFontSize">14</system:Double>
+
+    <system:Double x:Key="MenuTileHeight">55</system:Double>
+    <system:Double x:Key="MenuTileWidth">140</system:Double>
 
 </ResourceDictionary>

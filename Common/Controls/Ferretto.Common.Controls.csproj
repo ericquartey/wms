@@ -186,6 +186,9 @@
     <Compile Include="Controls\Custom\ComboBox\ComboBox.xaml.cs">
       <DependentUpon>ComboBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Custom\FilterBar\FilterBar.xaml.cs">
+      <DependentUpon>FilterBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Custom\Label\Label.xaml.cs">
       <DependentUpon>Label.xaml</DependentUpon>
     </Compile>
@@ -234,6 +237,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Custom\ActionBar\ActionBarItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Custom\FilterBar\FilterBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
