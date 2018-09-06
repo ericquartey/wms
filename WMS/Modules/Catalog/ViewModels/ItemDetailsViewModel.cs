@@ -13,19 +13,19 @@ namespace Ferretto.WMS.Modules.Catalog
     #region Fields
 
     private readonly IImageService imageService;
-    private IItem item;
-    private ImageSource imgArticle;
 
     #endregion
 
     #region Properties
 
+    private IItem item;
     public IItem Item
     {
       get => this.item;
       set => this.SetProperty(ref this.item, value);
     }
 
+    private ImageSource imgArticle;
     public ImageSource ImgArticle
     {
       get => this.imgArticle;
@@ -36,10 +36,10 @@ namespace Ferretto.WMS.Modules.Catalog
 
     #region Constructors
 
-    public ItemDetailsViewModel(IImageService imageService)
+    public ItemDetailsViewModel()
     {
       this.Initialize();
-      this.imageService = imageService;
+      this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
     }
 
     #endregion
