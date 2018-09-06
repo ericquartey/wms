@@ -19,7 +19,7 @@
                Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogo.png" />
         <DockPanel Background="LightGray">
             <dxnav:TileBar x:Name="WMSTileNav"
-                           Padding="125,10,90,0"
+                           Padding="125,10,120,0"
                            ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                            AllowItemSelection="False"
                            Background="Transparent"
