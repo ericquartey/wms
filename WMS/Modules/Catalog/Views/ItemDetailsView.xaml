@@ -11,7 +11,7 @@
              d:DesignWidth="800"
              Style="{DynamicResource SlideInView}"
              mc:Ignorable="d">
-    
+
     <Grid x:Name="itemDetails"
           Margin="20"
           HorizontalAlignment="Stretch"
@@ -36,31 +36,41 @@
                                       MinWidth="20" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                
-                <Grid Grid.ColumnSpan="5">
+
+                <Grid Name="Toolbar"
+                      Grid.ColumnSpan="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <wms:Button>
-                        <wms:Button.Template>
-                            <ControlTemplate>
-                                <Image Source="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_arrow_black_18dp.png" />
-                            </ControlTemplate>
-                        </wms:Button.Template>
-                    </wms:Button>
+                    <wms:ActionBar HorizontalAlignment="Left"
+                                   Style="{DynamicResource ActionBarNotCustomizable}">
+                        <wms:ActionBarItem Command="{Binding HideDetailsCommand}"
+                                           Content="Back"
+                                           CustomGlyphSize="18,18"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_arrow_back_black_18dp.png"
+                                           GlyphSize="Custom" />
+
+                    </wms:ActionBar>
+
                     <wms:ActionBar Grid.Column="1"
                                    HorizontalAlignment="Right"
                                    Style="{DynamicResource ActionBarNotCustomizable}">
-                        <wms:ActionBarItem Content="Add"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
-                        <wms:ActionBarItem Content="Withdraw"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_48dp.png" />
-                        <wms:ActionBarItem Content="Refresh"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png" />
+                        <wms:ActionBarItem Content="Immediato"
+                                           CustomGlyphSize="18,18"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_18dp.png"
+                                           GlyphSize="Custom" />
+                        <wms:ActionBarItem Content="Save"
+                                           CustomGlyphSize="18,18"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_18dp.png"
+                                           GlyphSize="Custom" />
+                        <wms:ActionBarItem Content="Undo"
+                                           CustomGlyphSize="18,18"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_undo_black_18dp.png"
+                                           GlyphSize="Custom" />
                     </wms:ActionBar>
                 </Grid>
-                
+
                 <!-- <wms:ContentGroup Label="Item Information"> -->
                 <Grid Grid.Row="1">
                     <Grid.RowDefinitions>
@@ -222,7 +232,8 @@
                     </catalog:ItemsGridControl>
                 </wms:ContentGroup>
 
-                <wms:ContentGroup Grid.RowSpan="3"
+                <wms:ContentGroup Grid.Row="1"
+                                  Grid.RowSpan="3"
                                   Grid.Column="4"
                                   MinWidth="200"
                                   MaxWidth="500">

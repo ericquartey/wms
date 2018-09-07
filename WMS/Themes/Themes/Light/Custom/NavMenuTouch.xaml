@@ -171,12 +171,12 @@
                   Grid.Column="1"
                   Width="9"
                   Height="5"
+                  Margin="0,0,10,0"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Data="F1 M 0,0L 14.002,0L 7,7L 0,0 Z "
                   RenderTransformOrigin="0.5,0.5"
-                  Stretch="Fill"
-                  Margin="0,0,10,0">
+                  Stretch="Fill">
                 <Path.Style>
                     <Style TargetType="Path">
                         <Style.Triggers>

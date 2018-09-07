@@ -1,9 +1,11 @@
-﻿using System.Windows.Media;
+﻿using System.Windows.Input;
+using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
+using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
@@ -13,6 +15,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private readonly IImageService imageService;
 
+    private ICommand hideDetailsCommand;
     private ImageSource imgArticle;
     private IItem item;
 
@@ -30,6 +33,8 @@ namespace Ferretto.WMS.Modules.Catalog
 
     #region Properties
 
+    public ICommand HideDetailsCommand => this.hideDetailsCommand ?? (this.hideDetailsCommand = new DelegateCommand(ExecuteHideDetailsCommand));
+
     public ImageSource ImgArticle
     {
       get => this.imgArticle;
@@ -45,6 +50,11 @@ namespace Ferretto.WMS.Modules.Catalog
     #endregion Properties
 
     #region Methods
+
+    private static void ExecuteHideDetailsCommand()
+    {
+      ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ShowDetailsEventArgs<IItem>(false));
+    }
 
     private void Initialize()
     {
