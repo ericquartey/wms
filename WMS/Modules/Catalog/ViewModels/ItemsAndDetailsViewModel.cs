@@ -10,7 +10,7 @@ namespace Ferretto.WMS.Modules.Catalog
   {
     #region Fields
 
-    private bool detailsViewVisibility;
+    private bool isDetailsViewVisible;
 
     #endregion Fields
 
@@ -21,7 +21,7 @@ namespace Ferretto.WMS.Modules.Catalog
       ServiceLocator.Current.GetInstance<IEventService>()
        .Subscribe((ShowDetailsEventArgs<IItem> eventArgs) =>
        {
-         this.DetailsViewVisibility = eventArgs.IsDetailsViewVisible;
+         this.IsDetailsViewVisible = eventArgs.IsDetailsViewVisible;
        });
     }
 
@@ -29,10 +29,10 @@ namespace Ferretto.WMS.Modules.Catalog
 
     #region Properties
 
-    public bool DetailsViewVisibility
+    public bool IsDetailsViewVisible
     {
-      get => this.detailsViewVisibility;
-      set => this.SetProperty(ref this.detailsViewVisibility, value);
+      get => this.isDetailsViewVisible;
+      set => this.SetProperty(ref this.isDetailsViewVisible, value);
     }
 
     #endregion Properties
@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
     protected override void OnAppear()
     {
-      this.DetailsViewVisibility = false;
+      this.IsDetailsViewVisible = false;
     }
 
     #endregion Methods

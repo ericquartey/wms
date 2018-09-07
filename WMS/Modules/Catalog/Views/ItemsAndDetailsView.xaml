@@ -19,16 +19,16 @@
                                              Invert="True" />
         </Grid.Resources>
 
-        <ContentControl Visibility="{Binding DetailsViewVisibility, Converter={StaticResource BTVIC}}">
+        <ContentControl Visibility="{Binding IsDetailsViewVisible, Converter={StaticResource BTVIC}}">
             <catalog:ItemsView Grid.Column="1" />
         </ContentControl>
-        <ContentControl Visibility="{Binding DetailsViewVisibility, Converter={StaticResource BTVC}}">
+        <ContentControl Visibility="{Binding IsDetailsViewVisible, Converter={StaticResource BTVC}}">
             <catalog:ItemDetailsView>
 
-            <!--
+                <!--
             temporarily remove the details view, since we will be refactoring this
             <localctrls:ItemDetailsView />
-            -->
+                -->
             </catalog:ItemDetailsView>
         </ContentControl>
     </Grid>
