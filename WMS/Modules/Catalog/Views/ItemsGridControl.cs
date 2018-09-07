@@ -9,14 +9,14 @@ namespace Ferretto.WMS.Modules.Catalog
 {
   public class ItemsGridControl : WmsGridControl<IItem, int>
   {
-    #region Ctor
+    #region Constructors
 
     public ItemsGridControl()
     {
       this.Initialize();
     }
 
-    #endregion
+    #endregion Constructors
 
     #region Methods
 
@@ -31,6 +31,6 @@ namespace Ferretto.WMS.Modules.Catalog
       ((IWmsGridViewModel)this.DataContext)?.RefreshGrid();
     }
 
-    #endregion
+    #endregion Methods
   }
 }

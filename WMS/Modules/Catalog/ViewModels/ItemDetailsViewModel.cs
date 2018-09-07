@@ -1,10 +1,11 @@
-﻿using System.Windows.Media;
+﻿using System.Windows.Input;
+using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Events;
+using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
@@ -13,18 +14,26 @@ namespace Ferretto.WMS.Modules.Catalog
     #region Fields
 
     private readonly IImageService imageService;
-    private IItem item;
-    private ImageSource imgArticle;
 
-    #endregion
+    private ICommand hideDetailsCommand;
+    private ImageSource imgArticle;
+    private IItem item;
+
+    #endregion Fields
+
+    #region Constructors
+
+    public ItemDetailsViewModel()
+    {
+      this.Initialize();
+      this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
+    }
+
+    #endregion Constructors
 
     #region Properties
 
-    public IItem Item
-    {
-      get => this.item;
-      set => this.SetProperty(ref this.item, value);
-    }
+    public ICommand HideDetailsCommand => this.hideDetailsCommand ?? (this.hideDetailsCommand = new DelegateCommand(ExecuteHideDetailsCommand));
 
     public ImageSource ImgArticle
     {
@@ -32,19 +41,20 @@ namespace Ferretto.WMS.Modules.Catalog
       set => this.SetProperty(ref this.imgArticle, value);
     }
 
-    #endregion
-
-    #region Constructors
-
-    public ItemDetailsViewModel(IImageService imageService)
+    public IItem Item
     {
-      this.Initialize();
-      this.imageService = imageService;
+      get => this.item;
+      set => this.SetProperty(ref this.item, value);
     }
 
-    #endregion
+    #endregion Properties
 
     #region Methods
+
+    private static void ExecuteHideDetailsCommand()
+    {
+      ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ShowDetailsEventArgs<IItem>(false));
+    }
 
     private void Initialize()
     {
@@ -73,7 +83,6 @@ namespace Ferretto.WMS.Modules.Catalog
         .Invoke(new ItemChangedEvent<IItem>(this.Item));
     }
 
-    #endregion
-
+    #endregion Methods
   }
 }

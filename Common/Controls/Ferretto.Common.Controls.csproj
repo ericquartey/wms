@@ -176,6 +176,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Controls\Common\Button.cs" />
     <Compile Include="Controls\Custom\ActionBar\ActionBar.xaml.cs">
       <DependentUpon>ActionBar.xaml</DependentUpon>

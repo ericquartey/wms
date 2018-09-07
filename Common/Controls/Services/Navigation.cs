@@ -14,13 +14,21 @@ namespace Ferretto.Common.Controls.Services
     }
   }
 
-  public class RefreshItemsEvent : Prism.Events.PubSubEvent, IEventArgs
+  public class ShowDetailsEventArgs<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
   {
     public string Token => null;
 
-    public RefreshItemsEvent()
+    public bool IsDetailsViewVisible { get; private set; }
+
+    public ShowDetailsEventArgs(bool isDetailsViewVisible)
     {
+      this.IsDetailsViewVisible = isDetailsViewVisible;
     }
+  }
+
+  public class RefreshItemsEvent : Prism.Events.PubSubEvent, IEventArgs
+  {
+    public string Token => null;
   }
 
   public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs

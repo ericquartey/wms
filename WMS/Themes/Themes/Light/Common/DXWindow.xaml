@@ -12,10 +12,10 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Image x:Name="PART_Icon"
+                   Height="16"
                    Margin="0,0,4,0"
                    Source="{Binding Path=(dx:FloatingContainer.FloatingContainer).Icon, RelativeSource={RelativeSource AncestorType=ContentPresenter}}"
-                   Stretch="None"
-                   Height="16" />
+                   Stretch="None" />
             <dxc:FloatingContainerHeaderPanel Grid.Column="1">
                 <TextBlock x:Name="PART_Text"
                            HorizontalAlignment="Center"
@@ -72,9 +72,10 @@
 
                                 <dxc:HeaderItemControl x:Name="PART_Help"
                                                        Foreground="{DynamicResource CommonForeground}">
-                                    <Image Width="18" Height="18"
-                                           Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_help_outline_white_18dp.png"
-                                           VerticalAlignment="Center"/>
+                                    <Image Width="18"
+                                           Height="18"
+                                           VerticalAlignment="Center"
+                                           Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_help_outline_white_18dp.png" />
                                 </dxc:HeaderItemControl>
 
                                 <dxc:HeaderItemControl x:Name="PART_Minimize"

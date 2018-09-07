@@ -7,6 +7,7 @@
         <!--  Common  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Common.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Common/DXWindow.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/SlideInView.xaml" />
 
         <!--  Custom  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouch.xaml" />

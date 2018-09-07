@@ -171,12 +171,12 @@
                   Grid.Column="1"
                   Width="9"
                   Height="5"
+                  Margin="0,0,10,0"
                   HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   Data="F1 M 0,0L 14.002,0L 7,7L 0,0 Z "
                   RenderTransformOrigin="0.5,0.5"
-                  Stretch="Fill"
-                  Margin="0,0,10,0">
+                  Stretch="Fill">
                 <Path.Style>
                     <Style TargetType="Path">
                         <Style.Triggers>
@@ -344,24 +344,24 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate>
-                                                <Grid Background="{DynamicResource CommonTextLightForeground}"
+                                                <Grid Width="{DynamicResource MenuTileWidth}"
                                                       Height="{DynamicResource MenuTileHeight}"
-                                                      Width="{DynamicResource MenuTileWidth}">
+                                                      Background="{DynamicResource CommonTextLightForeground}">
                                                     <Grid Margin="6">
                                                         <Grid.RowDefinitions>
                                                             <RowDefinition Height="*" />
                                                             <RowDefinition Height="Auto" />
                                                         </Grid.RowDefinitions>
-                                                        <Image Source="{Binding Image}"
-                                                               Height="24"
+                                                        <Image Height="24"
                                                                HorizontalAlignment="Left"
-                                                               VerticalAlignment="Top" />
+                                                               VerticalAlignment="Top"
+                                                               Source="{Binding Image}" />
                                                         <TextBlock x:Name="ChildBarItemTB"
                                                                    Grid.Row="1"
-                                                                   Foreground="{DynamicResource CommonDarkGrey}"
-                                                                   Text="{Binding DisplayName}"
                                                                    VerticalAlignment="Bottom"
-                                                                   FontSize="{DynamicResource MenuFontSize}" />
+                                                                   FontSize="{DynamicResource MenuFontSize}"
+                                                                   Foreground="{DynamicResource CommonDarkGrey}"
+                                                                   Text="{Binding DisplayName}" />
                                                     </Grid>
                                                 </Grid>
                                             </ControlTemplate>
@@ -383,9 +383,9 @@
                         <TextBlock Margin="5,5,0,0"
                                    VerticalAlignment="Top"
                                    Focusable="False"
+                                   FontSize="{DynamicResource MenuFontSize}"
                                    Foreground="White"
-                                   Text="{Binding Child.Info}"
-                                   FontSize="{DynamicResource MenuFontSize}" />
+                                   Text="{Binding Child.Info}" />
                     </Grid>
                 </DataTemplate>
             </Setter.Value>
@@ -403,9 +403,9 @@
             <Setter.Value>
                 <DataTemplate>
                     <TextBlock x:Name="ChildBarItemTB"
+                               FontSize="{DynamicResource MenuFontSize}"
                                Foreground="{DynamicResource CommonTextLightForeground}"
-                               Text="{Binding DisplayName}"
-                               FontSize="{DynamicResource MenuFontSize}"/>
+                               Text="{Binding DisplayName}" />
                 </DataTemplate>
             </Setter.Value>
         </Setter>
