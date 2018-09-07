@@ -16,23 +16,19 @@ namespace Ferretto.Common.Controls.Services
 
   public class ShowDetailsEventArgs<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
   {
-    public TPayload Item { get; private set; }
-
     public string Token => null;
 
-    public ShowDetailsEventArgs(TPayload item)
+    public bool IsDetailsViewVisible { get; private set; }
+
+    public ShowDetailsEventArgs(bool isDetailsViewVisible)
     {
-      this.Item = item;
+      this.IsDetailsViewVisible = isDetailsViewVisible;
     }
   }
 
   public class RefreshItemsEvent : Prism.Events.PubSubEvent, IEventArgs
   {
     public string Token => null;
-
-    public RefreshItemsEvent()
-    {
-    }
   }
 
   public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs

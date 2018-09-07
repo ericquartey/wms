@@ -4,7 +4,6 @@ using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Events;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
@@ -14,25 +13,10 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private readonly IImageService imageService;
 
-    #endregion
-
-    #region Properties
-
-    private IItem item;
-    public IItem Item
-    {
-      get => this.item;
-      set => this.SetProperty(ref this.item, value);
-    }
-
     private ImageSource imgArticle;
-    public ImageSource ImgArticle
-    {
-      get => this.imgArticle;
-      set => this.SetProperty(ref this.imgArticle, value);
-    }
+    private IItem item;
 
-    #endregion
+    #endregion Fields
 
     #region Constructors
 
@@ -42,7 +26,23 @@ namespace Ferretto.WMS.Modules.Catalog
       this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
     }
 
-    #endregion
+    #endregion Constructors
+
+    #region Properties
+
+    public ImageSource ImgArticle
+    {
+      get => this.imgArticle;
+      set => this.SetProperty(ref this.imgArticle, value);
+    }
+
+    public IItem Item
+    {
+      get => this.item;
+      set => this.SetProperty(ref this.item, value);
+    }
+
+    #endregion Properties
 
     #region Methods
 
@@ -73,7 +73,6 @@ namespace Ferretto.WMS.Modules.Catalog
         .Invoke(new ItemChangedEvent<IItem>(this.Item));
     }
 
-    #endregion
-
+    #endregion Methods
   }
 }

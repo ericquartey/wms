@@ -1,22 +1,26 @@
-﻿<ctrls:WmsView x:Class="Ferretto.WMS.Modules.Catalog.ItemDetailsView"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:catalog="clr-namespace:Ferretto.WMS.Modules.Catalog"
-               xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-               xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               d:DesignHeight="450"
-               d:DesignWidth="800"
-               mc:Ignorable="d">
-    <Grid Margin="20"
+﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.Catalog.ItemDetailsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:catalog="clr-namespace:Ferretto.WMS.Modules.Catalog"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             Style="{DynamicResource SlideInView}"
+             mc:Ignorable="d">
+    
+    <Grid x:Name="itemDetails"
+          Margin="20"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
         <ScrollViewer IsTabStop="True"
                       VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
@@ -32,78 +36,56 @@
                                       MinWidth="20" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <ctrls:ContentGroup Label="Item Information">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <ctrls:TextBox Label="Code"
-                                       Text="{Binding Code}" />
-                        <ctrls:TextBox Grid.Row="1"                                       
-                                       Label="Description"
-                                       Text="{Binding Description}" />
-                    </Grid>
-                </ctrls:ContentGroup>
+                
+                <Grid Grid.ColumnSpan="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <wms:Button>
+                        <wms:Button.Template>
+                            <ControlTemplate>
+                                <Image Source="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_arrow_black_18dp.png" />
+                            </ControlTemplate>
+                        </wms:Button.Template>
+                    </wms:Button>
+                    <wms:ActionBar Grid.Column="1"
+                                   HorizontalAlignment="Right"
+                                   Style="{DynamicResource ActionBarNotCustomizable}">
+                        <wms:ActionBarItem Content="Add"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_48dp.png" />
+                        <wms:ActionBarItem Content="Withdraw"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_48dp.png" />
+                        <wms:ActionBarItem Content="Refresh"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_48dp.png" />
+                    </wms:ActionBar>
+                </Grid>
+                
+                <!-- <wms:ContentGroup Label="Item Information"> -->
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <wms:TextBox Label="Code"
+                                 Text="{Binding Path=Item.Code}" />
+                    <wms:TextBox Grid.Row="1"
+                                 Label="Description"
+                                 Text="{Binding Path=Item.Description}" />
+                </Grid>
+                <!--   </wms:ContentGroup>-->
 
-                <ctrls:ContentGroup Grid.Column="2">
-                    <ctrls:TextBox Margin="0,13,0,0"
-                                   VerticalAlignment="Stretch"
-                                   VerticalContentAlignment="Stretch"
-                                   Label="Notes"
-                                   Text="{Binding Notes}" />
-                </ctrls:ContentGroup>
+                <wms:ContentGroup Grid.Row="1"
+                                  Grid.Column="2">
+                    <wms:TextBox Margin="0,13,0,0"
+                                 VerticalAlignment="Stretch"
+                                 VerticalContentAlignment="Stretch"
+                                 Label="Notes"
+                                 Text="{Binding Path=Item.Notes}" />
+                </wms:ContentGroup>
 
-                <ctrls:ContentGroup Grid.Row="1"
-                                    Label="Warehousing Information">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition MinWidth="120"
-                                              MaxWidth="120" />
-                            <ColumnDefinition Width="*"
-                                              MinWidth="20" />
-                            <ColumnDefinition MinWidth="120"
-                                              MaxWidth="120" />
-                            <ColumnDefinition Width="*"
-                                              MinWidth="20" />
-                            <ColumnDefinition MinWidth="120"
-                                              MaxWidth="120" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <ctrls:TextBox Grid.Column="0"
-                                       Label="ABC Class"
-                                       Text="{Binding AbcClass.Description}" />
-                        <ctrls:TextBox Grid.Column="2"
-                                       Label="FIFO Store Time"
-                                       Text="{Binding FifoTimeStore}" />
-                        <ctrls:TextBox Grid.Column="4"
-                                       Label="Reorder Point"
-                                       Text="{Binding ReorderPoint}" />
-                        <ctrls:TextBox Grid.Row="1"
-                                       Grid.Column="0"
-                                       Label="Unit of measurement"
-                                       Text="{Binding MeasureUnit.Description}" />
-                        <ctrls:TextBox Grid.Row="1"
-                                       Grid.Column="2"
-                                       Label="FIFO Pick Time"
-                                       Text="{Binding FifoTimePick}" />
-                        <ctrls:TextBox Grid.Row="1"
-                                       Grid.Column="4"
-                                       Label="Reorder Quantity"
-                                       Text="{Binding ReorderQuantity}" />
-                        <ctrls:TextBox Grid.Row="2"
-                                       Label="Management Type"
-                                       Text="{Binding ItemManagementType.Description}" />
-                    </Grid>
-                </ctrls:ContentGroup>
-
-                <ctrls:ContentGroup Grid.Row="1"
-                                    Grid.Column="2"
-                                    Label="Physical Information">
+                <wms:ContentGroup Grid.Row="2"
+                                  Label="Warehousing Information">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition MinWidth="120"
@@ -122,36 +104,84 @@
                             <RowDefinition />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <ctrls:TextBox Grid.Column="0"
-                                       Label="Height"
-                                       Text="{Binding Height}" />
-                        <ctrls:TextBox Grid.Column="2"
-                                       Label="Length"
-                                       Text="{Binding Length}" />
-                        <ctrls:TextBox Grid.Column="4"
-                                       Label="Pick Tolerance"
-                                       Text="{Binding PickTolerance}" />
-                        <ctrls:TextBox Grid.Row="1"
-                                       Grid.Column="0"
-                                       Label="Width"
-                                       Text="{Binding Width}" />
-                        <ctrls:TextBox Grid.Row="1"
-                                       Grid.Column="2"
-                                       Label="Average Weight"
-                                       Text="{Binding AverageWeight}" />
-                        <ctrls:TextBox Grid.Row="1"
-                                       Grid.Column="4"
-                                       Label="Store Tolerance"
-                                       Text="{Binding StoreTolerance}" />
-                        <ctrls:TextBox Grid.Row="2"
-                                       Label="Inventory Tolerance"
-                                       Text="{Binding InventoryTolerance}" />
+                        <wms:TextBox Grid.Column="0"
+                                     Label="ABC Class"
+                                     Text="{Binding Path=Item.AbcClassDescription}" />
+                        <wms:TextBox Grid.Column="2"
+                                     Label="FIFO Store Time"
+                                     Text="{Binding Path=Item.FifoTimeStore}" />
+                        <wms:TextBox Grid.Column="4"
+                                     Label="Reorder Point"
+                                     Text="{Binding Path=Item.ReorderPoint}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="0"
+                                     Label="Unit of measurement"
+                                     Text="{Binding Path=Item.MeasureUnitDescription}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="2"
+                                     Label="FIFO Pick Time"
+                                     Text="{Binding Path=Item.FifoTimePick}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="4"
+                                     Label="Reorder Quantity"
+                                     Text="{Binding Path=Item.ReorderQuantity}" />
+                        <wms:TextBox Grid.Row="2"
+                                     Label="Management Type"
+                                     Text="{Binding Path=Item.ItemManagementTypeDescription}" />
                     </Grid>
-                </ctrls:ContentGroup>
+                </wms:ContentGroup>
 
-                <ctrls:ContentGroup Grid.Row="2"
-                                    Grid.ColumnSpan="3"
-                                    Label="Compartments">
+                <wms:ContentGroup Grid.Row="2"
+                                  Grid.Column="2"
+                                  Label="Physical Information">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition MinWidth="120"
+                                              MaxWidth="120" />
+                            <ColumnDefinition Width="*"
+                                              MinWidth="20" />
+                            <ColumnDefinition MinWidth="120"
+                                              MaxWidth="120" />
+                            <ColumnDefinition Width="*"
+                                              MinWidth="20" />
+                            <ColumnDefinition MinWidth="120"
+                                              MaxWidth="120" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <wms:TextBox Grid.Column="0"
+                                     Label="Height"
+                                     Text="{Binding Path=Item.Height}" />
+                        <wms:TextBox Grid.Column="2"
+                                     Label="Length"
+                                     Text="{Binding Path=Item.Length}" />
+                        <wms:TextBox Grid.Column="4"
+                                     Label="Pick Tolerance"
+                                     Text="{Binding Path=Item.PickTolerance}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="0"
+                                     Label="Width"
+                                     Text="{Binding Path=Item.Width}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="2"
+                                     Label="Average Weight"
+                                     Text="{Binding Path=Item.AverageWeight}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="4"
+                                     Label="Store Tolerance"
+                                     Text="{Binding StoreTolerance}" />
+                        <wms:TextBox Grid.Row="2"
+                                     Label="Inventory Tolerance"
+                                     Text="{Binding InventoryTolerance}" />
+                    </Grid>
+                </wms:ContentGroup>
+
+                <wms:ContentGroup Grid.Row="3"
+                                  Grid.ColumnSpan="3"
+                                  Label="Compartments">
                     <catalog:ItemsGridControl MaxWidth="2000"
                                               MaxHeight="5000"
                                               SelectionMode="Row">
@@ -190,12 +220,12 @@
                                         FieldName="Pairing"
                                         Header="pairing" />
                     </catalog:ItemsGridControl>
-                </ctrls:ContentGroup>
+                </wms:ContentGroup>
 
-                <ctrls:ContentGroup Grid.RowSpan="3"
-                                    Grid.Column="4"
-                                    MinWidth="200"
-                                    MaxWidth="500">
+                <wms:ContentGroup Grid.RowSpan="3"
+                                  Grid.Column="4"
+                                  MinWidth="200"
+                                  MaxWidth="500">
                     <StackPanel HorizontalAlignment="Center"
                                 Orientation="Vertical">
                         <dxe:ImageEdit MinWidth="200"
@@ -204,30 +234,29 @@
                                        MaxHeight="500"
                                        BorderBrush="LightGray"
                                        Source="{Binding ImgArticle}" />
-                        <ctrls:Label Margin="20,3,0,0"
-                                     HorizontalAlignment="Left"
-                                     Content="Creation Date"
-                                     Text="-" />
-                        <ctrls:Label Margin="20,3,0,0"
-                                     HorizontalAlignment="Left"
-                                     Content="Last Modification Date"
-                                     Text="-" />
-                        <ctrls:Label Margin="20,3,0,0"
-                                     HorizontalAlignment="Left"
-                                     Content="Last Inventory Date"
-                                     Text="-" />
-                        <ctrls:Label Margin="20,3,0,0"
-                                     HorizontalAlignment="Left"
-                                     Content="Last Pick Date"
-                                     Text="-" />
-                        <ctrls:Label Margin="20,3,0,0"
-                                     HorizontalAlignment="Left"
-                                     Content="Last Store Date"
-                                     Text="-" />
+                        <wms:Label Margin="20,3,0,0"
+                                   HorizontalAlignment="Left"
+                                   Content="Creation Date"
+                                   Text="-" />
+                        <wms:Label Margin="20,3,0,0"
+                                   HorizontalAlignment="Left"
+                                   Content="Last Modification Date"
+                                   Text="-" />
+                        <wms:Label Margin="20,3,0,0"
+                                   HorizontalAlignment="Left"
+                                   Content="Last Inventory Date"
+                                   Text="-" />
+                        <wms:Label Margin="20,3,0,0"
+                                   HorizontalAlignment="Left"
+                                   Content="Last Pick Date"
+                                   Text="-" />
+                        <wms:Label Margin="20,3,0,0"
+                                   HorizontalAlignment="Left"
+                                   Content="Last Store Date"
+                                   Text="-" />
                     </StackPanel>
-                </ctrls:ContentGroup>
-
+                </wms:ContentGroup>
             </Grid>
         </ScrollViewer>
     </Grid>
-</ctrls:WmsView>
+</wms:WmsView>

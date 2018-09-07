@@ -1,4 +1,8 @@
-﻿using Ferretto.Common.Controls;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces.Models;
+using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
@@ -6,7 +10,10 @@ namespace Ferretto.WMS.Modules.Catalog
   {
     public ItemDetailsView()
     {
-      this.InitializeComponent();     
+      this.InitializeComponent();
+
+      this.DataContext = new ItemDetailsViewModel();
     }
+    
   }
 }
