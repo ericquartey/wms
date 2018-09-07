@@ -1,20 +1,16 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
 
     <ResourceDictionary.MergedDictionaries>
 
-        <!--  Common  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Common.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Common/DXWindow.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DXWindow.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/SlideInView.xaml" />
 
-        <!--  Custom  -->
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/ScrollViewer.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouch.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/DockLayoutManager.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/ActionBar.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/DateEdit.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/NavMenuTouch.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DockLayoutManager.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/ActionBar.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DateEdit.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

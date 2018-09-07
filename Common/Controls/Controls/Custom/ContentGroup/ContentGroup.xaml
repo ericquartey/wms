@@ -13,10 +13,11 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Label Grid.Row="0"
+               Margin="0,20,0,0"
                Content="{Binding Path=Label}"
+               TextBlock.FontSize="11pt"
                Foreground="{DynamicResource CommonSecondaryDark}"
-               TextBlock.FontWeight="DemiBold"
-               Typography.Capitals="AllSmallCaps" />
+               TextBlock.FontWeight="DemiBold" />
         <ContentPresenter Grid.Row="1"
                           Content="{Binding ControlContent}" />
     </Grid>

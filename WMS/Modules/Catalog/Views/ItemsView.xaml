@@ -12,7 +12,7 @@
              MinHeight="300"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Style="{DynamicResource SlideInView}"
+             Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
     <Grid>
 
