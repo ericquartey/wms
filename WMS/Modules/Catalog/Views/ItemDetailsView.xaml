@@ -71,19 +71,19 @@
                     </wms:ActionBar>
                 </Grid>
 
-                <!-- <wms:ContentGroup Label="Item Information"> -->
-                <Grid Grid.Row="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <wms:TextBox Label="Code"
-                                 Text="{Binding Path=Item.Code}" />
-                    <wms:TextBox Grid.Row="1"
-                                 Label="Description"
-                                 Text="{Binding Path=Item.Description}" />
-                </Grid>
-                <!--   </wms:ContentGroup>-->
+                <wms:ContentGroup Label="Item Information">
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <wms:TextBox Label="Code"
+                                     Text="{Binding Path=Item.Code}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Label="Description"
+                                     Text="{Binding Path=Item.Description}" />
+                    </Grid>
+                </wms:ContentGroup>
 
                 <wms:ContentGroup Grid.Row="1"
                                   Grid.Column="2">
