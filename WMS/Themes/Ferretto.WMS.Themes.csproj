@@ -8016,22 +8016,26 @@
     <Resource Include="Icons\Ferretto\Toolbar\ZoomOut.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Light\ContentGroup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Light\Common.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Light\Common\DXWindow.xaml">
+    <Page Include="Themes\Light\DXWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Light\Custom\DockLayoutManager.xaml">
+    <Page Include="Themes\Light\DockLayoutManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Themes\Light\Custom\ActionBar.xaml">
+    <Page Include="Themes\Light\ActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Light\Custom\NavMenuTouch.xaml">
+    <Page Include="Themes\Light\NavMenuTouch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -8064,7 +8068,7 @@
     <Resource Include="Icons\Ferretto\Logo\favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Light\Custom\DateEdit.xaml" />
+    <Page Include="Themes\Light\DateEdit.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Ferretto\Controls\baseline_calendar_today_black_18dp.png" />
