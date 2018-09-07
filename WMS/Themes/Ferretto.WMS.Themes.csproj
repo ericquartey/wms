@@ -8070,7 +8070,7 @@
     <Resource Include="Icons\Ferretto\Controls\baseline_calendar_today_black_18dp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Light\Custom\ScrollViewer.xaml" />
+    <Page Include="Themes\Light\ScrollViewer.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\cleanup.targets" />
