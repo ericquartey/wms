@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace Ferretto.Common.Utils.Menu
 {
@@ -14,7 +15,7 @@ namespace Ferretto.Common.Utils.Menu
 
     private void Initialize()
     {
-      var bgColor = "#525252";
+      var bgColor = "CommonSecondaryDark";
       this.menu = new MainMenu();
       this.menu.Items = new List<MainMenuItem>();
 

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Input;
+using System.Windows.Media;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
 using Ferretto.Common.Utils.Menu;
@@ -10,17 +12,17 @@ using Prism.Commands;
 namespace Ferretto.Common.Controls
 {
   public class NavMenuItem : IMenuItemViewModel
-  {    
+  {
     #region Ctor
     public NavMenuItem()
     {
-      this.Command = new DelegateCommand(this.CommandAction);     
+      this.Command = new DelegateCommand(this.CommandAction);
     }
 
     public NavMenuItem(MainMenuItem item, string currBreadCrumb) : this()
     {
       this.DisplayName = item.Name;
-      this.BackColor = item.BackGroundColor;
+      this.BackColor = ((SolidColorBrush)System.Windows.Application.Current.Resources[item.BackGroundColor]).Color.ToString();
       this.Image = item.Image;
       this.ModuleName = item.ModuleName;
       this.ViewName = item.ViewName;
@@ -55,7 +57,7 @@ namespace Ferretto.Common.Controls
 
     public string ViewName { get; set; }
 
-    public bool   IsRootLevel { get; set; }    
+    public bool   IsRootLevel { get; set; }
 
     public ICommand Command { get; set; }
 

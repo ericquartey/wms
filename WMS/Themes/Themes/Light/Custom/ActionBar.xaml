@@ -35,12 +35,12 @@
                         Opacity="0">
                     <Border x:Name="hover"
                             cs:Name="Border_3028"
-                            Background="{DynamicResource CommonBackgroundHover}"
+                            Background="{DynamicResource HoverCommonSecondaryMedium}"
                             Opacity="0" />
                 </Border>
                 <Border x:Name="PressedState"
                         cs:Name="Border_3029"
-                        Background="{DynamicResource CommonHighlightLight}"
+                        Background="{DynamicResource CommonSecondaryUltralight}"
                         Opacity="0" />
                 <Border x:Name="IndeterminateState"
                         cs:Name="Border_3044"

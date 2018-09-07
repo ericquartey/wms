@@ -17,7 +17,7 @@
                     <Setter Property="AllowGlyphTheming" Value="True" />
                     <Setter Property="VerticalContentAlignment" Value="Stretch" />
                     <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="Background" Value="{DynamicResource CommonBackgroundHover}" />
+                    <Setter Property="Background" Value="{DynamicResource CommonSecondaryUltralight}" />
                     <Setter Property="ContentTemplate">
                         <Setter.Value>
                             <DataTemplate>

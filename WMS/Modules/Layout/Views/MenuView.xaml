@@ -17,7 +17,7 @@
                Panel.ZIndex="1"
                Focusable="False"
                Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogo.png" />
-        <DockPanel Background="LightGray">
+        <DockPanel Background="{DynamicResource CommonSecondaryLight}">
             <dxnav:TileBar x:Name="WMSTileNav"
                            Padding="125,10,120,0"
                            ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
@@ -49,7 +49,7 @@
             <TextBlock Text="Nicola Moro"
                        Grid.Column="1"
                        VerticalAlignment="Center"
-                       Foreground="{DynamicResource CommonDarkGrey}"
+                       Foreground="{DynamicResource CommonSecondaryDark}"
                        Padding="5,0,0,0"/>
         </Grid>
     </Grid>

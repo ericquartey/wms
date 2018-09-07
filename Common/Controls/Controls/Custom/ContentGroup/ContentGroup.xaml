@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0"
                Content="{Binding Path=Label}"
-               Foreground="{DynamicResource CommonTextHighlighted}"
+               Foreground="{DynamicResource CommonSecondaryDark}"
                TextBlock.FontWeight="DemiBold"
                Typography.Capitals="AllSmallCaps" />
         <ContentPresenter Grid.Row="1"
