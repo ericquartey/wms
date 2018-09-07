@@ -38,7 +38,7 @@ namespace Ferretto.WMS.App.Tests
       this.application = Application.Attach(appProcess);
 
       this.mainWindow = this.application.GetWindow(
-       "Ferretto Warehouse Management System",
+       "WMS – Ferretto Group",
        InitializeOption.NoCache);
     }
 
