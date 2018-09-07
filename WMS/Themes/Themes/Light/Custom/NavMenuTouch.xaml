@@ -175,7 +175,8 @@
                   VerticalAlignment="Center"
                   Data="F1 M 0,0L 14.002,0L 7,7L 0,0 Z "
                   RenderTransformOrigin="0.5,0.5"
-                  Stretch="Fill">
+                  Stretch="Fill"
+                  Margin="0,0,10,0">
                 <Path.Style>
                     <Style TargetType="Path">
                         <Style.Triggers>
@@ -233,7 +234,7 @@
                                               VerticalGlyphAlignment="{TemplateBinding VerticalTileGlyphAlignment}" />
                     <dxnavi:TileBarItemArrowControl x:Name="PART_ArrowButton"
                                                     Grid.Column="0"
-                                                    Margin="0,0,10,0"
+                                                    Margin="0,0,0,0"
                                                     HorizontalAlignment="Stretch"
                                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -277,7 +278,14 @@
                     Opacity="0" />
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="MouseOver" />
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Border"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0.50"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
                     <VisualState x:Name="Pressed" />
                     <VisualState x:Name="Disabled">
                         <Storyboard>
