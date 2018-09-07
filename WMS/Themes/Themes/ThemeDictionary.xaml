@@ -10,6 +10,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/SlideInView.xaml" />
 
         <!--  Custom  -->
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/ScrollViewer.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/NavMenuTouch.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/DockLayoutManager.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Custom/ActionBar.xaml" />
