@@ -117,6 +117,7 @@ namespace Ferretto.Common.Controls.Services
 
       throw new NotSupportedException("Disappear need to be implemented");
 
+/*
       // Get corrent mapid
       var moduleRegionName = $"{moduleName}.{modelName}.1";
       if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
@@ -130,6 +131,7 @@ namespace Ferretto.Common.Controls.Services
       {
         region.Remove(viewToRemove);
       }
+*/
     }
     #endregion
 

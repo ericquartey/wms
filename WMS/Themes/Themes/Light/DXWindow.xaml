@@ -11,33 +11,23 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Image x:Name="PART_Icon"
-                   Height="16"
-                   Margin="0,0,4,0"
-                   Source="{Binding Path=(dx:FloatingContainer.FloatingContainer).Icon, RelativeSource={RelativeSource AncestorType=ContentPresenter}}"
-                   Stretch="None" />
             <dxc:FloatingContainerHeaderPanel Grid.Column="1">
                 <TextBlock x:Name="PART_Text"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            FontWeight="Normal"
-                           Foreground="{DynamicResource CommonForeground}"
+                           Foreground="{DynamicResource OnCommonSecondaryMedium}"
                            IsHitTestVisible="False"
                            Text="{Binding Path=(dx:FloatingContainer.FloatingContainer).Caption, RelativeSource={RelativeSource AncestorType=ContentPresenter}}" />
             </dxc:FloatingContainerHeaderPanel>
         </Grid>
-        <DataTemplate.Triggers>
-            <Trigger SourceName="PART_Icon" Property="Source" Value="{x:Null}">
-                <Setter TargetName="PART_Icon" Property="Visibility" Value="Collapsed" />
-            </Trigger>
-        </DataTemplate.Triggers>
     </DataTemplate>
 
     <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerTemplate}">
-        <Grid Background="{DynamicResource CommonDarkGrey}"
+        <Grid Background="{DynamicResource CommonSecondaryMedium}"
               SnapsToDevicePixels="True">
             <Border x:Name="FloatingContainerBorder"
-                    BorderBrush="{DynamicResource CommonDarkGrey}"
+                    BorderBrush="{DynamicResource CommonSecondaryDark}"
                     BorderThickness="1">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -71,7 +61,7 @@
                                                                     Style="{DynamicResource {dxt:DXTabbedWindowThemeKey ResourceKey=ControlContainerStyle}}" />
 
                                 <dxc:HeaderItemControl x:Name="PART_Help"
-                                                       Foreground="{DynamicResource CommonForeground}">
+                                                       Foreground="{DynamicResource OnCommonSecondaryMedium}">
                                     <Image Width="18"
                                            Height="18"
                                            VerticalAlignment="Center"
@@ -79,18 +69,18 @@
                                 </dxc:HeaderItemControl>
 
                                 <dxc:HeaderItemControl x:Name="PART_Minimize"
-                                                       Foreground="{DynamicResource CommonForeground}"
+                                                       Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}" />
                                 <dxc:HeaderItemControl x:Name="PART_Restore"
-                                                       Foreground="{DynamicResource CommonForeground}"
+                                                       Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=False}, RelativeSource={RelativeSource Self}}" />
                                 <dxc:HeaderItemControl x:Name="PART_Maximize"
-                                                       Foreground="{DynamicResource CommonForeground}"
+                                                       Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=True}, RelativeSource={RelativeSource Self}}" />
                                 <dxc:HeaderItemControl x:Name="PART_CloseButton"
-                                                       Foreground="{DynamicResource CommonForeground}"
+                                                       Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderCloseButtonStyle}}" />
                             </ItemsControl>
 
@@ -121,7 +111,7 @@
                             <Rectangle Grid.Row="1"
                                        Height="10"
                                        HorizontalAlignment="Stretch"
-                                       Fill="{DynamicResource CommonDarkGrey}" />
+                                       Fill="{DynamicResource CommonSecondaryMedium}" />
                         </Grid>
                     </Border>
                 </Grid>
