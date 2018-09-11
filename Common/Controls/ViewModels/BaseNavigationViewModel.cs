@@ -5,19 +5,22 @@ namespace Ferretto.Common.Controls
 {
   public class BaseNavigationViewModel : BindableBase, INavigableViewModel
   {
-    public string StateId { get; set; }
-    public string Token { get; set; }
+    #region Constructors
 
     protected BaseNavigationViewModel()
     {
-
     }
 
-    protected virtual void OnAppear()
-    {
-      // Nothing to do here.
-      // Derived classes can implement custom logic overriding this method.
-    }
+    #endregion Constructors
+
+    #region Properties
+
+    public string StateId { get; set; }
+    public string Token { get; set; }
+
+    #endregion Properties
+
+    #region Methods
 
     public void Appear()
     {
@@ -26,6 +29,21 @@ namespace Ferretto.Common.Controls
 
     public void Disappear()
     {
+      this.OnDisappear();
     }
+
+    protected virtual void OnAppear()
+    {
+      // Nothing to do here.
+      // Derived classes can implement custom logic overriding this method.
+    }
+
+    protected virtual void OnDisappear()
+    {
+      // Nothing to do here.
+      // Derived classes can implement custom logic overriding this method.
+    }
+
+    #endregion Methods
   }
 }

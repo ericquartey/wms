@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Windows.Media;
-using Ferretto.Common.Utils.Testing;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.DAL.Interfaces;
 using Ferretto.Common.Modules.BLL.Services;
+using Ferretto.Common.Utils.Testing;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,8 +14,14 @@ namespace Feretto.Common.Modules.BLL.Tests
   [TestCategory("Business")]
   public class ImageServiceTest : UnityTest
   {
+    #region Fields
+
+    private static readonly string imageFilePath = "image.png";
     private IImageService imageService;
-    static readonly string imageFilePath = "image.png";
+
+    #endregion Fields
+
+    #region Methods
 
     [TestInitialize]
     public override void Initialize()
@@ -39,5 +43,7 @@ namespace Feretto.Common.Modules.BLL.Tests
     {
       Assert.ThrowsException<InvalidOperationException>(() => this.imageService.GetImage(imageFilePath));
     }
+
+    #endregion Methods
   }
 }

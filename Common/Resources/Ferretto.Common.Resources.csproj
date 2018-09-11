@@ -51,6 +51,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DesktopApp.resx</DependentUpon>
     </Compile>
+    <Compile Include="Errors.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
     <Compile Include="General.it.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -72,6 +77,10 @@
     <EmbeddedResource Include="DesktopApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DesktopApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Errors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="General.it.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

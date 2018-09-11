@@ -1,26 +1,32 @@
 ﻿using DevExpress.Xpf.Docking;
+using Ferretto.Common.Resources;
 using Prism.Regions;
 
 namespace Ferretto.Common.Controls
 {
   public class WmsMainDockLayoutManager : DockLayoutManager
   {
-    #region Static Property
+    #region Constructors
+
+    public WmsMainDockLayoutManager()
+    {
+      Current = this;
+    }
+
+    #endregion Constructors
+
+    #region Properties
+
     public static WmsMainDockLayoutManager Current
     {
       get;
       private set;
     }
-    #endregion
 
-    #region Ctor
-    public WmsMainDockLayoutManager()
-    {
-      Current = this;
-    }
-    #endregion
+    #endregion Properties
 
     #region Methods
+
     public void RegisterView(string regionName, string title)
     {
       var layoutPanel = new LayoutPanel();
@@ -28,10 +34,11 @@ namespace Ferretto.Common.Controls
       RegionManager.SetRegionName(layoutPanel, regionName);
       if (!(this.FindName("MainDocumentGroup") is DocumentGroup mainGroup))
       {
-        throw new System.InvalidOperationException("Error retrieving document group from the Main Layout Manager");
+        throw new System.InvalidOperationException(Errors.CannotRetrieveDocumentGroupFromLayoutManager);
       }
       mainGroup.Add(layoutPanel);
     }
-    #endregion
+
+    #endregion Methods
   }
 }
