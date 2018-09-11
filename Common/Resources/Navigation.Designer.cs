@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.Common.Utils.Resources {
+namespace Ferretto.Common.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -19,19 +19,19 @@ namespace Ferretto.Common.Utils.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
-
+    public class Navigation {
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Navigation() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -39,13 +39,13 @@ namespace Ferretto.Common.Utils.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Utils.Resources.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Resources.Navigation", typeof(Navigation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.Common.Utils.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Catalog.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Catalog", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cells.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Catalog_Cells", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartments.
         /// </summary>
@@ -86,7 +86,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Catalog_Compartments", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Catalog_Items", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading Units.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Catalog_LoadingUnits", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Configuration.
         /// </summary>
@@ -113,7 +113,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to ABC Classes.
         /// </summary>
@@ -122,7 +122,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_AbcClasses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cell Statuses.
         /// </summary>
@@ -131,7 +131,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_CellStatuses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment Statuses.
         /// </summary>
@@ -140,7 +140,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_CompartmentStatuses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Compartment Types.
         /// </summary>
@@ -149,7 +149,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_CompartmentTypes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to List Row Statuses.
         /// </summary>
@@ -158,7 +158,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_ListRowStatuses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to List Statuses.
         /// </summary>
@@ -167,7 +167,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_ListStatuses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to List Types.
         /// </summary>
@@ -176,7 +176,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_ListTypes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading Unit Statuses.
         /// </summary>
@@ -185,7 +185,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_LoadingUnitStatuses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Machine Types.
         /// </summary>
@@ -194,7 +194,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_MachineTypes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Material Statuses.
         /// </summary>
@@ -203,7 +203,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_MaterialStatuses", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Measuring Units.
         /// </summary>
@@ -212,7 +212,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_MeasuringUnits", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Package Types.
         /// </summary>
@@ -221,7 +221,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Configuration_PackageTypes", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
@@ -230,7 +230,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Help", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import/Export.
         /// </summary>
@@ -239,7 +239,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_ImportExport", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
@@ -248,7 +248,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_ImportExport_Export", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
@@ -257,7 +257,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_ImportExport_Import", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Lists.
         /// </summary>
@@ -266,7 +266,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Lists", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Lists.
         /// </summary>
@@ -275,7 +275,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Lists_Lists", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Machine Status.
         /// </summary>
@@ -284,7 +284,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Machine_Status", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Others.
         /// </summary>
@@ -293,7 +293,16 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Others", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartments Mapping.
+        /// </summary>
+        public static string Nav_Others_CompartmentsMapping {
+            get {
+                return ResourceManager.GetString("Nav_Others_CompartmentsMapping", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
@@ -302,16 +311,7 @@ namespace Ferretto.Common.Utils.Resources {
                 return ResourceManager.GetString("Nav_Others_Inventory", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Reserved Compartments.
-        /// </summary>
-        public static string Nav_Others_CompartmentsMapping {
-            get {
-                return ResourceManager.GetString("Nav_Others_CompartmentsMapping", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Understock Items.
         /// </summary>
