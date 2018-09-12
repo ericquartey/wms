@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.Controls
 {
-  public class Button : System.Windows.Controls.Button
-  {
-
-  }
+    public class Button : System.Windows.Controls.Button
+    {
+    }
 }

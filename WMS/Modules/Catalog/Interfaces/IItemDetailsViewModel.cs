@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.WMS.Modules.Catalog
 {
-  public interface IItemDetailsViewModel
-  {
-  }
+    public interface IItemDetailsViewModel
+    {
+    }
 }

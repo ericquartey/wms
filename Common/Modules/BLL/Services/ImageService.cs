@@ -6,42 +6,43 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-  public class ImageService : IImageService
-  {
-    #region Fields
-
-    // TODO make the images directory configurable (https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/139)
-    private const string imagesDirectoryName = "images\\";
-
-    #endregion Fields
-
-    #region Properties
-
-    private static Uri ImageDirectoryUri => new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, imagesDirectoryName));
-
-    #endregion Properties
-
-    #region Methods
-
-    public ImageSource GetImage(string pathName)
+    public class ImageService : IImageService
     {
-      if (String.IsNullOrWhiteSpace(pathName))
-      {
-        throw new ArgumentException(Errors.ParameterCannotBeNullOrWhitespace, nameof(pathName));
-      }
+        #region Fields
 
-      var uri = new Uri(ImageDirectoryUri, pathName);
+        // TODO make the images directory configurable (https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/139)
+        private const string imagesDirectoryName = "images\\";
 
-      if (!ImageDirectoryUri.IsBaseOf(uri))
-      {
-        throw new ArgumentException(
-          Errors.SpecifiedPathNotInConfiguredImageFolder,
-          nameof(pathName));
-      }
+        #endregion Fields
 
-      return new BitmapImage(uri);
+        #region Properties
+
+        private static Uri ImageDirectoryUri =>
+            new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, imagesDirectoryName));
+
+        #endregion Properties
+
+        #region Methods
+
+        public ImageSource GetImage(string pathName)
+        {
+            if (String.IsNullOrWhiteSpace(pathName))
+            {
+                throw new ArgumentException(Errors.ParameterCannotBeNullOrWhitespace, nameof(pathName));
+            }
+
+            var uri = new Uri(ImageDirectoryUri, pathName);
+
+            if (!ImageDirectoryUri.IsBaseOf(uri))
+            {
+                throw new ArgumentException(
+                    Errors.SpecifiedPathNotInConfiguredImageFolder,
+                    nameof(pathName));
+            }
+
+            return new BitmapImage(uri);
+        }
+
+        #endregion Methods
     }
-
-    #endregion Methods
-  }
 }

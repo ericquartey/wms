@@ -7,42 +7,46 @@ using Prism.Regions;
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  [Module(ModuleName = nameof(Common.Utils.Modules.Layout), OnDemand = true)]
-  [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
-  public class LayoutModule : IModule
-  {
-    #region Members
-
-    public IUnityContainer Container { get; private set; }
-    public IRegionManager RegionManager { get; private set; }
-
-    #endregion
-
-    #region Constructors
-
-    public LayoutModule(IUnityContainer container, IRegionManager regionManager)
+    [Module(ModuleName = nameof(Common.Utils.Modules.Layout), OnDemand = true)]
+    [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
+    public class LayoutModule : IModule
     {
-      this.Container = container;
-      this.RegionManager = regionManager;
+        #region Members
+
+        public IUnityContainer Container { get; private set; }
+        public IRegionManager RegionManager { get; private set; }
+
+        #endregion
+
+        #region Constructors
+
+        public LayoutModule(IUnityContainer container, IRegionManager regionManager)
+        {
+            this.Container = container;
+            this.RegionManager = regionManager;
+        }
+
+        #endregion
+
+        #region IModule Members
+
+        public void Initialize()
+        {
+            this.Container.RegisterType<INavigationService, NavigationService>(
+                new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+
+            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+            navigationService.Register<LayoutView, LayoutViewModel>();
+            navigationService.Register<MenuView, MenuViewModel>();
+
+            this.RegionManager.RegisterViewWithRegion(
+                $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}",
+                typeof(LayoutView));
+            this.RegionManager.RegisterViewWithRegion(
+                $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
+        }
+
+        #endregion
     }
-
-    #endregion
-
-    #region IModule Members
-
-    public void Initialize()
-    {
-      this.Container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
-      this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
-
-      var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-      navigationService.Register<LayoutView, LayoutViewModel>();
-      navigationService.Register<MenuView, MenuViewModel>();
-
-      this.RegionManager.RegisterViewWithRegion($"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}", typeof(LayoutView));
-      this.RegionManager.RegisterViewWithRegion($"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
-    }
-
-    #endregion
-  }
 }

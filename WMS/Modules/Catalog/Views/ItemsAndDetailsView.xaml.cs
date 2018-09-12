@@ -2,15 +2,15 @@
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  public partial class ItemsAndDetailsView : WmsView
-  {
-    #region Constructors
-
-    public ItemsAndDetailsView()
+    public partial class ItemsAndDetailsView : WmsView
     {
-      this.InitializeComponent();
-    }
+        #region Constructors
 
-    #endregion Constructors
-  }
+        public ItemsAndDetailsView()
+        {
+            this.InitializeComponent();
+        }
+
+        #endregion Constructors
+    }
 }

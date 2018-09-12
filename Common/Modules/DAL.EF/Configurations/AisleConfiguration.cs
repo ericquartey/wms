@@ -4,23 +4,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.Modules.DAL.EF.Configurations
 {
-  public class AisleConfiguration : IEntityTypeConfiguration<Aisle>
-  {
-    public void Configure(EntityTypeBuilder<Aisle> builder)
+    public class AisleConfiguration : IEntityTypeConfiguration<Aisle>
     {
-      if (builder == null)
-      {
-        throw new System.ArgumentNullException(nameof(builder));
-      }
+        public void Configure(EntityTypeBuilder<Aisle> builder)
+        {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
 
-      builder.HasKey(a => a.Id);
+            builder.HasKey(a => a.Id);
 
-      builder.Property(a => a.Name).IsRequired();
+            builder.Property(a => a.Name).IsRequired();
 
-      builder.HasOne(a => a.Area)
-          .WithMany(a => a.Aisles)
-          .HasForeignKey(a => a.AreaId)
-          .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(a => a.Area)
+                .WithMany(a => a.Aisles)
+                .HasForeignKey(a => a.AreaId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        }
     }
-  }
 }

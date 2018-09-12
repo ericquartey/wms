@@ -4,14 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.Modules.DAL.EF.Configurations
 {
-  public class BayTypeConfiguration : IEntityTypeConfiguration<BayType>
-  {
-    public void Configure(EntityTypeBuilder<BayType> builder)
+    public class BayTypeConfiguration : IEntityTypeConfiguration<BayType>
     {
-      builder.HasKey(m => m.Id);
+        public void Configure(EntityTypeBuilder<BayType> builder)
+        {
+            builder.HasKey(m => m.Id);
 
-      builder.Property(m => m.Id).HasColumnType("char(1)");
-      builder.Property(m => m.Description).IsRequired();
+            builder.Property(m => m.Id).HasColumnType("char(1)");
+            builder.Property(m => m.Description).IsRequired();
+        }
     }
-  }
 }

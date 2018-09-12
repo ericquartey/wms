@@ -1,7 +1,7 @@
 namespace Ferretto.Common.Controls.Interfaces
 {
-  public interface IWmsGridViewModel
-  {
-    void RefreshGrid();
-  }
+    public interface IWmsGridViewModel
+    {
+        void RefreshGrid();
+    }
 }

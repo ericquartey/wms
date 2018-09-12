@@ -2,8 +2,7 @@
 
 namespace Ferretto.WMS.Modules.Layout
 {
-  public class LayoutViewModel : BaseNavigationViewModel
-  {
-    
-  }
+    public class LayoutViewModel : BaseNavigationViewModel
+    {
+    }
 }

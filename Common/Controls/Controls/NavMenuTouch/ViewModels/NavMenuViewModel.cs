@@ -4,32 +4,28 @@ using Ferretto.Common.Utils.Menu;
 
 namespace Ferretto.Common.Controls
 {
-  public class NavMenuViewModel
-  {
-    public NavMenuViewModel()
+    public class NavMenuViewModel
     {
-      this.Inizialize();
-    }
+        public NavMenuViewModel()
+        {
+            this.Inizialize();
+        }
 
-    private void Inizialize()
-    {
-      this.Items = new ObservableCollection<NavMenuItem>();
-      var menu = new AppMenu();
-      foreach (var item in menu.Menu.Items)
-      {
-        this.Items.Add(new NavMenuItem(item, string.Empty));
-      }
-    }
+        private void Inizialize()
+        {
+            this.Items = new ObservableCollection<NavMenuItem>();
+            var menu = new AppMenu();
+            foreach (var item in menu.Menu.Items)
+            {
+                this.Items.Add(new NavMenuItem(item, string.Empty));
+            }
+        }
 
-    public NavMenuViewModel(ObservableCollection<NavMenuItem> items)
-    {
-      this.Items = items;
-    }
+        public NavMenuViewModel(ObservableCollection<NavMenuItem> items)
+        {
+            this.Items = items;
+        }
 
-    public ObservableCollection<NavMenuItem> Items
-    {
-      get;
-      set;
+        public ObservableCollection<NavMenuItem> Items { get; set; }
     }
-  }
 }

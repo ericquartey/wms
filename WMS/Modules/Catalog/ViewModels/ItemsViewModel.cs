@@ -8,40 +8,43 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
-  public class ItemsViewModel : BaseNavigationViewModel
-  {
-    #region Fields
-
-    private readonly IFilterService filterService;
-
-    private ICommand viewDetailsCommand;
-
-    #endregion Fields
-
-    #region Constructors
-
-    public ItemsViewModel()
+    public class ItemsViewModel : BaseNavigationViewModel
     {
-      this.filterService = ServiceLocator.Current.GetInstance<IFilterService>();
+        #region Fields
+
+        private readonly IFilterService filterService;
+
+        private ICommand viewDetailsCommand;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public ItemsViewModel()
+        {
+            this.filterService = ServiceLocator.Current.GetInstance<IFilterService>();
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public IEnumerable<IFilter> Filters => this.filterService.GetByViewName("ItemsView");
+
+        public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
+                                              ( this.viewDetailsCommand =
+                                                  new DelegateCommand(ExecuteViewDetailsCommand) );
+
+        #endregion Properties
+
+        #region Methods
+
+        private static void ExecuteViewDetailsCommand()
+        {
+            ServiceLocator.Current.GetInstance<IEventService>()
+                .Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(true));
+        }
+
+        #endregion Methods
     }
-
-    #endregion Constructors
-
-    #region Properties
-
-    public IEnumerable<IFilter> Filters => this.filterService.GetByViewName("ItemsView");
-
-    public ICommand ViewDetailsCommand => this.viewDetailsCommand ?? (this.viewDetailsCommand = new DelegateCommand(ExecuteViewDetailsCommand));
-
-    #endregion Properties
-
-    #region Methods
-
-    private static void ExecuteViewDetailsCommand()
-    {
-      ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(true));
-    }
-
-    #endregion Methods
-  }
 }

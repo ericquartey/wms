@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.BLL.Interfaces
 {
-  public interface IEventArgs
-  {
-    string Token { get; }
-  }
+    public interface IEventArgs
+    {
+        string Token { get; }
+    }
 }

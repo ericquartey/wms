@@ -2,11 +2,11 @@
 
 namespace Ferretto.Common.Controls
 {
-  public partial class SplashScreen : UserControl
-  {
-    public SplashScreen()
+    public partial class SplashScreen : UserControl
     {
-      this.InitializeComponent();
+        public SplashScreen()
+        {
+            this.InitializeComponent();
+        }
     }
-  }
 }

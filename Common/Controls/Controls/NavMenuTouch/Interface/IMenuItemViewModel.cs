@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.Controls
 {
-  public interface IMenuItemViewModel
-  {
-    bool HasChildren { get; }
-  }
+    public interface IMenuItemViewModel
+    {
+        bool HasChildren { get; }
+    }
 }

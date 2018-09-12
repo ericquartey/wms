@@ -3,16 +3,16 @@ using DevExpress.Xpf.Core;
 
 namespace Ferretto.WMS.App
 {
-  public partial class App : Application
-  {
-    protected override void OnStartup(StartupEventArgs e)
+    public partial class App : Application
     {
-      base.OnStartup(e);
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
 
-      DXSplashScreen.Show<Common.Controls.SplashScreen>();
+            DXSplashScreen.Show<Common.Controls.SplashScreen>();
 
-      var bootstrapper = new Bootstrapper();
-      bootstrapper.Run();
+            var bootstrapper = new Bootstrapper();
+            bootstrapper.Run();
+        }
     }
-  }
 }
