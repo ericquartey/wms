@@ -193,10 +193,10 @@
                 <wms:ContentGroup Grid.Row="3"
                                   Grid.ColumnSpan="3"
                                   Label="Compartments">
-                    <catalog:ItemsGridControl MaxWidth="2000"
+                    <wms:WmsGridControl MaxWidth="2000"
                                               MaxHeight="5000"
                                               SelectionMode="Row">
-                        <catalog:ItemsGridControl.View>
+                        <wms:WmsGridControl.View>
                             <dxg:TableView AllowEditing="False"
                                            AllowGrouping="False"
                                            AllowMoveColumnToDropArea="False"
@@ -205,7 +205,7 @@
                                            ShowGroupPanel="False"
                                            ShowIndicator="False"
                                            ShowSearchPanelMode="Always" />
-                        </catalog:ItemsGridControl.View>
+                        </wms:WmsGridControl.View>
                         <dxg:GridColumn Width="100*"
                                         FieldName="Code"
                                         Header="Code" />
@@ -230,7 +230,7 @@
                         <dxg:GridColumn Width="200*"
                                         FieldName="Pairing"
                                         Header="pairing" />
-                    </catalog:ItemsGridControl>
+                    </wms:WmsGridControl>
                 </wms:ContentGroup>
 
                 <wms:ContentGroup Grid.Row="1"

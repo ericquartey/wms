@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
   public class FilterService : IFilterService
   {
+    #region Methods
+
     public IEnumerable<IFilter> GetByViewName(string viewName)
     {
       // TODO: remove the following static list and return a proper set of values
@@ -16,5 +17,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         new Filter { Id = 3, Name = "Category 2", Count  = 21 }
       };
     }
+
+    #endregion Methods
   }
 }
