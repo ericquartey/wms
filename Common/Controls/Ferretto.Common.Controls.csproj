@@ -176,45 +176,45 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Controls\Common\Button.cs" />
-    <Compile Include="Controls\Custom\ActionBar\ActionBar.xaml.cs">
+    <Compile Include="Controls\ActionBar\ActionBar.xaml.cs">
       <DependentUpon>ActionBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Custom\ActionBar\ActionBarItem.xaml.cs">
+    <Compile Include="Controls\ActionBar\ActionBarItem.xaml.cs">
       <DependentUpon>ActionBarItem.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Custom\ComboBox\ComboBox.xaml.cs">
+    <Compile Include="Controls\Button\Button.cs" />
+    <Compile Include="Controls\ComboBox\ComboBox.xaml.cs">
       <DependentUpon>ComboBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Custom\FilterBar\FilterBar.xaml.cs">
-      <DependentUpon>FilterBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Custom\InfoText\InfoText.xaml.cs">
-      <DependentUpon>InfoText.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Custom\SplashScreen\SplashScreen.xaml.cs">
-      <DependentUpon>SplashScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Common\WmsDockLayoutManager.cs" />
-    <Compile Include="Controls\Common\WmsGridControl.cs" />
-    <Compile Include="Controls\Common\WmsView.cs" />
-    <Compile Include="Controls\Custom\FlyoutContentTemplateSelector.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouch\Interface\IMenuItemViewModel.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouch\CustomMenuTileFlyoutPosition.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouch\TileBarContentControl.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuItem.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuViewModel.cs" />
-    <Compile Include="Controls\Custom\NavMenuTouch\ViewModels\NavMenuChildItem.cs" />
-    <Compile Include="Controls\Custom\TextBox\TextBox.xaml.cs">
-      <DependentUpon>TextBox.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Custom\DateEdit\DateEdit.xaml.cs">
-      <DependentUpon>DateEdit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Custom\ContentGroup\ContentGroup.xaml.cs">
+    <Compile Include="Controls\ContentGroup\ContentGroup.xaml.cs">
       <DependentUpon>ContentGroup.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DateEdit\DateEdit.xaml.cs">
+      <DependentUpon>DateEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FilterBar\FilterBar.xaml.cs">
+      <DependentUpon>FilterBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\InfoText\InfoText.xaml.cs">
+      <DependentUpon>InfoText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\NavMenuTouch\CustomMenuTileFlyoutPosition.cs" />
+    <Compile Include="Controls\NavMenuTouch\FlyoutContentTemplateSelector.cs" />
+    <Compile Include="Controls\NavMenuTouch\Interface\IMenuItemViewModel.cs" />
+    <Compile Include="Controls\NavMenuTouch\TileBarContentControl.cs" />
+    <Compile Include="Controls\NavMenuTouch\ViewModels\NavMenuChildItem.cs" />
+    <Compile Include="Controls\NavMenuTouch\ViewModels\NavMenuItem.cs" />
+    <Compile Include="Controls\NavMenuTouch\ViewModels\NavMenuViewModel.cs" />
+    <Compile Include="Controls\SplashScreen\SplashScreen.xaml.cs">
+      <DependentUpon>SplashScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextBox\TextBox.xaml.cs">
+      <DependentUpon>TextBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
+    <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
+    <Compile Include="Controls\WmsView\WmsView.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Interfaces\IWmsGridViewModel.cs" />
@@ -228,40 +228,31 @@
     <Compile Include="ViewModels\WmsGridViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\Custom\ActionBar\ActionBar.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\ActionBar\ActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Custom\ActionBar\ActionBarItem.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\ActionBar\ActionBarItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Custom\FilterBar\FilterBar.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\ComboBox\ComboBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Custom\DateEdit\DateEdit.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\ContentGroup\ContentGroup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Custom\ComboBox\ComboBox.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\DateEdit\DateEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Custom\InfoText\InfoText.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Custom\SplashScreen\SplashScreen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Custom\TextBox\TextBox.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\FilterBar\FilterBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Custom\ContentGroup\ContentGroup.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Controls\InfoText\InfoText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SplashScreen\SplashScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TextBox\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
@@ -289,7 +280,7 @@
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
   </ItemGroup>
-  <ItemGroup />
+  
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\cleanup.targets" />
 </Project>
