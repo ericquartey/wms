@@ -63,261 +63,261 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Catalog.
         /// </summary>
-        public static string Nav_Catalog {
+        public static string Catalog {
             get {
-                return ResourceManager.GetString("Nav_Catalog", resourceCulture);
+                return ResourceManager.GetString("Catalog", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cells.
         /// </summary>
-        public static string Nav_Catalog_Cells {
+        public static string Catalog_Cells {
             get {
-                return ResourceManager.GetString("Nav_Catalog_Cells", resourceCulture);
+                return ResourceManager.GetString("Catalog_Cells", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Compartments.
         /// </summary>
-        public static string Nav_Catalog_Compartments {
+        public static string Catalog_Compartments {
             get {
-                return ResourceManager.GetString("Nav_Catalog_Compartments", resourceCulture);
+                return ResourceManager.GetString("Catalog_Compartments", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
-        public static string Nav_Catalog_Items {
+        public static string Catalog_Items {
             get {
-                return ResourceManager.GetString("Nav_Catalog_Items", resourceCulture);
+                return ResourceManager.GetString("Catalog_Items", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loading Units.
         /// </summary>
-        public static string Nav_Catalog_LoadingUnits {
+        public static string Catalog_LoadingUnits {
             get {
-                return ResourceManager.GetString("Nav_Catalog_LoadingUnits", resourceCulture);
+                return ResourceManager.GetString("Catalog_LoadingUnits", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Configuration.
         /// </summary>
-        public static string Nav_Configuration {
+        public static string Configuration {
             get {
-                return ResourceManager.GetString("Nav_Configuration", resourceCulture);
+                return ResourceManager.GetString("Configuration", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to ABC Classes.
         /// </summary>
-        public static string Nav_Configuration_AbcClasses {
+        public static string Configuration_AbcClasses {
             get {
-                return ResourceManager.GetString("Nav_Configuration_AbcClasses", resourceCulture);
+                return ResourceManager.GetString("Configuration_AbcClasses", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Cell Statuses.
         /// </summary>
-        public static string Nav_Configuration_CellStatuses {
+        public static string Configuration_CellStatuses {
             get {
-                return ResourceManager.GetString("Nav_Configuration_CellStatuses", resourceCulture);
+                return ResourceManager.GetString("Configuration_CellStatuses", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Compartment Statuses.
         /// </summary>
-        public static string Nav_Configuration_CompartmentStatuses {
+        public static string Configuration_CompartmentStatuses {
             get {
-                return ResourceManager.GetString("Nav_Configuration_CompartmentStatuses", resourceCulture);
+                return ResourceManager.GetString("Configuration_CompartmentStatuses", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Compartment Types.
         /// </summary>
-        public static string Nav_Configuration_CompartmentTypes {
+        public static string Configuration_CompartmentTypes {
             get {
-                return ResourceManager.GetString("Nav_Configuration_CompartmentTypes", resourceCulture);
+                return ResourceManager.GetString("Configuration_CompartmentTypes", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to List Row Statuses.
         /// </summary>
-        public static string Nav_Configuration_ListRowStatuses {
+        public static string Configuration_ListRowStatuses {
             get {
-                return ResourceManager.GetString("Nav_Configuration_ListRowStatuses", resourceCulture);
+                return ResourceManager.GetString("Configuration_ListRowStatuses", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to List Statuses.
         /// </summary>
-        public static string Nav_Configuration_ListStatuses {
+        public static string Configuration_ListStatuses {
             get {
-                return ResourceManager.GetString("Nav_Configuration_ListStatuses", resourceCulture);
+                return ResourceManager.GetString("Configuration_ListStatuses", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to List Types.
         /// </summary>
-        public static string Nav_Configuration_ListTypes {
+        public static string Configuration_ListTypes {
             get {
-                return ResourceManager.GetString("Nav_Configuration_ListTypes", resourceCulture);
+                return ResourceManager.GetString("Configuration_ListTypes", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Loading Unit Statuses.
         /// </summary>
-        public static string Nav_Configuration_LoadingUnitStatuses {
+        public static string Configuration_LoadingUnitStatuses {
             get {
-                return ResourceManager.GetString("Nav_Configuration_LoadingUnitStatuses", resourceCulture);
+                return ResourceManager.GetString("Configuration_LoadingUnitStatuses", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Machine Types.
         /// </summary>
-        public static string Nav_Configuration_MachineTypes {
+        public static string Configuration_MachineTypes {
             get {
-                return ResourceManager.GetString("Nav_Configuration_MachineTypes", resourceCulture);
+                return ResourceManager.GetString("Configuration_MachineTypes", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Material Statuses.
         /// </summary>
-        public static string Nav_Configuration_MaterialStatuses {
+        public static string Configuration_MaterialStatuses {
             get {
-                return ResourceManager.GetString("Nav_Configuration_MaterialStatuses", resourceCulture);
+                return ResourceManager.GetString("Configuration_MaterialStatuses", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Measuring Units.
         /// </summary>
-        public static string Nav_Configuration_MeasuringUnits {
+        public static string Configuration_MeasuringUnits {
             get {
-                return ResourceManager.GetString("Nav_Configuration_MeasuringUnits", resourceCulture);
+                return ResourceManager.GetString("Configuration_MeasuringUnits", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Package Types.
         /// </summary>
-        public static string Nav_Configuration_PackageTypes {
+        public static string Configuration_PackageTypes {
             get {
-                return ResourceManager.GetString("Nav_Configuration_PackageTypes", resourceCulture);
+                return ResourceManager.GetString("Configuration_PackageTypes", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Help.
         /// </summary>
-        public static string Nav_Help {
+        public static string Help {
             get {
-                return ResourceManager.GetString("Nav_Help", resourceCulture);
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Import/Export.
         /// </summary>
-        public static string Nav_ImportExport {
+        public static string ImportExport {
             get {
-                return ResourceManager.GetString("Nav_ImportExport", resourceCulture);
+                return ResourceManager.GetString("ImportExport", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Export.
         /// </summary>
-        public static string Nav_ImportExport_Export {
+        public static string ImportExport_Export {
             get {
-                return ResourceManager.GetString("Nav_ImportExport_Export", resourceCulture);
+                return ResourceManager.GetString("ImportExport_Export", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Import.
         /// </summary>
-        public static string Nav_ImportExport_Import {
+        public static string ImportExport_Import {
             get {
-                return ResourceManager.GetString("Nav_ImportExport_Import", resourceCulture);
+                return ResourceManager.GetString("ImportExport_Import", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Lists.
         /// </summary>
-        public static string Nav_Lists {
+        public static string Lists {
             get {
-                return ResourceManager.GetString("Nav_Lists", resourceCulture);
+                return ResourceManager.GetString("Lists", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Lists.
         /// </summary>
-        public static string Nav_Lists_Lists {
+        public static string Lists_Lists {
             get {
-                return ResourceManager.GetString("Nav_Lists_Lists", resourceCulture);
+                return ResourceManager.GetString("Lists_Lists", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Machine Status.
         /// </summary>
-        public static string Nav_Machine_Status {
+        public static string Machine_Status {
             get {
-                return ResourceManager.GetString("Nav_Machine_Status", resourceCulture);
+                return ResourceManager.GetString("Machine_Status", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Others.
         /// </summary>
-        public static string Nav_Others {
+        public static string Others {
             get {
-                return ResourceManager.GetString("Nav_Others", resourceCulture);
+                return ResourceManager.GetString("Others", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Compartments Mapping.
         /// </summary>
-        public static string Nav_Others_CompartmentsMapping {
+        public static string Others_CompartmentsMapping {
             get {
-                return ResourceManager.GetString("Nav_Others_CompartmentsMapping", resourceCulture);
+                return ResourceManager.GetString("Others_CompartmentsMapping", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Inventory.
         /// </summary>
-        public static string Nav_Others_Inventory {
+        public static string Others_Inventory {
             get {
-                return ResourceManager.GetString("Nav_Others_Inventory", resourceCulture);
+                return ResourceManager.GetString("Others_Inventory", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Understock Items.
         /// </summary>
-        public static string Nav_Others_UnderStock_Items {
+        public static string Others_UnderStock_Items {
             get {
-                return ResourceManager.GetString("Nav_Others_UnderStock_Items", resourceCulture);
+                return ResourceManager.GetString("Others_UnderStock_Items", resourceCulture);
             }
         }
     }
