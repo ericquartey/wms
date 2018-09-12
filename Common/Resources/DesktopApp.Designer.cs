@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.WMS.App.Properties {
+namespace Ferretto.Common.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Ferretto.WMS.App.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    public class DesktopApp {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal DesktopApp() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.WMS.App.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.WMS.App.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Resources.DesktopApp", typeof(DesktopApp).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.App.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Ferretto Warehouse Management System.
+        ///   Looks up a localized string similar to WMS – Ferretto Group.
         /// </summary>
         public static string Application_Title {
             get {

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Ferretto.Common.Controls.Resources {
+namespace Ferretto.Common.Resources {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Ferretto.Common.Controls.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    public class Errors {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal Errors() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Controls.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Controls.Resources.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Resources.Errors", typeof(Errors).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,51 @@ namespace Ferretto.Common.Controls.Resources {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager.
+        /// </summary>
+        public static string CannotRetrieveDocumentGroupFromLayoutManager {
+            get {
+                return ResourceManager.GetString("CannotRetrieveDocumentGroupFromLayoutManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToVisibilityType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parameter cannot be null or whitespace..
+        /// </summary>
+        public static string ParameterCannotBeNullOrWhitespace {
+            get {
+                return ResourceManager.GetString("ParameterCannotBeNullOrWhitespace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parameter must be strictly positive..
+        /// </summary>
+        public static string ParameterMustBeStrictlyPositive {
+            get {
+                return ResourceManager.GetString("ParameterMustBeStrictlyPositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified path is not contained in the image directory.
+        /// </summary>
+        public static string SpecifiedPathNotInConfiguredImageFolder {
+            get {
+                return ResourceManager.GetString("SpecifiedPathNotInConfiguredImageFolder", resourceCulture);
             }
         }
     }

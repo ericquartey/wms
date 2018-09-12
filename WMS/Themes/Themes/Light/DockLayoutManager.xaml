@@ -8,26 +8,75 @@
                     xmlns:ve="http://schemas.devexpress.com/winfx/2008/xaml/docking/visualelements">
 
 
-    <Style x:Key="CustomClosePageButton" TargetType="{x:Type ve:ControlBoxGlyphPresenter}">
+    <Style x:Key="CustomClosePageButton"
+           TargetType="{x:Type ve:ControlBoxGlyphPresenter}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ve:ControlBoxGlyphPresenter}">
-                    <Grid x:Name="Root" Background="#00000000" MinWidth="0" MinHeight="0" ve:DockPane.HitTestType="CloseButton" SnapsToDevicePixels="True">
+                    <Grid x:Name="Root"
+                          MinWidth="0"
+                          MinHeight="0"
+                          ve:DockPane.HitTestType="CloseButton"
+                          Background="#00000000"
+                          SnapsToDevicePixels="True">
+                        <Grid Width="7"
+                              Height="7"
+                              Margin="4">
+                            <Path x:Name="Inactive"
+                                  Width="7"
+                                  Height="7"
+                                  Data="F1 M 0,0L 1,4.76837e-007L 3.5,2.5L 6,1.90735e-006L 7,1.90735e-006L 7,1L 4.5,3.5L 7,6L 7,7L 6,7L 3.5,4.5L 1,7L 2.86102e-006,7L 2.86102e-006,6L 2.5,3.5L 6.12323e-017,1L 0,0 Z "
+                                  Fill="#5F000000"
+                                  Opacity="0"
+                                  Stretch="Fill" />
+                            <Path x:Name="Active"
+                                  Width="7"
+                                  Height="7"
+                                  Data="F1 M 0,0L 1,4.76837e-007L 3.5,2.5L 6,1.90735e-006L 7,1.90735e-006L 7,1L 4.5,3.5L 7,6L 7,7L 6,7L 3.5,4.5L 1,7L 2.86102e-006,7L 2.86102e-006,6L 2.5,3.5L 6.12323e-017,1L 0,0 Z "
+                                  Fill="#FFFFFFFF"
+                                  Opacity="0"
+                                  Stretch="Fill" />
+                            <Path x:Name="Selected"
+                                  Width="7"
+                                  Height="7"
+                                  Data="F1 M 0,0L 1,4.76837e-007L 3.5,2.5L 6,1.90735e-006L 7,1.90735e-006L 7,1L 4.5,3.5L 7,6L 7,7L 6,7L 3.5,4.5L 1,7L 2.86102e-006,7L 2.86102e-006,6L 2.5,3.5L 6.12323e-017,1L 0,0 Z "
+                                  Fill="#FFFFFFFF"
+                                  Opacity="0"
+                                  Stretch="Fill" />
+                        </Grid>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal" />
                                 <VisualState x:Name="MouseOver">
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Inactive" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Duration="0" To="#9F000000" />
-                                        <ColorAnimation Storyboard.TargetName="Active" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Duration="0" To="#9FFFFFFF" />
-                                        <ColorAnimation Storyboard.TargetName="Selected" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Duration="0" To="#9FFFFFFF" />
+                                        <ColorAnimation Storyboard.TargetName="Inactive"
+                                                        Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                        To="#9F000000"
+                                                        Duration="0" />
+                                        <ColorAnimation Storyboard.TargetName="Active"
+                                                        Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                        To="#9FFFFFFF"
+                                                        Duration="0" />
+                                        <ColorAnimation Storyboard.TargetName="Selected"
+                                                        Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                        To="#9FFFFFFF"
+                                                        Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <ColorAnimation Storyboard.TargetName="Inactive" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Duration="0" To="#9F000000" />
-                                        <ColorAnimation Storyboard.TargetName="Active" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Duration="0" To="#9FFFFFFF" />
-                                        <ColorAnimation Storyboard.TargetName="Selected" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)" Duration="0" To="#9FFFFFFF" />
+                                        <ColorAnimation Storyboard.TargetName="Inactive"
+                                                        Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                        To="#9F000000"
+                                                        Duration="0" />
+                                        <ColorAnimation Storyboard.TargetName="Active"
+                                                        Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                        To="#9FFFFFFF"
+                                                        Duration="0" />
+                                        <ColorAnimation Storyboard.TargetName="Selected"
+                                                        Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)"
+                                                        To="#9FFFFFFF"
+                                                        Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled" />
@@ -36,26 +85,30 @@
                                 <VisualState x:Name="EmptyActiveState" />
                                 <VisualState x:Name="Inactive">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Inactive" Storyboard.TargetProperty="Opacity" Duration="0" To="1" />
+                                        <DoubleAnimation Storyboard.TargetName="Inactive"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Active">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Active" Storyboard.TargetProperty="Opacity" Duration="0" To="1" />
+                                        <DoubleAnimation Storyboard.TargetName="Active"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="Selected" Storyboard.TargetProperty="Opacity" Duration="0" To="1" />
+                                        <DoubleAnimation Storyboard.TargetName="Selected"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <Grid Width="7" Height="7" Margin="4">
-                            <Path x:Name="Inactive" Stretch="Fill" Fill="#5F000000" Data="F1 M 0,0L 1,4.76837e-007L 3.5,2.5L 6,1.90735e-006L 7,1.90735e-006L 7,1L 4.5,3.5L 7,6L 7,7L 6,7L 3.5,4.5L 1,7L 2.86102e-006,7L 2.86102e-006,6L 2.5,3.5L 6.12323e-017,1L 0,0 Z " Width="7" Height="7" Opacity="0" />
-                            <Path x:Name="Active" Stretch="Fill" Fill="#FFFFFFFF" Data="F1 M 0,0L 1,4.76837e-007L 3.5,2.5L 6,1.90735e-006L 7,1.90735e-006L 7,1L 4.5,3.5L 7,6L 7,7L 6,7L 3.5,4.5L 1,7L 2.86102e-006,7L 2.86102e-006,6L 2.5,3.5L 6.12323e-017,1L 0,0 Z " Width="7" Height="7" Opacity="0" />
-                            <Path x:Name="Selected" Stretch="Fill" Fill="#FFFFFFFF" Data="F1 M 0,0L 1,4.76837e-007L 3.5,2.5L 6,1.90735e-006L 7,1.90735e-006L 7,1L 4.5,3.5L 7,6L 7,7L 6,7L 3.5,4.5L 1,7L 2.86102e-006,7L 2.86102e-006,6L 2.5,3.5L 6.12323e-017,1L 0,0 Z " Width="7" Height="7" Opacity="0" />
-                        </Grid>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
@@ -63,8 +116,10 @@
     </Style>
 
     <DataTemplate x:Key="CustomClosePageButtonTemplate">
-        <ve:ControlBoxButton x:Name="PART_Button" ve:DockPane.HitTestType="CloseButton">
-            <ve:ControlBoxGlyphPresenter x:Name="PART_GlyphPresenter" Style="{StaticResource CustomClosePageButton}" />
+        <ve:ControlBoxButton x:Name="PART_Button"
+                             ve:DockPane.HitTestType="CloseButton">
+            <ve:ControlBoxGlyphPresenter x:Name="PART_GlyphPresenter"
+                                         Style="{StaticResource CustomClosePageButton}" />
         </ve:ControlBoxButton>
     </DataTemplate>
 
@@ -284,7 +339,7 @@
                                           Grid.Column="0"
                                           Width="{Binding Path=TabCaptionWidth}"
                                           Margin="9,4,9,2"
-                                          Foreground="{DynamicResource OnCommonSecondaryUltralight}"/>
+                                          Foreground="{DynamicResource OnCommonSecondaryUltralight}" />
                     <ve:BaseControlBoxControl x:Name="PART_ControlBox"
                                               Grid.Column="1"
                                               Margin="-5,2,3,0"

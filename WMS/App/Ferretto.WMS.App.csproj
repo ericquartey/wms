@@ -197,21 +197,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
@@ -229,6 +219,10 @@
     <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj">
       <Project>{0ddbd6dc-1f23-4f52-849d-94da9e5f1b12}</Project>
       <Name>Ferretto.Common.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
+      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
+      <Name>Ferretto.Common.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Common\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>

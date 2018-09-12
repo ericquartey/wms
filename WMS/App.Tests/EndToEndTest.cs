@@ -10,16 +10,27 @@ namespace Ferretto.WMS.App.Tests
   [TestClass]
   public class EndToEndTest
   {
+    #region Fields
+
     private Application application;
     private Window mainWindow;
-    private TestContext testContext;
+
+    #endregion Fields
+
+    #region Properties
 
     public Window MainWindow => this.mainWindow;
 
-    public TestContext TestContext
+    public TestContext TestContext { get; set; }
+
+    #endregion Properties
+
+    #region Methods
+
+    [TestCleanup]
+    public void Cleanup()
     {
-      get => this.testContext;
-      set => this.testContext = value;
+      this.application?.Close();
     }
 
     [TestInitialize]
@@ -37,16 +48,9 @@ namespace Ferretto.WMS.App.Tests
 
       this.application = Application.Attach(appProcess);
 
-      this.mainWindow = this.application.GetWindow(
-       "WMS – Ferretto Group",
-       InitializeOption.NoCache);
+      this.mainWindow = this.application.GetWindow(Common.Resources.DesktopApp.Application_Title, InitializeOption.NoCache);
     }
 
-    [TestCleanup]
-    public void Cleanup()
-    {
-      this.application?.Close();
-    }
-
+    #endregion Methods
   }
 }

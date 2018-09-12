@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Utils;
 using Ferretto.Common.Utils.Menu;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -13,7 +11,8 @@ namespace Ferretto.Common.Controls
 {
   public class NavMenuItem : IMenuItemViewModel
   {
-    #region Ctor
+    #region Constructors
+
     public NavMenuItem()
     {
       this.Command = new DelegateCommand(this.CommandAction);
@@ -21,6 +20,11 @@ namespace Ferretto.Common.Controls
 
     public NavMenuItem(MainMenuItem item, string currBreadCrumb) : this()
     {
+      if (item == null)
+      {
+        throw new ArgumentNullException(nameof(item));
+      }
+
       this.DisplayName = item.Name;
       this.BackColor = ((SolidColorBrush)System.Windows.Application.Current.Resources[item.BackGroundColor]).Color.ToString();
       this.Image = item.Image;
@@ -30,7 +34,41 @@ namespace Ferretto.Common.Controls
       this.AddChild(item.Children, currBreadCrumb);
     }
 
-    private void AddChild(List<MainMenuItem> children, string currBreadCrumb)
+    #endregion Constructors
+
+    #region Properties
+
+    public string BackColor { get; set; }
+
+    public TileNavMenuChildItem Child { get; set; }
+
+    public ICommand Command { get; set; }
+
+    public string DisplayName { get; set; }
+
+    public bool HasChildren => (this.Child != null &&
+                this.Child.Children != null &&
+                this.Child.Children.Count > 0);
+
+    public string Image { get; set; }
+
+    public bool IsRootLevel { get; set; }
+
+    public string ModuleName { get; set; }
+
+    public string ViewName { get; set; }
+
+    #endregion Properties
+
+    #region Methods
+
+    public void CommandAction()
+    {
+      var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+      navigationService.Appear(this.ModuleName, this.ViewName);
+    }
+
+    private void AddChild(ICollection<MainMenuItem> children, string currBreadCrumb)
     {
       if (children == null ||
           children.Count == 0)
@@ -44,42 +82,7 @@ namespace Ferretto.Common.Controls
         this.Child.Children.Add(new NavMenuItem(child, breadCrumb));
       }
     }
-    #endregion
 
-    #region Properties
-    public string DisplayName { get; set; }
-
-    public string BackColor { get; set; }
-
-    public string Image { get; set; }
-
-    public string ModuleName { get; set; }
-
-    public string ViewName { get; set; }
-
-    public bool   IsRootLevel { get; set; }
-
-    public ICommand Command { get; set; }
-
-    public TileNavMenuChildItem Child { get; set; }
-
-    public bool HasChildren
-    {
-      get
-      {
-        return (this.Child != null &&
-                this.Child.Children != null &&
-                this.Child.Children.Count > 0);
-      }
-    }
-    #endregion
-
-    #region Methods
-    public void CommandAction()
-    {
-      var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-      navigationService.Appear(this.ModuleName, this.ViewName);
-    }
-    #endregion
+    #endregion Methods
   }
 }

@@ -334,10 +334,47 @@
                 <DataTemplate>
                     <Grid>
                         <Grid.Resources>
-                            <ControlTemplate
-                                x:Key="{themeKeys:WindowsUIElementsThemeKey ResourceKey=ScrollableControlButtonTemplate, ThemeName=Office2016White}"
-                                TargetType="dxcop:ScrollableControlButton">
-                                <Grid x:Name="Root" Background="{DynamicResource CommonSecondaryMedium}">
+                            <ControlTemplate x:Key="{themeKeys:WindowsUIElementsThemeKey ResourceKey=ScrollableControlButtonTemplate,
+                                                                                         ThemeName=Office2016White}"
+                                             TargetType="dxcop:ScrollableControlButton">
+                                <Grid x:Name="Root"
+                                      Background="{DynamicResource CommonSecondaryMedium}">
+                                    <Border x:Name="State"
+                                            Width="{TemplateBinding Width}"
+                                            Height="{TemplateBinding Height}"
+                                            CornerRadius="0" />
+                                    <Path x:Name="PathRight"
+                                          Width="6"
+                                          Height="12"
+                                          Margin="1,0,-1,0"
+                                          Data="M 0 0 L 0 8 L 4 4 Z"
+                                          Fill="{DynamicResource OnCommonSecondaryMedium}"
+                                          Opacity="0"
+                                          Stretch="Fill" />
+                                    <Path x:Name="PathLeft"
+                                          Width="6"
+                                          Height="12"
+                                          Margin="-1,0,1,0"
+                                          Data="M 0 4 L 4 8 L 4 0 Z"
+                                          Fill="{DynamicResource OnCommonSecondaryMedium}"
+                                          Opacity="0"
+                                          Stretch="Fill" />
+                                    <Path x:Name="PathUp"
+                                          Width="12"
+                                          Height="6"
+                                          Margin="0,-1,0,1"
+                                          Data="M 0 4 L 7 4 L 3.5 0 Z"
+                                          Fill="{DynamicResource OnCommonSecondaryMedium}"
+                                          Opacity="0"
+                                          Stretch="Fill" />
+                                    <Path x:Name="PathDown"
+                                          Width="12"
+                                          Height="6"
+                                          Margin="0,1,0,-1"
+                                          Data="M 0 0 L 3.5 4 L 7 0 Z"
+                                          Fill="{DynamicResource OnCommonSecondaryMedium}"
+                                          Opacity="0"
+                                          Stretch="Fill" />
                                     <VisualStateManager.VisualStateGroups>
                                         <VisualStateGroup x:Name="CommonStates">
                                             <VisualState x:Name="Normal" />
@@ -349,40 +386,38 @@
                                                                      To="0.50"
                                                                      Duration="0" />
 
-                                                    <ObjectAnimationUsingKeyFrames
-                                                        Storyboard.TargetProperty="Background"
-                                                        Storyboard.TargetName="State">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="State"
+                                                                                   Storyboard.TargetProperty="Background">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource HoverCommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
 
-                                                    <ObjectAnimationUsingKeyFrames
-                                                        Storyboard.TargetProperty="BorderBrush"
-                                                        Storyboard.TargetName="State">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="State"
+                                                                                   Storyboard.TargetProperty="BorderBrush">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource CommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
 
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathLeft">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathLeft"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource CommonSecondaryDark}" />
                                                     </ObjectAnimationUsingKeyFrames>
 
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathRight">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathRight"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource CommonSecondaryDark}" />
                                                     </ObjectAnimationUsingKeyFrames>
 
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathUp">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathUp"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource CommonSecondaryDark}" />
                                                     </ObjectAnimationUsingKeyFrames>
 
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathDown">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathDown"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource CommonSecondaryDark}" />
                                                     </ObjectAnimationUsingKeyFrames>
@@ -390,35 +425,33 @@
                                             </VisualState>
                                             <VisualState x:Name="Pressed">
                                                 <Storyboard>
-                                                    <ObjectAnimationUsingKeyFrames
-                                                        Storyboard.TargetProperty="Background"
-                                                        Storyboard.TargetName="State">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="State"
+                                                                                   Storyboard.TargetProperty="Background">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource CommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
-                                                    <ObjectAnimationUsingKeyFrames
-                                                        Storyboard.TargetProperty="BorderBrush"
-                                                        Storyboard.TargetName="State">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="State"
+                                                                                   Storyboard.TargetProperty="BorderBrush">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource CommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathLeft">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathLeft"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource OnCommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathRight">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathRight"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource OnCommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathUp">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathUp"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource OnCommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill"
-                                                                                   Storyboard.TargetName="PathDown">
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="PathDown"
+                                                                                   Storyboard.TargetProperty="Fill">
                                                         <DiscreteObjectKeyFrame KeyTime="0"
                                                                                 Value="{DynamicResource OnCommonSecondaryMedium}" />
                                                     </ObjectAnimationUsingKeyFrames>
@@ -426,9 +459,9 @@
                                             </VisualState>
                                             <VisualState x:Name="Disabled">
                                                 <Storyboard>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="Root"
-                                                                                   Storyboard.TargetProperty="Visibility"
-                                                                                   dxcn:ValueSetter.Visibility="Collapsed" />
+                                                    <ObjectAnimationUsingKeyFrames dxcn:ValueSetter.Visibility="Collapsed"
+                                                                                   Storyboard.TargetName="Root"
+                                                                                   Storyboard.TargetProperty="Visibility" />
                                                 </Storyboard>
                                             </VisualState>
                                         </VisualStateGroup>
@@ -436,47 +469,37 @@
                                             <VisualState x:Name="Left">
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetName="PathLeft"
-                                                                     Storyboard.TargetProperty="Opacity" Duration="0"
-                                                                     To="1" />
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="1"
+                                                                     Duration="0" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Right">
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetName="PathRight"
-                                                                     Storyboard.TargetProperty="Opacity" Duration="0"
-                                                                     To="1" />
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="1"
+                                                                     Duration="0" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Up">
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetName="PathUp"
-                                                                     Storyboard.TargetProperty="Opacity" Duration="0"
-                                                                     To="1" />
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="1"
+                                                                     Duration="0" />
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Down">
                                                 <Storyboard>
                                                     <DoubleAnimation Storyboard.TargetName="PathDown"
-                                                                     Storyboard.TargetProperty="Opacity" Duration="0"
-                                                                     To="1" />
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     To="1"
+                                                                     Duration="0" />
                                                 </Storyboard>
                                             </VisualState>
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
-                                    <Border x:Name="State" CornerRadius="0" Width="{TemplateBinding Width}"
-                                            Height="{TemplateBinding Height}" />
-                                    <Path x:Name="PathRight" Stretch="Fill" Fill="{DynamicResource OnCommonSecondaryMedium}"
-                                          Data="M 0 0 L 0 8 L 4 4 Z" Width="6" Height="12" Margin="1,0,-1,0"
-                                          Opacity="0" />
-                                    <Path x:Name="PathLeft" Stretch="Fill" Fill="{DynamicResource OnCommonSecondaryMedium}"
-                                          Data="M 0 4 L 4 8 L 4 0 Z" Width="6" Height="12" Margin="-1,0,1,0"
-                                          Opacity="0" />
-                                    <Path x:Name="PathUp" Stretch="Fill" Fill="{DynamicResource OnCommonSecondaryMedium}"
-                                          Data="M 0 4 L 7 4 L 3.5 0 Z" Width="12" Height="6" Margin="0,-1,0,1"
-                                          Opacity="0" />
-                                    <Path x:Name="PathDown" Stretch="Fill" Fill="{DynamicResource OnCommonSecondaryMedium}"
-                                          Data="M 0 0 L 3.5 4 L 7 0 Z" Width="12" Height="6" Margin="0,1,0,-1"
-                                          Opacity="0" />
                                 </Grid>
                             </ControlTemplate>
                         </Grid.Resources>

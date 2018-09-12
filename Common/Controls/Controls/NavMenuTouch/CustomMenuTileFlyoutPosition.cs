@@ -11,16 +11,7 @@ namespace Ferretto.Common.Controls
 {
   public class CustomMenuTileFlyoutPosition : DependencyObject
   {
-    #region Dependency properties
-    public static bool GetEnabled(DependencyObject obj)
-    {
-      return (bool)obj.GetValue(EnabledProperty);
-    }
-
-    public static void SetEnabled(DependencyObject obj, bool value)
-    {
-      obj.SetValue(EnabledProperty, value);
-    }
+    #region Fields
 
     public static readonly DependencyProperty EnabledProperty = DependencyProperty.RegisterAttached(
         "Enabled",
@@ -28,27 +19,36 @@ namespace Ferretto.Common.Controls
         typeof(CustomMenuTileFlyoutPosition),
         new PropertyMetadata(OnSetEnabledChanged));
 
-    private static void OnSetEnabledChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+    #endregion Fields
+
+    #region Methods
+
+    public static bool GetEnabled(DependencyObject obj)
     {
-      if (dependencyObject is FrameworkElement element)
+      return (bool)obj?.GetValue(EnabledProperty);
+    }
+
+    public static void SetEnabled(DependencyObject obj, bool value)
+    {
+      obj?.SetValue(EnabledProperty, value);
+    }
+
+    private static void CloseParentFlyout(UIElement element)
+    {
+      if (element == null)
       {
-        element.Loaded += Element_Loaded;
-        element.PreviewMouseDown += PreviewMouseDown;
-        if (element.Parent != null)
-        {    // Is not first level /flyout                                                 
-          var grid = LayoutTreeHelper.GetVisualParents(dependencyObject)
-                       .OfType<Grid>().FirstOrDefault(x => x.Name == "PART_RenderGrid");
-          if (grid != null)
-          {   // Consider all flyout content
-            grid.PreviewMouseDown += GridParent_PreviewMouseDown;
-          }
-        }
-        
+        return;
+      }
+      var bar = LayoutHelper.FindParentObject<TileBar>(element);
+      var parents = LayoutTreeHelper.GetVisualParents(bar);
+      var flyoutContainerControl = parents.OfType<DevExpress.Xpf.Editors.Flyout.FlyoutContainerControl>();
+      foreach (var flyoutC in flyoutContainerControl)
+      {
+        var fly = flyoutC.TemplatedParent as DevExpress.Xpf.Controls.Primitives.FlyoutAdornerControl;
+        fly.IsOpen = false;
       }
     }
-    #endregion
 
-    #region Handled events
     private static void Element_Loaded(object sender, RoutedEventArgs e)
     {
       if (!(sender is TileBar tileBar))
@@ -63,6 +63,24 @@ namespace Ferretto.Common.Controls
         // Change position of child tilebar
         flyout.Padding = new Thickness(0, -(tileBar.ActualHeight - 10), 0, 0);
         flyout.UpdateLayout();
+      }
+    }
+
+    private static void Flyout_Closed(object sender, EventArgs e)
+    {
+      CloseParentFlyout(sender as UIElement);
+    }
+
+    private static void Flyout_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+    {
+      if (!(sender is TileBar tileBar))
+      {
+        return;
+      }
+      var flyout = (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase.FlyoutProperty);
+      if (flyout != null)
+      {
+        ((FrameworkElement)(flyout.Content)).Opacity = 1;
       }
     }
 
@@ -95,6 +113,31 @@ namespace Ferretto.Common.Controls
       }
     }
 
+    private static bool IsClickOnScroll(object originalSource)
+    {
+      return (LayoutTreeHelper.GetVisualParents(originalSource as UIElement)
+                                .OfType<DevExpress.Xpf.Controls.Primitives.ScrollableControlButton>()
+                                .FirstOrDefault() != null);
+    }
+
+    private static void OnSetEnabledChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+    {
+      if (dependencyObject is FrameworkElement element)
+      {
+        element.Loaded += Element_Loaded;
+        element.PreviewMouseDown += PreviewMouseDown;
+        if (element.Parent != null)
+        {    // Is not first level /flyout
+          var grid = LayoutTreeHelper.GetVisualParents(dependencyObject)
+                       .OfType<Grid>().FirstOrDefault(x => x.Name == "PART_RenderGrid");
+          if (grid != null)
+          {   // Consider all flyout content
+            grid.PreviewMouseDown += GridParent_PreviewMouseDown;
+          }
+        }
+      }
+    }
+
     private static void PreviewMouseDown(object sender, RoutedEventArgs e)
     {
       if (!(sender is TileBar tileBar))
@@ -109,9 +152,9 @@ namespace Ferretto.Common.Controls
         tileBar.IsVisibleChanged += Flyout_IsVisibleChanged;
       }
 
-      bool canClose = true;
+      var canClose = true;
       if (e.Source is TileBarItem tileBarItem)
-      {        
+      {
         if (flyout != null)
         {
           ((FrameworkElement)(flyout.Content)).Opacity = 0;
@@ -135,59 +178,14 @@ namespace Ferretto.Common.Controls
         }
       }
 
-      if (canClose)
+      if (canClose && flyout != null)
       {
-        if (flyout != null)
-        {
-          flyout.Closed -= Flyout_Closed;
-          flyout.Closed += Flyout_Closed;
-          flyout.IsOpen = false;
-        }
+        flyout.Closed -= Flyout_Closed;
+        flyout.Closed += Flyout_Closed;
+        flyout.IsOpen = false;
       }
     }
 
-    private static void Flyout_Closed(object sender, EventArgs e)
-    {
-      CloseParentFlyout(sender as UIElement);
-    }
-
-    private static void Flyout_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-    {
-      if (!(sender is TileBar tileBar))
-      {
-        return;
-      }
-      var flyout = (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase.FlyoutProperty);
-      if (flyout != null)
-      {
-        ((FrameworkElement)(flyout.Content)).Opacity = 1;
-      }
-    }
-    #endregion
-
-    #region Methods
-    private static bool IsClickOnScroll(object originalSource)
-    {
-      return (LayoutTreeHelper.GetVisualParents(originalSource as UIElement)
-                                .OfType<DevExpress.Xpf.Controls.Primitives.ScrollableControlButton>()
-                                .FirstOrDefault() != null);
-    }
-
-    private static void CloseParentFlyout(UIElement element)
-    {
-      if (element == null)
-      {
-        return;
-      }
-      var bar = LayoutHelper.FindParentObject<TileBar>(element);
-      var parents = LayoutTreeHelper.GetVisualParents(bar);
-      var flyoutContainerControl = parents.OfType<DevExpress.Xpf.Editors.Flyout.FlyoutContainerControl>();
-      foreach (DevExpress.Xpf.Editors.Flyout.FlyoutContainerControl flyoutC in flyoutContainerControl)
-      {
-        var fly = flyoutC.TemplatedParent as DevExpress.Xpf.Controls.Primitives.FlyoutAdornerControl;
-        fly.IsOpen = false;
-      }
-    }
-    #endregion
+    #endregion Methods
   }
 }
