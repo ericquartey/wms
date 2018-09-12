@@ -49,13 +49,13 @@
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
-            <catalog:ItemsGridControl x:Name="MainGridControl"
-                                      MaxWidth="2000"
-                                      MaxHeight="5000"
-                                      Margin="3"
-                                      SelectionMode="Row"
-                                      ShowBorder="False">
-                <catalog:ItemsGridControl.View>
+            <wms:WmsGridControl x:Name="MainGridControl"
+                                MaxWidth="2000"
+                                MaxHeight="5000"
+                                Margin="3"
+                                SelectionMode="Row"
+                                ShowBorder="False">
+                <wms:WmsGridControl.View>
 
                     <dxg:TableView AllowEditing="False"
                                    AllowGrouping="False"
@@ -72,9 +72,9 @@
                         </i:Interaction.Triggers>
                     </dxg:TableView>
 
-                </catalog:ItemsGridControl.View>
+                </wms:WmsGridControl.View>
 
-                <catalog:ItemsGridControl.Columns>
+                <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
                                     FieldName="Code"
                                     Header="Codice" />
@@ -96,9 +96,9 @@
                     <dxg:GridColumn Width="200*"
                                     FieldName="Disponibilita"
                                     Header="_Available" />
-                </catalog:ItemsGridControl.Columns>
+                </wms:WmsGridControl.Columns>
 
-            </catalog:ItemsGridControl>
+            </wms:WmsGridControl>
         </Grid>
 
     </Grid>

@@ -88,16 +88,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BusinessLogicAutoMapperProfile.cs" />
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="Models\Filter.cs" />
-    <Compile Include="Models\Item.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="BusinessLogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FilterService.cs" />
     <Compile Include="Services\ImageService.cs" />
-    <Compile Include="Services\ItemsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -117,10 +114,6 @@
     <ProjectReference Include="..\..\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DAL.Interfaces\Ferretto.Common.DAL.Interfaces.csproj">
-      <Project>{650c48cd-255c-4ae6-b3b0-7c4a06550c66}</Project>
-      <Name>Ferretto.Common.DAL.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DAL.Models\Ferretto.Common.DAL.Models.csproj">
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>

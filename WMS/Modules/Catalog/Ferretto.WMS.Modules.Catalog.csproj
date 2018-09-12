@@ -192,7 +192,6 @@
     <Compile Include="Views\ItemsAndDetailsView.xaml.cs">
       <DependentUpon>ItemsAndDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ItemsGridControl.cs" />
     <Compile Include="Views\ItemsView.xaml.cs">
       <DependentUpon>ItemsView.xaml</DependentUpon>
     </Compile>
@@ -241,5 +240,5 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\..\cleanup.targets"/>
+  <Import Project="..\..\..\cleanup.targets" />
 </Project>

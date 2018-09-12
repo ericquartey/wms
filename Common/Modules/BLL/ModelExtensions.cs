@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL
@@ -8,7 +7,7 @@ namespace Ferretto.Common.Modules.BLL
   {
     #region Methods
 
-    public static void SetIfStrictlyPositive(this IModel<int> model, ref int? member, int? value)
+    public static void SetIfStrictlyPositive(this Object model, ref int? member, int? value)
     {
       if (value.HasValue)
       {

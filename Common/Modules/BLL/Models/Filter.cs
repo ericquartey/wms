@@ -1,13 +1,16 @@
-﻿using Ferretto.Common.BLL.Interfaces.Models;
+﻿using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
   public class Filter : IFilter
   {
+    #region Properties
+
+    public int Count { get; set; }
     public int Id { get; set; }
 
     public string Name { get; set; }
 
-    public int Count { get; set; }
+    #endregion Properties
   }
 }

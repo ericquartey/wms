@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
-using Ferretto.Common.BLL.Interfaces.Models;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
   public interface IFilterService
   {
+    #region Methods
+
     IEnumerable<IFilter> GetByViewName(string viewName);
+
+    #endregion Methods
   }
 }

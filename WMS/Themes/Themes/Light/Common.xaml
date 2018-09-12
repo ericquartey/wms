@@ -2,11 +2,11 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <!-- boolean -->
+    <!--  boolean  -->
     <system:Boolean x:Key="True">True</system:Boolean>
     <system:Boolean x:Key="False">False</system:Boolean>
 
-    <!-- colors -->
+    <!--  colors  -->
     <Color x:Key="WhiteGrey">#e6e6e6</Color>
     <Color x:Key="LightGrey">#c5c7c4</Color>
     <Color x:Key="MediumGrey">#707173</Color>
@@ -16,11 +16,11 @@
     <Color x:Key="Green">#57A639</Color>
     <Color x:Key="PureWhite">#ffffff</Color>
 
-    <!-- primary color brush -->
+    <!--  primary color brush  -->
     <SolidColorBrush x:Key="CommonPrimary"
                      Color="{StaticResource Red}" />
 
-    <!-- secondary color brush -->
+    <!--  secondary color brush  -->
     <SolidColorBrush x:Key="CommonSecondaryUltralight"
                      Color="{StaticResource WhiteGrey}" />
     <SolidColorBrush x:Key="CommonSecondaryLight"
@@ -30,11 +30,11 @@
     <SolidColorBrush x:Key="CommonSecondaryDark"
                      Color="{StaticResource DarkGrey}" />
 
-    <!-- background color brush -->
+    <!--  background color brush  -->
     <SolidColorBrush x:Key="CommonBackground"
                      Color="{StaticResource PureWhite}" />
 
-    <!-- text color brush -->
+    <!--  text color brush  -->
     <SolidColorBrush x:Key="OnCommonPrimary"
                      Color="{StaticResource PureWhite}" />
 
@@ -50,7 +50,7 @@
     <SolidColorBrush x:Key="OnCommonBackground"
                      Color="{StaticResource Black}" />
 
-    <!-- hover color brush -->
+    <!--  hover color brush  -->
     <SolidColorBrush x:Key="HoverCommonSecondaryUltralight"
                      Color="{StaticResource WhiteGrey}" />
     <SolidColorBrush x:Key="HoverCommonSecondaryLight"
@@ -60,10 +60,10 @@
     <SolidColorBrush x:Key="HoverCommonSecondaryDark"
                      Color="{StaticResource WhiteGrey}" />
 
-    <!-- fonts -->
+    <!--  fonts  -->
     <system:Double x:Key="MenuFontSize">14</system:Double>
 
-    <!-- menu layout -->
+    <!--  menu layout  -->
     <system:Double x:Key="MenuTileHeight">55</system:Double>
     <system:Double x:Key="MenuTileWidth">140</system:Double>
 

@@ -1,7 +1,6 @@
 ﻿using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -17,7 +16,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private ICommand hideDetailsCommand;
     private ImageSource imgArticle;
-    private IItem item;
+    private Common.DAL.Models.Item item;
 
     #endregion Fields
 
@@ -41,7 +40,7 @@ namespace Ferretto.WMS.Modules.Catalog
       set => this.SetProperty(ref this.imgArticle, value);
     }
 
-    public IItem Item
+    public Common.DAL.Models.Item Item
     {
       get => this.item;
       set => this.SetProperty(ref this.item, value);
@@ -53,16 +52,16 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private static void ExecuteHideDetailsCommand()
     {
-      ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ShowDetailsEventArgs<IItem>(false));
+      ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(false));
     }
 
     private void Initialize()
     {
       ServiceLocator.Current.GetInstance<IEventService>()
-        .Subscribe<ItemSelectionChangedEvent<IItem>>(eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
+        .Subscribe<ItemSelectionChangedEvent<Common.DAL.Models.Item>>(eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
     }
 
-    private void OnItemSelectionChanged(IItem selectedItem)
+    private void OnItemSelectionChanged(Common.DAL.Models.Item selectedItem)
     {
       if (selectedItem != null)
       {
@@ -80,7 +79,7 @@ namespace Ferretto.WMS.Modules.Catalog
       // TODO: call data saving service
 
       ServiceLocator.Current.GetInstance<IEventService>()
-        .Invoke(new ItemChangedEvent<IItem>(this.Item));
+        .Invoke(new ItemChangedEvent<Common.DAL.Models.Item>(this.Item));
     }
 
     #endregion Methods

@@ -1,27 +1,36 @@
-﻿using System.Collections.Generic;
-using Ferretto.Common.BLL.Interfaces;
+﻿using System;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-  public class WmsGridViewModel<TModel, TId> : BindableBase, IWmsGridViewModel where TModel : IModel<TId>
+  public class WmsGridViewModel : BindableBase, IWmsGridViewModel
   {
+    // TODO private readonly IEntityService<TModel, TId> entityService;
+    // TODO private IEnumerable<Object> items;
+
     #region Fields
 
-    private readonly IEntityService<TModel, TId> entityService;
-    private IEnumerable<TModel> items;
-    private TModel selectedItem;
+    private Object selectedItem;
 
-    #endregion
+    #endregion Fields
+
+    #region Constructors
+
+    public WmsGridViewModel()
+    {
+      // TODO this.entityService = ServiceLocator.Current.GetInstance<IEntityService<TModel, TId>>();
+
+      this.Initialize();
+    }
+
+    #endregion Constructors
+
+    // TODO public IEnumerable<TModel> Items => this.items;
 
     #region Properties
 
-    public IEnumerable<TModel> Items => this.items;
-
-    public TModel SelectedItem
+    public Object SelectedItem
     {
       get => this.selectedItem;
       set
@@ -33,37 +42,25 @@ namespace Ferretto.Common.Controls
       }
     }
 
-    #endregion
-
-    #region Constructors
-
-    public WmsGridViewModel()
-    {
-      this.entityService = ServiceLocator.Current.GetInstance<IEntityService<TModel, TId>>();
-
-      this.Initialize();
-    }
-
-    #endregion
+    #endregion Properties
 
     #region Methods
+
+    public void RefreshGrid()
+    {
+      // TODO this.items = this.entityService.GetAll();
+    }
+
+    protected void NotifySelectionChanged()
+    {
+      // TODO ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ItemSelectionChangedEvent<TModel>(this.selectedItem));
+    }
 
     private void Initialize()
     {
       this.RefreshGrid();
     }
 
-    public void RefreshGrid()
-    {
-      this.items = this.entityService.GetAll();
-    }
-
-    protected void NotifySelectionChanged()
-    {
-      ServiceLocator.Current.GetInstance<IEventService>()
-        .Invoke(new ItemSelectionChangedEvent<TModel>(this.selectedItem));
-    }
-
-    #endregion
+    #endregion Methods
   }
 }
