@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.DAL.Interfaces;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Services
@@ -10,18 +10,16 @@ namespace Ferretto.Common.Modules.BLL.Services
   {
     #region Fields
 
-    private readonly IImageRepository imageRepository;
+    // TODO make the images directory configurable (https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/139)
+    private const string imagesDirectoryName = "images\\";
 
     #endregion Fields
 
-    #region Constructors
+    #region Properties
 
-    public ImageService(IImageRepository imageRepository)
-    {
-      this.imageRepository = imageRepository;
-    }
+    private static Uri ImageDirectoryUri => new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, imagesDirectoryName));
 
-    #endregion Constructors
+    #endregion Properties
 
     #region Methods
 
@@ -32,7 +30,16 @@ namespace Ferretto.Common.Modules.BLL.Services
         throw new ArgumentException(Errors.ParameterCannotBeNullOrWhitespace, nameof(pathName));
       }
 
-      return this.imageRepository.GetById(pathName);
+      var uri = new Uri(ImageDirectoryUri, pathName);
+
+      if (!ImageDirectoryUri.IsBaseOf(uri))
+      {
+        throw new ArgumentException(
+          Errors.SpecifiedPathNotInConfiguredImageFolder,
+          nameof(pathName));
+      }
+
+      return new BitmapImage(uri);
     }
 
     #endregion Methods

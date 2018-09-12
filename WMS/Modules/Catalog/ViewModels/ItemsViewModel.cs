@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -40,7 +39,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
     private static void ExecuteViewDetailsCommand()
     {
-      ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ShowDetailsEventArgs<IItem>(true));
+      ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(true));
     }
 
     #endregion Methods

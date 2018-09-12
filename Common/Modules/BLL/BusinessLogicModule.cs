@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using AutoMapper;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Microsoft.Practices.ServiceLocation;
+﻿using Ferretto.Common.BLL.Interfaces;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
@@ -12,28 +8,30 @@ namespace Ferretto.Common.Modules.BLL.Services
   [ModuleDependency(nameof(Utils.Modules.DataAccess))]
   public class BusinessLogicModule : IModule
   {
-    public IUnityContainer Container { get; private set; }
+    #region Constructors
 
     public BusinessLogicModule(IUnityContainer container)
     {
       this.Container = container;
     }
 
+    #endregion Constructors
+
+    #region Properties
+
+    public IUnityContainer Container { get; private set; }
+
+    #endregion Properties
+
+    #region Methods
+
     public void Initialize()
     {
-      this.Container.RegisterType<ItemsService>(new ContainerControlledLifetimeManager())
-        .RegisterType<IItemsService, ItemsService>()
-        .RegisterType<IEntityService<IItem, int>, ItemsService>();
       this.Container.RegisterType<IImageService, ImageService>();
       this.Container.RegisterType<IEventService, EventService>();
       this.Container.RegisterType<IFilterService, FilterService>();
-
-      // TODO: in the future we may need to so something more complex http://docs.automapper.org/en/stable/Dependency-injection.html
-      Mapper.Initialize(config => config.AddProfile<BusinessLogicAutoMapperProfile>());
-      Mapper.Configuration.CompileMappings();
-
-      // TODO: review this call to ensure we do a proper initialization of the entity framework
-      var x = ServiceLocator.Current.GetInstance<ItemsService>().GetAll().First().Id;
     }
+
+    #endregion Methods
   }
 }

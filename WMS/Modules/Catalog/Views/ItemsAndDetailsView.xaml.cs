@@ -1,8 +1,4 @@
-﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BLL.Interfaces.Models;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
+﻿using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.Catalog
 {
@@ -15,7 +11,6 @@ namespace Ferretto.WMS.Modules.Catalog
       this.InitializeComponent();
     }
 
-    #endregion
+    #endregion Constructors
   }
-
 }

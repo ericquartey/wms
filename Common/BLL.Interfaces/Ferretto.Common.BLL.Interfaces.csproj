@@ -44,15 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IDataService.cs" />
-    <Compile Include="IEntityService.cs" />
+    <Compile Include="IFilter.cs" />
     <Compile Include="IImageService.cs" />
     <Compile Include="IEventService.cs" />
     <Compile Include="IEventArgs.cs" />
     <Compile Include="IFilterService.cs" />
-    <Compile Include="IItemsService.cs" />
-    <Compile Include="Models\IFilter.cs" />
-    <Compile Include="Models\IItem.cs" />
-    <Compile Include="IModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

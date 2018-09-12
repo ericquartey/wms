@@ -1,20 +1,16 @@
 ﻿using System.Windows.Data;
-using Ferretto.Common.BLL.Interfaces;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-  public class WmsGridControl<TModel, TId> : DevExpress.Xpf.Grid.GridControl where TModel : IModel<TId>
+  public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
   {
-    protected WmsGridControl()
-    {
-    }
+    #region Methods
 
     protected override void OnInitialized(System.EventArgs e)
     {
       base.OnInitialized(e);
 
-      this.DataContext = ServiceLocator.Current.GetInstance<WmsGridViewModel<TModel, TId>>() ?? new WmsGridViewModel<TModel, TId>();
+      this.DataContext = new WmsGridViewModel();
 
       var selectedItemBinding = new Binding("SelectedItem")
       {
@@ -24,6 +20,7 @@ namespace Ferretto.Common.Controls
       this.SetBinding(SelectedItemProperty, selectedItemBinding);
       this.SetBinding(ItemsSourceProperty, "Items");
     }
-  }
 
+    #endregion Methods
+  }
 }
