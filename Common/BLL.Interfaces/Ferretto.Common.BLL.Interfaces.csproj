@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDataService.cs" />
     <Compile Include="IEntityService.cs" />
     <Compile Include="IImageService.cs" />
     <Compile Include="IEventService.cs" />
