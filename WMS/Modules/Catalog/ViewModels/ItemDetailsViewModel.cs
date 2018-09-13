@@ -1,8 +1,11 @@
-﻿using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -12,11 +15,11 @@ namespace Ferretto.WMS.Modules.Catalog
     {
         #region Fields
 
+        private readonly IDataService dataService;
         private readonly IImageService imageService;
-
         private ICommand hideDetailsCommand;
         private ImageSource imgArticle;
-        private Common.DAL.Models.Item item;
+        private Item item;
 
         #endregion Fields
 
@@ -25,16 +28,20 @@ namespace Ferretto.WMS.Modules.Catalog
         public ItemDetailsViewModel()
         {
             this.Initialize();
+
             this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
+            this.dataService = ServiceLocator.Current.GetInstance<IDataService>();
+
         }
 
         #endregion Constructors
 
         #region Properties
 
+        public IEnumerable<AbcClass> AbcClassChoices => this.dataService.GetData<AbcClass>().AsEnumerable();
+
         public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-                                              ( this.hideDetailsCommand =
-                                                  new DelegateCommand(ExecuteHideDetailsCommand) );
+            (this.hideDetailsCommand = new DelegateCommand(ExecuteHideDetailsCommand));
 
         public ImageSource ImgArticle
         {
@@ -42,7 +49,7 @@ namespace Ferretto.WMS.Modules.Catalog
             set => this.SetProperty(ref this.imgArticle, value);
         }
 
-        public Common.DAL.Models.Item Item
+        public Item Item
         {
             get => this.item;
             set => this.SetProperty(ref this.item, value);
@@ -55,17 +62,17 @@ namespace Ferretto.WMS.Modules.Catalog
         private static void ExecuteHideDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(false));
+                .Invoke(new ShowDetailsEventArgs<Item>(false));
         }
 
         private void Initialize()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Subscribe<ItemSelectionChangedEvent<Common.DAL.Models.Item>>(
+                .Subscribe<ItemSelectionChangedEvent<Item>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
         }
 
-        private void OnItemSelectionChanged(Common.DAL.Models.Item selectedItem)
+        private void OnItemSelectionChanged(Item selectedItem)
         {
             if (selectedItem != null)
             {
@@ -83,7 +90,7 @@ namespace Ferretto.WMS.Modules.Catalog
             // TODO: call data saving service
 
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ItemChangedEvent<Common.DAL.Models.Item>(this.Item));
+                .Invoke(new ItemChangedEvent<Item>(this.Item));
         }
 
         #endregion Methods

@@ -19,6 +19,6 @@
                TextBlock.FontSize="11pt"
                TextBlock.FontWeight="DemiBold" />
         <ContentPresenter Grid.Row="1"
-                          Content="{Binding ControlContent}" />
+                          Content="{Binding}" />
     </Grid>
 </UserControl>

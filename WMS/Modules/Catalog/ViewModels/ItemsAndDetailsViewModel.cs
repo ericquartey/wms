@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Modules.Catalog
         public ItemsAndDetailsViewModel()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Subscribe((ShowDetailsEventArgs<Common.DAL.Models.Item> eventArgs) =>
+                .Subscribe((ShowDetailsEventArgs<Common.Models.Item> eventArgs) =>
                 {
                     this.IsDetailsViewVisible = eventArgs.IsDetailsViewVisible;
                 });

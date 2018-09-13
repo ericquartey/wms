@@ -32,8 +32,7 @@ namespace Ferretto.WMS.Modules.Catalog
         public IEnumerable<IFilter> Filters => this.filterService.GetByViewName("ItemsView");
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
-                                              ( this.viewDetailsCommand =
-                                                  new DelegateCommand(ExecuteViewDetailsCommand) );
+            (this.viewDetailsCommand = new DelegateCommand(ExecuteViewDetailsCommand));
 
         #endregion Properties
 
@@ -42,7 +41,7 @@ namespace Ferretto.WMS.Modules.Catalog
         private static void ExecuteViewDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(true));
+                .Invoke(new ShowDetailsEventArgs<Common.Models.Item>(true));
         }
 
         #endregion Methods
