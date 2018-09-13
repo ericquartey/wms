@@ -1,26 +1,28 @@
-﻿using System;
-
-namespace Ferretto.Common.Utils.Modules
+﻿namespace Ferretto.Common.Utils.Modules
 {
+    public static class BusinessLogic
+    {
+    }
+
     public static class Catalog
     {
-        public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
-        public const string ITEMS = "ItemsViewModel";
+        #region Fields
+
         public const string ITEMDETAILS = "ItemDetailsViewModel";
+        public const string ITEMS = "ItemsViewModel";
+        public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
+
+        #endregion Fields
     }
 
     public static class Layout
     {
-        public const string REGION_MAINCONTENT = "MainContent";
+        #region Fields
+
         public const string MENUOUTLOOK = "MenuOutlook";
+        public const string REGION_MAINCONTENT = "MainContent";
         public const string REGION_MENU = "Menu";
-    }
 
-    static public class DataAccess
-    {
-    }
-
-    static public class BusinessLogic
-    {
+        #endregion Fields
     }
 }
