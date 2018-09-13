@@ -4,8 +4,6 @@
                xmlns:catalog="clr-namespace:Ferretto.WMS.Modules.Catalog"
                xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-               xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                Title="Anagrafica articoli"
                d:DesignHeight="450"
@@ -20,16 +18,12 @@
         </Grid.Resources>
 
         <ContentControl Visibility="{Binding IsDetailsViewVisible, Converter={StaticResource BTVIC}}">
-            <catalog:ItemsView Grid.Column="1" />
+            <catalog:ItemsView />
         </ContentControl>
-        <ContentControl Visibility="{Binding IsDetailsViewVisible, Converter={StaticResource BTVC}}">
-            <catalog:ItemDetailsView>
 
-                <!--
-            temporarily remove the details view, since we will be refactoring this
-            <localctrls:ItemDetailsView />
-                -->
-            </catalog:ItemDetailsView>
+        <ContentControl Visibility="{Binding IsDetailsViewVisible, Converter={StaticResource BTVC}}">
+            <catalog:ItemDetailsView />
         </ContentControl>
+
     </Grid>
 </ctrls:WmsView>

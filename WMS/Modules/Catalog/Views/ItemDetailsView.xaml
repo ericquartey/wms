@@ -116,9 +116,11 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <wms:TextBox Grid.Column="0"
-                                     Label="ABC Class"
-                                     Text="{Binding Path=Item.AbcClassDescription}" />
+                        <wms:ComboBox Grid.Column="0"
+                                      DisplayMember="Id"
+                                      ItemsSource="{Binding Path=AbcClassChoices}"
+                                      Label="ABC Class"
+                                      ValueMember="Id" />
                         <wms:TextBox Grid.Column="2"
                                      Label="FIFO Store Time"
                                      Text="{Binding Path=Item.FifoTimeStore}" />
