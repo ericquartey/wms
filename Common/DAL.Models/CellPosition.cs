@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.Common.DAL.Models
+namespace Ferretto.Common.Models
 {
     // Posizione in Cella
     public sealed class CellPosition

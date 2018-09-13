@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Abbinamento Cella-Udc
     public enum Pairing

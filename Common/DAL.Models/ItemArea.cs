@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Articolo-Area
     public sealed class ItemArea

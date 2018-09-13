@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ferretto.Common.DAL.Models
+namespace Ferretto.Common.Models
 {
     // Unità di Carico
     public sealed class LoadingUnit

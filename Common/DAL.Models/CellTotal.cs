@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Totali Celle
     public sealed class CellTotal

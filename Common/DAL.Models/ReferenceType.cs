@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Tipo Referenza
     public enum ReferenceType

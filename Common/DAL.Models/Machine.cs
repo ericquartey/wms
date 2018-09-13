@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ferretto.Common.DAL.Models
+namespace Ferretto.Common.Models
 {
     // Macchina
     public sealed class Machine

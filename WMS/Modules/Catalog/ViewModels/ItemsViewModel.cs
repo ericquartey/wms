@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Modules.Catalog
         private static void ExecuteViewDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(true));
+                .Invoke(new ShowDetailsEventArgs<Common.Models.Item>(true));
         }
 
         #endregion Methods

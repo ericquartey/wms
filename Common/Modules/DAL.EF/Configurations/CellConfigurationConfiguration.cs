@@ -1,12 +1,12 @@
-﻿using Ferretto.Common.DAL.Models;
+﻿using Ferretto.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.Modules.DAL.EF.Configurations
 {
-    public class CellConfigurationConfiguration : IEntityTypeConfiguration<Common.DAL.Models.CellConfiguration>
+    public class CellConfigurationConfiguration : IEntityTypeConfiguration<Common.Models.CellConfiguration>
     {
-        public void Configure(EntityTypeBuilder<Common.DAL.Models.CellConfiguration> builder)
+        public void Configure(EntityTypeBuilder<Common.Models.CellConfiguration> builder)
         {
             if (builder == null)
             {

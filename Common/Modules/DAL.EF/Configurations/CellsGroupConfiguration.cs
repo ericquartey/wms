@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.DAL.Models;
+﻿using Ferretto.Common.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

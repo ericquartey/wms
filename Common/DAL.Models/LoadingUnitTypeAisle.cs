@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Tipo Udc - Corridoio
     public sealed class LoadingUnitTypeAisle

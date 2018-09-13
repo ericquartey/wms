@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Tipo Cella-Corridoio
     public sealed class CellTypeAisle

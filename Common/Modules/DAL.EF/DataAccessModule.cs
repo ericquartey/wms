@@ -30,7 +30,7 @@ namespace Ferretto.Common.Modules.DAL.EF
             dbContext.Database.EnsureCreated();
 
             // TODO: review this call to ensure we do a proper initialization of the entity framework
-            dbContext.Set<Common.DAL.Models.Item>().Find(5);
+            dbContext.Set<Common.Models.Item>().Find(5);
         }
 
         #endregion Methods

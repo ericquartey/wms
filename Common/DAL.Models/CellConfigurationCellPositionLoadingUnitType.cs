@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Configurazione Cella - Posizione in Cella - Tipo Udc
     public sealed class CellConfigurationCellPositionLoadingUnitType

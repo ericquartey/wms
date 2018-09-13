@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
         private ICommand hideDetailsCommand;
         private ImageSource imgArticle;
-        private Common.DAL.Models.Item item;
+        private Common.Models.Item item;
 
         #endregion Fields
 
@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Modules.Catalog
             set => this.SetProperty(ref this.imgArticle, value);
         }
 
-        public Common.DAL.Models.Item Item
+        public Common.Models.Item Item
         {
             get => this.item;
             set => this.SetProperty(ref this.item, value);
@@ -55,17 +55,17 @@ namespace Ferretto.WMS.Modules.Catalog
         private static void ExecuteHideDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Common.DAL.Models.Item>(false));
+                .Invoke(new ShowDetailsEventArgs<Common.Models.Item>(false));
         }
 
         private void Initialize()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Subscribe<ItemSelectionChangedEvent<Common.DAL.Models.Item>>(
+                .Subscribe<ItemSelectionChangedEvent<Common.Models.Item>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
         }
 
-        private void OnItemSelectionChanged(Common.DAL.Models.Item selectedItem)
+        private void OnItemSelectionChanged(Common.Models.Item selectedItem)
         {
             if (selectedItem != null)
             {
@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Modules.Catalog
             // TODO: call data saving service
 
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ItemChangedEvent<Common.DAL.Models.Item>(this.Item));
+                .Invoke(new ItemChangedEvent<Common.Models.Item>(this.Item));
         }
 
         #endregion Methods

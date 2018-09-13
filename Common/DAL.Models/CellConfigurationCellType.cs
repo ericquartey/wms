@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DAL.Models
+﻿namespace Ferretto.Common.Models
 {
     // Configurazione Cella - Tipo Cella
     public sealed class CellConfigurationCellType
