@@ -1,8 +1,9 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.Modules.BLL
 {
     [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
     [ModuleDependency(nameof(Utils.Modules.DataAccess))]
