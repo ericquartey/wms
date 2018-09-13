@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="ModelExtensions.cs" />
     <Compile Include="Models\Filter.cs" />
+    <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="BusinessLogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

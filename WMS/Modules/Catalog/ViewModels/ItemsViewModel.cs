@@ -32,8 +32,7 @@ namespace Ferretto.WMS.Modules.Catalog
         public IEnumerable<IFilter> Filters => this.filterService.GetByViewName("ItemsView");
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
-                                              ( this.viewDetailsCommand =
-                                                  new DelegateCommand(ExecuteViewDetailsCommand) );
+            (this.viewDetailsCommand = new DelegateCommand(ExecuteViewDetailsCommand));
 
         #endregion Properties
 

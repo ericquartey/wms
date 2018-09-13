@@ -27,9 +27,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public void Initialize()
         {
-            this.Container.RegisterType<IImageService, ImageService>();
+            this.Container.RegisterType<IDataService, DataService>();
             this.Container.RegisterType<IEventService, EventService>();
             this.Container.RegisterType<IFilterService, FilterService>();
+            this.Container.RegisterType<IImageService, ImageService>();
         }
 
         #endregion Methods
