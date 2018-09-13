@@ -252,23 +252,23 @@
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:General.CreationDate}"
-                                      Text="-" />
+                                      Text="{Binding Path=Item.CreationDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:General.LastModificationDate}"
-                                      Text="-" />
+                                      Text="{Binding Path=Item.LastModificationDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastInventoryDate}"
-                                      Text="-" />
+                                      Text="{Binding Path=Item.InventoryDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastPickDate}"
-                                      Text="-" />
+                                      Text="{Binding Path=Item.LastPickDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastStoreDate}"
-                                      Text="-" />
+                                      Text="{Binding Path=Item.LastStoreDate}" />
                     </StackPanel>
                 </wms:ContentGroup>
             </Grid>
