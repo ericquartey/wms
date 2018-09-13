@@ -6,6 +6,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:type="clr-namespace:Ferretto.Common.DAL.Models;assembly=Ferretto.Common.DAL.Models"             
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
@@ -50,13 +51,13 @@
             </wms:ActionBar>
 
             <wms:WmsGridControl x:Name="MainGridControl"
+                                ItemType="{x:Type type:Item}"
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"
                                 SelectionMode="Row"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
-
                     <dxg:TableView AllowEditing="False"
                                    AllowGrouping="False"
                                    AllowMoveColumnToDropArea="False"
