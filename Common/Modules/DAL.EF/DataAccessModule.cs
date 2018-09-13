@@ -2,7 +2,7 @@
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
-namespace Ferretto.Common.Modules.DAL.EF
+namespace Ferretto.Common.Modules.EF
 {
     [Module(ModuleName = nameof(Utils.Modules.DataAccess))]
     public class DataAccessModule : IModule

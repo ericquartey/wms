@@ -1,23 +1,23 @@
 ﻿using System.Configuration;
 using Ferretto.Common.Models;
-using Ferretto.Common.Modules.DAL.EF.Configurations;
+using Ferretto.Common.Modules.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.Modules.DAL.EF
+namespace Ferretto.Common.Modules.EF
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Major Code Smell",
         "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
         Justification = "Class Designed as part of the Entity Framework")]
-    public partial class DatabaseContext : Microsoft.EntityFrameworkCore.DbContext
+    public partial class DatabaseContext : DbContext
     {
+        #region Properties
+
         public virtual DbSet<AbcClass> AbcClasses { get; set; }
         public virtual DbSet<Aisle> Aisles { get; set; }
         public virtual DbSet<Area> Areas { get; set; }
         public virtual DbSet<Bay> Bays { get; set; }
         public virtual DbSet<BayType> BayTypes { get; set; }
-        public virtual DbSet<Cell> Cells { get; set; }
-        public virtual DbSet<Common.Models.CellConfiguration> CellConfigurations { get; set; }
 
         public virtual DbSet<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes
         {
@@ -26,8 +26,10 @@ namespace Ferretto.Common.Modules.DAL.EF
         }
 
         public virtual DbSet<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
+        public virtual DbSet<Common.Models.CellConfiguration> CellConfigurations { get; set; }
         public virtual DbSet<CellHeightClass> CellHeightClasses { get; set; }
         public virtual DbSet<CellPosition> CellPositions { get; set; }
+        public virtual DbSet<Cell> Cells { get; set; }
         public virtual DbSet<CellsGroup> CellsGroups { get; set; }
         public virtual DbSet<CellSizeClass> CellSizeClasses { get; set; }
         public virtual DbSet<CellStatus> CellStatuses { get; set; }
@@ -40,17 +42,17 @@ namespace Ferretto.Common.Modules.DAL.EF
         public virtual DbSet<CompartmentType> CompartmentTypes { get; set; }
         public virtual DbSet<DefaultCompartment> DefaultCompartments { get; set; }
         public virtual DbSet<DefaultLoadingUnit> DefaultLoadingUnits { get; set; }
-        public virtual DbSet<Item> Items { get; set; }
-        public virtual DbSet<ItemArea> ItemsAreas { get; set; }
-        public virtual DbSet<ItemList> ItemLists { get; set; }
         public virtual DbSet<ItemListRow> ItemListRows { get; set; }
         public virtual DbSet<ItemListRowStatus> ItemListRowStatuses { get; set; }
+        public virtual DbSet<ItemList> ItemLists { get; set; }
         public virtual DbSet<ItemListStatus> ItemListStatuses { get; set; }
         public virtual DbSet<ItemListType> ItemListTypes { get; set; }
         public virtual DbSet<ItemManagementType> ItemManagementTypes { get; set; }
-        public virtual DbSet<LoadingUnit> LoadingUnits { get; set; }
+        public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<ItemArea> ItemsAreas { get; set; }
         public virtual DbSet<LoadingUnitHeightClass> LoadingUnitHeightClasses { get; set; }
         public virtual DbSet<LoadingUnitRange> LoadingUnitRanges { get; set; }
+        public virtual DbSet<LoadingUnit> LoadingUnits { get; set; }
         public virtual DbSet<LoadingUnitSizeClass> LoadingUnitSizeClasses { get; set; }
         public virtual DbSet<LoadingUnitStatus> LoadingUnitStatuses { get; set; }
         public virtual DbSet<LoadingUnitType> LoadingUnitTypes { get; set; }
@@ -64,6 +66,10 @@ namespace Ferretto.Common.Modules.DAL.EF
         public virtual DbSet<MissionStatus> MissionStatuses { get; set; }
         public virtual DbSet<MissionType> MissionTypes { get; set; }
         public virtual DbSet<PackageType> PackageTypes { get; set; }
+
+        #endregion Properties
+
+        #region Methods
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -139,5 +145,7 @@ namespace Ferretto.Common.Modules.DAL.EF
             modelBuilder.ApplyConfiguration(new MissionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
         }
+
+        #endregion Methods
     }
 }

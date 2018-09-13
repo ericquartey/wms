@@ -30,7 +30,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Controls", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.DAL.Models", "Common\DAL.Models\Ferretto.Common.DAL.Models.csproj", "{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Modules.DAL.EF", "Common\Modules\DAL.EF\Ferretto.Common.Modules.DAL.EF.csproj", "{C32FD908-0388-4096-AF68-43BBEDB58725}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Modules.EF", "Common\Modules\DAL.EF\Ferretto.Common.Modules.EF.csproj", "{C32FD908-0388-4096-AF68-43BBEDB58725}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.BLL.Interfaces", "Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj", "{2586C34C-DA26-4143-8359-21D8A42B8462}"
 EndProject

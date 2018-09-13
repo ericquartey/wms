@@ -120,9 +120,9 @@
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
       <Name>Ferretto.Common.DAL.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DAL.EF\Ferretto.Common.Modules.DAL.EF.csproj">
+    <ProjectReference Include="..\DAL.EF\Ferretto.Common.Modules.EF.csproj">
       <Project>{C32FD908-0388-4096-AF68-43BBEDB58725}</Project>
-      <Name>Ferretto.Common.Modules.DAL.EF</Name>
+      <Name>Ferretto.Common.Modules.EF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

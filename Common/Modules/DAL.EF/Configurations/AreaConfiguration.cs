@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace Ferretto.Common.Modules.DAL.EF.Configurations
+namespace Ferretto.Common.Modules.EF.Configurations
 {
     public class AreaConfiguration : IEntityTypeConfiguration<Area>
     {
