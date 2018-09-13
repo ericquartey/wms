@@ -15,6 +15,6 @@
         </Grid.RowDefinitions>
         <Label Content="{Binding Path=Label}" />
         <Label Grid.Row="1"
-               Content="{Binding Path=Text, Mode=TwoWay}" />
+               Content="{Binding Path=Text, Mode=OneWay}" />
     </Grid>
 </UserControl>
