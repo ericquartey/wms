@@ -5,7 +5,6 @@ using Prism.Modularity;
 namespace Ferretto.Common.Modules.BLL.Services
 {
     [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
-    [ModuleDependency(nameof(Utils.Modules.DataAccess))]
     public class BusinessLogicModule : IModule
     {
         #region Constructors

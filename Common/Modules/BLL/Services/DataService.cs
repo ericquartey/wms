@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Modules.EF;
+using Ferretto.Common.EF;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
