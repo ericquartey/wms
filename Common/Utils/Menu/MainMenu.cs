@@ -3,8 +3,8 @@ using Ferretto.Common.Utils.Menu;
 
 namespace Ferretto.Common.Utils.Menu
 {
-  public class MainMenu
-  {
-    public List<MainMenuItem> Items { get; set; }
-  } 
+    public class MainMenu
+    {
+        public List<MainMenuItem> Items { get; set; }
+    }
 }

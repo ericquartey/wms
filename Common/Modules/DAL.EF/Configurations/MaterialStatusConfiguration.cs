@@ -4,18 +4,18 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.Modules.DAL.EF.Configurations
 {
-  public class MaterialStatusConfiguration : IEntityTypeConfiguration<MaterialStatus>
-  {
-    public void Configure(EntityTypeBuilder<MaterialStatus> builder)
+    public class MaterialStatusConfiguration : IEntityTypeConfiguration<MaterialStatus>
     {
-      if (builder == null)
-      {
-        throw new System.ArgumentNullException(nameof(builder));
-      }
+        public void Configure(EntityTypeBuilder<MaterialStatus> builder)
+        {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
 
-      builder.HasKey(m => m.Id);
+            builder.HasKey(m => m.Id);
 
-      builder.Property(m => m.Description).IsRequired();
+            builder.Property(m => m.Description).IsRequired();
+        }
     }
-  }
 }

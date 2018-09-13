@@ -2,15 +2,15 @@
 
 namespace Ferretto.Common.Controls
 {
-  public partial class ActionBarItem : BarButtonItem
-  {
-    #region Constructors
-
-    public ActionBarItem()
+    public partial class ActionBarItem : BarButtonItem
     {
-      this.InitializeComponent();
-    }
+        #region Constructors
 
-    #endregion
-  }
+        public ActionBarItem()
+        {
+            this.InitializeComponent();
+        }
+
+        #endregion
+    }
 }

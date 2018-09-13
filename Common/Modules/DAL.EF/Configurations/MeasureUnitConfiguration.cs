@@ -4,18 +4,18 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.Modules.DAL.EF.Configurations
 {
-  public class MeasureUnitConfiguration : IEntityTypeConfiguration<MeasureUnit>
-  {
-    public void Configure(EntityTypeBuilder<MeasureUnit> builder)
+    public class MeasureUnitConfiguration : IEntityTypeConfiguration<MeasureUnit>
     {
-      if (builder == null)
-      {
-        throw new System.ArgumentNullException(nameof(builder));
-      }
+        public void Configure(EntityTypeBuilder<MeasureUnit> builder)
+        {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
 
-      builder.HasKey(m => m.Id);
+            builder.HasKey(m => m.Id);
 
-      builder.Property(m => m.Description).IsRequired();
+            builder.Property(m => m.Description).IsRequired();
+        }
     }
-  }
 }

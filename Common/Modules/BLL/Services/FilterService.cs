@@ -4,20 +4,21 @@ using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-  public class FilterService : IFilterService
-  {
-    #region Methods
-
-    public IEnumerable<IFilter> GetByViewName(string viewName)
+    public class FilterService : IFilterService
     {
-      // TODO: remove the following static list and return a proper set of values
-      return new List<Filter> {
-        new Filter {Id= 1, Name = "All", Count = 53 },
-        new Filter { Id = 2, Name = "Category 1", Count  = 7 },
-        new Filter { Id = 3, Name = "Category 2", Count  = 21 }
-      };
-    }
+        #region Methods
 
-    #endregion Methods
-  }
+        public IEnumerable<IFilter> GetByViewName(string viewName)
+        {
+            // TODO: remove the following static list and return a proper set of values
+            return new List<Filter>
+            {
+                new Filter {Id = 1, Name = "All", Count = 53},
+                new Filter {Id = 2, Name = "Category 1", Count = 7},
+                new Filter {Id = 3, Name = "Category 2", Count = 21}
+            };
+        }
+
+        #endregion Methods
+    }
 }

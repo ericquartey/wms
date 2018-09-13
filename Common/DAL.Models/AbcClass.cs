@@ -2,14 +2,14 @@
 
 namespace Ferretto.Common.DAL.Models
 {
-  // Classe ABC
-  public sealed class AbcClass
-  {
-    public string Id { get; set; }
-    public string Description { get; set; }
+    // Classe ABC
+    public sealed class AbcClass
+    {
+        public string Id { get; set; }
+        public string Description { get; set; }
 
-    public List<Cell> Cells { get; set; }
-    public List<Item> Items { get; set; }
-    public List<LoadingUnit> LoadingUnits { get; set; }
-  }
+        public List<Cell> Cells { get; set; }
+        public List<Item> Items { get; set; }
+        public List<LoadingUnit> LoadingUnits { get; set; }
+    }
 }

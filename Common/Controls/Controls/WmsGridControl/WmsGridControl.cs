@@ -2,25 +2,25 @@
 
 namespace Ferretto.Common.Controls
 {
-  public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
-  {
-    #region Methods
-
-    protected override void OnInitialized(System.EventArgs e)
+    public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
     {
-      base.OnInitialized(e);
+        #region Methods
 
-      this.DataContext = new WmsGridViewModel();
+        protected override void OnInitialized(System.EventArgs e)
+        {
+            base.OnInitialized(e);
 
-      var selectedItemBinding = new Binding("SelectedItem")
-      {
-        Mode = BindingMode.TwoWay,
-        UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-      };
-      this.SetBinding(SelectedItemProperty, selectedItemBinding);
-      this.SetBinding(ItemsSourceProperty, "Items");
+            this.DataContext = new WmsGridViewModel();
+
+            var selectedItemBinding = new Binding("SelectedItem")
+            {
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            this.SetBinding(SelectedItemProperty, selectedItemBinding);
+            this.SetBinding(ItemsSourceProperty, "Items");
+        }
+
+        #endregion Methods
     }
-
-    #endregion Methods
-  }
 }

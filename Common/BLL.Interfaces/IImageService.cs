@@ -2,8 +2,8 @@
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-  public interface IImageService
-  {
-    ImageSource GetImage(string pathName);
-  }
+    public interface IImageService
+    {
+        ImageSource GetImage(string pathName);
+    }
 }

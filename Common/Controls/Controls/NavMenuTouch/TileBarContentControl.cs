@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Controls
 {
-  public class TileBarContentControl : Grid
-  {
-  }
+    public class TileBarContentControl : Grid
+    {
+    }
 }

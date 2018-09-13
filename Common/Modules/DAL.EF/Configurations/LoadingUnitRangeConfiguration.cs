@@ -4,21 +4,21 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Ferretto.Common.Modules.DAL.EF.Configurations
 {
-  public class LoadingUnitRangeConfiguration : IEntityTypeConfiguration<LoadingUnitRange>
-  {
-    public void Configure(EntityTypeBuilder<LoadingUnitRange> builder)
+    public class LoadingUnitRangeConfiguration : IEntityTypeConfiguration<LoadingUnitRange>
     {
-      if (builder == null)
-      {
-        throw new System.ArgumentNullException(nameof(builder));
-      }
+        public void Configure(EntityTypeBuilder<LoadingUnitRange> builder)
+        {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
 
-      builder.HasKey(l => l.Id);
+            builder.HasKey(l => l.Id);
 
-      builder.HasOne(l => l.Area)
-          .WithMany(a => a.LoadingUnitRanges)
-          .HasForeignKey(l => l.AreaId)
-          .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(l => l.Area)
+                .WithMany(a => a.LoadingUnitRanges)
+                .HasForeignKey(l => l.AreaId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+        }
     }
-  }
 }

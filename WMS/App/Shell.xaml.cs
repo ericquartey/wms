@@ -5,31 +5,31 @@ using Prism.Regions;
 
 namespace Ferretto.WMS.App
 {
-  public partial class Shell : DXWindow
-  {
-    private readonly IModuleManager moduleManager;
-    private readonly IRegionManager regionManager;
-
-    public Shell()
+    public partial class Shell : DXWindow
     {
-      this.InitializeComponent();
+        private readonly IModuleManager moduleManager;
+        private readonly IRegionManager regionManager;
 
-      this.Loaded += this.Shell_Loaded;
+        public Shell()
+        {
+            this.InitializeComponent();
+
+            this.Loaded += this.Shell_Loaded;
+        }
+
+        private void Shell_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+        {
+            DXSplashScreen.Close();
+        }
+
+        public Shell(IModuleManager moduleManager, IRegionManager regionManager)
+            : this()
+        {
+            this.moduleManager = moduleManager;
+            this.regionManager = regionManager;
+
+            // Load the root module of the application
+            this.moduleManager.LoadModule(nameof(Layout));
+        }
     }
-
-    private void Shell_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
-    {
-      DXSplashScreen.Close();
-    }
-
-    public Shell(IModuleManager moduleManager, IRegionManager regionManager)
-      : this()
-    {
-      this.moduleManager = moduleManager;
-      this.regionManager = regionManager;
-
-      // Load the root module of the application
-      this.moduleManager.LoadModule(nameof(Layout));
-    }
-  }
 }

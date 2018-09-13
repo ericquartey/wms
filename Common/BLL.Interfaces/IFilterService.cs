@@ -2,12 +2,12 @@
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-  public interface IFilterService
-  {
-    #region Methods
+    public interface IFilterService
+    {
+        #region Methods
 
-    IEnumerable<IFilter> GetByViewName(string viewName);
+        IEnumerable<IFilter> GetByViewName(string viewName);
 
-    #endregion Methods
-  }
+        #endregion Methods
+    }
 }

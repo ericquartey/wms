@@ -2,17 +2,17 @@
 
 namespace Ferretto.Common.DAL.Models
 {
-  // Baia
-  public sealed class Bay
-  {
-    public int Id { get; set; }
-    public string BayTypeId { get; set; }
-    public int? LoadingUnitsBufferSize { get; set; }
-    public string Description { get; set; }
+    // Baia
+    public sealed class Bay
+    {
+        public int Id { get; set; }
+        public string BayTypeId { get; set; }
+        public int? LoadingUnitsBufferSize { get; set; }
+        public string Description { get; set; }
 
-    public BayType BayType { get; set; }
+        public BayType BayType { get; set; }
 
-    public List<Mission> SourceMissions { get; set; }
-    public List<Mission> DestinationMissions { get; set; }
-  }
+        public List<Mission> SourceMissions { get; set; }
+        public List<Mission> DestinationMissions { get; set; }
+    }
 }

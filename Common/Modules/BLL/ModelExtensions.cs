@@ -3,26 +3,26 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL
 {
-  public static class ModelExtensions
-  {
-    #region Methods
-
-    public static void SetIfStrictlyPositive(this Object model, ref int? member, int? value)
+    public static class ModelExtensions
     {
-      if (value.HasValue)
-      {
-        if (value.Value <= 0)
+        #region Methods
+
+        public static void SetIfStrictlyPositive(this Object model, ref int? member, int? value)
         {
-          throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+            if (value.HasValue)
+            {
+                if (value.Value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+                }
+
+                if (!member.HasValue || member.Value != value.Value)
+                {
+                    member = value;
+                }
+            }
         }
 
-        if (!member.HasValue || member.Value != value.Value)
-        {
-          member = value;
-        }
-      }
+        #endregion Methods
     }
-
-    #endregion Methods
-  }
 }
