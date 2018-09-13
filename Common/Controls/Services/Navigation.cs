@@ -26,9 +26,15 @@ namespace Ferretto.Common.Controls.Services
         }
     }
 
-    public class RefreshItemsEvent : Prism.Events.PubSubEvent, IEventArgs
+    public class RefreshItemsEvent<TItem> : Prism.Events.PubSubEvent<TItem>, IEventArgs
     {
+        public TItem Item { get; set; }
+
         public string Token => null;
+
+        public RefreshItemsEvent()
+        {            
+        }
     }
 
     public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs

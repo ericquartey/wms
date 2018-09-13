@@ -1,9 +1,12 @@
-﻿using Ferretto.Common.Controls.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
+using System.Linq;
 
 namespace Ferretto.WMS.Modules.Layout
 {
@@ -11,13 +14,6 @@ namespace Ferretto.WMS.Modules.Layout
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class LayoutModule : IModule
     {
-        #region Members
-
-        public IUnityContainer Container { get; private set; }
-        public IRegionManager RegionManager { get; private set; }
-
-        #endregion
-
         #region Constructors
 
         public LayoutModule(IUnityContainer container, IRegionManager regionManager)
@@ -26,9 +22,16 @@ namespace Ferretto.WMS.Modules.Layout
             this.RegionManager = regionManager;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region IModule Members
+        #region Properties
+
+        public IUnityContainer Container { get; private set; }
+        public IRegionManager RegionManager { get; private set; }
+
+        #endregion Properties
+
+        #region Methods
 
         public void Initialize()
         {
@@ -40,6 +43,9 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
 
+            // TODO: review this call to ensure we do a proper initialization of the entity framework
+            ServiceLocator.Current.GetInstance<IDataService>().GetData<Item>().FirstOrDefault(item => item.Id == 4);
+
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}",
                 typeof(LayoutView));
@@ -47,6 +53,6 @@ namespace Ferretto.WMS.Modules.Layout
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
         }
 
-        #endregion
+        #endregion Methods
     }
 }

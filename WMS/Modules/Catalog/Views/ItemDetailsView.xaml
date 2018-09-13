@@ -6,6 +6,7 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:type="clr-namespace:Ferretto.Common.Models;assembly=Ferretto.Common.Models"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -199,6 +200,7 @@
                                   Label="{x:Static res:Catalog.Compartments}">
                     <wms:WmsGridControl MaxWidth="2000"
                                         MaxHeight="5000"
+                                        ItemType="{x:Type type:Item}"
                                         SelectionMode="Row">
                         <wms:WmsGridControl.View>
                             <dxg:TableView AllowEditing="False"

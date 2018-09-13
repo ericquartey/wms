@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Modules.EF;
+using Ferretto.Common.EF;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
