@@ -117,13 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
+  <data name="AbcClass" xml:space="preserve">
+    <value>ABC Class</value>
+    <comment>ABC Class</comment>
   </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
+  <data name="ItemAverageWeight" xml:space="preserve">
+    <value>Average Weight</value>
+    <comment>Item - Average Weight</comment>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Code</value>
+    <comment>Item - Code</comment>
+  </data>
+  <data name="ItemFifoPickTime" xml:space="preserve">
+    <value>FIFO Pick Time</value>
+    <comment>Item - FIFO Pick Time</comment>
+  </data>
+  <data name="ItemFifoStoreTime" xml:space="preserve">
+    <value>FIFO Store Time</value>
+    <comment>Item - FIFO Store Time</comment>
+  </data>
+  <data name="ItemHeight" xml:space="preserve">
+    <value>Height</value>
+    <comment>Item - Height</comment>
+  </data>
+  <data name="ItemInventoryTolerance" xml:space="preserve">
+    <value>Inventory Tolerance</value>
+    <comment>Item - Last Inventory Date</comment>
+  </data>
+  <data name="ItemLastInventoryDate" xml:space="preserve">
+    <value>Last Inventory Date</value>
+    <comment>Item - Last Inventory Date</comment>
+  </data>
+  <data name="ItemLastPickDate" xml:space="preserve">
+    <value>Last Pick Date</value>
+    <comment>Item - Last Pick Date</comment>
+  </data>
+  <data name="ItemLastStoreDate" xml:space="preserve">
+    <value>Last Store Date</value>
+    <comment>Item - Last Store Date</comment>
+  </data>
+  <data name="ItemLength" xml:space="preserve">
+    <value>Length</value>
+    <comment>Item - Length</comment>
+  </data>
+  <data name="ItemLot" xml:space="preserve">
+    <value>Lot</value>
+    <comment>Item - Lot</comment>
+  </data>
+  <data name="ItemManagementType" xml:space="preserve">
+    <value>Management Type</value>
+    <comment>Item - Management Type</comment>
+  </data>
+  <data name="ItemNotes" xml:space="preserve">
+    <value>Notes</value>
+    <comment>Item - Notes</comment>
+  </data>
+  <data name="ItemPairing" xml:space="preserve">
+    <value>Pairing</value>
+    <comment>Item - Pairing</comment>
+  </data>
+  <data name="ItemPickTolerance" xml:space="preserve">
+    <value>Pick Tolerance</value>
+    <comment>Item - Pick Tolerance</comment>
+  </data>
+  <data name="ItemReorderPoint" xml:space="preserve">
+    <value>ReorderPoint</value>
+    <comment>Item - ReorderPoint</comment>
+  </data>
+  <data name="ItemReorderQuantity" xml:space="preserve">
+    <value>Reorder Quantity</value>
+    <comment>Item - Reorder Quantity</comment>
+  </data>
+  <data name="ItemStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>Item - Status</comment>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Stock</value>
+    <comment>Item - Stock</comment>
+  </data>
+  <data name="ItemStoreTolerance" xml:space="preserve">
+    <value>Store Tolerance</value>
+    <comment>Item - Store Tolerance</comment>
+  </data>
+  <data name="ItemSub1" xml:space="preserve">
+    <value>Sub 1</value>
+    <comment>Item - Sub 1</comment>
+  </data>
+  <data name="ItemSub2" xml:space="preserve">
+    <value>Sub 2</value>
+    <comment>Item - Sub 2</comment>
+  </data>
+  <data name="ItemWidth" xml:space="preserve">
+    <value>Width</value>
+    <comment>Item - Width</comment>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Loading Unit</value>
+    <comment>Loading Unit</comment>
   </data>
 </root>
