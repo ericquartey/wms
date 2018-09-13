@@ -121,9 +121,9 @@
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
       <Name>Ferretto.Common.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EF\Ferretto.Common.Modules.EF.csproj">
+    <ProjectReference Include="..\..\EF\Ferretto.Common.EF.csproj">
       <Project>{C32FD908-0388-4096-AF68-43BBEDB58725}</Project>
-      <Name>Ferretto.Common.Modules.EF</Name>
+      <Name>Ferretto.Common.EF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
