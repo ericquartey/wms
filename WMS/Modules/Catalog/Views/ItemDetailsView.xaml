@@ -73,6 +73,7 @@
                 </Grid>
 
                 <wms:ContentGroup Grid.Row="1"
+                                  Margin="0"
                                   Label="{x:Static res:Catalog.ItemInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -80,10 +81,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:TextBox Label="{x:Static res:Models.ItemCode}"
-                                     Text="{Binding Path=Item.Code}" />
+                                     Text="{Binding Path=Item.Code, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="1"
                                      Label="{x:Static res:General.Description}"
-                                     Text="{Binding Path=Item.Description}" />
+                                     Text="{Binding Path=Item.Description, Mode=TwoWay}" />
                     </Grid>
                 </wms:ContentGroup>
 
@@ -93,7 +94,7 @@
                                  VerticalAlignment="Stretch"
                                  VerticalContentAlignment="Stretch"
                                  Label="{x:Static res:Models.ItemNotes}"
-                                 Text="{Binding Path=Item.Notes}" />
+                                 Text="{Binding Path=Item.Notes, Mode=TwoWay}" />
                 </wms:ContentGroup>
 
                 <wms:ContentGroup Grid.Row="2"
@@ -117,31 +118,31 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Grid.Column="0"
-                                      DisplayMember="Id"
                                       ItemsSource="{Binding Path=AbcClassChoices}"
                                       Label="{x:Static res:Models.AbcClass}"
+                                      SelectedValue="{Binding Path=Item.ClassId, Mode=TwoWay}"
                                       ValueMember="Id" />
                         <wms:TextBox Grid.Column="2"
                                      Label="{x:Static res:Models.ItemFifoStoreTime}"
-                                     Text="{Binding Path=Item.FifoTimeStore}" />
+                                     Text="{Binding Path=Item.FifoTimeStore, Mode=TwoWay}" />
                         <wms:TextBox Grid.Column="4"
                                      Label="{x:Static res:Models.ItemReorderPoint}"
-                                     Text="{Binding Path=Item.ReorderPoint}" />
+                                     Text="{Binding Path=Item.ReorderPoint, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Label="{x:Static res:General.UnitOfMeasurement}"
-                                     Text="{Binding Path=Item.MeasureUnitDescription}" />
+                                     Text="{Binding Path=Item.MeasureUnitDescription, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="2"
                                      Label="{x:Static res:Models.ItemFifoPickTime}"
-                                     Text="{Binding Path=Item.FifoTimePick}" />
+                                     Text="{Binding Path=Item.FifoTimePick, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="4"
                                      Label="{x:Static res:Models.ItemReorderQuantity}"
-                                     Text="{Binding Path=Item.ReorderQuantity}" />
+                                     Text="{Binding Path=Item.ReorderQuantity, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="2"
                                      Label="{x:Static res:Models.ItemManagementType}"
-                                     Text="{Binding Path=Item.ItemManagementTypeDescription}" />
+                                     Text="{Binding Path=Item.ItemManagementTypeDescription, Mode=TwoWay}" />
                     </Grid>
                 </wms:ContentGroup>
 
@@ -168,28 +169,28 @@
                         </Grid.RowDefinitions>
                         <wms:TextBox Grid.Column="0"
                                      Label="{x:Static res:Models.ItemHeight}"
-                                     Text="{Binding Path=Item.Height}" />
+                                     Text="{Binding Path=Item.Height, Mode=TwoWay}" />
                         <wms:TextBox Grid.Column="2"
                                      Label="{x:Static res:Models.ItemLength}"
-                                     Text="{Binding Path=Item.Length}" />
+                                     Text="{Binding Path=Item.Length, Mode=TwoWay}" />
                         <wms:TextBox Grid.Column="4"
                                      Label="{x:Static res:Models.ItemPickTolerance}"
                                      Text="{Binding Path=Item.PickTolerance}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Label="{x:Static res:Models.ItemWidth}"
-                                     Text="{Binding Path=Item.Width}" />
+                                     Text="{Binding Path=Item.Width, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="2"
                                      Label="{x:Static res:Models.ItemAverageWeight}"
-                                     Text="{Binding Path=Item.AverageWeight}" />
+                                     Text="{Binding Path=Item.AverageWeight, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="4"
                                      Label="{x:Static res:Models.ItemStoreTolerance}"
-                                     Text="{Binding StoreTolerance}" />
+                                     Text="{Binding Path=StoreTolerance, Mode=TwoWay}" />
                         <wms:TextBox Grid.Row="2"
                                      Label="{x:Static res:Models.ItemInventoryTolerance}"
-                                     Text="{Binding InventoryTolerance}" />
+                                     Text="{Binding Path=InventoryTolerance, Mode=TwoWay}" />
                     </Grid>
                 </wms:ContentGroup>
 
@@ -252,23 +253,23 @@
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:General.CreationDate}"
-                                      Text="{Binding Path=Item.CreationDate}" />
+                                      Text="{Binding Path=Item.CreationDate, Mode=TwoWay}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:General.LastModificationDate}"
-                                      Text="{Binding Path=Item.LastModificationDate}" />
+                                      Text="{Binding Path=Item.LastModificationDate, Mode=TwoWay}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastInventoryDate}"
-                                      Text="{Binding Path=Item.InventoryDate}" />
+                                      Text="{Binding Path=Item.InventoryDate, Mode=TwoWay}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastPickDate}"
-                                      Text="{Binding Path=Item.LastPickDate}" />
+                                      Text="{Binding Path=Item.LastPickDate, Mode=TwoWay}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastStoreDate}"
-                                      Text="{Binding Path=Item.LastStoreDate}" />
+                                      Text="{Binding Path=Item.LastStoreDate, Mode=TwoWay}" />
                     </StackPanel>
                 </wms:ContentGroup>
             </Grid>
