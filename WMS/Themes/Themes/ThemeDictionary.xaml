@@ -11,6 +11,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DockLayoutManager.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/ActionBar.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DateEdit.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/ComboBoxEdit.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

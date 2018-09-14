@@ -31,6 +31,11 @@
                           Text="{Binding SelectedText, Mode=TwoWay}"
                           ValidateOnEnterKeyPressed="False"
                           ValidateOnTextInput="False"
-                          ValueMember="{Binding ValueMember}" />
+                          ValueMember="{Binding ValueMember}"
+                          AllowDefaultButton="False">
+            <dxe:ComboBoxEdit.Buttons>
+                <dxe:ButtonInfo IsDefaultButton="True" Template="{DynamicResource ComboBoxEditCustomButtonTemplate}" />
+            </dxe:ComboBoxEdit.Buttons>
+        </dxe:ComboBoxEdit>
     </Grid>
 </UserControl>
