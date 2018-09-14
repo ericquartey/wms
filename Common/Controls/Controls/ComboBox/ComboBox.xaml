@@ -15,6 +15,7 @@
         <Label Content="{Binding Label}" />
         <dxe:ComboBoxEdit Name="dxeComboBoxEdit"
                           Grid.Row="1"
+                          AllowDefaultButton="False"
                           AllowNullInput="{Binding AllowNullInput}"
                           AssignNullValueOnClearingEditText="False"
                           AutoComplete="{Binding AutoComplete}"
@@ -31,10 +32,10 @@
                           Text="{Binding SelectedText, Mode=TwoWay}"
                           ValidateOnEnterKeyPressed="False"
                           ValidateOnTextInput="False"
-                          ValueMember="{Binding ValueMember}"
-                          AllowDefaultButton="False">
+                          ValueMember="{Binding ValueMember}">
             <dxe:ComboBoxEdit.Buttons>
-                <dxe:ButtonInfo IsDefaultButton="True" Template="{DynamicResource ComboBoxEditCustomButtonTemplate}" />
+                <dxe:ButtonInfo IsDefaultButton="True"
+                                Template="{DynamicResource ComboBoxEditCustomButtonTemplate}" />
             </dxe:ComboBoxEdit.Buttons>
         </dxe:ComboBoxEdit>
     </Grid>
