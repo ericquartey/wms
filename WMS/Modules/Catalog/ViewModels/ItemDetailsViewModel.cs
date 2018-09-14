@@ -18,6 +18,7 @@ namespace Ferretto.WMS.Modules.Catalog
         private readonly IDataService dataService;
         private readonly IImageService imageService;
         private ICommand hideDetailsCommand;
+        private ICommand saveCommand;
         private ImageSource imgArticle;
         private Item item;
 
@@ -43,6 +44,9 @@ namespace Ferretto.WMS.Modules.Catalog
         public ICommand HideDetailsCommand => this.hideDetailsCommand ??
             (this.hideDetailsCommand = new DelegateCommand(ExecuteHideDetailsCommand));
 
+        public ICommand SaveCommand => this.saveCommand ??
+          (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+
         public ImageSource ImgArticle
         {
             get => this.imgArticle;
@@ -63,6 +67,11 @@ namespace Ferretto.WMS.Modules.Catalog
         {
             ServiceLocator.Current.GetInstance<IEventService>()
                 .Invoke(new ShowDetailsEventArgs<Item>(false));
+        }
+
+        private void ExecuteSaveCommand()
+        {
+            this.dataService.SaveChanges();
         }
 
         private void Initialize()

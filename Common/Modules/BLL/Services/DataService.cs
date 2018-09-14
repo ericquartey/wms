@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 
@@ -32,6 +33,10 @@ namespace Ferretto.Common.Modules.BLL.Services
             }
             return predicate.Invoke(this.context.Set<TEntity>());
         }
+
+        public int SaveChanges() => this.context.SaveChanges();
+
+        public Task<int> SaveChangesAsync() => this.context.SaveChangesAsync();
 
         #endregion Methods
     }
