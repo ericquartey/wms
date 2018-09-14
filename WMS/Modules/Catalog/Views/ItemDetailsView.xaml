@@ -200,7 +200,7 @@
                                   Label="{x:Static res:Catalog.Compartments}">
                     <wms:WmsGridControl MaxWidth="2000"
                                         MaxHeight="5000"
-                                        ItemType="{x:Type type:Item}"
+                                        ItemType="{x:Type type:Compartment}"
                                         SelectionMode="Row">
                         <wms:WmsGridControl.View>
                             <dxg:TableView AllowEditing="False"
@@ -216,7 +216,7 @@
                                         FieldName="Code"
                                         Header="{x:Static res:Models.ItemCode}" />
                         <dxg:GridColumn Width="300*"
-                                        FieldName="LoadingUnit"
+                                        FieldName="LoadingUnit.Code"
                                         Header="{x:Static res:Models.LoadingUnit}" />
                         <dxg:GridColumn Width="100*"
                                         FieldName="Sub1"
@@ -228,7 +228,7 @@
                                         FieldName="Lot"
                                         Header="{x:Static res:Models.ItemLot}" />
                         <dxg:GridColumn Width="200*"
-                                        FieldName="Status"
+                                        FieldName="CompartmentStatus.Description"
                                         Header="{x:Static res:Models.ItemStatus}" />
                         <dxg:GridColumn Width="200*"
                                         FieldName="Stock"

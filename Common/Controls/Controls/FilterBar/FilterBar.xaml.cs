@@ -1,10 +1,18 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Ferretto.Common.Controls
 {
     public partial class FilterBar : UserControl
     {
+        #region Fields
+
+        public static readonly DependencyProperty FiltersProperty =
+            DependencyProperty.Register(nameof(Filters), typeof(TileFilter), typeof(FilterBar));
+
+        #endregion Fields
+
         #region Constructors
 
         public FilterBar()
@@ -12,19 +20,16 @@ namespace Ferretto.Common.Controls
             this.InitializeComponent();
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Filters Dependency Property
+        #region Properties
 
-        public static readonly DependencyProperty FiltersProperty =
-            DependencyProperty.Register(nameof(Filters), typeof(string), typeof(FilterBar));
-
-        public string Filters
+        public IEnumerable<TileFilter> Filters
         {
-            get => (string) this.GetValue(FiltersProperty);
+            get => (IEnumerable<TileFilter>)this.GetValue(FiltersProperty);
             set => this.SetValue(FiltersProperty, value);
         }
 
-        #endregion
+        #endregion Properties
     }
 }
