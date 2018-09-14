@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VerticalWarehouses", "VerticalWarehouses", "{2ED9180C-3A78-44C2-AB9C-83B6944848B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionBlocks", "VerticalWarehouses\ActionBlocks\ActionBlocks.csproj", "{ECDC6D6C-E5D2-4EC3-9AAC-6336C2048FFF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InverterDriver", "VerticalWarehouses\InverterDriver\InverterDriver.csproj", "{119128D4-1776-427A-AEC1-6DA12B0FF813}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "VerticalWarehouses\Utils\Utils.csproj", "{EAEEEB73-E9E7-4CDF-B100-A433A33562E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalWarehousesApp", "VerticalWarehouses\VerticalWarehousesApp\VerticalWarehousesApp.csproj", "{044A9872-DD3B-4505-9B32-CAB24A16DD3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECDC6D6C-E5D2-4EC3-9AAC-6336C2048FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECDC6D6C-E5D2-4EC3-9AAC-6336C2048FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECDC6D6C-E5D2-4EC3-9AAC-6336C2048FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECDC6D6C-E5D2-4EC3-9AAC-6336C2048FFF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{119128D4-1776-427A-AEC1-6DA12B0FF813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{119128D4-1776-427A-AEC1-6DA12B0FF813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{119128D4-1776-427A-AEC1-6DA12B0FF813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{119128D4-1776-427A-AEC1-6DA12B0FF813}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAEEEB73-E9E7-4CDF-B100-A433A33562E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAEEEB73-E9E7-4CDF-B100-A433A33562E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAEEEB73-E9E7-4CDF-B100-A433A33562E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAEEEB73-E9E7-4CDF-B100-A433A33562E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ECDC6D6C-E5D2-4EC3-9AAC-6336C2048FFF} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
+		{119128D4-1776-427A-AEC1-6DA12B0FF813} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
+		{EAEEEB73-E9E7-4CDF-B100-A433A33562E3} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
+	EndGlobalSection
+EndGlobal
