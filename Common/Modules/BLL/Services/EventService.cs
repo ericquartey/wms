@@ -6,12 +6,22 @@ namespace Ferretto.Common.Modules.BLL.Services
 {
     public class EventService : IEventService
     {
+        #region Fields
+
         private readonly IEventAggregator eventAggregator;
+
+        #endregion Fields
+
+        #region Constructors
 
         public EventService(IEventAggregator eventAggregator)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void Invoke<TEventArgs>(TEventArgs eventArgs) where TEventArgs : IEventArgs
         {
@@ -44,5 +54,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             return this.eventAggregator.GetEvent<PubSubEvent<TEventArgs>>();
         }
+
+        #endregion Methods
     }
 }

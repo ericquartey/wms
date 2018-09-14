@@ -34,8 +34,9 @@ namespace Ferretto.Common.Modules.BLL.Services
             return predicate.Invoke(this.context.Set<TEntity>());
         }
 
-        public Task<int> SaveChangesAsync() => this.context.SaveChangesAsync();
         public int SaveChanges() => this.context.SaveChanges();
+
+        public Task<int> SaveChangesAsync() => this.context.SaveChangesAsync();
 
         #endregion Methods
     }
