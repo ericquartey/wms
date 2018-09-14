@@ -7,161 +7,19 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     mc:Ignorable="cs">
-    <ControlTemplate x:Key="{dxet:ButtonsThemeKey ResourceKey=ButtonTemplate,
-                                                  ThemeName=Office2016White}"
-                     TargetType="{x:Type ButtonBase}">
-        <Grid x:Name="Root">
-            <Grid.Resources>
-                <Style x:Key="PressedElementStyle"
-                       TargetType="{x:Type ContentControl}">
-                    <Setter Property="dx:FocusHelper2.Focusable" Value="False" />
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ContentControl}" />
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </Grid.Resources>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto">
-                    <!--  BEGIN WPF  -->
-                    <ColumnDefinition.SharedSizeGroup>
-                        <sys:String>ComboBoxButton</sys:String>
-                    </ColumnDefinition.SharedSizeGroup>
-                    <!--  END WPF  -->
-                </ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Border x:Name="DefaultState"
-                    Grid.ColumnSpan="1"
-                    Padding="1"
-                    cs:Name="Border_0002" />
-            <Border x:Name="HoverState"
-                    Grid.ColumnSpan="1"
-                    Padding="1"
-                    cs:Name="Border_0003"
-                    Opacity="0" />
-            <ContentControl x:Name="pressed1"
-                            Opacity="0"
-                            Style="{StaticResource PressedElementStyle}" />
-            <ContentControl x:Name="pressed2"
-                            Style="{StaticResource PressedElementStyle}"
-                            Visibility="Collapsed" />
-            <Grid x:Name="Arrow"
-                  Grid.ColumnSpan="1"
-                  HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  SnapsToDevicePixels="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.7*" />
-                    <ColumnDefinition Width="0.3*"
-                                      MinWidth="16" />
-                </Grid.ColumnDefinitions>
-                <!--  BEGIN WPF  -->
-                <Image x:Name="Glyph"
-                       Grid.ColumnSpan="2"
-                       Width="12"
-                       Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Controls/baseline_calendar_today_black_18dp.png" />
-                <!--  END WPF  -->
-            </Grid>
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal" />
-                    <VisualState x:Name="MouseOver">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="DefaultState"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="HoverState"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="1"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="pressed1"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="pressed2"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Pressed">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="DefaultState"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="HoverState"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="pressed1"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="1"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="pressed2"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Disabled">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="Glyph"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0.25"
-                                             Duration="0" />
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-                <VisualStateGroup x:Name="CheckStates">
-                    <VisualState x:Name="Checked">
-                        <Storyboard>
-                            <DoubleAnimation Storyboard.TargetName="DefaultState"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="HoverState"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="pressed1"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="0"
-                                             Duration="0" />
-                            <DoubleAnimation Storyboard.TargetName="pressed2"
-                                             Storyboard.TargetProperty="Opacity"
-                                             To="1"
-                                             Duration="0" />
-                            <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pressed2"
-                                                           Storyboard.TargetProperty="Visibility"
-                                                           Duration="0">
-                                <ObjectAnimationUsingKeyFrames.KeyFrames>
-                                    <DiscreteObjectKeyFrame KeyTime="0">
-                                        <DiscreteObjectKeyFrame.Value>
-                                            <Visibility>Visible</Visibility>
-                                        </DiscreteObjectKeyFrame.Value>
-                                    </DiscreteObjectKeyFrame>
-                                </ObjectAnimationUsingKeyFrames.KeyFrames>
-                            </ObjectAnimationUsingKeyFrames>
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Unchecked" />
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
-        </Grid>
-        <ControlTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=GlyphKind}"
-                         Value="User">
-                <Setter TargetName="Glyph" Property="Style" Value="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=UserButtonInfoContentStyle}}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=GlyphKind}"
-                         Value="None">
-                <Setter TargetName="Glyph" Property="Style" Value="{DynamicResource {dxet:ButtonsThemeKey ResourceKey=NoneButtonInfoContentStyle}}" />
-            </DataTrigger>
-            <Trigger Property="dx:ThemeManager.IsTouchEnabled" Value="True" />
-        </ControlTemplate.Triggers>
-    </ControlTemplate>
+
+    <DataTemplate x:Key="DateEditCustomButtonTemplate">
+        <Button x:Name="PART_Item">
+            <Button.Template>
+                <ControlTemplate>
+                    <Border Background="Transparent">
+                        <Image x:Name="Glyph"
+                               Width="12"
+                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Controls/baseline_calendar_today_black_18dp.png" />
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </DataTemplate>
+
 </ResourceDictionary>
