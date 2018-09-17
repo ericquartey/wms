@@ -18,9 +18,9 @@ namespace Ferretto.WMS.Modules.Catalog
         private readonly IDataService dataService;
         private readonly IImageService imageService;
         private ICommand hideDetailsCommand;
-        private ICommand saveCommand;
         private ImageSource imgArticle;
         private Item item;
+        private ICommand saveCommand;
 
         #endregion Fields
 
@@ -32,7 +32,6 @@ namespace Ferretto.WMS.Modules.Catalog
 
             this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
             this.dataService = ServiceLocator.Current.GetInstance<IDataService>();
-
         }
 
         #endregion Constructors
@@ -43,9 +42,6 @@ namespace Ferretto.WMS.Modules.Catalog
 
         public ICommand HideDetailsCommand => this.hideDetailsCommand ??
             (this.hideDetailsCommand = new DelegateCommand(ExecuteHideDetailsCommand));
-
-        public ICommand SaveCommand => this.saveCommand ??
-          (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
         public ImageSource ImgArticle
         {
@@ -58,6 +54,13 @@ namespace Ferretto.WMS.Modules.Catalog
             get => this.item;
             set => this.SetProperty(ref this.item, value);
         }
+
+        public IEnumerable<ItemManagementType> ItemManagementTypeChoices => this.dataService.GetData<ItemManagementType>().AsEnumerable();
+
+        public ICommand SaveCommand => this.saveCommand ??
+                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+
+        public IEnumerable<MeasureUnit> UnitOfMeasurementChoices => this.dataService.GetData<MeasureUnit>().AsEnumerable();
 
         #endregion Properties
 
@@ -72,6 +75,9 @@ namespace Ferretto.WMS.Modules.Catalog
         private void ExecuteSaveCommand()
         {
             this.dataService.SaveChanges();
+
+            ServiceLocator.Current.GetInstance<IEventService>()
+                .Invoke(new ItemChangedEvent<Item>(this.Item));
         }
 
         private void Initialize()
@@ -83,23 +89,16 @@ namespace Ferretto.WMS.Modules.Catalog
 
         private void OnItemSelectionChanged(Item selectedItem)
         {
+            this.Item = selectedItem;
+
             if (selectedItem != null)
             {
-                this.Item = selectedItem;
                 this.ImgArticle = selectedItem.Image != null ? this.imageService.GetImage(selectedItem.Image) : null;
             }
             else
             {
                 this.ImgArticle = null;
             }
-        }
-
-        private void SaveItem()
-        {
-            // TODO: call data saving service
-
-            ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ItemChangedEvent<Item>(this.Item));
         }
 
         #endregion Methods

@@ -70,6 +70,69 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string CompartmentCode {
+            get {
+                return ResourceManager.GetString("CompartmentCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string CompartmentLot {
+            get {
+                return ResourceManager.GetString("CompartmentLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pairing.
+        /// </summary>
+        public static string CompartmentPairing {
+            get {
+                return ResourceManager.GetString("CompartmentPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string CompartmentStatus {
+            get {
+                return ResourceManager.GetString("CompartmentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string CompartmentStock {
+            get {
+                return ResourceManager.GetString("CompartmentStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub 1.
+        /// </summary>
+        public static string CompartmentSub1 {
+            get {
+                return ResourceManager.GetString("CompartmentSub1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub 2.
+        /// </summary>
+        public static string CompartmentSub2 {
+            get {
+                return ResourceManager.GetString("CompartmentSub2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average Weight.
         /// </summary>
         public static string ItemAverageWeight {
@@ -160,15 +223,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lot.
-        /// </summary>
-        public static string ItemLot {
-            get {
-                return ResourceManager.GetString("ItemLot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Management Type.
         /// </summary>
         public static string ItemManagementType {
@@ -183,15 +237,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemNotes {
             get {
                 return ResourceManager.GetString("ItemNotes", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pairing.
-        /// </summary>
-        public static string ItemPairing {
-            get {
-                return ResourceManager.GetString("ItemPairing", resourceCulture);
             }
         }
         
@@ -223,47 +268,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status.
-        /// </summary>
-        public static string ItemStatus {
-            get {
-                return ResourceManager.GetString("ItemStatus", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Stock.
-        /// </summary>
-        public static string ItemStock {
-            get {
-                return ResourceManager.GetString("ItemStock", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Store Tolerance.
         /// </summary>
         public static string ItemStoreTolerance {
             get {
                 return ResourceManager.GetString("ItemStoreTolerance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sub 1.
-        /// </summary>
-        public static string ItemSub1 {
-            get {
-                return ResourceManager.GetString("ItemSub1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sub 2.
-        /// </summary>
-        public static string ItemSub2 {
-            get {
-                return ResourceManager.GetString("ItemSub2", resourceCulture);
             }
         }
         
