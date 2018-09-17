@@ -10,7 +10,7 @@ namespace Ferretto.Common.Models
         public string Code { get; set; }
         public string Description { get; set; }
         public string ClassId { get; set; }
-        public int? MeasureUnitId { get; set; }
+        public string MeasureUnitId { get; set; }
         public int? Width { get; set; }
         public int? Length { get; set; }
         public int? Height { get; set; }

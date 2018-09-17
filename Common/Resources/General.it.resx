@@ -117,10 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="open" xml:space="preserve">
+  <data name="Open" xml:space="preserve">
     <value>Apri</value>
   </data>
-  <data name="save" xml:space="preserve">
+  <data name="Revert" xml:space="preserve">
+    <value>Scarta</value>
+  </data>
+  <data name="Save" xml:space="preserve">
     <value>Salva</value>
   </data>
 </root>

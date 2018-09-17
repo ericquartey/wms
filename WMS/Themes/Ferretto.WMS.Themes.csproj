@@ -8016,7 +8016,14 @@
     <Resource Include="Icons\Ferretto\Toolbar\ZoomOut.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Light\ComboBoxEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Light\Common.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Light\GroupBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Light\DXWindow.xaml">

@@ -123,6 +123,9 @@
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Converter can only convert to value of type Visibility.</value>
   </data>
+  <data name="ItemTypeWasNotSpecified" xml:space="preserve">
+    <value>ItemType was not specified</value>
+  </data>
   <data name="ParameterCannotBeNullOrWhitespace" xml:space="preserve">
     <value>The parameter cannot be null or whitespace.</value>
   </data>

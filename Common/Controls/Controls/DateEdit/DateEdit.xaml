@@ -18,6 +18,11 @@
                       MinWidth="100"
                       EditValue="{Binding Path=EditValue, Mode=TwoWay}"
                       Mask="{Binding Path=Mask}"
-                      MaskType="{Binding Path=MaskType}" />
+                      MaskType="{Binding Path=MaskType}"
+                      AllowDefaultButton="False">
+            <dxe:DateEdit.Buttons>
+                <dxe:ButtonInfo IsDefaultButton="True" Template="{DynamicResource DateEditCustomButtonTemplate}" />
+            </dxe:DateEdit.Buttons>
+        </dxe:DateEdit>
     </Grid>
 </UserControl>
