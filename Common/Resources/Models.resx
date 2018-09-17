@@ -121,6 +121,34 @@
     <value>ABC Class</value>
     <comment>ABC Class</comment>
   </data>
+  <data name="CompartmentCode" xml:space="preserve">
+    <value>Code</value>
+    <comment>Compartment - Code</comment>
+  </data>
+  <data name="CompartmentLot" xml:space="preserve">
+    <value>Lot</value>
+    <comment>Compartment - Lot</comment>
+  </data>
+  <data name="CompartmentPairing" xml:space="preserve">
+    <value>Pairing</value>
+    <comment>Compartment - Pairing</comment>
+  </data>
+  <data name="CompartmentStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>Compartment - Status</comment>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Stock</value>
+    <comment>Compartment - Stock</comment>
+  </data>
+  <data name="CompartmentSub1" xml:space="preserve">
+    <value>Sub 1</value>
+    <comment>Compartment - Sub 1</comment>
+  </data>
+  <data name="CompartmentSub2" xml:space="preserve">
+    <value>Sub 2</value>
+    <comment>Compartment - Sub 2</comment>
+  </data>
   <data name="ItemAverageWeight" xml:space="preserve">
     <value>Average Weight</value>
     <comment>Item - Average Weight</comment>
@@ -161,10 +189,6 @@
     <value>Length</value>
     <comment>Item - Length</comment>
   </data>
-  <data name="ItemLot" xml:space="preserve">
-    <value>Lot</value>
-    <comment>Item - Lot</comment>
-  </data>
   <data name="ItemManagementType" xml:space="preserve">
     <value>Management Type</value>
     <comment>Item - Management Type</comment>
@@ -172,10 +196,6 @@
   <data name="ItemNotes" xml:space="preserve">
     <value>Notes</value>
     <comment>Item - Notes</comment>
-  </data>
-  <data name="ItemPairing" xml:space="preserve">
-    <value>Pairing</value>
-    <comment>Item - Pairing</comment>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
     <value>Pick Tolerance</value>
@@ -189,25 +209,9 @@
     <value>Reorder Quantity</value>
     <comment>Item - Reorder Quantity</comment>
   </data>
-  <data name="ItemStatus" xml:space="preserve">
-    <value>Status</value>
-    <comment>Item - Status</comment>
-  </data>
-  <data name="ItemStock" xml:space="preserve">
-    <value>Stock</value>
-    <comment>Item - Stock</comment>
-  </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
     <value>Store Tolerance</value>
     <comment>Item - Store Tolerance</comment>
-  </data>
-  <data name="ItemSub1" xml:space="preserve">
-    <value>Sub 1</value>
-    <comment>Item - Sub 1</comment>
-  </data>
-  <data name="ItemSub2" xml:space="preserve">
-    <value>Sub 2</value>
-    <comment>Item - Sub 2</comment>
   </data>
   <data name="ItemWidth" xml:space="preserve">
     <value>Width</value>
