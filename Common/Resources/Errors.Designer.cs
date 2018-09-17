@@ -79,6 +79,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ItemType was not specified.
+        /// </summary>
+        public static string ItemTypeWasNotSpecified {
+            get {
+                return ResourceManager.GetString("ItemTypeWasNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter cannot be null or whitespace..
         /// </summary>
         public static string ParameterCannotBeNullOrWhitespace {
