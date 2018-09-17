@@ -25,9 +25,9 @@ namespace Ferretto.Common.Controls
             nameof(CurrentDataSource),
             typeof(object),
             typeof(WmsGridControl),
-            new PropertyMetadata(CurrentFilterChanged));
+            new PropertyMetadata(CurrentDataSourceChanged));
 
-        private static void CurrentFilterChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             if (dependencyObject is WmsGridControl gridControl)
             {                
