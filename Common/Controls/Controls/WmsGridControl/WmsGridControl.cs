@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
@@ -16,25 +15,25 @@ namespace Ferretto.Common.Controls
 
         #region Dependency properties  
 
-        public IFilter CurrentFilter
+        public object CurrentDataSource
         {
-            get => (IFilter)this.GetValue(CurrentFilterProperty);
-            set => this.SetValue(CurrentFilterProperty, value);
+            get => (object)this.GetValue(CurrentDataSourcesProperty);
+            set => this.SetValue(CurrentDataSourcesProperty, value);
         }
 
-        public static readonly DependencyProperty CurrentFilterProperty = DependencyProperty.Register(
-            nameof(CurrentFilter),
-            typeof(IFilter),
+        public static readonly DependencyProperty CurrentDataSourcesProperty = DependencyProperty.Register(
+            nameof(CurrentDataSource),
+            typeof(object),
             typeof(WmsGridControl),
             new PropertyMetadata(CurrentFilterChanged));
 
         private static void CurrentFilterChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
             if (dependencyObject is WmsGridControl gridControl)
-            {
+            {                
                 if (gridControl.DataContext is IWmsGridViewModel dataContext)
                 {
-                    dataContext.CurrentFilter = e.NewValue as IFilter;
+                    dataContext.SetDataSource(e.NewValue);
                 }
             }
         }

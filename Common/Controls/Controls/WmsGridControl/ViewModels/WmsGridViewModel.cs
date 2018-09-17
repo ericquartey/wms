@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
         private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
         private readonly BindingList<TEntity> items = new BindingList<TEntity>();
         private TEntity selectedItem;
-        private IFilter currentFilter;
+        private IDataSource<TEntity> currentDataSources;
 
         #endregion Fields
 
@@ -25,7 +25,6 @@ namespace Ferretto.Common.Controls
             this.dataService = ServiceLocator.Current.GetInstance<IDataService>();
             ServiceLocator.Current.GetInstance<IEventService>()
                           .Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
-            this.RefreshGrid();
         }
 
         #endregion Constructors
@@ -45,18 +44,18 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
-
-        public IFilter CurrentFilter
+        
+        public IDataSource<TEntity> CurrentDataSource
         {
-            get => this.currentFilter;
+            get => this.currentDataSources;
             set
             {
-                if (this.SetProperty(ref this.currentFilter, value))
+                if (this.SetProperty(ref this.currentDataSources, value))
                 {
                     this.NotifyFilterChanged();
                 }
             }
-        }
+        }        
 
         #endregion Properties
 
@@ -64,8 +63,13 @@ namespace Ferretto.Common.Controls
 
         public void RefreshGrid()
         {
-            this.Items.RaiseListChangedEvents = false;            
-            var elements = this.dataService.GetData<TEntity>();
+            if (this.CurrentDataSource == null)
+            {
+                return;
+            }
+
+            this.Items.RaiseListChangedEvents = false;
+            var elements = this.CurrentDataSource.Load();
 
             this.items.Clear();
             foreach (var item in elements)
@@ -83,9 +87,13 @@ namespace Ferretto.Common.Controls
         }
 
         protected void NotifyFilterChanged()
-        {
-            this.Items.Clear();
+        {            
             this.RefreshGrid();
+        }
+
+        public void SetDataSource(object dataSource)
+        {
+            this.CurrentDataSource = dataSource as IDataSource<TEntity>;
         }
 
         #endregion Methods

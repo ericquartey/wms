@@ -1,15 +1,12 @@
 ﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.Catalog.ItemsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:catalog="clr-namespace:Ferretto.WMS.Modules.Catalog"
-             xmlns:cmd="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
-             xmlns:type="clr-namespace:Ferretto.Common.Models;assembly=Ferretto.Common.Models"             
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:type="clr-namespace:Ferretto.Common.Models;assembly=Ferretto.Common.Models"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              MinHeight="300"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -27,7 +24,10 @@
                       ExpandDirection="Left"
                       IsExpanded="True">
                 <StackPanel Orientation="Horizontal">
-                    <wms:FilterBar Filters="{Binding Filters}" />
+
+                    <wms:FilterBar Filters="{Binding Filters}"
+                                   SelectedDataSource="{Binding CurrentDataSource, Mode=OneWayToSource}"
+                                    />
                 </StackPanel>
             </Expander>
         </StackPanel>
@@ -51,7 +51,9 @@
             </wms:ActionBar>
 
             <wms:WmsGridControl x:Name="MainGridControl"
-                                ItemType="{x:Type type:Item}"
+                                ItemType="{x:Type type:Item}"                                
+                                CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}},
+                                                            Path=DataContext.CurrentDataSource, Mode=OneWay}"
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
@@ -12,7 +13,8 @@ namespace Ferretto.WMS.Modules.Catalog
     {
         #region Fields
 
-        private readonly IFilterService filterService;
+        private readonly IDataSourceService filterService;
+        public IDataSource<Common.Models.Item> currentDataSource;
 
         private ICommand viewDetailsCommand;
 
@@ -22,17 +24,23 @@ namespace Ferretto.WMS.Modules.Catalog
 
         public ItemsViewModel()
         {
-            this.filterService = ServiceLocator.Current.GetInstance<IFilterService>();
+            this.filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();            
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IEnumerable<IFilter> Filters => this.filterService.GetByViewName("ItemsView");
+        public IEnumerable<IDataSource<Common.Models.Item>> Filters => this.filterService.GetAll() as IEnumerable<IDataSource<Common.Models.Item>>;
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
             (this.viewDetailsCommand = new DelegateCommand(ExecuteViewDetailsCommand));
+        
+        public IDataSource<Common.Models.Item> CurrentDataSource
+        {
+            get => this.currentDataSource;
+            set => this.SetProperty(ref this.currentDataSource, value);
+        }
 
         #endregion Properties
 
