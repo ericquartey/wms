@@ -13,16 +13,15 @@ namespace Ferretto.Common.Controls
 
         private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
         private readonly BindingList<TEntity> items = new BindingList<TEntity>();
-        private TEntity selectedItem;
         private IFilter currentFilter;
+        private TEntity selectedItem;
 
         #endregion Fields
 
         #region Constructors
 
         public WmsGridViewModel()
-        {            
-            this.dataService = ServiceLocator.Current.GetInstance<IDataService>();
+        {
             ServiceLocator.Current.GetInstance<IEventService>()
                           .Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
             this.RefreshGrid();
@@ -31,20 +30,6 @@ namespace Ferretto.Common.Controls
         #endregion Constructors
 
         #region Properties
-
-        public BindingList<TEntity> Items => this.items;        
-
-        public TEntity SelectedItem
-        {
-            get => this.selectedItem;
-            set
-            {
-                if (this.SetProperty(ref this.selectedItem, value))
-                {
-                    this.NotifySelectionChanged();
-                }
-            }
-        }
 
         public IFilter CurrentFilter
         {
@@ -58,13 +43,27 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public BindingList<TEntity> Items => this.items;
+
+        public TEntity SelectedItem
+        {
+            get => this.selectedItem;
+            set
+            {
+                if (this.SetProperty(ref this.selectedItem, value))
+                {
+                    this.NotifySelectionChanged();
+                }
+            }
+        }
+
         #endregion Properties
 
         #region Methods
 
         public void RefreshGrid()
         {
-            this.Items.RaiseListChangedEvents = false;            
+            this.Items.RaiseListChangedEvents = false;
             var elements = this.dataService.GetData<TEntity>();
 
             this.items.Clear();
@@ -77,15 +76,15 @@ namespace Ferretto.Common.Controls
             this.Items.ResetBindings();
         }
 
-        protected void NotifySelectionChanged()
-        {
-            // TODO ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ItemSelectionChangedEvent<TModel>(this.selectedItem));
-        }
-
         protected void NotifyFilterChanged()
         {
-            this.Items.Clear();
             this.RefreshGrid();
+        }
+
+        protected void NotifySelectionChanged()
+        {
+            ServiceLocator.Current.GetInstance<IEventService>()
+                .Invoke(new ItemSelectionChangedEvent<TEntity>(this.selectedItem));
         }
 
         #endregion Methods

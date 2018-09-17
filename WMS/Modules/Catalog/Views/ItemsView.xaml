@@ -81,7 +81,7 @@
                                     FieldName="Description"
                                     Header="{x:Static res:General.Description}" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Class"
+                                    FieldName="AbcClass.Description"
                                     Header="Classe di appartenenza" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="_TotalQty"
