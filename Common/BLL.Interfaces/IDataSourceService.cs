@@ -2,11 +2,11 @@
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IFilterService
+    public interface IDataSourceService
     {
         #region Methods
 
-        IEnumerable<IFilter> GetByViewName(string viewName);
+        IEnumerable<object> GetAll();
 
         #endregion Methods
     }
