@@ -231,7 +231,7 @@
                                         FieldName="Lot"
                                         Header="{x:Static res:Models.CompartmentLot}" />
                         <dxg:GridColumn Width="200*"
-                                        Header="{x:Static res:Models.CompartmentStatus}" />
+                                        Header="{x:Static res:Models.CompartmentStatus}"
                                         FieldName="CompartmentStatus.Description" />
                         <dxg:GridColumn Width="200*"
                                         FieldName="Stock"
