@@ -195,6 +195,10 @@
     <Compile Include="Controls\FilterBar\FilterBar.xaml.cs">
       <DependentUpon>FilterBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Image\Image.xaml.cs">
+      <DependentUpon>Image.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Image\ViewModels\ImageViewModel.cs" />
     <Compile Include="Controls\InfoText\InfoText.xaml.cs">
       <DependentUpon>InfoText.xaml</DependentUpon>
     </Compile>
@@ -244,6 +248,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\FilterBar\FilterBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Image\Image.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\InfoText\InfoText.xaml">

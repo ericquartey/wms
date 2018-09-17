@@ -249,12 +249,12 @@
                           MaxWidth="500">
                     <StackPanel HorizontalAlignment="Center"
                                 Orientation="Vertical">
-                        <dxe:ImageEdit MinWidth="200"
-                                       MinHeight="200"
-                                       MaxWidth="500"
-                                       MaxHeight="500"
-                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                       Source="{Binding ImgArticle}" />
+                        <wms:Image MinWidth="200"
+                                   MinHeight="200"
+                                   MaxWidth="500"
+                                   MaxHeight="500"
+                                   BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                   Path="{Binding Path=Item.Image}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:General.CreationDate}"
