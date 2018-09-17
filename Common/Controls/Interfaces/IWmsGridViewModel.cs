@@ -2,9 +2,9 @@ using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.Controls.Interfaces
 {
-    public interface IWmsGridViewModel
+    public interface IWmsGridViewModel 
     {
-        IFilter CurrentFilter { get; set; }
+        void SetDataSource(object source);
 
         void RefreshGrid();
     }
