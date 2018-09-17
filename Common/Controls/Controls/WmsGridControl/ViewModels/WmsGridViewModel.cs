@@ -52,7 +52,7 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.currentDataSources, value))
                 {
-                    this.NotifyFilterChanged();
+                    this.NotifyDataSourceChanged();
                 }
             }
         }        
@@ -86,7 +86,7 @@ namespace Ferretto.Common.Controls
             // TODO ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ItemSelectionChangedEvent<TModel>(this.selectedItem));
         }
 
-        protected void NotifyFilterChanged()
+        protected void NotifyDataSourceChanged()
         {            
             this.RefreshGrid();
         }
