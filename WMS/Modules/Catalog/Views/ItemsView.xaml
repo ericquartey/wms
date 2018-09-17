@@ -5,7 +5,7 @@
              xmlns:cmd="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"             
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
@@ -30,8 +30,7 @@
                 <StackPanel Orientation="Horizontal">
 
                     <wms:FilterBar Filters="{Binding Filters}"
-                                   SelectedDataSource="{Binding CurrentDataSource, Mode=OneWayToSource}"
-                                    />
+                                   SelectedDataSource="{Binding CurrentDataSource, Mode=OneWayToSource}" />
                 </StackPanel>
             </Expander>
         </StackPanel>
@@ -55,12 +54,11 @@
             </wms:ActionBar>
 
             <wms:WmsGridControl x:Name="MainGridControl"
-                                ItemType="{x:Type type:Item}"                                
-                                CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}},
-                                                            Path=DataContext.CurrentDataSource, Mode=OneWay}"
                                 MaxWidth="2000"
                                 MaxHeight="5000"
-                                Margin="3"                                
+                                Margin="3"
+                                CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentDataSource, Mode=OneWay}"
+                                ItemType="{x:Type type:Item}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>

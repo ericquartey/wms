@@ -11,10 +11,10 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
+        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly BindingList<TEntity> items = new BindingList<TEntity>();
+        private IDataSource<TEntity> currentDataSource;
         private TEntity selectedItem;
-        private IDataSource<TEntity> currentDataSources;
 
         #endregion Fields
 
@@ -22,15 +22,26 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            ServiceLocator.Current.GetInstance<IEventService>()
-                          .Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
+            this.eventService.Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public BindingList<TEntity> Items => this.items;        
+        public IDataSource<TEntity> CurrentDataSource
+        {
+            get => this.currentDataSource;
+            set
+            {
+                if (this.SetProperty(ref this.currentDataSource, value))
+                {
+                    this.NotifyDataSourceChanged();
+                }
+            }
+        }
+
+        public BindingList<TEntity> Items => this.items;
 
         public TEntity SelectedItem
         {
@@ -43,18 +54,6 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
-        
-        public IDataSource<TEntity> CurrentDataSource
-        {
-            get => this.currentDataSources;
-            set
-            {
-                if (this.SetProperty(ref this.currentDataSources, value))
-                {
-                    this.NotifyDataSourceChanged();
-                }
-            }
-        }        
 
         #endregion Properties
 
@@ -80,9 +79,9 @@ namespace Ferretto.Common.Controls
             this.Items.ResetBindings();
         }
 
-        protected void NotifySelectionChanged()
+        public void SetDataSource(object dataSource)
         {
-            // TODO ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ItemSelectionChangedEvent<TModel>(this.selectedItem));
+            this.CurrentDataSource = dataSource as IDataSource<TEntity>;
         }
 
         protected void NotifyDataSourceChanged()
@@ -92,13 +91,7 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ItemSelectionChangedEvent<TEntity>(this.selectedItem));
-        }
-
-        public void SetDataSource(object dataSource)
-        {
-            this.CurrentDataSource = dataSource as IDataSource<TEntity>;
+            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity>(this.selectedItem));
         }
 
         #endregion Methods
