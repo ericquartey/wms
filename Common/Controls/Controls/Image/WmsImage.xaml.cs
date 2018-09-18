@@ -3,22 +3,22 @@ using System.Windows.Controls;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class Image : UserControl
+    public partial class WmsImage : UserControl
     {
         #region Fields
 
         public static readonly DependencyProperty PathProperty = DependencyProperty.Register(
-         nameof(Path), typeof(string), typeof(Image), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
+         nameof(Path), typeof(string), typeof(WmsImage), new PropertyMetadata(default(string), new PropertyChangedCallback(OnPathChanged)));
 
         #endregion Fields
 
         #region Constructors
 
-        public Image()
+        public WmsImage()
         {
             this.InitializeComponent();
 
-            this.DataContext = new ImageViewModel();
+            this.InnerImage.DataContext = new ImageViewModel();
         }
 
         #endregion Constructors
@@ -37,15 +37,9 @@ namespace Ferretto.Common.Controls
 
         private static void OnPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is Image image
-                &&
-                image.DataContext is ImageViewModel viewModel
-                &&
-                e.NewValue is string imagePath
-                &&
-                string.IsNullOrWhiteSpace(imagePath) == false)
+            if (d is WmsImage wmsImage && wmsImage.InnerImage.DataContext is ImageViewModel viewModel)
             {
-                viewModel.RetrieveImage(imagePath);
+                viewModel.RetrieveImage((string)e.NewValue);
             }
         }
 

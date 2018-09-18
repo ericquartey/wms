@@ -10,7 +10,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private readonly IImageService imageService;
-        private ImageSource imageSource;
+        private ImageSource source;
 
         #endregion Fields
 
@@ -27,8 +27,8 @@ namespace Ferretto.Common.Controls
 
         public ImageSource Source
         {
-            get => this.imageSource;
-            set => this.SetProperty(ref this.imageSource, value);
+            get => this.source;
+            set => this.SetProperty(ref this.source, value);
         }
 
         #endregion Properties
@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls
 
         public void RetrieveImage(string imagePath)
         {
-            this.imageSource = this.imageService.GetImage(imagePath);
+            this.Source = string.IsNullOrWhiteSpace(imagePath) ? null : this.imageService.GetImage(imagePath);
         }
 
         #endregion Methods

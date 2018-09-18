@@ -70,6 +70,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string ItemAll {
+            get {
+                return ResourceManager.GetString("ItemAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class A.
+        /// </summary>
+        public static string ItemClassA {
+            get {
+                return ResourceManager.GetString("ItemClassA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to FIFO.
+        /// </summary>
+        public static string ItemFIFO {
+            get {
+                return ResourceManager.GetString("ItemFIFO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Information.
         /// </summary>
         public static string ItemInformation {

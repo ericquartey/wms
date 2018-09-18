@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Models;
-using System;
+using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
@@ -12,43 +12,52 @@ namespace Ferretto.Common.Modules.BLL.Services
     public enum DataSourceType
     {
         ItemAll,
-        ItemCode,        
-        ItemDscription,
+        ItemAClass,
+        ItemFifo
     }
 
     public class DataSourceService : IDataSourceService
     {
+        #region Fields
+
         private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
+
+        #endregion Fields
 
         #region Methods
 
         public IEnumerable<object> GetAll()
-        {            
-            var dataSources = new List<DataSource<Item>>();
-
-            // Item All            
-            Func<IQueryable<Item>, IQueryable<Item>> fFilter = (items) => items.Where(i => i.Code.Contains("code")).AsQueryable();
-            Func<Func<IQueryable<Item>, IQueryable<Item>>, IQueryable<Item>> fDataItems = (filter) => this.dataService.GetData<Item>(filter);
-            Func<Func<IQueryable<Item>, IQueryable<Item>>, int> fCount = (filter) => this.dataService.GetData<Item>(filter).Count();
-            var dsItems = new DataSource<Item>() { SourceName = DataSourceType.ItemAll, Name = "All", Filter = fFilter, GetCount = fCount,  GetData = fDataItems };
-            dataSources.Add(dsItems);
-
-            // Item Code contain 7
-            fFilter = (items) => items.Where(i => i.Code.Contains("7")).AsQueryable();
-            dsItems = new DataSource<Item>() { SourceName = DataSourceType.ItemCode, Name = "Code contain 7", Filter = fFilter, GetCount = fCount, GetData = fDataItems };
-            dataSources.Add(dsItems);
-
-            // Item Description contain n_1
-            fFilter = (items) => items.Where(i => i.Description.Contains("n_1")).AsQueryable();
-            dsItems = new DataSource<Item>() { SourceName = DataSourceType.ItemDscription, Name = "Description", Filter = fFilter, GetCount = fCount, GetData = fDataItems };
-            dataSources.Add(dsItems);
-
-            // Item Code contain Code_72
-            fFilter = (items) => items.Where(i => i.Code.Contains("Code_72")).AsQueryable();
-            dsItems = new DataSource<Item>() { SourceName = DataSourceType.ItemCode, Name = "Code_72", Filter = fFilter, GetCount = fCount, GetData = fDataItems };
-            dataSources.Add(dsItems);
-
-            return dataSources as IEnumerable<object>;
+        {
+            return new List<DataSource<Item>>
+            {
+                // All items
+                new DataSource<Item>
+                {
+                    SourceName = DataSourceType.ItemAll,
+                    Name = Catalog.ItemAll,
+                    Filter = items => items,
+                    GetCount = filter => this.dataService.GetData(filter).Count(),
+                    GetData = filter => this.dataService.GetData(filter)
+                },
+                // A-Class items
+                new DataSource<Item>
+                {
+                    SourceName = DataSourceType.ItemAClass,
+                    Name = Catalog.ItemClassA,
+                    Filter = items => items.Where(item => item.AbcClass.Id == "A"),
+                    GetCount = filter => this.dataService.GetData(filter).Count(),
+                    GetData = filter => this.dataService.GetData(filter)
+                },
+                // FIFO items
+                new DataSource<Item>
+                {
+                    SourceName = DataSourceType.ItemFifo,
+                    Name = Catalog.ItemFIFO,
+                    Filter = items => items.Where(item => item.ItemManagementType.Description.Contains("FIFO")),
+                    GetCount = filter => this.dataService.GetData(filter).Count(),
+                    GetData = filter => this.dataService.GetData(filter)
+                }
+            };
         }
 
         #endregion Methods

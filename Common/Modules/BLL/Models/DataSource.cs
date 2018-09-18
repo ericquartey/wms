@@ -2,7 +2,6 @@
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Modules.BLL.Services;
-using Microsoft.Practices.ServiceLocation;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
@@ -10,27 +9,27 @@ namespace Ferretto.Common.Modules.BLL.Models
     public class DataSource<TEntity> : BindableBase, IDataSource<TEntity> where TEntity : class
     {
         #region Fields
+
         private string countInfo;
         private bool isVisible;
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
 
-        #endregion
+        #endregion Fields
 
         #region Properties
 
         public int Count { get; set; }
-        public string Description { get; set; }
-        public string Name { get; set; }
-        public DataSourceType SourceName { get; set; }
-        public Func<IQueryable<TEntity>, IQueryable<TEntity>> Filter { get; set; }
-        public Func<Func<IQueryable<TEntity>, IQueryable<TEntity>>, IQueryable<TEntity>> GetData { get; set; }
-        public Func<Func<IQueryable<TEntity>, IQueryable<TEntity>>, int> GetCount { get; set; }
 
         public string CountInfo
         {
             get => this.countInfo;
             set => this.SetProperty(ref this.countInfo, value);
         }
+
+        public string Description { get; set; }
+        public Func<IQueryable<TEntity>, IQueryable<TEntity>> Filter { get; set; }
+        public Func<Func<IQueryable<TEntity>, IQueryable<TEntity>>, int> GetCount { get; set; }
+        public Func<Func<IQueryable<TEntity>, IQueryable<TEntity>>, IQueryable<TEntity>> GetData { get; set; }
+
         public bool IsVisible
         {
             get => this.isVisible;
@@ -43,9 +42,13 @@ namespace Ferretto.Common.Modules.BLL.Models
                 }
             }
         }
+
+        public string Name { get; set; }
+        public DataSourceType SourceName { get; set; }
+
         #endregion Properties
 
-        #region Method
+        #region Methods
 
         public void GetTotalCount()
         {
@@ -67,6 +70,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             return this.GetData(this.Filter);
         }
 
-        #endregion
+        #endregion Methods
     }
 }
