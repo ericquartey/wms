@@ -149,4 +149,8 @@
     <value>FIFO</value>
     <comment>Filter - Items with FIFO policy</comment>
   </data>
+  <data name="ItemsCatalog" xml:space="preserve">
+    <value>Items Catalog</value>
+    <comment>Label - Page Title</comment>
+  </data>
 </root>

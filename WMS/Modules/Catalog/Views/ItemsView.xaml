@@ -40,16 +40,16 @@
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
                 <wms:ActionBarItem Content="{x:Static res:General.Add}"
-                                   CustomGlyphSize="18,18"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_black_18dp.png"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:Catalog.Withdraw}"
-                                   CustomGlyphSize="18,18"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_play_for_work_black_18dp.png"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
-                                   CustomGlyphSize="18,18"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_18dp.png"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
