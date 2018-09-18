@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Windows;
 using DevExpress.Xpf.Navigation;
 
@@ -18,6 +18,13 @@ namespace Ferretto.Common.Controls
         public FilterBar()
         {
             this.InitializeComponent();
+
+            this.Loaded += this.OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.filterBar.SelectedIndex = 0;
         }
 
         #endregion Constructors
