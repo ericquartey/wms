@@ -3,18 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
-             xmlns:local="clr-namespace:Ferretto.Common.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wms="clr-namespace:Ferretto.Common.Controls"
              d:DesignHeight="80"
              d:DesignWidth="300"
              mc:Ignorable="d">
     <Grid x:Name="GridTextBox">
+
+        <Grid.Resources>
+            <wms:BoolToTextWrappingConverter x:Key="BTTWC" />
+        </Grid.Resources>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <Label Content="{Binding Path=Label}" />
         <TextBox Grid.Row="1"
-                 Text="{Binding Path=Text, Mode=TwoWay}" />
+                 AcceptsReturn="{Binding Path=IsMultiline}"
+                 Style="{DynamicResource TextBoxStyleHover}"
+                 Text="{Binding Path=Text, Mode=TwoWay}"
+                 TextWrapping="{Binding Path=IsMultiline, Converter={StaticResource BTTWC}}" />
     </Grid>
 </UserControl>
