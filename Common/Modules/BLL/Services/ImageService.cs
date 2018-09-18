@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces;
@@ -11,14 +12,14 @@ namespace Ferretto.Common.Modules.BLL.Services
         #region Fields
 
         // TODO make the images directory configurable (https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/139)
-        private const string imagesDirectoryName = "images\\";
+        private const string defaultImagesDirectoryName = "images\\";
 
         #endregion Fields
 
         #region Properties
 
         private static Uri ImageDirectoryUri =>
-            new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, imagesDirectoryName));
+            new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, ConfigurationManager.AppSettings["ImagesPath"] ?? defaultImagesDirectoryName));
 
         #endregion Properties
 
@@ -28,7 +29,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             if (String.IsNullOrWhiteSpace(pathName))
             {
-                throw new ArgumentException(Errors.ParameterCannotBeNullOrWhitespace, nameof(pathName));
+                return null;
             }
 
             var uri = new Uri(ImageDirectoryUri, pathName);

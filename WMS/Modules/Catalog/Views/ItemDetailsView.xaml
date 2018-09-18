@@ -210,10 +210,9 @@
                                            AllowGrouping="False"
                                            AllowMoveColumnToDropArea="False"
                                            NavigationStyle="Row"
-                                           SearchPanelHorizontalAlignment="Right"
                                            ShowGroupPanel="False"
                                            ShowIndicator="False"
-                                           ShowSearchPanelMode="Always" />
+                                           ShowSearchPanelMode="Never" />
                         </wms:WmsGridControl.View>
                         <dxg:GridColumn Width="100*"
                                         FieldName="Code"
@@ -231,8 +230,8 @@
                                         FieldName="Lot"
                                         Header="{x:Static res:Models.CompartmentLot}" />
                         <dxg:GridColumn Width="200*"
-                                        Header="{x:Static res:Models.CompartmentStatus}"
-                                        FieldName="CompartmentStatus.Description" />
+                                        FieldName="CompartmentStatus.Description"
+                                        Header="{x:Static res:Models.CompartmentStatus}" />
                         <dxg:GridColumn Width="200*"
                                         FieldName="Stock"
                                         Header="{x:Static res:Models.CompartmentStock}" />
@@ -249,32 +248,32 @@
                           MaxWidth="500">
                     <StackPanel HorizontalAlignment="Center"
                                 Orientation="Vertical">
-                        <dxe:ImageEdit MinWidth="200"
-                                       MinHeight="200"
-                                       MaxWidth="500"
-                                       MaxHeight="500"
-                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                       Source="{Binding ImgArticle}" />
+                        <wms:WmsImage MinWidth="200"
+                                      MinHeight="200"
+                                      MaxWidth="500"
+                                      MaxHeight="500"
+                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                      Path="{Binding Path=Item.Image}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:General.CreationDate}"
-                                      Text="{Binding Path=Item.CreationDate, Mode=TwoWay}" />
+                                      Text="{Binding Path=Item.CreationDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:General.LastModificationDate}"
-                                      Text="{Binding Path=Item.LastModificationDate, Mode=TwoWay}" />
+                                      Text="{Binding Path=Item.LastModificationDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastInventoryDate}"
-                                      Text="{Binding Path=Item.InventoryDate, Mode=TwoWay}" />
+                                      Text="{Binding Path=Item.InventoryDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastPickDate}"
-                                      Text="{Binding Path=Item.LastPickDate, Mode=TwoWay}" />
+                                      Text="{Binding Path=Item.LastPickDate}" />
                         <wms:InfoText Margin="20,3,0,0"
                                       HorizontalAlignment="Left"
                                       Label="{x:Static res:Models.ItemLastStoreDate}"
-                                      Text="{Binding Path=Item.LastStoreDate, Mode=TwoWay}" />
+                                      Text="{Binding Path=Item.LastStoreDate}" />
                     </StackPanel>
                 </GroupBox>
             </Grid>
