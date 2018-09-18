@@ -19,7 +19,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         #region Properties
 
         private static Uri ImageDirectoryUri =>
-            new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, ConfigurationManager.AppSettings["imagesPath"] ?? defaultImagesDirectoryName));
+            new Uri(System.IO.Path.Combine(Environment.CurrentDirectory, ConfigurationManager.AppSettings["ImagesPath"] ?? defaultImagesDirectoryName));
 
         #endregion Properties
 
