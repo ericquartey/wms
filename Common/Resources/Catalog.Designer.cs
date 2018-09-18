@@ -106,6 +106,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Items Catalog.
+        /// </summary>
+        public static string ItemsCatalog {
+            get {
+                return ResourceManager.GetString("ItemsCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Physical Information.
         /// </summary>
         public static string PhysicalInformation {
