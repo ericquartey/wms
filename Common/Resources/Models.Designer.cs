@@ -133,11 +133,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string ItemAvailable {
+            get {
+                return ResourceManager.GetString("ItemAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average Weight.
         /// </summary>
         public static string ItemAverageWeight {
             get {
                 return ResourceManager.GetString("ItemAverageWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string ItemClass {
+            get {
+                return ResourceManager.GetString("ItemClass", resourceCulture);
             }
         }
         
@@ -250,7 +268,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ReorderPoint.
+        ///   Looks up a localized string similar to Reorder Point.
         /// </summary>
         public static string ItemReorderPoint {
             get {
@@ -264,6 +282,33 @@ namespace Ferretto.Common.Resources {
         public static string ItemReorderQuantity {
             get {
                 return ResourceManager.GetString("ItemReorderQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reserved for Pick.
+        /// </summary>
+        public static string ItemReservedForPick {
+            get {
+                return ResourceManager.GetString("ItemReservedForPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reserved to Store.
+        /// </summary>
+        public static string ItemReservedToStore {
+            get {
+                return ResourceManager.GetString("ItemReservedToStore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string ItemStock {
+            get {
+                return ResourceManager.GetString("ItemStock", resourceCulture);
             }
         }
         
