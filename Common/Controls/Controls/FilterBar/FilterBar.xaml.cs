@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using DevExpress.Xpf.Navigation;
 
@@ -53,7 +53,7 @@ namespace Ferretto.Common.Controls
         protected override void OnSelectedItemChanged(System.Object oldValue, System.Object newValue)
         {
             base.OnSelectedItemChanged(oldValue, newValue);
-            this.SelectedDataSource = newValue;            
+            this.SelectedDataSource = newValue;
         }
 
         #endregion
