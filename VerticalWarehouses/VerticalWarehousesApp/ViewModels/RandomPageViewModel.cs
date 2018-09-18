@@ -8,7 +8,7 @@ using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.VerticalWarehousesApp.ViewModels
 {
-    class TestConnectionPageViewModel : IViewViewModel
+    class RandomPageViewModel : IViewViewModel
     {
     }
 }
