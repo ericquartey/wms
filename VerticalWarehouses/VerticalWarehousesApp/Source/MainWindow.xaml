@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Ferretto.VW.VerticalWarehousesApp.Views"
+        xmlns:local="clr-namespace:Ferretto.VW.VerticalWarehousesApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="768" Width="1024" Background="Gray">
     <DockPanel>
@@ -26,7 +26,7 @@
                     <Button Background="Transparent" Foreground="White" FontSize="30" BorderThickness="0">OFF</Button>
                 </Border>
                 <Border BorderBrush="White" BorderThickness="1" Margin="2" Width="390">
-                    <Image Source="C:\Users\npadovani\source\repos\WarehouseManagement\VerticalWarehouses\VerticalWarehousesApp\Assets\Images\ferrettologo_768x162.jpg"
+                    <Image Source="C:\Users\npadovani\Desktop\FERRETTO\Produzione\VerticalWarehouse\Warehouse Management System\VerticalWarehouses\VerticalWarehousesApp\Assets\ferrettologo_768x162.jpg"
                            Stretch="Fill"></Image>
                 </Border>
             </StackPanel>
