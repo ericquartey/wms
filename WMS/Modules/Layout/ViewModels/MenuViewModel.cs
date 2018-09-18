@@ -1,9 +1,9 @@
 ﻿using System.Collections.ObjectModel;
-using System.Windows.Input;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils.Menu;
-using Prism.Commands;
+using Ferretto.Common.Utils.Modules;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.Layout
 {
@@ -22,6 +22,9 @@ namespace Ferretto.WMS.Modules.Layout
             {
                 this.Items.Add(new NavMenuItem(item, string.Empty));
             }
+
+            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+            navigationService.Appear(nameof(Catalog), Catalog.ITEMSANDDETAILS);
         }
 
         public ObservableCollection<NavMenuItem> Items { get; set; }
