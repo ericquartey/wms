@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
         public ItemsViewModel()
         {
-            this.filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();            
+            this.filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         }
 
         #endregion Constructors
@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
             (this.viewDetailsCommand = new DelegateCommand(ExecuteViewDetailsCommand));
-        
+
         public IDataSource<Common.Models.Item> CurrentDataSource
         {
             get => this.currentDataSource;

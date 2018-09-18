@@ -149,9 +149,17 @@
     <value>Sub 2</value>
     <comment>Compartment - Sub 2</comment>
   </data>
+  <data name="ItemAvailable" xml:space="preserve">
+    <value>Available</value>
+    <comment>Item - Available (calculated)</comment>
+  </data>
   <data name="ItemAverageWeight" xml:space="preserve">
     <value>Average Weight</value>
     <comment>Item - Average Weight</comment>
+  </data>
+  <data name="ItemClass" xml:space="preserve">
+    <value>Class</value>
+    <comment>Item - Class</comment>
   </data>
   <data name="ItemCode" xml:space="preserve">
     <value>Code</value>
@@ -202,12 +210,24 @@
     <comment>Item - Pick Tolerance</comment>
   </data>
   <data name="ItemReorderPoint" xml:space="preserve">
-    <value>ReorderPoint</value>
-    <comment>Item - ReorderPoint</comment>
+    <value>Reorder Point</value>
+    <comment>Item - Reorder Point</comment>
   </data>
   <data name="ItemReorderQuantity" xml:space="preserve">
     <value>Reorder Quantity</value>
     <comment>Item - Reorder Quantity</comment>
+  </data>
+  <data name="ItemReservedForPick" xml:space="preserve">
+    <value>Reserved for Pick</value>
+    <comment>Item - Reserved for Pick (calculated)</comment>
+  </data>
+  <data name="ItemReservedToStore" xml:space="preserve">
+    <value>Reserved to Store</value>
+    <comment>Item - Reserved to Store (calculated)</comment>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Stock</value>
+    <comment>Item - Stock (calculated)</comment>
   </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
     <value>Store Tolerance</value>

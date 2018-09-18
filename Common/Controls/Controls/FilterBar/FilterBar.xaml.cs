@@ -18,6 +18,13 @@ namespace Ferretto.Common.Controls
         public FilterBar()
         {
             this.InitializeComponent();
+
+            this.Loaded += this.OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.filterBar.SelectedIndex = 0;
         }
 
         #endregion Constructors
@@ -46,7 +53,7 @@ namespace Ferretto.Common.Controls
         protected override void OnSelectedItemChanged(System.Object oldValue, System.Object newValue)
         {
             base.OnSelectedItemChanged(oldValue, newValue);
-            this.SelectedDataSource = newValue;            
+            this.SelectedDataSource = newValue;
         }
 
         #endregion
