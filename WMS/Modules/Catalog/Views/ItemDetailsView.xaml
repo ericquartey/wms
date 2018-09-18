@@ -39,7 +39,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Name="ToolbarGrid"
-                      Grid.ColumnSpan="5">
+                      Grid.ColumnSpan="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -47,9 +47,8 @@
                     <wms:ActionBar HorizontalAlignment="Left"
                                    Style="{DynamicResource ActionBarNotCustomizable}">
                         <wms:ActionBarItem Command="{Binding HideDetailsCommand}"
-                                           Content="{x:Static res:General.Back}"
-                                           CustomGlyphSize="18,18"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_arrow_back_black_18dp.png"
+                                           CustomGlyphSize="24,24"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
                                            GlyphSize="Custom" />
 
                     </wms:ActionBar>
@@ -58,17 +57,17 @@
                                    HorizontalAlignment="Right"
                                    Style="{DynamicResource ActionBarNotCustomizable}">
                         <wms:ActionBarItem Content="{x:Static res:Catalog.Withdraw}"
-                                           CustomGlyphSize="18,18"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_18dp.png"
+                                           CustomGlyphSize="24,24"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
                                            GlyphSize="Custom" />
                         <wms:ActionBarItem Command="{Binding SaveCommand}"
                                            Content="{x:Static res:General.Save}"
-                                           CustomGlyphSize="18,18"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_18dp.png"
+                                           CustomGlyphSize="24,24"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                            GlyphSize="Custom" />
                         <wms:ActionBarItem Content="{x:Static res:General.Revert}"
-                                           CustomGlyphSize="18,18"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_undo_black_18dp.png"
+                                           CustomGlyphSize="24,24"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_undo_black_24dp.png"
                                            GlyphSize="Custom" />
                     </wms:ActionBar>
                 </Grid>
@@ -241,11 +240,12 @@
                     </wms:WmsGridControl>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
-                          Grid.RowSpan="3"
+                <GroupBox Grid.Row="0"
+                          Grid.RowSpan="4"
                           Grid.Column="4"
                           MinWidth="200"
-                          MaxWidth="500">
+                          MaxWidth="500"
+                          Margin="0">
                     <StackPanel HorizontalAlignment="Center"
                                 Orientation="Vertical">
                         <wms:WmsImage MinWidth="200"
@@ -255,23 +255,28 @@
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                       Path="{Binding Path=Item.Image}" />
                         <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Left"
+                                      HorizontalAlignment="Right"
+                                      HorizontalContentAlignment="Right"
                                       Label="{x:Static res:General.CreationDate}"
                                       Text="{Binding Path=Item.CreationDate}" />
                         <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Left"
+                                      HorizontalAlignment="Right"
+                                      HorizontalContentAlignment="Right"
                                       Label="{x:Static res:General.LastModificationDate}"
                                       Text="{Binding Path=Item.LastModificationDate}" />
                         <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Left"
+                                      HorizontalAlignment="Right"
+                                      HorizontalContentAlignment="Right"
                                       Label="{x:Static res:Models.ItemLastInventoryDate}"
                                       Text="{Binding Path=Item.InventoryDate}" />
                         <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Left"
+                                      HorizontalAlignment="Right"
+                                      HorizontalContentAlignment="Right"
                                       Label="{x:Static res:Models.ItemLastPickDate}"
                                       Text="{Binding Path=Item.LastPickDate}" />
                         <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Left"
+                                      HorizontalAlignment="Right"
+                                      HorizontalContentAlignment="Right"
                                       Label="{x:Static res:Models.ItemLastStoreDate}"
                                       Text="{Binding Path=Item.LastStoreDate}" />
                     </StackPanel>
