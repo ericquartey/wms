@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -8054,6 +8054,10 @@
     <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj">
       <Project>{0ddbd6dc-1f23-4f52-849d-94da9e5f1b12}</Project>
       <Name>Ferretto.Common.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
+      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
+      <Name>Ferretto.Common.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
