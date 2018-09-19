@@ -193,9 +193,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\user_36dp_example.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\Ferretto\Menu\grey\cells.png" />
     <Resource Include="Icons\Ferretto\Menu\grey\compartments_mapping.png" />
     <Resource Include="Icons\Ferretto\Menu\grey\ic_arrow_downward_grey_24dp.png" />
@@ -8073,11 +8070,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic_help_gray_36dp.png" />
-    <Resource Include="Images\user_36dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic_help_gray_24dp.png" />
-    <Resource Include="Images\user_24dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Ferretto\Logo\favicon.ico" />
