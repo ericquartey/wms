@@ -9,6 +9,6 @@
       Title="TestConnectionPageView">
 
     <Grid>
-        
+        <TextBlock FontSize="50" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" Background="Transparent">CIAONE</TextBlock>
     </Grid>
 </Page>

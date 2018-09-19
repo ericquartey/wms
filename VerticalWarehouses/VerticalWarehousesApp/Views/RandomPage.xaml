@@ -9,6 +9,6 @@
       Title="RandomPage">
 
     <Grid>
-        <TextBlock FontSize="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">CIAONE</TextBlock>
+        <TextBlock FontSize="40" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">RANDOM CIAONE</TextBlock>
     </Grid>
 </Page>

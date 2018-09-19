@@ -1,21 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
-
-using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.VerticalWarehousesApp.ViewModels;
+using Ferretto.VW.VerticalWarehousesApp.Views;
 
 namespace Ferretto.VW.VerticalWarehousesApp
 {
@@ -25,11 +13,11 @@ namespace Ferretto.VW.VerticalWarehousesApp
   public partial class MainWindow : Window
   {
         MainWindowViewModel mwvm;
-        public MainWindow()
-        {
-            this.InitializeComponent();
 
-        CActions myActions = new CActions();
+        public MainWindow()
+        {            
+            this.InitializeComponent();
+            this._NavigationRegion.Navigate(new TestConnectionPageView());
         }
 
         public void OpenUserLogInPopUp(object sender, EventArgs e)
@@ -67,6 +55,30 @@ namespace Ferretto.VW.VerticalWarehousesApp
                 this.UserLoggedRect.Fill = new SolidColorBrush(Colors.Green);
             }
             
+        }
+
+        private void NavigateToTestConnectionPage()
+        {
+            this._NavigationRegion.Navigate(new TestConnectionPageView());
+        }
+
+        private void NavigateToRandomPage()
+        {
+            this._NavigationRegion.Navigate(new RandomPage());
+        }
+
+        private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
+        {
+            //Uri uri = new Uri("Page2.xaml", UriKind.Relative);
+            //this.NavigationService.Navigate(uri);
+            this.NavigateToTestConnectionPage();
+        }
+
+        private void ButtonNavigateToRandomPage(object sender, RoutedEventArgs e)
+        {
+            //Uri uri = new Uri("Page2.xaml", UriKind.Relative);
+            //this.NavigationService.Navigate(uri);
+            this.NavigateToRandomPage();
         }
 
     }
