@@ -13,6 +13,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DateEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/ComboBoxEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/GroupBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/WmsGridControl.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
