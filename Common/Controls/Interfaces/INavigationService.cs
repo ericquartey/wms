@@ -7,8 +7,7 @@
 
         INavigableViewModel RegisterAndGetViewModel(string viewName, string token);
         INavigableViewModel GetViewModelByName(string viewModelName);
-        INavigableViewModel GetRegisteredViewModel(string mapId);
-        // INavigableViewModel GetViewModelByMapId(string mapId);
+        INavigableViewModel GetRegisteredViewModel(string mapId);        
         void Appear<TViewModel>();
         void Appear(string moduleName, string viewModelName);
         void Disappear(INavigableViewModel viewModel);
