@@ -8050,6 +8050,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Light\WmsGridControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\ThemeDictionary.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -8058,6 +8062,10 @@
     <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj">
       <Project>{0ddbd6dc-1f23-4f52-849d-94da9e5f1b12}</Project>
       <Name>Ferretto.Common.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
+      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
+      <Name>Ferretto.Common.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

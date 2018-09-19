@@ -217,7 +217,7 @@
                     <Border x:Name="HeaderPart"
                             Margin="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BackgroundMarginConverter}}"
                             ve:DockPane.HitTestType="Content"
-                            Background="{TemplateBinding ActualBackground}"
+                            Background="{DynamicResource CommonBackground}"
                             BorderBrush="Transparent"
                             BorderThickness="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BorderThicknessConverter}}">
                         <ve:LayoutTabFastRenderPanel x:Name="PART_FastRenderPanel"

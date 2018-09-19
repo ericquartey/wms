@@ -152,6 +152,10 @@
     <value>Save</value>
     <comment>Command - Save modified data on the current page</comment>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+    <comment>Label - Search</comment>
+  </data>
   <data name="UnitOfMeasurement" xml:space="preserve">
     <value>Unit of measurement</value>
   </data>
