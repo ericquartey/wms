@@ -63,6 +63,12 @@
     <!--  fonts  -->
     <system:Double x:Key="MenuFontSize">14</system:Double>
 
+    <FontFamily x:Key="FontSmall">./#Segoe UI</FontFamily>
+    <system:Double x:Key="FontSizeSmall">12</system:Double>
+
+    <!-- StatusBar -->
+    <system:Double x:Key="StatusBarHeight">20</system:Double>
+
     <!--  menu layout  -->
     <system:Double x:Key="MenuTileHeight">55</system:Double>
     <system:Double x:Key="MenuTileWidth">140</system:Double>
