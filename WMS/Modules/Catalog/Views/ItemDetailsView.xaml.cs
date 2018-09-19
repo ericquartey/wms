@@ -9,8 +9,6 @@ namespace Ferretto.WMS.Modules.Catalog
         public ItemDetailsView()
         {
             this.InitializeComponent();
-
-            this.DataContext = new ItemDetailsViewModel();
         }
 
         #endregion Constructors

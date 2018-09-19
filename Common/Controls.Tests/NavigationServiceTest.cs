@@ -160,6 +160,7 @@ namespace Feretto.Common.Controls.Tests
 
         private class TestViewModel : INavigableViewModel
         {
+            public System.String MapId { get; set; }
             public System.String Token { get; set; }
             public System.String StateId { get; set; }
 

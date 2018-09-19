@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ferretto.Common.Controls.Interfaces
+﻿namespace Ferretto.Common.Controls.Interfaces
 {
     public interface INavigableViewModel
     {
+        string MapId { get; set; }
         string Token { get; set; }
         string StateId { get; set; }
         void Appear();

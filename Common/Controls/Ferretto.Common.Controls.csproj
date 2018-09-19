@@ -219,6 +219,7 @@
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\WmsView\WmsView.cs" />
+    <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
