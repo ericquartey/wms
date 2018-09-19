@@ -106,6 +106,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item saved sucessfully.
+        /// </summary>
+        public static string ItemSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items Catalog.
         /// </summary>
         public static string ItemsCatalog {

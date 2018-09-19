@@ -153,4 +153,8 @@
     <value>Items Catalog</value>
     <comment>Label - Page Title</comment>
   </data>
+  <data name="ItemSavedSuccessfully" xml:space="preserve">
+    <value>Item saved sucessfully</value>
+    <comment>Notification - item saved</comment>
+  </data>
 </root>
