@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Navigation;
+using Ferretto.VW.VerticalWarehousesApp.Source;
 using Ferretto.VW.VerticalWarehousesApp.ViewModels;
 using Ferretto.VW.VerticalWarehousesApp.Views;
 
@@ -13,11 +13,13 @@ namespace Ferretto.VW.VerticalWarehousesApp
   public partial class MainWindow : Window
   {
         MainWindowViewModel mwvm;
+        AutomationManager am;
 
         public MainWindow()
         {            
             this.InitializeComponent();
             this._NavigationRegion.Navigate(new TestConnectionPageView());
+            this.am = new AutomationManager();
         }
 
         public void OpenUserLogInPopUp(object sender, EventArgs e)
