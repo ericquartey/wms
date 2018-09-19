@@ -137,6 +137,10 @@
   <data name="LastModificationDate" xml:space="preserve">
     <value>Last Modification Date</value>
   </data>
+  <data name="MillionsSymbol" xml:space="preserve">
+    <value>M</value>
+    <comment>Symbol for millions</comment>
+  </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>
@@ -155,6 +159,10 @@
   <data name="Search" xml:space="preserve">
     <value>Search</value>
     <comment>Label - Search</comment>
+  </data>
+  <data name="ThousandsSymbol" xml:space="preserve">
+    <value>K</value>
+    <comment>Symbol for thousands</comment>
   </data>
   <data name="UnitOfMeasurement" xml:space="preserve">
     <value>Unit of measurement</value>
