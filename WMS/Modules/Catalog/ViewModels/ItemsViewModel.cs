@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Modules.Catalog
         #region Fields
 
         private readonly IDataSourceService filterService;
-        public IDataSource<Common.Models.Item> currentDataSource;
+        private IDataSource<Common.Models.Item> currentDataSource;
 
         private ICommand viewDetailsCommand;
 
