@@ -44,7 +44,7 @@ namespace Ferretto.Common.Controls
             if (string.IsNullOrEmpty(this.MapId) == false)
             {
                 // Is Main WMSView registered
-                this.DataContext = this.navigationService.GetViewModelByMapId(this.MapId);
+                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId);
             }
             else
             {
