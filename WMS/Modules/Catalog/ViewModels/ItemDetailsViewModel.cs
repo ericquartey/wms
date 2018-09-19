@@ -64,10 +64,10 @@ namespace Ferretto.WMS.Modules.Catalog
         {
             int rowSaved = this.dataService.SaveChanges();
 
-            this.eventService.Invoke(new ItemChangedEvent<Item>(this.Item));
-
             if (rowSaved != 0)
             {
+                this.eventService.Invoke(new ItemChangedEvent<Item>(this.Item));
+
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEvent(Ferretto.Common.Resources.Catalog.ItemSavedSuccessfully));
             }

@@ -16,6 +16,8 @@ namespace Ferretto.Common.Controls
 
         #endregion Fields
 
+        #region Constructors
+
         public StatusBarViewModel()
         {
             this.keepInfoTimer.Tick += new EventHandler(this.keepInfoTimer_Tick);
@@ -30,6 +32,8 @@ namespace Ferretto.Common.Controls
                });
         }
 
+        #endregion Constructors
+
         #region Properties
 
         public string Info
@@ -38,12 +42,16 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.info, value);
         }
 
+        #endregion Properties
+
+        #region Methods
+
         private void keepInfoTimer_Tick(Object sender, EventArgs e)
         {
             this.Info = string.Empty;
             this.keepInfoTimer.Stop();
         }
 
-        #endregion Properties
+        #endregion Methods
     }
 }
