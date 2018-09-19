@@ -93,6 +93,7 @@
                     <wms:TextBox Margin="0,13,0,0"
                                  VerticalAlignment="Stretch"
                                  VerticalContentAlignment="Stretch"
+                                 IsMultiline="True"
                                  Label="{x:Static res:Models.ItemNotes}"
                                  Text="{Binding Path=Item.Notes, Mode=TwoWay}" />
                 </GroupBox>

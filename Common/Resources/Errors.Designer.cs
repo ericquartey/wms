@@ -70,6 +70,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type TextWrapping..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToTextWrappingType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToTextWrappingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type Visibility..
         /// </summary>
         public static string ConverterCanConvertOnlyToVisibilityType {
