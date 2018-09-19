@@ -156,6 +156,10 @@
     <value>Save</value>
     <comment>Command - Save modified data on the current page</comment>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+    <comment>Label - Search</comment>
+  </data>
   <data name="ThousandsSymbol" xml:space="preserve">
     <value>K</value>
     <comment>Symbol for thousands</comment>
