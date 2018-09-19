@@ -241,47 +241,47 @@
                     </wms:WmsGridControl>
                 </GroupBox>
 
-                <GroupBox Grid.Row="0"
-                          Grid.RowSpan="4"
-                          Grid.Column="4"
-                          MinWidth="200"
-                          MaxWidth="500"
-                          Margin="0">
-                    <StackPanel HorizontalAlignment="Center"
-                                Orientation="Vertical">
-                        <wms:WmsImage MinWidth="200"
-                                      MinHeight="200"
-                                      MaxWidth="500"
-                                      MaxHeight="500"
-                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                      Path="{Binding Path=Item.Image}" />
-                        <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Right"
-                                      HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:General.CreationDate}"
-                                      Text="{Binding Path=Item.CreationDate}" />
-                        <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Right"
-                                      HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:General.LastModificationDate}"
-                                      Text="{Binding Path=Item.LastModificationDate}" />
-                        <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Right"
-                                      HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:Models.ItemLastInventoryDate}"
-                                      Text="{Binding Path=Item.InventoryDate}" />
-                        <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Right"
-                                      HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:Models.ItemLastPickDate}"
-                                      Text="{Binding Path=Item.LastPickDate}" />
-                        <wms:InfoText Margin="20,3,0,0"
-                                      HorizontalAlignment="Right"
-                                      HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:Models.ItemLastStoreDate}"
-                                      Text="{Binding Path=Item.LastStoreDate}" />
-                    </StackPanel>
-                </GroupBox>
+                <StackPanel Grid.Row="0"
+                            Grid.RowSpan="4"
+                            Grid.Column="4"
+                            MinWidth="200"
+                            MaxWidth="500"
+                            Margin="10,0"
+                            HorizontalAlignment="Center"
+                            Orientation="Vertical">
+                    <wms:WmsImage MinWidth="200"
+                                  MinHeight="200"
+                                  MaxWidth="500"
+                                  MaxHeight="500"
+                                  BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                  Path="{Binding Path=Item.Image}" />
+                    <wms:InfoText Margin="20,3,0,0"
+                                  HorizontalAlignment="Right"
+                                  HorizontalContentAlignment="Right"
+                                  Label="{x:Static res:General.CreationDate}"
+                                  Text="{Binding Path=Item.CreationDate}" />
+                    <wms:InfoText Margin="20,3,0,0"
+                                  HorizontalAlignment="Right"
+                                  HorizontalContentAlignment="Right"
+                                  Label="{x:Static res:General.LastModificationDate}"
+                                  Text="{Binding Path=Item.LastModificationDate}" />
+                    <wms:InfoText Margin="20,3,0,0"
+                                  HorizontalAlignment="Right"
+                                  HorizontalContentAlignment="Right"
+                                  Label="{x:Static res:Models.ItemLastInventoryDate}"
+                                  Text="{Binding Path=Item.InventoryDate}" />
+                    <wms:InfoText Margin="20,3,0,0"
+                                  HorizontalAlignment="Right"
+                                  HorizontalContentAlignment="Right"
+                                  Label="{x:Static res:Models.ItemLastPickDate}"
+                                  Text="{Binding Path=Item.LastPickDate}" />
+                    <wms:InfoText Margin="20,3,0,0"
+                                  HorizontalAlignment="Right"
+                                  HorizontalContentAlignment="Right"
+                                  Label="{x:Static res:Models.ItemLastStoreDate}"
+                                  Text="{Binding Path=Item.LastStoreDate}" />
+                </StackPanel>
+
             </Grid>
         </ScrollViewer>
     </Grid>
