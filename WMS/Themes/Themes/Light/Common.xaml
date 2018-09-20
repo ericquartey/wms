@@ -1,6 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
     <!--  boolean  -->
     <system:Boolean x:Key="True">True</system:Boolean>
@@ -17,48 +18,32 @@
     <Color x:Key="PureWhite">#ffffff</Color>
 
     <!--  primary color brush  -->
-    <SolidColorBrush x:Key="CommonPrimary"
-                     Color="{StaticResource Red}" />
+    <SolidColorBrush x:Key="CommonPrimary" Color="{StaticResource Red}" />
 
     <!--  secondary color brush  -->
-    <SolidColorBrush x:Key="CommonSecondaryUltralight"
-                     Color="{StaticResource WhiteGrey}" />
-    <SolidColorBrush x:Key="CommonSecondaryLight"
-                     Color="{StaticResource LightGrey}" />
-    <SolidColorBrush x:Key="CommonSecondaryMedium"
-                     Color="{StaticResource MediumGrey}" />
-    <SolidColorBrush x:Key="CommonSecondaryDark"
-                     Color="{StaticResource DarkGrey}" />
+    <SolidColorBrush x:Key="CommonSecondaryUltralight" Color="{StaticResource WhiteGrey}" />
+    <SolidColorBrush x:Key="CommonSecondaryLight" Color="{StaticResource LightGrey}" />
+    <SolidColorBrush x:Key="CommonSecondaryMedium" Color="{StaticResource MediumGrey}" />
+    <SolidColorBrush x:Key="CommonSecondaryDark" Color="{StaticResource DarkGrey}" />
 
     <!--  background color brush  -->
-    <SolidColorBrush x:Key="CommonBackground"
-                     Color="{StaticResource PureWhite}" />
+    <SolidColorBrush x:Key="CommonBackground" Color="{StaticResource PureWhite}" />
 
     <!--  text color brush  -->
-    <SolidColorBrush x:Key="OnCommonPrimary"
-                     Color="{StaticResource PureWhite}" />
+    <SolidColorBrush x:Key="OnCommonPrimary" Color="{StaticResource PureWhite}" />
 
-    <SolidColorBrush x:Key="OnCommonSecondaryUltralight"
-                     Color="{StaticResource Black}" />
-    <SolidColorBrush x:Key="OnCommonSecondaryLight"
-                     Color="{StaticResource PureWhite}" />
-    <SolidColorBrush x:Key="OnCommonSecondaryMedium"
-                     Color="{StaticResource PureWhite}" />
-    <SolidColorBrush x:Key="OnCommonSecondaryDark"
-                     Color="{StaticResource PureWhite}" />
+    <SolidColorBrush x:Key="OnCommonSecondaryUltralight" Color="{StaticResource Black}" />
+    <SolidColorBrush x:Key="OnCommonSecondaryLight" Color="{StaticResource PureWhite}" />
+    <SolidColorBrush x:Key="OnCommonSecondaryMedium" Color="{StaticResource PureWhite}" />
+    <SolidColorBrush x:Key="OnCommonSecondaryDark" Color="{StaticResource PureWhite}" />
 
-    <SolidColorBrush x:Key="OnCommonBackground"
-                     Color="{StaticResource Black}" />
+    <SolidColorBrush x:Key="OnCommonBackground" Color="{StaticResource Black}" />
 
     <!--  hover color brush  -->
-    <SolidColorBrush x:Key="HoverCommonSecondaryUltralight"
-                     Color="{StaticResource WhiteGrey}" />
-    <SolidColorBrush x:Key="HoverCommonSecondaryLight"
-                     Color="{StaticResource WhiteGrey}" />
-    <SolidColorBrush x:Key="HoverCommonSecondaryMedium"
-                     Color="{StaticResource WhiteGrey}" />
-    <SolidColorBrush x:Key="HoverCommonSecondaryDark"
-                     Color="{StaticResource WhiteGrey}" />
+    <SolidColorBrush x:Key="HoverCommonSecondaryUltralight" Color="{StaticResource WhiteGrey}" />
+    <SolidColorBrush x:Key="HoverCommonSecondaryLight" Color="{StaticResource WhiteGrey}" />
+    <SolidColorBrush x:Key="HoverCommonSecondaryMedium" Color="{StaticResource WhiteGrey}" />
+    <SolidColorBrush x:Key="HoverCommonSecondaryDark" Color="{StaticResource WhiteGrey}" />
 
     <!--  fonts  -->
     <system:Double x:Key="MenuFontSize">14</system:Double>
@@ -67,7 +52,7 @@
     <FontFamily x:Key="FontSmall">./#Segoe UI</FontFamily>
     <system:Double x:Key="FontSizeSmall">12</system:Double>
 
-    <!-- StatusBar -->
+    <!--  StatusBar  -->
     <system:Double x:Key="StatusBarHeight">20</system:Double>
 
     <!--  menu layout  -->
