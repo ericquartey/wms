@@ -1,15 +1,17 @@
-﻿using System.Collections.Generic;
-using System.Windows;
-using DevExpress.Xpf.Navigation;
+﻿using System.Windows;
+using System.Windows.Controls;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class FilterBar : TileBar
+    public partial class FilterBar : UserControl
     {
         #region Fields
 
         public static readonly DependencyProperty FiltersProperty =
-            DependencyProperty.Register(nameof(Filters), typeof(TileFilter), typeof(FilterBar));
+            DependencyProperty.Register(nameof(Filters), typeof(object), typeof(FilterBar));
+
+        public static readonly DependencyProperty SelectedDataSourceProperty =
+            DependencyProperty.Register(nameof(SelectedDataSource), typeof(object), typeof(FilterBar));
 
         #endregion Fields
 
@@ -18,44 +20,24 @@ namespace Ferretto.Common.Controls
         public FilterBar()
         {
             this.InitializeComponent();
-
-            this.Loaded += this.OnLoaded;
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            this.filterBar.SelectedIndex = 0;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IEnumerable<TileFilter> Filters
+        public object Filters
         {
-            get => (IEnumerable<TileFilter>)this.GetValue(FiltersProperty);
+            get => this.GetValue(FiltersProperty);
             set => this.SetValue(FiltersProperty, value);
         }
 
-        public static readonly DependencyProperty SelectedDataSourceProperty =
-            DependencyProperty.Register(nameof(SelectedDataSource), typeof(object), typeof(FilterBar));
-
         public object SelectedDataSource
         {
-            get => (object)this.GetValue(SelectedDataSourceProperty);
+            get => this.GetValue(SelectedDataSourceProperty);
             set => this.SetValue(SelectedDataSourceProperty, value);
         }
 
-        #endregion
-
-        #region Methods
-
-        protected override void OnSelectedItemChanged(System.Object oldValue, System.Object newValue)
-        {
-            base.OnSelectedItemChanged(oldValue, newValue);
-            this.SelectedDataSource = newValue;
-        }
-
-        #endregion
+        #endregion Properties
     }
 }

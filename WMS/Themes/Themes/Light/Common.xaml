@@ -16,6 +16,9 @@
     <Color x:Key="Green">#57A639</Color>
     <Color x:Key="PureWhite">#ffffff</Color>
 
+    <!--  lightgrey  -->
+    <Color x:Key="OnCommonSecondaryLightColor">#707173</Color>
+
     <!--  primary color brush  -->
     <SolidColorBrush x:Key="CommonPrimary"
                      Color="{StaticResource Red}" />
@@ -41,7 +44,7 @@
     <SolidColorBrush x:Key="OnCommonSecondaryUltralight"
                      Color="{StaticResource Black}" />
     <SolidColorBrush x:Key="OnCommonSecondaryLight"
-                     Color="{StaticResource PureWhite}" />
+                     Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="OnCommonSecondaryMedium"
                      Color="{StaticResource PureWhite}" />
     <SolidColorBrush x:Key="OnCommonSecondaryDark"

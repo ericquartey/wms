@@ -1,46 +1,19 @@
-﻿<dxnav:TileBar x:Class="Ferretto.Common.Controls.FilterBar"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
-               xmlns:local="clr-namespace:Ferretto.Common.Controls"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               x:Name="filterBar"
-               d:DesignHeight="450"
-               d:DesignWidth="800"
-               ItemsSource="{Binding Filters}"
-               Orientation="Vertical"
-               mc:Ignorable="d">
-    <dxnav:TileBar.Resources>
-        <local:IntToThousandsConverter x:Key="ITTC" />
-    </dxnav:TileBar.Resources>
-    <dxnav:TileBar.ItemContainerStyle>
-        <Style TargetType="dxnav:TileBarItem">
-            <Setter Property="Padding" Value="5,0,5,5" />
-            <Setter Property="AllowGlyphTheming" Value="True" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="Background" Value="{DynamicResource CommonSecondaryUltralight}" />
-            <Setter Property="ContentTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <Grid Visibility="{Binding IsVisible, Converter={StaticResource boolToVisibilityConverter}, Mode=OneWayToSource}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0"
-                                   VerticalAlignment="Bottom"
-                                   Content="{Binding Name}" />
-                            <Label Grid.Column="1"
-                                   HorizontalAlignment="Right"
-                                   Content="{Binding Count, Converter={StaticResource ITTC}}"
-                                   FontSize="32" />
-                        </Grid>
-                    </DataTemplate>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="TileGlyph" Value="{Binding Image}" />
-        </Style>
-    </dxnav:TileBar.ItemContainerStyle>
-</dxnav:TileBar>
+﻿<UserControl x:Class="Ferretto.Common.Controls.FilterBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dxnav="http://schemas.devexpress.com/winfx/2008/xaml/navigation"
+             xmlns:local="clr-namespace:Ferretto.Common.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+
+    <ListBox x:Name="itemsControl"
+             BorderThickness="0"
+             ItemContainerStyle="{StaticResource SelectionStyle}"
+             ItemsSource="{Binding Filters}"
+             SelectedItem="{Binding SelectedDataSource}" />
+
+</UserControl>
