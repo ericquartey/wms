@@ -70,6 +70,11 @@ namespace Ferretto.Common.Modules.BLL.Models
             return this.GetData(this.Filter);
         }
 
+        public override String ToString()
+        {
+            return this.Name ?? base.ToString();
+        }
+
         #endregion Methods
     }
 }

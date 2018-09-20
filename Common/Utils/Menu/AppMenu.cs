@@ -103,10 +103,7 @@ namespace Ferretto.Common.Utils.Menu
                 string.Empty, string.Empty));
             this.menu.Items.Add(importExportMenu);
 
-            var configurationMenu = new MainMenuItem(
-                Navigation.Configuration, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_settings_white_24dp.png",
-                string.Empty, string.Empty);
+            var configurationMenu = new MainMenuItem(Navigation.Configuration, bgColor, Icons.Configuration, string.Empty, string.Empty);
 
             configurationMenu.Children.Add(new MainMenuItem(
                 Navigation.Configuration_MeasuringUnits, bgColor,
