@@ -3,9 +3,9 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
 
-    <system:Double x:Key="ExpanderArrowHeight">50</system:Double>
-    <system:Double x:Key="ExpanderArrowWidth">19</system:Double>
-    
+    <system:Double x:Key="ExpanderArrowHeight">30</system:Double>
+    <system:Double x:Key="ExpanderArrowWidth">13</system:Double>
+
     <Style x:Key="ExpanderLeftHeaderStyle"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="VerticalAlignment" Value="Stretch" />
@@ -39,7 +39,6 @@
                                     <RotateTransform Angle="90" />
                                 </Path.LayoutTransform>
                             </Path>
-
                         </Grid>
                         <ContentPresenter Name="ExpanderContentPresenter"
                                           Grid.Row="0"
@@ -112,7 +111,7 @@
                                               Height="{Binding Path=Height, ElementName=GridHeaderSite}"
                                               MinWidth="0"
                                               MinHeight="0"
-                                              Margin="1"
+                                              Margin="1,1,7,1"
                                               VerticalAlignment="Stretch"
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                                               VerticalContentAlignment="Stretch"

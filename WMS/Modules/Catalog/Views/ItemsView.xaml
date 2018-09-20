@@ -24,16 +24,20 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.Column="0">
-            <wms:Expander x:Name="FiltersExpander"                          
-                ExpandDirection="Left"
-                IsExpanded="True">
-                <StackPanel Orientation="Horizontal">
-
-                    <wms:FilterBar Filters="{Binding Filters}" SelectedDataSource="{Binding CurrentDataSource, Mode=OneWayToSource}" />
-                </StackPanel>
-            </wms:Expander>
-        </StackPanel>
+        <wms:Expander x:Name="FiltersExpander"
+                      ExpandDirection="Left"
+                      IsExpanded="True"
+                      Grid.Column="0"
+                      VerticalAlignment="Stretch"
+                      VerticalContentAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <wms:FilterBar Filters="{Binding Filters}" SelectedDataSource="{Binding CurrentDataSource, Mode=OneWayToSource}" />
+            </Grid>
+        </wms:Expander>
 
         <Grid Grid.Column="1">
 
