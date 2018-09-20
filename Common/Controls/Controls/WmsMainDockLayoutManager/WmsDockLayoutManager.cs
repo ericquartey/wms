@@ -9,11 +9,11 @@ namespace Ferretto.Common.Controls
 {
     public class WmsMainDockLayoutManager : DockLayoutManager
     {
-        #region fields
+        #region Fields
 
         private readonly INavigationService navigationService;
 
-        #endregion
+        #endregion Fields
 
         #region Constructors
 
@@ -32,7 +32,21 @@ namespace Ferretto.Common.Controls
 
         #endregion Properties
 
-        #region Events
+        #region Methods
+
+        public void RegisterView(string regionName, string title)
+        {
+            var layoutPanel = new LayoutPanel();
+            layoutPanel.Caption = title;
+            RegionManager.SetRegionName(layoutPanel, regionName);
+            if (!(this.FindName("MainDocumentGroup") is DocumentGroup mainGroup))
+            {
+                throw new System.InvalidOperationException(Errors.CannotRetrieveDocumentGroupFromLayoutManager);
+            }
+            layoutPanel.AllowFloat = false;
+            mainGroup.Add(layoutPanel);
+            layoutPanel.IsActive = true;
+        }
 
         private void WmsMainDockLayoutManager_DockItemClosing(System.Object sender, DevExpress.Xpf.Docking.Base.ItemCancelEventArgs e)
         {
@@ -42,23 +56,6 @@ namespace Ferretto.Common.Controls
             }
             var viewModel = ((UserControl)vmsView).DataContext;
             this.navigationService.Disappear(viewModel as INavigableViewModel);
-        }
-
-        #endregion
-
-        #region Methods
-
-        public void RegisterView(string regionName, string title)
-        {
-            var layoutPanel = new LayoutPanel();
-            layoutPanel.Caption = title;
-            RegionManager.SetRegionName(layoutPanel, regionName);
-            if (!( this.FindName("MainDocumentGroup") is DocumentGroup mainGroup ))
-            {
-                throw new System.InvalidOperationException(Errors.CannotRetrieveDocumentGroupFromLayoutManager);
-            }
-
-            mainGroup.Add(layoutPanel);
         }
 
         #endregion Methods
