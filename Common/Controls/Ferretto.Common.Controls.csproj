@@ -213,6 +213,8 @@
     <Compile Include="Controls\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\StatusBar\StatusBar.cs" />
+    <Compile Include="Controls\StatusBar\StatusBarViewModel.cs" />
     <Compile Include="Controls\TextBox\TextBox.xaml.cs">
       <DependentUpon>TextBox.xaml</DependentUpon>
     </Compile>
