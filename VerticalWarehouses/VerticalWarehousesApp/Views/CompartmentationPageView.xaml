@@ -12,18 +12,21 @@
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
-            <Border BorderBrush="White" BorderThickness="1" Margin="5" IsEnabled="True">
-                <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20"
-                        Click="ButtonSetActionToCreateCompartment" Content="Create Compartment" Margin="2,0"/>
-            </Border>
-            <Border BorderBrush="White" BorderThickness="1" Margin="5" IsEnabled="True">
-                <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20"
-                        Click="ButtonSetActionToDoNothing" Content="Do Nothing" Margin="2,0"/>
-            </Border>
-        </StackPanel>
-        <Canvas Grid.Row="1" Name="cnvImage" MouseDown="imgCamera_MouseDown" MouseMove="imgCamera_MouseMove"
-                MouseUp="imgCamera_MouseUp" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+        <Border BorderBrush="White" BorderThickness="2" Margin="3">
+            <StackPanel Name="DrawButtonsStackPanel" Orientation="Horizontal" FlowDirection="LeftToRight">
+                
+                <Button Name="ButtonDrawCompartments" Margin="5" Background="Transparent" BorderThickness="1"
+                        Foreground="White" FontSize="20" Click="ButtonSetActionToCreateCompartment" BorderBrush="White"
+                        Content="Draw Compartments"/>
+
+
+                <Button Name="ButtonDoNothing" Margin="5" Background="Transparent" BorderThickness="1" BorderBrush="White"
+                        Foreground="White" FontSize="20" Click="ButtonSetActionToDoNothing" Content="Do Nothing"/>
+                
+            </StackPanel>
+        </Border>
+        <Canvas Grid.Row="1" Name="cnvImage" MouseDown="ImageMouseDown" MouseMove="ImageMouseMove"
+                MouseUp="ImageMouseUp" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                 Background="Transparent" Margin="5">
             <Image Source="/Assets/simple_tray.png" Height="{Binding ElementName=cnvImage, Path=ActualHeight}"
                    Width="{Binding ElementName=cnvImage, Path=ActualWidth}" Stretch="Fill"></Image>

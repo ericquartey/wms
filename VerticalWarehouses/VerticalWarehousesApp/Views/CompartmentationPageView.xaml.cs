@@ -19,7 +19,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         Rectangle currentRect;
         List<Rectangle> rects;
 
-        CompartmentActionMode currentActionMode = CompartmentActionMode.DoNothing;
+        CompartmentActionMode currentActionMode = CompartmentActionMode.NoActionSelectedYet;
 
         bool isDrawing = false;
 
@@ -27,9 +27,10 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             this.InitializeComponent();
             this.rects = new List<Rectangle>();
+            this.CheckActionButtonsSelectionCorrectness();
         }
 
-        private void imgCamera_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ImageMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (this.currentActionMode == CompartmentActionMode.CreateCompartment)
             {
@@ -55,20 +56,17 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
         }
 
-        private void imgCamera_MouseMove(object sender, MouseEventArgs e)
+        private void ImageMouseMove(object sender, MouseEventArgs e)
         {
             if (this.currentActionMode == CompartmentActionMode.CreateCompartment)
             {
                 if (this.isDrawing)
                 {
                     this.testPoint = e.GetPosition(this);
-
+                    // if I want continous lenghts for the compartment, then: double x = (this.testPoint.X - this.currentRectStartPoint.X); double y = (this.testPoint.Y - this.currentRectStartPoint.Y);
                     int x = ((int)(this.testPoint.X - this.currentRectStartPoint.X) % RESOLUTION == 0) ? (int)(this.testPoint.X - this.currentRectStartPoint.X) : ((int)(this.testPoint.X - this.currentRectStartPoint.X) - ((int)(this.testPoint.X - this.currentRectStartPoint.X) % RESOLUTION));
 
-
                     int y = ((int)(this.testPoint.Y - this.currentRectStartPoint.Y) % RESOLUTION == 0) ? (int)(this.testPoint.Y - this.currentRectStartPoint.Y) : ((int)(this.testPoint.Y - this.currentRectStartPoint.Y) - ((int)(this.testPoint.Y - this.currentRectStartPoint.Y) % RESOLUTION));
-
-                    Debug.Print("x, y: " + x + ", " + y + "\n");
 
                     if (x >= 0)
                     {
@@ -82,7 +80,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
         }
 
-        private void imgCamera_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ImageMouseUp(object sender, MouseButtonEventArgs e)
         {
             if (this.currentActionMode == CompartmentActionMode.CreateCompartment)
             {
@@ -98,11 +96,13 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         private void ButtonSetActionToCreateCompartment(object sender, RoutedEventArgs e)
         {
             this.SetActionToCreateCompartment();
+            this.CheckActionButtonsSelectionCorrectness();
         }
 
         private void ButtonSetActionToDoNothing(object sender, RoutedEventArgs e)
         {
             this.SetActionToDoNothing();
+            this.CheckActionButtonsSelectionCorrectness();
         }
 
         private void SetActionToCreateCompartment()
@@ -114,11 +114,41 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             this.currentActionMode = CompartmentActionMode.DoNothing;
         }
+
+        private void CheckActionButtonsSelectionCorrectness()
+        {
+            switch(this.currentActionMode)
+            {
+                case CompartmentActionMode.CreateCompartment:
+                    this.ButtonDrawCompartments.Foreground = Brushes.Green;
+                    foreach(Button btn in this.DrawButtonsStackPanel.Children)
+                    {
+                        if (!(btn.Name == "ButtonDrawCompartments"))
+                        {
+                            btn.Foreground = Brushes.White;
+                        }
+                    }
+                    break;
+                case CompartmentActionMode.DoNothing:
+                    this.ButtonDoNothing.Foreground = Brushes.Green;
+                    foreach (Button btn in this.DrawButtonsStackPanel.Children)
+                    {
+                        if (!(btn.Name == "ButtonDoNothing"))
+                        {
+                            btn.Foreground = Brushes.White;
+                        }
+                    }
+                    break;
+                case CompartmentActionMode.NoActionSelectedYet:
+                    break;
+            }
+        }
     }
 
     public enum CompartmentActionMode
     {
         CreateCompartment,
         DoNothing,
+        NoActionSelectedYet
     }
 }
