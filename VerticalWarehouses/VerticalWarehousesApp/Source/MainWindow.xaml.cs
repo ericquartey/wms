@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
+using System.Collections.Generic;
+using System.Windows.Controls;
 using Ferretto.VW.VerticalWarehousesApp.ViewModels;
 using Ferretto.VW.VerticalWarehousesApp.Views;
 
@@ -9,11 +11,14 @@ namespace Ferretto.VW.VerticalWarehousesApp
   public partial class MainWindow : Window
   {
         MainWindowViewModel mwvm;
+        Page currentTestConnectionPage, currentCompartmentationPage;
 
         public MainWindow()
         {            
             this.InitializeComponent();
-            this._NavigationRegion.Navigate(new TestConnectionPageView());
+            this.currentTestConnectionPage = new TestConnectionPageView();
+            this.currentCompartmentationPage = new CompartmentationPageView();
+            this._NavigationRegion.Navigate(this.currentTestConnectionPage);
         }
 
         public void OpenUserLogInPopUp(object sender, EventArgs e)
@@ -54,12 +59,12 @@ namespace Ferretto.VW.VerticalWarehousesApp
 
         private void NavigateToTestConnectionPage()
         {
-            this._NavigationRegion.Navigate(new TestConnectionPageView());
+            this._NavigationRegion.Navigate(this.currentTestConnectionPage);
         }
 
         private void NavigateToCompartmentationPage()
         {
-            this._NavigationRegion.Navigate(new CompartmentationPageView());
+            this._NavigationRegion.Navigate(this.currentCompartmentationPage);
         }
 
         private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
