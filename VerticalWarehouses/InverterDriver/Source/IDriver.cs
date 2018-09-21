@@ -9,6 +9,8 @@ namespace Ferretto.VW.InverterDriver
   public interface IDriver
   {
 
+    void EseguiComandoMovimentoElevatore();
+
     bool MyFunc();
 
   }

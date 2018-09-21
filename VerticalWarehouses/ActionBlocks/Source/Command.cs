@@ -12,7 +12,10 @@ namespace Ferretto.VW.ActionBlocks
 {
   public class CCommand
   {
-
+        public enum ComandCodes
+        {
+            Embark_drawer
+        }
   }
 
 

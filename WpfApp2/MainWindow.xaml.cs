@@ -13,20 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Ferretto.VW.ActionBlocks;
-
-namespace Ferretto.VW.VerticalWarehousesApp
+namespace WpfApp2
 {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
-  public partial class MainWindow : Window
-  {
-    public MainWindow()
+    /// <summary>
+    /// Interaction logic for MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
     {
-      this.InitializeComponent();
-
-      CActions myActions = new CActions();
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
     }
-  }
 }
