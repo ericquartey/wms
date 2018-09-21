@@ -36,11 +36,11 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 this.currentRect = new Rectangle();
                 this.currentRect.Height = 0;
                 this.currentRect.Width = 0;
-                this.currentRect.Fill = Brushes.Beige;
+                this.currentRect.Fill = Brushes.Red;
                 this.cnvImage.Children.Add(this.currentRect);
 
                 this.currentRect.SetValue(Canvas.LeftProperty, this.testPoint.X);
-                this.currentRect.SetValue(Canvas.TopProperty, this.testPoint.Y);
+                this.currentRect.SetValue(Canvas.TopProperty, this.testPoint.Y + 50);
 
                 this.isDrawing = true;
             }

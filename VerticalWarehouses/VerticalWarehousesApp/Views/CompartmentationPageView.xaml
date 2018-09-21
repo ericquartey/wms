@@ -7,10 +7,19 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CompartmentationPageView">
-    <Grid>
-        <Canvas Name="cnvImage" MouseDown="imgCamera_MouseDown" MouseMove="imgCamera_MouseMove"
-                MouseUp="imgCamera_MouseUp" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Blue">
+    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Frame}, Path=ActualWidth}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
             
+        </StackPanel>
+        <Canvas Grid.Row="1" Name="cnvImage" MouseDown="imgCamera_MouseDown" MouseMove="imgCamera_MouseMove"
+                MouseUp="imgCamera_MouseUp" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                Background="Transparent" Margin="5">
+            <Image Source="/Assets/simple_tray.png" Height="{Binding ElementName=cnvImage, Path=ActualHeight}"
+                   Width="{Binding ElementName=cnvImage, Path=ActualWidth}" Stretch="Fill"></Image>
         </Canvas>
     </Grid>
 </Page>
