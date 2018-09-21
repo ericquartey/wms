@@ -5,9 +5,8 @@
         #region Properties
 
         public int Count { get; set; }
-        public string Id { get; set; }
 
-        public string Image => Resources.Icons.ResourceManager.GetString($"Filter{this.Name.Replace(" ", string.Empty)}");
+        public string Image => this.Name != null ? Resources.Icons.ResourceManager.GetString($"Filter{this.Name.Replace(" ", string.Empty)}") : null;
 
         public string Name { get; set; }
 

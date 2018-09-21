@@ -117,16 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Add" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png</value>
+  </data>
   <data name="Configuration" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_settings_white_24dp.png</value>
   </data>
   <data name="FilterAll" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_done_all_black_36dp</value>
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_done_all_black_36dp.png</value>
   </data>
   <data name="FilterClassA" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_done_all_black_36dp</value>
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_done_all_black_36dp.png</value>
   </data>
   <data name="FilterFIFO" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_done_all_black_36dp</value>
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/hardware/ic_developer_board_black_36dp.png</value>
   </data>
 </root>

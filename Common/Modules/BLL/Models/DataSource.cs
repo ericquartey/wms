@@ -17,7 +17,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Properties
 
-        public int Count { get; set; }
+        public int Count => this.GetTotalCount();
 
         public string CountInfo
         {
@@ -50,24 +50,22 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Methods
 
-        public void GetTotalCount()
+        public int GetTotalCount()
         {
             if (this.GetCount == null)
             {
                 this.CountInfo = "-";
-                return;
+                return 0;
             }
-            this.Count = this.GetCount(this.Filter);
-            this.CountInfo = this.Count.ToString();
+            var count = this.GetCount(this.Filter);
+            this.CountInfo = count.ToString();
+
+            return count;
         }
 
         public IQueryable<TEntity> Load()
         {
-            if (this.GetData == null)
-            {
-                return null;
-            }
-            return this.GetData(this.Filter);
+            return this.GetData?.Invoke(this.Filter);
         }
 
         public override String ToString()

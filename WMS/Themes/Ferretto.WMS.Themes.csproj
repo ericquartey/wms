@@ -8013,7 +8013,7 @@
     <Resource Include="Icons\Ferretto\Toolbar\ZoomOut.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Light\FilterBar.xaml">
+    <Page Include="Themes\Light\TileBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
