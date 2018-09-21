@@ -17,6 +17,11 @@ namespace Ferretto.Common.Utils
             return ViewModelSuffixRegEx.Replace(viewModelName, string.Empty);
         }
 
+        public static string GetViewNameFromViewModelName(string viewModelName)
+        {
+            return ViewModelSuffixRegEx.Replace(viewModelName, Common.VIEW_SUFFIX);
+        }
+
         public static (string moduleName, string viewModelName) GetViewModelNameSplitted(string viewModelName)
         {
             var vmMatch = ViewModelNameRegEx.Match(viewModelName);
