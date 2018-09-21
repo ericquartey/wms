@@ -11,28 +11,37 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
+        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly BindingList<TEntity> items = new BindingList<TEntity>();
+        private IDataSource<TEntity> currentDataSource;
         private TEntity selectedItem;
-        private IFilter currentFilter;
 
         #endregion Fields
 
         #region Constructors
 
         public WmsGridViewModel()
-        {            
-            this.dataService = ServiceLocator.Current.GetInstance<IDataService>();
-            ServiceLocator.Current.GetInstance<IEventService>()
-                          .Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
-            this.RefreshGrid();
+        {
+            this.eventService.Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public BindingList<TEntity> Items => this.items;        
+        public IDataSource<TEntity> CurrentDataSource
+        {
+            get => this.currentDataSource;
+            set
+            {
+                if (this.SetProperty(ref this.currentDataSource, value))
+                {
+                    this.NotifyDataSourceChanged();
+                }
+            }
+        }
+
+        public BindingList<TEntity> Items => this.items;
 
         public TEntity SelectedItem
         {
@@ -46,26 +55,19 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public IFilter CurrentFilter
-        {
-            get => this.currentFilter;
-            set
-            {
-                if (this.SetProperty(ref this.currentFilter, value))
-                {
-                    this.NotifyFilterChanged();
-                }
-            }
-        }
-
         #endregion Properties
 
         #region Methods
 
         public void RefreshGrid()
         {
-            this.Items.RaiseListChangedEvents = false;            
-            var elements = this.dataService.GetData<TEntity>();
+            if (this.CurrentDataSource == null)
+            {
+                return;
+            }
+
+            this.Items.RaiseListChangedEvents = false;
+            var elements = this.CurrentDataSource.Load();
 
             this.items.Clear();
             foreach (var item in elements)
@@ -77,15 +79,19 @@ namespace Ferretto.Common.Controls
             this.Items.ResetBindings();
         }
 
-        protected void NotifySelectionChanged()
+        public void SetDataSource(object dataSource)
         {
-            // TODO ServiceLocator.Current.GetInstance<IEventService>().Invoke(new ItemSelectionChangedEvent<TModel>(this.selectedItem));
+            this.CurrentDataSource = dataSource as IDataSource<TEntity>;
         }
 
-        protected void NotifyFilterChanged()
+        protected void NotifyDataSourceChanged()
         {
-            this.Items.Clear();
             this.RefreshGrid();
+        }
+
+        protected void NotifySelectionChanged()
+        {
+            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity>(this.selectedItem));
         }
 
         #endregion Methods

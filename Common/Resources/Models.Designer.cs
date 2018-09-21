@@ -70,11 +70,92 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string CompartmentCode {
+            get {
+                return ResourceManager.GetString("CompartmentCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string CompartmentLot {
+            get {
+                return ResourceManager.GetString("CompartmentLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pairing.
+        /// </summary>
+        public static string CompartmentPairing {
+            get {
+                return ResourceManager.GetString("CompartmentPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string CompartmentStatus {
+            get {
+                return ResourceManager.GetString("CompartmentStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stock.
+        /// </summary>
+        public static string CompartmentStock {
+            get {
+                return ResourceManager.GetString("CompartmentStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub 1.
+        /// </summary>
+        public static string CompartmentSub1 {
+            get {
+                return ResourceManager.GetString("CompartmentSub1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub 2.
+        /// </summary>
+        public static string CompartmentSub2 {
+            get {
+                return ResourceManager.GetString("CompartmentSub2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available.
+        /// </summary>
+        public static string ItemAvailable {
+            get {
+                return ResourceManager.GetString("ItemAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Average Weight.
         /// </summary>
         public static string ItemAverageWeight {
             get {
                 return ResourceManager.GetString("ItemAverageWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Class.
+        /// </summary>
+        public static string ItemClass {
+            get {
+                return ResourceManager.GetString("ItemClass", resourceCulture);
             }
         }
         
@@ -160,15 +241,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lot.
-        /// </summary>
-        public static string ItemLot {
-            get {
-                return ResourceManager.GetString("ItemLot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Management Type.
         /// </summary>
         public static string ItemManagementType {
@@ -187,15 +259,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pairing.
-        /// </summary>
-        public static string ItemPairing {
-            get {
-                return ResourceManager.GetString("ItemPairing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pick Tolerance.
         /// </summary>
         public static string ItemPickTolerance {
@@ -205,7 +268,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ReorderPoint.
+        ///   Looks up a localized string similar to Reorder Point.
         /// </summary>
         public static string ItemReorderPoint {
             get {
@@ -223,11 +286,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Status.
+        ///   Looks up a localized string similar to Reserved for Pick.
         /// </summary>
-        public static string ItemStatus {
+        public static string ItemReservedForPick {
             get {
-                return ResourceManager.GetString("ItemStatus", resourceCulture);
+                return ResourceManager.GetString("ItemReservedForPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reserved to Store.
+        /// </summary>
+        public static string ItemReservedToStore {
+            get {
+                return ResourceManager.GetString("ItemReservedToStore", resourceCulture);
             }
         }
         
@@ -246,24 +318,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemStoreTolerance {
             get {
                 return ResourceManager.GetString("ItemStoreTolerance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sub 1.
-        /// </summary>
-        public static string ItemSub1 {
-            get {
-                return ResourceManager.GetString("ItemSub1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sub 2.
-        /// </summary>
-        public static string ItemSub2 {
-            get {
-                return ResourceManager.GetString("ItemSub2", resourceCulture);
             }
         }
         

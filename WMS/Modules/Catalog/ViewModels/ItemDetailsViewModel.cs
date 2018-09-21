@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
@@ -15,12 +14,11 @@ namespace Ferretto.WMS.Modules.Catalog
     {
         #region Fields
 
-        private readonly IDataService dataService;
-        private readonly IImageService imageService;
+        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
+        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private ICommand hideDetailsCommand;
-        private ICommand saveCommand;
-        private ImageSource imgArticle;
         private Item item;
+        private ICommand saveCommand;
 
         #endregion Fields
 
@@ -29,10 +27,6 @@ namespace Ferretto.WMS.Modules.Catalog
         public ItemDetailsViewModel()
         {
             this.Initialize();
-
-            this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
-            this.dataService = ServiceLocator.Current.GetInstance<IDataService>();
-
         }
 
         #endregion Constructors
@@ -42,16 +36,7 @@ namespace Ferretto.WMS.Modules.Catalog
         public IEnumerable<AbcClass> AbcClassChoices => this.dataService.GetData<AbcClass>().AsEnumerable();
 
         public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-            (this.hideDetailsCommand = new DelegateCommand(ExecuteHideDetailsCommand));
-
-        public ICommand SaveCommand => this.saveCommand ??
-          (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
-
-        public ImageSource ImgArticle
-        {
-            get => this.imgArticle;
-            set => this.SetProperty(ref this.imgArticle, value);
-        }
+            (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
 
         public Item Item
         {
@@ -59,47 +44,44 @@ namespace Ferretto.WMS.Modules.Catalog
             set => this.SetProperty(ref this.item, value);
         }
 
+        public IEnumerable<ItemManagementType> ItemManagementTypeChoices => this.dataService.GetData<ItemManagementType>().AsEnumerable();
+
+        public ICommand SaveCommand => this.saveCommand ??
+                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+
+        public IEnumerable<MeasureUnit> UnitOfMeasurementChoices => this.dataService.GetData<MeasureUnit>().AsEnumerable();
+
         #endregion Properties
 
         #region Methods
 
-        private static void ExecuteHideDetailsCommand()
+        private void ExecuteHideDetailsCommand()
         {
-            ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Item>(false));
+            this.eventService.Invoke(new ShowDetailsEventArgs<Item>(false));
         }
 
         private void ExecuteSaveCommand()
         {
-            this.dataService.SaveChanges();
+            int rowSaved = this.dataService.SaveChanges();
+
+            if (rowSaved != 0)
+            {
+                this.eventService.Invoke(new ItemChangedEvent<Item>(this.Item));
+
+                ServiceLocator.Current.GetInstance<IEventService>()
+                              .Invoke(new StatusEvent(Ferretto.Common.Resources.Catalog.ItemSavedSuccessfully));
+            }
         }
 
         private void Initialize()
         {
-            ServiceLocator.Current.GetInstance<IEventService>()
-                .Subscribe<ItemSelectionChangedEvent<Item>>(
+            this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
         }
 
         private void OnItemSelectionChanged(Item selectedItem)
         {
-            if (selectedItem != null)
-            {
-                this.Item = selectedItem;
-                this.ImgArticle = selectedItem.Image != null ? this.imageService.GetImage(selectedItem.Image) : null;
-            }
-            else
-            {
-                this.ImgArticle = null;
-            }
-        }
-
-        private void SaveItem()
-        {
-            // TODO: call data saving service
-
-            ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ItemChangedEvent<Item>(this.Item));
+            this.Item = selectedItem;
         }
 
         #endregion Methods

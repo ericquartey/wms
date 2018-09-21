@@ -192,9 +192,15 @@
     <Compile Include="Controls\DateEdit\DateEdit.xaml.cs">
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FilterBar\FilterBar.xaml.cs">
-      <DependentUpon>FilterBar.xaml</DependentUpon>
+	<Compile Include="Controls\Expander\Expander.cs" />
+    <Compile Include="Controls\TileBar\Tile.cs" />
+    <Compile Include="Controls\TileBar\TileBar.xaml.cs">
+      <DependentUpon>TileBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Image\WmsImage.xaml.cs">
+      <DependentUpon>WmsImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Image\ViewModels\ImageViewModel.cs" />
     <Compile Include="Controls\InfoText\InfoText.xaml.cs">
       <DependentUpon>InfoText.xaml</DependentUpon>
     </Compile>
@@ -208,12 +214,16 @@
     <Compile Include="Controls\SplashScreen\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\StatusBar\StatusBar.cs" />
+    <Compile Include="Controls\StatusBar\StatusBarViewModel.cs" />
     <Compile Include="Controls\TextBox\TextBox.xaml.cs">
       <DependentUpon>TextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\WmsView\WmsView.cs" />
+    <Compile Include="Converters\IntToThousandsConverter.cs" />
+    <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
@@ -243,7 +253,12 @@
     <Page Include="Controls\DateEdit\DateEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FilterBar\FilterBar.xaml">
+    <Page Include="Controls\TileBar\TileBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Image\WmsImage.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\InfoText\InfoText.xaml">

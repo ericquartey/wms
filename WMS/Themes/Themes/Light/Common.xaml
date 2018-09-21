@@ -41,7 +41,7 @@
     <SolidColorBrush x:Key="OnCommonSecondaryUltralight"
                      Color="{StaticResource Black}" />
     <SolidColorBrush x:Key="OnCommonSecondaryLight"
-                     Color="{StaticResource PureWhite}" />
+                     Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="OnCommonSecondaryMedium"
                      Color="{StaticResource PureWhite}" />
     <SolidColorBrush x:Key="OnCommonSecondaryDark"
@@ -62,6 +62,13 @@
 
     <!--  fonts  -->
     <system:Double x:Key="MenuFontSize">14</system:Double>
+    <system:Double x:Key="GridFontSize">14</system:Double>
+
+    <FontFamily x:Key="FontSmall">./#Segoe UI</FontFamily>
+    <system:Double x:Key="FontSizeSmall">12</system:Double>
+
+    <!--  StatusBar  -->
+    <system:Double x:Key="StatusBarHeight">20</system:Double>
 
     <!--  menu layout  -->
     <system:Double x:Key="MenuTileHeight">55</system:Double>
