@@ -7,8 +7,10 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CompartmentationPageView">
-
     <Grid>
-        
+        <Canvas Name="cnvImage" MouseDown="imgCamera_MouseDown" MouseMove="imgCamera_MouseMove"
+                MouseUp="imgCamera_MouseUp" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Blue">
+            
+        </Canvas>
     </Grid>
 </Page>
