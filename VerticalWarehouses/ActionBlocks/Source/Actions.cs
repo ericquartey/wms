@@ -11,7 +11,7 @@ namespace Ferretto.VW.ActionBlocks
 {
   public class CActions
   {
-    private int m_myItem;
+    private readonly int m_myItem;
 
     public CActions()
     {

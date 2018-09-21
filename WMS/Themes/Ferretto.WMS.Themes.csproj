@@ -8013,6 +8013,9 @@
     <Resource Include="Icons\Ferretto\Toolbar\ZoomOut.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Light\Expander.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Light\TileBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

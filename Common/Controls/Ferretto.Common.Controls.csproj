@@ -192,6 +192,7 @@
     <Compile Include="Controls\DateEdit\DateEdit.xaml.cs">
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
+	<Compile Include="Controls\Expander\Expander.cs" />
     <Compile Include="Controls\TileBar\Tile.cs" />
     <Compile Include="Controls\TileBar\TileBar.xaml.cs">
       <DependentUpon>TileBar.xaml</DependentUpon>

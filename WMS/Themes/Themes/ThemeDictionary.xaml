@@ -15,6 +15,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/GroupBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/WmsGridControl.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/TextBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Expander.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/TileBar.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
