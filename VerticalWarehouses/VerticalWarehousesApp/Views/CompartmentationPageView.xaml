@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="CompartmentationPageView">
-    <Grid Width="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Frame}, Path=ActualWidth}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>

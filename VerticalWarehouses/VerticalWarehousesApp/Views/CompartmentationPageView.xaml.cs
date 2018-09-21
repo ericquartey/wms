@@ -5,10 +5,14 @@ using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Windows.Media;
 
+using System.Diagnostics;
+
 namespace Ferretto.VW.VerticalWarehousesApp.Views
 {
     public partial class CompartmentationPageView : Page
     {
+        const int RESOLUTION = 20; //passo minimo di lunghezza scomparto
+
         Point testPoint;
         Point currentRectStartPoint;
 
@@ -44,7 +48,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                     this.cnvImage.Children.Add(this.currentRect);
 
                     this.currentRect.SetValue(Canvas.LeftProperty, this.testPoint.X);
-                    this.currentRect.SetValue(Canvas.TopProperty, this.testPoint.Y + 50);
+                    this.currentRect.SetValue(Canvas.TopProperty, this.testPoint.Y - 50); //50 = correzione: il canvas è posto nella 2a riga del Grid, con la prima riga alta 50px
 
                     this.isDrawing = true;
                 }
@@ -59,16 +63,20 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 {
                     this.testPoint = e.GetPosition(this);
 
-                    double x = this.testPoint.X - this.currentRectStartPoint.X;
-                    double y = this.testPoint.Y - this.currentRectStartPoint.Y;
+                    int x = ((int)(this.testPoint.X - this.currentRectStartPoint.X) % RESOLUTION == 0) ? (int)(this.testPoint.X - this.currentRectStartPoint.X) : ((int)(this.testPoint.X - this.currentRectStartPoint.X) - ((int)(this.testPoint.X - this.currentRectStartPoint.X) % RESOLUTION));
+
+
+                    int y = ((int)(this.testPoint.Y - this.currentRectStartPoint.Y) % RESOLUTION == 0) ? (int)(this.testPoint.Y - this.currentRectStartPoint.Y) : ((int)(this.testPoint.Y - this.currentRectStartPoint.Y) - ((int)(this.testPoint.Y - this.currentRectStartPoint.Y) % RESOLUTION));
+
+                    Debug.Print("x, y: " + x + ", " + y + "\n");
 
                     if (x >= 0)
                     {
-                        this.currentRect.Width = x;
+                        this.currentRect.Width = (double)x;
                     }
                     if (y >= 0)
                     {
-                        this.currentRect.Height = y;
+                        this.currentRect.Height = (double)y;
                     }
                 }
             }
