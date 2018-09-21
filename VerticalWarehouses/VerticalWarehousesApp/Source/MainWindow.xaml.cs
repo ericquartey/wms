@@ -57,9 +57,9 @@ namespace Ferretto.VW.VerticalWarehousesApp
             this._NavigationRegion.Navigate(new TestConnectionPageView());
         }
 
-        private void NavigateToRandomPage()
+        private void NavigateToCompartmentationPage()
         {
-            this._NavigationRegion.Navigate(new RandomPage());
+            this._NavigationRegion.Navigate(new CompartmentationPageView());
         }
 
         private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
@@ -67,9 +67,9 @@ namespace Ferretto.VW.VerticalWarehousesApp
             this.NavigateToTestConnectionPage();
         }
 
-        private void ButtonNavigateToRandomPage(object sender, RoutedEventArgs e)
+        private void ButtonNavigateToCompartmentationPage(object sender, RoutedEventArgs e)
         {
-            this.NavigateToRandomPage();
+            this.NavigateToCompartmentationPage();
         }
     }
 }

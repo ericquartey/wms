@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 
@@ -22,9 +18,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.ViewModels
         public AppViewModel()
         {
             this.ViewViewModels.Add(new TestConnectionPageViewModel());
-            this.ViewViewModels.Add(new RandomPageViewModel());
-
-            this.CurrentViewViewModel = this.ViewViewModels[1];
+            this.ViewViewModels.Add(new CompartmentationPageViewModel());
         }
 
         
