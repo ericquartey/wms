@@ -23,12 +23,12 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Expander x:Name="FiltersExpander"
-                  Grid.Column="0"
-                  VerticalAlignment="Stretch"
-                  VerticalContentAlignment="Stretch"
-                  ExpandDirection="Left"
-                  IsExpanded="True">
+        <wms:Expander x:Name="FiltersExpander"
+                      Grid.Column="0"
+                      VerticalAlignment="Stretch"
+                      VerticalContentAlignment="Stretch"
+                      ExpandDirection="Left"
+                      IsExpanded="True">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -37,7 +37,7 @@
                 <wms:TileBar ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
             </Grid>
-        </Expander>
+        </wms:Expander>
 
         <Grid Grid.Column="1">
 
