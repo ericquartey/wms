@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Windows.Media;
-
+using Ferretto.VW.CustomControls.Controls;
 using System.Diagnostics;
 
 namespace Ferretto.VW.VerticalWarehousesApp.Views
@@ -16,8 +16,8 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         Point testPoint;
         Point currentRectStartPoint;
 
-        Rectangle currentRect;
-        List<Rectangle> rects;
+        CompartmentRectangle currentRect;
+        List<CompartmentRectangle> rects;
 
         CompartmentActionMode currentActionMode = CompartmentActionMode.NoActionSelectedYet;
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         public CompartmentationPageView()
         {
             this.InitializeComponent();
-            this.rects = new List<Rectangle>();
+            this.rects = new List<CompartmentRectangle>();
             this.CheckActionButtonsSelectionCorrectness();
         }
 
@@ -42,10 +42,9 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 {
                     this.testPoint = e.GetPosition(this);
                     this.currentRectStartPoint = this.testPoint;
-                    this.currentRect = new Rectangle();
+                    this.currentRect = new CompartmentRectangle();
                     this.currentRect.Height = 0;
                     this.currentRect.Width = 0;
-                    this.currentRect.Fill = Brushes.Red;
                     this.cnvImage.Children.Add(this.currentRect);
 
                     this.currentRect.SetValue(Canvas.LeftProperty, this.testPoint.X);
