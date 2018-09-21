@@ -1,31 +1,25 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Media;
-using Ferretto.VW.VerticalWarehousesApp.Source;
 using Ferretto.VW.VerticalWarehousesApp.ViewModels;
 using Ferretto.VW.VerticalWarehousesApp.Views;
 
 namespace Ferretto.VW.VerticalWarehousesApp
 {
-  /// <summary>
-  /// Interaction logic for MainWindow.xaml
-  /// </summary>
   public partial class MainWindow : Window
   {
         MainWindowViewModel mwvm;
-        AutomationManager am;
 
         public MainWindow()
         {            
             this.InitializeComponent();
             this._NavigationRegion.Navigate(new TestConnectionPageView());
-            this.am = new AutomationManager();
         }
 
         public void OpenUserLogInPopUp(object sender, EventArgs e)
-         {
+        {
                 this.UserLoginPopup.IsOpen = true;
-          }
+        }
 
         public void CloseUserLogInPopUp(object sender, EventArgs e)
          {
@@ -55,8 +49,7 @@ namespace Ferretto.VW.VerticalWarehousesApp
             } else
             {
                 this.UserLoggedRect.Fill = new SolidColorBrush(Colors.Green);
-            }
-            
+            }         
         }
 
         private void NavigateToTestConnectionPage()
@@ -71,17 +64,12 @@ namespace Ferretto.VW.VerticalWarehousesApp
 
         private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
         {
-            //Uri uri = new Uri("Page2.xaml", UriKind.Relative);
-            //this.NavigationService.Navigate(uri);
             this.NavigateToTestConnectionPage();
         }
 
         private void ButtonNavigateToRandomPage(object sender, RoutedEventArgs e)
         {
-            //Uri uri = new Uri("Page2.xaml", UriKind.Relative);
-            //this.NavigationService.Navigate(uri);
             this.NavigateToRandomPage();
         }
-
     }
 }

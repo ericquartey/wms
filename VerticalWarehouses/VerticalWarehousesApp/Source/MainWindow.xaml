@@ -319,7 +319,7 @@
                     </ComboBox>
                 </Border>
                 <Border BorderBrush="White" BorderThickness="1" Margin="2" Width="390">
-                    <Image Source="C:\Users\npadovani\Desktop\FERRETTO\Produzione\VerticalWarehouse\Warehouse Management System\VerticalWarehouses\VerticalWarehousesApp\Assets\ferrettologo_768x162.jpg"
+                    <Image Source="C:\Users\npadovani\Desktop\FERRETTO\Produzione\VerticalWarehouse\VerticalWarehouses\VerticalWarehousesApp\Assets\ferrettologo_768x162.jpg"
                            Stretch="Fill"/>
                 </Border>
             </StackPanel>
@@ -328,26 +328,11 @@
                 Width="200">
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
                 <StackPanel x:Name="ButtonRegionStackPanel">
-                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="False">
-                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Click="ButtonNavigateToTestConnectionPage" Content="NavigateToConnectionPageView"/>
+                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="True">
+                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Click="ButtonNavigateToTestConnectionPage" Content="Connection Test"/>
                     </Border>
-                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="False">
-                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Click="ButtonNavigateToRandomPage" Content="NavigateToRandomPage"/>
-                    </Border>
-                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="False">
-                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Content="NavigateToView2"/>
-                    </Border>
-                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="False">
-                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Content="NavigateToView3"/>
-                    </Border>
-                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="False">
-                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Content="NavigateToView4"/>
-                    </Border>
-                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="False">
-                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Content="NavigateToView5"/>
-                    </Border>
-                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="False">
-                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Content="NavigateToView6"/>
+                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="True">
+                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Click="ButtonNavigateToRandomPage" Content="Compartmentation"/>
                     </Border>
                 </StackPanel>
             </ScrollViewer>
