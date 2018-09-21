@@ -193,9 +193,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\user_36dp_example.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\Ferretto\Menu\grey\cells.png" />
     <Resource Include="Icons\Ferretto\Menu\grey\compartments_mapping.png" />
     <Resource Include="Icons\Ferretto\Menu\grey\ic_arrow_downward_grey_24dp.png" />
@@ -8016,6 +8013,13 @@
     <Resource Include="Icons\Ferretto\Toolbar\ZoomOut.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Light\Expander.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Light\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Light\ComboBoxEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -8046,6 +8050,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Light\WmsGridControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\ThemeDictionary.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -8055,17 +8063,19 @@
       <Project>{0ddbd6dc-1f23-4f52-849d-94da9e5f1b12}</Project>
       <Name>Ferretto.Common.Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
+      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
+      <Name>Ferretto.Common.Resources</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\FGLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic_help_gray_36dp.png" />
-    <Resource Include="Images\user_36dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\ic_help_gray_24dp.png" />
-    <Resource Include="Images\user_24dp.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Ferretto\Logo\favicon.ico" />

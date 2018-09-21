@@ -24,7 +24,8 @@
                 <dxdo:LayoutGroup ItemHeight="0.7*"
                                   Orientation="Horizontal">
                     <dxdo:DocumentGroup Name="MainDocumentGroup"
-                                        MDIStyle="Tabbed" />
+                                        MDIStyle="Tabbed"
+                                        DestroyOnClosingChildren="False"/>
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
         </ctrls:WmsMainDockLayoutManager>

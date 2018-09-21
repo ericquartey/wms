@@ -29,7 +29,7 @@ namespace Ferretto.Common.Modules.BLL
         {
             this.Container.RegisterType<IDataService, DataService>();
             this.Container.RegisterType<IEventService, EventService>();
-            this.Container.RegisterType<IFilterService, FilterService>();
+            this.Container.RegisterType<IDataSourceService, DataSourceService>();
             this.Container.RegisterType<IImageService, ImageService>();
         }
 

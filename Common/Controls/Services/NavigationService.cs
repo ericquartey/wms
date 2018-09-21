@@ -83,8 +83,7 @@ namespace Ferretto.Common.Controls.Services
                 // View state is changed, register new instance of same view type
                 var newRegId = viewModelBind.GetNewId();
                 instanceModuleViewName = $"{moduleViewName}.{newRegId}";
-                this.container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel,
-                    instanceModuleViewName);
+                this.container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, instanceModuleViewName);
                 this.container.RegisterType(typeof(INavigableView), viewModelBind.View, instanceModuleViewName);
 
                 // Map cloned type to current layout
@@ -98,47 +97,24 @@ namespace Ferretto.Common.Controls.Services
 
         #region Disappear
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "S4144:Methods should not have identical implementations",
-            Justification = "Method is not yet fully implemented")]
-        public void Disappear<TViewModel>()
+        public void Disappear(INavigableViewModel viewModel)
         {
-            var (moduleName, viewModelName) = MvvmNaming.GetViewModelNames<TViewModel>();
-            this.Disappear(moduleName, viewModelName);
-        }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage(
-            "Major Code Smell",
-            "CA1804",
-            Justification = "Method is not yet fully implemented")]
-        public void Disappear(string moduleName, string viewModelName)
-        {
-            if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
+            if (viewModel == null)
+            {
+                return;
+            }
+            
+            var moduleRegionName = viewModel.MapId;
+            if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
             {
                 return;
             }
 
-            var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
-            var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
-
-            throw new NotSupportedException("Disappear need to be implemented");
-
-/*
-      // Get corrent mapid
-      var moduleRegionName = $"{moduleName}.{modelName}.1";
-      if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
-      {
-        return;
-      }
-
-      var region = this.regionManager.Regions[moduleRegionName];
-      var viewToRemove = region.GetView(moduleViewName);
-      if (viewToRemove != null)
-      {
-        region.Remove(viewToRemove);
-      }
-*/
+            var region = this.regionManager.Regions[moduleRegionName];
+            var viewActive = this.regionManager.Regions[moduleRegionName].ActiveViews.First();
+            region.Deactivate(viewActive);
+            this.regionManager.Regions[moduleRegionName].Remove(viewActive);
+            this.regionManager.Regions.Remove(moduleRegionName);
         }
 
         #endregion
@@ -187,7 +163,19 @@ namespace Ferretto.Common.Controls.Services
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(names.viewModelName);
         }
 
-        public INavigableViewModel GetViewModelByMapId(string mapId)
+        public INavigableViewModel GetRegisteredViewModel(string mapId)
+        {
+            var viewModel = this.GetViewModelByMapId(mapId);
+            viewModel.MapId = mapId;
+            viewModel.Token = mapId;
+            return viewModel;
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private INavigableViewModel GetViewModelByMapId(string mapId)
         {
             if (string.IsNullOrEmpty(mapId))
             {
@@ -196,10 +184,6 @@ namespace Ferretto.Common.Controls.Services
 
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
         }
-
-        #endregion
-
-        #region Private methods
 
         private string GetNewRegistrationId<TItemsView, TItemsViewModel>()
             where TItemsView : INavigableView

@@ -17,9 +17,9 @@
                Panel.ZIndex="1"
                Focusable="False"
                Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogo.png" />
-        <DockPanel Background="{DynamicResource CommonSecondaryLight}">
+        <DockPanel Background="{DynamicResource CommonBackground}">
             <dxnav:TileBar x:Name="WMSTileNav"
-                           Padding="125,10,120,0"
+                           Padding="125,10,150,0"
                            ctrls:CustomMenuTileFlyoutPosition.Enabled="True"
                            AllowItemSelection="False"
                            Background="Transparent"
@@ -42,11 +42,11 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Image Width="36"
-                   Height="36"
-                   Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/user_36dp_example.png"
+            <Image Width="18"
+                   Height="18"
+                   Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/social/ic_person_black_18dp.png"
                    VerticalAlignment="Center"/>
-            <TextBlock Text="Nicola Moro"
+            <TextBlock Text="Warehouse Manager"
                        Grid.Column="1"
                        VerticalAlignment="Center"
                        Foreground="{DynamicResource CommonSecondaryDark}"

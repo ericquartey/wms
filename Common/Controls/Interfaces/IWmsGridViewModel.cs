@@ -1,11 +1,13 @@
-using Ferretto.Common.BLL.Interfaces;
-
 namespace Ferretto.Common.Controls.Interfaces
 {
     public interface IWmsGridViewModel
     {
-        IFilter CurrentFilter { get; set; }
+        #region Methods
 
         void RefreshGrid();
+
+        void SetDataSource(object dataSource);
+
+        #endregion Methods
     }
 }

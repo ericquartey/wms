@@ -120,6 +120,12 @@
   <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
     <value>Error retrieving document group from the Main Layout Manager</value>
   </data>
+  <data name="ConverterCanConvertOnlyToStringType" xml:space="preserve">
+    <value>Converter can only convert to value of type string</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToTextWrappingType" xml:space="preserve">
+    <value>Converter can only convert to value of type TextWrapping.</value>
+  </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Converter can only convert to value of type Visibility.</value>
   </data>

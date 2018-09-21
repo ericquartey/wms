@@ -5,7 +5,8 @@
                xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               Title="Anagrafica articoli"
+               xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+               Title="{x:Static res:Catalog.ItemsCatalog}"
                d:DesignHeight="450"
                d:DesignWidth="800"
                mc:Ignorable="d">
