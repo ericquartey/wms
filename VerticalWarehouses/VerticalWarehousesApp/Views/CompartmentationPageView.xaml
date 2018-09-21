@@ -13,7 +13,14 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight">
-            
+            <Border BorderBrush="White" BorderThickness="1" Margin="5" IsEnabled="True">
+                <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20"
+                        Click="ButtonSetActionToCreateCompartment" Content="Create Compartment" Margin="2,0"/>
+            </Border>
+            <Border BorderBrush="White" BorderThickness="1" Margin="5" IsEnabled="True">
+                <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20"
+                        Click="ButtonSetActionToDoNothing" Content="Do Nothing" Margin="2,0"/>
+            </Border>
         </StackPanel>
         <Canvas Grid.Row="1" Name="cnvImage" MouseDown="imgCamera_MouseDown" MouseMove="imgCamera_MouseMove"
                 MouseUp="imgCamera_MouseUp" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"

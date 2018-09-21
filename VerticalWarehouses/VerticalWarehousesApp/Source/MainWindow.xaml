@@ -319,7 +319,7 @@
                     </ComboBox>
                 </Border>
                 <Border BorderBrush="White" BorderThickness="1" Margin="2" Width="390">
-                    <Image Source="C:\Users\npadovani\Desktop\FERRETTO\Produzione\VerticalWarehouse\VerticalWarehouses\VerticalWarehousesApp\Assets\ferrettologo_768x162.jpg"
+                    <Image Source="/Assets/ferrettologo_768x162.jpg"
                            Stretch="Fill"/>
                 </Border>
             </StackPanel>
