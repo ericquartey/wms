@@ -37,8 +37,6 @@
                                    Margin="0,5"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
-                                   dxb:ImageColorizer.Color="{DynamicResource OnCommonSecondaryLightColor}"
-                                   dxb:ImageColorizer.IsEnabled="True"
                                    SnapsToDevicePixels="True"
                                    Source="{Binding Image}"
                                    Stretch="None" />
