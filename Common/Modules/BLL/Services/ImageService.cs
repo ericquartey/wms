@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Ferretto.Common.BLL.Interfaces;
@@ -41,7 +42,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     nameof(pathName));
             }
 
-            return new BitmapImage(uri);
+            return File.Exists(uri.AbsolutePath) ? new BitmapImage(uri) : null;
         }
 
         #endregion Methods

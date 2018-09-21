@@ -8016,6 +8016,10 @@
     <Page Include="Themes\Light\Expander.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Themes\Light\TileBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Light\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
