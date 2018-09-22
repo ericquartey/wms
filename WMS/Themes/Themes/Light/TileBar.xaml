@@ -33,13 +33,13 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Image x:Name="TileImage"
-                                   Margin="0,5"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
-                                   SnapsToDevicePixels="True"
-                                   Source="{Binding Image}"
-                                   Stretch="None" />
+                            <wms:WmsIcon x:Name="TileImage"
+                                         Margin="0,5"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         SnapsToDevicePixels="True"
+                                         SymbolName="{Binding Image}"
+                                         ColorizeBrush="{DynamicResource OnCommonSecondaryLight}"/>
                             <Label x:Name="TileCountLabel"
                                    Grid.Column="1"
                                    HorizontalAlignment="Right"
