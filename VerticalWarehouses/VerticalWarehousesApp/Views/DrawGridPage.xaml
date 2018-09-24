@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="80"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="80" colu/>
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <!--<Image HorizontalAlignment="Left" Height="430" Margin="10,10,0,0" VerticalAlignment="Top" Width="780" Source="/Ferretto.VW.VerticalWarehousesApp;component/Assets/griglia_map_cassetto.jpg" Visibility="Hidden"/>-->
         <StackPanel Grid.Row="0" Background="#FF116118">
