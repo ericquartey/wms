@@ -8096,6 +8096,15 @@
   <ItemGroup>
     <Page Include="Themes\Light\ScrollViewer.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Tiles\Regions_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Tiles\Products_black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Tiles\Sectors_black.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\cleanup.targets" />
 </Project>
