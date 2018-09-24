@@ -319,7 +319,7 @@
                     </ComboBox>
                 </Border>
                 <Border BorderBrush="White" BorderThickness="1" Margin="2" Width="390">
-                    <Image Source="C:\Users\npadovani\Desktop\FERRETTO\Produzione\VerticalWarehouse\VerticalWarehouses\VerticalWarehousesApp\Assets\ferrettologo_768x162.jpg"
+                    <Image Source="../Assets/ferrettologo_768x162.jpg"
                            Stretch="Fill"/>
                 </Border>
             </StackPanel>
@@ -333,6 +333,9 @@
                     </Border>
                     <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="True">
                         <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Click="ButtonNavigateToRandomPage" Content="Compartmentation"/>
+                    </Border>
+                    <Border BorderBrush="White" BorderThickness="1" Margin="5" Height="100" IsEnabled="True">
+                        <Button Background="Transparent" BorderThickness="0" Foreground="White" FontSize="20" Click="ButtonNavigateToManualPage" Content="Manual"/>
                     </Border>
                 </StackPanel>
             </ScrollViewer>

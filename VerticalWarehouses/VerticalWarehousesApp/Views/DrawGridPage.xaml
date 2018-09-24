@@ -1,0 +1,32 @@
+﻿<Page x:Class="Ferretto.VW.VerticalWarehousesApp.Views.DrawGridPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Ferretto.VW.VerticalWarehousesApp.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="DrawGrid">
+
+    <Grid Background="White">
+        <Image HorizontalAlignment="Left" Height="430" Margin="10,10,0,0" VerticalAlignment="Top" Width="780" Source="/Ferretto.VW.VerticalWarehousesApp;component/Assets/griglia_map_cassetto.jpg" Visibility="Hidden"/>
+        <Canvas x:Name="canvas" Margin="0,83,0,75">
+            <Canvas.Background>
+                <DrawingBrush TileMode="Tile" Viewport="-10,-10,25,25" 
+                                     ViewportUnits="Absolute">
+                    <DrawingBrush.Drawing>
+                        <GeometryDrawing>
+                            <GeometryDrawing.Geometry>
+                                <RectangleGeometry Rect="0,0,50,50"/>
+                            </GeometryDrawing.Geometry>
+                            <GeometryDrawing.Pen>
+                                <Pen Brush="Gray" Thickness="1"/>
+                            </GeometryDrawing.Pen>
+                        </GeometryDrawing>
+                    </DrawingBrush.Drawing>
+                </DrawingBrush>
+            </Canvas.Background>
+            <Rectangle Width="751" Height="251" Canvas.Left="15" Canvas.Top="15" Stroke="#FFA21919"/>
+        </Canvas>
+    </Grid>
+</Page>

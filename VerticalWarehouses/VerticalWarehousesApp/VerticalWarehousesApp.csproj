@@ -59,6 +59,15 @@
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RandomPageViewModel.cs" />
     <Compile Include="ViewModels\TestConnectionPageViewModel.cs" />
+    <Compile Include="Views\DrawerPage.xaml.cs">
+      <DependentUpon>DrawerPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DrawGridPage.xaml.cs">
+      <DependentUpon>DrawGridPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ManualCompartmentPage.xaml.cs">
+      <DependentUpon>ManualCompartmentPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RandomPage.xaml.cs">
       <DependentUpon>RandomPage.xaml</DependentUpon>
     </Compile>
@@ -77,6 +86,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\DrawerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DrawGridPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ManualCompartmentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RandomPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -126,6 +147,7 @@
     <Content Include="Assets\ferrettologo_768x162.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Assets\griglia_map_cassetto.jpg" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -52,6 +52,7 @@ namespace Ferretto.VW.VerticalWarehousesApp
             }         
         }
 
+        #region navigation
         private void NavigateToTestConnectionPage()
         {
             this._NavigationRegion.Navigate(new TestConnectionPageView());
@@ -62,6 +63,28 @@ namespace Ferretto.VW.VerticalWarehousesApp
             this._NavigationRegion.Navigate(new RandomPage());
         }
 
+        //private void NavigateToManualPage()
+        //{
+        //    this._NavigationRegion.Navigate(new ManualCompartmentPage());
+        //}
+
+        public void NavigateToDrawerPage()
+        {
+            this._NavigationRegion.Navigate(new DrawerPage(this));
+        }
+
+        public void NavigateToManualPage()
+        {
+            this._NavigationRegion.Navigate(new ManualCompartmentPage(this));
+        }
+
+        public void NavigateToDrawGridPage()
+        {
+            this._NavigationRegion.Navigate(new DrawGridPage());
+        }
+        #endregion
+
+        #region controls
         private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
         {
             this.NavigateToTestConnectionPage();
@@ -71,5 +94,11 @@ namespace Ferretto.VW.VerticalWarehousesApp
         {
             this.NavigateToRandomPage();
         }
+
+        private void ButtonNavigateToManualPage(Object sender, RoutedEventArgs e)
+        {
+            this.NavigateToDrawerPage();
+        }
+        #endregion
     }
 }

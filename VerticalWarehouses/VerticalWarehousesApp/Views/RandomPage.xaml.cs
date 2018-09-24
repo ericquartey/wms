@@ -22,7 +22,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
     {
         public RandomPage()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
     }
 }
