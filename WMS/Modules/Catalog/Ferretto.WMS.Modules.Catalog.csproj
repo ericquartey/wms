@@ -183,9 +183,21 @@
     <Compile Include="Interfaces\IItemViewModel.cs" />
     <Compile Include="CatalogModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
+    <Compile Include="ViewModels\CompartmentsAndDetailsViewModel.cs" />
+    <Compile Include="ViewModels\CompartmentsViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
+    <Compile Include="Views\CompartmentDetailsView.xaml.cs">
+      <DependentUpon>CompartmentDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CompartmentsAndDetailsView.xaml.cs">
+      <DependentUpon>CompartmentsAndDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CompartmentsView.xaml.cs">
+      <DependentUpon>CompartmentsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ItemDetailsView.xaml.cs">
       <DependentUpon>ItemDetailsView.xaml</DependentUpon>
     </Compile>
@@ -203,6 +215,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\CompartmentDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CompartmentsAndDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CompartmentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ItemDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
