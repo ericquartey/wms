@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -22,7 +23,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
         #region Properties
 
-        public IEnumerable<IDataSource<Common.Models.Item>> DataSources => this.filterService.GetAll() as IEnumerable<IDataSource<Common.Models.Item>>;
+        public IEnumerable<IDataSource<Common.Models.Item>> DataSources => this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(ItemsViewModel))) as IEnumerable<IDataSource<Common.Models.Item>>;
 
         public IEnumerable<Tile> Filters => this.DataSources.Select(dataSource =>
             new Tile

@@ -12,6 +12,10 @@
         public const string ITEMS = "ItemsViewModel";
         public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
 
+        public const string COMPARTMENTDETAILS = "CompartmentDetailsViewModel";
+        public const string COMPARTMENTS = "CompartmentsViewModel";
+        public const string COMPARTMENTSANDDETAILS = "CompartmentsAndDetailsViewModel";
+
         #endregion Fields
     }
 

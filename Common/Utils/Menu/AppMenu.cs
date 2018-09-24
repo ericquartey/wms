@@ -47,7 +47,7 @@ namespace Ferretto.Common.Utils.Menu
                         new MainMenuItem(Navigation.Catalog_Items, bgColor, Icons.WarehouseItems, nameof(Modules.Catalog), Modules.Catalog.ITEMSANDDETAILS),
                         new MainMenuItem(Navigation.Catalog_Cells, bgColor, Icons.Cells, string.Empty, string.Empty),
                         new MainMenuItem(Navigation.Catalog_LoadingUnits, bgColor, Icons.LoadingUnit, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Catalog_Compartments, bgColor,  Icons.Compartments, string.Empty, string.Empty)
+                        new MainMenuItem(Navigation.Catalog_Compartments, bgColor,  Icons.Compartments, nameof(Modules.Catalog), Modules.Catalog.COMPARTMENTSANDDETAILS)
                     }
                 }
             );

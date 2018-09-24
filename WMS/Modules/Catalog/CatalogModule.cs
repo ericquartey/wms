@@ -28,6 +28,10 @@ namespace Ferretto.WMS.Modules.Catalog
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
             this.navigationService.Register<ItemsAndDetailsView, ItemsAndDetailsViewModel>();
+
+            this.navigationService.Register<CompartmentsView, CompartmentsViewModel>();
+            this.navigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
+            this.navigationService.Register<CompartmentsAndDetailsView, CompartmentsAndDetailsViewModel>();
         }
 
         #endregion

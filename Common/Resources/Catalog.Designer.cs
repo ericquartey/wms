@@ -61,11 +61,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string CompartmentAll {
+            get {
+                return ResourceManager.GetString("CompartmentAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartments.
         /// </summary>
         public static string Compartments {
             get {
                 return ResourceManager.GetString("Compartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment saved sucessfully.
+        /// </summary>
+        public static string CompartmentSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("CompartmentSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartments Catalog.
+        /// </summary>
+        public static string CompartmentsCatalog {
+            get {
+                return ResourceManager.GetString("CompartmentsCatalog", resourceCulture);
             }
         }
         
