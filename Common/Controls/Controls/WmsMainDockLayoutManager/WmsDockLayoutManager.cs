@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Linq;
+using System.Windows.Controls;
 using DevExpress.Xpf.Docking;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
@@ -22,6 +23,7 @@ namespace Ferretto.Common.Controls
             Current = this;
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
+            this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;
         }
 
         #endregion Constructors
@@ -34,6 +36,21 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public void ActivateView(string mapId)
+        {
+            if (string.IsNullOrEmpty(mapId))
+            {
+                return;
+            }
+
+            var layoutPanel = this.GetItems().Where((item) => item is LayoutPanel && (((LayoutPanel)item).Content is WmsView))
+                                             .FirstOrDefault(v => ((WmsView)((LayoutPanel)v).Content).MapId == mapId);
+            if (layoutPanel != null)
+            {
+                layoutPanel.IsActive = true;
+            }
+        }
+
         public void RegisterView(string regionName, string title)
         {
             var layoutPanel = new LayoutPanel();
@@ -44,6 +61,7 @@ namespace Ferretto.Common.Controls
                 throw new System.InvalidOperationException(Errors.CannotRetrieveDocumentGroupFromLayoutManager);
             }
             layoutPanel.AllowFloat = false;
+            layoutPanel.AllowHide = false;
             mainGroup.Add(layoutPanel);
             layoutPanel.IsActive = true;
         }
@@ -56,6 +74,39 @@ namespace Ferretto.Common.Controls
             }
             var viewModel = ((UserControl)vmsView).DataContext;
             this.navigationService.Disappear(viewModel as INavigableViewModel);
+        }
+
+        private void WmsMainDockLayoutManager_DockOperationCompleted(System.Object sender, DevExpress.Xpf.Docking.Base.DockOperationCompletedEventArgs e)
+        {
+            var item = e.Item;
+            var source = e.Source;
+            if (item.Parent == null)
+            {   // Is Closed
+                return;
+            }
+            if (item is DevExpress.Xpf.Docking.LayoutGroup)
+            {
+                return;
+            }
+            if (item.Parent.GetType() == typeof(DevExpress.Xpf.Docking.LayoutGroup))
+            {
+                var parentLayoutGroup = item.Parent as LayoutGroup;
+
+                var docLayoutGroup = this.CreateLayoutGroup();
+                var docGroup = this.CreateDocumentGroup();
+                docGroup.DestroyOnClosingChildren = true;
+                docLayoutGroup.Add(docGroup);
+                if ((parentLayoutGroup.Items.IndexOf(item)) == 0)
+                {
+                    parentLayoutGroup.Items.Insert(0, docGroup);
+                }
+                else
+                {
+                    parentLayoutGroup.Items.Add(docGroup);
+                }
+
+                this.LayoutController.Move(item, docGroup, DevExpress.Xpf.Layout.Core.MoveType.InsideGroup);
+            }
         }
 
         #endregion Methods

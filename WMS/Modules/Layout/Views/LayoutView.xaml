@@ -20,12 +20,17 @@
                             prism:RegionManager.RegionName="Layout.Menu" />
         </DockPanel>
         <ctrls:WmsMainDockLayoutManager Grid.Row="1">
-            <dxdo:LayoutGroup Orientation="Vertical">
-                <dxdo:LayoutGroup ItemHeight="0.7*"
-                                  Orientation="Horizontal">
-                    <dxdo:DocumentGroup Name="MainDocumentGroup"
-                                        MDIStyle="Tabbed"
-                                        DestroyOnClosingChildren="False"/>
+            <dxdo:LayoutGroup Name="HorizLayoutGroup"
+                              Orientation="Horizontal">
+                <dxdo:LayoutGroup Name="VertLayoutGroup"
+                                  Orientation="Vertical">
+                    <dxdo:LayoutGroup Name="MainDocumentGroupLayoutGroup"
+                                      ItemHeight="0.7*"
+                                      Orientation="Horizontal">
+                        <dxdo:DocumentGroup Name="MainDocumentGroup"
+                                            DestroyOnClosingChildren="False"
+                                            MDIStyle="Tabbed" />
+                    </dxdo:LayoutGroup>
                 </dxdo:LayoutGroup>
             </dxdo:LayoutGroup>
         </ctrls:WmsMainDockLayoutManager>
