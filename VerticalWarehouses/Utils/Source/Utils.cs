@@ -4,29 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Ferretto.VW.Utils
 {
-  public class Utils
-  { }
-
-  /// <summary>
-  /// My class implementation 
-  /// </summary>
-  public class CMyClass
-  {
-    const int NITEMS = 10;
-
-    private int m_myVariable;
 
     /// <summary>
-    /// Default c-tor.
+    /// Base interface.
+    /// IDriverBase interface is inherited by all device interface. 
     /// </summary>
-    public CMyClass()
+    public interface IDriverBase
     {
-      m_myVariable = 0;
-    }
+        //! Initialize the device resources.
+        bool Initialize();
+
+        //! Terminate and release the device resources.
+        void Terminate();
+
+    }  // interface IDriverBase
 
 
-  }
-  
+    public class Utils
+    { }
+
 }
