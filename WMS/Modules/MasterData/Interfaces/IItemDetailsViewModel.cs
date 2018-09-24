@@ -1,4 +1,4 @@
-﻿namespace Ferretto.WMS.Modules.Catalog
+﻿namespace Ferretto.WMS.Modules.MasterData
 {
     public interface IItemDetailsViewModel
     {

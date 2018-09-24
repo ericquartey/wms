@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{7C870A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Modules.BLL", "Common\Modules\BLL\Ferretto.Common.Modules.BLL.csproj", "{0D3E44FD-B369-4B85-AEBE-17A754D71C8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Modules.Catalog", "WMS\Modules\Catalog\Ferretto.WMS.Modules.Catalog.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Modules.MasterData", "WMS\Modules\MasterData\Ferretto.WMS.Modules.MasterData.csproj", "{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Modules.Layout", "WMS\Modules\Layout\Ferretto.WMS.Modules.Layout.csproj", "{965F447E-A8A3-42FA-9EDB-E90F677437AE}"
 EndProject

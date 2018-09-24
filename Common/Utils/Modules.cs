@@ -4,7 +4,7 @@
     {
     }
 
-    public static class Catalog
+    public static class MasterData
     {
         #region Fields
 

@@ -7,8 +7,8 @@
     <ProjectGuid>{9D9ECC03-073A-43F7-BED8-568CF67AB8AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ferretto.WMS.Modules.Catalog</RootNamespace>
-    <AssemblyName>Ferretto.WMS.Modules.Catalog</AssemblyName>
+    <RootNamespace>Ferretto.WMS.Modules.MasterData</RootNamespace>
+    <AssemblyName>Ferretto.WMS.Modules.MasterData</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -181,7 +181,7 @@
   <ItemGroup>
     <Compile Include="Interfaces\IItemDetailsViewModel.cs" />
     <Compile Include="Interfaces\IItemViewModel.cs" />
-    <Compile Include="CatalogModule.cs" />
+    <Compile Include="MasterDataModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsAndDetailsViewModel.cs" />

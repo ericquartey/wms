@@ -3,7 +3,7 @@ using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 
-namespace Ferretto.WMS.Modules.Catalog
+namespace Ferretto.WMS.Modules.MasterData
 {
     internal class CompartmentsAndDetailsViewModel : BaseNavigationViewModel
     {

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
@@ -8,14 +8,14 @@ using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.Catalog
+namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemsViewModel : BaseNavigationViewModel
+    public class CompartmentsViewModel : BaseNavigationViewModel
     {
         #region Fields
 
         private readonly IDataSourceService filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        private IDataSource<Common.Models.Item> selectedDataSource;
+        private IDataSource<Common.Models.Compartment> selectedDataSource;
         private Tile selectedFilter;
         private ICommand viewDetailsCommand;
 
@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
         #region Properties
 
-        public IEnumerable<IDataSource<Common.Models.Item>> DataSources => this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(ItemsViewModel))) as IEnumerable<IDataSource<Common.Models.Item>>;
+        public IEnumerable<IDataSource<Common.Models.Compartment>> DataSources => this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(CompartmentsViewModel))) as IEnumerable<IDataSource<Common.Models.Compartment>>;
 
         public IEnumerable<Tile> Filters => this.DataSources.Select(dataSource =>
             new Tile
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Modules.Catalog
             }
         );
 
-        public IDataSource<Common.Models.Item> SelectedDataSource
+        public IDataSource<Common.Models.Compartment> SelectedDataSource
         {
             get => this.selectedDataSource;
             set => this.SetProperty(ref this.selectedDataSource, value);
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Modules.Catalog
         private static void ExecuteViewDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Common.Models.Item>(true));
+                .Invoke(new ShowDetailsEventArgs<Common.Models.Compartment>(true));
         }
 
         #endregion Methods

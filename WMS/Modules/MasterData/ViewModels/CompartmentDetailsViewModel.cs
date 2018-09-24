@@ -8,23 +8,23 @@ using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.Catalog
+namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : BaseNavigationViewModel
+    public class CompartmentDetailsViewModel : BaseNavigationViewModel
     {
         #region Fields
 
         private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private Compartment compartment;
         private ICommand hideDetailsCommand;
-        private Item item;
         private ICommand saveCommand;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemDetailsViewModel()
+        public CompartmentDetailsViewModel()
         {
             this.Initialize();
         }
@@ -35,21 +35,17 @@ namespace Ferretto.WMS.Modules.Catalog
 
         public IEnumerable<AbcClass> AbcClassChoices => this.dataService.GetData<AbcClass>().AsEnumerable();
 
-        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-            (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
-
-        public Item Item
+        public Compartment Compartment
         {
-            get => this.item;
-            set => this.SetProperty(ref this.item, value);
+            get => this.compartment;
+            set => this.SetProperty(ref this.compartment, value);
         }
 
-        public IEnumerable<ItemManagementType> ItemManagementTypeChoices => this.dataService.GetData<ItemManagementType>().AsEnumerable();
+        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
+                    (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
-
-        public IEnumerable<MeasureUnit> UnitOfMeasurementChoices => this.dataService.GetData<MeasureUnit>().AsEnumerable();
 
         #endregion Properties
 
@@ -57,7 +53,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
         private void ExecuteHideDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Item>(false));
+            this.eventService.Invoke(new ShowDetailsEventArgs<Compartment>(false));
         }
 
         private void ExecuteSaveCommand()
@@ -66,22 +62,22 @@ namespace Ferretto.WMS.Modules.Catalog
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<Item>(this.Item));
+                this.eventService.Invoke(new ItemChangedEvent<Compartment>(this.Compartment));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEvent(Ferretto.Common.Resources.Catalog.ItemSavedSuccessfully));
+                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
         }
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
+            this.eventService.Subscribe<ItemSelectionChangedEvent<Compartment>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
         }
 
-        private void OnItemSelectionChanged(Item selectedItem)
+        private void OnItemSelectionChanged(Compartment selectedCompartment)
         {
-            this.Item = selectedItem;
+            this.Compartment = selectedCompartment;
         }
 
         #endregion Methods

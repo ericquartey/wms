@@ -3,11 +3,11 @@ using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace Ferretto.WMS.Modules.Catalog
+namespace Ferretto.WMS.Modules.MasterData
 {
-    [Module(ModuleName = nameof(Common.Utils.Modules.Catalog), OnDemand = true)]
+    [Module(ModuleName = nameof(Common.Utils.Modules.MasterData), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
-    public class CatalogModule : IModule
+    public class MasterDataModule : IModule
     {
         #region IModule Members
 
@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Modules.Catalog
         public IRegionManager RegionManager { get; private set; }
         private readonly INavigationService navigationService;
 
-        public CatalogModule(IUnityContainer container, IRegionManager regionManager,
+        public MasterDataModule(IUnityContainer container, IRegionManager regionManager,
             INavigationService navigationService)
         {
             this.Container = container;
