@@ -11,7 +11,6 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private const int ColorAlphaByteIndex = 3;
-        private const int PixelByteCount = 4;
         private SolidColorBrush colorizeBrush;
         private ImageSource source;
 
@@ -61,11 +60,10 @@ namespace Ferretto.Common.Controls
                 {
                     var cursor = new Int32Rect(col, row, 1, 1);
 
-                    var currentPixel = new byte[4];
+                    var currentPixel = new byte[bitmap.Format.BitsPerPixel / 8];
                     bitmap.CopyPixels(cursor, currentPixel, currentPixel.Length, 0);
 
                     var colorData = this.TransformColor(currentPixel);
-
                     bitmap.WritePixels(cursor, colorData, colorData.Length, 0);
                 }
             }
