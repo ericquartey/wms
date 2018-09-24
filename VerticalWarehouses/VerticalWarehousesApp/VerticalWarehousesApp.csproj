@@ -59,7 +59,6 @@
     <Compile Include="ViewModels\AppViewModel.cs" />
     <Compile Include="ViewModels\DrawerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\RandomPageViewModel.cs" />
     <Compile Include="ViewModels\TestConnectionPageViewModel.cs" />
     <Compile Include="Views\DrawerPage.xaml.cs">
       <DependentUpon>DrawerPage.xaml</DependentUpon>
@@ -136,6 +135,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CustomControls\CustomControls.csproj">
+      <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
       <Project>{ecdc6d6c-e5d2-4ec3-9aac-6336c2048fff}</Project>
       <Name>ActionBlocks</Name>
