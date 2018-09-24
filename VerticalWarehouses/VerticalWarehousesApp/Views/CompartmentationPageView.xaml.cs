@@ -43,37 +43,8 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 }
                 else
                 {
-                    if ((int)e.GetPosition(this).X % RESOLUTION == 0)
-                    {
-                        this.testPoint.X = e.GetPosition(this).X;
-                    }else
-                    {
-                        this.testPoint.X = (int)e.GetPosition(this).X - ((int)e.GetPosition(this).X % RESOLUTION);
-                    }
-                    if ((int)e.GetPosition(this).Y % RESOLUTION == 0)
-                    {
-                        this.testPoint.Y = e.GetPosition(this).Y;
-                    }
-                    else
-                    {
-                        this.testPoint.Y = (int)e.GetPosition(this).Y - ((int)e.GetPosition(this).Y % RESOLUTION);
-                    }
-                    if (this.testPoint.X < 20)
-                    {
-                        this.testPoint.X = 20;
-                    }
-                    if (this.testPoint.X > 760)
-                    {
-                        this.testPoint.X = 760;
-                    }
-                    if (this.testPoint.Y < 60)
-                    {
-                        this.testPoint.Y = 60;
-                    }
-                    if (this.testPoint.Y > 580)
-                    {
-                        this.testPoint.Y = 580;
-                    }
+                    this.testPoint.X = this.NormalizeXValue(e.GetPosition(this).X);
+                    this.testPoint.Y = this.NormalizeYValue(e.GetPosition(this).Y);
                     
                     this.currentRectStartPoint = this.testPoint;
                     this.currentRect = new CompartmentRectangle();
