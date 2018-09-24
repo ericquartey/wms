@@ -134,7 +134,7 @@
     <comment>Compartment - Pairing</comment>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
-    <value>Status</value>
+    <value>Compartment Status</value>
     <comment>Compartment - Status</comment>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
@@ -148,6 +148,14 @@
   <data name="CompartmentSub2" xml:space="preserve">
     <value>Sub 2</value>
     <comment>Compartment - Sub 2</comment>
+  </data>
+  <data name="CompartmentType" xml:space="preserve">
+    <value>Compartment Type</value>
+    <comment>Compartment Type</comment>
+  </data>
+  <data name="CompartmentTypeDescription" xml:space="preserve">
+    <value>Compartment Type Description</value>
+    <comment>Compartment Type - Description</comment>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
     <value>Available</value>
@@ -164,6 +172,14 @@
   <data name="ItemCode" xml:space="preserve">
     <value>Code</value>
     <comment>Item - Code</comment>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Item - Description</comment>
+  </data>
+  <data name="ItemDescription_extended" xml:space="preserve">
+    <value>Item Description</value>
+    <comment>Item - Description (extended)</comment>
   </data>
   <data name="ItemFifoPickTime" xml:space="preserve">
     <value>FIFO Pick Time</value>
@@ -240,5 +256,21 @@
   <data name="LoadingUnit" xml:space="preserve">
     <value>Loading Unit</value>
     <comment>Loading Unit</comment>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Code</value>
+    <comment>Loading Unit - Code</comment>
+  </data>
+  <data name="LoadingUnitCode_extended" xml:space="preserve">
+    <value>Loading Unit Code</value>
+    <comment>Loading Unit - Code (extended)</comment>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Material Status</value>
+    <comment>Material Status</comment>
+  </data>
+  <data name="PackageType" xml:space="preserve">
+    <value>Package Type</value>
+    <comment>Package Type</comment>
   </data>
 </root>

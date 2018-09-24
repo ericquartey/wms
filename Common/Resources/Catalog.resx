@@ -151,10 +151,22 @@
   </data>
   <data name="ItemsCatalog" xml:space="preserve">
     <value>Items Catalog</value>
-    <comment>Label - Page Title</comment>
+    <comment>Label - Items Page Title</comment>
   </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
     <value>Item saved sucessfully</value>
     <comment>Notification - item saved</comment>
+  </data>
+  <data name="CompartmentsCatalog" xml:space="preserve">
+    <value>Compartments Catalog</value>
+    <comment>Label - Compartments Page Title</comment>
+  </data>
+  <data name="CompartmentAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Compartments</comment>
+  </data>
+  <data name="CompartmentSavedSuccessfully" xml:space="preserve">
+    <value>Compartment saved sucessfully</value>
+    <comment>Notification - compartment saved</comment>
   </data>
 </root>

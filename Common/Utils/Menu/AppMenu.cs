@@ -49,8 +49,8 @@ namespace Ferretto.Common.Utils.Menu
                 nameof(Modules.Catalog), Modules.Catalog.ITEMSANDDETAILS));
             catalogMenu.Children.Add(new MainMenuItem(
                 Navigation.Catalog_Cells, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/cells.png", string.Empty,
-                string.Empty));
+                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/cells.png",
+                string.Empty, string.Empty));
             catalogMenu.Children.Add(new MainMenuItem(
                 Navigation.Catalog_LoadingUnits, bgColor,
                 "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png",
@@ -58,7 +58,7 @@ namespace Ferretto.Common.Utils.Menu
             catalogMenu.Children.Add(new MainMenuItem(
                 Navigation.Catalog_Compartments, bgColor,
                 "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_view_compact_grey_24dp.png",
-                string.Empty, string.Empty));
+                nameof(Modules.Catalog), Modules.Catalog.COMPARTMENTSANDDETAILS));
             this.menu.Items.Add(catalogMenu);
 
             var configMenu = new MainMenuItem(
