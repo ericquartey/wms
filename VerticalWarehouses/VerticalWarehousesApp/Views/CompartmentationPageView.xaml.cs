@@ -23,6 +23,8 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         bool isDrawing = false;
 
+        delegate void FocusableMethodHandler();
+
         public CompartmentationPageView()
         {
             this.InitializeComponent();
@@ -32,15 +34,47 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         private void ImageMouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.currentActionMode == CompartmentActionMode.CreateCompartment)
+            if (this.currentActionMode == CompartmentActionMode.DrawCompartment)
             {
+                Debug.Print("Start pos: " + e.GetPosition(this) + "\n");
                 if (this.isDrawing)
                 {
 
                 }
                 else
                 {
-                    this.testPoint = e.GetPosition(this);
+                    if ((int)e.GetPosition(this).X % RESOLUTION == 0)
+                    {
+                        this.testPoint.X = e.GetPosition(this).X;
+                    }else
+                    {
+                        this.testPoint.X = (int)e.GetPosition(this).X - ((int)e.GetPosition(this).X % RESOLUTION);
+                    }
+                    if ((int)e.GetPosition(this).Y % RESOLUTION == 0)
+                    {
+                        this.testPoint.Y = e.GetPosition(this).Y;
+                    }
+                    else
+                    {
+                        this.testPoint.Y = (int)e.GetPosition(this).Y - ((int)e.GetPosition(this).Y % RESOLUTION);
+                    }
+                    if (this.testPoint.X < 20)
+                    {
+                        this.testPoint.X = 20;
+                    }
+                    if (this.testPoint.X > 760)
+                    {
+                        this.testPoint.X = 760;
+                    }
+                    if (this.testPoint.Y < 60)
+                    {
+                        this.testPoint.Y = 60;
+                    }
+                    if (this.testPoint.Y > 580)
+                    {
+                        this.testPoint.Y = 580;
+                    }
+                    
                     this.currentRectStartPoint = this.testPoint;
                     this.currentRect = new CompartmentRectangle();
                     this.currentRect.Height = 0;
@@ -57,7 +91,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         private void ImageMouseMove(object sender, MouseEventArgs e)
         {
-            if (this.currentActionMode == CompartmentActionMode.CreateCompartment)
+            if (this.currentActionMode == CompartmentActionMode.DrawCompartment)
             {
                 if (this.isDrawing)
                 {
@@ -75,13 +109,21 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                     {
                         this.currentRect.Height = (double)y;
                     }
+                    if (this.currentRectStartPoint.X + x > 760)
+                    {
+                        this.currentRect.Width = 760 - this.currentRectStartPoint.X;
+                    }
+                    if (this.currentRectStartPoint.Y + y > 580)
+                    {
+                        this.currentRect.Height = 580 - this.currentRectStartPoint.Y;
+                    }
                 }
             }
         }
 
         private void ImageMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (this.currentActionMode == CompartmentActionMode.CreateCompartment)
+            if (this.currentActionMode == CompartmentActionMode.DrawCompartment)
             {
                 if (this.isDrawing)
                 {
@@ -92,16 +134,22 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
         }
 
+        private void ButtonSetActionToDrawCompartment(object sender, RoutedEventArgs e)
+        {
+            this.SetActionToDrawCompartment();
+            this.CheckActionButtonsSelectionCorrectness();
+        }
+
         private void ButtonSetActionToCreateCompartment(object sender, RoutedEventArgs e)
         {
             this.SetActionToCreateCompartment();
             this.CheckActionButtonsSelectionCorrectness();
+            this.CreateCompartment(100, 100, 100, 123);
         }
 
-        private void ButtonSetActionToDoNothing(object sender, RoutedEventArgs e)
+        private void SetActionToDrawCompartment()
         {
-            this.SetActionToDoNothing();
-            this.CheckActionButtonsSelectionCorrectness();
+            this.currentActionMode = CompartmentActionMode.DrawCompartment;
         }
 
         private void SetActionToCreateCompartment()
@@ -109,16 +157,39 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             this.currentActionMode = CompartmentActionMode.CreateCompartment;
         }
 
-        private void SetActionToDoNothing()
+        private void CreateCompartment(double originx, double originy, double width, double height)
         {
-            this.currentActionMode = CompartmentActionMode.DoNothing;
+            int ox, oy, w, h;
+
+            ox = this.NormalizeXValue(originx);
+            oy = this.NormalizeYValue(originy);
+            w = this.NormalizeXValue(width);
+            h = this.NormalizeYValue(height);
+
+            if (ox + w > 760)
+            {
+                w = 760 - ox;
+            }
+            if (oy + h > 580)
+            {
+                h = 580 - oy;
+            }
+
+            this.currentRect = new CompartmentRectangle();
+            this.currentRect.SetValue(Canvas.LeftProperty, (double)ox);
+            this.currentRect.SetValue(Canvas.TopProperty, (double)oy - 50);
+            this.currentRect.Width = w;
+            this.currentRect.Height = h;
+            this.cnvImage.Children.Add(this.currentRect);
+            this.rects.Add(this.currentRect);
+            this.currentRect = null;
         }
 
         private void CheckActionButtonsSelectionCorrectness()
         {
             switch(this.currentActionMode)
             {
-                case CompartmentActionMode.CreateCompartment:
+                case CompartmentActionMode.DrawCompartment:
                     this.ButtonDrawCompartments.Foreground = Brushes.Green;
                     foreach(Button btn in this.DrawButtonsStackPanel.Children)
                     {
@@ -128,7 +199,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                         }
                     }
                     break;
-                case CompartmentActionMode.DoNothing:
+                case CompartmentActionMode.CreateCompartment:
                     this.ButtonDoNothing.Foreground = Brushes.Green;
                     foreach (Button btn in this.DrawButtonsStackPanel.Children)
                     {
@@ -142,12 +213,41 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                     break;
             }
         }
+
+        int NormalizeXValue(double x)
+        {
+            int ret_x;
+
+            if (x >= 20 && x <= 760)
+            {
+                ret_x = ((int)x % RESOLUTION == 0) ? (int)x : (int)x - ((int)x % RESOLUTION);
+            }
+            else
+            {
+                ret_x = (x < 20) ? 20 : 760;
+            }
+            return ret_x;
+        }
+        int NormalizeYValue(double y)
+        {
+            int ret_y;
+
+            if (y >= 20 && y <= 760)
+            {
+                ret_y = ((int)y % RESOLUTION == 0) ? (int)y : (int)y - ((int)y % RESOLUTION);
+            }
+            else
+            {
+                ret_y = (y < 20) ? 20 : 760;
+            }
+            return ret_y;
+        }
     }
 
     public enum CompartmentActionMode
     {
+        DrawCompartment,
         CreateCompartment,
-        DoNothing,
         NoActionSelectedYet
     }
 }

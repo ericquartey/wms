@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,5 +51,24 @@ namespace Ferretto.VW.CustomControls.Controls
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CompartmentRectangle), new FrameworkPropertyMetadata(typeof(CompartmentRectangle)));
         }
+
+        public CompartmentRectangle()
+        {
+            MouseDown += this.FocusTestControl_MouseDown;
+            GotFocus += this.ChangeSelectedColor;
+        }
+
+        void FocusTestControl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Keyboard.Focus(this);
+            this.Focus();
+        }
+
+        void ChangeSelectedColor(object sender, EventArgs e)
+        {
+            this.Background = Brushes.Blue;
+            Debug.Print("flag: " + sender + "\n");       
+        }
+
     }
 }

@@ -17,12 +17,12 @@
             <StackPanel Name="DrawButtonsStackPanel" Orientation="Horizontal" FlowDirection="LeftToRight">
                 
                 <Button Name="ButtonDrawCompartments" Margin="5" Background="Transparent" BorderThickness="1"
-                        Foreground="White" FontSize="20" Click="ButtonSetActionToCreateCompartment" BorderBrush="White"
+                        Foreground="White" FontSize="20" Click="ButtonSetActionToDrawCompartment" BorderBrush="White"
                         Content="Draw Compartments"/>
 
 
                 <Button Name="ButtonDoNothing" Margin="5" Background="Transparent" BorderThickness="1" BorderBrush="White"
-                        Foreground="White" FontSize="20" Click="ButtonSetActionToDoNothing" Content="Do Nothing"/>
+                        Foreground="White" FontSize="20" Click="ButtonSetActionToCreateCompartment" Content="Create Compartments"/>
                 
             </StackPanel>
         </Border>

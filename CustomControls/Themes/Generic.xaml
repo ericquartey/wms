@@ -7,12 +7,20 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:CompartmentRectangle}">
-                    <Border Name="Border" Background="Red" BorderBrush="Red" BorderThickness="2" Opacity=".2">
-                        <DockPanel>
-                            <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontSize="15" Text="{Binding ElementName=Border, Path=ActualWidth}"></TextBlock>
-                            <TextBlock DockPanel.Dock="left" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontSize="15" Text="{Binding ElementName=Border, Path=ActualHeight}"></TextBlock>
-                        </DockPanel>
-                    </Border>
+                    <UserControl Name="CompartmentRectangleUserControl" Focusable="True">
+                        <Border Name="border" BorderThickness="2" BorderBrush="Red">
+                            <DockPanel Opacity=".2" Background="Red">
+                                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontSize="15" Text="{Binding ElementName=border, Path=ActualWidth}"></TextBlock>
+                                <TextBlock DockPanel.Dock="Left" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="White" FontSize="15" Text="{Binding ElementName=border, Path=ActualHeight}"></TextBlock>
+                            </DockPanel>
+                        </Border>
+                    </UserControl>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused"  Value="True">
+                            <Setter Property="Background" Value="Green" TargetName="border"/>
+                            <Setter Property="BorderBrush" Value="Green" TargetName="border"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
