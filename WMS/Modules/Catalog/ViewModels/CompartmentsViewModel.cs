@@ -14,32 +14,42 @@ namespace Ferretto.WMS.Modules.Catalog
     {
         #region Fields
 
-        private readonly IDataSourceService filterService;
-        private IDataSource<Common.Models.Compartment> currentDataSource;
-
+        private readonly IDataSourceService filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+        private IDataSource<Common.Models.Compartment> selectedDataSource;
+        private Tile selectedFilter;
         private ICommand viewDetailsCommand;
 
         #endregion Fields
 
-        #region Constructors
-
-        public CompartmentsViewModel()
-        {
-            this.filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        }
-
-        #endregion Constructors
-
         #region Properties
 
-        public IDataSource<Common.Models.Compartment> CurrentDataSource
+        public IEnumerable<IDataSource<Common.Models.Compartment>> DataSources => this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(CompartmentsViewModel))) as IEnumerable<IDataSource<Common.Models.Compartment>>;
+
+        public IEnumerable<Tile> Filters => this.DataSources.Select(dataSource =>
+            new Tile
+            {
+                Name = dataSource.Name,
+                Count = dataSource.Count
+            }
+        );
+
+        public IDataSource<Common.Models.Compartment> SelectedDataSource
         {
-            get => this.currentDataSource;
-            set => this.SetProperty(ref this.currentDataSource, value);
+            get => this.selectedDataSource;
+            set => this.SetProperty(ref this.selectedDataSource, value);
         }
 
-        public IEnumerable<IDataSource<Common.Models.Compartment>> Filters =>
-                    this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(CompartmentsViewModel))) as IEnumerable<IDataSource<Common.Models.Compartment>>;
+        public Tile SelectedFilter
+        {
+            get => this.selectedFilter;
+            set
+            {
+                if (this.SetProperty(ref this.selectedFilter, value))
+                {
+                    this.SelectedDataSource = this.DataSources.First(dataSource => dataSource.Name == value.Name);
+                }
+            }
+        }
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
             (this.viewDetailsCommand = new DelegateCommand(ExecuteViewDetailsCommand));
