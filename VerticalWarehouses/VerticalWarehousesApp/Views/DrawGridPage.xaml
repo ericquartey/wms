@@ -9,8 +9,16 @@
       Title="DrawGrid">
 
     <Grid Background="White">
-        <Image HorizontalAlignment="Left" Height="430" Margin="10,10,0,0" VerticalAlignment="Top" Width="780" Source="/Ferretto.VW.VerticalWarehousesApp;component/Assets/griglia_map_cassetto.jpg" Visibility="Hidden"/>
-        <Canvas x:Name="canvas" Margin="0,83,0,75">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80" colu/>
+        </Grid.RowDefinitions>
+        <!--<Image HorizontalAlignment="Left" Height="430" Margin="10,10,0,0" VerticalAlignment="Top" Width="780" Source="/Ferretto.VW.VerticalWarehousesApp;component/Assets/griglia_map_cassetto.jpg" Visibility="Hidden"/>-->
+        <StackPanel Grid.Row="0" Background="#FF116118">
+            
+        </StackPanel>
+        <Canvas x:Name="canvas" Margin="0,10,0,10" Grid.Row="1">
             <Canvas.Background>
                 <DrawingBrush TileMode="Tile" Viewport="-10,-10,25,25" 
                                      ViewportUnits="Absolute">
@@ -28,5 +36,8 @@
             </Canvas.Background>
             <Rectangle Width="751" Height="251" Canvas.Left="15" Canvas.Top="15" Stroke="#FFA21919"/>
         </Canvas>
+        <StackPanel Grid.Row="2" Background="#FFDE0505">
+
+        </StackPanel>
     </Grid>
 </Page>

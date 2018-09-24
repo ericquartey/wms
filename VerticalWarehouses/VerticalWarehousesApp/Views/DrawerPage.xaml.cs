@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.VerticalWarehousesApp.ViewModels;
 
 namespace Ferretto.VW.VerticalWarehousesApp.Views
 {
@@ -21,6 +22,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
     public partial class DrawerPage : Page
     {
         private MainWindow window;
+        private DrawerViewModel mwvm;
         public DrawerPage(MainWindow mainWindow)
         {
             this.InitializeComponent();
@@ -37,6 +39,12 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
             
         }
+
+        private void VMLoaded(object sender, RoutedEventArgs e)
+        {
+            this.mwvm = new DrawerViewModel();
+        }
+
         #region input_control
         private void ComboBox_SelectionChanged(Object sender, SelectionChangedEventArgs e)
         {

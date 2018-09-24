@@ -12,15 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.VerticalWarehousesApp.Models;
 
 namespace Ferretto.VW.VerticalWarehousesApp.Views
 {
 
-    public class Item
-    {
-        public string Name { get; set; }
-        public string SurName { get; set; }
-    }
     /// <summary>
     /// Interaction logic for PageCompartmentManual.xaml
     /// </summary>
@@ -37,8 +33,8 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         private void InizializzaPagina()
         {
-            List<Item> items = new List<Item>();
-            items.Add(new Item() { Name = "Alice", SurName = "Orsetto" });
+            var items = new List<Item>();
+            items.Add(new Item() { Name = "Alice", SurName = "Orsato" });
             items.Add(new Item() { Name = "Clark", SurName = "Kent" });
             items.Add(new Item() { Name = "Bruce", SurName = "Wayne" });
             this.items_list.ItemsSource = items;

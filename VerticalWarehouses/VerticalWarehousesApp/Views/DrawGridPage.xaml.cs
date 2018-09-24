@@ -23,6 +23,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         private const int xOrigin = 15;
         private const int yOrigin = 15;
         private const int square = 25;
+        private const double offset_writing = 7.5f;
 
         public DrawGridPage()
         {
@@ -36,6 +37,16 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             rect.Fill = new SolidColorBrush(Colors.Red);
             rect.Opacity = 0.2f;
             this.canvas.Children.Add(rect);
+
+            for (int i = 0; i < 10; i++)
+            {
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = $"{square * i}";
+                textBlock.Foreground = new SolidColorBrush(Colors.Blue);
+                Canvas.SetLeft(textBlock, ((square * i) + offset_writing));
+                Canvas.SetTop(textBlock, 0);
+                this.canvas.Children.Add(textBlock);
+            }
         }
     }
 }
