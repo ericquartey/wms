@@ -37,9 +37,9 @@
                                          Margin="0,5"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
+                                         ColorizeBrush="{DynamicResource OnCommonSecondaryLight}"
                                          SnapsToDevicePixels="True"
-                                         SymbolName="{Binding Image}"
-                                         ColorizeBrush="{DynamicResource OnCommonSecondaryLight}"/>
+                                         SymbolName="{Binding Image}" />
                             <Label x:Name="TileCountLabel"
                                    Grid.Column="1"
                                    HorizontalAlignment="Right"
