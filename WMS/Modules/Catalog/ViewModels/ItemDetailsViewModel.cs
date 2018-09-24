@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -16,6 +17,8 @@ namespace Ferretto.WMS.Modules.Catalog
 
         private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+
+        private CompartmentsDataSource compartmentsDataSource;
         private ICommand hideDetailsCommand;
         private Item item;
         private ICommand saveCommand;
@@ -35,13 +38,25 @@ namespace Ferretto.WMS.Modules.Catalog
 
         public IEnumerable<AbcClass> AbcClassChoices => this.dataService.GetData<AbcClass>().AsEnumerable();
 
+        public CompartmentsDataSource CompartmentsSource
+        {
+            get => this.compartmentsDataSource;
+            set => this.SetProperty(ref this.compartmentsDataSource, value);
+        }
+
         public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-            (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
+                            (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
 
         public Item Item
         {
             get => this.item;
-            set => this.SetProperty(ref this.item, value);
+            set
+            {
+                if (this.SetProperty(ref this.item, value))
+                {
+                    this.CompartmentsSource = new CompartmentsDataSource(this.item, this.dataService);
+                }
+            }
         }
 
         public IEnumerable<ItemManagementType> ItemManagementTypeChoices => this.dataService.GetData<ItemManagementType>().AsEnumerable();
@@ -62,7 +77,7 @@ namespace Ferretto.WMS.Modules.Catalog
 
         private void ExecuteSaveCommand()
         {
-            int rowSaved = this.dataService.SaveChanges();
+            var rowSaved = this.dataService.SaveChanges();
 
             if (rowSaved != 0)
             {
@@ -85,5 +100,44 @@ namespace Ferretto.WMS.Modules.Catalog
         }
 
         #endregion Methods
+
+        #region Classes
+
+        public class CompartmentsDataSource : IDataSource<Compartment>
+        {
+            #region Constructors
+
+            public CompartmentsDataSource(Item item, IDataService dataService)
+            {
+                this.Item = item;
+                this.DataService = dataService;
+            }
+
+            #endregion Constructors
+
+            #region Properties
+
+            public Int32 Count => 0;
+
+            public IDataService DataService { get; private set; }
+            public Func<IQueryable<Compartment>, IQueryable<Compartment>> Filter => compartments => compartments;
+            public Item Item { get; private set; }
+            public String Name => "Item Compartments";
+
+            #endregion Properties
+
+            #region Methods
+
+            public IQueryable<Compartment> Load()
+            {
+                return this.Item != null ?
+                           this.DataService.GetData<Compartment>().Where(compartment => compartment.ItemId == this.Item.Id)
+                           : null;
+            }
+
+            #endregion Methods
+        }
+
+        #endregion Classes
     }
 }
