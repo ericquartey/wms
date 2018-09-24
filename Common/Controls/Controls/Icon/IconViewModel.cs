@@ -31,21 +31,24 @@ namespace Ferretto.Common.Controls
         public void ColorizeImage(SolidColorBrush brush)
         {
             this.colorizeBrush = brush;
-            this.Source = this.ColorizeImageA(this.Source);
+            this.Source = this.ColorizeImage(this.Source);
         }
 
         public void RetrieveImage(string symbolName)
         {
-            var sourcePath = string.IsNullOrWhiteSpace(symbolName) ? null : Resources.Icons.ResourceManager.GetString(symbolName);
+            if (string.IsNullOrWhiteSpace(symbolName))
+            {
+                return;
+            }
 
-            var uri = new Uri(sourcePath, UriKind.RelativeOrAbsolute);
+            var sourcePath = Resources.Icons.ResourceManager.GetString(symbolName);
 
-            var bitmapImage = new BitmapImage(uri);
+            var bitmapImage = new BitmapImage(new Uri(sourcePath, UriKind.RelativeOrAbsolute));
 
-            this.Source = this.ColorizeImageA(bitmapImage);
+            this.Source = this.ColorizeImage(bitmapImage);
         }
 
-        private ImageSource ColorizeImageA(ImageSource image)
+        private ImageSource ColorizeImage(ImageSource image)
         {
             if (this.colorizeBrush == null || image is BitmapImage == false)
             {
@@ -53,14 +56,13 @@ namespace Ferretto.Common.Controls
             }
 
             var bitmap = new WriteableBitmap(image as BitmapImage);
+            var currentPixel = new byte[bitmap.Format.BitsPerPixel / 8];
 
-            for (var row = 0; row < bitmap.Height; row++)
+            for (var row = 0; row < bitmap.PixelHeight; row++)
             {
-                for (var col = 0; col < bitmap.Width; col++)
+                for (var col = 0; col < bitmap.PixelWidth; col++)
                 {
                     var cursor = new Int32Rect(col, row, 1, 1);
-
-                    var currentPixel = new byte[bitmap.Format.BitsPerPixel / 8];
                     bitmap.CopyPixels(cursor, currentPixel, currentPixel.Length, 0);
 
                     var colorData = this.TransformColor(currentPixel);
