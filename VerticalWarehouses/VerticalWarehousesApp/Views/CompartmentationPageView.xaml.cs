@@ -1,39 +1,170 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Collections.Generic;
 using System.Windows.Media;
 using Ferretto.VW.CustomControls.Controls;
-using System.Diagnostics;
+using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.VerticalWarehousesApp.Views
 {
+    public enum CompartmentActionMode
+    {
+        DrawCompartment,
+        CreateCompartment,
+        NoActionSelectedYet
+    }
+
     public partial class CompartmentationPageView : Page
     {
-        const int RESOLUTION = 20; //smaller drawing step
-        const int MAX_WIDTH = 760, MIN_WIDTH = 20; //min & max width
-        const int MAX_HEIGHT = 580, MIN_HEIGHT = 60; //min & max height
+        #region Fields
 
-        public static CompartmentRectangle selectedRect;
+        private const int HEIGHT_CORRECTION = 50; //correction due to parent position
+        private const int MAX_HEIGHT = 580, MIN_HEIGHT = 60;
+        private const int MAX_WIDTH = 760, MIN_WIDTH = 20;
+        private const int RESOLUTION = 20; //smaller drawing step
 
-        Point testPoint;
-        Point currentRectStartPoint;
+        private CompartmentActionMode currentActionMode = CompartmentActionMode.NoActionSelectedYet;
 
-        CompartmentRectangle currentRect;
-        List<CompartmentRectangle> rects;
+        private CompartmentRectangle currentRect;
 
-        CompartmentActionMode currentActionMode = CompartmentActionMode.NoActionSelectedYet;
+        private Point currentRectStartPoint;
 
-        bool isDrawing = false;
+        private bool isDrawing = false;
 
-        delegate void FocusableMethodHandler();
+        private List<CompartmentRectangle> rects;
+
+        private Point testPoint;
+
+        #endregion Fields
+
+        #region Constructors
 
         public CompartmentationPageView()
         {
             this.InitializeComponent();
             this.rects = new List<CompartmentRectangle>();
             this.CheckActionButtonsSelectionCorrectness();
-            
+        }
+
+        #endregion Constructors
+
+        #region Methods
+
+        private void ButtonDoDeleteCompartment(object sender, RoutedEventArgs e)
+        {
+            this.DeleteCompartment();
+        }
+
+        private void ButtonDoMassiveDivideCompartment(object sender, RoutedEventArgs e)
+        {
+            this.MassiveDivideCompartment(5, 5);
+        }
+
+        private void ButtonSetActionToCreateCompartment(object sender, RoutedEventArgs e)
+        {
+            this.SetActionToCreateCompartment();
+            this.CheckActionButtonsSelectionCorrectness();
+            this.CreateCompartment(100, 100, 100, 120);
+        }
+
+        private void ButtonSetActionToDrawCompartment(object sender, RoutedEventArgs e)
+        {
+            this.SetActionToDrawCompartment();
+            this.CheckActionButtonsSelectionCorrectness();
+        }
+
+        private void CheckActionButtonsSelectionCorrectness()
+        {
+            switch (this.currentActionMode)
+            {
+                case CompartmentActionMode.DrawCompartment:
+                    this.ButtonDrawCompartments.Foreground = Brushes.Green;
+                    foreach (Button btn in this.DrawButtonsStackPanel.Children)
+                    {
+                        if (!(btn.Name == "ButtonDrawCompartments"))
+                        {
+                            btn.Foreground = Brushes.White;
+                        }
+                    }
+                    break;
+
+                case CompartmentActionMode.CreateCompartment:
+                    this.ButtonDoNothing.Foreground = Brushes.Green;
+                    foreach (Button btn in this.DrawButtonsStackPanel.Children)
+                    {
+                        if (!(btn.Name == "ButtonDoNothing"))
+                        {
+                            btn.Foreground = Brushes.White;
+                        }
+                    }
+                    break;
+
+                case CompartmentActionMode.NoActionSelectedYet:
+                    break;
+            }
+        }
+
+        private void CreateCompartment(double originx, double originy, double width, double height)
+        {
+            int ox, oy, w, h;
+
+            ox = this.NormalizeXValue(originx);
+            oy = this.NormalizeYValue(originy);
+            w = this.NormalizeXValue(width);
+            h = this.NormalizeYValue(height);
+
+            if (ox + w > MAX_WIDTH)
+            {
+                w = MAX_WIDTH - ox;
+            }
+            if (oy + h > MAX_HEIGHT)
+            {
+                h = MAX_HEIGHT - oy;
+            }
+
+            this.currentRect = new CompartmentRectangle();
+            this.currentRect.OriginX = ox;
+            this.currentRect.OriginY = oy;
+            this.currentRect.SetValue(Canvas.LeftProperty, this.currentRect.OriginX);
+            this.currentRect.SetValue(Canvas.TopProperty, this.currentRect.OriginY); //correction due to the position of the parent canvas.
+            this.currentRect.Width = w;
+            this.currentRect.Height = h;
+            if (!this.IsCurrentCompartmentRectangleOverlappingAnotherCompRect(this.currentRect))
+            {
+                this.cnvImage.Children.Add(this.currentRect);
+                this.rects.Add(this.currentRect);
+            }
+            this.currentRect = null;
+        }
+
+        private void CreateMassiveCompartment(double originx, double originy, double width, double height)
+        {
+            this.currentRect = new CompartmentRectangle();
+            this.currentRect.OriginX = originx;
+            this.currentRect.OriginY = originy;
+            this.currentRect.SetValue(Canvas.LeftProperty, this.currentRect.OriginX);
+            this.currentRect.SetValue(Canvas.TopProperty, this.currentRect.OriginY); //correction due to the position of the parent canvas.
+            this.currentRect.Width = width;
+            this.currentRect.Height = height;
+            this.cnvImage.Children.Add(this.currentRect);
+            this.rects.Add(this.currentRect);
+            this.currentRect = null;
+        }
+
+        private void DeleteCompartment()
+        {
+            var selectedRect = Keyboard.FocusedElement;
+
+            if (selectedRect != null)
+            {
+                if (selectedRect.GetType() == typeof(CompartmentRectangle))
+                {
+                    this.rects.Remove((CompartmentRectangle)selectedRect);
+                    this.cnvImage.Children.Remove((CompartmentRectangle)selectedRect);
+                }
+            }
         }
 
         private void ImageMouseDown(object sender, MouseButtonEventArgs e)
@@ -43,21 +174,22 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 Debug.Print("Start pos: " + e.GetPosition(this) + "\n");
                 if (this.isDrawing)
                 {
-
                 }
                 else
                 {
                     this.testPoint.X = this.NormalizeXValue(e.GetPosition(this).X);
                     this.testPoint.Y = this.NormalizeYValue(e.GetPosition(this).Y);
-                    
+
                     this.currentRectStartPoint = this.testPoint;
                     this.currentRect = new CompartmentRectangle();
+                    this.currentRect.OriginX = this.testPoint.X;
+                    this.currentRect.OriginY = this.testPoint.Y;
                     this.currentRect.Height = 0;
                     this.currentRect.Width = 0;
                     this.cnvImage.Children.Add(this.currentRect);
 
-                    this.currentRect.SetValue(Canvas.LeftProperty, this.testPoint.X);
-                    this.currentRect.SetValue(Canvas.TopProperty, this.testPoint.Y - 50); //50 = correzione: il canvas è posto nella 2a riga del Grid, con la prima riga alta 50px
+                    this.currentRect.SetValue(Canvas.LeftProperty, this.currentRect.OriginX);
+                    this.currentRect.SetValue(Canvas.TopProperty, this.currentRect.OriginY); //correction due to the position of the parent canvas.
 
                     this.isDrawing = true;
                 }
@@ -102,50 +234,40 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             {
                 if (this.isDrawing)
                 {
-                    this.currentRect.OriginX = this.currentRectStartPoint.X;
-                    this.currentRect.OriginY = this.currentRectStartPoint.Y;
-                    this.rects.Add(this.currentRect);
+                    if (!this.IsCurrentCompartmentRectangleOverlappingAnotherCompRect(this.currentRect))
+                    {
+                        this.rects.Add(this.currentRect);
+                    }
+                    else
+                    {
+                        this.cnvImage.Children.Remove(this.currentRect);
+                    }
                     this.currentRect = null;
                     this.isDrawing = false;
                 }
             }
         }
 
-        private void ButtonSetActionToDrawCompartment(object sender, RoutedEventArgs e)
+        private bool IsCurrentCompartmentRectangleOverlappingAnotherCompRect(CompartmentRectangle cr)
         {
-            this.SetActionToDrawCompartment();
-            this.CheckActionButtonsSelectionCorrectness();
-        }
-
-        private void ButtonSetActionToCreateCompartment(object sender, RoutedEventArgs e)
-        {
-            this.SetActionToCreateCompartment();
-            this.CheckActionButtonsSelectionCorrectness();
-            this.CreateCompartment(100, 100, 100, 120);
-        }
-
-        private void ButtonDoDeleteCompartment(object sender, RoutedEventArgs e)
-        {
-            this.DeleteCompartment();
-        }
-
-        private void ButtonDoMassiveDivideCompartment(object sender, RoutedEventArgs e)
-        {
-            this.MassiveDivideCompartment(5,5);
-        }
-
-        private void DeleteCompartment()
-        {
-            var selectedRect = Keyboard.FocusedElement;
-
-            if (selectedRect != null)
+            if (this.rects.Count > 0)
             {
-                if (selectedRect.GetType() == typeof(CompartmentRectangle))
-                {
-                    this.rects.Remove((CompartmentRectangle)selectedRect);
-                    this.cnvImage.Children.Remove((CompartmentRectangle)selectedRect);
+                Point tmpPoint_1 = new Point(cr.OriginX, cr.OriginY); //up left
+                Point tmpPoint_2 = new Point(cr.OriginX + cr.Height, cr.OriginY + cr.Height); //bottom left
+                Point tmpPoint_3 = new Point(cr.OriginX + cr.Height + cr.Width, cr.OriginY + cr.Height + cr.Width); //bottom right
+                Point tmpPoint_4 = new Point(cr.OriginX + cr.Width, cr.OriginY + cr.Width); //top right
+                foreach (var compare_rect in this.rects)
+                { //check the four angles
+                    if (compare_rect.Contains(tmpPoint_1) || compare_rect.Contains(tmpPoint_2) || compare_rect.Contains(tmpPoint_3) || compare_rect.Contains(tmpPoint_4))
+                    {
+                        return true;
+                    }//check the four edges
+                    Point compareCompRectOrig = new Point(compare_rect.OriginX, compare_rect.OriginY);
+                    Point compareCompRectFinal = new Point(compare_rect.OriginX + compare_rect.Width, compare_rect.OriginY + compare_rect.Height);
+                    return PlanarGeometryMethods.AreGivenCompartmentRectanglesOverlapping(tmpPoint_1, tmpPoint_3, compareCompRectOrig, compareCompRectFinal);
                 }
-            }          
+            }
+            return false;
         }
 
         private void MassiveDivideCompartment(int rows, int columns)
@@ -156,16 +278,16 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             {
                 if (selectedRect.GetType() == typeof(CompartmentRectangle))
                 {
-                    cellWidth = this.rects.Find( x => x.Equals(selectedRect)).Width / columns;
+                    cellWidth = this.rects.Find(x => x.Equals(selectedRect)).Width / columns;
                     cellHeight = this.rects.Find(x => x.Equals(selectedRect)).Height / rows;
                     originX = this.rects.Find(x => x.Equals(selectedRect)).OriginX;
                     originY = this.rects.Find(x => x.Equals(selectedRect)).OriginY;
 
                     for (double x = originX; x < (originX + this.rects.Find(z => z.Equals(selectedRect)).Width); x += cellWidth)
                     {
-                        for (double y = originY; y < (originY + this.rects.Find(z => z.Equals(selectedRect)).Height); y+= cellHeight)
+                        for (double y = originY; y < (originY + this.rects.Find(z => z.Equals(selectedRect)).Height); y += cellHeight)
                         {
-                            this.CreateMassiveCompartment(x,y,cellWidth,cellHeight);
+                            this.CreateMassiveCompartment(x, y, cellWidth, cellHeight);
                         }
                     }
                     this.rects.Remove(this.rects.Find(x => x.Equals(selectedRect)));
@@ -175,86 +297,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
         }
 
-        private void SetActionToDrawCompartment()
-        {
-            this.currentActionMode = CompartmentActionMode.DrawCompartment;
-        }
-
-        private void SetActionToCreateCompartment()
-        {
-            this.currentActionMode = CompartmentActionMode.CreateCompartment;
-        }
-
-        private void CreateCompartment(double originx, double originy, double width, double height)
-        {
-            int ox, oy, w, h;
-
-            ox = this.NormalizeXValue(originx);
-            oy = this.NormalizeYValue(originy);
-            w = this.NormalizeXValue(width);
-            h = this.NormalizeYValue(height);
-
-            if (ox + w > MAX_WIDTH)
-            {
-                w = MAX_WIDTH - ox;
-            }
-            if (oy + h > MAX_HEIGHT)
-            {
-                h = MAX_HEIGHT - oy;
-            }
-
-            this.currentRect = new CompartmentRectangle();
-            this.currentRect.SetValue(Canvas.LeftProperty, (double)ox);
-            this.currentRect.SetValue(Canvas.TopProperty, (double)oy - 50);
-            this.currentRect.Width = w;
-            this.currentRect.Height = h;
-            this.cnvImage.Children.Add(this.currentRect);
-            this.rects.Add(this.currentRect);
-            this.currentRect = null;
-        }
-
-        private void CreateMassiveCompartment(double originx, double originy, double width, double height)
-        {
-            this.currentRect = new CompartmentRectangle();
-            this.currentRect.SetValue(Canvas.LeftProperty, originx);
-            this.currentRect.SetValue(Canvas.TopProperty, originy - 50);
-            this.currentRect.Width = width;
-            this.currentRect.Height = height;
-            this.cnvImage.Children.Add(this.currentRect);
-            this.rects.Add(this.currentRect);
-            this.currentRect = null;
-        }
-
-        private void CheckActionButtonsSelectionCorrectness()
-        {
-            switch(this.currentActionMode)
-            {
-                case CompartmentActionMode.DrawCompartment:
-                    this.ButtonDrawCompartments.Foreground = Brushes.Green;
-                    foreach(Button btn in this.DrawButtonsStackPanel.Children)
-                    {
-                        if (!(btn.Name == "ButtonDrawCompartments"))
-                        {
-                            btn.Foreground = Brushes.White;
-                        }
-                    }
-                    break;
-                case CompartmentActionMode.CreateCompartment:
-                    this.ButtonDoNothing.Foreground = Brushes.Green;
-                    foreach (Button btn in this.DrawButtonsStackPanel.Children)
-                    {
-                        if (!(btn.Name == "ButtonDoNothing"))
-                        {
-                            btn.Foreground = Brushes.White;
-                        }
-                    }
-                    break;
-                case CompartmentActionMode.NoActionSelectedYet:
-                    break;
-            }
-        }
-
-        int NormalizeXValue(double x)
+        private int NormalizeXValue(double x)
         {
             int ret_x;
 
@@ -268,7 +311,8 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
             return ret_x;
         }
-        int NormalizeYValue(double y)
+
+        private int NormalizeYValue(double y)
         {
             int ret_y;
 
@@ -282,12 +326,17 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             }
             return ret_y;
         }
-    }
 
-    public enum CompartmentActionMode
-    {
-        DrawCompartment,
-        CreateCompartment,
-        NoActionSelectedYet
+        private void SetActionToCreateCompartment()
+        {
+            this.currentActionMode = CompartmentActionMode.CreateCompartment;
+        }
+
+        private void SetActionToDrawCompartment()
+        {
+            this.currentActionMode = CompartmentActionMode.DrawCompartment;
+        }
+
+        #endregion Methods
     }
 }

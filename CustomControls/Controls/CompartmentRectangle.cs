@@ -1,32 +1,62 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace Ferretto.VW.CustomControls.Controls
 {
     public class CompartmentRectangle : Control
     {
-        double originX;
-        double originY;
+        #region Fields
 
-        public System.Double OriginX { get => this.originX; set => this.originX = value; }
-        public System.Double OriginY { get => this.originY; set => this.originY = value; }
+        private double originX;
+        private double originY;
+
+        #endregion Fields
+
+        #region Constructors
 
         static CompartmentRectangle()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CompartmentRectangle), new FrameworkPropertyMetadata(typeof(CompartmentRectangle)));
         }
+
         public CompartmentRectangle()
-        {            
+        {
             MouseDown += this.FocusTestControl_MouseDown;
         }
 
-        
+        #endregion Constructors
 
-        void FocusTestControl_MouseDown(object sender, MouseButtonEventArgs e)
+        #region Properties
+
+        public System.Double OriginX { get => this.originX; set => this.originX = value; }
+
+        //correction due to parent position
+        public System.Double OriginY { get => this.originY; set => this.originY = value - 50; }
+
+        #endregion Properties
+
+        #region Methods
+
+        public bool Contains(Point p)
+        {
+            return ((p.X > this.originX) && (p.X - this.Width < this.originX) &&
+                       (p.Y > this.OriginY) && (p.Y - this.Height < this.OriginY));
+        }
+
+        public bool ContainsOrOnFrontier(Point p)
+        {
+            return ((p.X >= this.originX) && (p.X - this.Width <= this.originX) &&
+                       (p.Y >= this.OriginY) && (p.Y - this.Height <= this.OriginY));
+        }
+
+        private void FocusTestControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Keyboard.Focus(this);
             this.Focus();
         }
+
+        #endregion Methods
     }
 }
