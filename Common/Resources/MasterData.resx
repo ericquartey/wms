@@ -117,54 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
-    <comment>Command - Add an element to current page</comment>
+  <data name="ItemInformation" xml:space="preserve">
+    <value>Item Information</value>
+    <comment>Label - Grouping</comment>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
-    <comment>Command - Navigation to previous page</comment>
+  <data name="Compartments" xml:space="preserve">
+    <value>Compartments</value>
+    <comment>Label - Grouping</comment>
   </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Creation Date</value>
+  <data name="PhysicalInformation" xml:space="preserve">
+    <value>Physical Information</value>
+    <comment>Label - Grouping</comment>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
+  <data name="WarehousingInformation" xml:space="preserve">
+    <value>Warehousing Information</value>
+    <comment>Label - Grouping</comment>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
+  <data name="Withdraw" xml:space="preserve">
+    <value>Withdraw</value>
+    <comment>Command - Withdraw the selected Item from the warehouse</comment>
   </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Last Modification Date</value>
+  <data name="ItemAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Items</comment>
   </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
-    <comment>Symbol for millions</comment>
+  <data name="ItemClassA" xml:space="preserve">
+    <value>Class A</value>
+    <comment>Filter - Items with class A</comment>
   </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
+  <data name="ItemFIFO" xml:space="preserve">
+    <value>FIFO</value>
+    <comment>Filter - Items with FIFO policy</comment>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Refresh</value>
-    <comment>Command - Update the contents of the current page</comment>
+  <data name="ItemsMasterData" xml:space="preserve">
+    <value>Items Master Data</value>
+    <comment>Label - Items Page Title</comment>
   </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Revert</value>
-    <comment>Command - Revert modified data on the current page</comment>
+  <data name="ItemSavedSuccessfully" xml:space="preserve">
+    <value>Item saved sucessfully</value>
+    <comment>Notification - item saved</comment>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-    <comment>Command - Save modified data on the current page</comment>
+  <data name="CompartmentsMasterData" xml:space="preserve">
+    <value>Compartments Master Data</value>
+    <comment>Label - Compartments Page Title</comment>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-    <comment>Label - Search</comment>
+  <data name="CompartmentAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Compartments</comment>
   </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
-    <comment>Symbol for thousands</comment>
-  </data>
-  <data name="UnitOfMeasurement" xml:space="preserve">
-    <value>Unit of measurement</value>
+  <data name="CompartmentSavedSuccessfully" xml:space="preserve">
+    <value>Compartment saved sucessfully</value>
+    <comment>Notification - compartment saved</comment>
   </data>
 </root>

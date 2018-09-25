@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Navigation {
@@ -57,51 +57,6 @@ namespace Ferretto.Common.Resources {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Catalog.
-        /// </summary>
-        public static string Catalog {
-            get {
-                return ResourceManager.GetString("Catalog", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Cells.
-        /// </summary>
-        public static string Catalog_Cells {
-            get {
-                return ResourceManager.GetString("Catalog_Cells", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Compartments.
-        /// </summary>
-        public static string Catalog_Compartments {
-            get {
-                return ResourceManager.GetString("Catalog_Compartments", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Items.
-        /// </summary>
-        public static string Catalog_Items {
-            get {
-                return ResourceManager.GetString("Catalog_Items", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Loading Units.
-        /// </summary>
-        public static string Catalog_LoadingUnits {
-            get {
-                return ResourceManager.GetString("Catalog_LoadingUnits", resourceCulture);
             }
         }
         
@@ -282,6 +237,51 @@ namespace Ferretto.Common.Resources {
         public static string Machine_Status {
             get {
                 return ResourceManager.GetString("Machine_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MasterData.
+        /// </summary>
+        public static string MasterData {
+            get {
+                return ResourceManager.GetString("MasterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cells.
+        /// </summary>
+        public static string MasterData_Cells {
+            get {
+                return ResourceManager.GetString("MasterData_Cells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartments.
+        /// </summary>
+        public static string MasterData_Compartments {
+            get {
+                return ResourceManager.GetString("MasterData_Compartments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items.
+        /// </summary>
+        public static string MasterData_Items {
+            get {
+                return ResourceManager.GetString("MasterData_Items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Units.
+        /// </summary>
+        public static string MasterData_LoadingUnits {
+            get {
+                return ResourceManager.GetString("MasterData_LoadingUnits", resourceCulture);
             }
         }
         

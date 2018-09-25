@@ -40,14 +40,14 @@ namespace Ferretto.Common.Utils.Menu
                 );
 
             this.menu.Items.Add(
-                new MainMenuItem(Navigation.Catalog, bgColor, Icons.MasterData, string.Empty, string.Empty)
+                new MainMenuItem(Navigation.MasterData, bgColor, Icons.MasterData, string.Empty, string.Empty)
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.Catalog_Items, bgColor, Icons.WarehouseItems, nameof(Modules.Catalog), Modules.Catalog.ITEMSANDDETAILS),
-                        new MainMenuItem(Navigation.Catalog_Cells, bgColor, Icons.Cells, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Catalog_LoadingUnits, bgColor, Icons.LoadingUnit, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Catalog_Compartments, bgColor,  Icons.Compartments, nameof(Modules.Catalog), Modules.Catalog.COMPARTMENTSANDDETAILS)
+                        new MainMenuItem(Navigation.MasterData_Items, bgColor, Icons.WarehouseItems, nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS),
+                        new MainMenuItem(Navigation.MasterData_Cells, bgColor, Icons.Cells, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MasterData_LoadingUnits, bgColor, Icons.LoadingUnit, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MasterData_Compartments, bgColor,  Icons.Compartments, nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS)
                     }
                 }
             );

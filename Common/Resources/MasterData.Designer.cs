@@ -22,14 +22,14 @@ namespace Ferretto.Common.Resources {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class General {
+    public class MasterData {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal General() {
+        internal MasterData() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Resources {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Resources.General", typeof(General).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Ferretto.Common.Resources.MasterData", typeof(MasterData).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,128 +61,119 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Add.
+        ///   Looks up a localized string similar to All.
         /// </summary>
-        public static string Add {
+        public static string CompartmentAll {
             get {
-                return ResourceManager.GetString("Add", resourceCulture);
+                return ResourceManager.GetString("CompartmentAll", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back.
+        ///   Looks up a localized string similar to Compartments.
         /// </summary>
-        public static string Back {
+        public static string Compartments {
             get {
-                return ResourceManager.GetString("Back", resourceCulture);
+                return ResourceManager.GetString("Compartments", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Creation Date.
+        ///   Looks up a localized string similar to Compartment saved sucessfully.
         /// </summary>
-        public static string CreationDate {
+        public static string CompartmentSavedSuccessfully {
             get {
-                return ResourceManager.GetString("CreationDate", resourceCulture);
+                return ResourceManager.GetString("CompartmentSavedSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
+        ///   Looks up a localized string similar to Compartments MasterData.
         /// </summary>
-        public static string Description {
+        public static string CompartmentsMasterData {
             get {
-                return ResourceManager.GetString("Description", resourceCulture);
+                return ResourceManager.GetString("CompartmentsMasterData", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File.
+        ///   Looks up a localized string similar to All.
         /// </summary>
-        public static string File {
+        public static string ItemAll {
             get {
-                return ResourceManager.GetString("File", resourceCulture);
+                return ResourceManager.GetString("ItemAll", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Modification Date.
+        ///   Looks up a localized string similar to Class A.
         /// </summary>
-        public static string LastModificationDate {
+        public static string ItemClassA {
             get {
-                return ResourceManager.GetString("LastModificationDate", resourceCulture);
+                return ResourceManager.GetString("ItemClassA", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to M.
+        ///   Looks up a localized string similar to FIFO.
         /// </summary>
-        public static string MillionsSymbol {
+        public static string ItemFIFO {
             get {
-                return ResourceManager.GetString("MillionsSymbol", resourceCulture);
+                return ResourceManager.GetString("ItemFIFO", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Open.
+        ///   Looks up a localized string similar to Item Information.
         /// </summary>
-        public static string Open {
+        public static string ItemInformation {
             get {
-                return ResourceManager.GetString("Open", resourceCulture);
+                return ResourceManager.GetString("ItemInformation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refresh.
+        ///   Looks up a localized string similar to Item saved sucessfully.
         /// </summary>
-        public static string Refresh {
+        public static string ItemSavedSuccessfully {
             get {
-                return ResourceManager.GetString("Refresh", resourceCulture);
+                return ResourceManager.GetString("ItemSavedSuccessfully", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Revert.
+        ///   Looks up a localized string similar to Items MasterData.
         /// </summary>
-        public static string Revert {
+        public static string ItemsMasterData {
             get {
-                return ResourceManager.GetString("Revert", resourceCulture);
+                return ResourceManager.GetString("ItemsMasterData", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save.
+        ///   Looks up a localized string similar to Physical Information.
         /// </summary>
-        public static string Save {
+        public static string PhysicalInformation {
             get {
-                return ResourceManager.GetString("Save", resourceCulture);
+                return ResourceManager.GetString("PhysicalInformation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search.
+        ///   Looks up a localized string similar to Warehousing Information.
         /// </summary>
-        public static string Search {
+        public static string WarehousingInformation {
             get {
-                return ResourceManager.GetString("Search", resourceCulture);
+                return ResourceManager.GetString("WarehousingInformation", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to k.
+        ///   Looks up a localized string similar to Withdraw.
         /// </summary>
-        public static string ThousandsSymbol {
+        public static string Withdraw {
             get {
-                return ResourceManager.GetString("ThousandsSymbol", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Unit of measurement.
-        /// </summary>
-        public static string UnitOfMeasurement {
-            get {
-                return ResourceManager.GetString("UnitOfMeasurement", resourceCulture);
+                return ResourceManager.GetString("Withdraw", resourceCulture);
             }
         }
     }
