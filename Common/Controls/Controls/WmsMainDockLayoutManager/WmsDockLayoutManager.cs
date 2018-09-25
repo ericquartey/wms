@@ -56,13 +56,26 @@ namespace Ferretto.Common.Controls
             var layoutPanel = new LayoutPanel();
             layoutPanel.Caption = title;
             RegionManager.SetRegionName(layoutPanel, regionName);
-            if (!(this.FindName("MainDocumentGroup") is DocumentGroup mainGroup))
+
+            DocumentGroup activeGroup = null;
+            if (this.ActiveDockItem != null && (this.ActiveDockItem.Parent is DocumentGroup))
+            {
+                activeGroup = this.ActiveDockItem.Parent as DocumentGroup;
+            }
+
+            if (activeGroup == null && (this.FindName("MainDocumentGroup") is DocumentGroup))
+            {
+                activeGroup = this.FindName("MainDocumentGroup") as DocumentGroup;
+            }
+
+            if (activeGroup == null)
             {
                 throw new System.InvalidOperationException(Errors.CannotRetrieveDocumentGroupFromLayoutManager);
             }
+
             layoutPanel.AllowFloat = false;
             layoutPanel.AllowHide = false;
-            mainGroup.Add(layoutPanel);
+            activeGroup.Add(layoutPanel);
             layoutPanel.IsActive = true;
         }
 
