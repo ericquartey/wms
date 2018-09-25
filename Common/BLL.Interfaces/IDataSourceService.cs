@@ -6,7 +6,7 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Methods
 
-        IEnumerable<object> GetAll();
+        IEnumerable<object> GetAll(string viewName);
 
         #endregion Methods
     }

@@ -24,7 +24,7 @@ namespace Ferretto.WMS.Modules.Layout
             }
 
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            navigationService.Appear(nameof(Catalog), Catalog.ITEMSANDDETAILS);
+            navigationService.Appear(nameof(MasterData), MasterData.ITEMSANDDETAILS);
         }
 
         public ObservableCollection<NavMenuItem> Items { get; set; }

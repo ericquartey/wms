@@ -249,6 +249,9 @@
     <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
+    <Content Include="App.Debug.config">
+      <DependentUpon>App.config</DependentUpon>
+    </Content>
     <Content Include="Seeds\Dev.Items.sql" />
     <Content Include="Seeds\Dev.Minimal.sql" />
     <Content Include="StoredProcedures\InsertionCellLookup.sql" />

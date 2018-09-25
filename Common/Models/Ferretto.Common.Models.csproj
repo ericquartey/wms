@@ -93,7 +93,9 @@
     <Compile Include="ReferenceType.cs" />
     <Compile Include="Side.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Diagrams\ItemsLoadingUnitsCompartments.cd" />
+  </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
@@ -102,5 +104,5 @@
     <Content Include="Diagrams\CellsAndPositions.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\cleanup.targets"/>
+  <Import Project="..\..\cleanup.targets" />
 </Project>

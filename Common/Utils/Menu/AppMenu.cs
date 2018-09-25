@@ -39,27 +39,27 @@ namespace Ferretto.Common.Utils.Menu
                 "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/white/dashboard.png",
                 string.Empty, string.Empty));
 
-            var catalogMenu = new MainMenuItem(
-                Navigation.Catalog, bgColor,
+            var masterDataMenu = new MainMenuItem(
+                Navigation.MasterData, bgColor,
                 "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/white/manual_warehouse.png",
                 string.Empty, string.Empty);
-            catalogMenu.Children.Add(new MainMenuItem(
-                Navigation.Catalog_Items, bgColor,
+            masterDataMenu.Children.Add(new MainMenuItem(
+                Navigation.MasterData_Items, bgColor,
                 "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png",
-                nameof(Modules.Catalog), Modules.Catalog.ITEMSANDDETAILS));
-            catalogMenu.Children.Add(new MainMenuItem(
-                Navigation.Catalog_Cells, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/cells.png", string.Empty,
-                string.Empty));
-            catalogMenu.Children.Add(new MainMenuItem(
-                Navigation.Catalog_LoadingUnits, bgColor,
+                nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS));
+            masterDataMenu.Children.Add(new MainMenuItem(
+                Navigation.MasterData_Cells, bgColor,
+                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/cells.png",
+                string.Empty, string.Empty));
+            masterDataMenu.Children.Add(new MainMenuItem(
+                Navigation.MasterData_LoadingUnits, bgColor,
                 "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png",
                 string.Empty, string.Empty));
-            catalogMenu.Children.Add(new MainMenuItem(
-                Navigation.Catalog_Compartments, bgColor,
+            masterDataMenu.Children.Add(new MainMenuItem(
+                Navigation.MasterData_Compartments, bgColor,
                 "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_view_compact_grey_24dp.png",
-                string.Empty, string.Empty));
-            this.menu.Items.Add(catalogMenu);
+                nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS));
+            this.menu.Items.Add(masterDataMenu);
 
             var configMenu = new MainMenuItem(
                 Navigation.Lists, bgColor,
@@ -103,10 +103,7 @@ namespace Ferretto.Common.Utils.Menu
                 string.Empty, string.Empty));
             this.menu.Items.Add(importExportMenu);
 
-            var configurationMenu = new MainMenuItem(
-                Navigation.Configuration, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_settings_white_24dp.png",
-                string.Empty, string.Empty);
+            var configurationMenu = new MainMenuItem(Navigation.Configuration, bgColor, Icons.Configuration, string.Empty, string.Empty);
 
             configurationMenu.Children.Add(new MainMenuItem(
                 Navigation.Configuration_MeasuringUnits, bgColor,

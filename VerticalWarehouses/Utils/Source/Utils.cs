@@ -4,53 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Ferretto.VW.Utils
 {
-    public class Utils
-    { }
 
     /// <summary>
-    /// My class implementation 
+    /// Base interface.
+    /// IDriverBase interface is inherited by all device interface. 
     /// </summary>
-    public class CMyClass
+    public interface IDriverBase
     {
-        const int NITEMS = 10;
+        //! Initialize the device resources.
+        bool Initialize();
 
-        public int m_myVariable;
+        //! Terminate and release the device resources.
+        void Terminate();
 
-        /// <summary>
-        /// Default c-tor.
-        /// </summary>
-        public CMyClass()
-        {
-            this.m_myVariable = 0;
-        }
-    }
-    public class CBufferStream
-    {
-        /// <summary>
-        /// Data buffer 1 to store receiving stream (main)
-        /// </summary>
-        public byte[] DataBuff1 { get; }
-
-        // Creo una Queue che salva i comandi ricevuti come bytes
-        public Queue<string> CommandsStr;
+    }  // interface IDriverBase
 
         // Creo una Queue che salva i comandi ricevuti come bytes
         public Queue<byte[]> Commands;
 
-        const int NMAX_SIZE = 100;
-
-        /// <summary>
-        /// Default c-tor.
-        /// </summary>
-        public CBufferStream()
-        {
-            this.DataBuff1   = new byte[NMAX_SIZE];
-            this.CommandsStr = new Queue<string>();
-            this.Commands    = new Queue<byte[]>();
-        }
-
-    } // class CBufferStream
+    public class Utils
+    { }
 
 }

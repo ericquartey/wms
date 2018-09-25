@@ -46,10 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Catalog.Designer.cs">
+    <Compile Include="MasterData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Catalog.resx</DependentUpon>
+      <DependentUpon>MasterData.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Icons.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="Models.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -84,10 +89,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Catalog.resx">
+    <EmbeddedResource Include="MasterData.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Catalog.Designer.cs</LastGenOutput>
+      <LastGenOutput>MasterData.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Icons.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Models.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

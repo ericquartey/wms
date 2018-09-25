@@ -13,7 +13,9 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         ItemAll,
         ItemAClass,
-        ItemFifo
+        ItemFifo,
+
+        CompartmentAll,
     }
 
     public class DataSourceService : IDataSourceService
@@ -26,38 +28,58 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public IEnumerable<object> GetAll()
+        public IEnumerable<object> GetAll(string viewName)
         {
-            return new List<DataSource<Item>>
+            switch (viewName)
             {
-                // All items
-                new DataSource<Item>
-                {
-                    SourceName = DataSourceType.ItemAll,
-                    Name = Catalog.ItemAll,
-                    Filter = items => items,
-                    GetCount = filter => this.dataService.GetData(filter).Count(),
-                    GetData = filter => this.dataService.GetData(filter)
-                },
-                // A-Class items
-                new DataSource<Item>
-                {
-                    SourceName = DataSourceType.ItemAClass,
-                    Name = Catalog.ItemClassA,
-                    Filter = items => items.Where(item => item.AbcClass.Id == "A"),
-                    GetCount = filter => this.dataService.GetData(filter).Count(),
-                    GetData = filter => this.dataService.GetData(filter)
-                },
-                // FIFO items
-                new DataSource<Item>
-                {
-                    SourceName = DataSourceType.ItemFifo,
-                    Name = Catalog.ItemFIFO,
-                    Filter = items => items.Where(item => item.ItemManagementType.Description.Contains("FIFO")),
-                    GetCount = filter => this.dataService.GetData(filter).Count(),
-                    GetData = filter => this.dataService.GetData(filter)
-                }
-            };
+                case "ItemsView":
+                    return new List<DataSource<Item>>
+                    {
+                        // All items
+                        new DataSource<Item>
+                        {
+                            SourceName = DataSourceType.ItemAll,
+                            Name = MasterData.ItemAll,
+                            Filter = items => items,
+                            GetCount = filter => this.dataService.GetData(filter).Count(),
+                            GetData = filter => this.dataService.GetData(filter)
+                        },
+                        // A-Class items
+                        new DataSource<Item>
+                        {
+                            SourceName = DataSourceType.ItemAClass,
+                            Name = MasterData.ItemClassA,
+                            Filter = items => items.Where(item => item.AbcClass.Id == "A"),
+                            GetCount = filter => this.dataService.GetData(filter).Count(),
+                            GetData = filter => this.dataService.GetData(filter)
+                        },
+                        // FIFO items
+                        new DataSource<Item>
+                        {
+                            SourceName = DataSourceType.ItemFifo,
+                            Name = MasterData.ItemFIFO,
+                            Filter = items => items.Where(item => item.ItemManagementType.Description.Contains("FIFO")),
+                            GetCount = filter => this.dataService.GetData(filter).Count(),
+                            GetData = filter => this.dataService.GetData(filter)
+                        }
+                    };
+
+                case "CompartmentsView":
+                    return new List<DataSource<Compartment>>
+                    {
+                        // All compartments
+                        new DataSource<Compartment>
+                        {
+                            SourceName = DataSourceType.CompartmentAll,
+                            Name = MasterData.CompartmentAll,
+                            Filter = compartments => compartments,
+                            GetCount = filter => this.dataService.GetData(filter).Count(),
+                            GetData = filter => this.dataService.GetData(filter)
+                        }
+                    };
+                default:
+                    return null;
+            }
         }
 
         #endregion Methods
