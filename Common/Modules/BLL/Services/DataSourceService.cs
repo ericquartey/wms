@@ -39,7 +39,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                         new DataSource<Item>
                         {
                             SourceName = DataSourceType.ItemAll,
-                            Name = Catalog.ItemAll,
+                            Name = MasterData.ItemAll,
                             Filter = items => items,
                             GetCount = filter => this.dataService.GetData(filter).Count(),
                             GetData = filter => this.dataService.GetData(filter)
@@ -48,7 +48,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                         new DataSource<Item>
                         {
                             SourceName = DataSourceType.ItemAClass,
-                            Name = Catalog.ItemClassA,
+                            Name = MasterData.ItemClassA,
                             Filter = items => items.Where(item => item.AbcClass.Id == "A"),
                             GetCount = filter => this.dataService.GetData(filter).Count(),
                             GetData = filter => this.dataService.GetData(filter)
@@ -57,7 +57,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                         new DataSource<Item>
                         {
                             SourceName = DataSourceType.ItemFifo,
-                            Name = Catalog.ItemFIFO,
+                            Name = MasterData.ItemFIFO,
                             Filter = items => items.Where(item => item.ItemManagementType.Description.Contains("FIFO")),
                             GetCount = filter => this.dataService.GetData(filter).Count(),
                             GetData = filter => this.dataService.GetData(filter)
@@ -71,7 +71,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                         new DataSource<Compartment>
                         {
                             SourceName = DataSourceType.CompartmentAll,
-                            Name = Catalog.CompartmentAll,
+                            Name = MasterData.CompartmentAll,
                             Filter = compartments => compartments,
                             GetCount = filter => this.dataService.GetData(filter).Count(),
                             GetData = filter => this.dataService.GetData(filter)

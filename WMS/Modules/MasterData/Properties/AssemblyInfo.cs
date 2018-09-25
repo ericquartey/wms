@@ -2,11 +2,11 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("Ferretto.WMS.Modules.Catalog")]
+[assembly: AssemblyTitle("Ferretto.WMS.Modules.MasterData")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ferretto Group S.p.A.")]
-[assembly: AssemblyProduct("Ferretto.WMS.Modules.Catalog")]
+[assembly: AssemblyProduct("Ferretto.WMS.Modules.MasterData")]
 [assembly: AssemblyCopyright("Copyright © Ferretto Group 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

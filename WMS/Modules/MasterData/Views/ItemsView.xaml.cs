@@ -1,12 +1,12 @@
 ﻿using Ferretto.Common.Controls;
 
-namespace Ferretto.WMS.Modules.Catalog
+namespace Ferretto.WMS.Modules.MasterData
 {
-    public partial class ItemsAndDetailsView : WmsView
+    public partial class ItemsView : WmsView
     {
         #region Constructors
 
-        public ItemsAndDetailsView()
+        public ItemsView()
         {
             this.InitializeComponent();
         }

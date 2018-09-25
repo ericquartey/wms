@@ -8,7 +8,7 @@ using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.Catalog
+namespace Ferretto.WMS.Modules.MasterData
 {
     public class CompartmentDetailsViewModel : BaseNavigationViewModel
     {
@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Modules.Catalog
                 this.eventService.Invoke(new ItemChangedEvent<Compartment>(this.Compartment));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEvent(Ferretto.Common.Resources.Catalog.CompartmentSavedSuccessfully));
+                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
         }
 
