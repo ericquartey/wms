@@ -8,7 +8,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    public class BusinessProvider
+    public class BusinessProvider : IBusinessProvider
     {
         #region Fields
 
@@ -46,7 +46,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public ItemDetails GetItemDetails(int itemId)
         {
-            return this.dataService.GetItemDetails(itemId);
+            return Mapper.Map<ItemDetails>(this.dataService.GetItemDetails(itemId));
         }
 
         public int Save(ItemDetails item)
@@ -54,32 +54,42 @@ namespace Ferretto.Common.Modules.BLL.Services
             return 0;
         }
 
-        internal IQueryable<Compartment> GetAllCompartments()
+        public int Save(CompartmentDetails compartment)
+        {
+            return 0;
+        }
+
+        public IEnumerable<Compartment> GetAllCompartments()
         {
             throw new NotImplementedException();
         }
 
-        internal IQueryable<Compartment> GetCompartmentsByItemId(int itemId)
+        public IEnumerable<Compartment> GetCompartmentsByItemId(int itemId)
         {
             throw new NotImplementedException();
         }
 
-        internal IQueryable<Item> GetItemsWithAClass()
+        public IEnumerable<Item> GetItemsWithAClass()
         {
             throw new NotImplementedException();
         }
 
-        internal Int32 GetItemsWithAClassCount()
+        public int GetItemsWithAClassCount()
         {
             throw new NotImplementedException();
         }
 
-        internal IQueryable<Item> GetItemsWithFIFO()
+        public IEnumerable<Item> GetItemsWithFIFO()
         {
             throw new NotImplementedException();
         }
 
-        internal Int32 GetItemsWithFIFOCount()
+        public int GetItemsWithFIFOCount()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetAllCompartmentsCount()
         {
             throw new NotImplementedException();
         }

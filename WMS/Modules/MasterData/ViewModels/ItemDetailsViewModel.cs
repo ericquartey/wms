@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Models;
+using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -15,12 +13,11 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
+        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
 
-        private CompartmentsDataSource compartmentsDataSource;
         private ICommand hideDetailsCommand;
-        private Item item;
+        private ItemDetails item;
         private ICommand saveCommand;
 
         #endregion Fields
@@ -36,35 +33,23 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IEnumerable<AbcClass> AbcClassChoices => this.dataService.GetData<AbcClass>().AsEnumerable();
-
-        public CompartmentsDataSource CompartmentsSource
-        {
-            get => this.compartmentsDataSource;
-            set => this.SetProperty(ref this.compartmentsDataSource, value);
-        }
-
         public ICommand HideDetailsCommand => this.hideDetailsCommand ??
                             (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
 
-        public Item Item
+        public ItemDetails Item
         {
             get => this.item;
             set
             {
                 if (this.SetProperty(ref this.item, value))
                 {
-                    this.CompartmentsSource = new CompartmentsDataSource(this.item, this.dataService);
+                    // set compartments
                 }
             }
         }
 
-        public IEnumerable<ItemManagementType> ItemManagementTypeChoices => this.dataService.GetData<ItemManagementType>().AsEnumerable();
-
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
-
-        public IEnumerable<MeasureUnit> UnitOfMeasurementChoices => this.dataService.GetData<MeasureUnit>().AsEnumerable();
 
         #endregion Properties
 
@@ -77,11 +62,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.dataService.SaveChanges();
+            var rowSaved = this.businessProvider.Save(this.Item);
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<Item>(this.Item));
+                this.eventService.Invoke(new ItemChangedEvent<ItemDetails>(this.Item));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
@@ -90,11 +75,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
+            this.eventService.Subscribe<ItemSelectionChangedEvent<ItemDetails>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
         }
 
-        private void OnItemSelectionChanged(Item selectedItem)
+        private void OnItemSelectionChanged(ItemDetails selectedItem)
         {
             this.Item = selectedItem;
         }
@@ -103,11 +88,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Classes
 
-        public class CompartmentsDataSource : IDataSource<Compartment>
+        /*public class CompartmentsDataSource : IDataSource<Compartment>
         {
             #region Constructors
 
-            public CompartmentsDataSource(Item item, IDataService dataService)
+            public CompartmentsDataSource(ItemDetails item, IDataService dataService)
             {
                 this.Item = item;
                 this.DataService = dataService;
@@ -120,7 +105,7 @@ namespace Ferretto.WMS.Modules.MasterData
             public Int32 Count => 0;
 
             public IDataService DataService { get; private set; }
-            public Func<IQueryable<Compartment>, IQueryable<Compartment>> Filter => compartments => compartments;
+            public Func<IEnumerable<Compartment>, IEnumerable<Compartment>> Filter => compartments => compartments;
             public Item Item { get; private set; }
             public String Name => "Item Compartments";
 
@@ -128,15 +113,20 @@ namespace Ferretto.WMS.Modules.MasterData
 
             #region Methods
 
-            public IQueryable<Compartment> Load()
+            public IEnumerable<Compartment> Load()
             {
                 return this.Item != null ?
                            this.DataService.GetData<Compartment>().Where(compartment => compartment.ItemId == this.Item.Id)
                            : null;
             }
 
+            IEnumerable<Compartment> IDataSource<Compartment>.Load()
+            {
+                throw new NotImplementedException();
+            }
+
             #endregion Methods
-        }
+        }*/
 
         #endregion Classes
     }

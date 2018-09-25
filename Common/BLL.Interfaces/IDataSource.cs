@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Ferretto.Common.BLL.Interfaces
@@ -8,14 +9,14 @@ namespace Ferretto.Common.BLL.Interfaces
         #region Properties
 
         int Count { get; }
-        Func<IQueryable<TEntity>, IQueryable<TEntity>> Filter { get; }
+        Func<IEnumerable<TEntity>, IEnumerable<TEntity>> Filter { get; }
         string Name { get; }
 
         #endregion Properties
 
         #region Methods
 
-        IQueryable<TEntity> Load();
+        IEnumerable<TEntity> Load();
 
         #endregion Methods
     }

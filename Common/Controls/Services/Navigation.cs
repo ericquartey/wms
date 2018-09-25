@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
+    public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs where TPayload : IBusinessObject
     {
         public ItemChangedEvent(TPayload changedItem)
         {
@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls.Services
         public string Token => null;
     }
 
-    public class ItemSelectionChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
+    public class ItemSelectionChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs where TPayload : IBusinessObject
     {
         public ItemSelectionChangedEvent(TPayload selectedItem)
         {
@@ -28,16 +28,12 @@ namespace Ferretto.Common.Controls.Services
 
     public class RefreshItemsEvent<TItem> : Prism.Events.PubSubEvent<TItem>, IEventArgs
     {
-        public RefreshItemsEvent()
-        {
-        }
-
         public TItem Item { get; set; }
 
         public string Token => null;
     }
 
-    public class ShowDetailsEventArgs<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
+    public class ShowDetailsEventArgs<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs where TPayload : IBusinessObject
     {
         public ShowDetailsEventArgs(bool isDetailsViewVisible)
         {

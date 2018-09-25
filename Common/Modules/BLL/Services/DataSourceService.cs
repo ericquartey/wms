@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    // All EF Item DataSources
     public enum DataSourceType
     {
         ItemAll,
@@ -66,13 +67,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                             SourceName = DataSourceType.CompartmentAll,
                             Name = MasterData.CompartmentAll,
                             Filter = compartments => compartments,
-                            GetCount = filter => this.businessProvider.GetCompartmentsCount(),
+                            GetCount = filter => this.businessProvider.GetAllCompartmentsCount(),
                             GetData = filter => this.businessProvider.GetAllCompartments()
                         }
                     };
 
                 default:
-                    return null;
+                    return new List<object>();
             }
 #pragma warning restore IDE0009
         }

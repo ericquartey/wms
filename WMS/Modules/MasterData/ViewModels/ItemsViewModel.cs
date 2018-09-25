@@ -7,6 +7,7 @@ using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
+using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -15,7 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IDataSourceService filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        private IDataSource<Common.Models.Item> selectedDataSource;
+        private IDataSource<Item> selectedDataSource;
         private Tile selectedFilter;
         private ICommand viewDetailsCommand;
 
@@ -23,7 +24,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IEnumerable<IDataSource<Common.Models.Item>> DataSources => this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(ItemsViewModel))) as IEnumerable<IDataSource<Common.Models.Item>>;
+        public IEnumerable<IDataSource<Item>> DataSources => this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(ItemsViewModel))) as IEnumerable<IDataSource<Item>>;
 
         public IEnumerable<Tile> Filters => this.DataSources.Select(dataSource =>
             new Tile
@@ -33,7 +34,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         );
 
-        public IDataSource<Common.Models.Item> SelectedDataSource
+        public IDataSource<Item> SelectedDataSource
         {
             get => this.selectedDataSource;
             set => this.SetProperty(ref this.selectedDataSource, value);
@@ -61,7 +62,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private static void ExecuteViewDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Common.Models.Item>(true));
+                .Invoke(new ShowDetailsEventArgs<Item>(true));
         }
 
         #endregion Methods

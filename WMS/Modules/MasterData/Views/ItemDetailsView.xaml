@@ -111,7 +111,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=AbcClassChoices}"
+                                      ItemsSource="{Binding Path=Item.AbcClassChoices}"
                                       Label="{x:Static res:Models.AbcClass}"
                                       SelectedValue="{Binding Path=Item.ClassId, Mode=TwoWay}"
                                       ValueMember="Id" />
@@ -125,7 +125,7 @@
                         <wms:ComboBox Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=UnitOfMeasurementChoices}"
+                                      ItemsSource="{Binding Path=Item.UnitOfMeasurementChoices}"
                                       Label="{x:Static res:General.UnitOfMeasurement}"
                                       SelectedValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay}"
                                       ValueMember="Id" />
@@ -140,7 +140,7 @@
                                      Text="{Binding Path=Item.ReorderQuantity, Mode=TwoWay}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=ItemManagementTypeChoices}"
+                                      ItemsSource="{Binding Path=Item.ItemManagementTypeChoices}"
                                       Label="{x:Static res:Models.ItemManagementType}"
                                       SelectedValue="{Binding Path=Item.ItemManagementTypeId, Mode=TwoWay}"
                                       ValueMember="Id" />
