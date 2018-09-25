@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ferretto.VW.VerticalWarehousesApp"
-        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="Ferretto.VW.VerticalWarehousesApp.MainWindow"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        x:Class="Ferretto.VW.VerticalWarehousesApp.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Loaded="VMLoaded"
         Height="768" Width="1024" Background="Gray">
