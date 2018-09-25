@@ -1,7 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Windows.Media;
 using Ferretto.VW.CustomControls.Controls;
@@ -11,7 +10,11 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 {
     public partial class CompartmentationPageView : Page
     {
-        const int RESOLUTION = 20; //passo minimo di lunghezza scomparto
+        const int RESOLUTION = 20; //smaller drawing step
+        const int MAX_WIDTH = 760, MIN_WIDTH = 20; //min & max width
+        const int MAX_HEIGHT = 580, MIN_HEIGHT = 60; //min & max height
+
+        public static CompartmentRectangle selectedRect;
 
         Point testPoint;
         Point currentRectStartPoint;
@@ -30,6 +33,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             this.InitializeComponent();
             this.rects = new List<CompartmentRectangle>();
             this.CheckActionButtonsSelectionCorrectness();
+            
         }
 
         private void ImageMouseDown(object sender, MouseButtonEventArgs e)
@@ -80,13 +84,13 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                     {
                         this.currentRect.Height = (double)y;
                     }
-                    if (this.currentRectStartPoint.X + x > 760)
+                    if (this.currentRectStartPoint.X + x > MAX_WIDTH)
                     {
-                        this.currentRect.Width = 760 - this.currentRectStartPoint.X;
+                        this.currentRect.Width = MAX_WIDTH - this.currentRectStartPoint.X;
                     }
-                    if (this.currentRectStartPoint.Y + y > 580)
+                    if (this.currentRectStartPoint.Y + y > MAX_HEIGHT)
                     {
-                        this.currentRect.Height = 580 - this.currentRectStartPoint.Y;
+                        this.currentRect.Height = MAX_HEIGHT - this.currentRectStartPoint.Y;
                     }
                 }
             }
@@ -98,6 +102,8 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             {
                 if (this.isDrawing)
                 {
+                    this.currentRect.OriginX = this.currentRectStartPoint.X;
+                    this.currentRect.OriginY = this.currentRectStartPoint.Y;
                     this.rects.Add(this.currentRect);
                     this.currentRect = null;
                     this.isDrawing = false;
@@ -115,7 +121,58 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             this.SetActionToCreateCompartment();
             this.CheckActionButtonsSelectionCorrectness();
-            this.CreateCompartment(100, 100, 100, 123);
+            this.CreateCompartment(100, 100, 100, 120);
+        }
+
+        private void ButtonDoDeleteCompartment(object sender, RoutedEventArgs e)
+        {
+            this.DeleteCompartment();
+        }
+
+        private void ButtonDoMassiveDivideCompartment(object sender, RoutedEventArgs e)
+        {
+            this.MassiveDivideCompartment(5,5);
+        }
+
+        private void DeleteCompartment()
+        {
+            var selectedRect = Keyboard.FocusedElement;
+
+            if (selectedRect != null)
+            {
+                if (selectedRect.GetType() == typeof(CompartmentRectangle))
+                {
+                    this.rects.Remove((CompartmentRectangle)selectedRect);
+                    this.cnvImage.Children.Remove((CompartmentRectangle)selectedRect);
+                }
+            }          
+        }
+
+        private void MassiveDivideCompartment(int rows, int columns)
+        {
+            var selectedRect = Keyboard.FocusedElement;
+            double cellWidth, cellHeight, originX, originY;
+            if (selectedRect != null)
+            {
+                if (selectedRect.GetType() == typeof(CompartmentRectangle))
+                {
+                    cellWidth = this.rects.Find( x => x.Equals(selectedRect)).Width / columns;
+                    cellHeight = this.rects.Find(x => x.Equals(selectedRect)).Height / rows;
+                    originX = this.rects.Find(x => x.Equals(selectedRect)).OriginX;
+                    originY = this.rects.Find(x => x.Equals(selectedRect)).OriginY;
+
+                    for (double x = originX; x < (originX + this.rects.Find(z => z.Equals(selectedRect)).Width); x += cellWidth)
+                    {
+                        for (double y = originY; y < (originY + this.rects.Find(z => z.Equals(selectedRect)).Height); y+= cellHeight)
+                        {
+                            this.CreateMassiveCompartment(x,y,cellWidth,cellHeight);
+                        }
+                    }
+                    this.rects.Remove(this.rects.Find(x => x.Equals(selectedRect)));
+                    this.cnvImage.Children.Remove(this.rects.Find(x => x.Equals(selectedRect)));
+                    this.cnvImage.Children.Remove((CompartmentRectangle)selectedRect);
+                }
+            }
         }
 
         private void SetActionToDrawCompartment()
@@ -137,13 +194,13 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             w = this.NormalizeXValue(width);
             h = this.NormalizeYValue(height);
 
-            if (ox + w > 760)
+            if (ox + w > MAX_WIDTH)
             {
-                w = 760 - ox;
+                w = MAX_WIDTH - ox;
             }
-            if (oy + h > 580)
+            if (oy + h > MAX_HEIGHT)
             {
-                h = 580 - oy;
+                h = MAX_HEIGHT - oy;
             }
 
             this.currentRect = new CompartmentRectangle();
@@ -151,6 +208,18 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             this.currentRect.SetValue(Canvas.TopProperty, (double)oy - 50);
             this.currentRect.Width = w;
             this.currentRect.Height = h;
+            this.cnvImage.Children.Add(this.currentRect);
+            this.rects.Add(this.currentRect);
+            this.currentRect = null;
+        }
+
+        private void CreateMassiveCompartment(double originx, double originy, double width, double height)
+        {
+            this.currentRect = new CompartmentRectangle();
+            this.currentRect.SetValue(Canvas.LeftProperty, originx);
+            this.currentRect.SetValue(Canvas.TopProperty, originy - 50);
+            this.currentRect.Width = width;
+            this.currentRect.Height = height;
             this.cnvImage.Children.Add(this.currentRect);
             this.rects.Add(this.currentRect);
             this.currentRect = null;
@@ -189,13 +258,13 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             int ret_x;
 
-            if (x >= 20 && x <= 760)
+            if (x >= MIN_WIDTH && x <= MAX_WIDTH)
             {
                 ret_x = ((int)x % RESOLUTION == 0) ? (int)x : (int)x - ((int)x % RESOLUTION);
             }
             else
             {
-                ret_x = (x < 20) ? 20 : 760;
+                ret_x = (x < MIN_WIDTH) ? MIN_WIDTH : MAX_WIDTH;
             }
             return ret_x;
         }
@@ -203,13 +272,13 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             int ret_y;
 
-            if (y >= 20 && y <= 760)
+            if (y >= MIN_HEIGHT && y <= MAX_HEIGHT)
             {
                 ret_y = ((int)y % RESOLUTION == 0) ? (int)y : (int)y - ((int)y % RESOLUTION);
             }
             else
             {
-                ret_y = (y < 20) ? 20 : 760;
+                ret_y = (y < MIN_HEIGHT) ? MIN_HEIGHT : MAX_HEIGHT;
             }
             return ret_y;
         }

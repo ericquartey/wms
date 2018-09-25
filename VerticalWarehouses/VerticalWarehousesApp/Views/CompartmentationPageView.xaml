@@ -23,7 +23,11 @@
 
                 <Button Name="ButtonDoNothing" Margin="5" Background="Transparent" BorderThickness="1" BorderBrush="White"
                         Foreground="White" FontSize="20" Click="ButtonSetActionToCreateCompartment" Content="Create Compartments"/>
-                
+
+                <Button Name="ButtonClearCompartment" Margin="5" Background="Transparent" BorderThickness="1" BorderBrush="White"
+                        Foreground="White" FontSize="20" Click="ButtonDoDeleteCompartment" Focusable="False" Content="Clear Compartment"/>
+                <Button Name="ButtonMassiveDivide" Margin="5" Background="Transparent" BorderThickness="1" BorderBrush="White"
+                        Foreground="White" FontSize="20" Click="ButtonDoMassiveDivideCompartment" Focusable="False" Content="Massive Divide"/>
             </StackPanel>
         </Border>
         <Canvas Grid.Row="1" Name="cnvImage" MouseDown="ImageMouseDown" MouseMove="ImageMouseMove"
