@@ -249,7 +249,7 @@
     <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">
       <Link>Properties\CustomDictionary.xml</Link>
     </CodeAnalysisDictionary>
-    <Content Include="App.Debug.config">
+    <Content Include="App.InternalTesting.config">
       <DependentUpon>App.config</DependentUpon>
     </Content>
     <Content Include="Seeds\Dev.Items.sql" />

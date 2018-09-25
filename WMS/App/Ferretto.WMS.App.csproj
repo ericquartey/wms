@@ -242,7 +242,7 @@
     <Resource Include="favicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.Debug.config">
+    <Content Include="App.InternalTesting.config">
       <DependentUpon>App.config</DependentUpon>
     </Content>
   </ItemGroup>
