@@ -7,6 +7,47 @@ using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.InvServer
 {
+
+    /// <summary>
+    /// Data buffer message.
+    /// The structure is composed by two buffers in order to handle the fragmented messages. 
+    /// No operations are made by the class.
+    /// </summary>
+    public class CBufferStream
+    {
+        const int NMAX_SIZE = 100;
+
+        /// <summary>
+        /// Default c-tor.
+        /// </summary>
+        public CBufferStream()
+        {
+            this.DataBuff1 = new byte[NMAX_SIZE];
+            this.DataBuff2 = new byte[NMAX_SIZE];
+            this.IdxBuff1 = 0;
+            this.IdxBuff2 = 0;
+        }
+
+        /// <summary>
+        /// Data buffer 1 to store receiving stream (main)
+        /// </summary>
+        public byte[] DataBuff1 { get; }
+        /// <summary>
+        /// Data buffer 2 to store receiving stream (support)
+        /// </summary>
+        public byte[] DataBuff2 { get; }
+        /// <summary>
+        /// Index of data buffer 1 
+        /// </summary>
+        public int IdxBuff1 { get; set; }
+        /// <summary>
+        /// Index of data buffer 2
+        /// </summary>
+        public int IdxBuff2 { get; set; }
+
+    } // class CBufferStream
+
+
     public class Program
     {
         // int i = 0;

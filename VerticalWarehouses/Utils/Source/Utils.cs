@@ -23,7 +23,7 @@ namespace Ferretto.VW.Utils
     }  // interface IDriverBase
 
         // Creo una Queue che salva i comandi ricevuti come bytes
-        public Queue<byte[]> Commands;
+        //public Queue<byte[]> Commands;
 
     public class Utils
     { }
