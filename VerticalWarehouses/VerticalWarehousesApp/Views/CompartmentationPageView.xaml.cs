@@ -256,15 +256,19 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 Point tmpPoint_2 = new Point(cr.OriginX + cr.Height, cr.OriginY + cr.Height); //bottom left
                 Point tmpPoint_3 = new Point(cr.OriginX + cr.Height + cr.Width, cr.OriginY + cr.Height + cr.Width); //bottom right
                 Point tmpPoint_4 = new Point(cr.OriginX + cr.Width, cr.OriginY + cr.Width); //top right
+                Point centerPoint = PlanarGeometryMethods.CalculateCompartmentRectCenterPoint(cr);
                 foreach (var compare_rect in this.rects)
                 { //check the four angles
-                    if (compare_rect.Contains(tmpPoint_1) || compare_rect.Contains(tmpPoint_2) || compare_rect.Contains(tmpPoint_3) || compare_rect.Contains(tmpPoint_4))
+                    if (compare_rect.Contains(tmpPoint_1) || compare_rect.Contains(tmpPoint_2) || compare_rect.Contains(tmpPoint_3) || compare_rect.Contains(tmpPoint_4) || compare_rect.ContainsOrOnFrontier(centerPoint))
                     {
                         return true;
                     }//check the four edges
                     Point compareCompRectOrig = new Point(compare_rect.OriginX, compare_rect.OriginY);
                     Point compareCompRectFinal = new Point(compare_rect.OriginX + compare_rect.Width, compare_rect.OriginY + compare_rect.Height);
-                    return PlanarGeometryMethods.AreGivenCompartmentRectanglesOverlapping(tmpPoint_1, tmpPoint_3, compareCompRectOrig, compareCompRectFinal);
+                    if (PlanarGeometryMethods.AreGivenCompartmentRectanglesOverlapping(tmpPoint_1, tmpPoint_3, compareCompRectOrig, compareCompRectFinal))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

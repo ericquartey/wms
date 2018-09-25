@@ -22,6 +22,16 @@ namespace Ferretto.VW.Utils.Source
             return true;
         }
 
+        public static Point CalculateCompartmentRectCenterPoint(CompartmentRectangle cr)
+        {
+            Point retPoint;
+            double x = cr.OriginX + (cr.Width / 2);
+            double y = cr.OriginY + (cr.Height / 2);
+
+            retPoint = new Point(x, y);
+            return retPoint;
+        }
+
         public static bool CompartmentRectangleIntersectCompartmentRectangle(CompartmentRectangle cr0, CompartmentRectangle cr1)
         {
             Point cr0point1 = new Point(cr0.OriginX, cr0.OriginY); //top left
