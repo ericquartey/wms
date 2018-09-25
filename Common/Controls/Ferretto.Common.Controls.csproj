@@ -193,7 +193,7 @@
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Expander\Expander.cs" />
-    <Compile Include="Controls\Icon\IconViewModel.cs" />
+    <Compile Include="Controls\Icon\WmsIconViewModel.cs" />
     <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
       <DependentUpon>WmsIcon.xaml</DependentUpon>
     </Compile>
