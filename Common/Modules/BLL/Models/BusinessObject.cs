@@ -1,13 +1,14 @@
 ﻿using System;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Modules.BLL
+namespace Ferretto.Common.Modules.BLL.Models
 {
-    public static class ModelExtensions
+    public abstract class BusinessObject : IBusinessObject
     {
         #region Methods
 
-        public static void SetIfStrictlyPositive(this Object model, ref int? member, int? value)
+        public void SetIfStrictlyPositive(ref int? member, int? value)
         {
             if (value.HasValue)
             {

@@ -6,7 +6,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class DataSource<TEntity> : BindableBase, IDataSource<TEntity> where TEntity : class
+    public class DataSource<TEntity> : BindableBase, IDataSource<TEntity> where TEntity : IBusinessObject
     {
         #region Fields
 

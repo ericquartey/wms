@@ -7,19 +7,7 @@ namespace Ferretto.Common.Controls
 {
     public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
     {
-        #region Properties
-
-        public Type ItemType { get; set; }
-
-        #endregion
-
-        #region Dependency properties  
-
-        public object CurrentDataSource
-        {
-            get => (object)this.GetValue(CurrentDataSourcesProperty);
-            set => this.SetValue(CurrentDataSourcesProperty, value);
-        }
+        #region Fields
 
         public static readonly DependencyProperty CurrentDataSourcesProperty = DependencyProperty.Register(
             nameof(CurrentDataSource),
@@ -27,18 +15,19 @@ namespace Ferretto.Common.Controls
             typeof(WmsGridControl),
             new PropertyMetadata(CurrentDataSourceChanged));
 
-        private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        #endregion Fields
+
+        #region Properties
+
+        public object CurrentDataSource
         {
-            if (dependencyObject is WmsGridControl gridControl)
-            {                
-                if (gridControl.DataContext is IWmsGridViewModel dataContext)
-                {
-                    dataContext.SetDataSource(e.NewValue);
-                }
-            }
+            get => (object)this.GetValue(CurrentDataSourcesProperty);
+            set => this.SetValue(CurrentDataSourcesProperty, value);
         }
 
-        #endregion
+        public Type ItemType { get; set; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -50,9 +39,9 @@ namespace Ferretto.Common.Controls
             }
             base.OnInitialized(e);
 
-            Type viewModelClass = typeof(WmsGridViewModel<>);
-            Type constructedClass = viewModelClass.MakeGenericType(this.ItemType);
-            this.DataContext = Activator.CreateInstance(constructedClass);            
+            var viewModelClass = typeof(WmsGridViewModel<>);
+            var constructedClass = viewModelClass.MakeGenericType(this.ItemType);
+            this.DataContext = Activator.CreateInstance(constructedClass);
 
             var selectedItemBinding = new Binding("SelectedItem")
             {
@@ -61,6 +50,17 @@ namespace Ferretto.Common.Controls
             };
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
             this.SetBinding(ItemsSourceProperty, "Items");
+        }
+
+        private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (dependencyObject is WmsGridControl gridControl)
+            {
+                if (gridControl.DataContext is IWmsGridViewModel dataContext)
+                {
+                    dataContext.SetDataSource(e.NewValue);
+                }
+            }
         }
 
         #endregion Methods

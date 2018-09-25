@@ -1,12 +1,10 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
-using System.Linq;
 
 namespace Ferretto.WMS.Modules.Layout
 {
@@ -44,7 +42,7 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<MenuView, MenuViewModel>();
 
             // TODO: review this call to ensure we do a proper initialization of the entity framework
-            ServiceLocator.Current.GetInstance<IDataService>().GetData<Item>().FirstOrDefault(item => item.Id == 4);
+            ServiceLocator.Current.GetInstance<IDataService>().Initialize();
 
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}",

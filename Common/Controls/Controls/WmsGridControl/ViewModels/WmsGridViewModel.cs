@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity> : BindableBase, IWmsGridViewModel where TEntity : class
+    public class WmsGridViewModel<TEntity> : BindableBase, IWmsGridViewModel where TEntity : IBusinessObject
     {
         #region Fields
 

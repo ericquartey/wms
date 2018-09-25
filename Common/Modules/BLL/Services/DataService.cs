@@ -1,8 +1,8 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
+using Ferretto.Common.Models;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -10,33 +10,40 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly DatabaseContext context;
+        private readonly DatabaseContext dataContext;
 
         #endregion Fields
 
         #region Constructors
 
-        public DataService(DatabaseContext context)
+        public DataService(DatabaseContext dataContext)
         {
-            this.context = context;
+            this.dataContext = dataContext;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public IQueryable<TEntity> GetData<TEntity>(Func<IQueryable<TEntity>, IQueryable<TEntity>> predicate = null) where TEntity : class
+        public IEnumerable<object> GetAllClassAItems()
         {
-            if (predicate == null)
-            {
-                return this.context.Set<TEntity>();
-            }
-            return predicate.Invoke(this.context.Set<TEntity>());
+            return this.GetAllItems().Cast<Item>().Where(item => item.ClassId == "A");
         }
 
-        public int SaveChanges() => this.context.SaveChanges();
+        public IEnumerable<object> GetAllItems()
+        {
+            return this.dataContext.Items;
+        }
 
-        public Task<int> SaveChangesAsync() => this.context.SaveChangesAsync();
+        public object GetItemDetails(int itemId)
+        {
+            return this.dataContext.Items.Single(item => item.Id == itemId);
+        }
+
+        public void Initialize()
+        {
+            this.dataContext.Items.ToArray();
+        }
 
         #endregion Methods
     }

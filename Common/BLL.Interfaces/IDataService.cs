@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
@@ -8,12 +6,13 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Methods
 
-        IQueryable<TEntity> GetData<TEntity>(Func<IQueryable<TEntity>, IQueryable<TEntity>> predicate = null)
-            where TEntity : class;
+        IEnumerable<object> GetAllClassAItems();
 
-        int SaveChanges();
+        IEnumerable<object> GetAllItems();
 
-        Task<int> SaveChangesAsync();
+        object GetItemDetails(int itemId);
+
+        void Initialize();
 
         #endregion Methods
     }
