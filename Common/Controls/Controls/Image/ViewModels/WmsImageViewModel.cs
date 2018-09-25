@@ -5,7 +5,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    internal class ImageViewModel : BindableBase
+    internal class WmsImageViewModel : BindableBase
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace Ferretto.Common.Controls
 
         #region Constructors
 
-        public ImageViewModel()
+        public WmsImageViewModel()
         {
             this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
         }

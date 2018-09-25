@@ -1,10 +1,10 @@
-﻿<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
-    <!-- converters -->
+    <!--  converters  -->
     <ctrls:BoolToVisibilityConverter x:Key="BTVC" />
-    <ctrls:BoolToVisibilityConverter x:Key="BTVIC" Invert="True" />
+    <ctrls:BoolToVisibilityConverter x:Key="BTVIC"
+                                     Invert="True" />
 
 </ResourceDictionary>

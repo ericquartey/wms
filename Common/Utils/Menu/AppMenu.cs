@@ -34,126 +34,77 @@ namespace Ferretto.Common.Utils.Menu
             this.menu.Items = new List<MainMenuItem>();
 
             const string bgColor = "CommonSecondaryDark";
-            this.menu.Items.Add(new MainMenuItem(
-                Navigation.Machine_Status, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/white/dashboard.png",
-                string.Empty, string.Empty));
 
-            var masterDataMenu = new MainMenuItem(
-                Navigation.MasterData, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/white/manual_warehouse.png",
-                string.Empty, string.Empty);
-            masterDataMenu.Children.Add(new MainMenuItem(
-                Navigation.MasterData_Items, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png",
-                nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS));
-            masterDataMenu.Children.Add(new MainMenuItem(
-                Navigation.MasterData_Cells, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/cells.png",
-                string.Empty, string.Empty));
-            masterDataMenu.Children.Add(new MainMenuItem(
-                Navigation.MasterData_LoadingUnits, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png",
-                string.Empty, string.Empty));
-            masterDataMenu.Children.Add(new MainMenuItem(
-                Navigation.MasterData_Compartments, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_view_compact_grey_24dp.png",
-                nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS));
-            this.menu.Items.Add(masterDataMenu);
+            this.menu.Items.Add(
+                new MainMenuItem(Navigation.Machine_Status, bgColor, Icons.MachineStatus, string.Empty, string.Empty)
+                );
 
-            var configMenu = new MainMenuItem(
-                Navigation.Lists, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_list_white_24dp.png",
-                string.Empty, string.Empty);
-            configMenu.Children.Add(new MainMenuItem(
-                Navigation.Lists_Lists, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_list_grey_24dp.png",
-                string.Empty, string.Empty));
-            this.menu.Items.Add(configMenu);
+            this.menu.Items.Add(
+                new MainMenuItem(Navigation.MasterData, bgColor, Icons.MasterData, string.Empty, string.Empty)
+                {
+                    Children = new List<MainMenuItem>
+                    {
+                        new MainMenuItem(Navigation.MasterData_Items, bgColor, Icons.WarehouseItems, nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS),
+                        new MainMenuItem(Navigation.MasterData_Cells, bgColor, Icons.Cells, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MasterData_LoadingUnits, bgColor, Icons.LoadingUnit, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MasterData_Compartments, bgColor,  Icons.Compartments, nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS)
+                    }
+                }
+            );
 
-            var otherMenu = new MainMenuItem(
-                Navigation.Others, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/editor/ic_functions_white_24dp.png",
-                string.Empty, string.Empty);
-            otherMenu.Children.Add(new MainMenuItem(
-                Navigation.Others_UnderStock_Items, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_trending_down_grey_24dp.png",
-                string.Empty, string.Empty));
-            otherMenu.Children.Add(new MainMenuItem(
-                Navigation.Others_CompartmentsMapping, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/compartments_mapping.png",
-                string.Empty, string.Empty));
-            otherMenu.Children.Add(new MainMenuItem(
-                Navigation.Others_Inventory, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/inventory.png",
-                string.Empty, string.Empty));
-            this.menu.Items.Add(otherMenu);
+            this.menu.Items.Add(
+                new MainMenuItem(Navigation.Lists, bgColor, Icons.Lists, string.Empty, string.Empty)
+                {
+                    Children = new List<MainMenuItem>
+                    {
+                        new MainMenuItem(Navigation.Lists_Lists, bgColor, Icons.AllLists, string.Empty, string.Empty)
+                    }
+                }
+            );
 
-            var importExportMenu = new MainMenuItem(
-                Navigation.ImportExport, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/communication/ic_import_export_white_24dp.png",
-                string.Empty, string.Empty);
-            importExportMenu.Children.Add(new MainMenuItem(
-                Navigation.ImportExport_Import, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_upward_grey_24dp.png",
-                string.Empty, string.Empty));
-            importExportMenu.Children.Add(new MainMenuItem(
-                Navigation.ImportExport_Export, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_downward_grey_24dp.png",
-                string.Empty, string.Empty));
-            this.menu.Items.Add(importExportMenu);
+            this.menu.Items.Add(
+                new MainMenuItem(Navigation.Others, bgColor, Icons.Others, string.Empty, string.Empty)
+                {
+                    Children = new List<MainMenuItem>
+                    {
+                        new MainMenuItem(Navigation.Others_UnderStock_Items, bgColor, Icons.UnderStock, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Others_CompartmentsMapping, bgColor, Icons.CompartmentsMapping, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Others_Inventory, bgColor, Icons.Inventory, string.Empty, string.Empty)
+                    }
+                }
+            );
 
-            var configurationMenu = new MainMenuItem(Navigation.Configuration, bgColor, Icons.Configuration, string.Empty, string.Empty);
+            this.menu.Items.Add(
+                new MainMenuItem(Navigation.ImportExport, bgColor, Icons.ImportExport, string.Empty, string.Empty)
+                {
+                    Children = new List<MainMenuItem>
+                    {
+                        new MainMenuItem(Navigation.ImportExport_Import, bgColor, Icons.Import, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.ImportExport_Export, bgColor, Icons.Export, string.Empty, string.Empty)
+                    }
+                }
+            );
 
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_MeasuringUnits, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_AbcClasses, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_CellStatuses, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_LoadingUnitStatuses, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_CompartmentTypes, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_CompartmentStatuses, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_PackageTypes, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_MaterialStatuses, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_ListTypes, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_ListStatuses, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_ListRowStatuses, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            configurationMenu.Children.Add(new MainMenuItem(
-                Navigation.Configuration_MachineTypes, bgColor,
-                "pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png",
-                string.Empty, string.Empty));
-            this.menu.Items.Add(configurationMenu);
+            this.menu.Items.Add(
+                new MainMenuItem(Navigation.Configuration, bgColor, Icons.Configuration, string.Empty, string.Empty)
+                {
+                    Children = new List<MainMenuItem>
+                    {
+                        new MainMenuItem(Navigation.Configuration_MeasuringUnits, bgColor, Icons.UnitsOfMeasurement, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_AbcClasses, bgColor, Icons.ItemClasses, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_CellStatuses, bgColor, Icons.CellStatuses, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_LoadingUnitStatuses, bgColor, Icons.LoadingUnitStatuses, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_CompartmentTypes, bgColor, Icons.CompartmentTypes, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_CompartmentStatuses, bgColor, Icons.CompartmentStatuses, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_PackageTypes, bgColor, Icons.PackageTypes, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_MaterialStatuses, bgColor, Icons.MaterialStatuses, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_ListTypes, bgColor,  Icons.ListTypes, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_ListStatuses, bgColor, Icons.ListStatuses,  string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_ListRowStatuses, bgColor, Icons.ListRowStatuses, string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Configuration_MachineTypes, bgColor, Icons.ListRowStatuses, string.Empty, string.Empty)
+                    }
+                }
+            );
         }
 
         #endregion Methods
