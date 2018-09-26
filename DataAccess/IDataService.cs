@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Ferretto.Common.DataAccess
 {
@@ -14,7 +14,7 @@ namespace Ferretto.Common.DataAccess
 
         int GetAllItemsCount();
 
-        object GetCompartmentsByItemId(int itemId);
+        IEnumerable<object> GetCompartmentsByItemId(int itemId);
 
         object GetItemDetails(int itemId);
 
@@ -27,6 +27,10 @@ namespace Ferretto.Common.DataAccess
         int GetItemsWithFifoCount();
 
         void Initialize();
+
+        int SaveCompartment(object compartment);
+
+        int SaveItem(object item);
 
         #endregion Methods
     }
