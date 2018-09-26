@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
 
-            this.InnerImage.DataContext = new ImageViewModel();
+            this.InnerImage.DataContext = new WmsImageViewModel();
         }
 
         #endregion Constructors
@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsImage wmsImage && wmsImage.InnerImage.DataContext is ImageViewModel viewModel)
+            if (d is WmsImage wmsImage && wmsImage.InnerImage.DataContext is WmsImageViewModel viewModel)
             {
                 viewModel.RetrieveImage((string)e.NewValue);
             }

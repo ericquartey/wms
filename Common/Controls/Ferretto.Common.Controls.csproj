@@ -192,7 +192,11 @@
     <Compile Include="Controls\DateEdit\DateEdit.xaml.cs">
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
-	<Compile Include="Controls\Expander\Expander.cs" />
+    <Compile Include="Controls\Expander\Expander.cs" />
+    <Compile Include="Controls\Icon\WmsIconViewModel.cs" />
+    <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
+      <DependentUpon>WmsIcon.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TileBar\Tile.cs" />
     <Compile Include="Controls\TileBar\TileBar.xaml.cs">
       <DependentUpon>TileBar.xaml</DependentUpon>
@@ -200,7 +204,7 @@
     <Compile Include="Controls\Image\WmsImage.xaml.cs">
       <DependentUpon>WmsImage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Image\ViewModels\ImageViewModel.cs" />
+    <Compile Include="Controls\Image\ViewModels\WmsImageViewModel.cs" />
     <Compile Include="Controls\InfoText\InfoText.xaml.cs">
       <DependentUpon>InfoText.xaml</DependentUpon>
     </Compile>
@@ -251,6 +255,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\DateEdit\DateEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Icon\WmsIcon.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TileBar\TileBar.xaml">
