@@ -5,32 +5,34 @@ namespace Ferretto.Common.Modules.BLL.Services
 {
     public interface IBusinessProvider
     {
+        #region Methods
+
         IEnumerable<Item> GetAllClassAItems();
+
+        IEnumerable<Compartment> GetAllCompartments();
+
+        int GetAllCompartmentsCount();
 
         IEnumerable<Item> GetAllItems();
 
         int GetAllItemsCount();
 
-        IEnumerable<Item> GetAllItemsFIFO();
+        IEnumerable<Compartment> GetCompartmentsByItemId(int itemId);
 
         ItemDetails GetItemDetails(int itemId);
-
-        int Save(ItemDetails item);
-
-        int Save(CompartmentDetails compartment);
-
-        IEnumerable<Compartment> GetAllCompartments();
-
-        IEnumerable<Compartment> GetCompartmentsByItemId(int itemId);
 
         IEnumerable<Item> GetItemsWithAClass();
 
         int GetItemsWithAClassCount();
 
-        IEnumerable<Item> GetItemsWithFIFO();
+        IEnumerable<Item> GetItemsWithFifo();
 
-        int GetItemsWithFIFOCount();
+        int GetItemsWithFifoCount();
 
-        int GetAllCompartmentsCount();
+        int Save(ItemDetails item);
+
+        int Save(CompartmentDetails compartment);
+
+        #endregion Methods
     }
 }

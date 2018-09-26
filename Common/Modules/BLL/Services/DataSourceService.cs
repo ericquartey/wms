@@ -53,8 +53,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                         {
                             SourceName = DataSourceType.ItemFifo,
                             Name = MasterData.ItemFIFO,
-                            GetCount = filter => this.businessProvider.GetItemsWithFIFOCount(),
-                            GetData = filter => this.businessProvider.GetItemsWithFIFO()
+                            GetCount = filter => this.businessProvider.GetItemsWithFifoCount(),
+                            GetData = filter => this.businessProvider.GetItemsWithFifo()
                         }
                     };
 
