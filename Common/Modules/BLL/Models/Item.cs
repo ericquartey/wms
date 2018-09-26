@@ -42,6 +42,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public int Id { get; set; }
         public string Image { get; set; }
+
         public DateTime? InventoryDate { get; set; }
 
         public int? InventoryTolerance
@@ -82,6 +83,11 @@ namespace Ferretto.Common.Modules.BLL.Models
             get => this.storeTolerance;
             set => SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
+
+        public int TotalAvailable { get; set; }
+        public int TotalReservedForPick { get; set; }
+        public int TotalReservedToStore { get; set; }
+        public string TotalStock { get; set; }
 
         public int? Width
         {
