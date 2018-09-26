@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Models;
@@ -25,12 +23,12 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IEnumerable<Compartment> GetAllCompartments()
         {
-            return null;
+            return Mapper.Map<IEnumerable<Compartment>>(this.dataService.GetAllCompartments());
         }
 
         public int GetAllCompartmentsCount()
         {
-            return 0;
+            return this.dataService.GetAllCompartmentsCount();
         }
 
         public IEnumerable<Item> GetAllItems()
@@ -40,20 +38,12 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllItemsCount()
         {
-            return this.dataService.GetAllItems().Count();
-        }
-
-        public IEnumerable<Item> GetAllItemsFIFO()
-        {
-            var allItems = Mapper.Map<IEnumerable<Item>>(this.dataService.GetAllItems()); // join con compartments
-            // calcolo totalstock
-
-            return allItems;
+            return this.dataService.GetAllItemsCount();
         }
 
         public IEnumerable<Compartment> GetCompartmentsByItemId(int itemId)
         {
-            return null;
+            return Mapper.Map<IEnumerable<Compartment>>(this.dataService.GetCompartmentsByItemId(itemId));
         }
 
         public ItemDetails GetItemDetails(int itemId)
@@ -63,22 +53,22 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IEnumerable<Item> GetItemsWithAClass()
         {
-            return null;
+            return Mapper.Map<IEnumerable<Item>>(this.dataService.GetItemsWithAClass());
         }
 
         public int GetItemsWithAClassCount()
         {
-            return 0;
+            return this.dataService.GetItemsWithAClassCount();
         }
 
-        public IEnumerable<Item> GetItemsWithFIFO()
+        public IEnumerable<Item> GetItemsWithFifo()
         {
-            return null;
+            return Mapper.Map<IEnumerable<Item>>(this.dataService.GetItemsWithFifo());
         }
 
-        public int GetItemsWithFIFOCount()
+        public int GetItemsWithFifoCount()
         {
-            return 0;
+            return this.dataService.GetItemsWithFifoCount();
         }
 
         public int Save(ItemDetails item)

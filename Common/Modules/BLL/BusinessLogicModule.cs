@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -8,6 +7,7 @@ using Prism.Modularity;
 namespace Ferretto.Common.Modules.BLL
 {
     [Module(ModuleName = nameof(Utils.Modules.BusinessLogic))]
+    [ModuleDependency(nameof(Utils.Modules.DataAccess))]
     public class BusinessLogicModule : IModule
     {
         #region Constructors
@@ -29,7 +29,6 @@ namespace Ferretto.Common.Modules.BLL
 
         public void Initialize()
         {
-            this.Container.RegisterType<IDataService, DataService>();
             this.Container.RegisterType<IEventService, EventService>();
             this.Container.RegisterType<IDataSourceService, DataSourceService>();
             this.Container.RegisterType<IImageService, ImageService>();

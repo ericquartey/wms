@@ -4,6 +4,29 @@
     {
     }
 
+    public static class Compartment
+    {
+        #region Fields
+
+        public const string COMPARTMENT = "CompartmentViewModel";
+
+        #endregion Fields
+    }
+
+    public static class DataAccess
+    {
+    }
+
+    public static class Layout
+    {
+        #region Fields
+
+        public const string REGION_MAINCONTENT = "MainContent";
+        public const string REGION_MENU = "Menu";
+
+        #endregion Fields
+    }
+
     public static class MasterData
     {
         #region Fields
@@ -14,26 +37,6 @@
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMS = "ItemsViewModel";
         public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
-
-        #endregion Fields
-    }
-
-    public static class Compartment
-    {
-        #region Fields
-
-        public const string COMPARTMENT = "CompartmentViewModel";
-
-        #endregion Fields
-
-    }
-
-    public static class Layout
-    {
-        #region Fields
-
-        public const string REGION_MAINCONTENT = "MainContent";
-        public const string REGION_MENU = "Menu";
 
         #endregion Fields
     }

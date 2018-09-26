@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
@@ -15,17 +16,37 @@ namespace Ferretto.Common.Controls
             typeof(WmsGridControl),
             new PropertyMetadata(CurrentDataSourceChanged));
 
+        private Type itemType;
+
         #endregion Fields
 
         #region Properties
 
         public object CurrentDataSource
         {
-            get => (object)this.GetValue(CurrentDataSourcesProperty);
+            get => this.GetValue(CurrentDataSourcesProperty);
             set => this.SetValue(CurrentDataSourcesProperty, value);
         }
 
-        public Type ItemType { get; set; }
+        public Type ItemType
+        {
+            get => this.itemType;
+            set
+            {
+                if (value != this.itemType)
+                {
+                    if (value.GetInterface(typeof(IBusinessObject).FullName) != null)
+                    {
+                        this.itemType = value;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"The value assigned to the {nameof(this.ItemType)} property must be of type {nameof(IBusinessObject)}", nameof(value));
+                    }
+                }
+            }
+        }
 
         #endregion Properties
 
@@ -33,23 +54,11 @@ namespace Ferretto.Common.Controls
 
         protected override void OnInitialized(System.EventArgs e)
         {
-            if (this.ItemType == null)
-            {
-                throw new Exception("WmsGridControl ItemType is missing.");
-            }
             base.OnInitialized(e);
 
-            var viewModelClass = typeof(WmsGridViewModel<>);
-            var constructedClass = viewModelClass.MakeGenericType(this.ItemType);
-            this.DataContext = Activator.CreateInstance(constructedClass);
+            this.DataContext = this.InstantiateViewModel();
 
-            var selectedItemBinding = new Binding("SelectedItem")
-            {
-                Mode = BindingMode.TwoWay,
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
-            };
-            this.SetBinding(SelectedItemProperty, selectedItemBinding);
-            this.SetBinding(ItemsSourceProperty, "Items");
+            this.SetupBindings();
         }
 
         private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -61,6 +70,30 @@ namespace Ferretto.Common.Controls
                     dataContext.SetDataSource(e.NewValue);
                 }
             }
+        }
+
+        private Object InstantiateViewModel()
+        {
+            if (this.ItemType == null)
+            {
+                throw new InvalidOperationException("WmsGridControl ItemType is missing.");
+            }
+
+            var viewModelClass = typeof(WmsGridViewModel<>);
+            var constructedClass = viewModelClass.MakeGenericType(this.ItemType);
+
+            return Activator.CreateInstance(constructedClass);
+        }
+
+        private void SetupBindings()
+        {
+            var selectedItemBinding = new Binding("SelectedItem")
+            {
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            this.SetBinding(SelectedItemProperty, selectedItemBinding);
+            this.SetBinding(ItemsSourceProperty, "Items");
         }
 
         #endregion Methods
