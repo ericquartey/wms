@@ -75,34 +75,34 @@
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
                                     FieldName="Code"
-                                    Header="{x:Static res:Models.CompartmentCode}" />
+                                    Header="{x:Static res:BusinessObjects.CompartmentCode}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="LoadingUnit.Code"
-                                    Header="{x:Static res:Models.LoadingUnitCode_extended}" />
+                                    Header="{x:Static res:BusinessObjects.LoadingUnitCode_extended}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="CompartmentType.Description"
-                                    Header="{x:Static res:Models.CompartmentType}" />
+                                    Header="{x:Static res:BusinessObjects.CompartmentType}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Item.Description"
-                                    Header="{x:Static res:Models.ItemDescription_extended}" />
+                                    Header="{x:Static res:BusinessObjects.ItemDescription_extended}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="MaterialStatus.Description"
-                                    Header="{x:Static res:Models.MaterialStatus}" />
+                                    Header="{x:Static res:BusinessObjects.MaterialStatus}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="CompartmentStatus.Description"
-                                    Header="{x:Static res:Models.CompartmentStatus}" />
+                                    Header="{x:Static res:BusinessObjects.CompartmentStatus}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Sub1"
-                                    Header="{x:Static res:Models.CompartmentSub1}" />
+                                    Header="{x:Static res:BusinessObjects.CompartmentSub1}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Sub2"
-                                    Header="{x:Static res:Models.CompartmentSub2}" />
+                                    Header="{x:Static res:BusinessObjects.CompartmentSub2}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Lot"
-                                    Header="{x:Static res:Models.CompartmentLot}" />
+                                    Header="{x:Static res:BusinessObjects.CompartmentLot}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Stock"
-                                    Header="{x:Static res:Models.CompartmentStock}" />
+                                    Header="{x:Static res:BusinessObjects.CompartmentStock}" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>

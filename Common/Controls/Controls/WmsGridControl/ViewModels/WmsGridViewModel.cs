@@ -70,11 +70,13 @@ namespace Ferretto.Common.Controls
             var elements = this.CurrentDataSource.Load();
 
             this.items.Clear();
-            foreach (var item in elements)
+            if (elements != null)
             {
-                this.items.Add(item);
+                foreach (var item in elements)
+                {
+                    this.items.Add(item);
+                }
             }
-
             this.Items.RaiseListChangedEvents = true;
             this.Items.ResetBindings();
         }
