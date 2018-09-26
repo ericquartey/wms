@@ -27,7 +27,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.averageWeight, value);
         }
 
-        public string ClassId { get; set; }
+        public string AbcClassId { get; set; }
         public string Code { get; set; }
         public DateTime CreationDate { get; set; }
         public string Description { get; set; }

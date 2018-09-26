@@ -56,7 +56,7 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetItemsWithAClass()
         {
-            return this.dataContext.Items.Where(item => item.ClassId == "A");
+            return this.dataContext.Items.Where(item => item.AbcClassId == "A");
         }
 
         public int GetItemsWithAClassCount()
