@@ -9,8 +9,13 @@ namespace Ferretto.Common.Modules.BLL
 
         public BusinessLogicAutoMapperProfile()
         {
-            this.CreateMap<DataModels.Item, Item>().As<Models.Item>();
+            this.CreateMap<DataModels.Item, Item>();
             this.CreateMap<Item, DataModels.Item>();
+
+            this.CreateMap<DataModels.Compartment, Compartment>();
+            this.CreateMap<Compartment, DataModels.Compartment>();
+
+            this.CreateMissingTypeMaps = true;
         }
 
         #endregion Constructors
