@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.Common.Models
+namespace Ferretto.Common.DataModels
 {
     // Articolo - Tipo Scomparto
     public sealed class ItemCompartmentType

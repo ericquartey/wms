@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Ferretto.Common.Models.Compartment">
+  <Class Name="Ferretto.Common.DataModels.Compartment">
     <Position X="4.25" Y="0.75" Width="2.5" />
     <Members>
       <Property Name="CompartmentStatusId" Hidden="true" />
@@ -22,7 +22,7 @@
       <Property Name="Item" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="Ferretto.Common.Models.CompartmentType">
+  <Class Name="Ferretto.Common.DataModels.CompartmentType">
     <Position X="8.75" Y="1" Width="1.75" />
     <Members>
       <Property Name="Compartments" Hidden="true" />
@@ -34,7 +34,7 @@
       <FileName>CompartmentType.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Ferretto.Common.Models.Item">
+  <Class Name="Ferretto.Common.DataModels.Item">
     <Position X="8.75" Y="5" Width="2" />
     <Members>
       <Property Name="AbcClassId" Hidden="true" />
@@ -51,7 +51,7 @@
       <FileName>Item.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Ferretto.Common.Models.LoadingUnit">
+  <Class Name="Ferretto.Common.DataModels.LoadingUnit">
     <Position X="0.5" Y="1.25" Width="2.5" />
     <Members>
       <Property Name="AbcClassId" Hidden="true" />
@@ -68,7 +68,7 @@
       <FileName>LoadingUnit.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Ferretto.Common.Models.ItemCompartmentType">
+  <Class Name="Ferretto.Common.DataModels.ItemCompartmentType">
     <Position X="8.75" Y="3.5" Width="2.5" />
     <Members>
       <Property Name="CompartmentTypeId" Hidden="true" />
