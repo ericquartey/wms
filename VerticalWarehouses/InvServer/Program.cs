@@ -3,19 +3,23 @@ using System.IO;
 
 using System.Net;
 using System.Net.Sockets;
-using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.InvServer
 {
-
     /// <summary>
     /// Data buffer message.
-    /// The structure is composed by two buffers in order to handle the fragmented messages. 
+    /// The structure is composed by two buffers in order to handle the fragmented messages.
     /// No operations are made by the class.
     /// </summary>
     public class CBufferStream
     {
-        const int NMAX_SIZE = 100;
+        #region Fields
+
+        private const int NMAX_SIZE = 100;
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Default c-tor.
@@ -28,104 +32,135 @@ namespace Ferretto.VW.InvServer
             this.IdxBuff2 = 0;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Data buffer 1 to store receiving stream (main)
         /// </summary>
         public byte[] DataBuff1 { get; }
+
         /// <summary>
         /// Data buffer 2 to store receiving stream (support)
         /// </summary>
         public byte[] DataBuff2 { get; }
+
         /// <summary>
-        /// Index of data buffer 1 
+        /// Index of data buffer 1
         /// </summary>
         public int IdxBuff1 { get; set; }
+
         /// <summary>
         /// Index of data buffer 2
         /// </summary>
         public int IdxBuff2 { get; set; }
 
+        #endregion Properties
     } // class CBufferStream
-
 
     public class Program
     {
-        // int i = 0;
+        #region Fields
 
-        // Delegate per segnalare l'arrivo di un nuovo messaggio
-        public delegate void EventHandler();
-        public event EventHandler ThrowEvent;
-
-        // Delegate per segnalare la connessione di un client
-        public delegate void ConnClientHandler();
-        public event ConnClientHandler SendClientEvent;
-
-        // Delegate per segnalare la disconnessione del cavo
-        public delegate void DisconnectedSockets();
-        public event DisconnectedSockets DiscSockets;
-
-        #region - Scrittura del file di log -
-
-        private const string LOG_PATH = "C:\\Users\\mmorbelli\\Documents\\";
-
-        #endregion
-
-        #region - Inizializzazione del Server Socket -
-
-        const int NMAX_CLIENTS = 1;                                      // Maximum number of client (default value)
-
-        const int DEFAULT_PORT = 8000;                                    // Address port default value
-
-        public AsyncCallback pfnWorkerCallback;                           //!< Reference to a callback for requesting client socket
-
-        private Socket m_sckMain;                                         //!< Server socket
-        private Socket m_sckWorker = null;                                //!< Client sockets pool
-
-        IPEndPoint remoteIpEndPoint;                                      // IP dell'host remoto connesso
-
-        #endregion
-
-        private int m_msgCounter;                                       //!< Message counter for client
-        // private int m_msgLengthForClient;                               //!< Message length related to a client
+        public FileStream f;
 
         // private int m_LengthOfCurrentMessage;                           //!< Length of current message to parse
-        public CBufferStream[] m_bufStream;                            //!< Data buffer stream message pool
+        public CBufferStream[] m_bufStream;
+
+        public AsyncCallback pfnWorkerCallback;
+
+        public StreamWriter s;
+        private const int DEFAULT_PORT = 8000;
+
+        private const int NMAX_CLIENTS = 1;
 
         // Resource synchronization
-        private static object g_lock = new object();                            //!< Lock object for concurrency 
+        private static object g_lock = new object();
 
-        #region - File di Log
-        public FileStream f;
-        public StreamWriter s;
-        #endregion
+        // Rivedere dove salva il Log
+        private readonly string LOG_PATH;
 
+        private int m_msgCounter;
+
+        private Socket m_sckMain;
+
+        //!< Server socket
+        private Socket m_sckWorker = null;
+
+        //!< Lock object for concurrency
         // Rappresenta il messaggio ricevuto
         private string mexRic = "";
 
+        private IPEndPoint remoteIpEndPoint;
+
+        #endregion Fields
+
+        #region Constructors
+
+        //!< Data buffer stream message pool
         /// <summary>
         /// Default c-tor.
         /// </summary>
         public Program()
         {
             this.m_msgCounter = 0;
-            // this.m_msgLengthForClient = 0;
-
-            // this.m_LengthOfCurrentMessage = 0;
 
             this.m_bufStream = new CBufferStream[NMAX_CLIENTS];
-            for (int ix = 0; ix < NMAX_CLIENTS; ix++)
-            { 
+            for (var ix = 0; ix < NMAX_CLIENTS; ix++)
+            {
                 this.m_bufStream[ix] = new CBufferStream();
             }
 
             this.m_sckMain = null;
+
+            // Log path and file creation
+            this.LOG_PATH = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%") + "\\Logs\\";
+
+            var exists = System.IO.Directory.Exists(this.LOG_PATH);
+
+            if (!exists)
+            {
+                System.IO.Directory.CreateDirectory(this.LOG_PATH);
+            }
         }
 
-        public class SocketPacket
-        {
-            public System.Net.Sockets.Socket m_currentSocket;           //!< Current socket
-            public byte[] dataBuffer = new byte[1024];                  //!< Data buffer
-        }
+        #endregion Constructors
+
+        #region Delegates
+
+        // Delegate per segnalare la connessione di un client
+        public delegate void ConnClientHandler();
+
+        // Delegate per segnalare la disconnessione del cavo
+        public delegate void DisconnectedSockets();
+
+        // Delegate per segnalare l'arrivo di un nuovo messaggio
+        public delegate void EventHandler();
+
+        #endregion Delegates
+
+        #region Events
+
+        public event DisconnectedSockets DiscSockets;
+
+        public event ConnClientHandler SendClientEvent;
+
+        public event EventHandler ThrowEvent;
+
+        #endregion Events
+
+        // Maximum number of client (default value)
+
+        // Address port default value
+
+        //!< Reference to a callback for requesting client socket
+
+        //!< Client sockets pool
+
+        // IP dell'host remoto connesso
+
+        #region Enums
 
         /// <summary>
         /// Categories for parsed requested operation.
@@ -136,23 +171,36 @@ namespace Ferretto.VW.InvServer
             /// Get IO sensors status.
             /// </summary>
             GetIOState = 0x00,
+
             /// <summary>
             /// Other operation.
             /// </summary>
             Other
         }
 
+        #endregion Enums
+
+        #region Methods
+
+        public void ClientConn(out string IPAddressClient, out string PortClient)
+        {
+            this.WriteLog("ClientConn");
+
+            IPAddressClient = this.remoteIpEndPoint.Address.ToString();
+            PortClient = this.remoteIpEndPoint.Port.ToString();
+        }
+
         // Metodo per il recupero dell'ind. IP della macchina
         public string GetIPAddress()
         {
-            string szHostName = Dns.GetHostName();
+            var szHostName = Dns.GetHostName();
 
             // Find host by name
-            IPHostEntry iphostentry = Dns.GetHostEntry(szHostName);
+            var iphostentry = Dns.GetHostEntry(szHostName);
 
             // Grab the first IP addresses
-            string szIP = "";
-            foreach (IPAddress ipaddress in iphostentry.AddressList)
+            var szIP = "";
+            foreach (var ipaddress in iphostentry.AddressList)
             {
                 // address IPv4
                 if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
@@ -171,34 +219,42 @@ namespace Ferretto.VW.InvServer
             return szIP;
         }
 
+        public void NumMessaggi(out int m_msgCounter, out string riga)
+        {
+            this.WriteLog("NumMessaggi");
+
+            m_msgCounter = this.m_msgCounter;
+            riga = this.mexRic;
+        }
+
         public string StartListen()
         {
-            string sListening = "ATTIVO";
+            var sListening = "ATTIVO";
 
             this.WriteLog("StartListen");
 
             try
             {
-                int port = DEFAULT_PORT;
+                var port = DEFAULT_PORT;
 
                 // Creates one SocketPermission object for access restrictions
-                SocketPermission permission = new SocketPermission(NetworkAccess.Accept,     // Allowed to accept connections 
-                                                                   TransportType.Tcp,        // Defines transport types 
-                                                                   "",                       // The IP addresses of local host 
-                                                                   SocketPermission.AllPorts // Specifies all ports 
+                var permission = new SocketPermission(NetworkAccess.Accept,     // Allowed to accept connections
+                                                                   TransportType.Tcp,        // Defines transport types
+                                                                   "",                       // The IP addresses of local host
+                                                                   SocketPermission.AllPorts // Specifies all ports
                                                                    );
 
-                // Ensures the code to have permission to access a Socket 
+                // Ensures the code to have permission to access a Socket
                 permission.Demand();
 
-                // Resolves a host name to an IPHostEntry instance 
-                IPHostEntry ipHost = Dns.GetHostEntry("");
+                // Resolves a host name to an IPHostEntry instance
+                var ipHost = Dns.GetHostEntry("");
 
                 this.WriteLog("ipHost = " + ipHost);
 
                 // Gets first IP address associated with a localhost (IPv6)
                 IPAddress ipAddr = null;
-                foreach (IPAddress ipaddress in ipHost.AddressList)
+                foreach (var ipaddress in ipHost.AddressList)
                 {
                     // IPv4
                     if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
@@ -208,8 +264,8 @@ namespace Ferretto.VW.InvServer
                     }
                 }
 
-                // Creates a network endpoint 
-                IPEndPoint ipLocal = new IPEndPoint(ipAddr, port);
+                // Creates a network endpoint
+                var ipLocal = new IPEndPoint(ipAddr, port);
 
                 this.WriteLog("ipLocal = " + ipLocal);
 
@@ -251,6 +307,61 @@ namespace Ferretto.VW.InvServer
             return sListening;
         }
 
+        /// <summary>
+        /// Stop listen.
+        /// Close the connection to all sockets.
+        /// </summary>
+        public string StopListen()
+        {
+            this.WriteLog("StopListen");
+
+            this.m_msgCounter = 0; // Lo azzero, deve contare i mex ricevuti per la sessione
+            var cSocket = this.closeSockets();
+
+            return cSocket;
+        }
+
+        // C'è solo CloseSocket per chiudere il Socket?
+        /// <summary>
+        /// Close sockets.
+        /// </summary>
+        private string closeSockets()
+        {
+            this.WriteLog("closeSockets");
+
+            var cSocket = "STOP";
+
+            try
+            {
+                // main (server)
+                if (this.m_sckMain != null)
+                {
+                    this.m_sckMain.Close();
+                }
+                if (this.m_sckWorker != null)
+                {
+                    this.m_sckWorker.Close();
+                    this.m_sckWorker = null;
+                }
+            }
+            catch (SocketException ex)
+            {
+                cSocket = "ERRORE";
+
+                this.WriteLog("Socket Exception Message: " + ex.Message);
+                this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
+            }
+            catch (Exception ex)
+            {
+                cSocket = "ERRORE";
+
+                this.WriteLog("Exception Message: " + ex.Message);
+                this.WriteLog("Exception InnerException: " + ex.InnerException);
+            }
+
+            return cSocket;
+        }
+
         private void onClientConnect(IAsyncResult asyn)
         {
             this.WriteLog("onClientConnect");
@@ -261,14 +372,13 @@ namespace Ferretto.VW.InvServer
                 // - which returns the reference to a new Socket object
                 this.m_sckWorker = this.m_sckMain.EndAccept(asyn);
 
-
                 // -------------------------------------
 
-                int size = sizeof(UInt32);
+                var size = sizeof(UInt32);
                 UInt32 on = 1;
                 UInt32 keepAliveInterval = 10000;
                 UInt32 retryInterval = 1000;
-                byte[] inArray = new byte[3 * size];
+                var inArray = new byte[3 * size];
                 Array.Copy(BitConverter.GetBytes(on), 0, inArray, 0, size);
                 Array.Copy(BitConverter.GetBytes(keepAliveInterval), 0, inArray, size, size);
                 Array.Copy(BitConverter.GetBytes(retryInterval), 0, inArray, size * 2, size);
@@ -276,7 +386,6 @@ namespace Ferretto.VW.InvServer
                 this.m_sckWorker.IOControl(IOControlCode.KeepAliveValues, inArray, null);
 
                 // -------------------------------------
-
 
                 this.waitForData(this.m_sckWorker);
 
@@ -299,39 +408,6 @@ namespace Ferretto.VW.InvServer
             }
         }
 
-        private void waitForData(System.Net.Sockets.Socket sckt)
-        {
-            this.WriteLog("waitForData");
-
-            try
-            {
-                if (this.pfnWorkerCallback == null)
-                {
-                    // Specify the call back function which is to be 
-                    // invoked when there is any write activity by the 
-                    // connected client
-                    this.pfnWorkerCallback = new AsyncCallback(this.onDataReceived);
-                }
-
-                SocketPacket theSocPkt = new SocketPacket();
-                theSocPkt.m_currentSocket = sckt;
-                // Start receiving any data written by the connected client asynchronously
-                sckt.BeginReceive(theSocPkt.dataBuffer, 0,
-                            theSocPkt.dataBuffer.Length,
-                            SocketFlags.None, this.pfnWorkerCallback, theSocPkt);
-            }
-            catch (SocketException ex)
-            {
-                this.WriteLog("Socket Exception Message: " + ex.Message);
-                this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
-            }
-            catch (Exception ex)
-            {
-                this.WriteLog("Exception Message: " + ex.Message);
-                this.WriteLog("Exception InnerException: " + ex.InnerException);
-            }
-        }
-
         /// <summary>
         /// Call back function which will be invoked when the socket detects any client writing of data on the stream.
         /// </summary>
@@ -340,28 +416,28 @@ namespace Ferretto.VW.InvServer
         {
             this.WriteLog("onDataReceived");
 
-            int pos = 0;
+            var pos = 0;
 
             try
             {
                 lock (g_lock)
                 {
-                    int startTime = DateTime.Now.Millisecond;
-                    int diffTime = 0;
+                    var startTime = DateTime.Now.Millisecond;
+                    var diffTime = 0;
 
-                    SocketPacket socketData = (SocketPacket)asyn.AsyncState;
+                    var socketData = (SocketPacket)asyn.AsyncState;
 
-                    int iRx = 0;
+                    var iRx = 0;
 
                     // Complete the BeginReceive() asynchronous call by EndReceive() method
-                    // which will return the number of characters written to the stream 
+                    // which will return the number of characters written to the stream
                     // by the client
                     iRx = socketData.m_currentSocket.EndReceive(asyn);
 
                     // Cache the incoming data in main data buffer stream for message
                     Array.Copy(socketData.dataBuffer, 0, this.m_bufStream[0].DataBuff1, 0, iRx);
 
-                    byte[] msgToParse = new byte[1024];
+                    var msgToParse = new byte[1024];
 
                     // Inserisco i comandi ricevuti in una coda, che verranno poi recuperati quando andrà in esecuzione.
                     // Ipotizzo che il client invii i comandi all'inverter nella sequenza corretta, uso una Queue che è FIFO.
@@ -376,10 +452,10 @@ namespace Ferretto.VW.InvServer
                     Array.Copy(socketData.dataBuffer, 0, msgToParse, 0, socketData.dataBuffer.Length);
 
                     // Parse the message in array of chars
-                    char[] chars = new char[msgToParse.Length];
-                    System.Text.Decoder d = System.Text.Encoding.Unicode.GetDecoder();
-                    int charLen = d.GetChars(msgToParse, 0, msgToParse.Length, chars, 0);
-                    string szData = new string(chars);
+                    var chars = new char[msgToParse.Length];
+                    var d = System.Text.Encoding.Unicode.GetDecoder();
+                    var charLen = d.GetChars(msgToParse, 0, msgToParse.Length, chars, 0);
+                    var szData = new string(chars);
 
                     this.m_msgCounter++;
                     this.mexRic = szData;
@@ -389,10 +465,7 @@ namespace Ferretto.VW.InvServer
                         this.mexRic = this.mexRic.Substring(0, pos);
                     }
 
-                    string byDataToSend = szData;
-
-                    // Inserisco i comandi ricevuti in una coda, di stringhe.
-                    // this.m_bufStream[0].CommandsStr.Enqueue(byDataToSend);
+                    var byDataToSend = szData;
 
                     // Send message
                     this.sendDataToClient(byDataToSend);
@@ -426,61 +499,6 @@ namespace Ferretto.VW.InvServer
         }
 
         /// <summary>
-        /// Stop listen.
-        /// Close the connection to all sockets.
-        /// </summary>
-        public string StopListen()
-        {
-            this.WriteLog("StopListen");
-
-            this.m_msgCounter = 0; // Lo azzero, deve contare i mex ricevuti per la sessione
-            string cSocket = this.closeSockets();
-
-            return cSocket;
-        }
-
-        // C'è solo CloseSocket per chiudere il Socket?
-        /// <summary>
-        /// Close sockets.
-        /// </summary>
-        private string closeSockets()
-        {
-            this.WriteLog("closeSockets");
-
-            string cSocket = "STOP";
-
-            try
-            {
-                // main (server)
-                if (this.m_sckMain != null)
-                {
-                    this.m_sckMain.Close();
-                }
-                if (this.m_sckWorker != null)
-                {
-                    this.m_sckWorker.Close();
-                    this.m_sckWorker = null;
-                }
-            }
-            catch (SocketException ex)
-            {
-                cSocket = "ERRORE";
-
-                this.WriteLog("Socket Exception Message: " + ex.Message);
-                this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
-            }
-            catch (Exception ex)
-            {
-                cSocket = "ERRORE";
-
-                this.WriteLog("Exception Message: " + ex.Message);
-                this.WriteLog("Exception InnerException: " + ex.InnerException);
-            }
-
-            return cSocket;
-        }
-
-        /// <summary>
         /// Send a given string data to client.
         /// </summary>
         /// <param name="index">Index of client</param>
@@ -490,7 +508,7 @@ namespace Ferretto.VW.InvServer
             this.WriteLog("sendDataToClient");
 
             Object objData = szData;
-            byte[] byData = System.Text.Encoding.Unicode.GetBytes(objData.ToString());
+            var byData = System.Text.Encoding.Unicode.GetBytes(objData.ToString());
 
             if (this.m_sckWorker != null)
             {
@@ -517,19 +535,44 @@ namespace Ferretto.VW.InvServer
             }
         }
 
-        public void NumMessaggi(out int m_msgCounter, out string riga)
+        private void waitForData(System.Net.Sockets.Socket sckt)
         {
-            this.WriteLog("NumMessaggi");
+            this.WriteLog("waitForData");
 
-            m_msgCounter = this.m_msgCounter;
-            riga = this.mexRic;
+            try
+            {
+                if (this.pfnWorkerCallback == null)
+                {
+                    // Specify the call back function which is to be
+                    // invoked when there is any write activity by the
+                    // connected client
+                    this.pfnWorkerCallback = new AsyncCallback(this.onDataReceived);
+                }
+
+                var theSocPkt = new SocketPacket();
+                theSocPkt.m_currentSocket = sckt;
+                // Start receiving any data written by the connected client asynchronously
+                sckt.BeginReceive(theSocPkt.dataBuffer, 0,
+                            theSocPkt.dataBuffer.Length,
+                            SocketFlags.None, this.pfnWorkerCallback, theSocPkt);
+            }
+            catch (SocketException ex)
+            {
+                this.WriteLog("Socket Exception Message: " + ex.Message);
+                this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
+            }
+            catch (Exception ex)
+            {
+                this.WriteLog("Exception Message: " + ex.Message);
+                this.WriteLog("Exception InnerException: " + ex.InnerException);
+            }
         }
 
         private void WriteLog(string messaggio)
         {
             lock (g_lock)
             {
-                this.f = new FileStream(LOG_PATH + "serverLog.log", FileMode.Append);
+                this.f = new FileStream(this.LOG_PATH + "serverLog.log", FileMode.Append);
                 this.s = new StreamWriter(this.f);
 
                 this.s.WriteLine(DateTime.Now.ToString() + " - " + messaggio);
@@ -539,12 +582,25 @@ namespace Ferretto.VW.InvServer
             }
         }
 
-        public void ClientConn(out string IPAddressClient, out string PortClient)
-        {
-            this.WriteLog("ClientConn");
+        #endregion Methods
 
-            IPAddressClient = this.remoteIpEndPoint.Address.ToString();
-            PortClient = this.remoteIpEndPoint.Port.ToString();
+        #region Classes
+
+        //!< Message counter for client
+        // private int m_msgLengthForClient;                               //!< Message length related to a client
+        public class SocketPacket
+        {
+            #region Fields
+
+            public byte[] dataBuffer = new byte[1024];
+            public System.Net.Sockets.Socket m_currentSocket;
+
+            #endregion Fields
+
+            //!< Current socket
+            //!< Data buffer
         }
+
+        #endregion Classes
     }
 }
