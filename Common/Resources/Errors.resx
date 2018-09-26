@@ -135,6 +135,9 @@
   <data name="ParameterCannotBeNullOrWhitespace" xml:space="preserve">
     <value>The parameter cannot be null or whitespace.</value>
   </data>
+  <data name="ParameterMustBePositive" xml:space="preserve">
+    <value>Parameter must be positive.</value>
+  </data>
   <data name="ParameterMustBeStrictlyPositive" xml:space="preserve">
     <value>Parameter must be strictly positive.</value>
   </data>

@@ -115,6 +115,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parameter must be positive..
+        /// </summary>
+        public static string ParameterMustBePositive {
+            get {
+                return ResourceManager.GetString("ParameterMustBePositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Parameter must be strictly positive..
         /// </summary>
         public static string ParameterMustBeStrictlyPositive {
