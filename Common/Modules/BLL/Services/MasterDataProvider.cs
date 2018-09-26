@@ -6,7 +6,7 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    public class BusinessProvider : IBusinessProvider
+    public class MasterDataProvider : IBusinessProvider
     {
         #region Fields
 
