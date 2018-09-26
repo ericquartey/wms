@@ -50,6 +50,7 @@ namespace Ferretto.Common.EF
         public virtual DbSet<ItemManagementType> ItemManagementTypes { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemArea> ItemsAreas { get; set; }
+        public virtual DbSet<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
         public virtual DbSet<LoadingUnitHeightClass> LoadingUnitHeightClasses { get; set; }
         public virtual DbSet<LoadingUnitRange> LoadingUnitRanges { get; set; }
         public virtual DbSet<LoadingUnit> LoadingUnits { get; set; }
@@ -122,6 +123,7 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new DefaultLoadingUnitConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
             modelBuilder.ApplyConfiguration(new ItemAreaConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemCompartmentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListRowConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListRowStatusConfiguration());

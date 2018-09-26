@@ -455,6 +455,8 @@ SET IDENTITY_INSERT CompartmentTypes ON;
 INSERT INTO CompartmentTypes (Id, Description, Width, Height) VALUES (1, 'Full-pallet compartment', 800, 1200);
 SET IDENTITY_INSERT CompartmentTypes OFF;
 
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (1, 1, 100);
+
 SET IDENTITY_INSERT Compartments ON;
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot)
   VALUES (1, 'UDC1_COMP1', 1, 1, 1, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll');
