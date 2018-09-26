@@ -7,35 +7,87 @@ using Ferretto.VW.VerticalWarehousesApp.Views;
 
 namespace Ferretto.VW.VerticalWarehousesApp
 {
-  public partial class MainWindow : Window
-  {
-        MainWindowViewModel mwvm;
-        Page currentTestConnectionPage, currentCompartmentationPage;
+    public partial class MainWindow : Window
+    {
+        #region Fields
+
+        private Page currentTestConnectionPage, currentCompartmentationPage;
+        private string drawerSelected;
+        private MainWindowViewModel mwvm;
+
+        #endregion Fields
+
+        #region Constructors
 
         public MainWindow()
-        {            
+        {
             this.InitializeComponent();
             this.currentTestConnectionPage = new TestConnectionPageView();
             this.currentCompartmentationPage = new CompartmentationPageView();
             this._NavigationRegion.Navigate(this.currentTestConnectionPage);
         }
 
-        public void OpenUserLogInPopUp(object sender, EventArgs e)
-        {
-                this.UserLoginPopup.IsOpen = true;
-        }
+        #endregion Constructors
+
+        #region Methods
 
         public void CloseUserLogInPopUp(object sender, EventArgs e)
-         {
+        {
             this.SetButtonRegionActive();
             this.mwvm.IsUserLoggedIn = true;
             this.UserLoginPopup.IsOpen = false;
             this.SetUserLoggedInRectColour();
-         }
+        }
 
-        private void VMLoaded(object sender, RoutedEventArgs e)
+        public void NavigateToDrawerPage()
         {
-            this.mwvm = new MainWindowViewModel();
+            this._NavigationRegion.Navigate(new DrawerPage(this));
+        }
+
+        public void NavigateToDrawGridPage()
+        {
+            this._NavigationRegion.Navigate(new DrawGridPage(this, this.drawerSelected));
+        }
+
+        public void NavigateToManualPage(string drawer)
+        {
+            this._NavigationRegion.Navigate(new ManualCompartmentPage(this));
+        }
+
+        public void NavigateToSwitchPage(string drawer)
+        {
+            this.drawerSelected = drawer;
+            this._NavigationRegion.Navigate(new SwitchCameraPage(this, drawer));
+        }
+
+        public void OpenUserLogInPopUp(object sender, EventArgs e)
+        {
+            this.UserLoginPopup.IsOpen = true;
+        }
+
+        private void ButtonNavigateToCompartmentationPage(object sender, RoutedEventArgs e)
+        {
+            this.NavigateToCompartmentationPage();
+        }
+
+        private void ButtonNavigateToManualPage(Object sender, RoutedEventArgs e)
+        {
+            this.NavigateToDrawerPage();
+        }
+
+        private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
+        {
+            this.NavigateToTestConnectionPage();
+        }
+
+        private void NavigateToCompartmentationPage()
+        {
+            this._NavigationRegion.Navigate(this.currentCompartmentationPage);
+        }
+
+        private void NavigateToTestConnectionPage()
+        {
+            this._NavigationRegion.Navigate(this.currentTestConnectionPage);
         }
 
         private void SetButtonRegionActive()
@@ -48,61 +100,21 @@ namespace Ferretto.VW.VerticalWarehousesApp
 
         private void SetUserLoggedInRectColour()
         {
-            if (!this.mwvm.IsUserLoggedIn) {
+            if (!this.mwvm.IsUserLoggedIn)
+            {
                 this.UserLoggedRect.Fill = new SolidColorBrush(Colors.Red);
-            } else
+            }
+            else
             {
                 this.UserLoggedRect.Fill = new SolidColorBrush(Colors.Green);
-            }         
+            }
         }
 
-        #region navigation
-        private void NavigateToTestConnectionPage()
+        private void VMLoaded(object sender, RoutedEventArgs e)
         {
-            this._NavigationRegion.Navigate(this.currentTestConnectionPage);
+            this.mwvm = new MainWindowViewModel();
         }
 
-        private void NavigateToCompartmentationPage()
-        {
-            this._NavigationRegion.Navigate(this.currentCompartmentationPage);
-        }
-
-        //private void NavigateToManualPage()
-        //{
-        //    this._NavigationRegion.Navigate(new ManualCompartmentPage());
-        //}
-
-        public void NavigateToDrawerPage()
-        {
-            this._NavigationRegion.Navigate(new DrawerPage(this));
-        }
-
-        public void NavigateToManualPage()
-        {
-            this._NavigationRegion.Navigate(new ManualCompartmentPage(this));
-        }
-
-        public void NavigateToDrawGridPage()
-        {
-            this._NavigationRegion.Navigate(new DrawGridPage());
-        }
-        #endregion
-
-        #region controls
-        private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
-        {
-            this.NavigateToTestConnectionPage();
-        }
-
-        private void ButtonNavigateToCompartmentationPage(object sender, RoutedEventArgs e)
-        {
-            this.NavigateToCompartmentationPage();
-        }
-
-        private void ButtonNavigateToManualPage(Object sender, RoutedEventArgs e)
-        {
-            this.NavigateToDrawerPage();
-        }
-        #endregion
+        #endregion Methods
     }
 }

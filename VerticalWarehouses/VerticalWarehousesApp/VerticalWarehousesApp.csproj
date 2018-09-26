@@ -77,6 +77,9 @@
     <Compile Include="Views\ManualCompartmentPage.xaml.cs">
       <DependentUpon>ManualCompartmentPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SwitchCameraPage.xaml.cs">
+      <DependentUpon>SwitchCameraPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TestConnectionPageView.xaml.cs">
       <DependentUpon>TestConnectionPageView.xaml</DependentUpon>
     </Compile>
@@ -101,6 +104,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ManualCompartmentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SwitchCameraPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,20 +8,14 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="DrawerPage">
 
-    <Grid>
+    <Grid Background="#FF6EA85D">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="Black" Offset="0"/>
-                <GradientStop Color="White" Offset="1"/>
-            </LinearGradientBrush>
-        </Grid.Background>
-        <Label Content="GESTIONE VERTIMAG" HorizontalAlignment="Left" Margin="244,48,0,0" VerticalAlignment="Top" Foreground="#FF3AFF00" FontSize="40"/>
+        <Label Content="GESTIONE VERTIMAG" HorizontalAlignment="Left" Margin="218,48,0,0" VerticalAlignment="Top" Foreground="#FF3AFF00" FontSize="40"/>
         <ComboBox x:Name="sel_drawer" HorizontalAlignment="Left" Margin="403,219,0,0" VerticalAlignment="Top" Width="290" SelectionChanged="ComboBox_SelectionChanged" FontSize="24"/>
         <Label Content="Seleziona Cassetto" HorizontalAlignment="Left" Margin="123,215,0,0" VerticalAlignment="Top" FontSize="24"/>
         <Button Content="AVANTI" HorizontalAlignment="Left" Margin="542,355,0,0" VerticalAlignment="Top" Width="151" Click="Button_Click" FontSize="24"/>

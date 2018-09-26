@@ -18,13 +18,21 @@
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <!--<Image HorizontalAlignment="Left" Height="430" Margin="10,10,0,0" VerticalAlignment="Top" Width="780" Source="/Ferretto.VW.VerticalWarehousesApp;component/Assets/griglia_map_cassetto.jpg" Visibility="Hidden"/>-->
-        <StackPanel Grid.Row="0" Background="#FF116118" />
+        <StackPanel Grid.Row="0" Background="#FF116118">
+            <TextBox
+                x:Name="InfoCassetto"
+                Height="23"
+                Text="TextBox"
+                TextWrapping="Wrap" />
+        </StackPanel>
+
         <Canvas
             x:Name="canvas"
             Grid.Row="1"
             Margin="0,0,0,10">
             <Canvas.Background>
                 <DrawingBrush
+                    x:Name="griglia"
                     TileMode="Tile"
                     Viewport="-5,-10,25,25"
                     ViewportUnits="Absolute">
@@ -40,12 +48,12 @@
                     </DrawingBrush.Drawing>
                 </DrawingBrush>
             </Canvas.Background>
-            <Rectangle
+            <!--<Rectangle
                 Canvas.Left="20"
                 Canvas.Top="15"
                 Width="751"
                 Height="251"
-                Stroke="#FFA21919" />
+                Stroke="#FFA21919" />-->
         </Canvas>
         <StackPanel Grid.Row="2" Background="#FFDE0505">
             <control:InputCompartmentControl x:Name="InputCompartmentControl" Loaded="InputCompartment_Loaded" />

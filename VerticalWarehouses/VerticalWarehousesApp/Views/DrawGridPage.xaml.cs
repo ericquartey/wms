@@ -28,7 +28,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         private const double offset_writing = 7.5f;
 
-        private const int square = 25;
+        private const int passo = 150;
 
         private const int xOrigin = 20;
 
@@ -99,41 +99,43 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 "#009BFF",
 "#E85EBE"};
 
+        private int conversionePassoPixel;
+        private string drawerSelected;
+
+        private int HDrawerSelectedMM;
+        private int HDrawerSelectedPixel;
+        private int NDrawerSelected;
+        private float PDrawerPixelMM;
         private List<Rect> rects;
+        private int WDrawerSelectedMM;
+        private int WDrawerSelectedPixel;
+        private MainWindow window;
 
         #endregion Fields
 
         #region Constructors
 
-        public DrawGridPage()
+        public DrawGridPage(MainWindow window, string drawerSelected)
         {
+            this.window = window;
             this.InitializeComponent();
-            this.rects = new List<Rect>();
-            Rectangle rect = new Rectangle();
-            //rect.Offset(new System.Drawing.Point(xOrigin, yOrigin));
-            Canvas.SetLeft(rect, xOrigin);
-            Canvas.SetTop(rect, yOrigin);
-            rect.Width = 50;
-            rect.Height = 50;
-            rect.Fill = new SolidColorBrush(Colors.Red);
-            rect.Opacity = 0.2f;
-            this.canvas.Children.Add(rect);
 
-            for (int i = 0; i < 10; i++)
-            {
-                TextBlock textBlock = new TextBlock();
-                textBlock.Text = $"{square * i}";
-                textBlock.Foreground = new SolidColorBrush(Colors.Blue);
-                Canvas.SetLeft(textBlock, ((square * i) + offset_writing));
-                Canvas.SetTop(textBlock, 0);
-                this.canvas.Children.Add(textBlock);
-                textBlock = new TextBlock();
-                textBlock.Text = $"{square * i}";
-                textBlock.Foreground = new SolidColorBrush(Colors.Blue);
-                Canvas.SetLeft(textBlock, 0);
-                Canvas.SetTop(textBlock, ((square * i) + offset_writing));
-                this.canvas.Children.Add(textBlock);
-            }
+            //this.window.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //this.window.Arrange(new Rect(0, 0, this.window.DesiredSize.Width, this.window.DesiredSize.Height));
+
+            this.drawerSelected = drawerSelected;
+            var temp = this.drawerSelected.Split(',');
+            var WxH = temp[1].Trim().Split('x');
+            this.WDrawerSelectedMM = int.Parse(WxH[0].Trim());
+            this.HDrawerSelectedMM = int.Parse(WxH[1].Trim());
+
+            this.rects = new List<Rect>();
+
+            this.InfoCassetto.Text = this.drawerSelected;
+
+            Loaded += this.DrawGridPage_Loaded;
+            //this.CreateRectangleDrawer();
+            //this.DrawNumberMetric();
         }
 
         #endregion Constructors
@@ -174,22 +176,60 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             this.DrawNewCompartment(InputCompartment);
         }
 
+        private void CreateRectangleDrawer()
+        {
+            //< Rectangle
+            //    Canvas.Left = "20"
+            //    Canvas.Top = "15"
+            //    Width = "751"
+            //    Height = "251"
+            //    Stroke = "#FFA21919" />
+            var rectangle = new Rectangle();
+            Canvas.SetLeft(rectangle, xOrigin);
+            Canvas.SetTop(rectangle, yOrigin);
+
+            // TODO: calculate W & H window
+            var widthCanvas = this.canvas.ActualWidth;
+            var heightCanvas = this.canvas.ActualHeight;
+            this.WDrawerSelectedPixel = (int)widthCanvas - 50;
+
+            this.conversionePassoPixel = (this.WDrawerSelectedPixel * passo) / this.WDrawerSelectedMM;
+            this.HDrawerSelectedPixel = (this.WDrawerSelectedPixel * this.HDrawerSelectedMM) / this.WDrawerSelectedMM;
+
+            //this.WDrawerSelectedPixel = this.HDrawerSelectedMM * this.conversionePassoPixel;
+            // 750=W
+            // 750 : WD = x : HD -> x = (750 * HD) / WD
+            this.PDrawerPixelMM = this.WDrawerSelectedPixel / this.WDrawerSelectedMM;
+
+            rectangle.Width = this.WDrawerSelectedPixel;
+            rectangle.Height = this.HDrawerSelectedPixel;
+            rectangle.Stroke = new SolidColorBrush(Colors.Red);
+            this.canvas.Children.Add(rectangle);
+        }
+
+        private void DrawGridPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.CreateRectangleDrawer();
+            this.DrawNumberMetric();
+            this.DrawTestRectangle();
+        }
+
         private void DrawNewCompartment(InputCompartment ic)
         {
-            var x = ic.PositionX + xOrigin;
-            var y = ic.PositionY + yOrigin;
-            var w = ic.Width;
-            var h = ic.Height;
+            var x = ((this.WDrawerSelectedPixel * (ic.PositionX)) / this.WDrawerSelectedMM) + xOrigin;
+            var y = ((this.WDrawerSelectedPixel * (ic.PositionY)) / this.WDrawerSelectedMM) + yOrigin;
+            var w = (this.WDrawerSelectedPixel * ic.Width) / this.WDrawerSelectedMM;
+            var h = (this.WDrawerSelectedPixel * ic.Height) / this.WDrawerSelectedMM;
             Rect rectTemp = new Rect(x, y, w, h);
             bool intersect = this.IntersectNewRectangle(rectTemp);
             if (intersect)
             {
                 Rectangle rect = new Rectangle();
                 //rect.PointToScreen(new Point(0,0));
-                Canvas.SetLeft(rect, ic.PositionX + xOrigin);
-                Canvas.SetTop(rect, ic.PositionY + yOrigin);
-                rect.Width = ic.Width;
-                rect.Height = ic.Height;
+                Canvas.SetLeft(rect, x);// ic.PositionX + xOrigin);
+                Canvas.SetTop(rect, y);//ic.PositionY + yOrigin);
+                rect.Width = w;// ic.Width;
+                rect.Height = h;// ic.Height;
                 rect.Fill = new SolidColorBrush(this.GetRandomColor());
                 rect.Opacity = 0.2f;
                 this.canvas.Children.Add(rect);
@@ -199,6 +239,53 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             {
                 MessageBox.Show("Errore: è presente un altro scompartimento", "Alert", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void DrawNumberMetric()
+        {
+            //W pixel / 5(passo)
+
+            var nMisureWidth = this.WDrawerSelectedPixel / this.conversionePassoPixel;
+            var nMisureHeight = this.HDrawerSelectedPixel / this.conversionePassoPixel;
+
+            nMisureWidth += 2;
+            nMisureHeight += 2;
+
+            var passoPixel = this.conversionePassoPixel * passo;
+
+            this.griglia.Viewport = new Rect(xOrigin, yOrigin, this.conversionePassoPixel, this.conversionePassoPixel);
+
+            for (int i = 0; i < nMisureWidth; i++)
+            {
+                TextBlock textBlock = new TextBlock();
+                textBlock.Text = $"{passo * i}";
+                textBlock.Foreground = new SolidColorBrush(Colors.Blue);
+                Canvas.SetLeft(textBlock, ((/*square*/this.conversionePassoPixel * i) + offset_writing));
+                Canvas.SetTop(textBlock, 0);
+                this.canvas.Children.Add(textBlock);
+                textBlock = new TextBlock();
+                textBlock.Text = $"{passo * i}";
+                if (i <= nMisureHeight)
+                {
+                    textBlock.Foreground = new SolidColorBrush(Colors.Blue);
+                    Canvas.SetLeft(textBlock, 0);
+                    Canvas.SetTop(textBlock, ((/*square*/this.conversionePassoPixel * i) + offset_writing));
+                    this.canvas.Children.Add(textBlock);
+                }
+            }
+        }
+
+        private void DrawTestRectangle()
+        {
+            Rectangle rect = new Rectangle();
+            //rect.Offset(new System.Drawing.Point(xOrigin, yOrigin));
+            Canvas.SetLeft(rect, xOrigin);
+            Canvas.SetTop(rect, yOrigin);
+            rect.Width = this.conversionePassoPixel;
+            rect.Height = this.conversionePassoPixel;
+            rect.Fill = new SolidColorBrush(Colors.Red);
+            rect.Opacity = 0.2f;
+            this.canvas.Children.Add(rect);
         }
 
         private void InputCompartment_Loaded(Object sender, RoutedEventArgs e)
@@ -211,8 +298,18 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             foreach (var a in this.rects)
             {
-                var rectangle1 = new System.Drawing.Rectangle((int)a.Top, (int)a.Left, (int)a.Width, (int)a.Height);
-                var rectangle2 = new System.Drawing.Rectangle((int)b.Top, (int)b.Left, (int)b.Width, (int)b.Height);
+                System.Drawing.Rectangle rectangle1, rectangle2;
+                if (a.Left < b.Left)
+                {
+                    rectangle1 = new System.Drawing.Rectangle((int)a.Top, (int)a.Left, (int)a.Width, (int)a.Height);
+                    rectangle2 = new System.Drawing.Rectangle((int)b.Top, (int)b.Left, (int)b.Width, (int)b.Height);
+                }
+                else
+                {
+                    rectangle2 = new System.Drawing.Rectangle((int)a.Top, (int)a.Left, (int)a.Width, (int)a.Height);
+                    rectangle1 = new System.Drawing.Rectangle((int)b.Top, (int)b.Left, (int)b.Width, (int)b.Height);
+                }
+
                 //bool intersect = a.IntersectsWith(b);
                 //if(intersect)
                 //{
