@@ -70,9 +70,9 @@
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Stretch"
                 Background="Transparent"
-                MouseDown="ImageMouseDown"
-                MouseMove="ImageMouseMove"
-                MouseUp="ImageMouseUp">
+                MouseDown="CanvasMouseDown"
+                MouseMove="CanvasMouseMove"
+                MouseUp="CanvasMouseUp">
             <Image Width="{Binding ElementName=cnvImage, Path=ActualWidth}"
                    Height="{Binding ElementName=cnvImage, Path=ActualHeight}"
                    Source="/Assets/simple_tray.png"

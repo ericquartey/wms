@@ -43,6 +43,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\ConverterPixelToCm.cs" />
     <Compile Include="Source\IViewViewModel.cs" />
     <Compile Include="Source\PlanarGeometryMethods.cs" />
     <Compile Include="Source\Utils.cs" />

@@ -9,6 +9,11 @@ namespace Ferretto.VW.CustomControls.Controls
     {
         #region Fields
 
+        /// <summary>
+        /// Correction due to canvas' parent position
+        /// </summary>
+        private const int HEIGHT_CORRECTION = 50;
+
         private double originX;
         private double originY;
 
@@ -32,8 +37,7 @@ namespace Ferretto.VW.CustomControls.Controls
 
         public System.Double OriginX { get => this.originX; set => this.originX = value; }
 
-        //correction due to parent position
-        public System.Double OriginY { get => this.originY; set => this.originY = value - 50; }
+        public System.Double OriginY { get => this.originY; set => this.originY = value - HEIGHT_CORRECTION; }
 
         #endregion Properties
 
