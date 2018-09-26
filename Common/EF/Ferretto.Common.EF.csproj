@@ -240,9 +240,9 @@
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Models\Ferretto.Common.Models.csproj">
+    <ProjectReference Include="..\Models\Ferretto.Common.DataModels.csproj">
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
-      <Name>Ferretto.Common.Models</Name>
+      <Name>Ferretto.Common.DataModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

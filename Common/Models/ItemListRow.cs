@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ferretto.Common.Models
+namespace Ferretto.Common.DataModels
 {
     // Riga di Lista Articoli
     public sealed class ItemListRow

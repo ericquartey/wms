@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.Common.Models
+namespace Ferretto.Common.DataModels
 {
     // Stato Udc
     public sealed class LoadingUnitStatus

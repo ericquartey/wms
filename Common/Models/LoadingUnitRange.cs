@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Models
+﻿namespace Ferretto.Common.DataModels
 {
     // Range Udc
     public sealed class LoadingUnitRange

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ferretto.Common.Models
+namespace Ferretto.Common.DataModels
 {
     // Lista Articoli
     public sealed class ItemList

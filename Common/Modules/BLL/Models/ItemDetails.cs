@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ferretto.Common.Models;
+using Ferretto.Common.DataModels;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
@@ -65,7 +65,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
-        public IEnumerable<Common.Models.MeasureUnit> MeasureUnitChoices { get; set; }
+        public IEnumerable<Common.DataModels.MeasureUnit> MeasureUnitChoices { get; set; }
         public string MeasureUnitId { get; set; }
         public string Note { get; set; }
 

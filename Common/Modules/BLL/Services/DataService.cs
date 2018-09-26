@@ -2,7 +2,6 @@
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
-using Ferretto.Common.Models;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -27,7 +26,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IEnumerable<object> GetAllClassAItems()
         {
-            return this.GetAllItems().Cast<Item>().Where(item => item.ClassId == "A");
+            return this.GetAllItems().Cast<DataModels.Item>().Where(item => item.ClassId == "A");
         }
 
         public IEnumerable<object> GetAllItems()
