@@ -5,8 +5,8 @@
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:Ferretto.Common.Modules.BLL.Models;assembly=Ferretto.Common.Modules.BLL"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:type="clr-namespace:Ferretto.Common.Models;assembly=Ferretto.Common.Models"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -201,7 +201,7 @@
                                         MaxWidth="2000"
                                         MaxHeight="5000"
                                         CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsSource, Mode=OneWay}"
-                                        ItemType="{x:Type type:Compartment}"
+                                        ItemType="{x:Type models:Compartment}"
                                         SelectionMode="Row">
                         <wms:WmsGridControl.View>
                             <dxg:TableView AllowEditing="False"

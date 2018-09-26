@@ -25,7 +25,7 @@ namespace Ferretto.Common.Controls
 
         public static bool GetEnabled(DependencyObject obj)
         {
-            return (bool) obj?.GetValue(EnabledProperty);
+            return (bool)obj?.GetValue(EnabledProperty);
         }
 
         public static void SetEnabled(DependencyObject obj, bool value)
@@ -40,7 +40,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var bar = LayoutHelper.FindParentObject<TileBar>(element);
+            var bar = LayoutHelper.FindParentObject<DevExpress.Xpf.Navigation.TileBar>(element);
             var parents = LayoutTreeHelper.GetVisualParents(bar);
             var flyoutContainerControl = parents.OfType<DevExpress.Xpf.Editors.Flyout.FlyoutContainerControl>();
             foreach (var flyoutC in flyoutContainerControl)
@@ -52,7 +52,7 @@ namespace Ferretto.Common.Controls
 
         private static void Element_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!( sender is TileBar tileBar ))
+            if (!(sender is DevExpress.Xpf.Navigation.TileBar tileBar))
             {
                 return;
             }
@@ -62,10 +62,10 @@ namespace Ferretto.Common.Controls
                     .FirstOrDefault() != null)
             {
                 var flyout =
-                    (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase) tileBar.GetValue(DevExpress.Xpf.Editors.Flyout
+                    (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout
                         .Native.FlyoutBase.FlyoutProperty);
                 // Change position of child tilebar
-                flyout.Padding = new Thickness(0, -( tileBar.ActualHeight - 10 ), 0, 0);
+                flyout.Padding = new Thickness(0, -(tileBar.ActualHeight - 10), 0, 0);
                 flyout.UpdateLayout();
             }
         }
@@ -77,29 +77,29 @@ namespace Ferretto.Common.Controls
 
         private static void Flyout_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            if (!( sender is TileBar tileBar ))
+            if (!(sender is DevExpress.Xpf.Navigation.TileBar tileBar))
             {
                 return;
             }
 
             var flyout =
-                (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase) tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native
+                (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native
                     .FlyoutBase.FlyoutProperty);
             if (flyout != null)
             {
-                ( (FrameworkElement) ( flyout.Content ) ).Opacity = 1;
+                ((FrameworkElement)(flyout.Content)).Opacity = 1;
             }
         }
 
         private static void GridParent_PreviewMouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            if (!( sender is Grid grid ))
+            if (!(sender is Grid grid))
             {
                 return;
             }
 
             var tileBar = LayoutTreeHelper.GetVisualChildren(grid as DependencyObject)
-                .OfType<TileBar>()
+                .OfType<DevExpress.Xpf.Navigation.TileBar>()
                 .FirstOrDefault();
             if (tileBar != null)
             {
@@ -109,13 +109,13 @@ namespace Ferretto.Common.Controls
                 }
 
                 var flyout =
-                    (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase) tileBar.GetValue(DevExpress.Xpf.Editors.Flyout
+                    (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout
                         .Native.FlyoutBase.FlyoutProperty);
                 if (flyout != null)
                 {
                     tileBar.IsVisibleChanged -= Flyout_IsVisibleChanged;
                     tileBar.IsVisibleChanged += Flyout_IsVisibleChanged;
-                    if (( e.Source is TileNavPaneContentControl ) == false)
+                    if ((e.Source is TileNavPaneContentControl) == false)
                     {
                         e.Handled = true;
                         flyout.IsOpen = false;
@@ -126,9 +126,9 @@ namespace Ferretto.Common.Controls
 
         private static bool IsClickOnScroll(object originalSource)
         {
-            return ( LayoutTreeHelper.GetVisualParents(originalSource as UIElement)
+            return (LayoutTreeHelper.GetVisualParents(originalSource as UIElement)
                          .OfType<DevExpress.Xpf.Controls.Primitives.ScrollableControlButton>()
-                         .FirstOrDefault() != null );
+                         .FirstOrDefault() != null);
         }
 
         private static void OnSetEnabledChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
@@ -153,13 +153,13 @@ namespace Ferretto.Common.Controls
 
         private static void PreviewMouseDown(object sender, RoutedEventArgs e)
         {
-            if (!( sender is TileBar tileBar ))
+            if (!(sender is DevExpress.Xpf.Navigation.TileBar tileBar))
             {
                 return;
             }
 
             var flyout =
-                (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase) tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native
+                (DevExpress.Xpf.Editors.Flyout.Native.FlyoutBase)tileBar.GetValue(DevExpress.Xpf.Editors.Flyout.Native
                     .FlyoutBase.FlyoutProperty);
             if (flyout != null)
             {
@@ -172,7 +172,7 @@ namespace Ferretto.Common.Controls
             {
                 if (flyout != null)
                 {
-                    ( (FrameworkElement) ( flyout.Content ) ).Opacity = 0;
+                    ((FrameworkElement)(flyout.Content)).Opacity = 0;
                 }
 
                 var dt = tileBarItem.DataContext as IMenuItemViewModel;

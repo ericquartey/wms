@@ -1,5 +1,5 @@
 ﻿using System.Configuration;
-using Ferretto.Common.Models;
+using Ferretto.Common.DataModels;
 using Ferretto.Common.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +26,7 @@ namespace Ferretto.Common.EF
         }
 
         public virtual DbSet<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
-        public virtual DbSet<Common.Models.CellConfiguration> CellConfigurations { get; set; }
+        public virtual DbSet<Common.DataModels.CellConfiguration> CellConfigurations { get; set; }
         public virtual DbSet<CellHeightClass> CellHeightClasses { get; set; }
         public virtual DbSet<CellPosition> CellPositions { get; set; }
         public virtual DbSet<Cell> Cells { get; set; }

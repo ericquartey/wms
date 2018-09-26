@@ -98,7 +98,6 @@
     <Compile Include="Models\ItemDetails.cs" />
     <Compile Include="Models\MeasureUnit.cs" />
     <Compile Include="Services\BusinessProvider.cs" />
-    <Compile Include="Services\DataService.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="BusinessLogicModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -114,6 +113,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DataAccess\Ferretto.Common.DataAccess.csproj">
+      <Project>{842EAD3A-D1A7-46D6-8900-AC9F29B5F952}</Project>
+      <Name>Ferretto.Common.DataAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj">
       <Project>{2586c34c-da26-4143-8359-21d8a42b8462}</Project>
       <Name>Ferretto.Common.BLL.Interfaces</Name>
@@ -126,9 +129,9 @@
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Models\Ferretto.Common.Models.csproj">
+    <ProjectReference Include="..\..\DataModels\Ferretto.Common.DataModels.csproj">
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
-      <Name>Ferretto.Common.Models</Name>
+      <Name>Ferretto.Common.DataModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\EF\Ferretto.Common.EF.csproj">
       <Project>{C32FD908-0388-4096-AF68-43BBEDB58725}</Project>

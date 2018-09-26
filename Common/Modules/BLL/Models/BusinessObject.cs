@@ -4,11 +4,18 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public abstract class BusinessObject : IBusinessObject
+    public class BusinessObject : IBusinessObject
     {
+        #region Constructors
+
+        protected BusinessObject()
+        { }
+
+        #endregion Constructors
+
         #region Methods
 
-        public void SetIfStrictlyPositive(ref int? member, int? value)
+        public static void SetIfStrictlyPositive(ref int? member, int? value)
         {
             if (value.HasValue)
             {

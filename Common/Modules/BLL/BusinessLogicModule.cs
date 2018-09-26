@@ -1,4 +1,5 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;

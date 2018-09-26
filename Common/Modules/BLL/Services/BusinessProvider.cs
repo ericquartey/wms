@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 

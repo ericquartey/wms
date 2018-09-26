@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBusinessObject.cs" />
-    <Compile Include="IDataService.cs" />
     <Compile Include="IDataSource.cs" />
     <Compile Include="IImageService.cs" />
     <Compile Include="IEventService.cs" />
@@ -53,9 +52,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Models\Ferretto.Common.Models.csproj">
+    <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj">
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
-      <Name>Ferretto.Common.Models</Name>
+      <Name>Ferretto.Common.DataModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
