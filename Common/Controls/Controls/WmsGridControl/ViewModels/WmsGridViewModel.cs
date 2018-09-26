@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity> : BindableBase, IWmsGridViewModel where TEntity : class
+    public class WmsGridViewModel<TEntity> : BindableBase, IWmsGridViewModel where TEntity : IBusinessObject
     {
         #region Fields
 
@@ -70,11 +70,13 @@ namespace Ferretto.Common.Controls
             var elements = this.CurrentDataSource.Load();
 
             this.items.Clear();
-            foreach (var item in elements)
+            if (elements != null)
             {
-                this.items.Add(item);
+                foreach (var item in elements)
+                {
+                    this.items.Add(item);
+                }
             }
-
             this.Items.RaiseListChangedEvents = true;
             this.Items.ResetBindings();
         }

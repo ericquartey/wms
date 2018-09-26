@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Modules.BLL.Services;
@@ -6,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class DataSource<TEntity> : BindableBase, IDataSource<TEntity> where TEntity : class
+    public class DataSource<TEntity> : BindableBase, IDataSource<TEntity> where TEntity : IBusinessObject
     {
         #region Fields
 
@@ -26,9 +27,9 @@ namespace Ferretto.Common.Modules.BLL.Models
         }
 
         public string Description { get; set; }
-        public Func<IQueryable<TEntity>, IQueryable<TEntity>> Filter { get; set; }
-        public Func<Func<IQueryable<TEntity>, IQueryable<TEntity>>, int> GetCount { get; set; }
-        public Func<Func<IQueryable<TEntity>, IQueryable<TEntity>>, IQueryable<TEntity>> GetData { get; set; }
+        public Func<IEnumerable<TEntity>, IEnumerable<TEntity>> Filter { get; set; }
+        public Func<Func<IEnumerable<TEntity>, IEnumerable<TEntity>>, int> GetCount { get; set; }
+        public Func<Func<IEnumerable<TEntity>, IEnumerable<TEntity>>, IEnumerable<TEntity>> GetData { get; set; }
 
         public bool IsVisible
         {
@@ -63,7 +64,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             return count;
         }
 
-        public IQueryable<TEntity> Load()
+        public IEnumerable<TEntity> Load()
         {
             return this.GetData?.Invoke(this.Filter);
         }
