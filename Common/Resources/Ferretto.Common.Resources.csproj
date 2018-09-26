@@ -56,10 +56,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models.Designer.cs">
+    <Compile Include="BusinessObjects.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Models.resx</DependentUpon>
+      <DependentUpon>BusinessObjects.resx</DependentUpon>
     </Compile>
     <Compile Include="DesktopApp.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -98,9 +98,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Models.resx">
+    <EmbeddedResource Include="BusinessObjects.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Models.Designer.cs</LastGenOutput>
+      <LastGenOutput>BusinessObjects.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopApp.resx">

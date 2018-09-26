@@ -83,25 +83,25 @@
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
                                     FieldName="Code"
-                                    Header="{x:Static res:Models.ItemCode}" />
+                                    Header="{x:Static res:BusinessObjects.ItemCode}" />
                     <dxg:GridColumn Width="300*"
                                     FieldName="Description"
                                     Header="{x:Static res:General.Description}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="AbcClass.Description"
-                                    Header="{x:Static res:Models.ItemClass}" />
+                                    Header="{x:Static res:BusinessObjects.ItemClass}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="_TotalQty"
-                                    Header="{x:Static res:Models.ItemStock}" />
+                                    Header="{x:Static res:BusinessObjects.ItemStock}" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="_HoldToPick"
-                                    Header="{x:Static res:Models.ItemReservedForPick}" />
+                                    Header="{x:Static res:BusinessObjects.ItemReservedForPick}" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="_HoldToStore"
-                                    Header="{x:Static res:Models.ItemReservedToStore}" />
+                                    Header="{x:Static res:BusinessObjects.ItemReservedToStore}" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="_Available"
-                                    Header="{x:Static res:Models.ItemAvailable}" />
+                                    Header="{x:Static res:BusinessObjects.ItemAvailable}" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>

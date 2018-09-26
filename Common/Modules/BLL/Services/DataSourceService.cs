@@ -2,6 +2,7 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Resources;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -18,9 +19,11 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly BusinessProvider businessProvider = new BusinessProvider();
+        private readonly IBusinessProvider businessService = ServiceLocator.Current.GetInstance<BusinessProvider>();
 
         #endregion Fields
+
+
 
         #region Methods
 
@@ -37,24 +40,24 @@ namespace Ferretto.Common.Modules.BLL.Services
                         {
                             SourceName = DataSourceType.ItemAll,
                             Name = MasterData.ItemAll,
-                            GetCount = filter => this.businessProvider.GetAllItemsCount(),
-                            GetData = filter => this.businessProvider.GetAllItems()
+                            GetCount = filter => this.businessService.GetAllItemsCount(),
+                            GetData = filter => this.businessService.GetAllItems()
                         },
                         //// A-Class items
                         new DataSource<Item>
                         {
                             SourceName = DataSourceType.ItemAClass,
                             Name = MasterData.ItemClassA,
-                            GetCount = filter => this.businessProvider.GetItemsWithAClassCount(),
-                            GetData = filter => this.businessProvider.GetItemsWithAClass()
+                            GetCount = filter => this.businessService.GetItemsWithAClassCount(),
+                            GetData = filter => this.businessService.GetItemsWithAClass()
                         },
                         //// FIFO items
                         new DataSource<Item>
                         {
                             SourceName = DataSourceType.ItemFifo,
                             Name = MasterData.ItemFIFO,
-                            GetCount = filter => this.businessProvider.GetItemsWithFIFOCount(),
-                            GetData = filter => this.businessProvider.GetItemsWithFIFO()
+                            GetCount = filter => this.businessService.GetItemsWithFIFOCount(),
+                            GetData = filter => this.businessService.GetItemsWithFIFO()
                         }
                     };
 
@@ -67,8 +70,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                             SourceName = DataSourceType.CompartmentAll,
                             Name = MasterData.CompartmentAll,
                             Filter = compartments => compartments,
-                            GetCount = filter => this.businessProvider.GetAllCompartmentsCount(),
-                            GetData = filter => this.businessProvider.GetAllCompartments()
+                            GetCount = filter => this.businessService.GetAllCompartmentsCount(),
+                            GetData = filter => this.businessService.GetAllCompartments()
                         }
                     };
 
