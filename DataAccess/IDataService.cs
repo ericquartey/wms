@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Ferretto.Common.DataAccess
 {
     public interface IDataService
     {
         #region Methods
-
-        IEnumerable<object> GetAllClassAItems();
 
         IEnumerable<object> GetAllCompartments();
 

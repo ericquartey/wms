@@ -7,8 +7,6 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Methods
 
-        IEnumerable<Item> GetAllClassAItems();
-
         IEnumerable<Compartment> GetAllCompartments();
 
         int GetAllCompartmentsCount();

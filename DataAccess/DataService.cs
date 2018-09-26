@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.EF;
 
@@ -22,11 +22,6 @@ namespace Ferretto.Common.DataAccess
         #endregion Constructors
 
         #region Methods
-
-        public IEnumerable<object> GetAllClassAItems()
-        {
-            return this.GetAllItems().Cast<DataModels.Item>().Where(item => item.ClassId == "A");
-        }
 
         public IEnumerable<object> GetAllCompartments()
         {
