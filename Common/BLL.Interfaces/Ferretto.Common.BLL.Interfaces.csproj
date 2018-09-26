@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IBusinessObject.cs" />
-    <Compile Include="IDataService.cs" />
     <Compile Include="IDataSource.cs" />
     <Compile Include="IImageService.cs" />
     <Compile Include="IEventService.cs" />
