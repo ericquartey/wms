@@ -105,6 +105,7 @@
     <Compile Include="Services\DataSourceService.cs" />
     <Compile Include="Services\IBusinessProvider.cs" />
     <Compile Include="Services\ImageService.cs" />
+    <Compile Include="BusinessLogicAutoMapperProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

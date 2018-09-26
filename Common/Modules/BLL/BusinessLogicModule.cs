@@ -31,6 +31,10 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IEventService, EventService>();
             this.Container.RegisterType<IDataSourceService, DataSourceService>();
             this.Container.RegisterType<IImageService, ImageService>();
+
+            // TODO: in the future we may need to so something more complex http://docs.automapper.org/en/stable/Dependency-injection.html
+            Mapper.Initialize(config => config.AddProfile<BusinessLogicAutoMapperProfile>());
+            Mapper.Configuration.CompileMappings();
         }
 
         #endregion Methods
