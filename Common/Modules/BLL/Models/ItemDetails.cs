@@ -26,7 +26,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? AverageWeight
         {
             get => this.averageWeight;
-            set => this.SetIfStrictlyPositive(ref this.averageWeight, value);
+            set => SetIfStrictlyPositive(ref this.averageWeight, value);
         }
 
         public string ClassId { get; set; }
@@ -40,7 +40,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? Height
         {
             get => this.height;
-            set => this.SetIfStrictlyPositive(ref this.height, value);
+            set => SetIfStrictlyPositive(ref this.height, value);
         }
 
         public int Id { get; set; }
@@ -50,7 +50,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
-            set => this.SetIfStrictlyPositive(ref this.inventoryTolerance, value);
+            set => SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
         public virtual ItemManagementType ItemManagementType { get; set; }
@@ -62,7 +62,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? Length
         {
             get => this.length;
-            set => this.SetIfStrictlyPositive(ref this.length, value);
+            set => SetIfStrictlyPositive(ref this.length, value);
         }
 
         public IEnumerable<Common.DataModels.MeasureUnit> MeasureUnitChoices { get; set; }
@@ -72,7 +72,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? PickTolerance
         {
             get => this.pickTolerance;
-            set => this.SetIfStrictlyPositive(ref this.pickTolerance, value);
+            set => SetIfStrictlyPositive(ref this.pickTolerance, value);
         }
 
         public int? ReorderPoint { get; set; }
@@ -80,19 +80,19 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? ReorderQuantity
         {
             get => this.reorderQuantity;
-            set => this.SetIfStrictlyPositive(ref this.reorderQuantity, value);
+            set => SetIfStrictlyPositive(ref this.reorderQuantity, value);
         }
 
         public int? StoreTolerance
         {
             get => this.storeTolerance;
-            set => this.SetIfStrictlyPositive(ref this.storeTolerance, value);
+            set => SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
 
         public int? Width
         {
             get => this.width;
-            set => this.SetIfStrictlyPositive(ref this.width, value);
+            set => SetIfStrictlyPositive(ref this.width, value);
         }
 
         #endregion Properties

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Ferretto.Common.BLL.Interfaces
+namespace Ferretto.Common.DataAccess
 {
     public interface IDataService
     {

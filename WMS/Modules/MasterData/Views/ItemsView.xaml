@@ -5,8 +5,8 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:Ferretto.Common.Modules.BLL.Models;assembly=Ferretto.Common.Modules.BLL"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:type="clr-namespace:Ferretto.Common.DataModels;assembly=Ferretto.Common.DataModels"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              MinHeight="300"
              d:DesignHeight="450"
@@ -59,7 +59,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
-                                ItemType="{x:Type type:Item}"
+                                ItemType="{x:Type models:Item}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>

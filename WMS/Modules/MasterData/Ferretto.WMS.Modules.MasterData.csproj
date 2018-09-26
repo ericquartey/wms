@@ -265,6 +265,10 @@
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\DataAccess\Ferretto.Common.DataAccess.csproj">
+      <Project>{842EAD3A-D1A7-46D6-8900-AC9F29B5F952}</Project>
+      <Name>Ferretto.Common.DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\..\CustomDictionary.xml">

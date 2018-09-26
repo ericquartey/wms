@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.EF;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.DataAccess
 {
     public class DataService : IDataService
     {

@@ -1,6 +1,6 @@
-﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls.Interfaces;
+﻿using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.DataAccess;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
