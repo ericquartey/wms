@@ -1,8 +1,10 @@
 ﻿
 namespace Ferretto.VW.ActionBlocks
 {
-    public class ActionCmds
-    { }
+  public class CCommand
+  {
+
+  }
 
 
 }
