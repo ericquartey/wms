@@ -1,6 +1,7 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -18,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ItemsAndDetailsViewModel()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Subscribe((ShowDetailsEventArgs<Common.Models.Item> eventArgs) =>
+                .Subscribe((ShowDetailsEventArgs<Item> eventArgs) =>
                 {
                     this.IsDetailsViewVisible = eventArgs.IsDetailsViewVisible;
                 });

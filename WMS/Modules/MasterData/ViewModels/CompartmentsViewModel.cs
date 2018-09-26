@@ -1,9 +1,10 @@
-﻿using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -15,7 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IDataSourceService filterService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        private IDataSource<Common.Models.Compartment> selectedDataSource;
+        private IDataSource<Compartment> selectedDataSource;
         private Tile selectedFilter;
         private ICommand viewDetailsCommand;
 
@@ -23,7 +24,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IEnumerable<IDataSource<Common.Models.Compartment>> DataSources => this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(CompartmentsViewModel))) as IEnumerable<IDataSource<Common.Models.Compartment>>;
+        public IEnumerable<IDataSource<Compartment>> DataSources =>
+            this.filterService.GetAll(MvvmNaming.GetViewNameFromViewModelName(nameof(CompartmentsViewModel))) as IEnumerable<IDataSource<Compartment>>;
 
         public IEnumerable<Tile> Filters => this.DataSources.Select(dataSource =>
             new Tile
@@ -33,7 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         );
 
-        public IDataSource<Common.Models.Compartment> SelectedDataSource
+        public IDataSource<Compartment> SelectedDataSource
         {
             get => this.selectedDataSource;
             set => this.SetProperty(ref this.selectedDataSource, value);
@@ -61,7 +63,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private static void ExecuteViewDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Common.Models.Compartment>(true));
+                .Invoke(new ShowDetailsEventArgs<Compartment>(true));
         }
 
         #endregion Methods

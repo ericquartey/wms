@@ -5,8 +5,8 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:Ferretto.Common.Modules.BLL.Models;assembly=Ferretto.Common.Modules.BLL"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:type="clr-namespace:Ferretto.Common.Models;assembly=Ferretto.Common.Models"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              MinHeight="300"
              d:DesignHeight="450"
@@ -59,7 +59,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
-                                ItemType="{x:Type type:Item}"
+                                ItemType="{x:Type models:Item}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
@@ -83,25 +83,25 @@
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
                                     FieldName="Code"
-                                    Header="{x:Static res:Models.ItemCode}" />
+                                    Header="{x:Static res:BusinessObjects.ItemCode}" />
                     <dxg:GridColumn Width="300*"
                                     FieldName="Description"
                                     Header="{x:Static res:General.Description}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="AbcClass.Description"
-                                    Header="{x:Static res:Models.ItemClass}" />
+                                    Header="{x:Static res:BusinessObjects.ItemClass}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="_TotalQty"
-                                    Header="{x:Static res:Models.ItemStock}" />
+                                    Header="{x:Static res:BusinessObjects.ItemStock}" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="_HoldToPick"
-                                    Header="{x:Static res:Models.ItemReservedForPick}" />
+                                    Header="{x:Static res:BusinessObjects.ItemReservedForPick}" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="_HoldToStore"
-                                    Header="{x:Static res:Models.ItemReservedToStore}" />
+                                    Header="{x:Static res:BusinessObjects.ItemReservedToStore}" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="_Available"
-                                    Header="{x:Static res:Models.ItemAvailable}" />
+                                    Header="{x:Static res:BusinessObjects.ItemAvailable}" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>

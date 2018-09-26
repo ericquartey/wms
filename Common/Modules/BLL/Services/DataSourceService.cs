@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Models;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Resources;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    // All EF Item DataSources
     public enum DataSourceType
     {
         ItemAll,
@@ -22,7 +18,7 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
+        private readonly BusinessProvider businessProvider = new BusinessProvider();
 
         #endregion Fields
 
@@ -30,6 +26,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IEnumerable<object> GetAll(string viewName)
         {
+#pragma warning disable IDE0009
             switch (viewName)
             {
                 case "ItemsView":
@@ -40,27 +37,24 @@ namespace Ferretto.Common.Modules.BLL.Services
                         {
                             SourceName = DataSourceType.ItemAll,
                             Name = MasterData.ItemAll,
-                            Filter = items => items,
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
+                            GetCount = filter => this.businessProvider.GetAllItemsCount(),
+                            GetData = filter => this.businessProvider.GetAllItems()
                         },
-                        // A-Class items
+                        //// A-Class items
                         new DataSource<Item>
                         {
                             SourceName = DataSourceType.ItemAClass,
                             Name = MasterData.ItemClassA,
-                            Filter = items => items.Where(item => item.AbcClass.Id == "A"),
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
+                            GetCount = filter => this.businessProvider.GetItemsWithAClassCount(),
+                            GetData = filter => this.businessProvider.GetItemsWithAClass()
                         },
-                        // FIFO items
+                        //// FIFO items
                         new DataSource<Item>
                         {
                             SourceName = DataSourceType.ItemFifo,
                             Name = MasterData.ItemFIFO,
-                            Filter = items => items.Where(item => item.ItemManagementType.Description.Contains("FIFO")),
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
+                            GetCount = filter => this.businessProvider.GetItemsWithFifoCount(),
+                            GetData = filter => this.businessProvider.GetItemsWithFifo()
                         }
                     };
 
@@ -73,13 +67,15 @@ namespace Ferretto.Common.Modules.BLL.Services
                             SourceName = DataSourceType.CompartmentAll,
                             Name = MasterData.CompartmentAll,
                             Filter = compartments => compartments,
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
+                            GetCount = filter => this.businessProvider.GetAllCompartmentsCount(),
+                            GetData = filter => this.businessProvider.GetAllCompartments()
                         }
                     };
+
                 default:
-                    return null;
+                    return new List<object>();
             }
+#pragma warning restore IDE0009
         }
 
         #endregion Methods
