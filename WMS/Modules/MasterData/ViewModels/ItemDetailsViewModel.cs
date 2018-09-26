@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.item, value))
                 {
-                    // set compartments
+                    // TODO: set compartments
                 }
             }
         }
@@ -85,49 +85,5 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         #endregion Methods
-
-        #region Classes
-
-        /*public class CompartmentsDataSource : IDataSource<Compartment>
-        {
-            #region Constructors
-
-            public CompartmentsDataSource(ItemDetails item, IDataService dataService)
-            {
-                this.Item = item;
-                this.DataService = dataService;
-            }
-
-            #endregion Constructors
-
-            #region Properties
-
-            public Int32 Count => 0;
-
-            public IDataService DataService { get; private set; }
-            public Func<IEnumerable<Compartment>, IEnumerable<Compartment>> Filter => compartments => compartments;
-            public Item Item { get; private set; }
-            public String Name => "Item Compartments";
-
-            #endregion Properties
-
-            #region Methods
-
-            public IEnumerable<Compartment> Load()
-            {
-                return this.Item != null ?
-                           this.DataService.GetData<Compartment>().Where(compartment => compartment.ItemId == this.Item.Id)
-                           : null;
-            }
-
-            IEnumerable<Compartment> IDataSource<Compartment>.Load()
-            {
-                throw new NotImplementedException();
-            }
-
-            #endregion Methods
-        }*/
-
-        #endregion Classes
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.DataAccess
 {
@@ -28,9 +29,9 @@ namespace Ferretto.Common.DataAccess
 
         void Initialize();
 
-        int SaveCompartment(object compartment);
+        int SaveCompartment(IEntity<int> compartment);
 
-        int SaveItem(object item);
+        int SaveItem(IEntity<int> item);
 
         #endregion Methods
     }

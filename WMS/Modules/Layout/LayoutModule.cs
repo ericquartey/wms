@@ -41,7 +41,6 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
 
-            // TODO: review this call to ensure we do a proper initialization of the entity framework
             ServiceLocator.Current.GetInstance<IDataService>().Initialize();
 
             this.RegionManager.RegisterViewWithRegion(
