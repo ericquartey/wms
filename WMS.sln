@@ -28,7 +28,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Modules.Layout
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Controls", "Common\Controls\Ferretto.Common.Controls.csproj", "{0DDBD6DC-1F23-4F52-849D-94DA9E5F1B12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Models", "Common\Models\Ferretto.Common.Models.csproj", "{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.DataModels", "Common\DataModels\Ferretto.Common.DataModels.csproj", "{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.EF", "Common\EF\Ferretto.Common.EF.csproj", "{C32FD908-0388-4096-AF68-43BBEDB58725}"
 EndProject

@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Models;
+﻿using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

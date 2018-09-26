@@ -6,7 +6,7 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             xmlns:type="clr-namespace:Ferretto.Common.Models;assembly=Ferretto.Common.Models"
+             xmlns:type="clr-namespace:Ferretto.Common.DataModels;assembly=Ferretto.Common.DataModels"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
              d:DesignWidth="800"
