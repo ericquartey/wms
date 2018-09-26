@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Models
 {
-    // Corridoio
+    // Articolo - Tipo Scomparto
     public sealed class ItemCompartmentType
     {
         #region Properties
