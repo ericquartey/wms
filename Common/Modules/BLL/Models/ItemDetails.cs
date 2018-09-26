@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ferretto.Common.DataModels;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class ItemDetails : BusinessObject
+    public class ItemDetails : BusinessObject, IEntity<int>
     {
         #region Fields
 

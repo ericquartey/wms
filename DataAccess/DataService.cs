@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.EF;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.DataAccess
 {
@@ -23,19 +24,14 @@ namespace Ferretto.Common.DataAccess
 
         #region Methods
 
-        public IEnumerable<object> GetAllClassAItems()
-        {
-            return this.GetAllItems().Cast<DataModels.Item>().Where(item => item.ClassId == "A");
-        }
-
         public IEnumerable<object> GetAllCompartments()
         {
-            throw new System.NotImplementedException();
+            return this.dataContext.Compartments;
         }
 
         public int GetAllCompartmentsCount()
         {
-            throw new System.NotImplementedException();
+            return this.GetAllCompartments().Count();
         }
 
         public IEnumerable<object> GetAllItems()
@@ -45,12 +41,12 @@ namespace Ferretto.Common.DataAccess
 
         public int GetAllItemsCount()
         {
-            return 0;
+            return this.GetAllItems().Count();
         }
 
-        public object GetCompartmentsByItemId(int itemId)
+        public IEnumerable<object> GetCompartmentsByItemId(int itemId)
         {
-            return null;
+            return this.dataContext.Compartments.Where(compartment => compartment.ItemId == itemId);
         }
 
         public object GetItemDetails(int itemId)
@@ -60,27 +56,40 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetItemsWithAClass()
         {
-            return null;
+            return this.dataContext.Items.Where(item => item.ClassId == "A");
         }
 
         public int GetItemsWithAClassCount()
         {
-            return 0;
+            return this.GetItemsWithAClass().Count();
         }
 
         public IEnumerable<object> GetItemsWithFifo()
         {
-            return null;
+            return this.dataContext.Items.Where(item => item.ItemManagementType.Description.Contains("FIFO"));
         }
 
         public int GetItemsWithFifoCount()
         {
-            return 0;
+            return this.GetItemsWithFifo().Count();
         }
 
         public void Initialize()
         {
             this.dataContext.Items.ToArray();
+        }
+
+        public int SaveCompartment(IEntity<int> compartmentDetails)
+        {
+            var compartmentToUpdate = this.dataContext.Compartments.Single(compartment => compartment.Id == compartmentDetails.Id);
+            return this.dataContext.SaveChanges();
+        }
+
+        public int SaveItem(IEntity<int> itemDetails)
+        {
+            var compartmentToUpdate = this.dataContext.Compartments.Single(item => item.Id == itemDetails.Id);
+
+            return this.dataContext.SaveChanges();
         }
 
         #endregion Methods

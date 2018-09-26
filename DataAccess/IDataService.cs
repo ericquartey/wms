@@ -6,8 +6,6 @@ namespace Ferretto.Common.DataAccess
     {
         #region Methods
 
-        IEnumerable<object> GetAllClassAItems();
-
         IEnumerable<object> GetAllCompartments();
 
         int GetAllCompartmentsCount();
@@ -16,7 +14,7 @@ namespace Ferretto.Common.DataAccess
 
         int GetAllItemsCount();
 
-        object GetCompartmentsByItemId(int itemId);
+        IEnumerable<object> GetCompartmentsByItemId(int itemId);
 
         object GetItemDetails(int itemId);
 
@@ -29,6 +27,10 @@ namespace Ferretto.Common.DataAccess
         int GetItemsWithFifoCount();
 
         void Initialize();
+
+        int SaveCompartment(object compartment);
+
+        int SaveItem(object item);
 
         #endregion Methods
     }

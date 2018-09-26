@@ -16,11 +16,6 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public IEnumerable<Item> GetAllClassAItems()
-        {
-            return Mapper.Map<IEnumerable<Item>>(this.dataService.GetAllClassAItems());
-        }
-
         public IEnumerable<Compartment> GetAllCompartments()
         {
             return Mapper.Map<IEnumerable<Compartment>>(this.dataService.GetAllCompartments());
@@ -73,12 +68,12 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int Save(ItemDetails item)
         {
-            return 0;
+            return this.dataService.SaveItem(item);
         }
 
         public int Save(CompartmentDetails compartment)
         {
-            return 0;
+            return this.dataService.SaveCompartment(compartment);
         }
 
         #endregion Methods
