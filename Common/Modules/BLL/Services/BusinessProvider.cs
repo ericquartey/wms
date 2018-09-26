@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Models;
@@ -23,30 +21,54 @@ namespace Ferretto.Common.Modules.BLL.Services
             return Mapper.Map<IEnumerable<Item>>(this.dataService.GetAllClassAItems());
         }
 
+        public IEnumerable<Compartment> GetAllCompartments()
+        {
+            return Mapper.Map<IEnumerable<Compartment>>(this.dataService.GetAllCompartments());
+        }
+
+        public int GetAllCompartmentsCount()
+        {
+            return this.dataService.GetAllCompartmentsCount();
+        }
+
         public IEnumerable<Item> GetAllItems()
         {
-            var allItems = Mapper.Map<IEnumerable<Item>>(this.dataService.GetAllItems()); // join con compartments
-            // calcolo totalstock
-
-            return allItems;
+            return Mapper.Map<IEnumerable<Item>>(this.dataService.GetAllItems());
         }
 
         public int GetAllItemsCount()
         {
-            return this.dataService.GetAllItems().Count();
+            return this.dataService.GetAllItemsCount();
         }
 
-        public IEnumerable<Item> GetAllItemsFIFO()
+        public IEnumerable<Compartment> GetCompartmentsByItemId(int itemId)
         {
-            var allItems = Mapper.Map<IEnumerable<Item>>(this.dataService.GetAllItems()); // join con compartments
-            // calcolo totalstock
-
-            return allItems;
+            return Mapper.Map<IEnumerable<Compartment>>(this.dataService.GetCompartmentsByItemId(itemId));
         }
 
         public ItemDetails GetItemDetails(int itemId)
         {
             return Mapper.Map<ItemDetails>(this.dataService.GetItemDetails(itemId));
+        }
+
+        public IEnumerable<Item> GetItemsWithAClass()
+        {
+            return Mapper.Map<IEnumerable<Item>>(this.dataService.GetItemsWithAClass());
+        }
+
+        public int GetItemsWithAClassCount()
+        {
+            return this.dataService.GetItemsWithAClassCount();
+        }
+
+        public IEnumerable<Item> GetItemsWithFifo()
+        {
+            return Mapper.Map<IEnumerable<Item>>(this.dataService.GetItemsWithFifo());
+        }
+
+        public int GetItemsWithFifoCount()
+        {
+            return this.dataService.GetItemsWithFifoCount();
         }
 
         public int Save(ItemDetails item)
@@ -57,41 +79,6 @@ namespace Ferretto.Common.Modules.BLL.Services
         public int Save(CompartmentDetails compartment)
         {
             return 0;
-        }
-
-        public IEnumerable<Compartment> GetAllCompartments()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Compartment> GetCompartmentsByItemId(int itemId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Item> GetItemsWithAClass()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetItemsWithAClassCount()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Item> GetItemsWithFIFO()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetItemsWithFIFOCount()
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetAllCompartmentsCount()
-        {
-            throw new NotImplementedException();
         }
 
         #endregion Methods
