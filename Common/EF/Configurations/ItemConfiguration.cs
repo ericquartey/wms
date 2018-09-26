@@ -19,7 +19,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasIndex(i => i.Code).IsUnique();
 
             builder.Property(i => i.Code).IsRequired();
-            builder.Property(i => i.ClassId).IsRequired()
+            builder.Property(i => i.AbcClassId).IsRequired()
                 .HasColumnType("char(1)");
             builder.Property(i => i.Note)
                 .HasColumnType("text");
@@ -28,7 +28,7 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasOne(i => i.AbcClass)
                 .WithMany(a => a.Items)
-                .HasForeignKey(i => i.ClassId)
+                .HasForeignKey(i => i.AbcClassId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             builder.HasOne(i => i.MeasureUnit)
                 .WithMany(m => m.Items)

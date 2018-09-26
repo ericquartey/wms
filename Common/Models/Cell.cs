@@ -16,7 +16,7 @@ namespace Ferretto.Common.Models
         public int? ZCoordinate { get; set; }
         public int Priority { get; set; }
         public int? CellTypeId { get; set; }
-        public string ClassId { get; set; }
+        public string AbcClassId { get; set; }
         public int CellStatusId { get; set; }
 
         public AbcClass AbcClass { get; set; }
