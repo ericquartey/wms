@@ -7,6 +7,7 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 
-    <Image x:Name="InnerImage" Source="{Binding Source}" />
+    <Image x:Name="InnerImage"
+           Source="{Binding Source}" />
 
 </UserControl>

@@ -6,7 +6,9 @@
 
         public int Count { get; set; }
 
-        public string Image => this.Name != null ? Resources.Icons.ResourceManager.GetString($"Filter{this.Name.Replace(" ", string.Empty)}") : null;
+        public string Image => this.Name != null ?
+            $"Filter{this.Name.Replace(" ", string.Empty)}"
+            : null;
 
         public string Name { get; set; }
 

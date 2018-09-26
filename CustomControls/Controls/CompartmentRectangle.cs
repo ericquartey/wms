@@ -1,52 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Ferretto.VW.CustomControls.Controls
 {
-    /// <summary>
-    /// Follow steps 1a or 1b and then 2 to use this custom control in a XAML file.
-    ///
-    /// Step 1a) Using this custom control in a XAML file that exists in the current project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:Ferretto.VW.CustomControls.Controls"
-    ///
-    ///
-    /// Step 1b) Using this custom control in a XAML file that exists in a different project.
-    /// Add this XmlNamespace attribute to the root element of the markup file where it is 
-    /// to be used:
-    ///
-    ///     xmlns:MyNamespace="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls.Controls"
-    ///
-    /// You will also need to add a project reference from the project where the XAML file lives
-    /// to this project and Rebuild to avoid compilation errors:
-    ///
-    ///     Right click on the target project in the Solution Explorer and
-    ///     "Add Reference"->"Projects"->[Browse to and select this project]
-    ///
-    ///
-    /// Step 2)
-    /// Go ahead and use your control in the XAML file.
-    ///
-    ///     <MyNamespace:CompartmentRectangle/>
-    ///
-    /// </summary>
     public class CompartmentRectangle : Control
     {
+        #region Fields
+
+        /// <summary>
+        /// Correction due to canvas' parent position
+        /// </summary>
+        private const int HEIGHT_CORRECTION = 50;
+
+        private double originX;
+        private double originY;
+
+        #endregion Fields
+
+        #region Constructors
+
         static CompartmentRectangle()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CompartmentRectangle), new FrameworkPropertyMetadata(typeof(CompartmentRectangle)));
@@ -55,20 +29,38 @@ namespace Ferretto.VW.CustomControls.Controls
         public CompartmentRectangle()
         {
             MouseDown += this.FocusTestControl_MouseDown;
-            GotFocus += this.ChangeSelectedColor;
         }
 
-        void FocusTestControl_MouseDown(object sender, MouseButtonEventArgs e)
+        #endregion Constructors
+
+        #region Properties
+
+        public System.Double OriginX { get => this.originX; set => this.originX = value; }
+
+        public System.Double OriginY { get => this.originY; set => this.originY = value - HEIGHT_CORRECTION; }
+
+        #endregion Properties
+
+        #region Methods
+
+        public bool Contains(Point p)
+        {
+            return ((p.X > this.originX) && (p.X - this.Width < this.originX) &&
+                       (p.Y > this.OriginY) && (p.Y - this.Height < this.OriginY));
+        }
+
+        public bool ContainsOrOnFrontier(Point p)
+        {
+            return ((p.X >= this.originX) && (p.X - this.Width <= this.originX) &&
+                       (p.Y >= this.OriginY) && (p.Y - this.Height <= this.OriginY));
+        }
+
+        private void FocusTestControl_MouseDown(object sender, MouseButtonEventArgs e)
         {
             Keyboard.Focus(this);
             this.Focus();
         }
 
-        void ChangeSelectedColor(object sender, EventArgs e)
-        {
-            this.Background = Brushes.Blue;
-            Debug.Print("flag: " + sender + "\n");       
-        }
-
+        #endregion Methods
     }
 }

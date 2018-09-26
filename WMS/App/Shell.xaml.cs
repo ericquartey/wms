@@ -30,7 +30,7 @@ namespace Ferretto.WMS.App
 
             // Load the root module of the application
             this.moduleManager.LoadModule(nameof(Layout));
-            this.moduleManager.LoadModule(nameof(Catalog));
+            this.moduleManager.LoadModule(nameof(MasterData));
         }
     }
 }
