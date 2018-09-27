@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Modules.BLL
 {
@@ -9,11 +8,20 @@ namespace Ferretto.Common.Modules.BLL
 
         public BusinessLogicAutoMapperProfile()
         {
-            this.CreateMap<DataModels.Item, Item>();
-            this.CreateMap<Item, DataModels.Item>();
+            this.CreateMap<DataModels.AbcClass, Models.AbcClass>();
+            this.CreateMap<Models.AbcClass, DataModels.AbcClass>();
 
-            this.CreateMap<DataModels.Compartment, Compartment>();
-            this.CreateMap<Compartment, DataModels.Compartment>();
+            this.CreateMap<DataModels.Compartment, Models.Compartment>();
+            this.CreateMap<Models.Compartment, DataModels.Compartment>();
+
+            this.CreateMap<DataModels.Item, Models.Item>();
+            this.CreateMap<Models.Item, DataModels.Item>();
+
+            this.CreateMap<DataModels.ItemManagementType, Models.ItemManagementType>();
+            this.CreateMap<Models.ItemManagementType, DataModels.ItemManagementType>();
+
+            this.CreateMap<DataModels.MeasureUnit, Models.MeasureUnit>();
+            this.CreateMap<Models.MeasureUnit, DataModels.MeasureUnit>();
 
             this.CreateMissingTypeMaps = true;
         }

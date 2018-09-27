@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ferretto.Common.Modules.BLL.Models
+﻿namespace Ferretto.Common.Modules.BLL.Models
 {
     public class AbcClass : BusinessObject
     {
+        #region Properties
+
+        public string Description { get; set; }
+        public string Id { get; set; }
+
+        #endregion Properties
     }
 }

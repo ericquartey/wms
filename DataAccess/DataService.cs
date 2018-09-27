@@ -25,6 +25,11 @@ namespace Ferretto.Common.DataAccess
 
         #region Methods
 
+        public IEnumerable<object> GetAllAbcClasses()
+        {
+            return this.dataContext.AbcClasses;
+        }
+
         public IEnumerable<object> GetAllCompartments()
         {
             return this.dataContext.Compartments;
@@ -33,6 +38,11 @@ namespace Ferretto.Common.DataAccess
         public int GetAllCompartmentsCount()
         {
             return this.GetAllCompartments().Count();
+        }
+
+        public IEnumerable<System.Object> GetAllItemManagementTypes()
+        {
+            throw new System.NotImplementedException();
         }
 
         public IEnumerable<object> GetAllItems()
@@ -79,6 +89,11 @@ namespace Ferretto.Common.DataAccess
         public int GetAllItemsCount()
         {
             return this.GetAllItems().Count();
+        }
+
+        public IEnumerable<object> GetAllMeasureUnits()
+        {
+            return this.dataContext.MeasureUnits;
         }
 
         public IEnumerable<object> GetCompartmentsByItemId(int itemId)

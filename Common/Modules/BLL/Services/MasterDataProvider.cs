@@ -43,7 +43,13 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public ItemDetails GetItemDetails(int itemId)
         {
-            return Mapper.Map<ItemDetails>(this.dataService.GetItemDetails(itemId));
+            var itemDetails = Mapper.Map<ItemDetails>(this.dataService.GetItemDetails(itemId));
+
+            itemDetails.AbcClassChoices = Mapper.Map<IEnumerable<AbcClass>>(this.dataService.GetAllAbcClasses());
+            itemDetails.MeasureUnitChoices = Mapper.Map<IEnumerable<MeasureUnit>>(this.dataService.GetAllMeasureUnits());
+            itemDetails.ItemManagementTypeChoices = Mapper.Map<IEnumerable<ItemManagementType>>(this.dataService.GetAllItemManagementTypes());
+
+            return itemDetails;
         }
 
         public IEnumerable<Item> GetItemsWithAClass()
