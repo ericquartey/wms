@@ -3,7 +3,7 @@
   <Class Name="Ferretto.Common.DataModels.Item">
     <Position X="1.75" Y="1.25" Width="2" />
     <Members>
-      <Property Name="ClassId" Hidden="true" />
+      <Property Name="AbcClassId" Hidden="true" />
       <Property Name="Compartments" Hidden="true" />
       <Property Name="Id" Hidden="true" />
       <Property Name="ItemAreas" Hidden="true" />
@@ -22,7 +22,7 @@
     <Members>
       <Property Name="CellId" Hidden="true" />
       <Property Name="CellPositionId" Hidden="true" />
-      <Property Name="ClassId" Hidden="true" />
+      <Property Name="AbcClassId" Hidden="true" />
       <Property Name="Compartments" Hidden="true" />
       <Property Name="Id" Hidden="true" />
       <Property Name="LoadingUnitStatusId" Hidden="true" />
@@ -64,7 +64,7 @@
       <Property Name="AisleId" Hidden="true" />
       <Property Name="CellStatusId" Hidden="true" />
       <Property Name="CellTypeId" Hidden="true" />
-      <Property Name="ClassId" Hidden="true" />
+      <Property Name="AbcClassId" Hidden="true" />
       <Property Name="DestinationMissions" Hidden="true" />
       <Property Name="FirstCellsGroups" Hidden="true" />
       <Property Name="Id" Hidden="true" />

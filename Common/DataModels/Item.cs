@@ -9,8 +9,8 @@ namespace Ferretto.Common.DataModels
         #region Properties
 
         public virtual AbcClass AbcClass { get; set; }
+        public string AbcClassId { get; set; }
         public int? AverageWeight { get; set; }
-        public string ClassId { get; set; }
         public string Code { get; set; }
         public IEnumerable<Compartment> Compartments { get; set; }
         public DateTime CreationDate { get; set; }
@@ -26,6 +26,7 @@ namespace Ferretto.Common.DataModels
         public IEnumerable<ItemListRow> ItemListRows { get; set; }
         public virtual ItemManagementType ItemManagementType { get; set; }
         public int? ItemManagementTypeId { get; set; }
+        public IEnumerable<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
         public DateTime? LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }
         public DateTime? LastStoreDate { get; set; }

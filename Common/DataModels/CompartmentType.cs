@@ -9,6 +9,7 @@ namespace Ferretto.Common.DataModels
         public string Description { get; set; }
         public int? Width { get; set; }
         public int? Height { get; set; }
+        public IEnumerable<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
 
         public IEnumerable<Compartment> Compartments { get; set; }
         public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }

@@ -17,7 +17,7 @@ BEGIN
 			@CellTypeId INT
 
 	-- Fetch current item class
-	SELECT @ItemClass = ClassId FROM Items WHERE Id=@ItemId
+	SELECT @ItemClass = AbcClassId FROM Items WHERE Id=@ItemId
 	--PRINT 'Item class: ' + @ItemClass
 
 	-- Find compatible CellTypes
@@ -71,7 +71,7 @@ BEGIN
 			)
 			GROUP BY Aisles.Id
 			ORDER BY
-				SUM(CASE WHEN LoadingUnits.Id IS NOT NULL AND Cells.ClassId=@ItemClass THEN 1 ELSE 0 END),
+				SUM(CASE WHEN LoadingUnits.Id IS NOT NULL AND Cells.AbcClassId=@ItemClass THEN 1 ELSE 0 END),
 				SUM(CASE WHEN LoadingUnits.Id IS NOT NULL THEN 1 ELSE 0 END),
 				AisleId
 	END
@@ -105,7 +105,7 @@ Look_for_position:
 			  JOIN CellConfigurations CC ON CCCT.CellConfigurationId = CC.Id
 			  JOIN CellConfigurationCellPositionLoadingUnitTypes CCCPLUT_Available on CC.Id = CCCPLUT_Available.CellConfigurationId AND CCCPLUT_Available.LoadingUnitTypeId=@LoadingUnitTypeId
 			WHERE C.AisleId=@AisleId
-				  AND C.ClassId=@ItemClass
+				  AND C.AbcClassId=@ItemClass
 				  AND C.CellTypeId=@CellTypeId
 				  AND (CCCPLUT_Busy.CellConfigurationId IS NULL OR CCCPLUT_Busy.CellConfigurationId=CC.Id) -- same configuration
 				  AND (LU.CellPositionId IS NULL OR LU.CellPositionId<>CCCPLUT_Available.CellPositionId) -- different position
@@ -207,9 +207,9 @@ BEGIN
 	PRINT 'CellId: ' + CONVERT(VARCHAR, @OutputCellId);
 	PRINT 'CellPositionId: ' + CONVERT(VARCHAR, @OutputCellPositionId);
 
-	SELECT @ItemClass = ClassId FROM Items WHERE Id=@ItemId;
+	SELECT @ItemClass = AbcClassId FROM Items WHERE Id=@ItemId;
 
-	INSERT INTO LoadingUnits (Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, ClassId)
+	INSERT INTO LoadingUnits (Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
 	VALUES ('', @OutputCellId, 1, @OutputCellPositionId, @LoadingUnitTypeId, 1600, 900, 'U', 'M', @ItemClass);
 	SET @LoadingUnitId = @@IDENTITY;
 	UPDATE LoadingUnits SET Code='UDC' + CONVERT(VARCHAR, @LoadingUnitId) WHERE Id=@LoadingUnitId;

@@ -16,7 +16,7 @@ namespace Ferretto.Common.DataModels
         public int Weight { get; set; }
         public string LoadingUnitStatusId { get; set; }
         public ReferenceType Reference { get; set; }
-        public string ClassId { get; set; }
+        public string AbcClassId { get; set; }
         public int? HandlingParametersCorrection { get; set; }
         public int InCycleCount { get; set; }
         public int OutCycleCount { get; set; }

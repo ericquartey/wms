@@ -22,5 +22,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         }
+
+        public void test() { }
     }
 }

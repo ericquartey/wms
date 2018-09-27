@@ -18,7 +18,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasIndex(l => l.Code).IsUnique();
 
             builder.Property(l => l.Code).IsRequired();
-            builder.Property(l => l.ClassId).IsRequired()
+            builder.Property(l => l.AbcClassId).IsRequired()
                 .HasColumnType("char(1)");
             builder.Property(l => l.Reference).IsRequired()
                 .HasColumnType("char(1)");
@@ -37,7 +37,7 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasOne(l => l.AbcClass)
                 .WithMany(a => a.LoadingUnits)
-                .HasForeignKey(l => l.ClassId)
+                .HasForeignKey(l => l.AbcClassId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             builder.HasOne(l => l.Cell)
                 .WithMany(c => c.LoadingUnits)
