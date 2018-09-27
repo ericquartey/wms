@@ -63,7 +63,7 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<System.Object> GetAllItemManagementTypes()
         {
-            throw new System.NotImplementedException();
+            return this.dataContext.ItemManagementTypes;
         }
 
         public IEnumerable<object> GetAllItems()
@@ -117,6 +117,7 @@ namespace Ferretto.Common.DataAccess
         {
             return this.dataContext.Compartments
                 .Where(compartment => compartment.ItemId == itemId)
+                .Select(compartment => ProjectCompartment(compartment))
                 .ToList();
         }
 
@@ -163,6 +164,24 @@ namespace Ferretto.Common.DataAccess
             var compartmentToUpdate = this.dataContext.Compartments.Single(item => item.Id == itemDetails.Id);
 
             return this.dataContext.SaveChanges();
+        }
+
+        private static object ProjectCompartment(DataModels.Compartment compartment)
+        {
+            return new
+            {
+                Code = compartment.Code,
+                CompartmentStatusDescription = compartment.CompartmentStatus?.Description,
+                CompartmentTypeDescription = compartment.CompartmentType?.Description,
+                Id = compartment.Id,
+                ItemDescription = compartment.Item?.Description,
+                LoadingUnitCode = compartment.LoadingUnit?.Code,
+                Lot = compartment.Lot,
+                MaterialStatusDescription = compartment.MaterialStatus?.Description,
+                Stock = compartment.Stock,
+                Sub1 = compartment.Sub1,
+                Sub2 = compartment.Sub2,
+            };
         }
 
         #endregion Methods
