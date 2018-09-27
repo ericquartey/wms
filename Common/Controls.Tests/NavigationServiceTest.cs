@@ -11,7 +11,13 @@ namespace Feretto.Common.Controls.Tests
     [TestClass]
     public class NavigationServiceTest : PrismTest
     {
+        #region Fields
+
         private INavigationService navigationService;
+
+        #endregion Fields
+
+        #region Methods
 
         [TestInitialize]
         public override void Initialize()
@@ -34,47 +40,6 @@ namespace Feretto.Common.Controls.Tests
 
             // Assert
             var expectedRegistrationName = $"{typeof(TestView).FullName}.1";
-
-            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
-                registration.RegisteredType == typeof(INavigableView)
-                &&
-                registration.MappedToType == typeof(TestView)
-                &&
-                registration.Name == expectedRegistrationName
-            ));
-
-            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
-                registration.RegisteredType == typeof(INavigableViewModel)
-                &&
-                registration.MappedToType == typeof(TestViewModel)
-                &&
-                registration.Name == expectedRegistrationName
-            ));
-        }
-
-        [TestMethod]
-        public void TestRegisterTwice()
-        {
-            // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
-
-            // Act
-            this.navigationService.Register<TestView, TestViewModel>();
-
-            // Assert
-            var expectedRegistrationName = $"{typeof(TestView).FullName}.2";
-
-            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableView)
-                &&
-                registration.MappedToType == typeof(TestView)
-            ));
-
-            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableView)
-                &&
-                registration.MappedToType == typeof(TestView)
-            ));
 
             Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
                 registration.RegisteredType == typeof(INavigableView)
@@ -149,20 +114,74 @@ namespace Feretto.Common.Controls.Tests
                 () => this.navigationService.RegisterAndGetViewModel(viewName, token));
         }
 
-        #region Test Types
+        [TestMethod]
+        public void TestRegisterTwice()
+        {
+            // Arrange
+            this.navigationService.Register<TestView, TestViewModel>();
+
+            // Act
+            this.navigationService.Register<TestView, TestViewModel>();
+
+            // Assert
+            var expectedRegistrationName = $"{typeof(TestView).FullName}.2";
+
+            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
+                registration.RegisteredType == typeof(INavigableView)
+                &&
+                registration.MappedToType == typeof(TestView)
+            ));
+
+            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
+                registration.RegisteredType == typeof(INavigableView)
+                &&
+                registration.MappedToType == typeof(TestView)
+            ));
+
+            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
+                registration.RegisteredType == typeof(INavigableView)
+                &&
+                registration.MappedToType == typeof(TestView)
+                &&
+                registration.Name == expectedRegistrationName
+            ));
+
+            Assert.IsNotNull(this.Container.Registrations.SingleOrDefault(registration =>
+                registration.RegisteredType == typeof(INavigableViewModel)
+                &&
+                registration.MappedToType == typeof(TestViewModel)
+                &&
+                registration.Name == expectedRegistrationName
+            ));
+        }
+
+        #endregion Methods
+
+        #region Classes
 
         private class TestView : INavigableView
         {
-            public string Token { get; set; }
+            #region Properties
+
+            public object DataContext { get; set; }
             public string MapId { get; set; }
             public string Title { get; set; }
+            public string Token { get; set; }
+
+            #endregion Properties
         }
 
         private class TestViewModel : INavigableViewModel
         {
+            #region Properties
+
             public System.String MapId { get; set; }
-            public System.String Token { get; set; }
             public System.String StateId { get; set; }
+            public System.String Token { get; set; }
+
+            #endregion Properties
+
+            #region Methods
 
             public void Appear()
             {
@@ -173,8 +192,10 @@ namespace Feretto.Common.Controls.Tests
             {
                 // Test method. Nothing to do here.
             }
+
+            #endregion Methods
         }
 
-        #endregion
+        #endregion Classes
     }
 }

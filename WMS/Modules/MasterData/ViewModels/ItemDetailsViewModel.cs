@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteHideDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Item>(false));
+            this.eventService.Invoke(new ShowDetailsEventArgs<Item>(this.Token, false));
         }
 
         private void ExecuteSaveCommand()
@@ -75,13 +75,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<ItemDetails>>(
+            this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
         }
 
-        private void OnItemSelectionChanged(ItemDetails selectedItem)
+        private void OnItemSelectionChanged(Item selectedItem)
         {
-            this.Item = selectedItem;
+            if (selectedItem == null)
+            {
+                this.Item = null;
+                return;
+            }
+            this.Item = this.businessProvider.GetItemDetails(selectedItem.Id);
         }
 
         #endregion Methods

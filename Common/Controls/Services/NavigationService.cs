@@ -131,20 +131,6 @@ namespace Ferretto.Common.Controls.Services
             return vm;
         }
 
-        private static string GetStateNotChanged(string moduleViewName, ViewModelBind viewModelBind)
-        {
-            foreach (var id in viewModelBind.Ids)
-            {
-                var viewModel = ServiceLocator.Current.GetInstance<INavigableViewModel>($"{moduleViewName}.{id}");
-                if (string.IsNullOrEmpty(viewModel.StateId))
-                {
-                    return id;
-                }
-            }
-
-            return null;
-        }
-
         private void ActivateView(string moduleViewName, string instanceModuleViewName)
         {
             var region = this.regionManager.Regions[instanceModuleViewName];
@@ -176,7 +162,7 @@ namespace Ferretto.Common.Controls.Services
                 return instanceModuleViewName;
             }
 
-            var idStateNotChanged = GetStateNotChanged(moduleViewName, viewModelBind);
+            var idStateNotChanged = this.GetStateNotChanged(moduleViewName, viewModelBind);
             if (idStateNotChanged != null)
             {
                 // View state is not changed, activate this id
@@ -217,6 +203,32 @@ namespace Ferretto.Common.Controls.Services
 
             newId = $"{typeof(TItemsView)}.{viewModelBind.GetNewId()}";
             return newId;
+        }
+
+        private string GetStateNotChanged(string moduleViewName, ViewModelBind viewModelBind)
+        {
+            foreach (var id in viewModelBind.Ids)
+            {
+                var instanceModuleViewName = $"{moduleViewName}.{id}";
+                if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
+                {
+                    return null;
+                }
+
+                var viewActive = this.regionManager.Regions[instanceModuleViewName].ActiveViews.First();
+                if (viewActive == null)
+                {
+                    return null;
+                }
+
+                var viewModel = ((INavigableView)viewActive).DataContext;
+                if (string.IsNullOrEmpty(((INavigableViewModel)viewModel).StateId))
+                {
+                    return id;
+                }
+            }
+
+            return null;
         }
 
         private ViewModelBind GetViewModelBind(string fullViewName)

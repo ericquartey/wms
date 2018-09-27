@@ -54,16 +54,16 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
-            (this.viewDetailsCommand = new DelegateCommand(ExecuteViewDetailsCommand));
+            (this.viewDetailsCommand = new DelegateCommand(this.ExecuteViewDetailsCommand));
 
         #endregion Properties
 
         #region Methods
 
-        private static void ExecuteViewDetailsCommand()
+        private void ExecuteViewDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Compartment>(true));
+                .Invoke(new ShowDetailsEventArgs<Compartment>(this.Token, true));
         }
 
         #endregion Methods

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Core.Native;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 
@@ -58,6 +61,8 @@ namespace Ferretto.Common.Controls
 
             this.DataContext = this.InstantiateViewModel();
 
+            this.SetToken();
+
             this.SetupBindings();
         }
 
@@ -85,6 +90,11 @@ namespace Ferretto.Common.Controls
             return Activator.CreateInstance(constructedClass);
         }
 
+        private void SetToken()
+        {
+            this.Loaded += this.WmsGridControl_Loaded;
+        }
+
         private void SetupBindings()
         {
             var selectedItemBinding = new Binding("SelectedItem")
@@ -94,6 +104,18 @@ namespace Ferretto.Common.Controls
             };
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
             this.SetBinding(ItemsSourceProperty, "Items");
+        }
+
+        private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)
+        {
+            var wmsViews = LayoutTreeHelper.GetVisualParents(this.Parent).OfType<WmsView>();
+            if (wmsViews != null && wmsViews.Count() > 0)
+            {
+                var wmsView = wmsViews.First();
+                var wmsViewViewModel = ((INavigableView)wmsView).DataContext;
+                var token = ((INavigableViewModel)wmsViewViewModel).Token;
+                ((INavigableViewModel)this.DataContext).Token = token;
+            }
         }
 
         #endregion Methods
