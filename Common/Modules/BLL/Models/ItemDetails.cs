@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Ferretto.Common.DataModels;
 using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
@@ -54,7 +53,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
-        public virtual ItemManagementType ItemManagementType { get; set; }
+        public IEnumerable<ItemManagementType> ItemManagementTypeChoices { get; set; }
         public int? ItemManagementTypeId { get; set; }
         public DateTime? LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }
@@ -66,7 +65,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.length, value);
         }
 
-        public IEnumerable<Common.DataModels.MeasureUnit> MeasureUnitChoices { get; set; }
+        public IEnumerable<MeasureUnit> MeasureUnitChoices { get; set; }
         public string MeasureUnitId { get; set; }
         public string Note { get; set; }
 

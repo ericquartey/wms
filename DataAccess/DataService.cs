@@ -2,6 +2,7 @@
 using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.DataAccess
 {
@@ -24,9 +25,21 @@ namespace Ferretto.Common.DataAccess
 
         #region Methods
 
+        public IEnumerable<object> GetAllAbcClasses()
+        {
+            return this.dataContext.AbcClasses;
+        }
+
         public IEnumerable<object> GetAllCompartments()
         {
-            return this.dataContext.Compartments;
+            return this.dataContext.Compartments
+                .Include(compartment => compartment.LoadingUnit)
+                .Include(compartment => compartment.MaterialStatus)
+                .Include(compartment => compartment.Item)
+                .Include(compartment => compartment.CompartmentType)
+                .Include(compartment => compartment.CompartmentStatus)
+                .Include(compartment => compartment.PackageType)
+                .ToList();
         }
 
         public int GetAllCompartmentsCount()
@@ -34,9 +47,46 @@ namespace Ferretto.Common.DataAccess
             return this.GetAllCompartments().Count();
         }
 
+        public IEnumerable<System.Object> GetAllItemManagementTypes()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public IEnumerable<object> GetAllItems()
         {
-            return this.dataContext.Items;
+            return this.dataContext.Items
+                .Include(item => item.AbcClass)
+                .Include(item => item.Compartments)
+                .Select(item =>
+                new
+                {
+                    AbcClassDescription = item.AbcClass.Description,
+                    AverageWeight = item.AverageWeight,
+                    ClassId = item.AbcClassId,
+                    CreationDate = item.CreationDate,
+                    FifoTimePick = item.FifoTimePick,
+                    FifoTimeStore = item.FifoTimeStore,
+                    Height = item.Height,
+                    Id = item.Id,
+                    InventoryDate = item.InventoryDate,
+                    InventoryTolerance = item.InventoryTolerance,
+                    ItemManagementTypeDescription = item.ItemManagementType.Description,
+                    LastModificationDate = item.LastModificationDate,
+                    LastPickDate = item.LastPickDate,
+                    LastStoreDate = item.LastStoreDate,
+                    Length = item.Length,
+                    MeasureUnitDescription = item.MeasureUnit.Description,
+                    PickTolerance = item.PickTolerance,
+                    ReorderPoint = item.ReorderPoint,
+                    ReorderQuantity = item.ReorderQuantity,
+                    StoreTolerance = item.StoreTolerance,
+                    Width = item.Width,
+                    Code = item.Code,
+                    Description = item.Description,
+                    Compartments = item.Compartments.Select(c => new { c.ReservedForPick, c.ReservedToStore, c.Stock })
+                }
+                )
+                .ToList();
         }
 
         public int GetAllItemsCount()
@@ -44,9 +94,16 @@ namespace Ferretto.Common.DataAccess
             return this.GetAllItems().Count();
         }
 
+        public IEnumerable<object> GetAllMeasureUnits()
+        {
+            return this.dataContext.MeasureUnits;
+        }
+
         public IEnumerable<object> GetCompartmentsByItemId(int itemId)
         {
-            return this.dataContext.Compartments.Where(compartment => compartment.ItemId == itemId);
+            return this.dataContext.Compartments
+                .Where(compartment => compartment.ItemId == itemId)
+                .ToList();
         }
 
         public object GetItemDetails(int itemId)
@@ -66,7 +123,9 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetItemsWithFifo()
         {
-            return this.dataContext.Items.Where(item => item.ItemManagementType.Description.Contains("FIFO"));
+            return this.dataContext.Items
+                .Where(item => item.ItemManagementType.Description.Contains("FIFO"))
+                .ToList();
         }
 
         public int GetItemsWithFifoCount()

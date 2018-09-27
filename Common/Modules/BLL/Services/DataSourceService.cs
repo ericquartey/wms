@@ -18,7 +18,7 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly BusinessProvider businessProvider = new BusinessProvider();
+        private readonly MasterDataProvider businessProvider = new MasterDataProvider();
 
         #endregion Fields
 

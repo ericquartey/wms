@@ -7,13 +7,19 @@ namespace Ferretto.Common.DataAccess
     {
         #region Methods
 
+        IEnumerable<object> GetAllAbcClasses();
+
         IEnumerable<object> GetAllCompartments();
 
         int GetAllCompartmentsCount();
 
+        IEnumerable<object> GetAllItemManagementTypes();
+
         IEnumerable<object> GetAllItems();
 
         int GetAllItemsCount();
+
+        IEnumerable<object> GetAllMeasureUnits();
 
         IEnumerable<object> GetCompartmentsByItemId(int itemId);
 

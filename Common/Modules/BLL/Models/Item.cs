@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
@@ -7,6 +9,8 @@ namespace Ferretto.Common.Modules.BLL.Models
         #region Fields
 
         private int? averageWeight;
+        private int? fifoTimePick;
+        private int? fifoTimeStore;
         private int? height;
         private int? inventoryTolerance;
         private int? length;
@@ -29,10 +33,21 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public string AbcClassId { get; set; }
         public string Code { get; set; }
+        public IEnumerable<Compartment> Compartments { get; set; }
         public DateTime CreationDate { get; set; }
         public string Description { get; set; }
-        public int? FifoTimePick { get; set; }
-        public int? FifoTimeStore { get; set; }
+
+        public int? FifoTimePick
+        {
+            get => this.fifoTimePick;
+            set => SetIfStrictlyPositive(ref this.fifoTimePick, value);
+        }
+
+        public int? FifoTimeStore
+        {
+            get => this.fifoTimeStore;
+            set => SetIfStrictlyPositive(ref this.fifoTimeStore, value);
+        }
 
         public int? Height
         {
@@ -41,7 +56,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         }
 
         public int Id { get; set; }
-        public string Image { get; set; }
+
         public DateTime? InventoryDate { get; set; }
 
         public int? InventoryTolerance
@@ -82,6 +97,11 @@ namespace Ferretto.Common.Modules.BLL.Models
             get => this.storeTolerance;
             set => SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
+
+        public int? TotalAvailable => this.Compartments?.Sum(compartment => compartment.Stock - compartment.ReservedForPick - compartment.ReservedToStore);
+        public int? TotalReservedForPick => this.Compartments?.Sum(compartment => compartment.ReservedForPick);
+        public int? TotalReservedToStore => this.Compartments?.Sum(compartment => compartment.ReservedToStore);
+        public int? TotalStock => this.Compartments?.Sum(compartment => compartment.Stock);
 
         public int? Width
         {

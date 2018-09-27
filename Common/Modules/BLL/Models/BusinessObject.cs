@@ -15,7 +15,33 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Methods
 
-        public static void SetIfStrictlyPositive(ref int? member, int? value)
+        protected static void SetIfPositive(ref int? member, int? value)
+        {
+            if (value.HasValue)
+            {
+                if (value.Value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
+                }
+
+                if (!member.HasValue || member.Value != value.Value)
+                {
+                    member = value;
+                }
+            }
+        }
+
+        protected static void SetIfPositive(ref int member, int value)
+        {
+            if (value < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
+            }
+
+            member = value;
+        }
+
+        protected static void SetIfStrictlyPositive(ref int? member, int? value)
         {
             if (value.HasValue)
             {
