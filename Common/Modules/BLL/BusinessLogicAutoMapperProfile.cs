@@ -17,6 +17,9 @@ namespace Ferretto.Common.Modules.BLL
             this.CreateMap<DataModels.Item, Models.Item>();
             this.CreateMap<Models.Item, DataModels.Item>();
 
+            this.CreateMap<DataModels.Item, Models.ItemDetails>();
+            this.CreateMap<Models.ItemDetails, DataModels.Item>();
+
             this.CreateMap<DataModels.ItemManagementType, Models.ItemManagementType>();
             this.CreateMap<Models.ItemManagementType, DataModels.ItemManagementType>();
 
