@@ -52,7 +52,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteHideDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Compartment>(false));
+            this.eventService.Invoke(new ShowDetailsEventArgs<Compartment>(this.Token, false));
         }
 
         private void ExecuteSaveCommand()
@@ -76,7 +76,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnItemSelectionChanged(CompartmentDetails selectedCompartment)
         {
-            this.Compartment = selectedCompartment;
+            if (selectedCompartment == null)
+            {
+                this.Compartment = null;
+                return;
+            }
+            // this.Compartment = this.businessProvider.GetItemDetails(selectedCompartment.Id);
         }
 
         #endregion Methods

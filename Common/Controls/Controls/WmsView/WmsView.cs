@@ -13,26 +13,54 @@ namespace Ferretto.Common.Controls
         private readonly INavigationService
             navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
-        #endregion
+        #endregion Fields
 
-        #region Properties
-
-        public string Token { get; set; }
-        public string MapId { get; set; }
-        public string Title { get; set; }
-
-        #endregion
-
-        #region Ctor
+        #region Constructors
 
         protected WmsView()
         {
             this.Loaded += this.WMSView_Loaded;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Event
+        #region Properties
+
+        public string MapId { get; set; }
+        public string Title { get; set; }
+        public string Token { get; set; }
+
+        #endregion Properties
+
+        #region Methods
+
+        private string GetAttachedViewModel()
+        {
+            return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
+        }
+
+        private string GetMainViewToken()
+        {
+            string token = null;
+            var parentMainView = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsView);
+            if (parentMainView != null)
+            {
+                token = ((WmsView)parentMainView).Token;
+            }
+
+            return token;
+        }
+
+        private bool IsWrongDataContext()
+        {
+            if (this.DataContext == null)
+            {
+                return true;
+            }
+
+            var dataContextName = this.DataContext.GetType().ToString();
+            return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
+        }
 
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
@@ -52,41 +80,9 @@ namespace Ferretto.Common.Controls
                     this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());
             }
 
-            ( (INavigableViewModel) this.DataContext )?.Appear();
+            ((INavigableViewModel)this.DataContext)?.Appear();
         }
 
-        #endregion
-
-        #region Methods
-
-        private string GetMainViewToken()
-        {
-            string token = null;
-            var parentMainView = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsView);
-            if (parentMainView != null)
-            {
-                token = ( (WmsView) parentMainView ).Token;
-            }
-
-            return token;
-        }
-
-        private bool IsWrongDataContext()
-        {
-            if (this.DataContext == null)
-            {
-                return true;
-            }
-
-            var dataContextName = this.DataContext.GetType().ToString();
-            return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
-        }
-
-        private string GetAttachedViewModel()
-        {
-            return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
-        }
-
-        #endregion
+        #endregion Methods
     }
 }

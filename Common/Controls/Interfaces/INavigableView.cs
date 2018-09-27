@@ -2,8 +2,13 @@
 {
     public interface INavigableView
     {
-        string Token { get; set; }
+        #region Properties
+
+        object DataContext { get; }
         string MapId { get; set; }
         string Title { get; set; }
+        string Token { get; set; }
+
+        #endregion Properties
     }
 }

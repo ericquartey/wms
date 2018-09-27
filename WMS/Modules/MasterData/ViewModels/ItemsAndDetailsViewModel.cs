@@ -10,7 +10,9 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private bool isDetailsViewVisible;
+        private string selectedId;
 
         #endregion Fields
 
@@ -18,11 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ItemsAndDetailsViewModel()
         {
-            ServiceLocator.Current.GetInstance<IEventService>()
-                .Subscribe((ShowDetailsEventArgs<Item> eventArgs) =>
-                {
-                    this.IsDetailsViewVisible = eventArgs.IsDetailsViewVisible;
-                });
+            this.Initialize();
         }
 
         #endregion Constructors
@@ -42,6 +40,35 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override void OnAppear()
         {
             this.IsDetailsViewVisible = false;
+        }
+
+        private void Initialize()
+        {
+            this.eventService.Subscribe((ShowDetailsEventArgs<Item> eventArgs) =>
+              {
+                  if (this.Token != eventArgs.Token)
+                  {
+                      return;
+                  }
+                  this.IsDetailsViewVisible = eventArgs.IsDetailsViewVisible;
+                  this.StateId = this.IsDetailsViewVisible ? this.selectedId : string.Empty;
+              });
+
+            this.eventService.Subscribe((ItemSelectionChangedEvent<Item> eventArgs) =>
+              {
+                  if (this.Token != eventArgs.Token)
+                  {
+                      return;
+                  }
+                  if (eventArgs.SelectedItem == null)
+                  {
+                      this.selectedId = null;
+                  }
+                  else
+                  {
+                      this.selectedId = eventArgs.SelectedItem.Id.ToString();
+                  }
+              });
         }
 
         #endregion Methods

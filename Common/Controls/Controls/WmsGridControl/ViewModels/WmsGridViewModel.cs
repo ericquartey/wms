@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity> : BindableBase, IWmsGridViewModel where TEntity : IBusinessObject
+    public class WmsGridViewModel<TEntity> : BaseNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject
     {
         #region Fields
 
@@ -93,7 +93,7 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity>(this.selectedItem));
+            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity>(this.Token, this.selectedItem));
         }
 
         #endregion Methods
