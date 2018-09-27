@@ -71,35 +71,7 @@ namespace Ferretto.Common.DataAccess
             return this.dataContext.Items
                 .Include(item => item.AbcClass)
                 .Include(item => item.Compartments)
-                .Select(item =>
-                new
-                {
-                    AbcClassDescription = item.AbcClass.Description,
-                    AverageWeight = item.AverageWeight,
-                    AbcClassId = item.AbcClassId,
-                    CreationDate = item.CreationDate,
-                    FifoTimePick = item.FifoTimePick,
-                    FifoTimeStore = item.FifoTimeStore,
-                    Height = item.Height,
-                    Id = item.Id,
-                    InventoryDate = item.InventoryDate,
-                    InventoryTolerance = item.InventoryTolerance,
-                    ItemManagementTypeDescription = item.ItemManagementType.Description,
-                    LastModificationDate = item.LastModificationDate,
-                    LastPickDate = item.LastPickDate,
-                    LastStoreDate = item.LastStoreDate,
-                    Length = item.Length,
-                    MeasureUnitDescription = item.MeasureUnit.Description,
-                    PickTolerance = item.PickTolerance,
-                    ReorderPoint = item.ReorderPoint,
-                    ReorderQuantity = item.ReorderQuantity,
-                    StoreTolerance = item.StoreTolerance,
-                    Width = item.Width,
-                    Code = item.Code,
-                    Description = item.Description,
-                    Compartments = item.Compartments.Select(c => new { c.ReservedForPick, c.ReservedToStore, c.Stock })
-                }
-                )
+                .Select(item => this.ProjectItem(item))
                 .ToList();
         }
 
@@ -127,7 +99,9 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetItemsWithAClass()
         {
-            return this.dataContext.Items.Where(item => item.AbcClassId == "A");
+            return this.dataContext.Items
+                .Where(item => item.AbcClassId == "A")
+                .Select(item => this.ProjectItem(item));
         }
 
         public int GetItemsWithAClassCount()
@@ -139,6 +113,7 @@ namespace Ferretto.Common.DataAccess
         {
             return this.dataContext.Items
                 .Where(item => item.ItemManagementType.Description.Contains("FIFO"))
+                .Select(item => this.ProjectItem(item))
                 .ToList();
         }
 
@@ -155,6 +130,7 @@ namespace Ferretto.Common.DataAccess
         public int SaveCompartment(IEntity<int> compartmentDetails)
         {
             var compartmentToUpdate = this.dataContext.Compartments.Single(compartment => compartment.Id == compartmentDetails.Id);
+
             return this.dataContext.SaveChanges();
         }
 
@@ -163,6 +139,37 @@ namespace Ferretto.Common.DataAccess
             var compartmentToUpdate = this.dataContext.Compartments.Single(item => item.Id == itemDetails.Id);
 
             return this.dataContext.SaveChanges();
+        }
+
+        private object ProjectItem(DataModels.Item item)
+        {
+            return new
+            {
+                AbcClassDescription = item.AbcClass?.Description,
+                AverageWeight = item.AverageWeight,
+                AbcClassId = item.AbcClassId,
+                CreationDate = item.CreationDate,
+                FifoTimePick = item.FifoTimePick,
+                FifoTimeStore = item.FifoTimeStore,
+                Height = item.Height,
+                Id = item.Id,
+                InventoryDate = item.InventoryDate,
+                InventoryTolerance = item.InventoryTolerance,
+                ItemManagementTypeDescription = item.ItemManagementType?.Description,
+                LastModificationDate = item.LastModificationDate,
+                LastPickDate = item.LastPickDate,
+                LastStoreDate = item.LastStoreDate,
+                Length = item.Length,
+                MeasureUnitDescription = item.MeasureUnit?.Description,
+                PickTolerance = item.PickTolerance,
+                ReorderPoint = item.ReorderPoint,
+                ReorderQuantity = item.ReorderQuantity,
+                StoreTolerance = item.StoreTolerance,
+                Width = item.Width,
+                Code = item.Code,
+                Description = item.Description,
+                Compartments = item.Compartments.Select(c => new { c.ReservedForPick, c.ReservedToStore, c.Stock })
+            };
         }
 
         #endregion Methods

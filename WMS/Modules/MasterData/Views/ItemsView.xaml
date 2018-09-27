@@ -84,22 +84,22 @@
                     <dxg:GridColumn Width="100*"
                                     FieldName="Code"
                                     Header="{x:Static res:BusinessObjects.ItemCode}" />
-                    <dxg:GridColumn Width="300*"
+                    <dxg:GridColumn Width="400*"
                                     FieldName="Description"
                                     Header="{x:Static res:General.Description}" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="AbcClassDescription"
                                     Header="{x:Static res:BusinessObjects.ItemClass}" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="50*"
                                     FieldName="TotalStock"
                                     Header="{x:Static res:BusinessObjects.ItemStock}" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="100*"
                                     FieldName="TotalReservedForPick"
                                     Header="{x:Static res:BusinessObjects.ItemReservedForPick}" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="100*"
                                     FieldName="TotalReservedToStore"
                                     Header="{x:Static res:BusinessObjects.ItemReservedToStore}" />
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="50*"
                                     FieldName="TotalAvailable"
                                     Header="{x:Static res:BusinessObjects.ItemAvailable}" />
                 </wms:WmsGridControl.Columns>

@@ -82,7 +82,7 @@
                     <dxg:GridColumn Width="100*"
                                     FieldName="CompartmentTypeDescription"
                                     Header="{x:Static res:BusinessObjects.CompartmentType}" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="200*"
                                     FieldName="ItemDescription"
                                     Header="{x:Static res:BusinessObjects.ItemDescription_extended}" />
                     <dxg:GridColumn Width="100*"
@@ -100,7 +100,7 @@
                     <dxg:GridColumn Width="100*"
                                     FieldName="Lot"
                                     Header="{x:Static res:BusinessObjects.CompartmentLot}" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="50*"
                                     FieldName="Stock"
                                     Header="{x:Static res:BusinessObjects.CompartmentStock}" />
                 </wms:WmsGridControl.Columns>
