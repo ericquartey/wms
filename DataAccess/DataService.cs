@@ -62,7 +62,7 @@ namespace Ferretto.Common.DataAccess
                 {
                     AbcClassDescription = item.AbcClass.Description,
                     AverageWeight = item.AverageWeight,
-                    ClassId = item.ClassId,
+                    ClassId = item.AbcClassId,
                     CreationDate = item.CreationDate,
                     FifoTimePick = item.FifoTimePick,
                     FifoTimeStore = item.FifoTimeStore,
