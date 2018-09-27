@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils;
@@ -32,7 +32,14 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetAllCompartments()
         {
-            return this.dataContext.Compartments;
+            return this.dataContext.Compartments
+                .Include(compartment => compartment.LoadingUnit)
+                .Include(compartment => compartment.MaterialStatus)
+                .Include(compartment => compartment.Item)
+                .Include(compartment => compartment.CompartmentType)
+                .Include(compartment => compartment.CompartmentStatus)
+                .Include(compartment => compartment.PackageType)
+                .ToList();
         }
 
         public int GetAllCompartmentsCount()
@@ -61,7 +68,6 @@ namespace Ferretto.Common.DataAccess
                     FifoTimeStore = item.FifoTimeStore,
                     Height = item.Height,
                     Id = item.Id,
-                    Image = item.Image,
                     InventoryDate = item.InventoryDate,
                     InventoryTolerance = item.InventoryTolerance,
                     ItemManagementTypeDescription = item.ItemManagementType.Description,
@@ -77,10 +83,7 @@ namespace Ferretto.Common.DataAccess
                     Width = item.Width,
                     Code = item.Code,
                     Description = item.Description,
-                    TotalStock = item.Compartments.Sum(cmp => cmp.Stock),
-                    TotalReservedForPick = item.Compartments.Sum(cmp => cmp.ReservedForPick),
-                    TotalReservedToStore = item.Compartments.Sum(cmp => cmp.ReservedToStore),
-                    TotalAvailable = item.Compartments.Sum(cmp => cmp.Stock - cmp.ReservedForPick - cmp.ReservedToStore)
+                    Compartments = item.Compartments.Select(c => new { c.ReservedForPick, c.ReservedToStore, c.Stock })
                 }
                 )
                 .ToList();
