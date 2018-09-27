@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Models\AbcClass.cs" />
     <Compile Include="Models\BusinessObject.cs" />
+    <Compile Include="Models\CompartmentStockDetails.cs" />
     <Compile Include="Models\Compartment.cs" />
     <Compile Include="Models\CompartmentDetails.cs" />
     <Compile Include="Models\DataSource.cs" />

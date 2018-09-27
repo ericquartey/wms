@@ -25,15 +25,16 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public string AbcClassDescription { get; set; }
 
+        public string AbcClassId { get; set; }
+
         public int? AverageWeight
         {
             get => this.averageWeight;
             set => SetIfStrictlyPositive(ref this.averageWeight, value);
         }
 
-        public string AbcClassId { get; set; }
         public string Code { get; set; }
-        public IEnumerable<Compartment> Compartments { get; set; }
+        public IEnumerable<CompartmentStockDetails> Compartments { get; set; }
         public DateTime CreationDate { get; set; }
         public string Description { get; set; }
 
