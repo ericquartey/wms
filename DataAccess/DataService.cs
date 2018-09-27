@@ -39,7 +39,21 @@ namespace Ferretto.Common.DataAccess
                 .Include(compartment => compartment.CompartmentType)
                 .Include(compartment => compartment.CompartmentStatus)
                 .Include(compartment => compartment.PackageType)
-                .ToList();
+                .Select(compartment => new
+                {
+                    Code = compartment.Code,
+                    CompartmentStatusDescription = compartment.CompartmentStatus.Description,
+                    CompartmentTypeDescription = compartment.CompartmentType.Description,
+                    Id = compartment.Id,
+                    ItemDescription = compartment.Item.Description,
+                    LoadingUnitCode = compartment.LoadingUnit.Code,
+                    Lot = compartment.Lot,
+                    MaterialStatusDescription = compartment.MaterialStatus.Description,
+                    Stock = compartment.Stock,
+                    Sub1 = compartment.Sub1,
+                    Sub2 = compartment.Sub2
+                }
+                );
         }
 
         public int GetAllCompartmentsCount()
@@ -62,7 +76,7 @@ namespace Ferretto.Common.DataAccess
                 {
                     AbcClassDescription = item.AbcClass.Description,
                     AverageWeight = item.AverageWeight,
-                    ClassId = item.AbcClassId,
+                    AbcClassId = item.AbcClassId,
                     CreationDate = item.CreationDate,
                     FifoTimePick = item.FifoTimePick,
                     FifoTimeStore = item.FifoTimeStore,
