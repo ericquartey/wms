@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils;
@@ -83,6 +83,12 @@ namespace Ferretto.Common.DataAccess
         public IEnumerable<object> GetAllMeasureUnits()
         {
             return this.dataContext.MeasureUnits;
+        }
+
+        public object GetCompartmentDetails(int compartmentId)
+        {
+            return this.dataContext.Compartments
+                .Single(compartment => compartment.Id == compartmentId);
         }
 
         public IEnumerable<object> GetCompartmentsByItemId(int itemId)
