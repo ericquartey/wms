@@ -8,6 +8,7 @@
         string MapId { get; set; }
         string Title { get; set; }
         string Token { get; set; }
+        WmsViewType ViewType { get; }
 
         #endregion Properties
     }
