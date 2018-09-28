@@ -8105,6 +8105,9 @@
   <ItemGroup>
     <Resource Include="Icons\Ferretto\Tiles\Sectors_black.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\UDC_Compartment.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\cleanup.targets" />
 </Project>
