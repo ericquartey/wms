@@ -253,28 +253,23 @@
                                   MaxHeight="500"
                                   BorderBrush="{DynamicResource CommonSecondaryLight}"
                                   Path="{Binding Path=Item.Image}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:General.CreationDate}"
                                   Text="{Binding Path=Item.CreationDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:General.LastModificationDate}"
                                   Text="{Binding Path=Item.LastModificationDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastInventoryDate}"
                                   Text="{Binding Path=Item.InventoryDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastPickDate}"
                                   Text="{Binding Path=Item.LastPickDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastStoreDate}"
                                   Text="{Binding Path=Item.LastStoreDate}" />
