@@ -97,6 +97,7 @@
     <Compile Include="Models\DataSource.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemDetails.cs" />
+    <Compile Include="Models\ItemInCompartment.cs" />
     <Compile Include="Models\ItemManagementType.cs" />
     <Compile Include="Models\MeasureUnit.cs" />
     <Compile Include="Services\MasterDataProvider.cs" />
