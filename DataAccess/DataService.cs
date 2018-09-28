@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils;
@@ -9,6 +10,12 @@ namespace Ferretto.Common.DataAccess
     public class DataService : IDataService
     {
         #region Fields
+
+        static readonly private Func<DataModels.Item, bool> AClassFilter =
+            item => item.AbcClassId == "A";
+
+        static readonly private Func<DataModels.Item, bool> FifoFilter =
+            item => item.ItemManagementType.Description.Contains("FIFO");
 
         private readonly DatabaseContext dataContext;
 
@@ -68,11 +75,7 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetAllItems()
         {
-            return this.dataContext.Items
-                .Include(item => item.AbcClass)
-                .Include(item => item.Compartments)
-                .Select(item => ProjectItem(item))
-                .ToList();
+            return this.GetAllItemsWithAggregations().ToList();
         }
 
         public int GetAllItemsCount()
@@ -114,27 +117,22 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetItemsWithAClass()
         {
-            return this.dataContext.Items
-                .Where(item => item.AbcClassId == "A")
-                .Select(item => ProjectItem(item));
+            return this.GetAllItemsWithAggregations(AClassFilter).ToList();
         }
 
         public int GetItemsWithAClassCount()
         {
-            return this.GetItemsWithAClass().Count();
+            return this.dataContext.Items.Where(AClassFilter).Count();
         }
 
         public IEnumerable<object> GetItemsWithFifo()
         {
-            return this.dataContext.Items
-                .Where(item => item.ItemManagementType.Description.Contains("FIFO"))
-                .Select(item => ProjectItem(item))
-                .ToList();
+            return this.GetAllItemsWithAggregations(FifoFilter).ToList();
         }
 
         public int GetItemsWithFifoCount()
         {
-            return this.GetItemsWithFifo().Count();
+            return this.dataContext.Items.Include(i => i.ItemManagementType).Where(FifoFilter).Count();
         }
 
         public void Initialize()
@@ -174,35 +172,65 @@ namespace Ferretto.Common.DataAccess
             };
         }
 
-        private static object ProjectItem(DataModels.Item item)
+        private IQueryable<object> GetAllItemsWithAggregations(Func<DataModels.Item, bool> whereCondition = null)
         {
-            return new
-            {
-                AbcClassDescription = item.AbcClass?.Description,
-                AverageWeight = item.AverageWeight,
-                AbcClassId = item.AbcClassId,
-                CreationDate = item.CreationDate,
-                FifoTimePick = item.FifoTimePick,
-                FifoTimeStore = item.FifoTimeStore,
-                Height = item.Height,
-                Id = item.Id,
-                InventoryDate = item.InventoryDate,
-                InventoryTolerance = item.InventoryTolerance,
-                ItemManagementTypeDescription = item.ItemManagementType?.Description,
-                LastModificationDate = item.LastModificationDate,
-                LastPickDate = item.LastPickDate,
-                LastStoreDate = item.LastStoreDate,
-                Length = item.Length,
-                MeasureUnitDescription = item.MeasureUnit?.Description,
-                PickTolerance = item.PickTolerance,
-                ReorderPoint = item.ReorderPoint,
-                ReorderQuantity = item.ReorderQuantity,
-                StoreTolerance = item.StoreTolerance,
-                Width = item.Width,
-                Code = item.Code,
-                Description = item.Description,
-                Compartments = item.Compartments.Select(c => new { c.ReservedForPick, c.ReservedToStore, c.Stock })
-            };
+            return this.dataContext.Items
+                .Where(i => whereCondition == null || whereCondition(i))
+                .Include(i => i.AbcClass)
+                .Include(i => i.ItemManagementType)
+                .GroupJoin(
+                    this.dataContext.Compartments
+                        .Where(c => c.ItemId != null)
+                        .GroupBy(c => c.ItemId)
+                        .Select(j => new
+                        {
+                            ItemId = j.Key,
+                            TotalStock = j.Sum(x => x.Stock),
+                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                        }),
+                    i => i.Id,
+                    c => c.ItemId,
+                    (i, c) => new
+                    {
+                        Item = i,
+                        CompartmentsAggregation = c
+                    })
+                .SelectMany(
+                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                    (a, b) => new ItemDTO
+                    {
+                        AbcClassDescription = a.Item.AbcClass.Description,
+                        AverageWeight = a.Item.AverageWeight,
+                        AbcClassId = a.Item.AbcClassId,
+                        CreationDate = a.Item.CreationDate,
+                        FifoTimePick = a.Item.FifoTimePick,
+                        FifoTimeStore = a.Item.FifoTimeStore,
+                        Height = a.Item.Height,
+                        Id = a.Item.Id,
+                        InventoryDate = a.Item.InventoryDate,
+                        InventoryTolerance = a.Item.InventoryTolerance,
+                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                        LastModificationDate = a.Item.LastModificationDate,
+                        LastPickDate = a.Item.LastPickDate,
+                        LastStoreDate = a.Item.LastStoreDate,
+                        Length = a.Item.Length,
+                        MeasureUnitDescription = a.Item.MeasureUnit.Description,
+                        PickTolerance = a.Item.PickTolerance,
+                        ReorderPoint = a.Item.ReorderPoint,
+                        ReorderQuantity = a.Item.ReorderQuantity,
+                        StoreTolerance = a.Item.StoreTolerance,
+                        Width = a.Item.Width,
+                        Code = a.Item.Code,
+                        Description = a.Item.Description,
+                        TotalReservedForPick = b != null ? b.TotalReservedForPick : 0,
+                        TotalReservedToStore = b != null ? b.TotalReservedToStore : 0,
+                        TotalStock = b != null ? b.TotalStock : 0,
+                        TotalAvailable = b != null
+                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
+                            : 0,
+                    }
+                );
         }
 
         #endregion Methods

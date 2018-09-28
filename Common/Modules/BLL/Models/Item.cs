@@ -34,7 +34,6 @@ namespace Ferretto.Common.Modules.BLL.Models
         }
 
         public string Code { get; set; }
-        public IEnumerable<CompartmentStockDetails> Compartments { get; set; }
         public DateTime CreationDate { get; set; }
         public string Description { get; set; }
 
@@ -99,10 +98,10 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
 
-        public int? TotalAvailable => this.Compartments?.Sum(compartment => compartment.Stock - compartment.ReservedForPick - compartment.ReservedToStore);
-        public int? TotalReservedForPick => this.Compartments?.Sum(compartment => compartment.ReservedForPick);
-        public int? TotalReservedToStore => this.Compartments?.Sum(compartment => compartment.ReservedToStore);
-        public int? TotalStock => this.Compartments?.Sum(compartment => compartment.Stock);
+        public int TotalAvailable { get; set; }
+        public int TotalReservedForPick { get; set; }
+        public int TotalReservedToStore { get; set; }
+        public int TotalStock { get; set; }
 
         public int? Width
         {

@@ -8043,11 +8043,9 @@
     </Page>
     <Page Include="Themes\Light\DXWindow.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Light\DockLayoutManager.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Light\ActionBar.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -8059,6 +8057,9 @@
     </Page>
     <Page Include="Themes\Light\SlideInView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Light\WmsDialogView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Light\WmsGridControl.xaml">

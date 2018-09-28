@@ -14,6 +14,9 @@ namespace Ferretto.Common.Modules.BLL
             this.CreateMap<DataModels.Compartment, Models.Compartment>();
             this.CreateMap<Models.Compartment, DataModels.Compartment>();
 
+            this.CreateMap<DataAccess.ItemDTO, Models.Item>();
+            this.CreateMap<Models.Item, DataAccess.ItemDTO>();
+
             this.CreateMap<DataModels.Item, Models.Item>();
             this.CreateMap<Models.Item, DataModels.Item>();
 
