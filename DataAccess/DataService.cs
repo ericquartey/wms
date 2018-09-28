@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Utils;
@@ -71,7 +71,7 @@ namespace Ferretto.Common.DataAccess
             return this.dataContext.Items
                 .Include(item => item.AbcClass)
                 .Include(item => item.Compartments)
-                .Select(item => this.ProjectItem(item))
+                .Select(item => ProjectItem(item))
                 .ToList();
         }
 
@@ -101,14 +101,15 @@ namespace Ferretto.Common.DataAccess
 
         public object GetItemDetails(int itemId)
         {
-            return this.dataContext.Items.Single(item => item.Id == itemId);
+            return this.dataContext.Items
+                .Single(item => item.Id == itemId);
         }
 
         public IEnumerable<object> GetItemsWithAClass()
         {
             return this.dataContext.Items
                 .Where(item => item.AbcClassId == "A")
-                .Select(item => this.ProjectItem(item));
+                .Select(item => ProjectItem(item));
         }
 
         public int GetItemsWithAClassCount()
@@ -120,7 +121,7 @@ namespace Ferretto.Common.DataAccess
         {
             return this.dataContext.Items
                 .Where(item => item.ItemManagementType.Description.Contains("FIFO"))
-                .Select(item => this.ProjectItem(item))
+                .Select(item => ProjectItem(item))
                 .ToList();
         }
 
@@ -148,7 +149,25 @@ namespace Ferretto.Common.DataAccess
             return this.dataContext.SaveChanges();
         }
 
-        private object ProjectItem(DataModels.Item item)
+        private static object ProjectCompartment(DataModels.Compartment compartment)
+        {
+            return new
+            {
+                Code = compartment.Code,
+                CompartmentStatusDescription = compartment.CompartmentStatus?.Description,
+                CompartmentTypeDescription = compartment.CompartmentType?.Description,
+                Id = compartment.Id,
+                ItemDescription = compartment.Item?.Description,
+                LoadingUnitCode = compartment.LoadingUnit?.Code,
+                Lot = compartment.Lot,
+                MaterialStatusDescription = compartment.MaterialStatus?.Description,
+                Stock = compartment.Stock,
+                Sub1 = compartment.Sub1,
+                Sub2 = compartment.Sub2,
+            };
+        }
+
+        private static object ProjectItem(DataModels.Item item)
         {
             return new
             {
@@ -176,24 +195,6 @@ namespace Ferretto.Common.DataAccess
                 Code = item.Code,
                 Description = item.Description,
                 Compartments = item.Compartments.Select(c => new { c.ReservedForPick, c.ReservedToStore, c.Stock })
-            };
-        }
-
-        private static object ProjectCompartment(DataModels.Compartment compartment)
-        {
-            return new
-            {
-                Code = compartment.Code,
-                CompartmentStatusDescription = compartment.CompartmentStatus?.Description,
-                CompartmentTypeDescription = compartment.CompartmentType?.Description,
-                Id = compartment.Id,
-                ItemDescription = compartment.Item?.Description,
-                LoadingUnitCode = compartment.LoadingUnit?.Code,
-                Lot = compartment.Lot,
-                MaterialStatusDescription = compartment.MaterialStatus?.Description,
-                Stock = compartment.Stock,
-                Sub1 = compartment.Sub1,
-                Sub2 = compartment.Sub2,
             };
         }
 
