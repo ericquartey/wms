@@ -136,6 +136,7 @@
     <Compile Include="DataAccessModule.cs" />
     <Compile Include="DataService.cs" />
     <Compile Include="IDataService.cs" />
+    <Compile Include="ItemDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
