@@ -88,7 +88,14 @@ namespace Ferretto.Common.DataAccess
         public object GetCompartmentDetails(int compartmentId)
         {
             return this.dataContext.Compartments
-                .Single(compartment => compartment.Id == compartmentId);
+                .Where(compartment => compartment.Id == compartmentId)
+                .Include(compartment => compartment.LoadingUnit)
+                .Include(compartment => compartment.MaterialStatus)
+                .Include(compartment => compartment.Item)
+                .Include(compartment => compartment.CompartmentType)
+                .Include(compartment => compartment.CompartmentStatus)
+                .Include(compartment => compartment.PackageType)
+                .Single();
         }
 
         public IEnumerable<object> GetCompartmentsByItemId(int itemId)
