@@ -29,7 +29,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? FifoTime
         {
             get => this.fifoTime;
-            set => SetIfPositive(ref this.fifoTime, value);
+            set => SetIfStrictlyPositive(ref this.fifoTime, value);
         }
 
         public DateTime? FirstStoreDate { get; set; }
@@ -37,15 +37,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? Height
         {
             get => this.height;
-            set => SetIfPositive(ref this.height, value);
+            set => SetIfStrictlyPositive(ref this.height, value);
         }
 
         public int Id { get; set; }
         public DateTime? InventoryDate { get; set; }
         public string ItemDescription { get; set; }
         public string ItemPairing { get; set; }
-        public int? LaserPointerCoordinate1 { get; set; }
-        public int? LaserPointerCoordinate2 { get; set; }
         public DateTime? LastHandlingDate { get; set; }
         public DateTime? LastPickDate { get; set; }
         public DateTime? LastStoreDate { get; set; }
@@ -56,7 +54,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? MaxCapacity
         {
             get => this.maxCapacity;
-            set => SetIfPositive(ref this.maxCapacity, value);
+            set => SetIfStrictlyPositive(ref this.maxCapacity, value);
         }
 
         public string PackageTypeDescription { get; set; }
@@ -92,13 +90,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? XPosition
         {
             get => this.xPosition;
-            set => SetIfPositive(ref this.xPosition, value);
+            set => SetIfStrictlyPositive(ref this.xPosition, value);
         }
 
         public int? YPosition
         {
             get => this.yPosition;
-            set => SetIfPositive(ref this.yPosition, value);
+            set => SetIfStrictlyPositive(ref this.yPosition, value);
         }
 
         #endregion Properties
