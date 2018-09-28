@@ -189,7 +189,6 @@
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
-    <Compile Include="ViewModels\TestDialogViewModel.cs" />
     <Compile Include="Views\CompartmentDetailsView.xaml.cs">
       <DependentUpon>CompartmentDetailsView.xaml</DependentUpon>
     </Compile>
