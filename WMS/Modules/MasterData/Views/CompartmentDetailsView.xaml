@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.CompartmentDetailsView"
+<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.CompartmentDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,20 +19,10 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
                 <Grid Name="ToolbarGrid"
-                      Grid.ColumnSpan="2">
+                      Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -56,8 +46,56 @@
                                            GlyphSize="Custom" />
                     </wms:ActionBar>
                 </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"
+                                          MinWidth="300" />
+                        <ColumnDefinition Width="*"
+                                          MinWidth="400" />
+                        <ColumnDefinition Width="*"
+                                          MinWidth="400" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
+                    <GroupBox Grid.Row="0"
+                              Grid.RowSpan="2"
+                              Grid.Column="0"
+                              Margin="0"
+                              Header="{x:Static res:MasterData.CompartmentInformation}">
+                        <Grid>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Grid.Row="0"
+                              Grid.Column="1"
+                              Margin="0"
+                              Header="{x:Static res:MasterData.PhysicalInformation}" />
+                    <GroupBox Grid.Row="0"
+                              Grid.RowSpan="2"
+                              Grid.Column="2"
+                              Margin="0"
+                              Header="{x:Static res:MasterData.CurrentItemInformation}" />
+                    <GroupBox Grid.Row="1"
+                              Grid.Column="1"
+                              Margin="0"
+                              Header="{x:Static res:MasterData.ContentInformation}" />
+
+                    <GroupBox Grid.Row="2"
+                              Grid.Column="0"
+                              Margin="0"
+                              Header="{x:Static res:MasterData.AllowedItems}" />
+                    <GroupBox Grid.Row="2"
+                              Grid.Column="1"
+                              Grid.ColumnSpan="2"
+                              Margin="0"
+                              Header="{x:Static res:MasterData.CompartmentPosition}" />
+                </Grid>
             </Grid>
+
         </ScrollViewer>
     </Grid>
 </wms:WmsView>
