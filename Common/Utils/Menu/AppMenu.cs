@@ -44,10 +44,10 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.MasterData_Items, bgColor, Icons.WarehouseItems, nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS),
-                        new MainMenuItem(Navigation.MasterData_Cells, bgColor, Icons.Cells, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.MasterData_LoadingUnits, bgColor, Icons.LoadingUnit, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.MasterData_Compartments, bgColor,  Icons.Compartments, nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS)
+                        new MainMenuItem(Navigation.Items, bgColor, nameof(Navigation.Items), nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS),
+                        new MainMenuItem(Navigation.Cells, bgColor, nameof(Navigation.Cells), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.LoadingUnits, bgColor, nameof(Navigation.LoadingUnits), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Compartments, bgColor,  nameof(Navigation.Compartments), nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS)
                     }
                 }
             );
@@ -57,7 +57,7 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.Lists_Lists, bgColor, Icons.AllLists, string.Empty, string.Empty)
+                        new MainMenuItem(Navigation.AllLists, bgColor, nameof(Navigation.AllLists), string.Empty, string.Empty)
                     }
                 }
             );
@@ -67,9 +67,9 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.Others_UnderStock_Items, bgColor, Icons.UnderStock, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Others_CompartmentsMapping, bgColor, Icons.CompartmentsMapping, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Others_Inventory, bgColor, Icons.Inventory, string.Empty, string.Empty)
+                        new MainMenuItem(Navigation.UnderStockItems, bgColor, nameof(Navigation.UnderStockItems), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.CompartmentsMapping, bgColor, nameof(Navigation.CompartmentsMapping), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Inventory, bgColor, nameof(Navigation.Inventory), string.Empty, string.Empty)
                     }
                 }
             );
@@ -79,8 +79,8 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.ImportExport_Import, bgColor, Icons.Import, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.ImportExport_Export, bgColor, Icons.Export, string.Empty, string.Empty)
+                        new MainMenuItem(Navigation.Import, bgColor, nameof(Navigation.Import), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Export, bgColor, nameof(Navigation.Export), string.Empty, string.Empty)
                     }
                 }
             );
@@ -90,18 +90,18 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.Configuration_MeasuringUnits, bgColor, Icons.UnitsOfMeasurement, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_AbcClasses, bgColor, Icons.ItemClasses, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_CellStatuses, bgColor, Icons.CellStatuses, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_LoadingUnitStatuses, bgColor, Icons.LoadingUnitStatuses, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_CompartmentTypes, bgColor, Icons.CompartmentTypes, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_CompartmentStatuses, bgColor, Icons.CompartmentStatuses, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_PackageTypes, bgColor, Icons.PackageTypes, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_MaterialStatuses, bgColor, Icons.MaterialStatuses, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_ListTypes, bgColor,  Icons.ListTypes, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_ListStatuses, bgColor, Icons.ListStatuses,  string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_ListRowStatuses, bgColor, Icons.ListRowStatuses, string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.Configuration_MachineTypes, bgColor, Icons.ListRowStatuses, string.Empty, string.Empty)
+                        new MainMenuItem(Navigation.UnitsOfMeasurement, bgColor, nameof(Navigation.UnitsOfMeasurement), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.AbcClasses, bgColor, nameof(Navigation.AbcClasses), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.CellStatuses, bgColor, nameof(Navigation.CellStatuses), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.LoadingUnitStatuses, bgColor, nameof(Navigation.LoadingUnitStatuses), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.CompartmentTypes, bgColor, nameof(Navigation.CompartmentTypes), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.CompartmentStatuses, bgColor, nameof(Navigation.CompartmentStatuses), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.PackageTypes, bgColor, nameof(Navigation.PackageTypes), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MaterialStatuses, bgColor, nameof(Navigation.MaterialStatuses), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.ListTypes, bgColor,  nameof(Navigation.ListTypes), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.ListStatuses, bgColor, nameof(Navigation.ListStatuses),  string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.ListRowStatuses, bgColor, nameof(Navigation.ListRowStatuses), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MachineTypes, bgColor, nameof(Navigation.MachineTypes), string.Empty, string.Empty)
                     }
                 }
             );

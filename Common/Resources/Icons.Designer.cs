@@ -61,6 +61,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
+        /// </summary>
+        public static string AbcClasses {
+            get {
+                return ResourceManager.GetString("AbcClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png.
         /// </summary>
         public static string Add {
@@ -142,6 +151,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png.
+        /// </summary>
+        public static string DropDown {
+            get {
+                return ResourceManager.GetString("DropDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_downward_grey_24dp.png.
         /// </summary>
         public static string Export {
@@ -151,7 +169,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_done_all_black_36dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
         /// </summary>
         public static string FilterAll {
             get {
@@ -205,11 +223,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png.
         /// </summary>
-        public static string ItemClasses {
+        public static string Items {
             get {
-                return ResourceManager.GetString("ItemClasses", resourceCulture);
+                return ResourceManager.GetString("Items", resourceCulture);
             }
         }
         
@@ -252,9 +270,9 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png.
         /// </summary>
-        public static string LoadingUnit {
+        public static string LoadingUnits {
             get {
-                return ResourceManager.GetString("LoadingUnit", resourceCulture);
+                return ResourceManager.GetString("LoadingUnits", resourceCulture);
             }
         }
         
@@ -324,9 +342,9 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_trending_down_grey_24dp.png.
         /// </summary>
-        public static string UnderStock {
+        public static string UnderStockItems {
             get {
-                return ResourceManager.GetString("UnderStock", resourceCulture);
+                return ResourceManager.GetString("UnderStockItems", resourceCulture);
             }
         }
         
@@ -339,16 +357,6 @@ namespace Ferretto.Common.Resources {
             }
         }
         
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png.
-        /// </summary>
-        public static string WarehouseItems {
-            get {
-                return ResourceManager.GetString("WarehouseItems", resourceCulture);
-            }
-        }
-
-
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/social/ic_person_black_18dp.png.
         /// </summary>

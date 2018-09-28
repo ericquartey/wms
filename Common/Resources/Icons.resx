@@ -165,7 +165,7 @@
   <data name="Inventory" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/inventory.png</value>
   </data>
-  <data name="ItemClasses" xml:space="preserve">
+  <data name="AbcClasses" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
   <data name="ListRowStatuses" xml:space="preserve">
@@ -180,7 +180,7 @@
   <data name="ListTypes" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
-  <data name="LoadingUnit" xml:space="preserve">
+  <data name="LoadingUnits" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png</value>
   </data>
   <data name="LoadingUnitStatuses" xml:space="preserve">
@@ -204,13 +204,13 @@
   <data name="PackageTypes" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
-  <data name="UnderStock" xml:space="preserve">
+  <data name="UnderStockItems" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_trending_down_grey_24dp.png</value>
   </data>
   <data name="UnitsOfMeasurement" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
-  <data name="WarehouseItems" xml:space="preserve">
+  <data name="Items" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png</value>
   </data>
   <data name="UserProfile" xml:space="preserve">
