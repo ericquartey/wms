@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -212,5 +212,8 @@
   </data>
   <data name="WarehouseItems" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png</value>
+  </data>
+  <data name="UserProfile" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/social/ic_person_black_18dp.png</value>
   </data>
 </root>
