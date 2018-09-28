@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Utils.Testing;
@@ -167,6 +168,7 @@ namespace Feretto.Common.Controls.Tests
             public string MapId { get; set; }
             public string Title { get; set; }
             public string Token { get; set; }
+            public WmsViewType ViewType { get; }
 
             #endregion Properties
         }

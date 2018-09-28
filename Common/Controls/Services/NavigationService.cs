@@ -51,12 +51,6 @@ namespace Ferretto.Common.Controls.Services
             var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
 
             var instanceModuleViewName = this.CheckAddRegion(moduleViewName);
-
-            var region = this.regionManager.Regions[instanceModuleViewName];
-            var view = region.Views.FirstOrDefault(v =>
-                v.GetType().ToString().Equals(moduleViewName, StringComparison.InvariantCulture));
-
-            region.Activate(view);
         }
 
         public void Disappear(INavigableViewModel viewModel)
@@ -147,8 +141,15 @@ namespace Ferretto.Common.Controls.Services
             var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
             registeredView.Token = moduleViewName;
             registeredView.MapId = moduleViewName;
-            WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);
-            this.regionManager.AddToRegion(moduleViewName, registeredView);
+            if (registeredView.ViewType == WmsViewType.Docking)
+            {
+                WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);
+                this.regionManager.AddToRegion(moduleViewName, registeredView);
+            }
+            else
+            {
+                this.RegisterDialog(moduleViewName, registeredView.Title);
+            }
         }
 
         private string CheckAddRegion(string moduleViewName)
@@ -257,6 +258,12 @@ namespace Ferretto.Common.Controls.Services
 
             var moduleManager = this.container.Resolve<IModuleManager>();
             moduleManager.LoadModule(moduleName);
+        }
+
+        private void RegisterDialog(String moduleViewName, String title)
+        {
+            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
+            WmsDialogView.ShowDialog(registeredView);
         }
 
         #endregion Methods
