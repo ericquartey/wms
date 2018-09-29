@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
@@ -14,8 +15,9 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
+        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
-
+        private DataSource<Compartment> compartmentsDataSource;
         private ICommand hideDetailsCommand;
         private ItemDetails item;
         private ICommand saveCommand;
@@ -33,8 +35,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public DataSource<Compartment> CompartmentsDataSource
+        {
+            get => this.compartmentsDataSource;
+            set => this.SetProperty(ref this.compartmentsDataSource, value);
+        }
+
         public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-                            (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
+                                    (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
 
         public ItemDetails Item
         {
@@ -43,7 +51,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.item, value))
                 {
-                    // TODO: set compartments
+                    this.CompartmentsDataSource = this.dataSourceService.GetAll("ItemDetailsView", this.item.Id).Single() as DataSource<Compartment>;
                 }
             }
         }

@@ -12,6 +12,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         ItemFifo,
 
         CompartmentAll,
+        ItemCompartments
     }
 
     public class DataSourceService : IDataSourceService
@@ -24,7 +25,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public IEnumerable<object> GetAll(string viewName)
+        public IEnumerable<object> GetAll(string viewName, object parameter = null)
         {
 #pragma warning disable IDE0009
             switch (viewName)
@@ -55,6 +56,18 @@ namespace Ferretto.Common.Modules.BLL.Services
                             Name = MasterData.ItemFIFO,
                             GetCount = filter => this.businessProvider.GetItemsWithFifoCount(),
                             GetData = filter => this.businessProvider.GetItemsWithFifo()
+                        }
+                    };
+
+                case "ItemDetailsView":
+                    return new List<DataSource<Compartment>>
+                    {
+                        // All items
+                        new DataSource<Compartment>
+                        {
+                            SourceName = DataSourceType.ItemCompartments,
+                            Name = nameof(DataSourceType.ItemCompartments),
+                            GetData = filter => this.businessProvider.GetCompartmentsByItemId((int)parameter)
                         }
                     };
 

@@ -121,6 +121,8 @@ namespace Ferretto.Common.DataAccess
         {
             return this.dataContext.Compartments
                 .Where(compartment => compartment.ItemId == itemId)
+                .Include(compartment => compartment.LoadingUnit)
+                .Include(compartment => compartment.CompartmentStatus)
                 .Select(compartment => ProjectCompartment(compartment))
                 .ToList();
         }
@@ -138,7 +140,7 @@ namespace Ferretto.Common.DataAccess
 
         public int GetItemsWithAClassCount()
         {
-            return this.dataContext.Items.Where(AClassFilter).Count();
+            return this.dataContext.Items.Count(AClassFilter);
         }
 
         public IEnumerable<object> GetItemsWithFifo()
@@ -148,7 +150,7 @@ namespace Ferretto.Common.DataAccess
 
         public int GetItemsWithFifoCount()
         {
-            return this.dataContext.Items.Include(i => i.ItemManagementType).Where(FifoFilter).Count();
+            return this.dataContext.Items.Include(i => i.ItemManagementType).Count(FifoFilter);
         }
 
         public void Initialize()
