@@ -197,11 +197,13 @@
                                          IsEnabled="False"
                                          Label="{x:Static res:BusinessObjects.CompartmentLot}"
                                          Text="{Binding Path=Compartment.Lot}" />
-                            <wms:TextBox Grid.Row="3"
-                                         Grid.Column="1"
-                                         IsEnabled="False"
-                                         Label="{x:Static res:BusinessObjects.PackageType}"
-                                         Text="{Binding Path=Compartment.PackageTypeDescription}" />
+                            <wms:ComboBox Grid.Row="3"
+                                          Grid.Column="1"
+                                          IsEnabled="False"
+                                          ItemsSource="{Binding Path=Compartment.PackageTypeChoices}"
+                                          Label="{x:Static res:BusinessObjects.PackageType}"
+                                          SelectedValue="{Binding Path=Compartment.PackageTypeId, Mode=TwoWay}"
+                                          ValueMember="Id" />
                             <wms:TextBox Grid.Row="4"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"

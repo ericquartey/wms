@@ -27,6 +27,8 @@ namespace Ferretto.Common.DataAccess
 
         IEnumerable<object> GetAllMeasureUnits();
 
+        IEnumerable<object> GetAllPackageTypes();
+
         object GetCompartmentDetails(int compartmentId);
 
         IEnumerable<object> GetCompartmentsByItemId(int itemId);

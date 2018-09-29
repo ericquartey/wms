@@ -41,6 +41,9 @@ namespace Ferretto.Common.Modules.BLL
             this.CreateMap<DataModels.MeasureUnit, Models.MeasureUnit>();
             this.CreateMap<Models.MeasureUnit, DataModels.MeasureUnit>();
 
+            this.CreateMap<DataModels.PackageType, Models.PackageType>();
+            this.CreateMap<Models.PackageType, DataModels.PackageType>();
+
             this.CreateMissingTypeMaps = true;
         }
 

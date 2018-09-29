@@ -61,7 +61,8 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.maxCapacity, value);
         }
 
-        public string PackageTypeDescription { get; set; }
+        public IEnumerable<PackageType> PackageTypeChoices { get; set; }
+        public int PackageTypeId { get; set; }
         public string RegistrationNumber { get; set; }
 
         public int ReservedForPick

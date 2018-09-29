@@ -103,13 +103,17 @@ namespace Ferretto.Common.DataAccess
             return this.dataContext.MeasureUnits;
         }
 
+        public IEnumerable<object> GetAllPackageTypes()
+        {
+            return this.dataContext.PackageTypes;
+        }
+
         public object GetCompartmentDetails(int compartmentId)
         {
             return this.dataContext.Compartments
                 .Where(compartment => compartment.Id == compartmentId)
                 .Include(compartment => compartment.LoadingUnit)
                 .Include(compartment => compartment.Item)
-                .Include(compartment => compartment.PackageType)
                 .Single();
         }
 

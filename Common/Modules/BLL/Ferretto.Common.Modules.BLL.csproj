@@ -103,6 +103,7 @@
     <Compile Include="Models\ItemManagementType.cs" />
     <Compile Include="Models\MaterialStatus.cs" />
     <Compile Include="Models\MeasureUnit.cs" />
+    <Compile Include="Models\PackageType.cs" />
     <Compile Include="Services\MasterDataProvider.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="BusinessLogicModule.cs" />
