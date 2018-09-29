@@ -20,7 +20,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ItemsView_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
         {
-            DXSplashScreen.Close();
+            if (DXSplashScreen.IsActive)
+            {
+                DXSplashScreen.Close();
+            }
         }
 
         #endregion Methods
