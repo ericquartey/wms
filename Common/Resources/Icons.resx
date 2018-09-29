@@ -214,7 +214,7 @@
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png</value>
   </data>
   <data name="UserProfile" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/social/ic_person_black_18dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_account_circle_black_18dp.png</value>
   </data>
   <data name="DropDown" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png</value>
