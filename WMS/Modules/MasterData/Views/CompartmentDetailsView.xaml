@@ -89,21 +89,25 @@
                                           Grid.ColumnSpan="2"
                                           Label="{x:Static res:BusinessObjects.LoadingUnit}"
                                           Text="{Binding Path=Compartment.LoadingUnitCode}" />
-                            <wms:TextBox Grid.Row="2"
-                                         Margin="0,0,20,0"
-                                         IsEnabled="False"
-                                         Label="{x:Static res:BusinessObjects.CompartmentType}"
-                                         Text="{Binding Path=Compartment.CompartmentType}" />
+                            <wms:ComboBox Grid.Row="2"
+                                          Margin="0,0,20,0"
+                                          IsEnabled="True"
+                                          ItemsSource="{Binding Path=Compartment.CompartmentTypeChoices}"
+                                          Label="{x:Static res:BusinessObjects.CompartmentType}"
+                                          SelectedValue="{Binding Path=Compartment.CompartmentTypeId, Mode=TwoWay}"
+                                          ValueMember="Id" />
                             <wms:TextBox Grid.Row="2"
                                          Grid.Column="1"
                                          IsEnabled="False"
                                          Label="{x:Static res:BusinessObjects.CompartmentPairing}"
                                          Text="{Binding Path=Compartment.ItemPairingDescription}" />
-                            <wms:TextBox Grid.Row="3"
-                                         Margin="0,0,20,0"
-                                         IsEnabled="False"
-                                         Label="{x:Static res:BusinessObjects.CompartmentStatus}"
-                                         Text="{Binding Path=Compartment.CompartmentStatusDescription}" />
+                            <wms:ComboBox Grid.Row="3"
+                                          Margin="0,0,20,0"
+                                          IsEnabled="False"
+                                          ItemsSource="{Binding Path=Compartment.CompartmentStatusChoices}"
+                                          Label="{x:Static res:BusinessObjects.CompartmentStatus}"
+                                          SelectedValue="{Binding Path=Compartment.CompartmentStatusId, Mode=TwoWay}"
+                                          ValueMember="Id" />
                         </Grid>
                     </GroupBox>
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
@@ -22,8 +23,10 @@ namespace Ferretto.Common.Modules.BLL.Models
         #region Properties
 
         public string Code { get; set; }
-        public string CompartmentStatusDescription { get; set; }
-        public string CompartmentTypeDescription { get; set; }
+        public IEnumerable<CompartmentStatus> CompartmentStatusChoices { get; set; }
+        public int CompartmentStatusId { get; set; }
+        public IEnumerable<CompartmentType> CompartmentTypeChoices { get; set; }
+        public int CompartmentTypeId { get; set; }
         public DateTime CreationDate { get; set; }
 
         public int? FifoTime
