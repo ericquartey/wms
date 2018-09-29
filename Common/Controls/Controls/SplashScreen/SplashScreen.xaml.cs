@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -28,7 +29,7 @@ namespace Ferretto.Common.Controls
 
         private void SetupTimer()
         {
-            this.startTime = DateTime.Now;
+            this.startTime = Process.GetCurrentProcess().StartTime;
             var timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 0, 0, 200);
             timer.Tick += this.Timer_Tick;
