@@ -93,6 +93,11 @@ namespace Ferretto.Common.DataAccess
             return this.GetAllItems().Count();
         }
 
+        public IEnumerable<object> GetAllMaterialStatuses()
+        {
+            return this.dataContext.MaterialStatuses;
+        }
+
         public IEnumerable<object> GetAllMeasureUnits()
         {
             return this.dataContext.MeasureUnits;
@@ -103,7 +108,6 @@ namespace Ferretto.Common.DataAccess
             return this.dataContext.Compartments
                 .Where(compartment => compartment.Id == compartmentId)
                 .Include(compartment => compartment.LoadingUnit)
-                .Include(compartment => compartment.MaterialStatus)
                 .Include(compartment => compartment.Item)
                 .Include(compartment => compartment.PackageType)
                 .Single();

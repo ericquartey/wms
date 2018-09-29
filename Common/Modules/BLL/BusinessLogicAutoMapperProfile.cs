@@ -20,6 +20,9 @@ namespace Ferretto.Common.Modules.BLL
             this.CreateMap<DataModels.CompartmentStatus, Models.CompartmentStatus>();
             this.CreateMap<Models.CompartmentStatus, DataModels.CompartmentStatus>();
 
+            this.CreateMap<DataModels.CompartmentType, Models.CompartmentType>();
+            this.CreateMap<Models.CompartmentType, DataModels.CompartmentType>();
+
             this.CreateMap<DataAccess.ItemDTO, Models.Item>();
             this.CreateMap<Models.Item, DataAccess.ItemDTO>();
 
@@ -31,6 +34,9 @@ namespace Ferretto.Common.Modules.BLL
 
             this.CreateMap<DataModels.ItemManagementType, Models.ItemManagementType>();
             this.CreateMap<Models.ItemManagementType, DataModels.ItemManagementType>();
+
+            this.CreateMap<DataModels.MaterialStatus, Models.MaterialStatus>();
+            this.CreateMap<Models.MaterialStatus, DataModels.MaterialStatus>();
 
             this.CreateMap<DataModels.MeasureUnit, Models.MeasureUnit>();
             this.CreateMap<Models.MeasureUnit, DataModels.MeasureUnit>();

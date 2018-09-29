@@ -52,7 +52,8 @@ namespace Ferretto.Common.Modules.BLL.Models
         public DateTime? LastStoreDate { get; set; }
         public string LoadingUnitCode { get; set; }
         public string Lot { get; set; }
-        public string MaterialStatusDescription { get; set; }
+        public IEnumerable<MaterialStatus> MaterialStatusChoices { get; set; }
+        public int MaterialStatusId { get; set; }
 
         public int? MaxCapacity
         {

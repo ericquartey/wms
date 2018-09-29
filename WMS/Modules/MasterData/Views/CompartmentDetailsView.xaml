@@ -91,7 +91,7 @@
                                           Text="{Binding Path=Compartment.LoadingUnitCode}" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
-                                          IsEnabled="True"
+                                          IsEnabled="False"
                                           ItemsSource="{Binding Path=Compartment.CompartmentTypeChoices}"
                                           Label="{x:Static res:BusinessObjects.CompartmentType}"
                                           SelectedValue="{Binding Path=Compartment.CompartmentTypeId, Mode=TwoWay}"
@@ -179,12 +179,13 @@
                                          IsEnabled="False"
                                          Label="{x:Static res:BusinessObjects.CompartmentSub2}"
                                          Text="{Binding Path=Compartment.Sub2}" />
-                            <wms:TextBox Grid.Row="2"
-                                         Grid.Column="0"
-                                         Margin="0,0,20,0"
-                                         IsEnabled="False"
-                                         Label="{x:Static res:BusinessObjects.MaterialStatus}"
-                                         Text="{Binding Path=Compartment.Sub1}" />
+                            <wms:ComboBox Grid.Row="2"
+                                          Margin="0,0,20,0"
+                                          IsEnabled="False"
+                                          ItemsSource="{Binding Path=Compartment.MaterialStatusChoices}"
+                                          Label="{x:Static res:BusinessObjects.MaterialStatus}"
+                                          SelectedValue="{Binding Path=Compartment.MaterialStatusId, Mode=TwoWay}"
+                                          ValueMember="Id" />
                             <wms:TextBox Grid.Row="2"
                                          Grid.Column="1"
                                          IsEnabled="False"
