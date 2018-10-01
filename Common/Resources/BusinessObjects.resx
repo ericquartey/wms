@@ -121,6 +121,54 @@
     <value>ABC Class</value>
     <comment>ABC Class</comment>
   </data>
+  <data name="Aisle" xml:space="preserve">
+    <value>Aisle</value>
+    <comment>Aisle</comment>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Area</value>
+    <comment>Area</comment>
+  </data>
+  <data name="CellColumn" xml:space="preserve">
+    <value>Column</value>
+    <comment>Cell - Column</comment>
+  </data>
+  <data name="CellColumn_extended" xml:space="preserve">
+    <value>Cell Column</value>
+    <comment>Cell - Column (extended)</comment>
+  </data>
+  <data name="CellFloor" xml:space="preserve">
+    <value>Floor</value>
+    <comment>Cell - Floor</comment>
+  </data>
+  <data name="CellFloor_extended" xml:space="preserve">
+    <value>Cell Floor</value>
+    <comment>Cell - Floor (extended)</comment>
+  </data>
+  <data name="CellNumber" xml:space="preserve">
+    <value>Number</value>
+    <comment>Cell - Number</comment>
+  </data>
+  <data name="CellNumber_extended" xml:space="preserve">
+    <value>Cell Number</value>
+    <comment>Cell - Number (extended)</comment>
+  </data>
+  <data name="CellPosition" xml:space="preserve">
+    <value>Cell Position</value>
+    <comment>Cell Position</comment>
+  </data>
+  <data name="CellPositionDescription" xml:space="preserve">
+    <value>Cell Position Description</value>
+    <comment>Cell Position - Description</comment>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Side</value>
+    <comment>Cell - Side</comment>
+  </data>
+  <data name="CellSide_extended" xml:space="preserve">
+    <value>Cell Side</value>
+    <comment>Cell - Side (extended)</comment>
+  </data>
   <data name="CompartmentCode" xml:space="preserve">
     <value>Code</value>
     <comment>Compartment - Code</comment>
@@ -320,6 +368,18 @@
   <data name="LoadingUnitCode_extended" xml:space="preserve">
     <value>Loading Unit Code</value>
     <comment>Loading Unit - Code (extended)</comment>
+  </data>
+  <data name="LoadingUnitStatus" xml:space="preserve">
+    <value>Loading Unit Status</value>
+    <comment>Loading Unit - Status</comment>
+  </data>
+  <data name="LoadingUnitType" xml:space="preserve">
+    <value>Loading Unit Type</value>
+    <comment>Loading Unit Type</comment>
+  </data>
+  <data name="LoadingUnitTypeDescription" xml:space="preserve">
+    <value>Loading Unit Type Description</value>
+    <comment>Loading Unit Type - Description</comment>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
     <value>Material Status</value>

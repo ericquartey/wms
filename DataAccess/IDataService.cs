@@ -23,6 +23,10 @@ namespace Ferretto.Common.DataAccess
 
         int GetAllItemsCount();
 
+        IEnumerable<object> GetAllLoadingUnits();
+
+        int GetAllLoadingUnitsCount();
+
         IEnumerable<object> GetAllMaterialStatuses();
 
         IEnumerable<object> GetAllMeasureUnits();
@@ -48,6 +52,8 @@ namespace Ferretto.Common.DataAccess
         int SaveCompartment(IEntity<int> compartment);
 
         int SaveItem(IEntity<int> item);
+
+        int SaveLoadingUnit(IEntity<int> loadingUnit);
 
         #endregion Methods
     }

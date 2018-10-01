@@ -37,6 +37,9 @@
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMS = "ItemsViewModel";
         public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
+        public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
+        public const string LOADINGUNITS = "LoadingUnitsViewModel";
+        public const string LOADINGUNITSANDDETAILS = "LoadingUnitsAndDetailsViewModel";
 
         #endregion Fields
     }

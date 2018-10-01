@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Models;
@@ -34,6 +35,16 @@ namespace Ferretto.Common.Modules.BLL.Services
         public int GetAllItemsCount()
         {
             return this.dataService.GetAllItemsCount();
+        }
+
+        public IEnumerable<LoadingUnit> GetAllLoadingUnits()
+        {
+            return Mapper.Map<IEnumerable<LoadingUnit>>(this.dataService.GetAllLoadingUnits());
+        }
+
+        public Int32 GetAllLoadingUnitsCount()
+        {
+            return this.dataService.GetAllLoadingUnitsCount();
         }
 
         public CompartmentDetails GetCompartmentDetails(int compartmentId)
@@ -92,6 +103,11 @@ namespace Ferretto.Common.Modules.BLL.Services
         public int Save(CompartmentDetails compartment)
         {
             return this.dataService.SaveCompartment(compartment);
+        }
+
+        public int Save(LoadingUnitDetails loadingUnit)
+        {
+            return this.dataService.SaveLoadingUnit(loadingUnit);
         }
 
         #endregion Methods
