@@ -6,7 +6,7 @@
                xmlns:masterdata="clr-namespace:Ferretto.WMS.Modules.MasterData"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-               Title="{x:Static res:Navigation.MasterData_Items}"
+               Title="{x:Static res:Navigation.Items}"
                d:DesignHeight="450"
                d:DesignWidth="800"
                mc:Ignorable="d">
