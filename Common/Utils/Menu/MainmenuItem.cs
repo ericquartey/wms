@@ -5,34 +5,33 @@ namespace Ferretto.Common.Utils.Menu
 {
     public class MainMenuItem
     {
-        #region Properties
-
-        public string Name { get; set; }
-        public string Image { get; set; }
-        public string ModuleName { get; set; }
-        public string ViewName { get; set; }
-        public string BackGroundColor { get; set; }
-        public List<MainMenuItem> Children { get; set; }
-
-        #endregion
-
-        #region Ctor
+        #region Constructors
 
         public MainMenuItem()
         {
             this.Children = new List<MainMenuItem>();
         }
 
-        public MainMenuItem(String name, String backGroundColor, string image, String moduleName,
-            String viewName) : this()
+        public MainMenuItem(String name, String backgroundColor, string image, String moduleName, String viewName) : this()
         {
             this.Name = name;
             this.Image = image;
-            this.BackGroundColor = backGroundColor;
+            this.BackgroundColor = backgroundColor;
             this.ModuleName = moduleName;
             this.ViewName = viewName;
         }
 
-        #endregion
+        #endregion Constructors
+
+        #region Properties
+
+        public string BackgroundColor { get; set; }
+        public List<MainMenuItem> Children { get; set; }
+        public string Image { get; set; }
+        public string ModuleName { get; set; }
+        public string Name { get; set; }
+        public string ViewName { get; set; }
+
+        #endregion Properties
     }
 }

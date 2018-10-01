@@ -26,7 +26,7 @@ namespace Ferretto.Common.Controls
             }
 
             this.DisplayName = item.Name;
-            this.BackColor = ( (SolidColorBrush) System.Windows.Application.Current.Resources[item.BackGroundColor] )
+            this.BackColor = ( (SolidColorBrush) System.Windows.Application.Current.Resources[item.BackgroundColor] )
                 .Color.ToString();
             this.Image = item.Image;
             this.ModuleName = item.ModuleName;
