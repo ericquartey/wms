@@ -2,7 +2,6 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -15,7 +14,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private CompartmentDetails compartment;
         private ICommand hideDetailsCommand;
