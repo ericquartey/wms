@@ -2,6 +2,7 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Resources;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -19,7 +20,7 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly MasterDataProvider businessProvider = new MasterDataProvider();
+        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
 
         #endregion Fields
 

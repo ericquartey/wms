@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
@@ -17,6 +15,10 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? pickTolerance;
         private int? reorderQuantity;
         private int? storeTolerance;
+        private int totalAvailable;
+        private int totalReservedForPick;
+        private int totalReservedToStore;
+        private int totalStock;
         private int? width;
 
         #endregion Fields
@@ -98,10 +100,29 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
 
-        public int TotalAvailable { get; set; }
-        public int TotalReservedForPick { get; set; }
-        public int TotalReservedToStore { get; set; }
-        public int TotalStock { get; set; }
+        public int TotalAvailable
+        {
+            get => this.totalAvailable;
+            set => SetIfPositive(ref this.totalAvailable, value);
+        }
+
+        public int TotalReservedForPick
+        {
+            get => this.totalReservedForPick;
+            set => SetIfPositive(ref this.totalReservedForPick, value);
+        }
+
+        public int TotalReservedToStore
+        {
+            get => this.totalReservedToStore;
+            set => SetIfPositive(ref this.totalReservedToStore, value);
+        }
+
+        public int TotalStock
+        {
+            get => this.totalStock;
+            set => SetIfPositive(ref this.totalStock, value);
+        }
 
         public int? Width
         {

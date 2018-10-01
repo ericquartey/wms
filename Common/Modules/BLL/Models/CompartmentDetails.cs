@@ -23,9 +23,9 @@ namespace Ferretto.Common.Modules.BLL.Models
         #region Properties
 
         public string Code { get; set; }
-        public IEnumerable<CompartmentStatus> CompartmentStatusChoices { get; set; }
-        public int CompartmentStatusId { get; set; }
-        public IEnumerable<CompartmentType> CompartmentTypeChoices { get; set; }
+        public IEnumerable<DataModels.CompartmentStatus> CompartmentStatusChoices { get; set; }
+        public int? CompartmentStatusId { get; set; }
+        public IEnumerable<DataModels.CompartmentType> CompartmentTypeChoices { get; set; }
         public int CompartmentTypeId { get; set; }
         public DateTime CreationDate { get; set; }
 
@@ -45,15 +45,16 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public int Id { get; set; }
         public DateTime? InventoryDate { get; set; }
+        public string ItemCode { get; set; }
         public string ItemDescription { get; set; }
-        public string ItemPairing { get; set; }
+        public DataModels.Pairing ItemPairing { get; set; }
         public DateTime? LastHandlingDate { get; set; }
         public DateTime? LastPickDate { get; set; }
         public DateTime? LastStoreDate { get; set; }
         public string LoadingUnitCode { get; set; }
         public string Lot { get; set; }
-        public IEnumerable<MaterialStatus> MaterialStatusChoices { get; set; }
-        public int MaterialStatusId { get; set; }
+        public IEnumerable<DataModels.MaterialStatus> MaterialStatusChoices { get; set; }
+        public int? MaterialStatusId { get; set; }
 
         public int? MaxCapacity
         {
@@ -61,8 +62,8 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.maxCapacity, value);
         }
 
-        public IEnumerable<PackageType> PackageTypeChoices { get; set; }
-        public int PackageTypeId { get; set; }
+        public IEnumerable<DataModels.PackageType> PackageTypeChoices { get; set; }
+        public int? PackageTypeId { get; set; }
         public string RegistrationNumber { get; set; }
 
         public int ReservedForPick
