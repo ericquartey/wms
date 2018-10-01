@@ -15,6 +15,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         int GetAllItemsCount();
 
+        IEnumerable<LoadingUnit> GetAllLoadingUnits();
+
+        int GetAllLoadingUnitsCount();
+
         CompartmentDetails GetCompartmentDetails(int compartmentId);
 
         IEnumerable<Compartment> GetCompartmentsByItemId(int itemId);
@@ -29,9 +33,11 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         int GetItemsWithFifoCount();
 
+        int Save(CompartmentDetails compartment);
+
         int Save(ItemDetails item);
 
-        int Save(CompartmentDetails compartment);
+        int Save(LoadingUnitDetails loadingUnit);
 
         #endregion Methods
     }

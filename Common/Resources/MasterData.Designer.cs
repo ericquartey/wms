@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MasterData {
@@ -192,6 +192,24 @@ namespace Ferretto.Common.Resources {
         public static string ItemsMasterData {
             get {
                 return ResourceManager.GetString("ItemsMasterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string LoadingUnitAll {
+            get {
+                return ResourceManager.GetString("LoadingUnitAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit saved sucessfully.
+        /// </summary>
+        public static string LoadingUnitSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("LoadingUnitSavedSuccessfully", resourceCulture);
             }
         }
         

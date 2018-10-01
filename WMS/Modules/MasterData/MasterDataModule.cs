@@ -9,11 +9,13 @@ namespace Ferretto.WMS.Modules.MasterData
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class MasterDataModule : IModule
     {
-        #region IModule Members
+        #region Fields
 
-        public IUnityContainer Container { get; private set; }
-        public IRegionManager RegionManager { get; private set; }
         private readonly INavigationService navigationService;
+
+        #endregion Fields
+
+        #region Constructors
 
         public MasterDataModule(IUnityContainer container, IRegionManager regionManager,
             INavigationService navigationService)
@@ -22,6 +24,17 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RegionManager = regionManager;
             this.navigationService = navigationService;
         }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public IUnityContainer Container { get; private set; }
+        public IRegionManager RegionManager { get; private set; }
+
+        #endregion Properties
+
+        #region Methods
 
         public void Initialize()
         {
@@ -32,8 +45,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.navigationService.Register<CompartmentsView, CompartmentsViewModel>();
             this.navigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
             this.navigationService.Register<CompartmentsAndDetailsView, CompartmentsAndDetailsViewModel>();
+
+            this.navigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
+            this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
+            this.navigationService.Register<LoadingUnitsAndDetailsView, LoadingUnitsAndDetailsViewModel>();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

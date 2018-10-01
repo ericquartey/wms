@@ -12,7 +12,9 @@ namespace Ferretto.Common.Modules.BLL.Services
         ItemFifo,
 
         CompartmentAll,
-        ItemCompartments
+        ItemCompartments,
+
+        LoadingUnitAll,
     }
 
     public class DataSourceService : IDataSourceService
@@ -82,6 +84,20 @@ namespace Ferretto.Common.Modules.BLL.Services
                             Filter = compartments => compartments,
                             GetCount = filter => this.businessProvider.GetAllCompartmentsCount(),
                             GetData = filter => this.businessProvider.GetAllCompartments()
+                        }
+                    };
+
+                case "LoadingUnitsView":
+                    return new List<DataSource<LoadingUnit>>
+                    {
+                        // All loading units
+                        new DataSource<LoadingUnit>
+                        {
+                            SourceName = DataSourceType.LoadingUnitAll,
+                            Name = MasterData.LoadingUnitAll,
+                            Filter = loadingUnits => loadingUnits,
+                            GetCount = filter => this.businessProvider.GetAllLoadingUnitsCount(),
+                            GetData = filter => this.businessProvider.GetAllLoadingUnits()
                         }
                     };
 

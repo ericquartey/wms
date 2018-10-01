@@ -70,6 +70,114 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Aisle.
+        /// </summary>
+        public static string Aisle {
+            get {
+                return ResourceManager.GetString("Aisle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string Area {
+            get {
+                return ResourceManager.GetString("Area", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column.
+        /// </summary>
+        public static string CellColumn {
+            get {
+                return ResourceManager.GetString("CellColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Column.
+        /// </summary>
+        public static string CellColumn_extended {
+            get {
+                return ResourceManager.GetString("CellColumn_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Floor.
+        /// </summary>
+        public static string CellFloor {
+            get {
+                return ResourceManager.GetString("CellFloor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Floor.
+        /// </summary>
+        public static string CellFloor_extended {
+            get {
+                return ResourceManager.GetString("CellFloor_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number.
+        /// </summary>
+        public static string CellNumber {
+            get {
+                return ResourceManager.GetString("CellNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Number.
+        /// </summary>
+        public static string CellNumber_extended {
+            get {
+                return ResourceManager.GetString("CellNumber_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Position.
+        /// </summary>
+        public static string CellPosition {
+            get {
+                return ResourceManager.GetString("CellPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Position Description.
+        /// </summary>
+        public static string CellPositionDescription {
+            get {
+                return ResourceManager.GetString("CellPositionDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Side.
+        /// </summary>
+        public static string CellSide {
+            get {
+                return ResourceManager.GetString("CellSide", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Side.
+        /// </summary>
+        public static string CellSide_extended {
+            get {
+                return ResourceManager.GetString("CellSide_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string CompartmentCode {
@@ -516,6 +624,33 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitCode_extended {
             get {
                 return ResourceManager.GetString("LoadingUnitCode_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Status.
+        /// </summary>
+        public static string LoadingUnitStatus {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Type.
+        /// </summary>
+        public static string LoadingUnitType {
+            get {
+                return ResourceManager.GetString("LoadingUnitType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Type Description.
+        /// </summary>
+        public static string LoadingUnitTypeDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitTypeDescription", resourceCulture);
             }
         }
         
