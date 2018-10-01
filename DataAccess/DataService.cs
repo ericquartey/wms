@@ -79,6 +79,11 @@ namespace Ferretto.Common.DataAccess
             return this.dataContext.CompartmentTypes;
         }
 
+        public IEnumerable<object> GetAllItemCategories()
+        {
+            return this.dataContext.ItemCategories;
+        }
+
         public IEnumerable<object> GetAllItemManagementTypes()
         {
             return this.dataContext.ItemManagementTypes;
@@ -229,6 +234,7 @@ namespace Ferretto.Common.DataAccess
                 .Where(i => whereCondition == null || whereCondition(i))
                 .Include(i => i.AbcClass)
                 .Include(i => i.ItemManagementType)
+                .Include(i => i.ItemCategory)
                 .GroupJoin(
                     this.dataContext.Compartments
                         .Where(c => c.ItemId != null)
@@ -262,6 +268,7 @@ namespace Ferretto.Common.DataAccess
                         InventoryDate = a.Item.InventoryDate,
                         InventoryTolerance = a.Item.InventoryTolerance,
                         ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                        ItemCategoryDescription = a.Item.ItemCategory.Description,
                         LastModificationDate = a.Item.LastModificationDate,
                         LastPickDate = a.Item.LastPickDate,
                         LastStoreDate = a.Item.LastStoreDate,

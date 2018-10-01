@@ -65,6 +65,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
+        public string ItemCategoryDescription { get; set; }
         public string ItemManagementTypeDescription { get; set; }
         public DateTime? LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }

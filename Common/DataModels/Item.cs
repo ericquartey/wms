@@ -23,6 +23,8 @@ namespace Ferretto.Common.DataModels
         public DateTime? InventoryDate { get; set; }
         public int? InventoryTolerance { get; set; }
         public IEnumerable<ItemArea> ItemAreas { get; set; }
+        public virtual ItemCategory ItemCategory { get; set; }
+        public int? ItemCategoryId { get; set; }
         public IEnumerable<ItemListRow> ItemListRows { get; set; }
         public virtual ItemManagementType ItemManagementType { get; set; }
         public int? ItemManagementTypeId { get; set; }

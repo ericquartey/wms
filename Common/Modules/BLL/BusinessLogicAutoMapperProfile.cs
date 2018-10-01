@@ -35,6 +35,9 @@ namespace Ferretto.Common.Modules.BLL
             this.CreateMap<DataModels.ItemManagementType, Models.ItemManagementType>();
             this.CreateMap<Models.ItemManagementType, DataModels.ItemManagementType>();
 
+            this.CreateMap<DataModels.ItemCategory, Models.ItemCategory>();
+            this.CreateMap<Models.ItemCategory, DataModels.ItemCategory>();
+
             this.CreateMap<DataModels.LoadingUnit, Models.LoadingUnit>();
             this.CreateMap<Models.LoadingUnit, DataModels.LoadingUnit>();
 

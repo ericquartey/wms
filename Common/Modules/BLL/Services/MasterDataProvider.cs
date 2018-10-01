@@ -71,6 +71,7 @@ namespace Ferretto.Common.Modules.BLL.Services
             itemDetails.AbcClassChoices = Mapper.Map<IEnumerable<AbcClass>>(this.dataService.GetAllAbcClasses());
             itemDetails.MeasureUnitChoices = Mapper.Map<IEnumerable<MeasureUnit>>(this.dataService.GetAllMeasureUnits());
             itemDetails.ItemManagementTypeChoices = Mapper.Map<IEnumerable<ItemManagementType>>(this.dataService.GetAllItemManagementTypes());
+            itemDetails.ItemCategoryChoices = Mapper.Map<IEnumerable<ItemCategory>>(this.dataService.GetAllItemCategories());
 
             return itemDetails;
         }

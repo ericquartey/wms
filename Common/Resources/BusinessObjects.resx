@@ -265,6 +265,10 @@
     <value>Average Weight</value>
     <comment>Item - Average Weight</comment>
   </data>
+  <data name="ItemCategory" xml:space="preserve">
+    <value>Category</value>
+    <comment>Item - Category</comment>
+  </data>
   <data name="ItemClass" xml:space="preserve">
     <value>Class</value>
     <comment>Item - Class</comment>
