@@ -98,6 +98,8 @@
     <Compile Include="Models\ItemDetails.cs" />
     <Compile Include="Models\ItemInCompartment.cs" />
     <Compile Include="Models\ItemManagementType.cs" />
+    <Compile Include="Models\LoadingUnit.cs" />
+    <Compile Include="Models\LoadingUnitDetails.cs" />
     <Compile Include="Models\MaterialStatus.cs" />
     <Compile Include="Models\MeasureUnit.cs" />
     <Compile Include="Models\PackageType.cs" />

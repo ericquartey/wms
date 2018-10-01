@@ -1,0 +1,87 @@
+﻿using System.Windows.Input;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Modules.BLL.Services;
+using Microsoft.Practices.ServiceLocation;
+using Prism.Commands;
+
+namespace Ferretto.WMS.Modules.MasterData
+{
+    public class LoadingUnitDetailsViewModel : BaseNavigationViewModel
+    {
+        #region Fields
+
+        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
+        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private ICommand hideDetailsCommand;
+        private LoadingUnitDetails loadingUnit;
+        private ICommand saveCommand;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public LoadingUnitDetailsViewModel()
+        {
+            this.Initialize();
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
+                    (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
+
+        public LoadingUnitDetails LoadingUnit
+        {
+            get => this.loadingUnit;
+            set => this.SetProperty(ref this.loadingUnit, value);
+        }
+
+        public ICommand SaveCommand => this.saveCommand ??
+                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+
+        #endregion Properties
+
+        #region Methods
+
+        private void ExecuteHideDetailsCommand()
+        {
+            this.eventService.Invoke(new ShowDetailsEventArgs<LoadingUnit>(this.Token, false));
+        }
+
+        private void ExecuteSaveCommand()
+        {
+            var rowSaved = this.businessProvider.Save(this.LoadingUnit);
+
+            if (rowSaved != 0)
+            {
+                this.eventService.Invoke(new ItemChangedEvent<LoadingUnitDetails>(this.LoadingUnit));
+
+                ServiceLocator.Current.GetInstance<IEventService>()
+                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+            }
+        }
+
+        private void Initialize()
+        {
+            this.eventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
+                    eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
+        }
+
+        private void OnItemSelectionChanged(LoadingUnitDetails selectedLoadingUnit)
+        {
+            if (selectedLoadingUnit == null)
+            {
+                this.LoadingUnit = null;
+                return;
+            }
+            // this.LoadingUnit = this.businessProvider.GetItemDetails(selectedLoadingUnit.Id);
+        }
+
+        #endregion Methods
+    }
+}

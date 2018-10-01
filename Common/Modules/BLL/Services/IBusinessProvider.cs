@@ -18,6 +18,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         int GetAllItemsCount();
 
+        IQueryable<Models.LoadingUnit> GetAllLoadingUnits();
+
+        int GetAllLoadingUnitsCount();
+
         IQueryable<DataModels.MaterialStatus> GetAllMaterialStatuses();
 
         IQueryable<DataModels.MeasureUnit> GetAllMeasureUnits();
@@ -41,6 +45,8 @@ namespace Ferretto.Common.Modules.BLL.Services
         int Save(Models.ItemDetails itemDetails);
 
         int Save(Models.CompartmentDetails compartmentDetails);
+
+        int Save(Models.LoadingUnitDetails loadingUnit);
 
         #endregion Methods
     }

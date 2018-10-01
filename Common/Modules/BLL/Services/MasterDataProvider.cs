@@ -39,32 +39,32 @@ namespace Ferretto.Common.Modules.BLL.Services
         public IQueryable<Compartment> GetAllCompartments()
         {
             return this.dataContext.Compartments
-                .Include(compartment => compartment.LoadingUnit)
-                .Include(compartment => compartment.MaterialStatus)
-                .Include(compartment => compartment.Item)
-                .Include(compartment => compartment.CompartmentType)
-                .Include(compartment => compartment.CompartmentStatus)
-                .Include(compartment => compartment.PackageType)
-                .Select(compartment => new Compartment
+                .Include(c => c.LoadingUnit)
+                .Include(c => c.MaterialStatus)
+                .Include(c => c.Item)
+                .Include(c => c.CompartmentType)
+                .Include(c => c.CompartmentStatus)
+                .Include(c => c.PackageType)
+                .Select(c => new Compartment
                 {
-                    Code = compartment.Code,
-                    CompartmentStatusDescription = compartment.CompartmentStatus.Description,
-                    CompartmentTypeDescription = compartment.CompartmentType.Description,
-                    Id = compartment.Id,
-                    ItemDescription = compartment.Item.Description,
-                    LoadingUnitCode = compartment.LoadingUnit.Code,
-                    Lot = compartment.Lot,
-                    MaterialStatusDescription = compartment.MaterialStatus.Description,
-                    Stock = compartment.Stock,
-                    Sub1 = compartment.Sub1,
-                    Sub2 = compartment.Sub2
+                    Code = c.Code,
+                    CompartmentStatusDescription = c.CompartmentStatus.Description,
+                    CompartmentTypeDescription = c.CompartmentType.Description,
+                    Id = c.Id,
+                    ItemDescription = c.Item.Description,
+                    LoadingUnitCode = c.LoadingUnit.Code,
+                    Lot = c.Lot,
+                    MaterialStatusDescription = c.MaterialStatus.Description,
+                    Stock = c.Stock,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2
                 }
                 );
         }
 
         public int GetAllCompartmentsCount()
         {
-            return this.GetAllCompartments().Count();
+            return this.dataContext.Compartments.Count();
         }
 
         public IQueryable<DataModels.CompartmentStatus> GetAllCompartmentStatuses()
@@ -90,6 +90,37 @@ namespace Ferretto.Common.Modules.BLL.Services
         public int GetAllItemsCount()
         {
             return this.dataContext.Items.Count();
+        }
+
+        public IQueryable<LoadingUnit> GetAllLoadingUnits()
+        {
+            return this.dataContext.LoadingUnits
+                .Include(l => l.LoadingUnitType)
+                .Include(l => l.LoadingUnitStatus)
+                .Include(l => l.AbcClass)
+                .Include(l => l.CellPosition)
+                .Select(l => new LoadingUnit
+                {
+                    Id = l.Id,
+                    Code = l.Code,
+                    LoadingUnitTypeDescription = l.LoadingUnitType.Description,
+                    LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
+                    AbcClassDescription = l.AbcClass.Description,
+                    AreaName = l.Cell.Aisle.Area.Name,
+                    AisleName = l.Cell.Aisle.Name,
+                    CellFloor = l.Cell.Floor,
+                    CellColumn = l.Cell.Column,
+                    CellSide = Enum.GetName(typeof(DataModels.Side), l.Cell.Side),
+                    CellNumber = l.Cell.CellNumber,
+                    CellPositionDescription = l.CellPosition.Description,
+                }
+                )
+                .AsNoTracking();
+        }
+
+        public Int32 GetAllLoadingUnitsCount()
+        {
+            return this.dataContext.LoadingUnits.Count();
         }
 
         public IQueryable<DataModels.MaterialStatus> GetAllMaterialStatuses()
@@ -232,6 +263,11 @@ namespace Ferretto.Common.Modules.BLL.Services
         }
 
         public int Save(ItemDetails itemDetails)
+        {
+            return this.dataContext.SaveChanges();
+        }
+
+        public int Save(LoadingUnitDetails loadingUnit)
         {
             return this.dataContext.SaveChanges();
         }
