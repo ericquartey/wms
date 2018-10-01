@@ -96,7 +96,7 @@ namespace Ferretto.Common.DataAccess
 
         public IEnumerable<object> GetAllLoadingUnits()
         {
-            var aaa = this.dataContext.LoadingUnits
+            return this.dataContext.LoadingUnits
                 .Include(l => l.LoadingUnitType)
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
@@ -117,8 +117,6 @@ namespace Ferretto.Common.DataAccess
                     CellPositionDescription = l.CellPosition.Description,
                 }
                 );
-
-            return aaa;
         }
 
         public int GetAllLoadingUnitsCount()
