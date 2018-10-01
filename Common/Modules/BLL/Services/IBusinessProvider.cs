@@ -15,6 +15,8 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         int GetAllItemsCount();
 
+        CompartmentDetails GetCompartmentDetails(int compartmentId);
+
         IEnumerable<Compartment> GetCompartmentsByItemId(int itemId);
 
         ItemDetails GetItemDetails(int itemId);

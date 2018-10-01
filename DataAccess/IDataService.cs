@@ -13,13 +13,23 @@ namespace Ferretto.Common.DataAccess
 
         int GetAllCompartmentsCount();
 
+        IEnumerable<object> GetAllCompartmentStatuses();
+
+        IEnumerable<object> GetAllCompartmentTypes();
+
         IEnumerable<object> GetAllItemManagementTypes();
 
         IEnumerable<object> GetAllItems();
 
         int GetAllItemsCount();
 
+        IEnumerable<object> GetAllMaterialStatuses();
+
         IEnumerable<object> GetAllMeasureUnits();
+
+        IEnumerable<object> GetAllPackageTypes();
+
+        object GetCompartmentDetails(int compartmentId);
 
         IEnumerable<object> GetCompartmentsByItemId(int itemId);
 

@@ -13,15 +13,17 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Content="{Binding Path=Label}" />
+        <Label Content="{Binding Path=Label}"
+               Style="{DynamicResource ControlLabelStyle}" />
         <dxe:DateEdit Grid.Row="1"
                       MinWidth="100"
+                      AllowDefaultButton="False"
                       EditValue="{Binding Path=EditValue, Mode=TwoWay}"
                       Mask="{Binding Path=Mask}"
-                      MaskType="{Binding Path=MaskType}"
-                      AllowDefaultButton="False">
+                      MaskType="{Binding Path=MaskType}">
             <dxe:DateEdit.Buttons>
-                <dxe:ButtonInfo IsDefaultButton="True" Template="{DynamicResource DateEditCustomButtonTemplate}" />
+                <dxe:ButtonInfo IsDefaultButton="True"
+                                Template="{DynamicResource DateEditCustomButtonTemplate}" />
             </dxe:DateEdit.Buttons>
         </dxe:DateEdit>
     </Grid>

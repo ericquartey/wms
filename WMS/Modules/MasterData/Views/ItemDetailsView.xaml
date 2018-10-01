@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.ItemDetailsView"
+<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.ItemDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -125,7 +125,7 @@
                         <wms:ComboBox Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=Item.UnitOfMeasurementChoices}"
+                                      ItemsSource="{Binding Path=Item.MeasureUnitChoices}"
                                       Label="{x:Static res:General.UnitOfMeasurement}"
                                       SelectedValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay}"
                                       ValueMember="Id" />
@@ -200,7 +200,7 @@
                     <wms:WmsGridControl MinHeight="300"
                                         MaxWidth="2000"
                                         MaxHeight="5000"
-                                        CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsSource, Mode=OneWay}"
+                                        CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
                                         ItemType="{x:Type models:Compartment}"
                                         SelectionMode="Row">
                         <wms:WmsGridControl.View>
@@ -216,7 +216,7 @@
                                         FieldName="Code"
                                         Header="{x:Static res:BusinessObjects.CompartmentCode}" />
                         <dxg:GridColumn Width="300*"
-                                        FieldName="LoadingUnit.Code"
+                                        FieldName="LoadingUnitCode"
                                         Header="{x:Static res:BusinessObjects.LoadingUnit}" />
                         <dxg:GridColumn Width="100*"
                                         FieldName="Sub1"
@@ -228,13 +228,13 @@
                                         FieldName="Lot"
                                         Header="{x:Static res:BusinessObjects.CompartmentLot}" />
                         <dxg:GridColumn Width="200*"
-                                        FieldName="CompartmentStatus.Description"
+                                        FieldName="CompartmentStatusDescription"
                                         Header="{x:Static res:BusinessObjects.CompartmentStatus}" />
                         <dxg:GridColumn Width="200*"
                                         FieldName="Stock"
                                         Header="{x:Static res:BusinessObjects.CompartmentStock}" />
                         <dxg:GridColumn Width="200*"
-                                        FieldName="Pairing"
+                                        FieldName="ItemPairing"
                                         Header="{x:Static res:BusinessObjects.CompartmentPairing}" />
                     </wms:WmsGridControl>
                 </GroupBox>
@@ -253,28 +253,23 @@
                                   MaxHeight="500"
                                   BorderBrush="{DynamicResource CommonSecondaryLight}"
                                   Path="{Binding Path=Item.Image}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:General.CreationDate}"
                                   Text="{Binding Path=Item.CreationDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:General.LastModificationDate}"
                                   Text="{Binding Path=Item.LastModificationDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastInventoryDate}"
                                   Text="{Binding Path=Item.InventoryDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastPickDate}"
                                   Text="{Binding Path=Item.LastPickDate}" />
-                    <wms:InfoText Margin="0,10,0,0"
-                                  HorizontalAlignment="Right"
+                    <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastStoreDate}"
                                   Text="{Binding Path=Item.LastStoreDate}" />

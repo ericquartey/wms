@@ -12,7 +12,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Label Content="{Binding Label}" />
+        <Label Content="{Binding Label}"
+               Style="{DynamicResource ControlLabelStyle}" />
         <dxe:ComboBoxEdit Name="dxeComboBoxEdit"
                           Grid.Row="1"
                           AllowDefaultButton="False"

@@ -36,6 +36,18 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataService.GetAllItemsCount();
         }
 
+        public CompartmentDetails GetCompartmentDetails(int compartmentId)
+        {
+            var compartmentDetails = Mapper.Map<CompartmentDetails>(this.dataService.GetCompartmentDetails(compartmentId));
+
+            compartmentDetails.CompartmentStatusChoices = Mapper.Map<IEnumerable<CompartmentStatus>>(this.dataService.GetAllCompartmentStatuses());
+            compartmentDetails.CompartmentTypeChoices = Mapper.Map<IEnumerable<CompartmentType>>(this.dataService.GetAllCompartmentTypes());
+            compartmentDetails.MaterialStatusChoices = Mapper.Map<IEnumerable<MaterialStatus>>(this.dataService.GetAllMaterialStatuses());
+            compartmentDetails.PackageTypeChoices = Mapper.Map<IEnumerable<PackageType>>(this.dataService.GetAllPackageTypes());
+
+            return compartmentDetails;
+        }
+
         public IEnumerable<Compartment> GetCompartmentsByItemId(int itemId)
         {
             return Mapper.Map<IEnumerable<Compartment>>(this.dataService.GetCompartmentsByItemId(itemId));

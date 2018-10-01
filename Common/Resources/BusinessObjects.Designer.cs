@@ -79,6 +79,69 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FIFO Time.
+        /// </summary>
+        public static string CompartmentFifoTime {
+            get {
+                return ResourceManager.GetString("CompartmentFifoTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Store Date.
+        /// </summary>
+        public static string CompartmentFirstStoreDate {
+            get {
+                return ResourceManager.GetString("CompartmentFirstStoreDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handling Date.
+        /// </summary>
+        public static string CompartmentHandlingDate {
+            get {
+                return ResourceManager.GetString("CompartmentHandlingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string CompartmentHeight {
+            get {
+                return ResourceManager.GetString("CompartmentHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Inventory Date.
+        /// </summary>
+        public static string CompartmentLastInventoryDate {
+            get {
+                return ResourceManager.GetString("CompartmentLastInventoryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Pick Date.
+        /// </summary>
+        public static string CompartmentLastPickDate {
+            get {
+                return ResourceManager.GetString("CompartmentLastPickDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Store Date.
+        /// </summary>
+        public static string CompartmentLastStoreDate {
+            get {
+                return ResourceManager.GetString("CompartmentLastStoreDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lot.
         /// </summary>
         public static string CompartmentLot {
@@ -88,11 +151,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Max Capacity.
+        /// </summary>
+        public static string CompartmentMaxCapacity {
+            get {
+                return ResourceManager.GetString("CompartmentMaxCapacity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pairing.
         /// </summary>
         public static string CompartmentPairing {
             get {
                 return ResourceManager.GetString("CompartmentPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reserved for Pick.
+        /// </summary>
+        public static string CompartmentReservedForPick {
+            get {
+                return ResourceManager.GetString("CompartmentReservedForPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reserved to Store.
+        /// </summary>
+        public static string CompartmentReservedToStore {
+            get {
+                return ResourceManager.GetString("CompartmentReservedToStore", resourceCulture);
             }
         }
         
@@ -147,6 +237,33 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentTypeDescription {
             get {
                 return ResourceManager.GetString("CompartmentTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string CompartmentWidth {
+            get {
+                return ResourceManager.GetString("CompartmentWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X Position.
+        /// </summary>
+        public static string CompartmentXPosition {
+            get {
+                return ResourceManager.GetString("CompartmentXPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y Position.
+        /// </summary>
+        public static string CompartmentYPosition {
+            get {
+                return ResourceManager.GetString("CompartmentYPosition", resourceCulture);
             }
         }
         
@@ -228,6 +345,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemHeight {
             get {
                 return ResourceManager.GetString("ItemHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Capacity.
+        /// </summary>
+        public static string ItemInCompartmentCapacity {
+            get {
+                return ResourceManager.GetString("ItemInCompartmentCapacity", resourceCulture);
             }
         }
         
@@ -408,6 +534,15 @@ namespace Ferretto.Common.Resources {
         public static string PackageType {
             get {
                 return ResourceManager.GetString("PackageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string RegistrationNumber {
+            get {
+                return ResourceManager.GetString("RegistrationNumber", resourceCulture);
             }
         }
     }

@@ -11,10 +11,10 @@ namespace Ferretto.Common.DataAccess
     {
         #region Fields
 
-        static readonly private Func<DataModels.Item, bool> AClassFilter =
+        private static readonly Func<DataModels.Item, bool> AClassFilter =
             item => item.AbcClassId == "A";
 
-        static readonly private Func<DataModels.Item, bool> FifoFilter =
+        private static readonly Func<DataModels.Item, bool> FifoFilter =
             item => item.ItemManagementType.Description.Contains("FIFO");
 
         private readonly DatabaseContext dataContext;
@@ -68,7 +68,17 @@ namespace Ferretto.Common.DataAccess
             return this.GetAllCompartments().Count();
         }
 
-        public IEnumerable<System.Object> GetAllItemManagementTypes()
+        public IEnumerable<object> GetAllCompartmentStatuses()
+        {
+            return this.dataContext.CompartmentStatuses;
+        }
+
+        public IEnumerable<object> GetAllCompartmentTypes()
+        {
+            return this.dataContext.CompartmentTypes;
+        }
+
+        public IEnumerable<object> GetAllItemManagementTypes()
         {
             return this.dataContext.ItemManagementTypes;
         }
@@ -83,22 +93,44 @@ namespace Ferretto.Common.DataAccess
             return this.GetAllItems().Count();
         }
 
+        public IEnumerable<object> GetAllMaterialStatuses()
+        {
+            return this.dataContext.MaterialStatuses;
+        }
+
         public IEnumerable<object> GetAllMeasureUnits()
         {
             return this.dataContext.MeasureUnits;
+        }
+
+        public IEnumerable<object> GetAllPackageTypes()
+        {
+            return this.dataContext.PackageTypes;
+        }
+
+        public object GetCompartmentDetails(int compartmentId)
+        {
+            return this.dataContext.Compartments
+                .Where(compartment => compartment.Id == compartmentId)
+                .Include(compartment => compartment.LoadingUnit)
+                .Include(compartment => compartment.Item)
+                .Single();
         }
 
         public IEnumerable<object> GetCompartmentsByItemId(int itemId)
         {
             return this.dataContext.Compartments
                 .Where(compartment => compartment.ItemId == itemId)
+                .Include(compartment => compartment.LoadingUnit)
+                .Include(compartment => compartment.CompartmentStatus)
                 .Select(compartment => ProjectCompartment(compartment))
                 .ToList();
         }
 
         public object GetItemDetails(int itemId)
         {
-            return this.dataContext.Items.Single(item => item.Id == itemId);
+            return this.dataContext.Items
+                .Single(item => item.Id == itemId);
         }
 
         public IEnumerable<object> GetItemsWithAClass()
@@ -108,7 +140,7 @@ namespace Ferretto.Common.DataAccess
 
         public int GetItemsWithAClassCount()
         {
-            return this.dataContext.Items.Where(AClassFilter).Count();
+            return this.dataContext.Items.Count(AClassFilter);
         }
 
         public IEnumerable<object> GetItemsWithFifo()
@@ -118,7 +150,7 @@ namespace Ferretto.Common.DataAccess
 
         public int GetItemsWithFifoCount()
         {
-            return this.dataContext.Items.Include(i => i.ItemManagementType).Where(FifoFilter).Count();
+            return this.dataContext.Items.Include(i => i.ItemManagementType).Count(FifoFilter);
         }
 
         public void Initialize()

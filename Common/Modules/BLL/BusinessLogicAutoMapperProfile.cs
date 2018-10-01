@@ -14,6 +14,15 @@ namespace Ferretto.Common.Modules.BLL
             this.CreateMap<DataModels.Compartment, Models.Compartment>();
             this.CreateMap<Models.Compartment, DataModels.Compartment>();
 
+            this.CreateMap<DataModels.Compartment, Models.CompartmentDetails>();
+            this.CreateMap<Models.CompartmentDetails, DataModels.Compartment>();
+
+            this.CreateMap<DataModels.CompartmentStatus, Models.CompartmentStatus>();
+            this.CreateMap<Models.CompartmentStatus, DataModels.CompartmentStatus>();
+
+            this.CreateMap<DataModels.CompartmentType, Models.CompartmentType>();
+            this.CreateMap<Models.CompartmentType, DataModels.CompartmentType>();
+
             this.CreateMap<DataAccess.ItemDTO, Models.Item>();
             this.CreateMap<Models.Item, DataAccess.ItemDTO>();
 
@@ -26,8 +35,14 @@ namespace Ferretto.Common.Modules.BLL
             this.CreateMap<DataModels.ItemManagementType, Models.ItemManagementType>();
             this.CreateMap<Models.ItemManagementType, DataModels.ItemManagementType>();
 
+            this.CreateMap<DataModels.MaterialStatus, Models.MaterialStatus>();
+            this.CreateMap<Models.MaterialStatus, DataModels.MaterialStatus>();
+
             this.CreateMap<DataModels.MeasureUnit, Models.MeasureUnit>();
             this.CreateMap<Models.MeasureUnit, DataModels.MeasureUnit>();
+
+            this.CreateMap<DataModels.PackageType, Models.PackageType>();
+            this.CreateMap<Models.PackageType, DataModels.PackageType>();
 
             this.CreateMissingTypeMaps = true;
         }

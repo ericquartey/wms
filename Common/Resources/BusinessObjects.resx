@@ -125,13 +125,53 @@
     <value>Code</value>
     <comment>Compartment - Code</comment>
   </data>
+  <data name="CompartmentFifoTime" xml:space="preserve">
+    <value>FIFO Time</value>
+    <comment>Compartment - FIFO Time</comment>
+  </data>
+  <data name="CompartmentFirstStoreDate" xml:space="preserve">
+    <value>First Store Date</value>
+    <comment>Compartment - First Store Date</comment>
+  </data>
+  <data name="CompartmentHandlingDate" xml:space="preserve">
+    <value>Handling Date</value>
+    <comment>Compartment - Handling Date</comment>
+  </data>
+  <data name="CompartmentHeight" xml:space="preserve">
+    <value>Height</value>
+    <comment>Compartment - Height</comment>
+  </data>
+  <data name="CompartmentLastInventoryDate" xml:space="preserve">
+    <value>Last Inventory Date</value>
+    <comment>Compartment - Last Inventory Date</comment>
+  </data>
+  <data name="CompartmentLastPickDate" xml:space="preserve">
+    <value>Last Pick Date</value>
+    <comment>Compartment - Last Pick Date</comment>
+  </data>
+  <data name="CompartmentLastStoreDate" xml:space="preserve">
+    <value>Last Store Date</value>
+    <comment>Compartment - Last Store Date</comment>
+  </data>
   <data name="CompartmentLot" xml:space="preserve">
     <value>Lot</value>
     <comment>Compartment - Lot</comment>
   </data>
+  <data name="CompartmentMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+    <comment>Compartment - Max Capacity</comment>
+  </data>
   <data name="CompartmentPairing" xml:space="preserve">
     <value>Pairing</value>
     <comment>Compartment - Pairing</comment>
+  </data>
+  <data name="CompartmentReservedForPick" xml:space="preserve">
+    <value>Reserved for Pick</value>
+    <comment>Compartment - Reserved for Pick</comment>
+  </data>
+  <data name="CompartmentReservedToStore" xml:space="preserve">
+    <value>Reserved to Store</value>
+    <comment>Compartment - Reserved To Store</comment>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
     <value>Compartment Status</value>
@@ -156,6 +196,18 @@
   <data name="CompartmentTypeDescription" xml:space="preserve">
     <value>Compartment Type Description</value>
     <comment>Compartment Type - Description</comment>
+  </data>
+  <data name="CompartmentWidth" xml:space="preserve">
+    <value>Width</value>
+    <comment>Compartment - Width</comment>
+  </data>
+  <data name="CompartmentXPosition" xml:space="preserve">
+    <value>X Position</value>
+    <comment>Compartment - X Position</comment>
+  </data>
+  <data name="CompartmentYPosition" xml:space="preserve">
+    <value>Y Position</value>
+    <comment>Compartment - Y Position</comment>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
     <value>Available</value>
@@ -192,6 +244,10 @@
   <data name="ItemHeight" xml:space="preserve">
     <value>Height</value>
     <comment>Item - Height</comment>
+  </data>
+  <data name="ItemInCompartmentCapacity" xml:space="preserve">
+    <value>Capacity</value>
+    <comment>Item In Compartment - Capacity</comment>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
     <value>Inventory Tolerance</value>
@@ -272,5 +328,9 @@
   <data name="PackageType" xml:space="preserve">
     <value>Package Type</value>
     <comment>Package Type</comment>
+  </data>
+  <data name="RegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Item In Compartment - Registration Number</comment>
   </data>
 </root>
