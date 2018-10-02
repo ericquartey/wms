@@ -1,5 +1,6 @@
 ﻿using DevExpress.Xpf.Core;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -11,18 +12,28 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.InitializeComponent();
 
-            this.Loaded += this.ItemsView_Loaded;
+            this.Loaded += ItemsView_Loaded;
+            this.MainGridControl.AsyncOperationCompleted += this.MainGridControl_AsyncOperationCompleted;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        private void ItemsView_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+        private static void ItemsView_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
         {
             if (DXSplashScreen.IsActive)
             {
                 DXSplashScreen.Close();
+            }
+        }
+
+        private async void MainGridControl_AsyncOperationCompleted(System.Object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (this.DataContext is FilteredNavigationViewModel<Item> viewModel)
+            {
+                await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
+                this.MainGridControl.AsyncOperationCompleted -= this.MainGridControl_AsyncOperationCompleted;
             }
         }
 
