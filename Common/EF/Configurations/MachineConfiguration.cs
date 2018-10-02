@@ -6,8 +6,15 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class MachineConfiguration : IEntityTypeConfiguration<Machine>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<Machine> builder)
         {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
+
             builder.HasKey(m => m.Id);
 
             builder.Property(m => m.MachineTypeId).IsRequired().HasColumnType("char(1)");
@@ -22,5 +29,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(m => m.MachineTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion Methods
     }
 }

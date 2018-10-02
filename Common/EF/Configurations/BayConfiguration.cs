@@ -6,8 +6,15 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class BayConfiguration : IEntityTypeConfiguration<Bay>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<Bay> builder)
         {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
+
             builder.HasKey(b => b.Id);
 
             builder.Property(b => b.Description).IsRequired();
@@ -17,5 +24,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(b => b.BayTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion Methods
     }
 }
