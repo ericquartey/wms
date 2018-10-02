@@ -92,8 +92,21 @@ namespace Ferretto.Common.Controls.Services
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(names.viewModelName);
         }
 
+        public void LoadModule(string moduleName)
+        {
+            var catalog = this.container.Resolve<IModuleCatalog>();
+            var module = (catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName));
+            if (module.State != ModuleState.NotStarted)
+            {
+                return;
+            }
+
+            var moduleManager = this.container.Resolve<IModuleManager>();
+            moduleManager.LoadModule(moduleName);
+        }
+
         public void Register<TItemsView, TItemsViewModel>() where TItemsViewModel : INavigableViewModel
-            where TItemsView : INavigableView
+                    where TItemsView : INavigableView
         {
             var newRegId = this.GetNewRegistrationId<TItemsView, TItemsViewModel>();
             this.container.RegisterType<INavigableViewModel, TItemsViewModel>(newRegId);
@@ -245,19 +258,6 @@ namespace Ferretto.Common.Controls.Services
             }
 
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
-        }
-
-        private void LoadModule(string moduleName)
-        {
-            var catalog = this.container.Resolve<IModuleCatalog>();
-            var module = (catalog.Modules.FirstOrDefault(m => m.ModuleName == moduleName));
-            if (module.State != ModuleState.NotStarted)
-            {
-                return;
-            }
-
-            var moduleManager = this.container.Resolve<IModuleManager>();
-            moduleManager.LoadModule(moduleName);
         }
 
         private void RegisterDialog(String moduleViewName, String title)
