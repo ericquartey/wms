@@ -88,6 +88,9 @@
                                     FieldName="Description"
                                     Header="{x:Static res:General.Description}" />
                     <dxg:GridColumn Width="100*"
+                                    FieldName="ItemCategoryDescription"
+                                    Header="{x:Static res:BusinessObjects.ItemCategory}" />
+                    <dxg:GridColumn Width="100*"
                                     FieldName="AbcClassDescription"
                                     Header="{x:Static res:BusinessObjects.ItemClass}" />
                     <dxg:GridColumn Width="50*"

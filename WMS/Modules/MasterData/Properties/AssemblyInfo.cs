@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 
 [assembly: ComVisible(false)]
 
-[assembly: System.CLSCompliant(true)]
+[assembly: System.CLSCompliant(false)]
 
 // Se il progetto viene esposto a COM, il GUID seguente verrà utilizzato come ID della libreria dei tipi
 [assembly: Guid("9d9ecc03-073a-43f7-bed8-568cf67ab8ad")]

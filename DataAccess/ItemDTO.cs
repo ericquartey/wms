@@ -31,6 +31,7 @@ namespace Ferretto.Common.DataAccess
         public int? InventoryTolerance { get; set; }
 
         public string ItemManagementTypeDescription { get; set; }
+        public string ItemCategoryDescription { get; set; }
         public DateTime? LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }
         public DateTime? LastStoreDate { get; set; }

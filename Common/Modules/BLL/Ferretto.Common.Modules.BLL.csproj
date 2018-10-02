@@ -98,6 +98,7 @@
     <Compile Include="Models\CompartmentType.cs" />
     <Compile Include="Models\DataSource.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemCategory.cs" />
     <Compile Include="Models\ItemDetails.cs" />
     <Compile Include="Models\ItemInCompartment.cs" />
     <Compile Include="Models\ItemManagementType.cs" />

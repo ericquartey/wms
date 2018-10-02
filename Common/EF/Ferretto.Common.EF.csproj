@@ -197,6 +197,7 @@
     <Compile Include="Configurations\DefaultCompartmentConfiguration.cs" />
     <Compile Include="Configurations\DefaultLoadingUnitConfiguration.cs" />
     <Compile Include="Configurations\ItemAreaConfiguration.cs" />
+    <Compile Include="Configurations\ItemCategoryConfiguration.cs" />
     <Compile Include="Configurations\ItemCompartmentTypeConfiguration.cs" />
     <Compile Include="Configurations\ItemConfiguration.cs" />
     <Compile Include="Configurations\ItemListConfiguration.cs" />

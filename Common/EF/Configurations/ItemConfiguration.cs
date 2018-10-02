@@ -38,6 +38,10 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(i => i.Items)
                 .HasForeignKey(i => i.ItemManagementTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(i => i.ItemCategory)
+                .WithMany(i => i.Items)
+                .HasForeignKey(i => i.ItemCategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }
 }

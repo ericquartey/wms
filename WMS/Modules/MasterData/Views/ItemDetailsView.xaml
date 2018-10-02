@@ -144,6 +144,13 @@
                                       Label="{x:Static res:BusinessObjects.ItemManagementType}"
                                       SelectedValue="{Binding Path=Item.ItemManagementTypeId, Mode=TwoWay}"
                                       ValueMember="Id" />
+                        <wms:ComboBox Grid.Row="2"
+                                      Grid.Column="1"
+                                      Margin="0,0,20,0"
+                                      ItemsSource="{Binding Path=Item.ItemCategoryChoices}"
+                                      Label="{x:Static res:BusinessObjects.ItemCategory}"
+                                      SelectedValue="{Binding Path=Item.ItemCategoryId, Mode=TwoWay}"
+                                      ValueMember="Id" />
                     </Grid>
                 </GroupBox>
 
