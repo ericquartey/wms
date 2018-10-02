@@ -46,8 +46,8 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
-        private List<CellBlock> blocks;
-        private List<Cell> cells;
+        private List<CellBlock> blocks = new List<CellBlock>();
+        private List<Cell> cells = new List<Cell>();
 
         #endregion Fields
 
@@ -55,9 +55,22 @@ namespace Ferretto.VW.Utils.Source
 
         public CellsManagement()
         {
-            string jsonCells = File.ReadAllText(CreateAndPopulateTestTables.JSON_CELL_PATH);
-            string jsonBlocks = File.ReadAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH);
-            this.cells = JsonConvert.DeserializeObject<List<Cell>>(jsonCells);
+            if (File.Exists(CreateAndPopulateTestTables.JSON_CELL_PATH))
+            {
+                string jsonCells = File.ReadAllText(CreateAndPopulateTestTables.JSON_CELL_PATH);
+                this.Cells = JsonConvert.DeserializeObject<List<Cell>>(jsonCells);
+            }
+            if (File.Exists(CreateAndPopulateTestTables.JSON_BLOCK_PATH))
+            {
+                string jsonBlocks = File.ReadAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH);
+                this.Blocks = JsonConvert.DeserializeObject<List<CellBlock>>(jsonBlocks);
+            }
+            else
+            {
+                this.CreateBlocks();
+                this.CreateBlockFile();
+            }
+            Debug.Print("Done!\n");
         }
 
         #endregion Constructors
@@ -84,6 +97,16 @@ namespace Ferretto.VW.Utils.Source
 
         private void CreateBlockFile()
         {
+            var json = JsonConvert.SerializeObject(this.Blocks, Formatting.Indented);
+            if (File.Exists(CreateAndPopulateTestTables.JSON_BLOCK_PATH))
+            {
+                File.Delete(CreateAndPopulateTestTables.JSON_BLOCK_PATH);
+                File.WriteAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH, json);
+            }
         }
 
         private void CreateBlocks()
@@ -93,8 +116,8 @@ namespace Ferretto.VW.Utils.Source
             {
                 if (this.Cells[i].Status == 0)
                 {
-                    int tmp = this.GetLastUpperNotDisabledCell(i);
-                    CellBlock cb = new CellBlock(i, tmp, counter);
+                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
+                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
                     this.Blocks.Add(cb);
                     counter++;
                     i = tmp;
@@ -104,8 +127,8 @@ namespace Ferretto.VW.Utils.Source
             {
                 if (this.Cells[i].Status == 0)
                 {
-                    int tmp = this.GetLastUpperNotDisabledCell(i);
-                    CellBlock cb = new CellBlock(i, tmp, counter);
+                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
+                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
                     this.Blocks.Add(cb);
                     counter++;
                     i = tmp;
@@ -113,9 +136,19 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        private int GetLastUpperNotDisabledCell(int cellID)
+        private int GetLastUpperNotDisabledCellIndex(int cellIndex)
         {
-            return 0;
+            for (int i = cellIndex + 2; i < this.Cells.Count; i += 2)
+            {
+                if (this.Cells[i].Status != 1)
+                {
+                }
+                else
+                {
+                    return i - 2;
+                }
+            }
+            return (cellIndex % 2 == 0) ? this.Cells.Count - 2 : this.Cells.Count - 1;
         }
 
         private void UpdateCellsFile()
@@ -205,6 +238,7 @@ namespace Ferretto.VW.Utils.Source
         {
             if ((firstCell % 2 == 0 && lastCell % 2 != 0) || (firstCell % 2 != 0 && lastCell % 2 == 0))
             {
+                Debug.Print("CellBlock Constructor: " + firstCell + ", " + lastCell);
                 throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
             }
             this.Area = 0;
