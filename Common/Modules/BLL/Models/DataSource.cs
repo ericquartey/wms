@@ -11,7 +11,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         #region Constructors
 
         public DataSource(string name, Func<IQueryable<TModel>> getData)
-                        : base((a) => a.QueryableSource = getData())
+                          : this(name, getData, () => getData().Count())
         {
             if (name == null)
             {
@@ -24,16 +24,16 @@ namespace Ferretto.Common.Modules.BLL.Models
             this.GetData = getData;
         }
 
-        public DataSource(string name, Func<IQueryable<TModel>> getData, Func<IQueryable<TModel>, int> getDataCount)
-                    : this(name, getData)
+        public DataSource(string name, Func<IQueryable<TModel>> getData, Func<int> getDataCount)
+                : base((a) => a.QueryableSource = getData())
         {
-            if (getDataCount != null)
+            if (getDataCount == null)
             {
-                this.GetDataCount = getDataCount;
+                throw new ArgumentNullException(nameof(getDataCount));
             }
             else
             {
-                this.GetDataCount = data => this.GetData().Count();
+                this.GetDataCount = getDataCount;
             }
         }
 
@@ -43,10 +43,19 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public Func<IQueryable<TModel>> GetData { get; protected set; }
 
-        public Func<IQueryable<TModel>, int> GetDataCount { get; protected set; }
+        public Func<int> GetDataCount { get; protected set; }
 
         public string Name { get; private set; }
 
         #endregion Properties
+
+        #region Methods
+
+        public override String ToString()
+        {
+            return this.Name ?? base.ToString();
+        }
+
+        #endregion Methods
     }
 }

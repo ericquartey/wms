@@ -59,7 +59,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2
                 }
-                );
+                )
+                .AsNoTracking();
         }
 
         public int GetAllCompartmentsCount()
@@ -221,7 +222,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                             ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
                             : 0,
                     }
-                ).Single();
+                )
+                .AsNoTracking()
+                .Single();
 
             itemDetails.AbcClassChoices = this.GetAllAbcClasses();
             itemDetails.MeasureUnitChoices = this.GetAllMeasureUnits();

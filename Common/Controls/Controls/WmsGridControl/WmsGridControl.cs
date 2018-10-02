@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using DevExpress.Mvvm.UI;
-using DevExpress.Xpf.Core.Native;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 
@@ -13,7 +12,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty CurrentDataSourcesProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty CurrentDataSourceProperty = DependencyProperty.Register(
             nameof(CurrentDataSource),
             typeof(object),
             typeof(WmsGridControl),
@@ -27,8 +26,8 @@ namespace Ferretto.Common.Controls
 
         public object CurrentDataSource
         {
-            get => this.GetValue(CurrentDataSourcesProperty);
-            set => this.SetValue(CurrentDataSourcesProperty, value);
+            get => this.GetValue(CurrentDataSourceProperty);
+            set => this.SetValue(CurrentDataSourceProperty, value);
         }
 
         public Type ItemType
@@ -38,7 +37,7 @@ namespace Ferretto.Common.Controls
             {
                 if (value != this.itemType)
                 {
-                    if (value.GetInterface(typeof(IBusinessObject).FullName) != null)
+                    if (value?.GetInterface(typeof(IBusinessObject).FullName) != null)
                     {
                         this.itemType = value;
                     }
@@ -68,12 +67,11 @@ namespace Ferretto.Common.Controls
 
         private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            if (dependencyObject is WmsGridControl gridControl)
+            if (dependencyObject is WmsGridControl gridControl
+                &&
+                gridControl.DataContext is IWmsGridViewModel dataContext)
             {
-                if (gridControl.DataContext is IWmsGridViewModel dataContext)
-                {
-                    dataContext.SetDataSource(e.NewValue);
-                }
+                dataContext.SetDataSource(e.NewValue);
             }
         }
 
@@ -103,13 +101,13 @@ namespace Ferretto.Common.Controls
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
-            this.SetBinding(ItemsSourceProperty, "Items");
+            this.SetBinding(ItemsSourceProperty, "CurrentDataSource");
         }
 
         private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)
         {
             var wmsViews = LayoutTreeHelper.GetVisualParents(this.Parent).OfType<WmsView>();
-            if (wmsViews != null && wmsViews.Count() > 0)
+            if (wmsViews != null && wmsViews.Any())
             {
                 var wmsView = wmsViews.First();
                 var wmsViewViewModel = ((INavigableView)wmsView).DataContext;

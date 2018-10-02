@@ -19,6 +19,11 @@ namespace Ferretto.Common.Controls
 
         public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
         {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
             if (value is int == false)
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToStringType);

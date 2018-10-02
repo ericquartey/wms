@@ -69,17 +69,17 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.eventService.Subscribe<ItemSelectionChangedEvent<Compartment>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
+                    eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(Compartment selectedCompartment)
+        private void OnItemSelectionChanged(object itemId)
         {
-            if (selectedCompartment == null)
+            if (itemId == null)
             {
                 this.Compartment = null;
                 return;
             }
-            this.Compartment = this.businessProvider.GetCompartmentDetails(selectedCompartment.Id);
+            this.Compartment = this.businessProvider.GetCompartmentDetails((int)itemId);
         }
 
         #endregion Methods

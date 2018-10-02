@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Utils;
@@ -26,7 +27,7 @@ namespace Ferretto.WMS.Modules.MasterData
         protected FilteredNavigationViewModel()
         {
             var viewName = MvvmNaming.GetViewNameFromViewModelName(this.GetType().Name);
-            this.dataSources = this.dataSourceService.GetAll(viewName) as IEnumerable<IDataSource<TModel>>;
+            this.dataSources = this.dataSourceService.GetAll<TModel>(viewName);
 
             this.filterTiles = new BindingList<Tile>(this.DataSources.Select(dataSource => new Tile { Name = dataSource.Name }).ToList());
         }
@@ -69,12 +70,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void UpdateFilterTilesCounts()
+        public async Task UpdateFilterTilesCountsAsync()
         {
-            foreach (var filterTile in this.filterTiles)
+            await Task.Run(() =>
             {
-                filterTile.Count = this.DataSources.Single(dataSource => dataSource.Name == filterTile.Name).GetData().Count();
-            }
+                foreach (var filterTile in this.filterTiles)
+                {
+                    filterTile.Count = this.DataSources.Single(d => d.Name == filterTile.Name).GetDataCount();
+                }
+            }).ConfigureAwait(true);
         }
 
         #endregion Methods

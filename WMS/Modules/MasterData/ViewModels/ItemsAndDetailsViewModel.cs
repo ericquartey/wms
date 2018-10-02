@@ -60,14 +60,8 @@ namespace Ferretto.WMS.Modules.MasterData
                   {
                       return;
                   }
-                  if (eventArgs.SelectedItem == null)
-                  {
-                      this.selectedId = null;
-                  }
-                  else
-                  {
-                      this.selectedId = eventArgs.SelectedItem.Id.ToString();
-                  }
+
+                  this.selectedId = eventArgs.ItemId?.ToString();
               });
         }
 

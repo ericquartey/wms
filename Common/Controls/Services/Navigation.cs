@@ -2,58 +2,80 @@
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs where TPayload : IBusinessObject
+    public class ItemChangedEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
     {
+        #region Fields
+
+        private readonly object itemId;
+
+        #endregion Fields
+
         #region Constructors
 
-        public ItemChangedEvent(TPayload changedItem)
+        public ItemChangedEvent(object itemId)
         {
-            this.ChangedItem = changedItem;
+            this.itemId = itemId;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public TPayload ChangedItem { get; set; }
+        public object ItemId => this.itemId;
 
         public string Token => null;
 
         #endregion Properties
     }
 
-    public class ItemSelectionChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs where TPayload : IBusinessObject
+    public class ItemSelectionChangedEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
     {
         #region Fields
 
+        private readonly object itemId;
         private readonly string token;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemSelectionChangedEvent(string token, TPayload selectedItem)
+        public ItemSelectionChangedEvent(object itemId, string token)
         {
             this.token = token;
-            this.SelectedItem = selectedItem;
+            this.itemId = itemId;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public TPayload SelectedItem { get; private set; }
+        public object ItemId => this.itemId;
 
         public string Token => this.token;
 
         #endregion Properties
     }
 
-    public class RefreshItemsEvent<TItem> : Prism.Events.PubSubEvent<TItem>, IEventArgs
+    public class RefreshItemsEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs
     {
+        #region Fields
+
+        private readonly object itemId;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public RefreshItemsEvent(object itemId)
+        {
+            this.itemId = itemId;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
-        public TItem Item { get; set; }
+        public object ItemId => this.itemId;
 
         public string Token => null;
 
@@ -81,6 +103,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public bool IsDetailsViewVisible { get; private set; }
+
         public string Token => this.token;
 
         #endregion Properties
