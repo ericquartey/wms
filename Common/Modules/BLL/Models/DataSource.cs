@@ -1,79 +1,52 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Modules.BLL.Services;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class DataSource<TEntity> : BindableBase, IDataSource<TEntity> where TEntity : IBusinessObject
+    public class DataSource<TModel> : EntityInstantFeedbackSource, IDataSource<TModel>
+        where TModel : BusinessObject
     {
-        #region Fields
+        #region Constructors
 
-        private string countInfo;
-        private bool isVisible;
+        public DataSource(string name, Func<IQueryable<TModel>> getData)
+                        : base((a) => a.QueryableSource = getData())
+        {
+            if (name == null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
 
-        #endregion Fields
+            this.Name = name;
+            this.KeyExpression = "Id";
+            this.AreSourceRowsThreadSafe = true;
+            this.GetData = getData;
+        }
+
+        public DataSource(string name, Func<IQueryable<TModel>> getData, Func<IQueryable<TModel>, int> getDataCount)
+                    : this(name, getData)
+        {
+            if (getDataCount != null)
+            {
+                this.GetDataCount = getDataCount;
+            }
+            else
+            {
+                this.GetDataCount = data => this.GetData().Count();
+            }
+        }
+
+        #endregion Constructors
 
         #region Properties
 
-        public int Count => this.GetTotalCount();
+        public Func<IQueryable<TModel>> GetData { get; protected set; }
 
-        public string CountInfo
-        {
-            get => this.countInfo;
-            set => this.SetProperty(ref this.countInfo, value);
-        }
+        public Func<IQueryable<TModel>, int> GetDataCount { get; protected set; }
 
-        public string Description { get; set; }
-        public Func<IEnumerable<TEntity>, IEnumerable<TEntity>> Filter { get; set; }
-        public Func<Func<IEnumerable<TEntity>, IEnumerable<TEntity>>, int> GetCount { get; set; }
-        public Func<Func<IEnumerable<TEntity>, IEnumerable<TEntity>>, IEnumerable<TEntity>> GetData { get; set; }
-
-        public bool IsVisible
-        {
-            get => this.isVisible;
-            set
-            {
-                this.SetProperty(ref this.isVisible, value);
-                if (value)
-                {
-                    this.GetTotalCount();
-                }
-            }
-        }
-
-        public string Name { get; set; }
-        public DataSourceType SourceName { get; set; }
+        public string Name { get; private set; }
 
         #endregion Properties
-
-        #region Methods
-
-        public int GetTotalCount()
-        {
-            if (this.GetCount == null)
-            {
-                this.CountInfo = "-";
-                return 0;
-            }
-            var count = this.GetCount(this.Filter);
-            this.CountInfo = count.ToString();
-
-            return count;
-        }
-
-        public IEnumerable<TEntity> Load()
-        {
-            return this.GetData?.Invoke(this.Filter);
-        }
-
-        public override String ToString()
-        {
-            return this.Name ?? base.ToString();
-        }
-
-        #endregion Methods
     }
 }

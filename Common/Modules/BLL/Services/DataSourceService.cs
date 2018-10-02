@@ -28,7 +28,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public IEnumerable<object> GetAll(string viewName, object parameter = null)
+        public IEnumerable<IDataSource<IBusinessObject>> GetAll(string viewName, object parameter = null)
         {
 #pragma warning disable IDE0009
             switch (viewName)
@@ -36,70 +36,27 @@ namespace Ferretto.Common.Modules.BLL.Services
                 case "ItemsView":
                     return new List<DataSource<Item>>
                     {
-                        // All items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemAll,
-                            Name = MasterData.ItemAll,
-                            GetCount = filter => this.businessProvider.GetAllItemsCount(),
-                            GetData = filter => this.businessProvider.GetAllItems()
-                        },
-                        //// A-Class items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemAClass,
-                            Name = MasterData.ItemClassA,
-                            GetCount = filter => this.businessProvider.GetItemsWithAClassCount(),
-                            GetData = filter => this.businessProvider.GetItemsWithAClass()
-                        },
-                        //// FIFO items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemFifo,
-                            Name = MasterData.ItemFIFO,
-                            GetCount = filter => this.businessProvider.GetItemsWithFifoCount(),
-                            GetData = filter => this.businessProvider.GetItemsWithFifo()
-                        }
+                        new DataSource<Item>(MasterData.ItemAll, () => this.businessProvider.GetAllItems()),
+                        new DataSource<Item>(MasterData.ItemClassA, () => this.businessProvider.GetItemsWithAClass()),
+                        new DataSource<Item>(MasterData.ItemFIFO, () => this.businessProvider.GetItemsWithFifo())
                     };
 
                 case "ItemDetailsView":
                     return new List<DataSource<Compartment>>
                     {
-                        // All items
-                        new DataSource<Compartment>
-                        {
-                            SourceName = DataSourceType.ItemCompartments,
-                            Name = nameof(DataSourceType.ItemCompartments),
-                            GetData = filter => this.businessProvider.GetCompartmentsByItemId((int)parameter)
-                        }
+                        new DataSource<Compartment>(MasterData.CompartmentAll, () => this.businessProvider.GetCompartmentsByItemId((int)parameter))
                     };
 
                 case "CompartmentsView":
                     return new List<DataSource<Compartment>>
                     {
-                        // All compartments
-                        new DataSource<Compartment>
-                        {
-                            SourceName = DataSourceType.CompartmentAll,
-                            Name = MasterData.CompartmentAll,
-                            Filter = compartments => compartments,
-                            GetCount = filter => this.businessProvider.GetAllCompartmentsCount(),
-                            GetData = filter => this.businessProvider.GetAllCompartments()
-                        }
+                        new DataSource<Compartment>(MasterData.CompartmentAll, () => this.businessProvider.GetAllCompartments())
                     };
 
                 case "LoadingUnitsView":
                     return new List<DataSource<LoadingUnit>>
                     {
-                        // All loading units
-                        new DataSource<LoadingUnit>
-                        {
-                            SourceName = DataSourceType.LoadingUnitAll,
-                            Name = MasterData.LoadingUnitAll,
-                            Filter = loadingUnits => loadingUnits,
-                            GetCount = filter => this.businessProvider.GetAllLoadingUnitsCount(),
-                            GetData = filter => this.businessProvider.GetAllLoadingUnits()
-                        }
+                        new DataSource<LoadingUnit>(MasterData.LoadingUnitAll, () => this.businessProvider.GetAllLoadingUnits())
                     };
 
                 default:
