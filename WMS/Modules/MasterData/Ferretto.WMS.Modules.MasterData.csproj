@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsViewModel.cs" />
+    <Compile Include="ViewModels\FilteredNavigationViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />

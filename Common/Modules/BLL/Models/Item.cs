@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class Item : BusinessObject
+    public sealed class Item : BusinessObject
     {
         #region Fields
 

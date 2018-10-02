@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class Compartment : BusinessObject
+    public sealed class Compartment : BusinessObject
     {
         #region Fields
 
