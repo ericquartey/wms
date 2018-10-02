@@ -78,6 +78,11 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.CompartmentTypes.AsNoTracking();
         }
 
+        public IQueryable<DataModels.ItemCategory> GetAllItemCategories()
+        {
+            return this.dataContext.ItemCategories.AsNoTracking();
+        }
+
         public IQueryable<DataModels.ItemManagementType> GetAllItemManagementTypes()
         {
             return this.dataContext.ItemManagementTypes.AsNoTracking();
@@ -229,6 +234,7 @@ namespace Ferretto.Common.Modules.BLL.Services
             itemDetails.AbcClassChoices = this.GetAllAbcClasses();
             itemDetails.MeasureUnitChoices = this.GetAllMeasureUnits();
             itemDetails.ItemManagementTypeChoices = this.GetAllItemManagementTypes();
+            itemDetails.ItemCategoryChoices = this.GetAllItemCategories();
 
             return itemDetails;
         }

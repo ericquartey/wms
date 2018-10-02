@@ -12,6 +12,8 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         IQueryable<DataModels.CompartmentType> GetAllCompartmentTypes();
 
+        IQueryable<DataModels.ItemCategory> GetAllItemCategories();
+
         IQueryable<DataModels.ItemManagementType> GetAllItemManagementTypes();
 
         IQueryable<Models.Item> GetAllItems();
