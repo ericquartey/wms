@@ -31,9 +31,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public IQueryable<DataModels.AbcClass> GetAllAbcClasses()
+        public IQueryable<Enumeration<string>> GetAllAbcClasses()
         {
-            return this.dataContext.AbcClasses.AsNoTracking();
+            return this.dataContext.AbcClasses.AsNoTracking().Select(x => new Enumeration<string>(x.Id, x.Description));
         }
 
         public IQueryable<Compartment> GetAllCompartments()
@@ -68,24 +68,24 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.Compartments.Count();
         }
 
-        public IQueryable<DataModels.CompartmentStatus> GetAllCompartmentStatuses()
+        public IQueryable<Enumeration<int>> GetAllCompartmentStatuses()
         {
-            return this.dataContext.CompartmentStatuses.AsNoTracking();
+            return this.dataContext.CompartmentStatuses.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
-        public IQueryable<DataModels.CompartmentType> GetAllCompartmentTypes()
+        public IQueryable<Enumeration<int>> GetAllCompartmentTypes()
         {
-            return this.dataContext.CompartmentTypes.AsNoTracking();
+            return this.dataContext.CompartmentTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
-        public IQueryable<DataModels.ItemCategory> GetAllItemCategories()
+        public IQueryable<Enumeration<int>> GetAllItemCategories()
         {
-            return this.dataContext.ItemCategories.AsNoTracking();
+            return this.dataContext.ItemCategories.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
-        public IQueryable<DataModels.ItemManagementType> GetAllItemManagementTypes()
+        public IQueryable<Enumeration<int>> GetAllItemManagementTypes()
         {
-            return this.dataContext.ItemManagementTypes.AsNoTracking();
+            return this.dataContext.ItemManagementTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
         public IQueryable<Item> GetAllItems()
@@ -129,19 +129,19 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.LoadingUnits.Count();
         }
 
-        public IQueryable<DataModels.MaterialStatus> GetAllMaterialStatuses()
+        public IQueryable<Enumeration<int>> GetAllMaterialStatuses()
         {
-            return this.dataContext.MaterialStatuses.AsNoTracking();
+            return this.dataContext.MaterialStatuses.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
-        public IQueryable<DataModels.MeasureUnit> GetAllMeasureUnits()
+        public IQueryable<Enumeration<string>> GetAllMeasureUnits()
         {
-            return this.dataContext.MeasureUnits.AsNoTracking();
+            return this.dataContext.MeasureUnits.AsNoTracking().Select(x => new Enumeration<string>(x.Id, x.Description));
         }
 
-        public IQueryable<DataModels.PackageType> GetAllPackageTypes()
+        public IQueryable<Enumeration<int>> GetAllPackageTypes()
         {
-            return this.dataContext.PackageTypes.AsNoTracking();
+            return this.dataContext.PackageTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
         public CompartmentDetails GetCompartmentDetails(int compartmentId)

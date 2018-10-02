@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -6,49 +7,49 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Methods
 
-        IQueryable<Models.Compartment> GetAllCompartments();
+        IQueryable<Compartment> GetAllCompartments();
 
         int GetAllCompartmentsCount();
 
-        IQueryable<DataModels.CompartmentType> GetAllCompartmentTypes();
+        IQueryable<Enumeration<int>> GetAllCompartmentTypes();
 
-        IQueryable<DataModels.ItemCategory> GetAllItemCategories();
+        IQueryable<Enumeration<int>> GetAllItemCategories();
 
-        IQueryable<DataModels.ItemManagementType> GetAllItemManagementTypes();
+        IQueryable<Enumeration<int>> GetAllItemManagementTypes();
 
-        IQueryable<Models.Item> GetAllItems();
+        IQueryable<Item> GetAllItems();
 
         int GetAllItemsCount();
 
-        IQueryable<Models.LoadingUnit> GetAllLoadingUnits();
+        IQueryable<LoadingUnit> GetAllLoadingUnits();
 
         int GetAllLoadingUnitsCount();
 
-        IQueryable<DataModels.MaterialStatus> GetAllMaterialStatuses();
+        IQueryable<Enumeration<int>> GetAllMaterialStatuses();
 
-        IQueryable<DataModels.MeasureUnit> GetAllMeasureUnits();
+        IQueryable<Enumeration<string>> GetAllMeasureUnits();
 
-        IQueryable<DataModels.PackageType> GetAllPackageTypes();
+        IQueryable<Enumeration<int>> GetAllPackageTypes();
 
-        Models.CompartmentDetails GetCompartmentDetails(int compartmentId);
+        CompartmentDetails GetCompartmentDetails(int compartmentId);
 
-        IQueryable<Models.Compartment> GetCompartmentsByItemId(int itemId);
+        IQueryable<Compartment> GetCompartmentsByItemId(int itemId);
 
-        Models.ItemDetails GetItemDetails(int itemId);
+        ItemDetails GetItemDetails(int itemId);
 
         IQueryable<Models.Item> GetItemsWithAClass();
 
         int GetItemsWithAClassCount();
 
-        IQueryable<Models.Item> GetItemsWithFifo();
+        IQueryable<Item> GetItemsWithFifo();
 
         int GetItemsWithFifoCount();
 
-        int Save(Models.ItemDetails itemDetails);
+        int Save(ItemDetails itemDetails);
 
-        int Save(Models.CompartmentDetails compartmentDetails);
+        int Save(CompartmentDetails compartmentDetails);
 
-        int Save(Models.LoadingUnitDetails loadingUnit);
+        int Save(LoadingUnitDetails loadingUnit);
 
         #endregion Methods
     }
