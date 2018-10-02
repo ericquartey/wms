@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -8,7 +10,7 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
-        private static readonly string jsonPath = Environment.CurrentDirectory;
+        public const string JSON_PATH = "C:/Users/npadovani/Desktop/cellsfile.json";
 
         #endregion Fields
 
@@ -16,13 +18,24 @@ namespace Ferretto.VW.Utils.Source
 
         public static void CreateJsonFile()
         {
-            string json = "";
-            for (int i = 0; i < 4000; i++)
+            List<Cell> cellsToJson = new List<Cell>();
+            for (int i = 1; i < 4001; i++)
             {
                 var tmp = new Cell(i);
-                json += JsonConvert.SerializeObject(tmp);
+                cellsToJson.Add(tmp);
             }
-            File.WriteAllText(jsonPath, json);
+
+            var json = JsonConvert.SerializeObject(cellsToJson, Formatting.Indented);
+
+            if (File.Exists(JSON_PATH))
+            {
+                File.Delete(JSON_PATH);
+                File.WriteAllText(JSON_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(JSON_PATH, json);
+            }
         }
 
         #endregion Methods
@@ -30,6 +43,29 @@ namespace Ferretto.VW.Utils.Source
 
     public class CellsManagement
     {
+        #region Fields
+
+        private List<CellBlock> blocks;
+        private List<Cell> cells;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public CellsManagement()
+        {
+            string json = File.ReadAllText(CreateAndPopulateTestTables.JSON_PATH);
+            this.cells = JsonConvert.DeserializeObject<List<Cell>>(json);
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        internal List<CellBlock> Blocks { get => this.blocks; set => this.blocks = value; }
+        internal List<Cell> Cells { get => this.cells; set => this.cells = value; }
+
+        #endregion Properties
     }
 
     internal static class CellManagementMethods
@@ -54,14 +90,14 @@ namespace Ferretto.VW.Utils.Source
         {
             this.IdCell = id;
             this.Priority = id;
-            if (id % 2 == 0)
+            if (id % 2 == 0) //if id is even
             {
                 this.Coord = (id == 2) ? 25 : 25 * (id / 2);
                 this.Side = 0;
             }
-            else
+            else //if id is odd
             {
-                this.Coord = (id == 2) ? 25 : 25 * ((id / 2) + 1);
+                this.Coord = (id == 1) ? 25 : 25 * ((id / 2) + 1);
                 this.Side = 1;
             }
             this.Status = 0;

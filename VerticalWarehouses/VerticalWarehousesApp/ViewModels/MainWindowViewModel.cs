@@ -17,6 +17,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.ViewModels
         public MainWindowViewModel()
         {
             CreateAndPopulateTestTables.CreateJsonFile();
+            CellsManagement cm = new CellsManagement();
         }
 
         #endregion Constructors
