@@ -5,6 +5,7 @@ using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Modules.BLL.Services;
+using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -17,7 +18,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
-        private DataSource<Compartment> compartmentsDataSource;
+        private IDataSource<Compartment> compartmentsDataSource;
         private ICommand hideDetailsCommand;
         private ItemDetails item;
         private ICommand saveCommand;
@@ -35,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public DataSource<Compartment> CompartmentsDataSource
+        public IDataSource<Compartment> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -51,7 +52,15 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.item, value))
                 {
-                    this.CompartmentsDataSource = this.dataSourceService.GetAll("ItemDetailsView", this.item.Id).Single() as DataSource<Compartment>;
+                    if (this.item != null)
+                    {
+                        var viewName = MvvmNaming.GetViewNameFromViewModelName(nameof(ItemDetailsViewModel));
+                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment>(viewName, this.item.Id).Single();
+                    }
+                    else
+                    {
+                        this.CompartmentsDataSource = null;
+                    }
                 }
             }
         }
@@ -84,17 +93,17 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
+                    eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(Item selectedItem)
+        private void OnItemSelectionChanged(object itemId)
         {
-            if (selectedItem == null)
+            if (itemId == null)
             {
                 this.Item = null;
                 return;
             }
-            this.Item = this.businessProvider.GetItemDetails(selectedItem.Id);
+            this.Item = this.businessProvider.GetItemDetails((int)itemId);
         }
 
         #endregion Methods

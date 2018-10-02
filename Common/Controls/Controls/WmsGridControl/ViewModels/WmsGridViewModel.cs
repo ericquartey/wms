@@ -1,9 +1,7 @@
-﻿using System.ComponentModel;
-using Ferretto.Common.BLL.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
@@ -12,9 +10,8 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
-        private readonly BindingList<TEntity> items = new BindingList<TEntity>();
         private IDataSource<TEntity> currentDataSource;
-        private TEntity selectedItem;
+        private object selectedItem;
 
         #endregion Fields
 
@@ -41,9 +38,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public BindingList<TEntity> Items => this.items;
-
-        public TEntity SelectedItem
+        public object SelectedItem
         {
             get => this.selectedItem;
             set
@@ -61,29 +56,19 @@ namespace Ferretto.Common.Controls
 
         public void RefreshGrid()
         {
-            if (this.CurrentDataSource == null)
-            {
-                return;
-            }
-
-            this.Items.RaiseListChangedEvents = false;
-            var elements = this.CurrentDataSource.Load();
-
-            this.items.Clear();
-            if (elements != null)
-            {
-                foreach (var item in elements)
-                {
-                    this.items.Add(item);
-                }
-            }
-            this.Items.RaiseListChangedEvents = true;
-            this.Items.ResetBindings();
+            // do nothing
         }
 
         public void SetDataSource(object dataSource)
         {
-            this.CurrentDataSource = dataSource as IDataSource<TEntity>;
+            if (dataSource == null || dataSource is IDataSource<TEntity> dataSourceEntity)
+            {
+                this.CurrentDataSource = dataSource as IDataSource<TEntity>;
+            }
+            else
+            {
+                throw new System.ArgumentException("Data source is not of the right type", nameof(dataSource));
+            }
         }
 
         protected void NotifyDataSourceChanged()
@@ -93,7 +78,8 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity>(this.Token, this.selectedItem));
+            var selectedId = this.selectedItem?.GetType().GetProperty("Id")?.GetValue(this.selectedItem);
+            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity>(selectedId, this.Token));
         }
 
         #endregion Methods

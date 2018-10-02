@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Ferretto.Common.Modules.BLL.Models;
+﻿using System.Linq;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -7,37 +6,49 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Methods
 
-        IEnumerable<Compartment> GetAllCompartments();
+        IQueryable<Models.Compartment> GetAllCompartments();
 
         int GetAllCompartmentsCount();
 
-        IEnumerable<Item> GetAllItems();
+        IQueryable<DataModels.CompartmentType> GetAllCompartmentTypes();
+
+        IQueryable<DataModels.ItemCategory> GetAllItemCategories();
+
+        IQueryable<DataModels.ItemManagementType> GetAllItemManagementTypes();
+
+        IQueryable<Models.Item> GetAllItems();
 
         int GetAllItemsCount();
 
-        IEnumerable<LoadingUnit> GetAllLoadingUnits();
+        IQueryable<Models.LoadingUnit> GetAllLoadingUnits();
 
         int GetAllLoadingUnitsCount();
 
-        CompartmentDetails GetCompartmentDetails(int compartmentId);
+        IQueryable<DataModels.MaterialStatus> GetAllMaterialStatuses();
 
-        IEnumerable<Compartment> GetCompartmentsByItemId(int itemId);
+        IQueryable<DataModels.MeasureUnit> GetAllMeasureUnits();
 
-        ItemDetails GetItemDetails(int itemId);
+        IQueryable<DataModels.PackageType> GetAllPackageTypes();
 
-        IEnumerable<Item> GetItemsWithAClass();
+        Models.CompartmentDetails GetCompartmentDetails(int compartmentId);
+
+        IQueryable<Models.Compartment> GetCompartmentsByItemId(int itemId);
+
+        Models.ItemDetails GetItemDetails(int itemId);
+
+        IQueryable<Models.Item> GetItemsWithAClass();
 
         int GetItemsWithAClassCount();
 
-        IEnumerable<Item> GetItemsWithFifo();
+        IQueryable<Models.Item> GetItemsWithFifo();
 
         int GetItemsWithFifoCount();
 
-        int Save(CompartmentDetails compartment);
+        int Save(Models.ItemDetails itemDetails);
 
-        int Save(ItemDetails item);
+        int Save(Models.CompartmentDetails compartmentDetails);
 
-        int Save(LoadingUnitDetails loadingUnit);
+        int Save(Models.LoadingUnitDetails loadingUnit);
 
         #endregion Methods
     }

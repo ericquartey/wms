@@ -2,7 +2,6 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.DataAccess;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -15,7 +14,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private ICommand hideDetailsCommand;
         private LoadingUnitDetails loadingUnit;
@@ -71,17 +69,17 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.eventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
+                    eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(LoadingUnitDetails selectedLoadingUnit)
+        private void OnItemSelectionChanged(object itemId)
         {
-            if (selectedLoadingUnit == null)
+            if (itemId == null)
             {
                 this.LoadingUnit = null;
                 return;
             }
-            // this.LoadingUnit = this.businessProvider.GetItemDetails(selectedLoadingUnit.Id);
+            //this.LoadingUnit = this.businessProvider.GetItemDetails((int)itemId);
         }
 
         #endregion Methods

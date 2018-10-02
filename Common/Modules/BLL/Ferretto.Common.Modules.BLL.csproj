@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=7.0.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\AutoMapper.7.0.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="DevExpress.Data.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\DevExpress.Data.18.1.5\lib\net40\DevExpress.Data.v18.1.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -96,7 +96,9 @@
     <Compile Include="Models\Compartment.cs" />
     <Compile Include="Models\CompartmentDetails.cs" />
     <Compile Include="Models\CompartmentType.cs" />
-    <Compile Include="Models\DataSource.cs" />
+    <Compile Include="Models\DataSource.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemCategory.cs" />
     <Compile Include="Models\ItemDetails.cs" />
@@ -114,7 +116,6 @@
     <Compile Include="Services\DataSourceService.cs" />
     <Compile Include="Services\IBusinessProvider.cs" />
     <Compile Include="Services\ImageService.cs" />
-    <Compile Include="BusinessLogicAutoMapperProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -123,13 +124,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DataAccess\Ferretto.Common.DataAccess.csproj">
-      <Project>{842EAD3A-D1A7-46D6-8900-AC9F29B5F952}</Project>
-      <Name>Ferretto.Common.DataAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj">
       <Project>{2586c34c-da26-4143-8359-21d8a42b8462}</Project>
       <Name>Ferretto.Common.BLL.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DataModels\Ferretto.Common.DataModels.csproj">
+      <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
+      <Name>Ferretto.Common.DataModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Resources\Ferretto.Common.Resources.csproj">
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
@@ -138,10 +139,6 @@
     <ProjectReference Include="..\..\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DataModels\Ferretto.Common.DataModels.csproj">
-      <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
-      <Name>Ferretto.Common.DataModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\EF\Ferretto.Common.EF.csproj">
       <Project>{C32FD908-0388-4096-AF68-43BBEDB58725}</Project>

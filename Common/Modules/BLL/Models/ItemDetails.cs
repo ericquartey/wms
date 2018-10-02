@@ -15,13 +15,19 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? pickTolerance;
         private int? reorderQuantity;
         private int? storeTolerance;
+        private int totalAvailable;
+        private int totalReservedForPick;
+        private int totalReservedToStore;
+        private int totalStock;
         private int? width;
 
         #endregion Fields
 
         #region Properties
 
-        public IEnumerable<AbcClass> AbcClassChoices { get; set; }
+        public IEnumerable<DataModels.AbcClass> AbcClassChoices { get; set; }
+
+        public string AbcClassId { get; set; }
 
         public int? AverageWeight
         {
@@ -29,7 +35,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.averageWeight, value);
         }
 
-        public string AbcClassId { get; set; }
         public string Code { get; set; }
         public IEnumerable<Compartment> Compartments { get; set; }
         public DateTime CreationDate { get; set; }
@@ -53,9 +58,9 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
-        public IEnumerable<ItemCategory> ItemCategoryChoices { get; set; }
-        public IEnumerable<ItemManagementType> ItemManagementTypeChoices { get; set; }
+        public IEnumerable<DataModels.ItemCategory> ItemCategoryChoices { get; set; }
         public int? ItemCategoryId { get; set; }
+        public IEnumerable<DataModels.ItemManagementType> ItemManagementTypeChoices { get; set; }
         public int? ItemManagementTypeId { get; set; }
         public DateTime? LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }
@@ -67,7 +72,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.length, value);
         }
 
-        public IEnumerable<MeasureUnit> MeasureUnitChoices { get; set; }
+        public IEnumerable<DataModels.MeasureUnit> MeasureUnitChoices { get; set; }
         public string MeasureUnitId { get; set; }
         public string Note { get; set; }
 
@@ -89,6 +94,30 @@ namespace Ferretto.Common.Modules.BLL.Models
         {
             get => this.storeTolerance;
             set => SetIfStrictlyPositive(ref this.storeTolerance, value);
+        }
+
+        public int TotalAvailable
+        {
+            get => this.totalAvailable;
+            set => SetIfPositive(ref this.totalAvailable, value);
+        }
+
+        public int TotalReservedForPick
+        {
+            get => this.totalReservedForPick;
+            set => SetIfPositive(ref this.totalReservedForPick, value);
+        }
+
+        public int TotalReservedToStore
+        {
+            get => this.totalReservedToStore;
+            set => SetIfPositive(ref this.totalReservedToStore, value);
+        }
+
+        public int TotalStock
+        {
+            get => this.totalStock;
+            set => SetIfPositive(ref this.totalStock, value);
         }
 
         public int? Width

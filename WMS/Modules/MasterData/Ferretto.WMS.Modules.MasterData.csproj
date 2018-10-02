@@ -186,6 +186,7 @@
     <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsViewModel.cs" />
+    <Compile Include="ViewModels\FilteredNavigationViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
@@ -288,10 +289,6 @@
     <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\Ferretto.Common.DataAccess.csproj">
-      <Project>{842EAD3A-D1A7-46D6-8900-AC9F29B5F952}</Project>
-      <Name>Ferretto.Common.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

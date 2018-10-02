@@ -1,10 +1,22 @@
-﻿namespace Ferretto.Common.Controls
+﻿using Prism.Mvvm;
+
+namespace Ferretto.Common.Controls
 {
-    public class Tile
+    public class Tile : BindableBase
     {
+        #region Fields
+
+        private int? count;
+
+        #endregion Fields
+
         #region Properties
 
-        public int Count { get; set; }
+        public int? Count
+        {
+            get => this.count;
+            set => this.SetProperty(ref this.count, value);
+        }
 
         public string Image => this.Name != null ?
             $"Filter{this.Name.Replace(" ", string.Empty)}"
