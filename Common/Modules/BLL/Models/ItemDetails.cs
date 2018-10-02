@@ -25,7 +25,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Properties
 
-        public IEnumerable<DataModels.AbcClass> AbcClassChoices { get; set; }
+        public IEnumerable<Enumeration<string>> AbcClassChoices { get; set; }
 
         public string AbcClassId { get; set; }
 
@@ -58,9 +58,9 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
-        public IEnumerable<DataModels.ItemCategory> ItemCategoryChoices { get; set; }
+        public IEnumerable<Enumeration<int>> ItemCategoryChoices { get; set; }
         public int? ItemCategoryId { get; set; }
-        public IEnumerable<DataModels.ItemManagementType> ItemManagementTypeChoices { get; set; }
+        public IEnumerable<Enumeration<int>> ItemManagementTypeChoices { get; set; }
         public int? ItemManagementTypeId { get; set; }
         public DateTime? LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }
@@ -72,7 +72,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => SetIfStrictlyPositive(ref this.length, value);
         }
 
-        public IEnumerable<DataModels.MeasureUnit> MeasureUnitChoices { get; set; }
+        public IEnumerable<Enumeration<string>> MeasureUnitChoices { get; set; }
         public string MeasureUnitId { get; set; }
         public string Note { get; set; }
 

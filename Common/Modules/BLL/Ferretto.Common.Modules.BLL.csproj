@@ -89,9 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\AbcClass.cs" />
     <Compile Include="Models\BusinessObject.cs" />
-    <Compile Include="Models\CompartmentStatus.cs" />
     <Compile Include="Models\CompartmentStockDetails.cs" />
     <Compile Include="Models\Compartment.cs" />
     <Compile Include="Models\CompartmentDetails.cs" />
@@ -99,16 +97,12 @@
     <Compile Include="Models\DataSource.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Models\Enumeration.cs" />
     <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\ItemCategory.cs" />
     <Compile Include="Models\ItemDetails.cs" />
     <Compile Include="Models\ItemInCompartment.cs" />
-    <Compile Include="Models\ItemManagementType.cs" />
     <Compile Include="Models\LoadingUnit.cs" />
     <Compile Include="Models\LoadingUnitDetails.cs" />
-    <Compile Include="Models\MaterialStatus.cs" />
-    <Compile Include="Models\MeasureUnit.cs" />
-    <Compile Include="Models\PackageType.cs" />
     <Compile Include="Services\MasterDataProvider.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="BusinessLogicModule.cs" />
