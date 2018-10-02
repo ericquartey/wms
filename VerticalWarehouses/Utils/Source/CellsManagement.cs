@@ -10,7 +10,7 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
-        public const string JSON_PATH = "C:/Users/npadovani/Desktop/cellsfile.json";
+        public static readonly string JSON_PATH = Environment.CurrentDirectory + "/cellstable.json";
 
         #endregion Fields
 
