@@ -10,7 +10,8 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
-        public static readonly string JSON_PATH = Environment.CurrentDirectory + "/cellstable.json";
+        public static readonly string JSON_BLOCK_PATH = Environment.CurrentDirectory + "/blockstable.json";
+        public static readonly string JSON_CELL_PATH = Environment.CurrentDirectory + "/cellstable.json";
 
         #endregion Fields
 
@@ -27,14 +28,14 @@ namespace Ferretto.VW.Utils.Source
 
             var json = JsonConvert.SerializeObject(cellsToJson, Formatting.Indented);
 
-            if (File.Exists(JSON_PATH))
+            if (File.Exists(JSON_CELL_PATH))
             {
-                File.Delete(JSON_PATH);
-                File.WriteAllText(JSON_PATH, json);
+                File.Delete(JSON_CELL_PATH);
+                File.WriteAllText(JSON_CELL_PATH, json);
             }
             else
             {
-                File.WriteAllText(JSON_PATH, json);
+                File.WriteAllText(JSON_CELL_PATH, json);
             }
         }
 
@@ -54,8 +55,9 @@ namespace Ferretto.VW.Utils.Source
 
         public CellsManagement()
         {
-            string json = File.ReadAllText(CreateAndPopulateTestTables.JSON_PATH);
-            this.cells = JsonConvert.DeserializeObject<List<Cell>>(json);
+            string jsonCells = File.ReadAllText(CreateAndPopulateTestTables.JSON_CELL_PATH);
+            string jsonBlocks = File.ReadAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH);
+            this.cells = JsonConvert.DeserializeObject<List<Cell>>(jsonCells);
         }
 
         #endregion Constructors
@@ -63,9 +65,75 @@ namespace Ferretto.VW.Utils.Source
         #region Properties
 
         internal List<CellBlock> Blocks { get => this.blocks; set => this.blocks = value; }
+
         internal List<Cell> Cells { get => this.cells; set => this.cells = value; }
 
         #endregion Properties
+
+        #region Methods
+
+        private void ChangeCellStatus(int cellID, int newStatus)
+        {
+            if (cellID >= this.Cells.Count || cellID < 0)
+            {
+                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
+            }
+            this.Cells[cellID].Status = newStatus;
+            this.UpdateCellsFile();
+        }
+
+        private void CreateBlockFile()
+        {
+        }
+
+        private void CreateBlocks()
+        {
+            int counter = 1;
+            for (int i = 0; i < this.Cells.Count; i += 2) //odd cell's id
+            {
+                if (this.Cells[i].Status == 0)
+                {
+                    int tmp = this.GetLastUpperNotDisabledCell(i);
+                    CellBlock cb = new CellBlock(i, tmp, counter);
+                    this.Blocks.Add(cb);
+                    counter++;
+                    i = tmp;
+                }
+            }
+            for (int i = 1; i < this.Cells.Count; i += 2)//even cell's id
+            {
+                if (this.Cells[i].Status == 0)
+                {
+                    int tmp = this.GetLastUpperNotDisabledCell(i);
+                    CellBlock cb = new CellBlock(i, tmp, counter);
+                    this.Blocks.Add(cb);
+                    counter++;
+                    i = tmp;
+                }
+            }
+        }
+
+        private int GetLastUpperNotDisabledCell(int cellID)
+        {
+            return 0;
+        }
+
+        private void UpdateCellsFile()
+        {
+            var json = JsonConvert.SerializeObject(this.Cells, Formatting.Indented);
+
+            if (File.Exists(CreateAndPopulateTestTables.JSON_CELL_PATH))
+            {
+                File.Delete(CreateAndPopulateTestTables.JSON_CELL_PATH);
+                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
+            }
+        }
+
+        #endregion Methods
     }
 
     internal static class CellManagementMethods
@@ -133,8 +201,20 @@ namespace Ferretto.VW.Utils.Source
 
         #region Constructors
 
-        public CellBlock()
+        public CellBlock(int firstCell, int lastCell, int blockID)
         {
+            if ((firstCell % 2 == 0 && lastCell % 2 != 0) || (firstCell % 2 != 0 && lastCell % 2 == 0))
+            {
+                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
+            }
+            this.Area = 0;
+            this.Machine = 0;
+            this.InitialIDCell = firstCell;
+            this.FinalIDCell = lastCell;
+            this.Priority = this.InitialIDCell;
+            this.BlockHeight = ((lastCell - firstCell) / 2) * 25;
+            this.Side = (firstCell % 2 == 0) ? 0 : 1;
+            this.IdGroup = blockID;
         }
 
         #endregion Constructors
