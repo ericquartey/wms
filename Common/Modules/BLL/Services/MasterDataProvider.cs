@@ -85,7 +85,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetAllItems()
         {
-            return this.GetAllItemsWithAggregations().AsNoTracking();
+            return this.GetAllItemsWithAggregations();
         }
 
         public int GetAllItemsCount()
@@ -235,7 +235,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetItemsWithAClass()
         {
-            return this.GetAllItemsWithAggregations(AClassFilter).AsNoTracking();
+            return this.GetAllItemsWithAggregations(AClassFilter);
         }
 
         public int GetItemsWithAClassCount()
@@ -326,11 +326,13 @@ namespace Ferretto.Common.Modules.BLL.Services
         private IQueryable<Item> GetAllItemsWithAggregations(Predicate<DataModels.Item> wherePredicate = null)
         {
             return this.dataContext.Items
+               .AsNoTracking()
                .Where(i => wherePredicate == null || wherePredicate(i))
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
                .GroupJoin(
                    this.dataContext.Compartments
+                       .AsNoTracking()
                        .Where(c => c.ItemId != null)
                        .GroupBy(c => c.ItemId)
                        .Select(j => new

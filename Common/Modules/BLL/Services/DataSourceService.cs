@@ -7,18 +7,6 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    public enum DataSourceType
-    {
-        ItemAll,
-        ItemAClass,
-        ItemFifo,
-
-        CompartmentAll,
-        ItemCompartments,
-
-        LoadingUnitAll,
-    }
-
     public class DataSourceService : IDataSourceService
     {
         #region Fields
@@ -37,27 +25,44 @@ namespace Ferretto.Common.Modules.BLL.Services
                 case "ItemsView":
                     return new List<DataSource<Item>>
                     {
-                        new DataSource<Item>(MasterData.ItemAll, () => this.businessProvider.GetAllItems()),
-                        new DataSource<Item>(MasterData.ItemClassA, () => this.businessProvider.GetItemsWithAClass()),
-                        new DataSource<Item>(MasterData.ItemFIFO, () => this.businessProvider.GetItemsWithFifo())
+                        new DataSource<Item>(
+                            MasterData.ItemAll,
+                            () => this.businessProvider.GetAllItems(),
+                            () => this.businessProvider.GetAllItemsCount()),
+                        new DataSource<Item>(
+                            MasterData.ItemClassA,
+                            () => this.businessProvider.GetItemsWithAClass(),
+                            () => this.businessProvider.GetItemsWithAClassCount()),
+                        new DataSource<Item>(
+                            MasterData.ItemFIFO,
+                            () => this.businessProvider.GetItemsWithFifo(),
+                            () => this.businessProvider.GetItemsWithFifoCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case "ItemDetailsView":
                     return new List<DataSource<Compartment>>
                     {
-                        new DataSource<Compartment>(MasterData.CompartmentAll, () => this.businessProvider.GetCompartmentsByItemId((int)parameter))
+                        new DataSource<Compartment>(
+                            MasterData.CompartmentAll,
+                            () => this.businessProvider.GetCompartmentsByItemId((int)parameter))
                     }.Cast<IDataSource<TModel>>();
 
                 case "CompartmentsView":
                     return new List<DataSource<Compartment>>
                     {
-                        new DataSource<Compartment>(MasterData.CompartmentAll, () => this.businessProvider.GetAllCompartments())
+                        new DataSource<Compartment>(
+                            MasterData.CompartmentAll,
+                            () => this.businessProvider.GetAllCompartments(),
+                            () => this.businessProvider.GetAllCompartmentsCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case "LoadingUnitsView":
                     return new List<DataSource<LoadingUnit>>
                     {
-                        new DataSource<LoadingUnit>(MasterData.LoadingUnitAll, () => this.businessProvider.GetAllLoadingUnits())
+                        new DataSource<LoadingUnit>(
+                            MasterData.LoadingUnitAll,
+                            () => this.businessProvider.GetAllLoadingUnits(),
+                            () => this.businessProvider.GetAllLoadingUnitsCount())
                     }.Cast<IDataSource<TModel>>();
 
                 default:

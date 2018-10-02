@@ -12,6 +12,10 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public DataSource(string name, Func<IQueryable<TModel>> getData)
                           : this(name, getData, () => getData().Count())
+        { }
+
+        public DataSource(string name, Func<IQueryable<TModel>> getData, Func<int> getDataCount)
+                : base((a) => a.QueryableSource = getData())
         {
             if (name == null)
             {
@@ -22,11 +26,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             this.KeyExpression = "Id";
             this.AreSourceRowsThreadSafe = true;
             this.GetData = getData;
-        }
 
-        public DataSource(string name, Func<IQueryable<TModel>> getData, Func<int> getDataCount)
-                : base((a) => a.QueryableSource = getData())
-        {
             if (getDataCount == null)
             {
                 throw new ArgumentNullException(nameof(getDataCount));
