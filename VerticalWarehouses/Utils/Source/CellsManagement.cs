@@ -68,7 +68,7 @@ namespace Ferretto.VW.Utils.Source
             else
             {
                 this.CreateBlocks();
-                this.CreateBlockFile();
+                this.UpdateBlocksFile();
             }
             Debug.Print("Done!\n");
         }
@@ -85,19 +85,10 @@ namespace Ferretto.VW.Utils.Source
 
         #region Methods
 
-        private void ChangeCellStatus(int cellID, int newStatus)
-        {
-            if (cellID >= this.Cells.Count || cellID < 0)
-            {
-                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
-            }
-            this.Cells[cellID].Status = newStatus;
-            this.UpdateCellsFile();
-        }
-
-        private void CreateBlockFile()
+        public void UpdateBlocksFile()
         {
             var json = JsonConvert.SerializeObject(this.Blocks, Formatting.Indented);
+
             if (File.Exists(CreateAndPopulateTestTables.JSON_BLOCK_PATH))
             {
                 File.Delete(CreateAndPopulateTestTables.JSON_BLOCK_PATH);
@@ -109,10 +100,35 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
+        public void UpdateCellsFile()
+        {
+            var json = JsonConvert.SerializeObject(this.Cells, Formatting.Indented);
+
+            if (File.Exists(CreateAndPopulateTestTables.JSON_CELL_PATH))
+            {
+                File.Delete(CreateAndPopulateTestTables.JSON_CELL_PATH);
+                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
+            }
+        }
+
+        private void ChangeCellStatus(int cellID, int newStatus)
+        {
+            if (cellID >= this.Cells.Count || cellID < 0)
+            {
+                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
+            }
+            this.Cells[cellID].Status = newStatus;
+            this.UpdateCellsFile();
+        }
+
         private void CreateBlocks()
         {
             int counter = 1;
-            for (int i = 0; i < this.Cells.Count; i += 2) //odd cell's id
+            for (int i = 0; i < this.Cells.Count; i += 2) //odd cell's index
             {
                 if (this.Cells[i].Status == 0)
                 {
@@ -123,7 +139,7 @@ namespace Ferretto.VW.Utils.Source
                     i = tmp;
                 }
             }
-            for (int i = 1; i < this.Cells.Count; i += 2)//even cell's id
+            for (int i = 1; i < this.Cells.Count; i += 2)//even cell's index
             {
                 if (this.Cells[i].Status == 0)
                 {
@@ -151,26 +167,20 @@ namespace Ferretto.VW.Utils.Source
             return (cellIndex % 2 == 0) ? this.Cells.Count - 2 : this.Cells.Count - 1;
         }
 
-        private void UpdateCellsFile()
-        {
-            var json = JsonConvert.SerializeObject(this.Cells, Formatting.Indented);
-
-            if (File.Exists(CreateAndPopulateTestTables.JSON_CELL_PATH))
-            {
-                File.Delete(CreateAndPopulateTestTables.JSON_CELL_PATH);
-                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
-            }
-        }
-
         #endregion Methods
     }
 
     internal static class CellManagementMethods
     {
+        #region Methods
+
+        private static void ChangeCellStatus(CellsManagement cm, int cellID, int newStatus)
+        {
+            cm.Cells[cellID - 1].Status = newStatus;
+            cm.UpdateCellsFile();
+        }
+
+        #endregion Methods
     }
 
     internal class Cell
@@ -238,7 +248,6 @@ namespace Ferretto.VW.Utils.Source
         {
             if ((firstCell % 2 == 0 && lastCell % 2 != 0) || (firstCell % 2 != 0 && lastCell % 2 == 0))
             {
-                Debug.Print("CellBlock Constructor: " + firstCell + ", " + lastCell);
                 throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
             }
             this.Area = 0;
