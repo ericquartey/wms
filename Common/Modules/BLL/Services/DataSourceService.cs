@@ -34,7 +34,7 @@ namespace Ferretto.Common.Modules.BLL.Services
             switch (viewName)
             {
                 case "ItemsView":
-                    return new List<DataSource<Item>>
+                    return (IEnumerable<IDataSource<IBusinessObject>>)new List<DataSource<Item>>
                     {
                         new DataSource<Item>(MasterData.ItemAll, () => this.businessProvider.GetAllItems()),
                         new DataSource<Item>(MasterData.ItemClassA, () => this.businessProvider.GetItemsWithAClass()),
@@ -42,25 +42,25 @@ namespace Ferretto.Common.Modules.BLL.Services
                     };
 
                 case "ItemDetailsView":
-                    return new List<DataSource<Compartment>>
+                    return (IEnumerable<IDataSource<IBusinessObject>>)new List<DataSource<Compartment>>
                     {
                         new DataSource<Compartment>(MasterData.CompartmentAll, () => this.businessProvider.GetCompartmentsByItemId((int)parameter))
                     };
 
                 case "CompartmentsView":
-                    return new List<DataSource<Compartment>>
+                    return (IEnumerable<IDataSource<IBusinessObject>>)new List<DataSource<Compartment>>
                     {
                         new DataSource<Compartment>(MasterData.CompartmentAll, () => this.businessProvider.GetAllCompartments())
                     };
 
                 case "LoadingUnitsView":
-                    return new List<DataSource<LoadingUnit>>
+                    return (IEnumerable<IDataSource<IBusinessObject>>)new List<DataSource<LoadingUnit>>
                     {
                         new DataSource<LoadingUnit>(MasterData.LoadingUnitAll, () => this.businessProvider.GetAllLoadingUnits())
                     };
 
                 default:
-                    return new List<object>();
+                    return (IEnumerable<IDataSource<IBusinessObject>>)new List<object>();
             }
 #pragma warning restore IDE0009
         }
