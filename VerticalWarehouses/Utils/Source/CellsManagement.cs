@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Ferretto.VW.Utils.Source
 {
-    public static class CreateAndPopulateTestTables
+    public static class CreateAndPopulateTables
     {
         #region Fields
 
@@ -17,10 +17,10 @@ namespace Ferretto.VW.Utils.Source
 
         #region Methods
 
-        public static void CreateJsonFile()
+        public static void CreateCellJsonFile(int cellQuantity)
         {
             List<Cell> cellsToJson = new List<Cell>();
-            for (int i = 1; i < 4001; i++)
+            for (int i = 1; i < cellQuantity + 1; i++)
             {
                 var tmp = new Cell(i);
                 cellsToJson.Add(tmp);
@@ -55,22 +55,21 @@ namespace Ferretto.VW.Utils.Source
 
         public CellsManagement()
         {
-            if (File.Exists(CreateAndPopulateTestTables.JSON_CELL_PATH))
-            {
-                string jsonCells = File.ReadAllText(CreateAndPopulateTestTables.JSON_CELL_PATH);
-                this.Cells = JsonConvert.DeserializeObject<List<Cell>>(jsonCells);
-            }
-            if (File.Exists(CreateAndPopulateTestTables.JSON_BLOCK_PATH))
-            {
-                string jsonBlocks = File.ReadAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH);
-                this.Blocks = JsonConvert.DeserializeObject<List<CellBlock>>(jsonBlocks);
-            }
-            else
-            {
-                this.CreateBlocks();
-                this.UpdateBlocksFile();
-            }
-            Debug.Print("Done!\n");
+            //if (File.Exists(CreateAndPopulateTables.JSON_CELL_PATH))
+            //{
+            //    string jsonCells = File.ReadAllText(CreateAndPopulateTables.JSON_CELL_PATH);
+            //    this.Cells = JsonConvert.DeserializeObject<List<Cell>>(jsonCells);
+            //}
+            //if (File.Exists(CreateAndPopulateTables.JSON_BLOCK_PATH))
+            //{
+            //    string jsonBlocks = File.ReadAllText(CreateAndPopulateTables.JSON_BLOCK_PATH);
+            //    this.Blocks = JsonConvert.DeserializeObject<List<CellBlock>>(jsonBlocks);
+            //}
+            //else
+            //{
+            //    this.CreateBlocks();
+            //    this.UpdateBlocksFile();
+            //}
         }
 
         #endregion Constructors
@@ -85,37 +84,13 @@ namespace Ferretto.VW.Utils.Source
 
         #region Methods
 
-        public void UpdateBlocksFile()
+        public int CalculateCellQuantityFromMachineHeight(int machineHeight)
         {
-            var json = JsonConvert.SerializeObject(this.Blocks, Formatting.Indented);
-
-            if (File.Exists(CreateAndPopulateTestTables.JSON_BLOCK_PATH))
-            {
-                File.Delete(CreateAndPopulateTestTables.JSON_BLOCK_PATH);
-                File.WriteAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CreateAndPopulateTestTables.JSON_BLOCK_PATH, json);
-            }
+            int cells = machineHeight / 25;
+            return cells * 2;
         }
 
-        public void UpdateCellsFile()
-        {
-            var json = JsonConvert.SerializeObject(this.Cells, Formatting.Indented);
-
-            if (File.Exists(CreateAndPopulateTestTables.JSON_CELL_PATH))
-            {
-                File.Delete(CreateAndPopulateTestTables.JSON_CELL_PATH);
-                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CreateAndPopulateTestTables.JSON_CELL_PATH, json);
-            }
-        }
-
-        private void ChangeCellStatus(int cellID, int newStatus)
+        public void ChangeCellStatus(int cellID, int newStatus)
         {
             if (cellID >= this.Cells.Count || cellID < 0)
             {
@@ -123,6 +98,54 @@ namespace Ferretto.VW.Utils.Source
             }
             this.Cells[cellID].Status = newStatus;
             this.UpdateCellsFile();
+        }
+
+        public void CreateBay(int firstCell, int lastCell)
+        {
+            if ((firstCell % 2 == 0 && lastCell % 2 != 0) || (firstCell % 2 != 0 && lastCell % 2 == 0))
+            {
+                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
+            }
+            for (int i = firstCell; i < lastCell + 1; i += 2)
+            {
+                this.ChangeCellStatus(i, 1);
+            }
+        }
+
+        public void CreateCellTable(int machineHeight)
+        {
+            int cells = this.CalculateCellQuantityFromMachineHeight(machineHeight);
+            CreateAndPopulateTables.CreateCellJsonFile(cells);
+        }
+
+        public void UpdateBlocksFile()
+        {
+            var json = JsonConvert.SerializeObject(this.Blocks, Formatting.Indented);
+
+            if (File.Exists(CreateAndPopulateTables.JSON_BLOCK_PATH))
+            {
+                File.Delete(CreateAndPopulateTables.JSON_BLOCK_PATH);
+                File.WriteAllText(CreateAndPopulateTables.JSON_BLOCK_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(CreateAndPopulateTables.JSON_BLOCK_PATH, json);
+            }
+        }
+
+        public void UpdateCellsFile()
+        {
+            var json = JsonConvert.SerializeObject(this.Cells, Formatting.Indented);
+
+            if (File.Exists(CreateAndPopulateTables.JSON_CELL_PATH))
+            {
+                File.Delete(CreateAndPopulateTables.JSON_CELL_PATH);
+                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
+            }
         }
 
         private void CreateBlocks()
@@ -190,7 +213,7 @@ namespace Ferretto.VW.Utils.Source
         private int coord;
         private int idCell;
         private int priority;
-        private int side;
+        private int side; // 0 = even ; 1 = odd
         private int status;
 
         #endregion Fields
