@@ -239,7 +239,13 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\Articolo2.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="favicon.ico" />
+    <Content Include="Images\Articolo1.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.InternalTesting.config">
