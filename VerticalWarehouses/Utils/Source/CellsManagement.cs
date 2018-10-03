@@ -21,9 +21,9 @@ namespace Ferretto.VW.Utils.Source
         public static void CreateCellJsonFile(int cellQuantity)
         {
             List<Cell> cellsToJson = new List<Cell>();
-            for (int i = 1; i < cellQuantity + 1; i++)
+            for (int id = 1; id <= cellQuantity; id++)
             {
-                var tmp = new Cell(i);
+                var tmp = new Cell(id);
                 cellsToJson.Add(tmp);
             }
             var json = JsonConvert.SerializeObject(cellsToJson, Formatting.Indented);
@@ -90,52 +90,54 @@ namespace Ferretto.VW.Utils.Source
             return cells * 2;
         }
 
-        public void ChangeCellStatus(int cellID, int newStatus)
+        public void ChangeCellStatus(int cellIndex, int newStatus)
         {
-            if (cellID >= this.Cells.Count || cellID < 0)
+            if (cellIndex >= this.Cells.Count || cellIndex < 0)
             {
                 throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
             }
-            this.Cells[cellID].Status = newStatus;
+            this.Cells[cellIndex].Status = newStatus;
             this.UpdateCellsFile();
         }
 
-        public void CreateBay(int firstCell, int lastCell)
+        public void CreateBay(int firstCellID, int lastCellID)
         {
-            Debug.Print("firstCell: " + firstCell + ", lastCell: " + lastCell + "\n");
-            if ((firstCell % 2 == 0 && lastCell % 2 != 0) || (firstCell % 2 != 0 && lastCell % 2 == 0))
+            Debug.Print("firstCell: " + firstCellID + ", lastCell: " + lastCellID + "\n");
+            if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
             {
                 throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
             }
-            for (int i = firstCell; i < lastCell + 1; i += 2)
+            for (int id = firstCellID; id <= lastCellID; id += 2)
             {
-                this.ChangeCellStatus(i, 1);
+                this.ChangeCellStatus(id - 1, 1);
             }
         }
 
         public void CreateBlocks()
         {
+            this.Blocks = null;
+            this.Blocks = new List<CellBlock>();
             int counter = 1;
-            for (int i = 0; i < this.Cells.Count; i += 2) //odd cell's index
+            for (int index = 0; index < this.Cells.Count; index += 2) //odd cell's index
             {
-                if (this.Cells[i].Status == 0)
+                if (this.Cells[index].Status == 0)
                 {
-                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
-                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
+                    int tmp = this.GetLastUpperNotDisabledCellIndex(index);
+                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
                     this.Blocks.Add(cb);
                     counter++;
-                    i = tmp;
+                    index = tmp;
                 }
             }
-            for (int i = 1; i < this.Cells.Count; i += 2)//even cell's index
+            for (int index = 1; index < this.Cells.Count; index += 2)//even cell's index
             {
-                if (this.Cells[i].Status == 0)
+                if (this.Cells[index].Status == 0)
                 {
-                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
-                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
+                    int tmp = this.GetLastUpperNotDisabledCellIndex(index);
+                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
                     this.Blocks.Add(cb);
                     counter++;
-                    i = tmp;
+                    index = tmp;
                 }
             }
         }
@@ -143,12 +145,21 @@ namespace Ferretto.VW.Utils.Source
         public void CreateCellTable(int machineHeight)
         {
             int cells = this.CalculateCellQuantityFromMachineHeight(machineHeight);
-            for (int i = 1; i < cells + 1; i++)
+            for (int id = 1; id <= cells; id++)
             {
-                Cell c = new Cell(i);
+                Cell c = new Cell(id);
                 this.Cells.Add(c);
             }
-            this.CreateCellJsonFile(this.Cells);
+            this.UpdateCellsFile();
+        }
+
+        public void InsertNewDrawer(int newDrawerID, int newDrawerHeight)
+        {
+            int initCellID = CellManagementMethods.FindFirstFreeCellIDForDrawerInsert(this, newDrawerHeight);
+            CellManagementMethods.OccupyCells(this, initCellID - 1, newDrawerHeight);
+            this.UpdateCellsFile();
+            this.CreateBlocks();
+            this.UpdateBlocksFile();
         }
 
         public void UpdateBlocksFile()
@@ -181,31 +192,16 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        private void CreateCellJsonFile(List<Cell> cellsToJson)
-        {
-            var json = JsonConvert.SerializeObject(cellsToJson, Formatting.Indented);
-
-            if (File.Exists(CreateAndPopulateTables.JSON_CELL_PATH))
-            {
-                File.Delete(CreateAndPopulateTables.JSON_CELL_PATH);
-                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
-            }
-        }
-
         private int GetLastUpperNotDisabledCellIndex(int cellIndex)
         {
-            for (int i = cellIndex + 2; i < this.Cells.Count; i += 2)
+            for (int index = cellIndex + 2; index < this.Cells.Count; index += 2)
             {
-                if (this.Cells[i].Status != 1)
+                if (this.Cells[index].Status != 1 && this.Cells[index].Status != 2)
                 {
                 }
                 else
                 {
-                    return i - 2;
+                    return index - 2;
                 }
             }
             return (cellIndex % 2 == 0) ? this.Cells.Count - 2 : this.Cells.Count - 1;
@@ -223,28 +219,31 @@ namespace Ferretto.VW.Utils.Source
             cm.CreateBlocks();
         }
 
-        public static int FindFirstUsefullFreeCellForDrawerInsert(CellsManagement cm, int drawerHeight)
+        public static int FindFirstFreeCellIDForDrawerInsert(CellsManagement cm, int drawerHeight)
         {
-            cm.Blocks.OrderBy(x => x.Priority);
-            List<CellBlock> cb = cm.Blocks.FindAll(x => x.BlockHeight > drawerHeight);
-            return cb[0].InitialIDCell;
+            Debug.Print("Ricomincia da qui.\n");
+            //TODO!!!!!
+            //cm.Blocks.OrderBy(x => x.Priority);
+            //List<CellBlock> cb = cm.Blocks.FindAll(x => x.BlockHeight > drawerHeight);
+            //return cb[0].InitialIDCell;
+            return 0;
         }
 
-        public static void FreeCells(CellsManagement cm, int firstCell, int cellHeight)
+        public static void FreeCells(CellsManagement cm, int firstCellIndex, int drawerHeight)
         {
-            int cellsToFree = cellHeight / 25;
-            for (int i = firstCell; i <= firstCell + cellsToFree * 2; i += 2)
+            int cellsToFree = drawerHeight / 25;
+            for (int index = firstCellIndex; index <= firstCellIndex + cellsToFree * 2; index += 2)
             {
-                cm.ChangeCellStatus(i, 0);
+                cm.ChangeCellStatus(index, 0);
             }
         }
 
         public static int GetFreeCellQuantityInMachine(CellsManagement cm)
         {
             int counter = 0;
-            for (int i = 0; i < cm.Blocks.Count; i++)
+            for (int index = 0; index < cm.Blocks.Count; index++)
             {
-                counter += cm.Blocks[i].FinalIDCell - cm.Blocks[i].InitialIDCell;
+                counter += cm.Blocks[index].FinalIDCell - cm.Blocks[index].InitialIDCell;
             }
             return counter;
         }
@@ -254,35 +253,35 @@ namespace Ferretto.VW.Utils.Source
             int counter = 0;
             if (side == 0)
             {
-                for (int i = 0; i < cm.Blocks.Count; i++)
+                for (int index = 0; index < cm.Blocks.Count; index++)
                 {
-                    if (cm.Blocks[i].Side == 1)
+                    if (cm.Blocks[index].Side == 1)
                     {
                         continue;
                     }
-                    counter += cm.Blocks[i].FinalIDCell - cm.Blocks[i].InitialIDCell;
+                    counter += cm.Blocks[index].FinalIDCell - cm.Blocks[index].InitialIDCell;
                 }
             }
             else
             {
-                for (int i = 0; i < cm.Blocks.Count; i++)
+                for (int index = 0; index < cm.Blocks.Count; index++)
                 {
-                    if (cm.Blocks[i].Side == 0)
+                    if (cm.Blocks[index].Side == 0)
                     {
                         continue;
                     }
-                    counter += cm.Blocks[i].FinalIDCell - cm.Blocks[i].InitialIDCell;
+                    counter += cm.Blocks[index].FinalIDCell - cm.Blocks[index].InitialIDCell;
                 }
             }
             return counter;
         }
 
-        public static void OccupyCells(CellsManagement cm, int firstCell, int cellHeight)
+        public static void OccupyCells(CellsManagement cm, int firstCellindex, int drawerHeight)
         {
-            int cellsToOccupy = cellHeight / 25;
-            for (int i = firstCell; i <= firstCell + cellsToOccupy * 2; i += 2)
+            int cellsToOccupy = drawerHeight / 25;
+            for (int index = firstCellindex; index <= firstCellindex + cellsToOccupy * 2; index += 2)
             {
-                cm.ChangeCellStatus(i, 2);
+                cm.ChangeCellStatus(index, 2);
             }
         }
 
@@ -354,19 +353,19 @@ namespace Ferretto.VW.Utils.Source
 
         #region Constructors
 
-        public CellBlock(int firstCell, int lastCell, int blockID)
+        public CellBlock(int firstCellID, int lastCellID, int blockID)
         {
-            if ((firstCell % 2 == 0 && lastCell % 2 != 0) || (firstCell % 2 != 0 && lastCell % 2 == 0))
+            if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
             {
                 throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
             }
             this.Area = 0;
             this.Machine = 0;
-            this.InitialIDCell = firstCell;
-            this.FinalIDCell = lastCell;
+            this.InitialIDCell = firstCellID;
+            this.FinalIDCell = lastCellID;
             this.Priority = this.InitialIDCell;
-            this.BlockHeight = ((lastCell - firstCell) / 2) * 25;
-            this.Side = (firstCell % 2 == 0) ? 0 : 1;
+            this.BlockHeight = ((lastCellID - firstCellID) / 2) * 25;
+            this.Side = (firstCellID % 2 == 0) ? 0 : 1;
             this.IdGroup = blockID;
         }
 

@@ -9,6 +9,9 @@ namespace ZZ_CellManagementTestApp
         #region Fields
 
         private CellsManagement cm;
+        private int extractDrawerID;
+        private int insertNewDrawerHeight;
+        private int insertNewDrawerID;
         private int machineHeight;
         private int newBayHeight;
         private int newBayHeightFromGround;
@@ -28,6 +31,9 @@ namespace ZZ_CellManagementTestApp
 
         #region Properties
 
+        public System.Int32 ExtractDrawerID { get => this.extractDrawerID; set => this.extractDrawerID = value; }
+        public System.Int32 InsertNewDrawerHeight { get => this.insertNewDrawerHeight; set => this.insertNewDrawerHeight = value; }
+        public System.Int32 InsertNewDrawerID { get => this.insertNewDrawerID; set => this.insertNewDrawerID = value; }
         public System.Int32 MachineHeight { get => this.machineHeight; set => this.machineHeight = value; }
 
         public System.Int32 NewBayHeight { get => this.newBayHeight; set => this.newBayHeight = value; }
@@ -51,6 +57,21 @@ namespace ZZ_CellManagementTestApp
         public void InsertMachineHeightDoneButtonMethod(object sender, RoutedEventArgs e)
         {
             this.InsertMachineHeightDone();
+        }
+
+        public void InsertNewDrawerButtonMethod(object sender, RoutedEventArgs e)
+        {
+            this.InsertNewDrawer();
+        }
+
+        public void OpenExtractDrawerInputMaskButtonMethod(object sender, RoutedEventArgs e)
+        {
+            this.OpenExtractDrawerInputMask();
+        }
+
+        public void OpenInsertNewDrawerInputMaskButtonMethod(object sender, RoutedEventArgs e)
+        {
+            this.OpenInsertNewDrawerInputMask();
         }
 
         private void DoneInsertingBays()
@@ -77,9 +98,30 @@ namespace ZZ_CellManagementTestApp
             this.NewBayHeightTextBox.Text = "";
             this.NewBayHeightFromGroundTextBox.Text = "";
             this.NewBaySideTextBox.Text = "";
-            int initialNewBayCell = (this.NewBaySide == 0) ? (2 * this.NewBayHeightFromGround) / 25 : ((2 * this.NewBayHeightFromGround) / 25) + 1;
-            int finalNewBayCell = (this.NewBaySide == 0) ? (2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25 : ((2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25) + 1;
-            this.cm.CreateBay(initialNewBayCell, finalNewBayCell);
+            int initialNewBayCellIndex = (this.NewBaySide != 0) ? ((2 * this.NewBayHeightFromGround) / 25) + 1 : (2 * this.NewBayHeightFromGround) / 25;
+            int finalNewBayCellIndex = (this.NewBaySide != 0) ? ((2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25) + 1 : (2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25;
+            this.cm.CreateBay(initialNewBayCellIndex, finalNewBayCellIndex); //here
+        }
+
+        private void InsertNewDrawer()
+        {
+            this.InsertNewDrawerID = int.Parse(this.InsertNewDrawerIDTextBox.Text);
+            this.InsertNewDrawerHeight = int.Parse(this.InsertNewDrawerHeightTextBox.Text);
+            this.InsertNewDrawerIDTextBox.Text = "";
+            this.InsertNewDrawerHeightTextBox.Text = "";
+            this.cm.InsertNewDrawer(this.InsertNewDrawerID, this.InsertNewDrawerHeight);
+        }
+
+        private void OpenExtractDrawerInputMask()
+        {
+            this.InsertLUInputMask.Visibility = Visibility.Hidden;
+            this.ExtractLUInputMask.Visibility = Visibility.Visible;
+        }
+
+        private void OpenInsertNewDrawerInputMask()
+        {
+            this.ExtractLUInputMask.Visibility = Visibility.Hidden;
+            this.InsertLUInputMask.Visibility = Visibility.Visible;
         }
 
         #endregion Methods

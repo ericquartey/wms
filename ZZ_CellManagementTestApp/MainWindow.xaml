@@ -12,23 +12,28 @@
         <StackPanel Height="auto"
                     DockPanel.Dock="Top"
                     Orientation="Horizontal">
-            <Button Margin="5"
+            <Button Width="200"
+                    Margin="5"
                     Background="Transparent"
                     BorderBrush="White"
                     BorderThickness="2"
+                    Click="OpenInsertNewDrawerInputMaskButtonMethod"
                     FontSize="20"
                     Foreground="White">
                 Insert Loading Unit
             </Button>
-            <Button Margin="5"
+            <Button Width="200"
+                    Margin="5"
                     Background="Transparent"
                     BorderBrush="White"
                     BorderThickness="2"
+                    Click="OpenExtractDrawerInputMaskButtonMethod"
                     FontSize="20"
                     Foreground="White">
-                Take off Loading Unit
+                Extract Loading Unit
             </Button>
-            <Button Margin="5"
+            <Button Width="200"
+                    Margin="5"
                     Background="Transparent"
                     BorderBrush="White"
                     BorderThickness="2"
@@ -37,6 +42,60 @@
                 Compact machine
             </Button>
         </StackPanel>
+        <Grid DockPanel.Dock="Left">
+            <Border Width="200"
+                    Margin="5"
+                    BorderBrush="White"
+                    BorderThickness="2">
+                <Grid>
+                    <StackPanel Name="InsertLUInputMask"
+                                Visibility="Visible">
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Insert New Drawer ID</Label>
+                                <TextBox Name="InsertNewDrawerIDTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Insert New Drawer Height</Label>
+                                <TextBox Name="InsertNewDrawerHeightTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Click="InsertNewDrawerButtonMethod"
+                                Foreground="White">
+                            Insert Drawer
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Name="ExtractLUInputMask"
+                                Visibility="Hidden">
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Extract Drawer ID</Label>
+                                <TextBox />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Foreground="White">
+                            Insert Drawer
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
         <Popup Name="MachineHeightPopUp"
                Width="400"
                Height="auto"
@@ -89,7 +148,7 @@
                              Text="{Binding Path=NewBayHeightFromGround, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     <Label FontSize="20"
                            Foreground="White">
-                        Insert Bay Height From Ground (mm):
+                        Insert Bay side:
                     </Label>
                     <TextBox Name="NewBaySideTextBox"
                              FontSize="20"
