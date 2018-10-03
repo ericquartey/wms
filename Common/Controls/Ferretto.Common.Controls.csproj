@@ -226,11 +226,10 @@
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\WmsView\WmsDialogView.cs" />
+    <Compile Include="Controls\WmsView\WmsHistoryViewModel.cs" />
     <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
       <DependentUpon>WmsHistoryView.xaml</DependentUpon>
-      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\WmsView\WmsHistoryViewModel.cs" />
     <Compile Include="Controls\WmsView\WmsView.cs" />
     <Compile Include="Controls\WmsView\WmsViewType.cs" />
     <Compile Include="Converters\IntToThousandsConverter.cs" />
@@ -290,7 +289,7 @@
     </Page>
     <Page Include="Controls\WmsView\WmsHistoryView.xaml">
       <SubType>Designer</SubType>
-      <Generator>XamlIntelliSenseFileGenerator</Generator>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

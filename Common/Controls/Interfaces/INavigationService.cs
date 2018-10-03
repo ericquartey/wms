@@ -12,6 +12,8 @@
 
         INavigableViewModel GetRegisteredViewModel(string mapId);
 
+        string GetViewModelBindFirstId(string fullViewName);
+
         INavigableViewModel GetViewModelByName(string viewModelName);
 
         void LoadModule(string moduleName);

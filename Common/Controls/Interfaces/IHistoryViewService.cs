@@ -8,5 +8,12 @@ namespace Ferretto.Common.Controls.Interfaces
 {
     public interface IHistoryViewService
     {
+        #region Methods
+
+        void Appear(string moduleName, string viewModelName);
+
+        void Previous();
+
+        #endregion Methods
     }
 }

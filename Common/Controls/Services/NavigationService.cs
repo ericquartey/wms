@@ -81,6 +81,16 @@ namespace Ferretto.Common.Controls.Services
             return viewModel;
         }
 
+        public string GetViewModelBindFirstId(string fullViewName)
+        {
+            var viewModelBind = this.GetViewModelBind(fullViewName);
+            if (viewModelBind != null)
+            {
+                return viewModelBind.Ids.First();
+            }
+            return null;
+        }
+
         public INavigableViewModel GetViewModelByName(string viewModelName)
         {
             if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)

@@ -3,47 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Utils;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class WmsHistoryView : UserControl, IWmsHistoryView
+    public partial class WmsHistoryView : ContentControl, IWmsHistoryView
     {
         #region Fields
 
-        public static readonly DependencyProperty ViewContentProperty = DependencyProperty.Register("ViewContent", typeof(object), typeof(WmsHistoryView));
-        public static readonly DependencyProperty ViewContentTemplateProperty = DependencyProperty.Register("ViewContentTemplate", typeof(DataTemplate), typeof(WmsHistoryView));
-        public static readonly DependencyProperty ViewContentTemplateSelectorProperty = DependencyProperty.Register("ViewContentTemplateSelector", typeof(DataTemplateSelector), typeof(WmsHistoryView));
+        public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register("StartModuleName", typeof(string), typeof(WmsHistoryView));
+        public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register("StartViewName", typeof(string), typeof(WmsHistoryView));
+        private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
         private readonly Dictionary<string, INavigableView> registeredViews = new Dictionary<string, INavigableView>();
+        private ActionBar actionBarHsitoryView;
 
         #endregion Fields
-
-        // BackCommand
 
         #region Constructors
 
         public WmsHistoryView()
         {
-            this.DataContext = this;
+            this.InitializeComponent();
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public object ViewContent
+        public string StartModuleName
         {
-#pragma warning disable IDE0009 // Member access should be qualified.
-            get => GetValue(ViewContentProperty);
-            set => this.SetValue(ViewContentProperty, value);
-#pragma warning restore IDE0009 // Member access should be qualified.
+            get => (string)this.GetValue(StartModuleNameProperty);
+            set => this.SetValue(StartModuleNameProperty, value);
+        }
+
+        public string StartViewName
+        {
+            get => (string)this.GetValue(StartViewNameProperty);
+            set => this.SetValue(StartViewNameProperty, value);
         }
 
         #endregion Properties
 
         #region Methods
 
-        public void Appear(string viewModelName)
+        public void Appear(string moduleName, string viewModelName)
         {
             if (string.IsNullOrEmpty(viewModelName))
             {
@@ -52,23 +58,59 @@ namespace Ferretto.Common.Controls
 
             if (this.registeredViews.ContainsKey(viewModelName))
             {
-                this.ViewContent = this.registeredViews[viewModelName];
+                this.Content = this.registeredViews[viewModelName];
+                return;
             }
-            //if (this.existView(view) == false)
-            //{
-            //    this.AddView(view);
-            //}
-            // this.ViewContent = new WmsHistoryViewModel();
+
+            var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+            var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
+            var id = this.navigationService.GetViewModelBindFirstId(moduleViewName);
+            if (id == null)
+            {
+                return;
+            }
+            var instanceModuleViewName = $"{moduleViewName}.{id}";
+            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(instanceModuleViewName);
+            this.registeredViews.Add(viewModelName, registeredView);
+            this.Content = registeredView;
+            this.CheckBackVisibility();
         }
 
-        private void AddView(string viewModelName, INavigableView view)
+        public override void OnApplyTemplate()
         {
-            this.registeredViews.Add(viewModelName, view);
+            base.OnApplyTemplate();
+
+            this.actionBarHsitoryView = LayoutTreeHelper.GetVisualChildren(this as DependencyObject)
+                .OfType<ActionBar>()
+                .FirstOrDefault();
+
+            if (string.IsNullOrEmpty(this.StartModuleName) == false &&
+                string.IsNullOrEmpty(this.StartViewName) == false)
+            {
+                this.Appear(this.StartModuleName, this.StartViewName);
+            }
         }
 
-        private Boolean existView(INavigableView view)
+        public void Previous()
         {
-            return (this.registeredViews.FirstOrDefault(v => v.Value.MapId == view.MapId).Value != null);
+            if (this.registeredViews.Count() == 1)
+            {
+                return;
+            }
+
+            this.registeredViews.Remove(this.registeredViews.Last().Key);
+            this.Content = this.registeredViews[this.registeredViews.Last().Key];
+            this.CheckBackVisibility();
+        }
+
+        private void BackViewClick(Object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            this.Previous();
+        }
+
+        private void CheckBackVisibility()
+        {
+            this.actionBarHsitoryView.Visibility = (this.registeredViews.Count() == 1) ? Visibility.Hidden : Visibility.Visible;
         }
 
         #endregion Methods

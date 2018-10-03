@@ -34,21 +34,24 @@ namespace Ferretto.Common.Controls.Services
 
             this.navigationService.LoadModule(moduleName);
 
-            historyView.Appear(viewModelName);
+            historyView.Appear(moduleName, viewModelName);
+        }
+
+        public void Previous()
+        {
+            var historyView = this.GetCurrentHistoryView();
+            if (historyView != null)
+            {
+                historyView.Previous();
+            }
         }
 
         private IWmsHistoryView GetCurrentHistoryView()
         {
             var elementWithFocus = Keyboard.FocusedElement as UIElement;
-            var currentHist = LayoutTreeHelper.GetVisualParents(elementWithFocus as DependencyObject)
+            return LayoutTreeHelper.GetVisualParents(elementWithFocus as DependencyObject)
                                 .OfType<IWmsHistoryView>()
                                 .FirstOrDefault();
-            if (currentHist != null)
-            {
-                return currentHist;
-            }
-
-            return null;
         }
 
         #endregion Methods
