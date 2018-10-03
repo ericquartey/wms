@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace Ferretto.VW.Utils.Source
@@ -217,10 +218,72 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Methods
 
-        private static void ChangeCellStatus(CellsManagement cm, int cellID, int newStatus)
+        public static void CreateBlocks(CellsManagement cm)
         {
-            cm.Cells[cellID - 1].Status = newStatus;
-            cm.UpdateCellsFile();
+            cm.CreateBlocks();
+        }
+
+        public static int FindFirstUsefullFreeCellForDrawerInsert(CellsManagement cm, int drawerHeight)
+        {
+            cm.Blocks.OrderBy(x => x.Priority);
+            List<CellBlock> cb = cm.Blocks.FindAll(x => x.BlockHeight > drawerHeight);
+            return cb[0].InitialIDCell;
+        }
+
+        public static void FreeCells(CellsManagement cm, int firstCell, int cellHeight)
+        {
+            int cellsToFree = cellHeight / 25;
+            for (int i = firstCell; i <= firstCell + cellsToFree * 2; i += 2)
+            {
+                cm.ChangeCellStatus(i, 0);
+            }
+        }
+
+        public static int GetFreeCellQuantityInMachine(CellsManagement cm)
+        {
+            int counter = 0;
+            for (int i = 0; i < cm.Blocks.Count; i++)
+            {
+                counter += cm.Blocks[i].FinalIDCell - cm.Blocks[i].InitialIDCell;
+            }
+            return counter;
+        }
+
+        public static int GetFreeCellQuantityInMachineSide(CellsManagement cm, int side)
+        {
+            int counter = 0;
+            if (side == 0)
+            {
+                for (int i = 0; i < cm.Blocks.Count; i++)
+                {
+                    if (cm.Blocks[i].Side == 1)
+                    {
+                        continue;
+                    }
+                    counter += cm.Blocks[i].FinalIDCell - cm.Blocks[i].InitialIDCell;
+                }
+            }
+            else
+            {
+                for (int i = 0; i < cm.Blocks.Count; i++)
+                {
+                    if (cm.Blocks[i].Side == 0)
+                    {
+                        continue;
+                    }
+                    counter += cm.Blocks[i].FinalIDCell - cm.Blocks[i].InitialIDCell;
+                }
+            }
+            return counter;
+        }
+
+        public static void OccupyCells(CellsManagement cm, int firstCell, int cellHeight)
+        {
+            int cellsToOccupy = cellHeight / 25;
+            for (int i = firstCell; i <= firstCell + cellsToOccupy * 2; i += 2)
+            {
+                cm.ChangeCellStatus(i, 2);
+            }
         }
 
         #endregion Methods
@@ -237,6 +300,8 @@ namespace Ferretto.VW.Utils.Source
         private int status;
 
         #endregion Fields
+
+        // status code: 0 = free; 1 = disabled; 2 = occupied; 3 = unusable
 
         #region Constructors
 
@@ -268,6 +333,8 @@ namespace Ferretto.VW.Utils.Source
         public Int32 Status { get => this.status; set => this.status = value; }
 
         #endregion Properties
+
+        // status code: 0 = free; 1 = disabled; 2 = occupied; 3 = unusable
     }
 
     internal class CellBlock
