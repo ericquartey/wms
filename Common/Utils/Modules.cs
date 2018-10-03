@@ -14,10 +14,6 @@
         #endregion Fields
     }
 
-    public static class DataAccess
-    {
-    }
-
     public static class Layout
     {
         #region Fields

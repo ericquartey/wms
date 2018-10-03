@@ -8,11 +8,10 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    public class ImageService : IImageService
+    public class ImageProvider : IImageProvider
     {
         #region Fields
 
-        // TODO make the images directory configurable (https://ferrettogroup.visualstudio.com/Warehouse%20Management%20System/_workitems/edit/139)
         private const string defaultImagesDirectoryName = "images\\";
 
         #endregion Fields

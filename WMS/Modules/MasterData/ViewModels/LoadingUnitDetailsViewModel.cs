@@ -2,8 +2,8 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL;
 using Ferretto.Common.Modules.BLL.Models;
-using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -13,8 +13,8 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand hideDetailsCommand;
         private LoadingUnitDetails loadingUnit;
         private ICommand saveCommand;
@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.businessProvider.Save(this.LoadingUnit);
+            var rowSaved = this.loadingUnitProvider.Save(this.LoadingUnit);
 
             if (rowSaved != 0)
             {

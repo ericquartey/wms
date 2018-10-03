@@ -9,12 +9,6 @@ namespace Ferretto.Common.Modules.BLL.Services
 {
     public class DataSourceService : IDataSourceService
     {
-        #region Fields
-
-        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
-
-        #endregion Fields
-
         #region Methods
 
         public IEnumerable<IDataSource<TModel>> GetAll<TModel>(string viewName, object parameter = null) where TModel : IBusinessObject
@@ -23,46 +17,53 @@ namespace Ferretto.Common.Modules.BLL.Services
             switch (viewName)
             {
                 case "ItemsView":
+                    var itemsProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
                     return new List<DataSource<Item>>
                     {
                         new DataSource<Item>(
                             MasterData.ItemAll,
-                            () => this.businessProvider.GetAllItems(),
-                            () => this.businessProvider.GetAllItemsCount()),
+                            () => itemsProvider.GetAll(),
+                            () => itemsProvider.GetAllCount()),
                         new DataSource<Item>(
                             MasterData.ItemClassA,
-                            () => this.businessProvider.GetItemsWithAClass(),
-                            () => this.businessProvider.GetItemsWithAClassCount()),
+                            () => itemsProvider.GetWithAClass(),
+                            () => itemsProvider.GetWithAClassCount()),
                         new DataSource<Item>(
                             MasterData.ItemFIFO,
-                            () => this.businessProvider.GetItemsWithFifo(),
-                            () => this.businessProvider.GetItemsWithFifoCount())
+                            () => itemsProvider.GetWithFifo(),
+                            () => itemsProvider.GetWithFifoCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case "ItemDetailsView":
+                    var itemDetailsProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
                     return new List<DataSource<Compartment>>
                     {
                         new DataSource<Compartment>(
                             MasterData.CompartmentAll,
-                            () => this.businessProvider.GetCompartmentsByItemId((int)parameter))
+                            () => itemDetailsProvider.GetByItemId((int)parameter))
                     }.Cast<IDataSource<TModel>>();
 
                 case "CompartmentsView":
+                    var compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
                     return new List<DataSource<Compartment>>
                     {
                         new DataSource<Compartment>(
                             MasterData.CompartmentAll,
-                            () => this.businessProvider.GetAllCompartments(),
-                            () => this.businessProvider.GetAllCompartmentsCount())
+                            () => compartmentProvider.GetAll(),
+                            () => compartmentProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case "LoadingUnitsView":
+                    var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
                     return new List<DataSource<LoadingUnit>>
                     {
                         new DataSource<LoadingUnit>(
                             MasterData.LoadingUnitAll,
-                            () => this.businessProvider.GetAllLoadingUnits(),
-                            () => this.businessProvider.GetAllLoadingUnitsCount())
+                            () => loadingUnitProvider.GetAll(),
+                            () => loadingUnitProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();
 
                 default:
