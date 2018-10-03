@@ -17,7 +17,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register("StartModuleName", typeof(string), typeof(WmsHistoryView));
         public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register("StartViewName", typeof(string), typeof(WmsHistoryView));
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-        private readonly Dictionary<string, INavigableView> registeredViews = new Dictionary<string, INavigableView>();
+        private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
         private ActionBar actionBarHsitoryView;
 
         #endregion Fields
@@ -56,12 +56,6 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            if (this.registeredViews.ContainsKey(viewModelName))
-            {
-                this.Content = this.registeredViews[viewModelName];
-                return;
-            }
-
             var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
             var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
             var id = this.navigationService.GetViewModelBindFirstId(moduleViewName);
@@ -71,7 +65,7 @@ namespace Ferretto.Common.Controls
             }
             var instanceModuleViewName = $"{moduleViewName}.{id}";
             var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(instanceModuleViewName);
-            this.registeredViews.Add(viewModelName, registeredView);
+            this.registeredViews.Push(registeredView);
             this.Content = registeredView;
             this.CheckBackVisibility();
         }
@@ -98,8 +92,8 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            this.registeredViews.Remove(this.registeredViews.Last().Key);
-            this.Content = this.registeredViews[this.registeredViews.Last().Key];
+            this.registeredViews.Pop();
+            this.Content = this.registeredViews.Last();
             this.CheckBackVisibility();
         }
 
