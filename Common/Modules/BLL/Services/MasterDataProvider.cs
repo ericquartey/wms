@@ -133,7 +133,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                 }).AsNoTracking();
         }
 
-        public Int32 GetAllLoadingUnitsCount()
+        public int GetAllLoadingUnitsCount()
         {
             return this.dataContext.LoadingUnits.Count();
         }
@@ -298,6 +298,33 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int Save(ItemDetails itemDetails)
         {
+            var item = this.dataContext.Items.Single(i => i.Id == itemDetails.Id);
+
+            item.AbcClassId = itemDetails.AbcClassId;
+            item.AverageWeight = itemDetails.AverageWeight;
+            item.Code = itemDetails.Code;
+            item.CreationDate = itemDetails.CreationDate;
+            item.Description = itemDetails.Description;
+            item.FifoTimePick = itemDetails.FifoTimePick;
+            item.FifoTimeStore = itemDetails.FifoTimeStore;
+            item.Height = itemDetails.Height;
+            item.Image = itemDetails.Image;
+            item.InventoryDate = itemDetails.InventoryDate;
+            item.InventoryTolerance = itemDetails.InventoryTolerance;
+            item.ItemCategoryId = itemDetails.ItemCategoryId;
+            item.ItemManagementTypeId = itemDetails.ItemManagementTypeId;
+            item.LastModificationDate = itemDetails.LastModificationDate;
+            item.LastPickDate = itemDetails.LastPickDate;
+            item.LastStoreDate = itemDetails.LastStoreDate;
+            item.Length = itemDetails.Length;
+            item.MeasureUnitId = itemDetails.MeasureUnitId;
+            item.Note = itemDetails.Note;
+            item.PickTolerance = itemDetails.PickTolerance;
+            item.ReorderPoint = itemDetails.ReorderPoint;
+            item.ReorderQuantity = itemDetails.ReorderQuantity;
+            item.StoreTolerance = itemDetails.StoreTolerance;
+            item.Width = itemDetails.Width;
+
             return this.dataContext.SaveChanges();
         }
 
