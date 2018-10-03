@@ -200,7 +200,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public ItemDetails GetItemDetails(int itemId)
         {
-            var itemDetails = this.dataContext.Items // TODO: remove duplication of this logic
+            var itemDetails = this.dataContext.Items
                 .Where(i => i.Id == itemId)
                 .Select(i => new ItemDetails
                     {
