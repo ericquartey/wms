@@ -13,8 +13,8 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly ILoadingUnitProvider businessProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand hideDetailsCommand;
         private LoadingUnitDetails loadingUnit;
         private ICommand saveCommand;
@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.businessProvider.Save(this.LoadingUnit);
+            var rowSaved = this.loadingUnitProvider.Save(this.LoadingUnit);
 
             if (rowSaved != 0)
             {

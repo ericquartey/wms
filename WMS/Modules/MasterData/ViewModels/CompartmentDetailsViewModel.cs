@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly ICompartmentProvider businessProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private CompartmentDetails compartment;
         private ICommand hideDetailsCommand;
@@ -55,14 +55,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.businessProvider.Save(this.Compartment);
+            var rowSaved = this.compartmentProvider.Save(this.Compartment);
 
             if (rowSaved != 0)
             {
                 this.eventService.Invoke(new ItemChangedEvent<CompartmentDetails>(this.Compartment));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.CompartmentSavedSuccessfully));
+                              .Invoke(new StatusEvent(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
         }
 
@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Compartment = null;
                 return;
             }
-            this.Compartment = this.businessProvider.GetById((int)itemId);
+            this.Compartment = this.compartmentProvider.GetById((int)itemId);
         }
 
         #endregion Methods
