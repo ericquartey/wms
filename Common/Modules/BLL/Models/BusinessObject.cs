@@ -57,6 +57,16 @@ namespace Ferretto.Common.Modules.BLL.Models
             }
         }
 
+        protected static void SetIfStrictlyPositive(ref int member, int value)
+        {
+            if (value <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
+            }
+
+            member = value;
+        }
+
         #endregion Methods
     }
 }
