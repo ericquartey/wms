@@ -9,13 +9,12 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class FilteredNavigationViewModel<TModel> : BaseNavigationViewModel
+    public class EntityListViewModel<TModel> : BaseNavigationViewModel
         where TModel : IBusinessObject
     {
         #region Fields
 
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        private IEnumerable<IDataSource<TModel>> dataSources;
+        private readonly IEnumerable<IDataSource<TModel>> dataSources;
         private IEnumerable<Tile> filterTiles;
         private IDataSource<TModel> selectedDataSource;
         private Tile selectedFilterTile;
@@ -24,23 +23,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        protected FilteredNavigationViewModel()
+        protected EntityListViewModel()
         {
+            var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
             var viewName = MvvmNaming.GetViewNameFromViewModelName(this.GetType().Name);
-            this.dataSources = this.dataSourceService.GetAll<TModel>(viewName);
+            this.dataSources = dataSourceService.GetAll<TModel>(viewName);
 
-            this.filterTiles = new BindingList<Tile>(this.DataSources.Select(dataSource => new Tile { Name = dataSource.Name }).ToList());
+            this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile { Name = dataSource.Name }).ToList());
         }
 
         #endregion Constructors
 
         #region Properties
-
-        public IEnumerable<IDataSource<TModel>> DataSources
-        {
-            get => this.dataSources;
-            protected set => this.SetProperty(ref this.dataSources, value);
-        }
 
         public IEnumerable<Tile> Filters
         {
@@ -61,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedDataSource = this.DataSources.Single(dataSource => dataSource.Name == value.Name);
+                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Name == value.Name);
                 }
             }
         }
@@ -76,7 +70,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.DataSources.Single(d => d.Name == filterTile.Name).GetDataCount();
+                    filterTile.Count = this.dataSources.Single(d => d.Name == filterTile.Name).GetDataCount();
                 }
             }).ConfigureAwait(true);
         }

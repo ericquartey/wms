@@ -22,19 +22,21 @@ namespace Ferretto.Common.Modules.BLL.Models
                 throw new ArgumentNullException(nameof(name));
             }
 
-            this.Name = name;
-            this.KeyExpression = "Id";
-            this.AreSourceRowsThreadSafe = true;
-            this.GetData = getData;
+            if (getData == null)
+            {
+                throw new ArgumentNullException(nameof(getData));
+            }
 
             if (getDataCount == null)
             {
                 throw new ArgumentNullException(nameof(getDataCount));
             }
-            else
-            {
-                this.GetDataCount = getDataCount;
-            }
+
+            this.Name = name;
+            this.GetData = getData;
+            this.GetDataCount = getDataCount;
+
+            this.KeyExpression = "Id";
         }
 
         #endregion Constructors
