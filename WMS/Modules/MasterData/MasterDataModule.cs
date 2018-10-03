@@ -1,4 +1,9 @@
-﻿using Ferretto.Common.Controls.Interfaces;
+using System.Linq;
+using DevExpress.Xpf.Core;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Modules.BLL;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -38,6 +43,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void Initialize()
         {
+            DXSplashScreen.SetState("Initializing Master Data module ...");
+
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
             this.navigationService.Register<ItemsAndDetailsView, ItemsAndDetailsViewModel>();

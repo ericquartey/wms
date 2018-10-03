@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Threading;
 
@@ -21,6 +23,8 @@ namespace Ferretto.Common.Controls
 #if DEBUG
             this.SetupTimer();
 #endif
+
+            this.Footer_Text.Text = this.GetCopyright();
         }
 
         #endregion Constructors
@@ -35,6 +39,12 @@ namespace Ferretto.Common.Controls
             timer.Tick += this.Timer_Tick;
 
             timer.Start();
+        }
+
+        private string GetCopyright()
+        {
+            return (this.GetType().Assembly.GetCustomAttributes(false)
+                .FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute) as AssemblyCopyrightAttribute)?.Copyright;
         }
 
         private void Timer_Tick(Object sender, EventArgs e)

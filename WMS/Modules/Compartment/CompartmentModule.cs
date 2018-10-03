@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Controls.Interfaces;
+﻿using DevExpress.Xpf.Core;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -32,9 +33,11 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public void Initialize()
         {
+            DXSplashScreen.SetState("Initializing Compartment module ...");
+
             this.Container.RegisterType<INavigationService, NavigationService>(
                                         new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IDialogService, Common.Controls.Services.DialogService>(new ContainerControlledLifetimeManager());
 
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Compartment)}.{Common.Utils.Modules.Compartment.REGION_MAINCONTENT}",

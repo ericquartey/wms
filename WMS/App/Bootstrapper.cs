@@ -1,31 +1,34 @@
-﻿using DevExpress.Xpf.Docking;
+﻿using System.Configuration;
+using System.Windows;
+using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Modularity;
 using Prism.Regions;
 using Prism.Unity;
-using System.Configuration;
-using System.Windows;
 
 namespace Ferretto.WMS.App
 {
     public class Bootstrapper : UnityBootstrapper
     {
-        protected override DependencyObject CreateShell()
+        #region Constructors
+
+        public Bootstrapper()
         {
-            return this.Container.TryResolve<Shell>();
         }
 
-        protected override IModuleCatalog CreateModuleCatalog()
-        {
-            return new DirectoryModuleCatalog {ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"]};
-        }
+        #endregion Constructors
+
+        #region Methods
 
         protected override void ConfigureModuleCatalog()
         {
+            DXSplashScreen.SetState("Configuring Prism module catalog ...");
+
             base.ConfigureModuleCatalog();
 
-            ( this.ModuleCatalog as DirectoryModuleCatalog )?.Load();
+            (this.ModuleCatalog as DirectoryModuleCatalog)?.Load();
         }
 
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
@@ -41,12 +44,30 @@ namespace Ferretto.WMS.App
             return mappings;
         }
 
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            DXSplashScreen.SetState("Loading Prism module catalog ...");
+
+            return new DirectoryModuleCatalog { ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"] };
+        }
+
+        protected override DependencyObject CreateShell()
+        {
+            DXSplashScreen.SetState("Creating shell ...");
+
+            return this.Container.TryResolve<Shell>();
+        }
+
         protected override void InitializeShell()
         {
             base.InitializeShell();
 
-            Application.Current.MainWindow = (Window) this.Shell;
+            DXSplashScreen.SetState("Opening main window ...");
+
+            Application.Current.MainWindow = (Window)this.Shell;
             Application.Current.MainWindow.Show();
         }
+
+        #endregion Methods
     }
 }

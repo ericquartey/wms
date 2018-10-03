@@ -14,6 +14,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.Loaded += ItemsView_Loaded;
             this.MainGridControl.AsyncOperationCompleted += this.MainGridControl_AsyncOperationCompleted;
+
+            DXSplashScreen.SetState("Initializing main window ...");
         }
 
         #endregion Constructors
