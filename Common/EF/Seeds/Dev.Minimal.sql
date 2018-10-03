@@ -35,7 +35,10 @@ INSERT INTO MeasureUnits (Id, Description) VALUES ('KG', 'Kilograms');
 INSERT INTO MeasureUnits (Id, Description) VALUES ('L', 'Liters');
 
 SET IDENTITY_INSERT Items ON;
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2, 1);
+INSERT INTO FerrettoWmsDb.dbo.Items (AbcClassId, AverageWeight, Code, Description, FifoTimePick, FifoTimeStore, Height, Id, Image, InventoryDate, InventoryTolerance, ItemCategoryId, ItemManagementTypeId, LastModificationDate, LastPickDate, LastStoreDate, Length, MeasureUnitId, Note, PickTolerance, ReorderPoint, ReorderQuantity, StoreTolerance, Width)
+  VALUES ('A', 1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 2, 3, 4, 1, 'Articolo1.jpg', '2001-01-01', 5, 1, 2, '2002-02-02', '2003-03-03', '2004-04-04', 6, 'PZ', 'aaaaaaaaaa', 7, 8, 9, 10, 11);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image)
+  VALUES (1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2, 1, 'Articolo2.jpg');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (2, 'U000499', '000499        FRESA SMUSSO PUNTA KESO', 'A', 'PZ', 2, 2);
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (3, 'U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', 2, 3);
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (4, 'U000578', '000578        FRESA DORSI VAC91', 'B', 'PZ', 2, 4);
