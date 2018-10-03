@@ -56,6 +56,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.navigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
             this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
             this.navigationService.Register<LoadingUnitsAndDetailsView, LoadingUnitsAndDetailsViewModel>();
+
+            DXSplashScreen.SetState("Initializing Entity Framework ...");
+
+            ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
+
+            DXSplashScreen.SetState("Initializing Entity Framework ... done.");
         }
 
         #endregion Methods
