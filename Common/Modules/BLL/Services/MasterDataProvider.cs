@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using DevExpress.Data.ODataLinq.Helpers;
 using DevExpress.Data.Selection;
@@ -6,6 +6,9 @@ using Ferretto.Common.DataModels;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
+using Compartment = Ferretto.Common.Modules.BLL.Models.Compartment;
+using Item = Ferretto.Common.Modules.BLL.Models.Item;
+using LoadingUnit = Ferretto.Common.Modules.BLL.Models.LoadingUnit;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -124,12 +127,10 @@ namespace Ferretto.Common.Modules.BLL.Services
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
-                    CellSide = Enum.GetName(typeof(DataModels.Side), l.Cell.Side),
+                    CellSide = l.Cell.Side.ToString(),
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
-                }
-                )
-                .AsNoTracking();
+                }).AsNoTracking();
         }
 
         public Int32 GetAllLoadingUnitsCount()
