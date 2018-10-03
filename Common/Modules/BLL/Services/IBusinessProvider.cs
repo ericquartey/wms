@@ -7,6 +7,8 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Methods
 
+        IQueryable<Enumeration<int>> GetAllCellPositions();
+
         IQueryable<Compartment> GetAllCompartments();
 
         int GetAllCompartmentsCount();
@@ -24,6 +26,10 @@ namespace Ferretto.Common.Modules.BLL.Services
         IQueryable<LoadingUnit> GetAllLoadingUnits();
 
         int GetAllLoadingUnitsCount();
+
+        IQueryable<Enumeration<string>> GetAllLoadingUnitStatuses();
+
+        IQueryable<Enumeration<int>> GetAllLoadingUnitTypes();
 
         IQueryable<Enumeration<int>> GetAllMaterialStatuses();
 
@@ -44,6 +50,8 @@ namespace Ferretto.Common.Modules.BLL.Services
         IQueryable<Item> GetItemsWithFifo();
 
         int GetItemsWithFifoCount();
+
+        LoadingUnitDetails GetLoadingUnitDetails(int loadingUnitId);
 
         int Save(ItemDetails itemDetails);
 

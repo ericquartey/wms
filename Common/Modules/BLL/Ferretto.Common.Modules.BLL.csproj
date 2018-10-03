@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\BusinessObject.cs" />
+    <Compile Include="Models\CellPosition.cs" />
     <Compile Include="Models\CompartmentStockDetails.cs" />
     <Compile Include="Models\Compartment.cs" />
     <Compile Include="Models\CompartmentDetails.cs" />
@@ -103,6 +104,8 @@
     <Compile Include="Models\ItemInCompartment.cs" />
     <Compile Include="Models\LoadingUnit.cs" />
     <Compile Include="Models\LoadingUnitDetails.cs" />
+    <Compile Include="Models\LoadingUnitStatus.cs" />
+    <Compile Include="Models\LoadingUnitType.cs" />
     <Compile Include="Services\MasterDataProvider.cs" />
     <Compile Include="Services\EventService.cs" />
     <Compile Include="BusinessLogicModule.cs" />
