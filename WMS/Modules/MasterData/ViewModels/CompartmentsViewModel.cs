@@ -7,7 +7,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentsViewModel : FilteredNavigationViewModel<Compartment>
+    public class CompartmentsViewModel : EntityListViewModel<Compartment>
     {
         #region Fields
 
