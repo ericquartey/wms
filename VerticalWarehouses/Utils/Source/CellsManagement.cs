@@ -25,7 +25,6 @@ namespace Ferretto.VW.Utils.Source
                 var tmp = new Cell(i);
                 cellsToJson.Add(tmp);
             }
-
             var json = JsonConvert.SerializeObject(cellsToJson, Formatting.Indented);
 
             if (File.Exists(JSON_CELL_PATH))
@@ -102,6 +101,7 @@ namespace Ferretto.VW.Utils.Source
 
         public void CreateBay(int firstCell, int lastCell)
         {
+            Debug.Print("firstCell: " + firstCell + ", lastCell: " + lastCell + "\n");
             if ((firstCell % 2 == 0 && lastCell % 2 != 0) || (firstCell % 2 != 0 && lastCell % 2 == 0))
             {
                 throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
@@ -112,10 +112,42 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
+        public void CreateBlocks()
+        {
+            int counter = 1;
+            for (int i = 0; i < this.Cells.Count; i += 2) //odd cell's index
+            {
+                if (this.Cells[i].Status == 0)
+                {
+                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
+                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
+                    this.Blocks.Add(cb);
+                    counter++;
+                    i = tmp;
+                }
+            }
+            for (int i = 1; i < this.Cells.Count; i += 2)//even cell's index
+            {
+                if (this.Cells[i].Status == 0)
+                {
+                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
+                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
+                    this.Blocks.Add(cb);
+                    counter++;
+                    i = tmp;
+                }
+            }
+        }
+
         public void CreateCellTable(int machineHeight)
         {
             int cells = this.CalculateCellQuantityFromMachineHeight(machineHeight);
-            CreateAndPopulateTables.CreateCellJsonFile(cells);
+            for (int i = 1; i < cells + 1; i++)
+            {
+                Cell c = new Cell(i);
+                this.Cells.Add(c);
+            }
+            this.CreateCellJsonFile(this.Cells);
         }
 
         public void UpdateBlocksFile()
@@ -148,30 +180,18 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        private void CreateBlocks()
+        private void CreateCellJsonFile(List<Cell> cellsToJson)
         {
-            int counter = 1;
-            for (int i = 0; i < this.Cells.Count; i += 2) //odd cell's index
+            var json = JsonConvert.SerializeObject(cellsToJson, Formatting.Indented);
+
+            if (File.Exists(CreateAndPopulateTables.JSON_CELL_PATH))
             {
-                if (this.Cells[i].Status == 0)
-                {
-                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
-                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
-                    this.Blocks.Add(cb);
-                    counter++;
-                    i = tmp;
-                }
+                File.Delete(CreateAndPopulateTables.JSON_CELL_PATH);
+                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
             }
-            for (int i = 1; i < this.Cells.Count; i += 2)//even cell's index
+            else
             {
-                if (this.Cells[i].Status == 0)
-                {
-                    int tmp = this.GetLastUpperNotDisabledCellIndex(i);
-                    CellBlock cb = new CellBlock(i + 1, tmp + 1, counter);
-                    this.Blocks.Add(cb);
-                    counter++;
-                    i = tmp;
-                }
+                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
             }
         }
 

@@ -55,6 +55,9 @@ namespace ZZ_CellManagementTestApp
 
         private void DoneInsertingBays()
         {
+            this.cm.CreateBlocks();
+            this.cm.UpdateBlocksFile();
+            this.cm.UpdateCellsFile();
             this.InsertBaysPopUp.IsOpen = false;
         }
 

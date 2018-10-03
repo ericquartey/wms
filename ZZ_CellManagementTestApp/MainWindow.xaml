@@ -63,7 +63,7 @@
         <Popup Name="InsertBaysPopUp"
                Width="400"
                Height="auto"
-               IsOpen="True"
+               IsOpen="False"
                Placement="Center">
             <Border Width="auto"
                     Height="auto"
