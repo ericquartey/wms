@@ -2,8 +2,8 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL;
 using Ferretto.Common.Modules.BLL.Models;
-using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
