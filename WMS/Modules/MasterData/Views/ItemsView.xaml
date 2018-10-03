@@ -70,7 +70,8 @@
                                    SearchPanelHorizontalAlignment="Right"
                                    ShowGroupPanel="False"
                                    ShowIndicator="False"
-                                   ShowSearchPanelMode="Always">
+                                   ShowSearchPanelMode="Always"
+                                   ShowFilterPanelMode="ShowAlways">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.ViewDetailsCommand}" />
