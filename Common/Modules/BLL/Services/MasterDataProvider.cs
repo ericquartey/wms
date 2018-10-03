@@ -1,8 +1,14 @@
 ﻿using System;
 using System.Linq;
+using DevExpress.Data.ODataLinq.Helpers;
+using DevExpress.Data.Selection;
+using Ferretto.Common.DataModels;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
+using Compartment = Ferretto.Common.Modules.BLL.Models.Compartment;
+using Item = Ferretto.Common.Modules.BLL.Models.Item;
+using LoadingUnit = Ferretto.Common.Modules.BLL.Models.LoadingUnit;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -34,6 +40,11 @@ namespace Ferretto.Common.Modules.BLL.Services
         public IQueryable<Enumeration<string>> GetAllAbcClasses()
         {
             return this.dataContext.AbcClasses.AsNoTracking().Select(x => new Enumeration<string>(x.Id, x.Description));
+        }
+
+        public IQueryable<Enumeration<int>> GetAllCellPositions()
+        {
+            return this.dataContext.CellPositions.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
         public IQueryable<Compartment> GetAllCompartments()
@@ -116,17 +127,25 @@ namespace Ferretto.Common.Modules.BLL.Services
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
-                    CellSide = Enum.GetName(typeof(DataModels.Side), l.Cell.Side),
+                    CellSide = l.Cell.Side.ToString(),
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
-                }
-                )
-                .AsNoTracking();
+                }).AsNoTracking();
         }
 
         public Int32 GetAllLoadingUnitsCount()
         {
             return this.dataContext.LoadingUnits.Count();
+        }
+
+        public IQueryable<Enumeration<string>> GetAllLoadingUnitStatuses()
+        {
+            return this.dataContext.LoadingUnitStatuses.AsNoTracking().Select(x => new Enumeration<string>(x.Id, x.Description));
+        }
+
+        public IQueryable<Enumeration<int>> GetAllLoadingUnitTypes()
+        {
+            return this.dataContext.LoadingUnitTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration<int>> GetAllMaterialStatuses()
@@ -171,61 +190,49 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .AsNoTracking();
         }
 
+        public IQueryable<CompartmentDetails> GetCompartmentsByLoadingUnitId(int loadingUnitId)
+        {
+            return this.dataContext.Compartments
+                .Where(c => c.LoadingUnitId == loadingUnitId)
+                .Select(c => ProjectCompartmentDetails(c))
+                .AsNoTracking();
+        }
+
         public ItemDetails GetItemDetails(int itemId)
         {
-            var itemDetails = this.dataContext.Items // TODO: remove duplication of this logic
+            var itemDetails = this.dataContext.Items
                 .Where(i => i.Id == itemId)
-                .GroupJoin(
-                    this.dataContext.Compartments
-                        .Where(c => c.ItemId != null)
-                        .GroupBy(c => c.ItemId)
-                        .Select(j => new
-                        {
-                            ItemId = j.Key,
-                            TotalStock = j.Sum(x => x.Stock),
-                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
-                        }),
-                    i => i.Id,
-                    c => c.ItemId,
-                    (i, c) => new
+                .Select(i => new ItemDetails
                     {
-                        Item = i,
-                        CompartmentsAggregation = c
-                    })
-                .SelectMany(
-                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (a, b) => new ItemDetails
-                    {
-                        AbcClassId = a.Item.AbcClassId,
-                        AverageWeight = a.Item.AverageWeight,
-                        CreationDate = a.Item.CreationDate,
-                        FifoTimePick = a.Item.FifoTimePick,
-                        FifoTimeStore = a.Item.FifoTimeStore,
-                        Height = a.Item.Height,
-                        Id = a.Item.Id,
-                        InventoryDate = a.Item.InventoryDate,
-                        InventoryTolerance = a.Item.InventoryTolerance,
-                        ItemManagementTypeId = a.Item.ItemManagementTypeId,
-                        Image = a.Item.Image,
-                        LastModificationDate = a.Item.LastModificationDate,
-                        LastPickDate = a.Item.LastPickDate,
-                        LastStoreDate = a.Item.LastStoreDate,
-                        Length = a.Item.Length,
-                        MeasureUnitId = a.Item.MeasureUnitId,
-                        PickTolerance = a.Item.PickTolerance,
-                        ReorderPoint = a.Item.ReorderPoint,
-                        ReorderQuantity = a.Item.ReorderQuantity,
-                        StoreTolerance = a.Item.StoreTolerance,
-                        Width = a.Item.Width,
-                        Code = a.Item.Code,
-                        Description = a.Item.Description,
-                        TotalReservedForPick = b != null ? b.TotalReservedForPick : 0,
-                        TotalReservedToStore = b != null ? b.TotalReservedToStore : 0,
-                        TotalStock = b != null ? b.TotalStock : 0,
-                        TotalAvailable = b != null
-                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
-                            : 0,
+                        Id = i.Id,
+                        Code = i.Code,
+                        Description = i.Description,
+                        ItemCategoryId = i.ItemCategoryId,
+                        Note = i.Note,
+
+                        AbcClassId = i.AbcClassId,
+                        MeasureUnitId = i.MeasureUnitId,
+                        ItemManagementTypeId = i.ItemManagementTypeId,
+                        FifoTimePick = i.FifoTimePick,
+                        FifoTimeStore = i.FifoTimeStore,
+                        ReorderPoint = i.ReorderPoint,
+                        ReorderQuantity = i.ReorderQuantity,
+
+                        Height = i.Height,
+                        Length = i.Length,
+                        Width = i.Width,
+                        PickTolerance = i.PickTolerance,
+                        StoreTolerance = i.StoreTolerance,
+                        InventoryTolerance = i.InventoryTolerance,
+                        AverageWeight = i.AverageWeight,
+
+                        Image = i.Image,
+
+                        CreationDate = i.CreationDate,
+                        InventoryDate = i.InventoryDate,
+                        LastModificationDate = i.LastModificationDate,
+                        LastPickDate = i.LastPickDate,
+                        LastStoreDate = i.LastStoreDate,
                     }
                 )
                 .AsNoTracking()
@@ -261,6 +268,24 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Count(i => FifoFilter(i));
         }
 
+        public LoadingUnitDetails GetLoadingUnitDetails(int loadingUnitId)
+        {
+            var loadingUnitDetails = this.dataContext.LoadingUnits
+                .Where(l => l.Id == loadingUnitId)
+                .Include(l => l.LoadingUnitType)
+                .ThenInclude(l => l.LoadingUnitSizeClass)
+                .Select(l => ProjectLoadingUnitDetails(l))
+                .Single();
+
+            loadingUnitDetails.AbcClassChoices = this.GetAllAbcClasses();
+            loadingUnitDetails.CellPositionChoices = this.GetAllCellPositions();
+            loadingUnitDetails.LoadingUnitStatusChoices = this.GetAllLoadingUnitStatuses();
+            loadingUnitDetails.LoadingUnitTypeChoices = this.GetAllLoadingUnitTypes();
+            loadingUnitDetails.Compartments = this.GetCompartmentsByLoadingUnitId(loadingUnitId).ToList();
+
+            return loadingUnitDetails;
+        }
+
         public void Initialize()
         {
             this.dataContext.Items.Load();
@@ -281,53 +306,69 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.SaveChanges();
         }
 
-        private static Compartment ProjectCompartment(DataModels.Compartment c) => new Compartment
-        {
-            Code = c.Code,
-            CompartmentStatusDescription = c.CompartmentStatus?.Description,
-            CompartmentTypeDescription = c.CompartmentType?.Description,
-            Id = c.Id,
-            ItemDescription = c.Item?.Description,
-            LoadingUnitCode = c.LoadingUnit?.Code,
-            Lot = c.Lot,
-            MaterialStatusDescription = c.MaterialStatus?.Description,
-            Stock = c.Stock,
-            Sub1 = c.Sub1,
-            Sub2 = c.Sub2,
-        };
+        private static Compartment ProjectCompartment(DataModels.Compartment c) =>
+            new Compartment
+            {
+                Code = c.Code,
+                CompartmentStatusDescription = c.CompartmentStatus?.Description,
+                CompartmentTypeDescription = c.CompartmentType?.Description,
+                Id = c.Id,
+                ItemDescription = c.Item?.Description,
+                LoadingUnitCode = c.LoadingUnit?.Code,
+                Lot = c.Lot,
+                MaterialStatusDescription = c.MaterialStatus?.Description,
+                Stock = c.Stock,
+                Sub1 = c.Sub1,
+                Sub2 = c.Sub2,
+                ItemPairing = c.ItemPairing.ToString(),
+            };
 
-        private static CompartmentDetails ProjectCompartmentDetails(DataModels.Compartment c) => new CompartmentDetails
-        {
-            Id = c.Id,
-            Code = c.Code,
-            LoadingUnitCode = c.LoadingUnit?.Code,
-            CompartmentTypeId = c.CompartmentTypeId,
-            ItemPairing = c.ItemPairing,
-            ItemCode = c.Item?.Code,
-            ItemDescription = c.Item?.Description,
-            Sub1 = c.Sub1,
-            Sub2 = c.Sub2,
-            MaterialStatusId = c.MaterialStatusId,
-            FifoTime = c.FifoTime,
-            PackageTypeId = c.PackageTypeId,
-            Lot = c.Lot,
-            RegistrationNumber = c.RegistrationNumber,
-            MaxCapacity = c.MaxCapacity,
-            Stock = c.Stock,
-            ReservedForPick = c.ReservedForPick,
-            ReservedToStore = c.ReservedToStore,
-            CompartmentStatusId = c.CompartmentStatusId,
-            CreationDate = c.CreationDate,
-            LastHandlingDate = c.LastHandlingDate,
-            InventoryDate = c.InventoryDate,
-            FirstStoreDate = c.FirstStoreDate,
-            LastStoreDate = c.LastStoreDate,
-            LastPickDate = c.LastPickDate,
-            Width = c.Width,
-            Height = c.Height,
-            XPosition = c.XPosition,
-            YPosition = c.YPosition
-        };
+        private static CompartmentDetails ProjectCompartmentDetails(DataModels.Compartment c) =>
+            new CompartmentDetails
+            {
+                Id = c.Id,
+                Code = c.Code,
+                LoadingUnitCode = c.LoadingUnit?.Code,
+                CompartmentTypeId = c.CompartmentTypeId,
+                ItemPairing = c.ItemPairing,
+                ItemCode = c.Item?.Code,
+                ItemDescription = c.Item?.Description,
+                Sub1 = c.Sub1,
+                Sub2 = c.Sub2,
+                MaterialStatusId = c.MaterialStatusId,
+                FifoTime = c.FifoTime,
+                PackageTypeId = c.PackageTypeId,
+                Lot = c.Lot,
+                RegistrationNumber = c.RegistrationNumber,
+                MaxCapacity = c.MaxCapacity,
+                Stock = c.Stock,
+                ReservedForPick = c.ReservedForPick,
+                ReservedToStore = c.ReservedToStore,
+                CompartmentStatusId = c.CompartmentStatusId,
+                CreationDate = c.CreationDate,
+                LastHandlingDate = c.LastHandlingDate,
+                InventoryDate = c.InventoryDate,
+                FirstStoreDate = c.FirstStoreDate,
+                LastStoreDate = c.LastStoreDate,
+                LastPickDate = c.LastPickDate,
+                Width = c.Width,
+                Height = c.Height,
+                XPosition = c.XPosition,
+                YPosition = c.YPosition
+            };
+
+        private static LoadingUnitDetails ProjectLoadingUnitDetails(DataModels.LoadingUnit l) =>
+            new LoadingUnitDetails
+            {
+                Id = l.Id,
+                Code = l.Code,
+                AbcClassId = l.AbcClassId,
+                CellPositionId = l.CellPositionId,
+                LoadingUnitStatusId = l.LoadingUnitStatusId,
+                LoadingUnitTypeId = l.LoadingUnitTypeId,
+                Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
+                Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
+            };
 
         private IQueryable<Item> GetAllItemsWithAggregations(Predicate<DataModels.Item> wherePredicate = null)
         {

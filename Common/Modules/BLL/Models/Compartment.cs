@@ -18,6 +18,8 @@
 
         public string ItemDescription { get; set; }
 
+        public string ItemPairing { get; set; }
+
         public string LoadingUnitCode { get; set; }
         public string Lot { get; set; }
         public string MaterialStatusDescription { get; set; }

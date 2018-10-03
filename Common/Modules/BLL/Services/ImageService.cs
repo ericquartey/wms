@@ -42,7 +42,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     nameof(pathName));
             }
 
-            return File.Exists(uri.AbsolutePath) ? new BitmapImage(uri) : null;
+            return File.Exists(uri.LocalPath) ? new BitmapImage(uri) : null;
         }
 
         #endregion Methods
