@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
+        private readonly ICompartmentProvider businessProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private CompartmentDetails compartment;
         private ICommand hideDetailsCommand;
@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Compartment = null;
                 return;
             }
-            this.Compartment = this.businessProvider.GetCompartmentDetails((int)itemId);
+            this.Compartment = this.businessProvider.GetById((int)itemId);
         }
 
         #endregion Methods

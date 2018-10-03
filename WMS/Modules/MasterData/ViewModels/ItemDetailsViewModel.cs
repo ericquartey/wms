@@ -15,9 +15,9 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
         private ICommand hideDetailsCommand;
         private ItemDetails item;
@@ -86,7 +86,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.businessProvider.Save(this.Item);
+            var rowSaved = this.itemProvider.Save(this.Item);
 
             if (rowSaved != 0)
             {
@@ -110,9 +110,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Item = null;
                 return;
             }
-            this.Item = this.businessProvider.GetItemDetails((int)itemId);
+            this.Item = this.itemProvider.GetById((int)itemId);
 
-            this.ItemHasCompartments = this.businessProvider.GetCompartmentsByItemId(this.item.Id).Count() > 0;
+            this.ItemHasCompartments = this.itemProvider.HasAnyCompartments((int)itemId);
         }
 
         #endregion Methods

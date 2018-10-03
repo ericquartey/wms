@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IBusinessProvider businessProvider = ServiceLocator.Current.GetInstance<IBusinessProvider>();
+        private readonly ILoadingUnitProvider businessProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private ICommand hideDetailsCommand;
         private LoadingUnitDetails loadingUnit;

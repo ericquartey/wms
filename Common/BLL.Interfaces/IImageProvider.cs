@@ -2,8 +2,12 @@
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IImageService
+    public interface IImageProvider
     {
+        #region Methods
+
         ImageSource GetImage(string pathName);
+
+        #endregion Methods
     }
 }
