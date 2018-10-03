@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
@@ -21,6 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private IDataSource<Compartment> compartmentsDataSource;
         private ICommand hideDetailsCommand;
         private ItemDetails item;
+        private bool itemHasCompartments;
         private ICommand saveCommand;
 
         #endregion Fields
@@ -65,6 +66,12 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        public bool ItemHasCompartments
+        {
+            get => this.itemHasCompartments;
+            set => this.SetProperty(ref this.itemHasCompartments, value);
+        }
+
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
@@ -104,6 +111,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
             this.Item = this.businessProvider.GetItemDetails((int)itemId);
+
+            this.ItemHasCompartments = this.businessProvider.GetCompartmentsByItemId(this.item.Id).Count() > 0;
         }
 
         #endregion Methods

@@ -93,7 +93,7 @@
                                      VerticalContentAlignment="Stretch"
                                      IsMultiline="True"
                                      Label="{x:Static res:BusinessObjects.ItemNotes}"
-                                     Text="{Binding Path=Item.Notes, Mode=TwoWay}" />
+                                     Text="{Binding Path=Item.Note, Mode=TwoWay}" />
                     </Grid>
                 </GroupBox>
 
@@ -204,46 +204,51 @@
                 <GroupBox Grid.Row="3"
                           Grid.ColumnSpan="2"
                           Header="{x:Static res:MasterData.Compartments}">
-                    <wms:WmsGridControl MinHeight="300"
-                                        MaxWidth="2000"
-                                        MaxHeight="5000"
-                                        CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
-                                        ItemType="{x:Type models:Compartment}"
-                                        SelectionMode="Row">
-                        <wms:WmsGridControl.View>
-                            <dxg:TableView AllowEditing="False"
-                                           AllowGrouping="False"
-                                           AllowMoveColumnToDropArea="False"
-                                           NavigationStyle="Row"
-                                           ShowGroupPanel="False"
-                                           ShowIndicator="False"
-                                           ShowSearchPanelMode="Never" />
-                        </wms:WmsGridControl.View>
-                        <dxg:GridColumn Width="100*"
-                                        FieldName="Code"
-                                        Header="{x:Static res:BusinessObjects.CompartmentCode}" />
-                        <dxg:GridColumn Width="300*"
-                                        FieldName="LoadingUnitCode"
-                                        Header="{x:Static res:BusinessObjects.LoadingUnit}" />
-                        <dxg:GridColumn Width="100*"
-                                        FieldName="Sub1"
-                                        Header="{x:Static res:BusinessObjects.CompartmentSub1}" />
-                        <dxg:GridColumn Width="100*"
-                                        FieldName="Sub2"
-                                        Header="{x:Static res:BusinessObjects.CompartmentSub2}" />
-                        <dxg:GridColumn Width="200*"
-                                        FieldName="Lot"
-                                        Header="{x:Static res:BusinessObjects.CompartmentLot}" />
-                        <dxg:GridColumn Width="200*"
-                                        FieldName="CompartmentStatusDescription"
-                                        Header="{x:Static res:BusinessObjects.CompartmentStatus}" />
-                        <dxg:GridColumn Width="200*"
-                                        FieldName="Stock"
-                                        Header="{x:Static res:BusinessObjects.CompartmentStock}" />
-                        <dxg:GridColumn Width="200*"
-                                        FieldName="ItemPairing"
-                                        Header="{x:Static res:BusinessObjects.CompartmentPairing}" />
-                    </wms:WmsGridControl>
+                    <StackPanel Margin="0,10,0,0">
+                        <TextBlock Text="{x:Static res:MasterData.ItemIsAllocatedInNoCompartment}"
+                                   Visibility="{Binding Path=ItemHasCompartments, Converter={StaticResource BTVIC}}" />
+                        <wms:WmsGridControl MinHeight="300"
+                                            MaxWidth="2000"
+                                            MaxHeight="5000"
+                                            CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
+                                            ItemType="{x:Type models:Compartment}"
+                                            SelectionMode="Row"
+                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVC}}">
+                            <wms:WmsGridControl.View>
+                                <dxg:TableView AllowEditing="False"
+                                               AllowGrouping="False"
+                                               AllowMoveColumnToDropArea="False"
+                                               NavigationStyle="Row"
+                                               ShowGroupPanel="False"
+                                               ShowIndicator="False"
+                                               ShowSearchPanelMode="Never" />
+                            </wms:WmsGridControl.View>
+                            <dxg:GridColumn Width="200*"
+                                            FieldName="Code"
+                                            Header="{x:Static res:BusinessObjects.CompartmentCode}" />
+                            <dxg:GridColumn Width="200*"
+                                            FieldName="LoadingUnitCode"
+                                            Header="{x:Static res:BusinessObjects.LoadingUnit}" />
+                            <dxg:GridColumn Width="100*"
+                                            FieldName="Sub1"
+                                            Header="{x:Static res:BusinessObjects.CompartmentSub1}" />
+                            <dxg:GridColumn Width="100*"
+                                            FieldName="Sub2"
+                                            Header="{x:Static res:BusinessObjects.CompartmentSub2}" />
+                            <dxg:GridColumn Width="200*"
+                                            FieldName="Lot"
+                                            Header="{x:Static res:BusinessObjects.CompartmentLot}" />
+                            <dxg:GridColumn Width="200*"
+                                            FieldName="CompartmentStatusDescription"
+                                            Header="{x:Static res:BusinessObjects.CompartmentStatus}" />
+                            <dxg:GridColumn Width="100*"
+                                            FieldName="Stock"
+                                            Header="{x:Static res:BusinessObjects.CompartmentStock}" />
+                            <dxg:GridColumn Width="200*"
+                                            FieldName="ItemPairing"
+                                            Header="{x:Static res:BusinessObjects.CompartmentPairing}" />
+                        </wms:WmsGridControl>
+                    </StackPanel>
                 </GroupBox>
 
                 <StackPanel Grid.Row="0"
