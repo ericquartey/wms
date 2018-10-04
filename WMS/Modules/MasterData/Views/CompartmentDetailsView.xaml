@@ -268,14 +268,11 @@
                                                ShowSearchPanelMode="Never" />
                             </wms:WmsGridControl.View>
                             <dxg:GridColumn Width="100*"
-                                            FieldName="Code"
-                                            Header="{x:Static res:BusinessObjects.ItemCode}" />
+                                            FieldName="Code" />
                             <dxg:GridColumn Width="100*"
-                                            FieldName="Description"
-                                            Header="{x:Static res:BusinessObjects.ItemDescription}" />
+                                            FieldName="Description" />
                             <dxg:GridColumn Width="100*"
-                                            FieldName="Capacity"
-                                            Header="{x:Static res:BusinessObjects.ItemInCompartmentCapacity}" />
+                                            FieldName="Capacity" />
                         </wms:WmsGridControl>
                     </GroupBox>
 

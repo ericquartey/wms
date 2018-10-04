@@ -60,10 +60,10 @@
                                    AllowMoveColumnToDropArea="False"
                                    NavigationStyle="Row"
                                    SearchPanelHorizontalAlignment="Right"
+                                   ShowFilterPanelMode="ShowAlways"
                                    ShowGroupPanel="False"
                                    ShowIndicator="False"
-                                   ShowSearchPanelMode="Always"
-                                   ShowFilterPanelMode="ShowAlways">
+                                   ShowSearchPanelMode="Always">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.ViewDetailsCommand}" />
@@ -75,35 +75,25 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Code"
-                                    Header="{x:Static res:BusinessObjects.CompartmentCode}" />
+                                    FieldName="Code" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="LoadingUnitCode"
-                                    Header="{x:Static res:BusinessObjects.LoadingUnitCode_extended}" />
+                                    FieldName="LoadingUnitCode" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="CompartmentTypeDescription"
-                                    Header="{x:Static res:BusinessObjects.CompartmentType}" />
+                                    FieldName="CompartmentTypeDescription" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemDescription"
-                                    Header="{x:Static res:BusinessObjects.ItemDescription_extended}" />
+                                    FieldName="ItemDescription" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="MaterialStatusDescription"
-                                    Header="{x:Static res:BusinessObjects.MaterialStatus}" />
+                                    FieldName="MaterialStatusDescription" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="CompartmentStatusDescription"
-                                    Header="{x:Static res:BusinessObjects.CompartmentStatus}" />
+                                    FieldName="CompartmentStatusDescription" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Sub1"
-                                    Header="{x:Static res:BusinessObjects.CompartmentSub1}" />
+                                    FieldName="Sub1" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Sub2"
-                                    Header="{x:Static res:BusinessObjects.CompartmentSub2}" />
+                                    FieldName="Sub2" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Lot"
-                                    Header="{x:Static res:BusinessObjects.CompartmentLot}" />
+                                    FieldName="Lot" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="Stock"
-                                    Header="{x:Static res:BusinessObjects.CompartmentStock}" />
+                                    FieldName="Stock" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>
