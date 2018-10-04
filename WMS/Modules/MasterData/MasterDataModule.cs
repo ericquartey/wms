@@ -1,7 +1,6 @@
 using System.Linq;
-using DevExpress.Xpf.Core;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
@@ -22,8 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        public MasterDataModule(IUnityContainer container, IRegionManager regionManager,
-            INavigationService navigationService)
+        public MasterDataModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
         {
             this.Container = container;
             this.RegionManager = regionManager;
@@ -43,7 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void Initialize()
         {
-            DXSplashScreen.SetState("Initializing Master Data module ...");
+            SplashScreenService.SetMessage("Initializing Master Data module ...");
 
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
@@ -57,11 +55,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
             this.navigationService.Register<LoadingUnitsAndDetailsView, LoadingUnitsAndDetailsViewModel>();
 
-            DXSplashScreen.SetState("Initializing Entity Framework ...");
+            SplashScreenService.SetMessage("Initializing Entity Framework ...");
 
             ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
 
-            DXSplashScreen.SetState("Initializing Entity Framework ... done.");
+            SplashScreenService.SetMessage("Initializing Entity Framework ... done.");
         }
 
         #endregion Methods

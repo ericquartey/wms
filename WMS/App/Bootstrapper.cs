@@ -1,8 +1,8 @@
 ﻿using System.Configuration;
 using System.Windows;
-using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
+using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Modularity;
 using Prism.Regions;
@@ -12,19 +12,11 @@ namespace Ferretto.WMS.App
 {
     public class Bootstrapper : UnityBootstrapper
     {
-        #region Constructors
-
-        public Bootstrapper()
-        {
-        }
-
-        #endregion Constructors
-
         #region Methods
 
         protected override void ConfigureModuleCatalog()
         {
-            DXSplashScreen.SetState("Configuring Prism module catalog ...");
+            SplashScreenService.SetMessage("Configuring Prism module catalog ...");
 
             base.ConfigureModuleCatalog();
 
@@ -46,14 +38,14 @@ namespace Ferretto.WMS.App
 
         protected override IModuleCatalog CreateModuleCatalog()
         {
-            DXSplashScreen.SetState("Loading Prism module catalog ...");
+            SplashScreenService.SetMessage("Loading Prism module catalog ...");
 
             return new DirectoryModuleCatalog { ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"] };
         }
 
         protected override DependencyObject CreateShell()
         {
-            DXSplashScreen.SetState("Creating shell ...");
+            SplashScreenService.SetMessage("Creating shell ...");
 
             return this.Container.TryResolve<Shell>();
         }
@@ -62,7 +54,7 @@ namespace Ferretto.WMS.App
         {
             base.InitializeShell();
 
-            DXSplashScreen.SetState("Opening main window ...");
+            SplashScreenService.SetMessage("Opening main window ...");
 
             Application.Current.MainWindow = (Window)this.Shell;
             Application.Current.MainWindow.Show();

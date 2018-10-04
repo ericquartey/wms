@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using DevExpress.Xpf.Core;
+using Ferretto.Common.Controls.Services;
 
 namespace Ferretto.WMS.App
 {
@@ -11,7 +11,7 @@ namespace Ferretto.WMS.App
         {
             base.OnStartup(e);
 
-            DXSplashScreen.Show<Common.Controls.SplashScreen>();
+            SplashScreenService.Show();
 
             new Bootstrapper().Run();
         }

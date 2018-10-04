@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Ferretto.Common.Controls.Services;
 
 namespace Ferretto.Common.Controls
 {
@@ -11,6 +10,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private static readonly TimeSpan TimerInterval = new TimeSpan(0, 0, 0, 0, 200);
         private DateTime startTime;
 
         #endregion Fields
@@ -20,11 +20,12 @@ namespace Ferretto.Common.Controls
         public SplashScreen()
         {
             this.InitializeComponent();
+
+            this.Footer_Text.Text = SplashScreenService.Copyright;
+
 #if DEBUG
             this.SetupTimer();
 #endif
-
-            this.Footer_Text.Text = this.GetCopyright();
         }
 
         #endregion Constructors
@@ -35,21 +36,16 @@ namespace Ferretto.Common.Controls
         {
             this.startTime = Process.GetCurrentProcess().StartTime;
             var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 200);
+            timer.Interval = TimerInterval;
             timer.Tick += this.Timer_Tick;
 
             timer.Start();
         }
 
-        private string GetCopyright()
-        {
-            return (this.GetType().Assembly.GetCustomAttributes(false)
-                .FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute) as AssemblyCopyrightAttribute)?.Copyright;
-        }
-
         private void Timer_Tick(Object sender, EventArgs e)
         {
-            this.Timing.Text = $"Elapsed Time: {(DateTime.Now - this.startTime).TotalSeconds.ToString("#.0")}s";
+            var elapsedSeconds = (DateTime.Now - this.startTime).TotalSeconds;
+            this.Timing.Text = $"Elapsed Time: {elapsedSeconds.ToString("#")}s";
         }
 
         #endregion Methods

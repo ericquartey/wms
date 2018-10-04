@@ -1,0 +1,41 @@
+﻿using System.Linq;
+using System.Reflection;
+using DevExpress.Xpf.Core;
+
+namespace Ferretto.Common.Controls.Services
+{
+    public static class SplashScreenService
+    {
+        #region Properties
+
+        public static string Copyright => (typeof(SplashScreenService).Assembly.GetCustomAttributes(false)
+                .FirstOrDefault(attribute => attribute is AssemblyCopyrightAttribute) as AssemblyCopyrightAttribute)?.Copyright;
+
+        #endregion Properties
+
+        #region Methods
+
+        public static void Hide()
+        {
+            if (DXSplashScreen.IsActive)
+            {
+                DXSplashScreen.Close();
+            }
+        }
+
+        public static void SetMessage(System.String message)
+        {
+            if (DXSplashScreen.IsActive)
+            {
+                DXSplashScreen.SetState(message);
+            }
+        }
+
+        public static void Show()
+        {
+            DXSplashScreen.Show<SplashScreen>();
+        }
+
+        #endregion Methods
+    }
+}

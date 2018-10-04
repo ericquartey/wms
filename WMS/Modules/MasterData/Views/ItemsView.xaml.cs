@@ -1,5 +1,5 @@
-﻿using DevExpress.Xpf.Core;
-using Ferretto.Common.Controls;
+﻿using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -12,25 +12,22 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.InitializeComponent();
 
-            this.Loaded += ItemsView_Loaded;
+            this.Loaded += this.ItemsView_Loaded;
             this.MainGridControl.AsyncOperationCompleted += this.MainGridControl_AsyncOperationCompleted;
 
-            DXSplashScreen.SetState("Initializing main window ...");
+            SplashScreenService.SetMessage("Initializing main window ...");
         }
 
         #endregion Constructors
 
         #region Methods
 
-        private static void ItemsView_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+        private void ItemsView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (DXSplashScreen.IsActive)
-            {
-                DXSplashScreen.Close();
-            }
+            SplashScreenService.Hide();
         }
 
-        private async void MainGridControl_AsyncOperationCompleted(System.Object sender, System.Windows.RoutedEventArgs e)
+        private async void MainGridControl_AsyncOperationCompleted(object sender, System.Windows.RoutedEventArgs e)
         {
             if (this.DataContext is EntityListViewModel<Item> viewModel)
             {
