@@ -226,7 +226,6 @@
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\WmsView\WmsDialogView.cs" />
-    <Compile Include="Controls\WmsView\WmsHistoryViewModel.cs" />
     <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
       <DependentUpon>WmsHistoryView.xaml</DependentUpon>
     </Compile>

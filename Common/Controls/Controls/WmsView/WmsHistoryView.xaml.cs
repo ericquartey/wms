@@ -17,7 +17,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register("StartModuleName", typeof(string), typeof(WmsHistoryView));
         public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register("StartViewName", typeof(string), typeof(WmsHistoryView));
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-        private readonly Dictionary<string, INavigableView> registeredViews = new Dictionary<string, INavigableView>();
+        private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
         private ActionBar actionBarHsitoryView;
 
         #endregion Fields
@@ -49,16 +49,10 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName)
+        public void Appear(string moduleName, string viewModelName, object data = null)
         {
             if (string.IsNullOrEmpty(viewModelName))
             {
-                return;
-            }
-
-            if (this.registeredViews.ContainsKey(viewModelName))
-            {
-                this.Content = this.registeredViews[viewModelName];
                 return;
             }
 
@@ -70,8 +64,8 @@ namespace Ferretto.Common.Controls
                 return;
             }
             var instanceModuleViewName = $"{moduleViewName}.{id}";
-            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(instanceModuleViewName);
-            this.registeredViews.Add(viewModelName, registeredView);
+            var registeredView = this.navigationService.GetView(instanceModuleViewName, data);
+            this.registeredViews.Push(registeredView);
             this.Content = registeredView;
             this.CheckBackVisibility();
         }
@@ -87,7 +81,8 @@ namespace Ferretto.Common.Controls
             if (string.IsNullOrEmpty(this.StartModuleName) == false &&
                 string.IsNullOrEmpty(this.StartViewName) == false)
             {
-                this.Appear(this.StartModuleName, this.StartViewName);
+                var data = this.GetParentWmsViewData();
+                this.Appear(this.StartModuleName, this.StartViewName, data);
             }
         }
 
@@ -98,8 +93,8 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            this.registeredViews.Remove(this.registeredViews.Last().Key);
-            this.Content = this.registeredViews[this.registeredViews.Last().Key];
+            this.registeredViews.Pop();
+            this.Content = this.registeredViews.Last();
             this.CheckBackVisibility();
         }
 
@@ -111,6 +106,18 @@ namespace Ferretto.Common.Controls
         private void CheckBackVisibility()
         {
             this.actionBarHsitoryView.Visibility = (this.registeredViews.Count() == 1) ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        private Object GetParentWmsViewData()
+        {
+            var parentWmsView = LayoutTreeHelper.GetVisualParents(this as DependencyObject)
+               .OfType<WmsView>()
+               .FirstOrDefault();
+            if (parentWmsView != null)
+            {
+                return parentWmsView.Data;
+            }
+            return null;
         }
 
         #endregion Methods

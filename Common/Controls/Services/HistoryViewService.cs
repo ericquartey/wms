@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName)
+        public void Appear(string moduleName, string viewModelName, object data)
         {
             var historyView = this.GetCurrentHistoryView();
 
@@ -34,7 +34,7 @@ namespace Ferretto.Common.Controls.Services
 
             this.navigationService.LoadModule(moduleName);
 
-            historyView.Appear(moduleName, viewModelName);
+            historyView.Appear(moduleName, viewModelName, data);
         }
 
         public void Previous()

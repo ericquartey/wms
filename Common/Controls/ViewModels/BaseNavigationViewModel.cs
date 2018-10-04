@@ -15,6 +15,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public object Data { get; set; }
         public string MapId { get; set; }
         public string StateId { get; set; }
         public string Token { get; set; }

@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        void Appear(string moduleName, string viewModelName);
+        void Appear(string moduleName, string viewModelName, object data);
 
         void Previous();
 

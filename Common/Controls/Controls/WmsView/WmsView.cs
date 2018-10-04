@@ -29,6 +29,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public object Data { get; set; }
         public string MapId { get; set; }
         public string Title { get; set; }
         public string Token { get; set; }
@@ -76,12 +77,12 @@ namespace Ferretto.Common.Controls
             if (string.IsNullOrEmpty(this.MapId) == false)
             {
                 // Is Main WMSView registered
-                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId);
+                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId, this.Data);
             }
             else
             {
                 this.DataContext =
-                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());
+                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
             }
 
             ((INavigableViewModel)this.DataContext)?.Appear();

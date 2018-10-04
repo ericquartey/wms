@@ -38,7 +38,7 @@ namespace Ferretto.Common.Controls.Services
             this.Appear(moduleName, viewModelName);
         }
 
-        public void Appear(string moduleName, string viewModelName)
+        public void Appear(string moduleName, string viewModelName, object data = null)
         {
             if (MvvmNaming.IsViewModelNameValid(viewModelName) == false)
             {
@@ -50,7 +50,7 @@ namespace Ferretto.Common.Controls.Services
             var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
             var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
 
-            var instanceModuleViewName = this.CheckAddRegion(moduleViewName);
+            this.CheckAddRegion(moduleViewName, data);
         }
 
         public void Disappear(INavigableViewModel viewModel)
@@ -73,12 +73,22 @@ namespace Ferretto.Common.Controls.Services
             this.regionManager.Regions.Remove(moduleRegionName);
         }
 
-        public INavigableViewModel GetRegisteredViewModel(string mapId)
+        public INavigableViewModel GetRegisteredViewModel(string mapId, object data)
         {
             var viewModel = this.GetViewModelByMapId(mapId);
             viewModel.MapId = mapId;
             viewModel.Token = mapId;
+            viewModel.Data = data;
             return viewModel;
+        }
+
+        public INavigableView GetView(string moduleViewName, object data)
+        {
+            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
+            registeredView.Token = moduleViewName;
+            registeredView.MapId = moduleViewName;
+            registeredView.Data = data;
+            return registeredView;
         }
 
         public string GetViewModelBindFirstId(string fullViewName)
@@ -131,7 +141,7 @@ namespace Ferretto.Common.Controls.Services
         /// <remarks>This method shall be called only after the Register method has been invoked to ensure there is an association registered between the view type and the view model type.
         /// Multiple calls to this method are allowed and they will generate new instances of the view model.</remarks>
         /// <returns>A new instance of the view model associated to the specified view.</returns>
-        public INavigableViewModel RegisterAndGetViewModel(string viewName, string token)
+        public INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data)
         {
             if (this.registrations.ContainsKey(viewName) == false)
             {
@@ -159,11 +169,9 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        private void AddToRegion(string moduleViewName)
+        private void AddToRegion(string moduleViewName, object data)
         {
-            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
-            registeredView.Token = moduleViewName;
-            registeredView.MapId = moduleViewName;
+            var registeredView = this.GetView(moduleViewName, data);
             if (registeredView.ViewType == WmsViewType.Docking)
             {
                 WmsMainDockLayoutManager.Current.RegisterView(moduleViewName, registeredView.Title);
@@ -175,14 +183,14 @@ namespace Ferretto.Common.Controls.Services
             }
         }
 
-        private string CheckAddRegion(string moduleViewName)
+        private string CheckAddRegion(string moduleViewName, object data)
         {
             var viewModelBind = this.GetViewModelBind(moduleViewName);
             var instanceModuleViewName = $"{moduleViewName}.{viewModelBind.Ids.First()}";
             if (this.regionManager.Regions.ContainsRegionWithName(instanceModuleViewName) == false)
             {
                 // Map Prism region to current layout
-                this.AddToRegion(instanceModuleViewName);
+                this.AddToRegion(instanceModuleViewName, data);
                 return instanceModuleViewName;
             }
 
@@ -202,7 +210,7 @@ namespace Ferretto.Common.Controls.Services
                 this.container.RegisterType(typeof(INavigableView), viewModelBind.View, instanceModuleViewName);
 
                 // Map cloned type to current layout
-                this.AddToRegion(instanceModuleViewName);
+                this.AddToRegion(instanceModuleViewName, data);
             }
 
             return instanceModuleViewName;
