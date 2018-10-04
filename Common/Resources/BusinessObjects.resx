@@ -377,6 +377,10 @@
     <value>Loading Unit Code</value>
     <comment>Loading Unit - Code (extended)</comment>
   </data>
+  <data name="LoadingUnitLength" xml:space="preserve">
+    <value>Length</value>
+    <comment>Loading Unit - Length</comment>
+  </data>
   <data name="LoadingUnitStatus" xml:space="preserve">
     <value>Loading Unit Status</value>
     <comment>Loading Unit - Status</comment>
@@ -388,6 +392,10 @@
   <data name="LoadingUnitTypeDescription" xml:space="preserve">
     <value>Loading Unit Type Description</value>
     <comment>Loading Unit Type - Description</comment>
+  </data>
+  <data name="LoadingUnitWidth" xml:space="preserve">
+    <value>Width</value>
+    <comment>Loading Unit - Width</comment>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
     <value>Material Status</value>
