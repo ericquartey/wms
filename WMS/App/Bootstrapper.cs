@@ -16,7 +16,7 @@ namespace Ferretto.WMS.App
 
         protected override void ConfigureModuleCatalog()
         {
-            SplashScreenService.SetMessage("Configuring Prism module catalog ...");
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.ConfiguringPrismModuleCatalog);
 
             base.ConfigureModuleCatalog();
 
@@ -38,15 +38,13 @@ namespace Ferretto.WMS.App
 
         protected override IModuleCatalog CreateModuleCatalog()
         {
-            SplashScreenService.SetMessage("Loading Prism module catalog ...");
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.LoadingPrismModuleCatalog);
 
             return new DirectoryModuleCatalog { ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"] };
         }
 
         protected override DependencyObject CreateShell()
         {
-            SplashScreenService.SetMessage("Creating shell ...");
-
             return this.Container.TryResolve<Shell>();
         }
 
@@ -54,7 +52,7 @@ namespace Ferretto.WMS.App
         {
             base.InitializeShell();
 
-            SplashScreenService.SetMessage("Opening main window ...");
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.OpeningMainWindow);
 
             Application.Current.MainWindow = (Window)this.Shell;
             Application.Current.MainWindow.Show();

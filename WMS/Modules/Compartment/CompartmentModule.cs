@@ -32,11 +32,11 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public void Initialize()
         {
-            this.splashScreenService.SetMessage("Initializing Compartment module ...");
+            SplashScreenService.SetMessage(Common.Resources.Compartment.InitializingCompartmentModule);
 
             this.Container.RegisterType<INavigationService, NavigationService>(
                                         new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IDialogService, Common.Controls.Services.DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
 
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Compartment)}.{Common.Utils.Modules.Compartment.REGION_MAINCONTENT}",

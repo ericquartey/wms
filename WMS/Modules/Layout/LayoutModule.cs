@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void Initialize()
         {
-            SplashScreenService.SetMessage("Initializing Layout module ...");
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
 
             this.Container.RegisterType<INavigationService, NavigationService>(
                 new ContainerControlledLifetimeManager());

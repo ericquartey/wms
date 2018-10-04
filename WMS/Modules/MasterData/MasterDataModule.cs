@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void Initialize()
         {
-            SplashScreenService.SetMessage("Initializing Master Data module ...");
+            SplashScreenService.SetMessage(Common.Resources.MasterData.InitializingMasterDataModule);
 
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
@@ -55,11 +55,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
             this.navigationService.Register<LoadingUnitsAndDetailsView, LoadingUnitsAndDetailsViewModel>();
 
-            SplashScreenService.SetMessage("Initializing Entity Framework ...");
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
 
             ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
 
-            SplashScreenService.SetMessage("Initializing Entity Framework ... done.");
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
         }
 
         #endregion Methods
