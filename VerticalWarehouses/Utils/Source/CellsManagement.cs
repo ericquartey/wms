@@ -36,6 +36,8 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
+        private int bayCounter = 0;
+        private List<Bay> bays = new List<Bay>();
         private List<CellBlock> blocks = new List<CellBlock>();
         private List<Cell> cells = new List<Cell>();
         private List<Drawer> drawers = new List<Drawer>();
@@ -52,6 +54,9 @@ namespace Ferretto.VW.Utils.Source
 
         #region Properties
 
+        public Int32 BayCounter { get => this.bayCounter; set => this.bayCounter = value; }
+
+        internal List<Bay> Bays { get => this.bays; set => this.bays = value; }
         internal List<CellBlock> Blocks { get => this.blocks; set => this.blocks = value; }
         internal List<Cell> Cells { get => this.cells; set => this.cells = value; }
         internal List<Drawer> Drawers { get => this.drawers; set => this.drawers = value; }
@@ -85,6 +90,7 @@ namespace Ferretto.VW.Utils.Source
             {
                 this.ChangeCellStatus(id - 1, Status.Disabled);
             }
+            this.Bays.Add(new Bay(++this.BayCounter, ((lastCellID - firstCellID) / 2) * 25, firstCellID));
         }
 
         public void CreateBlocks()
@@ -266,38 +272,12 @@ namespace Ferretto.VW.Utils.Source
 
         public static int GetFreeCellQuantity(CellsManager cm)
         {
-            int counter = 0;
-            for (int index = 0; index < cm.Blocks.Count; index++)
-            {
-                counter += cm.Blocks[index].FinalIDCell - cm.Blocks[index].InitialIDCell;
-            }
-            return counter;
+            return cm.Blocks.Sum(x => x.FinalIDCell - x.InitialIDCell);
         }
 
         public static int GetFreeCellQuantity(CellsManager cm, Side side)
         {
-            int counter = 0;
-            if (side == Side.FrontEven)
-            {
-                for (int index = 0; index < cm.Blocks.Count; index++)
-                {
-                    if (cm.Blocks[index].InitialIDCell % 2 == 0)
-                    {
-                        counter += cm.Blocks[index].FinalIDCell - cm.Blocks[index].InitialIDCell;
-                    }
-                }
-            }
-            else
-            {
-                for (int index = 0; index < cm.Blocks.Count; index++)
-                {
-                    if (cm.Blocks[index].InitialIDCell % 2 != 0)
-                    {
-                        counter += cm.Blocks[index].FinalIDCell - cm.Blocks[index].InitialIDCell;
-                    }
-                }
-            }
-            return counter;
+            return cm.Blocks.Where(x => x.Side == side).Sum(x => x.FinalIDCell - x.InitialIDCell);
         }
 
         public static void OccupyCells(CellsManager cm, int firstCellindex, int drawerHeight)
@@ -310,6 +290,38 @@ namespace Ferretto.VW.Utils.Source
         }
 
         #endregion Methods
+    }
+
+    internal class Bay
+    {
+        #region Fields
+
+        private int firstCellID;
+        private int height;
+        private int id;
+        private bool occupied = false;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public Bay(int newBayID, int newBayHeight, int newBayFirstCellID)
+        {
+            this.FirstCellID = newBayFirstCellID;
+            this.Height = newBayHeight;
+            this.Id = newBayID;
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public Int32 FirstCellID { get => this.firstCellID; set => this.firstCellID = value; }
+        public Int32 Height { get => this.height; set => this.height = value; }
+        public Int32 Id { get => this.id; set => this.id = value; }
+        public Boolean Occupied { get => this.occupied; set => this.occupied = value; }
+
+        #endregion Properties
     }
 
     internal class Cell
