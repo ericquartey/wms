@@ -221,12 +221,16 @@ namespace Ferretto.VW.Utils.Source
 
         public static int FindFirstFreeCellIDForDrawerInsert(CellsManagement cm, int drawerHeight)
         {
-            Debug.Print("Ricomincia da qui.\n");
+            var tempCellBlockIenumerable = cm.Blocks.Where(x => x.BlockHeight > drawerHeight);
+            tempCellBlockIenumerable = tempCellBlockIenumerable.OrderBy(x => x.Priority);
+            var tempCellBlockList = tempCellBlockIenumerable.ToList();
+
+            Debug.Print("First cellblock free: " + tempCellBlockList[0].InitialIDCell + "\n");
             //TODO!!!!!
             //cm.Blocks.OrderBy(x => x.Priority);
             //List<CellBlock> cb = cm.Blocks.FindAll(x => x.BlockHeight > drawerHeight);
             //return cb[0].InitialIDCell;
-            return 0;
+            return tempCellBlockList[0].InitialIDCell;
         }
 
         public static void FreeCells(CellsManagement cm, int firstCellIndex, int drawerHeight)
