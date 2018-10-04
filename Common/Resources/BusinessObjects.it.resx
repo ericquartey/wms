@@ -279,4 +279,7 @@
   <data name="LoadingUnitTypeDescription" xml:space="preserve">
     <value>Descrizione Tipo di UdC</value>
   </data>
+  <data name="ItemCode_extended" xml:space="preserve">
+    <value>Codice Articolo</value>
+  </data>
 </root>

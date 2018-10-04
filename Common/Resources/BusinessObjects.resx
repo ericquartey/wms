@@ -277,6 +277,10 @@
     <value>Code</value>
     <comment>Item - Code</comment>
   </data>
+  <data name="ItemCode_extended" xml:space="preserve">
+    <value>Item Code</value>
+    <comment>Item - Code (extended)</comment>
+  </data>
   <data name="ItemDescription" xml:space="preserve">
     <value>Description</value>
     <comment>Item - Description</comment>
