@@ -3,6 +3,7 @@ using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -37,7 +38,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetAll()
         {
-            return this.GetAllItemsWithAggregations();
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return GetAllItemsWithAggregations(context);
         }
 
         public int GetAllCount()
@@ -95,7 +98,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetWithAClass()
         {
-            return this.GetAllItemsWithAggregations(AClassFilter);
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return GetAllItemsWithAggregations(context, AClassFilter);
         }
 
         public int GetWithAClassCount()
@@ -105,7 +110,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetWithFifo()
         {
-            return this.GetAllItemsWithAggregations(FifoFilter).AsNoTracking();
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return GetAllItemsWithAggregations(context, FifoFilter).AsNoTracking();
         }
 
         public int GetWithFifoCount()
@@ -152,15 +159,15 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.SaveChanges();
         }
 
-        private IQueryable<Item> GetAllItemsWithAggregations(Predicate<DataModels.Item> wherePredicate = null)
+        private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Predicate<DataModels.Item> wherePredicate = null)
         {
-            return this.dataContext.Items
+            return context.Items
                .AsNoTracking()
                .Where(i => wherePredicate == null || wherePredicate(i))
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
                .GroupJoin(
-                   this.dataContext.Compartments
+                   context.Compartments
                        .AsNoTracking()
                        .Where(c => c.ItemId != null)
                        .GroupBy(c => c.ItemId)

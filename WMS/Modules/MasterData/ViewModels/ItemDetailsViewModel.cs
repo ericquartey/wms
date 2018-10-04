@@ -93,7 +93,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.eventService.Invoke(new ItemChangedEvent<ItemDetails>(this.Item));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
+                              .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
             }
         }
 

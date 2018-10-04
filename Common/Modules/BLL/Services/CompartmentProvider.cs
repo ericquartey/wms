@@ -2,6 +2,7 @@
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -29,7 +30,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Compartment> GetAll()
         {
-            return this.dataContext.Compartments
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.Compartments
                .Include(c => c.LoadingUnit)
                .Include(c => c.MaterialStatus)
                .Include(c => c.Item)
