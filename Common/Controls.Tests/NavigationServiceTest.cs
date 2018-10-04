@@ -68,7 +68,8 @@ namespace Feretto.Common.Controls.Tests
             // Act
             var viewName = typeof(TestView).FullName;
             var token = "a-token";
-            var viewModel = this.navigationService.RegisterAndGetViewModel(viewName, token);
+            var data = "id=1";
+            var viewModel = this.navigationService.RegisterAndGetViewModel(viewName, token, data);
 
             // Assert
             Assert.IsNotNull(viewModel);
@@ -89,9 +90,9 @@ namespace Feretto.Common.Controls.Tests
 
             // Act
             var viewName = typeof(TestView).FullName;
-            this.navigationService.RegisterAndGetViewModel(viewName, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null);
+            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
 
             // Assert
             Assert.AreEqual(1 + 3, this.Container.Registrations.Count(registration =>
@@ -110,9 +111,9 @@ namespace Feretto.Common.Controls.Tests
             // Act + Assert
             var viewName = typeof(TestView).FullName;
             var token = "a-token";
-
+            var data = "id=1";
             Assert.ThrowsException<System.InvalidOperationException>(
-                () => this.navigationService.RegisterAndGetViewModel(viewName, token));
+                () => this.navigationService.RegisterAndGetViewModel(viewName, token, data));
         }
 
         [TestMethod]
@@ -164,6 +165,7 @@ namespace Feretto.Common.Controls.Tests
         {
             #region Properties
 
+            public object Data { get; set; }
             public object DataContext { get; set; }
             public string MapId { get; set; }
             public string Title { get; set; }
@@ -177,6 +179,7 @@ namespace Feretto.Common.Controls.Tests
         {
             #region Properties
 
+            public System.Object Data { get; set; }
             public System.String MapId { get; set; }
             public System.String StateId { get; set; }
             public System.String Token { get; set; }

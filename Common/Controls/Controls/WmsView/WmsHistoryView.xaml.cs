@@ -49,7 +49,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName)
+        public void Appear(string moduleName, string viewModelName, object data = null)
         {
             if (string.IsNullOrEmpty(viewModelName))
             {
@@ -64,7 +64,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
             var instanceModuleViewName = $"{moduleViewName}.{id}";
-            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(instanceModuleViewName);
+            var registeredView = this.navigationService.GetView(instanceModuleViewName, data);
             this.registeredViews.Push(registeredView);
             this.Content = registeredView;
             this.CheckBackVisibility();
@@ -81,7 +81,8 @@ namespace Ferretto.Common.Controls
             if (string.IsNullOrEmpty(this.StartModuleName) == false &&
                 string.IsNullOrEmpty(this.StartViewName) == false)
             {
-                this.Appear(this.StartModuleName, this.StartViewName);
+                var data = this.GetParentWmsViewData();
+                this.Appear(this.StartModuleName, this.StartViewName, data);
             }
         }
 
@@ -105,6 +106,18 @@ namespace Ferretto.Common.Controls
         private void CheckBackVisibility()
         {
             this.actionBarHsitoryView.Visibility = (this.registeredViews.Count() == 1) ? Visibility.Hidden : Visibility.Visible;
+        }
+
+        private Object GetParentWmsViewData()
+        {
+            var parentWmsView = LayoutTreeHelper.GetVisualParents(this as DependencyObject)
+               .OfType<WmsView>()
+               .FirstOrDefault();
+            if (parentWmsView != null)
+            {
+                return parentWmsView.Data;
+            }
+            return null;
         }
 
         #endregion Methods

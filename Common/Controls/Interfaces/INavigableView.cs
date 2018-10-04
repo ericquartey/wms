@@ -4,6 +4,7 @@
     {
         #region Properties
 
+        object Data { get; set; }
         object DataContext { get; }
         string MapId { get; set; }
         string Title { get; set; }
