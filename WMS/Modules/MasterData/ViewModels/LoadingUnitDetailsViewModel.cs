@@ -62,7 +62,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.eventService.Invoke(new ItemChangedEvent<LoadingUnitDetails>(this.LoadingUnit));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                              .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }
         }
 

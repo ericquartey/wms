@@ -109,11 +109,11 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class StatusEvent : Prism.Events.PubSubEvent, IEventArgs
+    public class StatusEventArgs : Prism.Events.PubSubEvent, IEventArgs
     {
         #region Constructors
 
-        public StatusEvent(string info)
+        public StatusEventArgs(string info)
         {
             this.Info = info;
         }
