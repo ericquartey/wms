@@ -150,4 +150,13 @@
   <data name="CreationDate" xml:space="preserve">
     <value>Data Creazione</value>
   </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="ThousandsSymbol" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="MillionsSymbol" xml:space="preserve">
+    <value>M</value>
+  </data>
 </root>
