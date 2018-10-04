@@ -121,5 +121,32 @@
     <value>WMS – Ferretto Group</value>
     <comment>Title of the application showing on the main window title bar</comment>
   </data>
-
+  <data name="ConfiguringPrismModuleCatalog" xml:space="preserve">
+    <value>Configuring Prism module catalog ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="DoneInitializingEntityFramework" xml:space="preserve">
+    <value>Initializing Entity Framework ... done.</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="InitializingEntityFramework" xml:space="preserve">
+    <value>Initializing Entity Framework ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="InitializingLayoutModule" xml:space="preserve">
+    <value>Initializing Layout module ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="InitializingMainWindow" xml:space="preserve">
+    <value>Initializing main window ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="LoadingPrismModuleCatalog" xml:space="preserve">
+    <value>Loading Prism module catalog ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="OpeningMainWindow" xml:space="preserve">
+    <value>Opening main window ...</value>
+    <comment>Splash screen message</comment>
+  </data>
 </root>

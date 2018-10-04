@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using DevExpress.Xpf.Core;
 
 namespace Ferretto.WMS.App.Compartment
 {
@@ -10,8 +9,6 @@ namespace Ferretto.WMS.App.Compartment
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            DXSplashScreen.Show<Common.Controls.SplashScreen>();
 
             new Bootstrapper().Run();
         }

@@ -240,6 +240,7 @@
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Interfaces\IWmsGridViewModel.cs" />
     <Compile Include="Interfaces\IWmsHistoryView.cs" />
+    <Compile Include="Services\SplashScreenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Services\DialogService.cs" />

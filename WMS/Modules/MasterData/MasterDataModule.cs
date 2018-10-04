@@ -1,4 +1,8 @@
-﻿using Ferretto.Common.Controls.Interfaces;
+using System.Linq;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -17,8 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        public MasterDataModule(IUnityContainer container, IRegionManager regionManager,
-            INavigationService navigationService)
+        public MasterDataModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
         {
             this.Container = container;
             this.RegionManager = regionManager;
@@ -38,6 +41,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void Initialize()
         {
+            SplashScreenService.SetMessage(Common.Resources.MasterData.InitializingMasterDataModule);
+
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
             this.navigationService.Register<ItemsAndDetailsView, ItemsAndDetailsViewModel>();
@@ -49,6 +54,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.navigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
             this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
             this.navigationService.Register<LoadingUnitsAndDetailsView, LoadingUnitsAndDetailsViewModel>();
+
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
+
+            ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
+
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
         }
 
         #endregion Methods

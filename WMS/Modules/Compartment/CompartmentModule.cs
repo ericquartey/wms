@@ -32,6 +32,8 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public void Initialize()
         {
+            SplashScreenService.SetMessage(Common.Resources.Compartment.InitializingCompartmentModule);
+
             this.Container.RegisterType<INavigationService, NavigationService>(
                                         new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());

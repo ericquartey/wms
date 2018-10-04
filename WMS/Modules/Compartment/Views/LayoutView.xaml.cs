@@ -1,5 +1,5 @@
-﻿using DevExpress.Xpf.Core;
-using Ferretto.Common.Controls;
+﻿using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
 
 namespace Ferretto.WMS.Modules.Compartment
 {
@@ -19,10 +19,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private void LayoutView_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
         {
-            if (DXSplashScreen.IsActive)
-            {
-                DXSplashScreen.Close();
-            }
+            SplashScreenService.Hide();
         }
 
         #endregion Methods

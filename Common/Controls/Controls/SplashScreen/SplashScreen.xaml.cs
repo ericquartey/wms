@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using Ferretto.Common.Controls.Services;
 
 namespace Ferretto.Common.Controls
 {
@@ -9,6 +10,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private static readonly TimeSpan TimerInterval = new TimeSpan(0, 0, 0, 0, 200);
         private DateTime startTime;
 
         #endregion Fields
@@ -18,6 +20,9 @@ namespace Ferretto.Common.Controls
         public SplashScreen()
         {
             this.InitializeComponent();
+
+            this.Footer_Text.Text = SplashScreenService.Copyright;
+
 #if DEBUG
             this.SetupTimer();
 #endif
@@ -31,7 +36,7 @@ namespace Ferretto.Common.Controls
         {
             this.startTime = Process.GetCurrentProcess().StartTime;
             var timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 200);
+            timer.Interval = TimerInterval;
             timer.Tick += this.Timer_Tick;
 
             timer.Start();
@@ -39,7 +44,8 @@ namespace Ferretto.Common.Controls
 
         private void Timer_Tick(Object sender, EventArgs e)
         {
-            this.Timing.Text = $"Elapsed Time: {(DateTime.Now - this.startTime).TotalSeconds.ToString("#.0")}s";
+            var elapsedSeconds = (DateTime.Now - this.startTime).TotalSeconds;
+            this.Timing.Text = $"Elapsed Time: {elapsedSeconds.ToString("#")}s";
         }
 
         #endregion Methods

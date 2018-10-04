@@ -2,7 +2,6 @@
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Modules.BLL.Models;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
@@ -21,15 +20,15 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<Item>>
                     {
                         new DataSource<Item>(
-                            MasterData.ItemAll,
+                            Resources.MasterData.ItemAll,
                             () => itemsProvider.GetAll(),
                             () => itemsProvider.GetAllCount()),
                         new DataSource<Item>(
-                            MasterData.ItemClassA,
+                            Resources.MasterData.ItemClassA,
                             () => itemsProvider.GetWithAClass(),
                             () => itemsProvider.GetWithAClassCount()),
                         new DataSource<Item>(
-                            MasterData.ItemFIFO,
+                            Resources.MasterData.ItemFIFO,
                             () => itemsProvider.GetWithFifo(),
                             () => itemsProvider.GetWithFifoCount())
                     }.Cast<IDataSource<TModel>>();
@@ -40,7 +39,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<Compartment>>
                     {
                         new DataSource<Compartment>(
-                            MasterData.CompartmentAll,
+                            Resources.MasterData.CompartmentAll,
                             () => itemDetailsProvider.GetByItemId((int)parameter))
                     }.Cast<IDataSource<TModel>>();
 
@@ -50,7 +49,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<Compartment>>
                     {
                         new DataSource<Compartment>(
-                            MasterData.CompartmentAll,
+                            Resources.MasterData.CompartmentAll,
                             () => compartmentProvider.GetAll(),
                             () => compartmentProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();
@@ -61,7 +60,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<LoadingUnit>>
                     {
                         new DataSource<LoadingUnit>(
-                            MasterData.LoadingUnitAll,
+                            Resources.MasterData.LoadingUnitAll,
                             () => loadingUnitProvider.GetAll(),
                             () => loadingUnitProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();

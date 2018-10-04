@@ -142,6 +142,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing Master Data module ....
+        /// </summary>
+        public static string InitializingMasterDataModule {
+            get {
+                return ResourceManager.GetString("InitializingMasterDataModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string ItemAll {

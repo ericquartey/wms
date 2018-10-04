@@ -1,31 +1,26 @@
-﻿using DevExpress.Xpf.Docking;
+﻿using System.Configuration;
+using System.Windows;
+using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
+using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Modularity;
 using Prism.Regions;
 using Prism.Unity;
-using System.Configuration;
-using System.Windows;
 
 namespace Ferretto.WMS.App
 {
     public class Bootstrapper : UnityBootstrapper
     {
-        protected override DependencyObject CreateShell()
-        {
-            return this.Container.TryResolve<Shell>();
-        }
-
-        protected override IModuleCatalog CreateModuleCatalog()
-        {
-            return new DirectoryModuleCatalog {ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"]};
-        }
+        #region Methods
 
         protected override void ConfigureModuleCatalog()
         {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.ConfiguringPrismModuleCatalog);
+
             base.ConfigureModuleCatalog();
 
-            ( this.ModuleCatalog as DirectoryModuleCatalog )?.Load();
+            (this.ModuleCatalog as DirectoryModuleCatalog)?.Load();
         }
 
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
@@ -41,12 +36,28 @@ namespace Ferretto.WMS.App
             return mappings;
         }
 
+        protected override IModuleCatalog CreateModuleCatalog()
+        {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.LoadingPrismModuleCatalog);
+
+            return new DirectoryModuleCatalog { ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"] };
+        }
+
+        protected override DependencyObject CreateShell()
+        {
+            return this.Container.TryResolve<Shell>();
+        }
+
         protected override void InitializeShell()
         {
             base.InitializeShell();
 
-            Application.Current.MainWindow = (Window) this.Shell;
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.OpeningMainWindow);
+
+            Application.Current.MainWindow = (Window)this.Shell;
             Application.Current.MainWindow.Show();
         }
+
+        #endregion Methods
     }
 }

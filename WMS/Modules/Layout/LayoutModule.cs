@@ -32,9 +32,11 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void Initialize()
         {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+
             this.Container.RegisterType<INavigationService, NavigationService>(
                 new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IDialogService, Common.Controls.Services.DialogService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
 
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
