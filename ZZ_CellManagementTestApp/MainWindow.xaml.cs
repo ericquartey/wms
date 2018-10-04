@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using Ferretto.VW.Utils.Source;
 
@@ -8,7 +9,7 @@ namespace ZZ_CellManagementTestApp
     {
         #region Fields
 
-        private CellsManagement cm;
+        private CellsManager cm;
         private int extractDrawerID;
         private int insertNewDrawerHeight;
         private int insertNewDrawerID;
@@ -24,7 +25,7 @@ namespace ZZ_CellManagementTestApp
         public MainWindow()
         {
             this.InitializeComponent();
-            this.cm = new CellsManagement();
+            this.cm = new CellsManager();
         }
 
         #endregion Constructors
@@ -77,8 +78,8 @@ namespace ZZ_CellManagementTestApp
         private void DoneInsertingBays()
         {
             this.cm.CreateBlocks();
-            this.cm.UpdateBlocksFile();
             this.cm.UpdateCellsFile();
+            this.cm.UpdateBlocksFile();
             this.InsertBaysPopUp.IsOpen = false;
         }
 
@@ -98,18 +99,51 @@ namespace ZZ_CellManagementTestApp
             this.NewBayHeightTextBox.Text = "";
             this.NewBayHeightFromGroundTextBox.Text = "";
             this.NewBaySideTextBox.Text = "";
-            int initialNewBayCellIndex = (this.NewBaySide != 0) ? ((2 * this.NewBayHeightFromGround) / 25) + 1 : (2 * this.NewBayHeightFromGround) / 25;
-            int finalNewBayCellIndex = (this.NewBaySide != 0) ? ((2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25) + 1 : (2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25;
-            this.cm.CreateBay(initialNewBayCellIndex, finalNewBayCellIndex); //here
+            int initialNewBayCellIndex = (this.NewBaySide != 0) ? ((2 * this.NewBayHeightFromGround) / 25) - 1 : (2 * this.NewBayHeightFromGround) / 25;
+            int finalNewBayCellIndex = (this.NewBaySide != 0) ? ((2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25) - 1 : (2 * (this.NewBayHeightFromGround + this.NewBayHeight)) / 25;
+            this.cm.CreateBay(initialNewBayCellIndex, finalNewBayCellIndex);
         }
 
         private void InsertNewDrawer()
         {
-            this.InsertNewDrawerID = int.Parse(this.InsertNewDrawerIDTextBox.Text);
-            this.InsertNewDrawerHeight = int.Parse(this.InsertNewDrawerHeightTextBox.Text);
-            this.InsertNewDrawerIDTextBox.Text = "";
-            this.InsertNewDrawerHeightTextBox.Text = "";
-            this.cm.InsertNewDrawer(this.InsertNewDrawerID, this.InsertNewDrawerHeight);
+            var watch = Stopwatch.StartNew();
+            var watch1 = Stopwatch.StartNew();
+            try
+            {
+                this.InsertNewDrawerID = int.Parse(this.InsertNewDrawerIDTextBox.Text);
+            }
+            catch
+            {
+                this.InsertNewDrawerID = 0;
+            }
+            watch1.Stop();
+            Debug.Print("Phase 1 took " + watch1.ElapsedMilliseconds + " milliseconds.\n");
+            var watch2 = Stopwatch.StartNew();
+            try
+            {
+                this.InsertNewDrawerHeight = int.Parse(this.InsertNewDrawerHeightTextBox.Text);
+            }
+            catch
+            {
+                this.InsertNewDrawerHeight = new Random().Next(1, 11) * 100;
+                Debug.Print("New Drawer Height: " + this.InsertNewDrawerHeight + "\n");
+            }
+            watch2.Stop();
+            Debug.Print("Phase 2 took " + watch2.ElapsedMilliseconds + " milliseconds.\n");
+            var watch3 = Stopwatch.StartNew();
+            if (this.cm.InsertNewDrawer(this.InsertNewDrawerID, this.InsertNewDrawerHeight))
+            {
+                this.InsertNewDrawerIDTextBox.Text = "";
+                this.InsertNewDrawerHeightTextBox.Text = "";
+            }
+            else
+            {
+                Debug.Print("Failed inserting new drawer with height " + this.InsertNewDrawerHeight + "\n");
+            }
+            watch3.Stop();
+            Debug.Print("Phase 3 took " + watch3.ElapsedMilliseconds + " milliseconds.\n");
+            watch.Stop();
+            Debug.Print("It took " + watch.ElapsedMilliseconds + " milliseconds to insert new drawer of height " + this.InsertNewDrawerHeight + "\n");
         }
 
         private void OpenExtractDrawerInputMask()
