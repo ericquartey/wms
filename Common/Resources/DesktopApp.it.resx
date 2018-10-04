@@ -117,37 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
+  <data name="ConfiguringPrismModuleCatalog" xml:space="preserve">
+    <value>Configurazione catalogo dei moduli Prism ...</value>
   </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
+  <data name="DoneInitializingEntityFramework" xml:space="preserve">
+    <value>Inizializzazione Entity Framework ... fatto.</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
+  <data name="InitializingEntityFramework" xml:space="preserve">
+    <value>Inizializzazione Entity Framework ...</value>
   </data>
-  <data name="UnitOfMeasurement" xml:space="preserve">
-    <value>Unità di misura</value>
+  <data name="InitializingLayoutModule" xml:space="preserve">
+    <value>Inizializzazione modulo Layout ...</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
+  <data name="InitializingMainWindow" xml:space="preserve">
+    <value>Inizializzazione finestra principale ...</value>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
+  <data name="LoadingPrismModuleCatalog" xml:space="preserve">
+    <value>Caricamento del catalogo dei moduli Prism ...</value>
   </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrizione</value>
-  </data>
-  <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
-  </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
-  </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
+  <data name="OpeningMainWindow" xml:space="preserve">
+    <value>Apertura finestra principale ...</value>
   </data>
 </root>

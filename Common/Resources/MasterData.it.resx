@@ -117,37 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
+  <data name="ItemAll" xml:space="preserve">
+    <value>Tutti gli Articoli</value>
   </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
+  <data name="ItemsMasterData" xml:space="preserve">
+    <value>Anagrafiche</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
+  <data name="Compartments" xml:space="preserve">
+    <value>Scomparti</value>
   </data>
-  <data name="UnitOfMeasurement" xml:space="preserve">
-    <value>Unità di misura</value>
+  <data name="ItemInformation" xml:space="preserve">
+    <value>Informazioni Articolo</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
+  <data name="PhysicalInformation" xml:space="preserve">
+    <value>Informazioni Fisiche</value>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
+  <data name="WarehousingInformation" xml:space="preserve">
+    <value>Informazioni di Stoccaggio</value>
   </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
+  <data name="Withdraw" xml:space="preserve">
+    <value>Immediato</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrizione</value>
+  <data name="ItemClassA" xml:space="preserve">
+    <value>Articoli di Classe A</value>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
-  </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
-  </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
+  <data name="ItemFIFO" xml:space="preserve">
+    <value>Articoli con FIFO</value>
   </data>
 </root>
