@@ -2,6 +2,7 @@
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -32,26 +33,28 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<LoadingUnit> GetAll()
         {
-            return this.dataContext.LoadingUnits
-            .Include(l => l.LoadingUnitType)
-            .Include(l => l.LoadingUnitStatus)
-            .Include(l => l.AbcClass)
-            .Include(l => l.CellPosition)
-            .Select(l => new LoadingUnit
-            {
-                Id = l.Id,
-                Code = l.Code,
-                LoadingUnitTypeDescription = l.LoadingUnitType.Description,
-                LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
-                AbcClassDescription = l.AbcClass.Description,
-                AreaName = l.Cell.Aisle.Area.Name,
-                AisleName = l.Cell.Aisle.Name,
-                CellFloor = l.Cell.Floor,
-                CellColumn = l.Cell.Column,
-                CellSide = l.Cell.Side.ToString(),
-                CellNumber = l.Cell.CellNumber,
-                CellPositionDescription = l.CellPosition.Description,
-            }).AsNoTracking();
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.LoadingUnits
+                .Include(l => l.LoadingUnitType)
+                .Include(l => l.LoadingUnitStatus)
+                .Include(l => l.AbcClass)
+                .Include(l => l.CellPosition)
+                .Select(l => new LoadingUnit
+                {
+                    Id = l.Id,
+                    Code = l.Code,
+                    LoadingUnitTypeDescription = l.LoadingUnitType.Description,
+                    LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
+                    AbcClassDescription = l.AbcClass.Description,
+                    AreaName = l.Cell.Aisle.Area.Name,
+                    AisleName = l.Cell.Aisle.Name,
+                    CellFloor = l.Cell.Floor,
+                    CellColumn = l.Cell.Column,
+                    CellSide = l.Cell.Side.ToString(),
+                    CellNumber = l.Cell.CellNumber,
+                    CellPositionDescription = l.CellPosition.Description,
+                }).AsNoTracking();
         }
 
         public int GetAllCount()
