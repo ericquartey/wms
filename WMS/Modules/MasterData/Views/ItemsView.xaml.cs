@@ -12,7 +12,6 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.InitializeComponent();
 
-            this.Loaded += this.ItemsView_Loaded;
             this.MainGridControl.AsyncOperationCompleted += this.MainGridControl_AsyncOperationCompleted;
 
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMainWindow);
@@ -21,11 +20,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Methods
-
-        private void ItemsView_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            SplashScreenService.Hide();
-        }
 
         private async void MainGridControl_AsyncOperationCompleted(object sender, System.Windows.RoutedEventArgs e)
         {
