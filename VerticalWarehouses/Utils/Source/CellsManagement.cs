@@ -52,11 +52,9 @@ namespace Ferretto.VW.Utils.Source
 
         #region Properties
 
-        public List<Drawer> Drawers { get => this.drawers; set => this.drawers = value; }
-
         internal List<CellBlock> Blocks { get => this.blocks; set => this.blocks = value; }
-
         internal List<Cell> Cells { get => this.cells; set => this.cells = value; }
+        internal List<Drawer> Drawers { get => this.drawers; set => this.drawers = value; }
 
         #endregion Properties
 
@@ -75,7 +73,6 @@ namespace Ferretto.VW.Utils.Source
                 throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
             }
             this.Cells[cellIndex].Status = newStatus;
-            this.UpdateCellsFile();
         }
 
         public void CreateBay(int firstCellID, int lastCellID)
@@ -120,12 +117,12 @@ namespace Ferretto.VW.Utils.Source
             }
             watch.Stop();
             var elapsedMs = watch.ElapsedTicks;
-            Debug.Print("Operation in RAM took " + elapsedMs + " timerticks to complete (" + (elapsedMs * ((double)Stopwatch.Frequency / 1000000D) + " microseconds). It does " + Stopwatch.Frequency + " ticks every second. " + ((double)Stopwatch.Frequency / 1000000D) + " microsecond per tick.\n"));
+            Debug.Print("Create Block in RAM took " + elapsedMs + " timerticks to complete (" + (elapsedMs * ((double)Stopwatch.Frequency / 1000000D) + " microseconds). It does " + Stopwatch.Frequency + " ticks every second. " + ((double)Stopwatch.Frequency / 1000000D) + " microsecond per tick.\n"));
             watch = Stopwatch.StartNew();
             this.UpdateBlocksFile();
             watch.Stop();
             elapsedMs = watch.ElapsedMilliseconds;
-            Debug.Print("Operation in File I/O took " + elapsedMs + " ms to complete.\n");
+            Debug.Print("Create Block write File I/O took " + elapsedMs + " ms to complete.\n");
         }
 
         public void CreateCellTable(int machineHeight)
@@ -137,6 +134,14 @@ namespace Ferretto.VW.Utils.Source
                 this.Cells.Add(c);
             }
             this.UpdateCellsFile();
+        }
+
+        public void ExtractDrawer(int drawerID)
+        {
+            Drawer d = (from ret_d in this.Drawers where ret_d.Id == drawerID select ret_d).First();
+            CellManagementMethods.FreeCells(this, d.FirstCellID - 1, d.Height);
+            this.UpdateCellsFile();
+            this.UpdateBlocksFile();
         }
 
         public bool InsertNewDrawer(int newDrawerID, int newDrawerHeight)
@@ -175,6 +180,7 @@ namespace Ferretto.VW.Utils.Source
 
         public void UpdateCellsFile()
         {
+            var watch = Stopwatch.StartNew();
             var json = JsonConvert.SerializeObject(this.Cells, Formatting.Indented);
 
             if (File.Exists(CreateAndPopulateTables.JSON_CELL_PATH))
@@ -186,6 +192,8 @@ namespace Ferretto.VW.Utils.Source
             {
                 File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
             }
+            watch.Stop();
+            Debug.Print("Update Cells file took: " + watch.ElapsedMilliseconds + " milliseconds. \n");
         }
 
         private int GetLastUpperNotDisabledCellIndex(int cellIndex)
@@ -201,45 +209,6 @@ namespace Ferretto.VW.Utils.Source
                 }
             }
             return (cellIndex % 2 == 0) ? this.Cells.Count - 2 : this.Cells.Count - 1;
-        }
-
-        #endregion Methods
-    }
-
-    public class Drawer
-    {
-        #region Fields
-
-        private int firstCellID;
-        private int height;
-        private int id;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public Drawer(int newID, int newHeight, int newFirstCellID)
-        {
-            this.Id = newID;
-            this.Height = newHeight;
-            this.FirstCellID = newFirstCellID;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Int32 FirstCellID { get => this.firstCellID; set => this.firstCellID = value; }
-        public Int32 Height { get => this.height; set => this.height = value; }
-        public Int32 Id { get => this.id; set => this.id = value; }
-
-        #endregion Properties
-
-        #region Methods
-
-        public void ChangeFirstCellID(int newFirstCellID)
-        {
-            this.FirstCellID = newFirstCellID;
         }
 
         #endregion Methods
@@ -372,6 +341,10 @@ namespace Ferretto.VW.Utils.Source
                 this.Side = Side.BackOdd;
             }
             this.Status = Status.Free;
+            if (id == 1 || id == 2)
+            {
+                this.Status = Status.Unusable;
+            }
         }
 
         #endregion Constructors
@@ -436,5 +409,44 @@ namespace Ferretto.VW.Utils.Source
         public Side Side { get => this.side; set => this.side = value; }
 
         #endregion Properties
+    }
+
+    internal class Drawer
+    {
+        #region Fields
+
+        private int firstCellID;
+        private int height;
+        private int id;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public Drawer(int newID, int newHeight, int newFirstCellID)
+        {
+            this.Id = newID;
+            this.Height = newHeight;
+            this.FirstCellID = newFirstCellID;
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public Int32 FirstCellID { get => this.firstCellID; set => this.firstCellID = value; }
+        public Int32 Height { get => this.height; set => this.height = value; }
+        public Int32 Id { get => this.id; set => this.id = value; }
+
+        #endregion Properties
+
+        #region Methods
+
+        public void ChangeFirstCellID(int newFirstCellID)
+        {
+            this.FirstCellID = newFirstCellID;
+        }
+
+        #endregion Methods
     }
 }

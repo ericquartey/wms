@@ -10,6 +10,7 @@ namespace ZZ_CellManagementTestApp
         #region Fields
 
         private CellsManager cm;
+        private int drawerCounter = 0;
         private int extractDrawerID;
         private int insertNewDrawerHeight;
         private int insertNewDrawerID;
@@ -107,18 +108,14 @@ namespace ZZ_CellManagementTestApp
         private void InsertNewDrawer()
         {
             var watch = Stopwatch.StartNew();
-            var watch1 = Stopwatch.StartNew();
             try
             {
                 this.InsertNewDrawerID = int.Parse(this.InsertNewDrawerIDTextBox.Text);
             }
             catch
             {
-                this.InsertNewDrawerID = 0;
+                this.InsertNewDrawerID = ++this.drawerCounter;
             }
-            watch1.Stop();
-            Debug.Print("Phase 1 took " + watch1.ElapsedMilliseconds + " milliseconds.\n");
-            var watch2 = Stopwatch.StartNew();
             try
             {
                 this.InsertNewDrawerHeight = int.Parse(this.InsertNewDrawerHeightTextBox.Text);
@@ -126,11 +123,7 @@ namespace ZZ_CellManagementTestApp
             catch
             {
                 this.InsertNewDrawerHeight = new Random().Next(1, 11) * 100;
-                Debug.Print("New Drawer Height: " + this.InsertNewDrawerHeight + "\n");
             }
-            watch2.Stop();
-            Debug.Print("Phase 2 took " + watch2.ElapsedMilliseconds + " milliseconds.\n");
-            var watch3 = Stopwatch.StartNew();
             if (this.cm.InsertNewDrawer(this.InsertNewDrawerID, this.InsertNewDrawerHeight))
             {
                 this.InsertNewDrawerIDTextBox.Text = "";
@@ -140,8 +133,6 @@ namespace ZZ_CellManagementTestApp
             {
                 Debug.Print("Failed inserting new drawer with height " + this.InsertNewDrawerHeight + "\n");
             }
-            watch3.Stop();
-            Debug.Print("Phase 3 took " + watch3.ElapsedMilliseconds + " milliseconds.\n");
             watch.Stop();
             Debug.Print("It took " + watch.ElapsedMilliseconds + " milliseconds to insert new drawer of height " + this.InsertNewDrawerHeight + "\n");
         }
