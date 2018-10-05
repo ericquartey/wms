@@ -12,38 +12,48 @@
         <StackPanel Height="auto"
                     DockPanel.Dock="Top"
                     Orientation="Horizontal">
-            <Button Width="200"
+            <Button Width="180"
                     Margin="5"
                     Background="Transparent"
                     BorderBrush="White"
                     BorderThickness="2"
                     Click="OpenInsertNewDrawerInputMaskButtonMethod"
-                    FontSize="20"
+                    FontSize="15"
                     Foreground="White">
                 Insert Loading Unit
             </Button>
-            <Button Width="200"
+            <Button Width="180"
                     Margin="5"
                     Background="Transparent"
                     BorderBrush="White"
                     BorderThickness="2"
                     Click="OpenExtractDrawerInputMaskButtonMethod"
-                    FontSize="20"
+                    FontSize="15"
                     Foreground="White">
                 Extract Loading Unit
             </Button>
-            <Button Width="200"
+            <Button Width="180"
                     Margin="5"
                     Background="Transparent"
                     BorderBrush="White"
                     BorderThickness="2"
-                    FontSize="20"
+                    Click="OpenInsertUnusableCellInputMaskButtonMethod"
+                    FontSize="15"
+                    Foreground="White">
+                Insert Unusable Cell
+            </Button>
+            <Button Width="180"
+                    Margin="5"
+                    Background="Transparent"
+                    BorderBrush="White"
+                    BorderThickness="2"
+                    FontSize="15"
                     Foreground="White">
                 Compact machine
             </Button>
         </StackPanel>
         <Grid DockPanel.Dock="Left">
-            <Border Width="200"
+            <Border Width="180"
                     Margin="5"
                     BorderBrush="White"
                     BorderThickness="2">
@@ -82,20 +92,72 @@
                                 BorderThickness="2">
                             <StackPanel>
                                 <Label Foreground="White">Extract Drawer ID</Label>
-                                <TextBox />
+                                <TextBox Name="ExtractDrawerIDTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Destination Bay ID</Label>
+                                <TextBox Name="ExtractDrawerDestinationBayIDTextBox" />
                             </StackPanel>
                         </Border>
                         <Button Margin="5"
                                 Background="Transparent"
                                 BorderBrush="White"
                                 BorderThickness="2"
+                                Click="ExtractDrawerButtonMethod"
                                 Foreground="White">
-                            Insert Drawer
+                            Extract Drawer
+                        </Button>
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Destination Bay ID to free</Label>
+                                <TextBox Name="BayIDTofreeTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Click="ReInsertDrawerButtonMethod"
+                                Foreground="White">
+                            Re-Insert Drawer
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Name="InsertUnusableCellInputMask"
+                                Visibility="Hidden">
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Unusable Cell ID</Label>
+                                <TextBox Name="InsertNewUnusableCellIDTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Click="InsertNewUnusableCellButtonMethod"
+                                Foreground="White">
+                            Make Unusable
                         </Button>
                     </StackPanel>
                 </Grid>
             </Border>
         </Grid>
+        <Border Width="560"
+                Margin="5"
+                BorderBrush="White"
+                BorderThickness="2">
+            <ScrollViewer>
+                <StackPanel Name="LogStackPanel" />
+            </ScrollViewer>
+        </Border>
         <Popup Name="MachineHeightPopUp"
                Width="400"
                Height="auto"

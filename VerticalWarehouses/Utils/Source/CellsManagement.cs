@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading;
 using Newtonsoft.Json;
 
+// File for cells' management. Data stored in CellsManager instance, methods stored in CellsManagementMethods
+// ATTENTION: MAKE SURE TO CHECK WHEN METHODS REQUIRE CELL ID OR CELL INDEX (WHERE CELL INDEX = CELL ID - 1)
+
 namespace Ferretto.VW.Utils.Source
 {
     public enum Side
@@ -22,39 +25,8 @@ namespace Ferretto.VW.Utils.Source
         Unusable
     }
 
-    public class CellsManager
-    {
-        #region Fields
-
-        private int bayCounter = 0;
-        private List<Bay> bays = new List<Bay>();
-        private List<CellBlock> blocks = new List<CellBlock>();
-        private List<Cell> cells = new List<Cell>();
-        private List<Drawer> drawers = new List<Drawer>();
-
-        #endregion Fields
-
-        #region Constructors
-
-        public CellsManager()
-        {
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Int32 BayCounter { get => this.bayCounter; set => this.bayCounter = value; }
-
-        internal List<Bay> Bays { get => this.bays; set => this.bays = value; }
-        internal List<CellBlock> Blocks { get => this.blocks; set => this.blocks = value; }
-        internal List<Cell> Cells { get => this.cells; set => this.cells = value; }
-        internal List<Drawer> Drawers { get => this.drawers; set => this.drawers = value; }
-
-        #endregion Properties
-    }
-
-    internal static class CellManagementMethods
+    // ATTENTION: MAKE SURE TO CHECK WHEN METHODS REQUIRE CELL ID OR CELL INDEX (WHERE CELL INDEX = CELL ID - 1)
+    public static class CellManagementMethods
     {
         #region Fields
 
@@ -77,20 +49,27 @@ namespace Ferretto.VW.Utils.Source
         {
         }
 
-        public static void CreateBay(CellsManager cm, int firstCellID, int lastCellID)
+        public static bool CreateBay(CellsManager cm, int firstCellID, int lastCellID)
         {
             if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
             {
-                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
+                Debug.Print("CellManagementMethods::CreateBay Error: inserted cell not on same side of the machine.\n");
+                return false;
+            }
+            if (cm.BayCounter > 3)
+            {
+                Debug.Print("CellManagementMethods::CreateBay Error: it's not possible to insert more than 3 bays.\n");
+                return false;
             }
             for (int id = firstCellID; id <= lastCellID; id += 2)
             {
                 ChangeCellStatus(cm, id - 1, Status.Disabled);
             }
             cm.Bays.Add(new Bay(++cm.BayCounter, ((lastCellID - firstCellID) / 2) * 25, firstCellID));
+            return true;
         }
 
-        public static void CreateBlocks(CellsManager cm)
+        public static bool CreateBlocks(CellsManager cm)
         {
             var watch = Stopwatch.StartNew();
             cm.Blocks = null;
@@ -101,7 +80,7 @@ namespace Ferretto.VW.Utils.Source
                 if (cm.Cells[index].Status == 0)
                 {
                     int tmp = GetLastUpperNotDisabledCellIndex(cm, index);
-                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
+                    var cb = new CellBlock(index + 1, tmp + 1, counter);
                     cm.Blocks.Add(cb);
                     counter++;
                     index = tmp;
@@ -112,7 +91,7 @@ namespace Ferretto.VW.Utils.Source
                 if (cm.Cells[index].Status == 0)
                 {
                     int tmp = GetLastUpperNotDisabledCellIndex(cm, index);
-                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
+                    var cb = new CellBlock(index + 1, tmp + 1, counter);
                     cm.Blocks.Add(cb);
                     counter++;
                     index = tmp;
@@ -126,6 +105,7 @@ namespace Ferretto.VW.Utils.Source
             watch.Stop();
             elapsedMs = watch.ElapsedMilliseconds;
             Debug.Print("Create Block write File I/O took " + elapsedMs + " ms to complete.\n");
+            return true;
         }
 
         public static void CreateCellTable(CellsManager cm, int machineHeight)
@@ -133,18 +113,33 @@ namespace Ferretto.VW.Utils.Source
             int cells = CalculateCellQuantityFromMachineHeight(machineHeight);
             for (int id = 1; id <= cells; id++)
             {
-                Cell c = new Cell(id);
+                var c = new Cell(id);
                 cm.Cells.Add(c);
             }
             UpdateCellsFile(cm);
         }
 
-        public static void ExtractDrawer(CellsManager cm, int drawerID)
+        public static bool ExtractDrawer(CellsManager cm, int drawerID, int destinationBayID)
         {
-            Drawer d = (from ret_d in cm.Drawers where ret_d.Id == drawerID select ret_d).First();
-            CellManagementMethods.FreeCells(cm, d.FirstCellID - 1, d.Height);
+            if (cm.Bays[destinationBayID - 1].Occupied)
+            {
+                Debug.Print("CellManagementMethods::ExtractDrawer Error: destination bay is already occupied. Destination Bay ID = " + destinationBayID + ".\n");
+                return false;
+            }
+            if (cm.Drawers.Find(x => x.Id == drawerID) == null)
+            {
+                Debug.Print("CellManagementMethods::ExtractDrawer Error: did not found drawer with this ID: " + drawerID + ".\n");
+                return false;
+            }
+            cm.Bays[destinationBayID - 1].Occupied = true;
+            cm.Bays[destinationBayID - 1].DrawerID = drawerID;
+            var d = (from ret_d in cm.Drawers where ret_d.Id == drawerID select ret_d).First();
+            FreeCells(cm, d.FirstCellID - 1, d.Height);
             UpdateCellsFile(cm);
+            CreateBlocks(cm);
             UpdateBlocksFile(cm);
+            Debug.Print("CellManagementMethods::ExtractDrawer output: Drawer with ID " + drawerID + " successfully extracted.\n");
+            return true;
         }
 
         public static int GetFreeCellQuantity(CellsManager cm)
@@ -157,23 +152,93 @@ namespace Ferretto.VW.Utils.Source
             return cm.Blocks.Where(x => x.Side == side).Sum(x => x.FinalIDCell - x.InitialIDCell);
         }
 
+        public static void InsertBays(CellsManager cm)
+        {
+            CreateBlocks(cm);
+            UpdateCellsFile(cm);
+            UpdateBlocksFile(cm);
+        }
+
         public static bool InsertNewDrawer(CellsManager cm, int newDrawerID, int newDrawerHeight)
         {
             var watch = Stopwatch.StartNew();
-            int initCellID = CellManagementMethods.FindFirstFreeCellIDForDrawerInsert(cm, newDrawerHeight);
+            var initCellID = FindFirstFreeCellIDForDrawerInsert(cm, newDrawerHeight);
             if (initCellID < 0)
             {
                 return false;
             }
             var d = new Drawer(newDrawerID, newDrawerHeight, initCellID);
             cm.Drawers.Add(d);
-            CellManagementMethods.OccupyCells(cm, initCellID - 1, newDrawerHeight);
+            OccupyCells(cm, initCellID - 1, newDrawerHeight);
             UpdateCellsFile(cm);
             CreateBlocks(cm);
             UpdateBlocksFile(cm);
             watch.Stop();
             Debug.Print("It took " + watch.ElapsedMilliseconds + " millisecond to complete InsertNewDrawer method in CellManager.\n");
             return true;
+        }
+
+        public static bool InsertUnusableCell(CellsManager cm, int cellID)
+        {
+            if (cm.Cells[cellID - 1].Status != Status.Free)
+            {
+                Debug.Print("CellManagementMethods::InsertUnusableCell Error: selected Cell ID " + cellID + " is not free.\n");
+                return false;
+            }
+            ChangeCellStatus(cm, cellID - 1, Status.Unusable);
+            CreateBlocks(cm);
+            UpdateCellsFile(cm);
+            UpdateBlocksFile(cm);
+            return true;
+        }
+
+        public static bool ReInsertDrawer(CellsManager cm, int bayID)
+        {
+            if (!cm.Bays[bayID].Occupied)
+            {
+                Debug.Print("CellManagementMethods::ReInsertDrawer Error: selected bay ID " + bayID + " is not occupied.\n");
+                return false;
+            }
+            InsertNewDrawer(cm, cm.Bays[bayID - 1].DrawerID, cm.Drawers[cm.Bays[bayID - 1].DrawerID - 1].Height);
+            cm.Bays[bayID - 1].Occupied = false;
+            cm.Bays[bayID - 1].DrawerID = -1;
+            CreateBlocks(cm);
+            UpdateCellsFile(cm);
+            UpdateBlocksFile(cm);
+            return true;
+        }
+
+        public static void UpdateBlocksFile(CellsManager cm)
+        {
+            var json = JsonConvert.SerializeObject(cm.Blocks, Formatting.Indented);
+
+            if (File.Exists(JSON_BLOCK_PATH))
+            {
+                File.Delete(JSON_BLOCK_PATH);
+                File.WriteAllText(JSON_BLOCK_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(JSON_BLOCK_PATH, json);
+            }
+        }
+
+        public static void UpdateCellsFile(CellsManager cm)
+        {
+            var watch = Stopwatch.StartNew();
+            var json = JsonConvert.SerializeObject(cm.Cells, Formatting.Indented);
+
+            if (File.Exists(JSON_CELL_PATH))
+            {
+                File.Delete(JSON_CELL_PATH);
+                File.WriteAllText(JSON_CELL_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(JSON_CELL_PATH, json);
+            }
+            watch.Stop();
+            Debug.Print("Update Cells file took: " + watch.ElapsedMilliseconds + " milliseconds. \n");
         }
 
         private static int CalculateCellQuantityFromMachineHeight(int machineHeight)
@@ -213,7 +278,7 @@ namespace Ferretto.VW.Utils.Source
 
         private static void FreeCells(CellsManager cm, int firstCellIndex, int drawerHeight)
         {
-            int cellsToFree = drawerHeight / 25;
+            var cellsToFree = drawerHeight / 25;
             for (int index = firstCellIndex; index <= firstCellIndex + cellsToFree * 2; index += 2)
             {
                 ChangeCellStatus(cm, index, 0);
@@ -244,46 +309,14 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        private static void UpdateBlocksFile(CellsManager cm)
-        {
-            var json = JsonConvert.SerializeObject(cm.Blocks, Formatting.Indented);
-
-            if (File.Exists(CellManagementMethods.JSON_BLOCK_PATH))
-            {
-                File.Delete(CellManagementMethods.JSON_BLOCK_PATH);
-                File.WriteAllText(CellManagementMethods.JSON_BLOCK_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CellManagementMethods.JSON_BLOCK_PATH, json);
-            }
-        }
-
-        private static void UpdateCellsFile(CellsManager cm)
-        {
-            var watch = Stopwatch.StartNew();
-            var json = JsonConvert.SerializeObject(cm.Cells, Formatting.Indented);
-
-            if (File.Exists(CellManagementMethods.JSON_CELL_PATH))
-            {
-                File.Delete(CellManagementMethods.JSON_CELL_PATH);
-                File.WriteAllText(CellManagementMethods.JSON_CELL_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CellManagementMethods.JSON_CELL_PATH, json);
-            }
-            watch.Stop();
-            Debug.Print("Update Cells file took: " + watch.ElapsedMilliseconds + " milliseconds. \n");
-        }
-
         #endregion Methods
     }
 
-    internal class Bay
+    public class Bay
     {
         #region Fields
 
+        private int drawerID = -1;
         private int firstCellID;
         private int height;
         private int id;
@@ -304,6 +337,7 @@ namespace Ferretto.VW.Utils.Source
 
         #region Properties
 
+        public Int32 DrawerID { get => this.drawerID; set => this.drawerID = value; }
         public Int32 FirstCellID { get => this.firstCellID; set => this.firstCellID = value; }
         public Int32 Height { get => this.height; set => this.height = value; }
         public Int32 Id { get => this.id; set => this.id = value; }
@@ -312,7 +346,7 @@ namespace Ferretto.VW.Utils.Source
         #endregion Properties
     }
 
-    internal class Cell
+    public class Cell
     {
         #region Fields
 
@@ -341,10 +375,6 @@ namespace Ferretto.VW.Utils.Source
                 this.Side = Side.BackOdd;
             }
             this.Status = Status.Free;
-            if (id == 1 || id == 2)
-            {
-                this.Status = Status.Unusable;
-            }
         }
 
         #endregion Constructors
@@ -362,7 +392,7 @@ namespace Ferretto.VW.Utils.Source
         // status code: 0 = free; 1 = disabled; 2 = occupied; 3 = unusable
     }
 
-    internal class CellBlock
+    public class CellBlock
     {
         #region Fields
 
@@ -411,7 +441,39 @@ namespace Ferretto.VW.Utils.Source
         #endregion Properties
     }
 
-    internal class Drawer
+    public class CellsManager
+    {
+        #region Fields
+
+        private int bayCounter = 0;
+        private List<Bay> bays = new List<Bay>();
+        private List<CellBlock> blocks = new List<CellBlock>();
+        private List<Cell> cells = new List<Cell>();
+        private List<Drawer> drawers = new List<Drawer>();
+
+        #endregion Fields
+
+        #region Constructors
+
+        public CellsManager()
+        {
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public Int32 BayCounter { get => this.bayCounter; set => this.bayCounter = value; }
+
+        public List<Bay> Bays { get => this.bays; set => this.bays = value; }
+        public List<CellBlock> Blocks { get => this.blocks; set => this.blocks = value; }
+        public List<Cell> Cells { get => this.cells; set => this.cells = value; }
+        public List<Drawer> Drawers { get => this.drawers; set => this.drawers = value; }
+
+        #endregion Properties
+    }
+
+    public class Drawer
     {
         #region Fields
 
