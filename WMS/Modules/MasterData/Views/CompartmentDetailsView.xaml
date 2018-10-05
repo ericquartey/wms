@@ -182,10 +182,11 @@
                                           Label="{x:Static res:BusinessObjects.MaterialStatus}"
                                           SelectedValue="{Binding Path=MaterialStatusId, Mode=TwoWay}"
                                           ValueMember="Id" />
-                            <wms:TextBox Grid.Row="2"
-                                         Grid.Column="1"
-                                         FieldName="FifoTime"
-                                         IsEnabled="False" />
+                            <wms:SpinEdit Grid.Row="2"
+                                          Grid.Column="1"
+                                          IsEnabled="False"
+                                          Label="{x:Static res:BusinessObjects.CompartmentFifoTime}"
+                                          EditValue="{Binding Path=Compartment.FifoTime}" />
                             <wms:TextBox Grid.Row="3"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
@@ -219,11 +220,12 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <wms:TextBox Grid.Row="0"
-                                         Grid.Column="0"
-                                         Margin="0,0,20,0"
-                                         FieldName="MaxCapacity"
-                                         IsEnabled="False" />
+                            <wms:SpinEdit Grid.Row="0"
+                                          Grid.Column="0"
+                                          Margin="0,0,20,0"
+                                          IsEnabled="False"
+                                          Label="{x:Static res:BusinessObjects.CompartmentMaxCapacity}"
+                                          EditValue="{Binding Path=Compartment.MaxCapacity}" />
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="1"
                                           Label="{x:Static res:BusinessObjects.CompartmentReservedForPick}"

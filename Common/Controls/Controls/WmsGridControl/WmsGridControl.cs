@@ -58,6 +58,8 @@ namespace Ferretto.Common.Controls
         {
             base.OnInitialized(e);
 
+            this.DisableColumnFiltering();
+
             this.DataContext = this.InstantiateViewModel();
 
             this.SetToken();
@@ -73,6 +75,11 @@ namespace Ferretto.Common.Controls
             {
                 dataContext.SetDataSource(e.NewValue);
             }
+        }
+
+        private void DisableColumnFiltering()
+        {
+            this.View.AllowColumnFiltering = false;
         }
 
         private Object InstantiateViewModel()

@@ -198,6 +198,9 @@
     <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
       <DependentUpon>WmsIcon.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SpinEdit\SpinEdit.xaml.cs">
+      <DependentUpon>SpinEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\TileBar\Tile.cs" />
     <Compile Include="Controls\TileBar\TileBar.xaml.cs">
       <DependentUpon>TileBar.xaml</DependentUpon>
@@ -269,6 +272,9 @@
     </Page>
     <Page Include="Controls\Icon\WmsIcon.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SpinEdit\SpinEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TileBar\TileBar.xaml">

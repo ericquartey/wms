@@ -120,11 +120,13 @@
                                       Label="{x:Static res:BusinessObjects.AbcClass}"
                                       SelectedValue="{Binding Path=AbcClassId, Mode=TwoWay}"
                                       ValueMember="Id" />
-                        <wms:TextBox Grid.Column="1"
-                                     Margin="0,0,20,0"
-                                     FieldName="FifoTimeStore" />
-                        <wms:TextBox Grid.Column="2"
-                                     FieldName="ReorderPoint" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemFifoStoreTime}"
+                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="2"
+                                      Label="{x:Static res:BusinessObjects.ItemReorderPoint}"
+                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
@@ -132,13 +134,15 @@
                                       Label="{x:Static res:General.UnitOfMeasurement}"
                                       SelectedValue="{Binding Path=MeasureUnitId, Mode=TwoWay}"
                                       ValueMember="Id" />
-                        <wms:TextBox Grid.Row="1"
-                                     Grid.Column="1"
-                                     Margin="0,0,20,0"
-                                     FieldName="FifoTimePick" />
-                        <wms:TextBox Grid.Row="1"
-                                     Grid.Column="2"
-                                     FieldName="ReorderQuantity" />
+                        <wms:SpinEdit Grid.Row="1"
+                                      Grid.Column="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemFifoPickTime}"
+                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Row="1"
+                                      Grid.Column="2"
+                                      Label="{x:Static res:BusinessObjects.ItemReorderQuantity}"
+                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       ItemsSource="{Binding Path=ItemManagementTypeChoices}"
@@ -163,34 +167,41 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <wms:TextBox Grid.Row="0"
-                                     Grid.Column="0"
-                                     Margin="0,0,20,0"
-                                     FieldName="Height" />
-                        <wms:TextBox Grid.Row="1"
-                                     Grid.Column="0"
-                                     Margin="0,0,20,0"
-                                     FieldName="Length" />
-                        <wms:TextBox Grid.Row="2"
-                                     Grid.Column="0"
-                                     Margin="0,0,20,0"
-                                     FieldName="Width" />
-                        <wms:TextBox Grid.Row="0"
-                                     Grid.Column="1"
-                                     Margin="0,0,20,0"
-                                     FieldName="PickTolerance" />
-                        <wms:TextBox Grid.Row="1"
-                                     Grid.Column="1"
-                                     Margin="0,0,20,0"
-                                     FieldName="StoreTolerance" />
-                        <wms:TextBox Grid.Row="2"
-                                     Grid.Column="1"
-                                     Margin="0,0,20,0"
-                                     FieldName="InventoryTolerance" />
-                        <wms:TextBox Grid.Row="0"
-                                     Grid.Column="2"
-                                     Margin="0,0,20,0"
-                                     FieldName="AverageWeight" />
+                        <wms:SpinEdit Grid.Column="0"
+                                      Grid.Row="0"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemHeight}"
+                                      EditValue="{Binding Path=Item.Height, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Grid.Row="0"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemPickTolerance}"
+                                      EditValue="{Binding Path=Item.PickTolerance}" />
+                        <wms:SpinEdit Grid.Column="2"
+                                      Grid.Row="0"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemAverageWeight}"
+                                      EditValue="{Binding Path=Item.AverageWeight, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="0"
+                                      Grid.Row="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemLength}"
+                                      EditValue="{Binding Path=Item.Length, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Grid.Row="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemStoreTolerance}"
+                                      EditValue="{Binding Path=Item.StoreTolerance, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="0"
+                                      Grid.Row="2"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemWidth}"
+                                      EditValue="{Binding Path=Item.Width, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Grid.Row="2"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemInventoryTolerance}"
+                                      EditValue="{Binding Path=Item.InventoryTolerance, Mode=TwoWay}" />
                     </Grid>
                 </GroupBox>
 

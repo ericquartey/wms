@@ -8018,7 +8018,12 @@
     <Page Include="Themes\Light\Expander.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Light\Controls.xaml">
+    <Page Include="Themes\Light\Label.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Light\SpinEdit.xaml" />
+    <Page Include="Themes\Light\TextEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
