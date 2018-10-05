@@ -18,12 +18,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Label Content="{Binding Path=Label}"
+        <Label x:Name="InnerLabel"
+               Content="{Binding Path=Label}"
                Style="{DynamicResource ControlLabelStyle}" />
-        <TextBox Grid.Row="1"
+        <TextBox x:Name="InnerTextBox"
+                 Grid.Row="1"
                  AcceptsReturn="{Binding Path=IsMultiline}"
                  Style="{DynamicResource TextBoxStyleHover}"
-                 Text="{Binding Path=Text, Mode=TwoWay}"
                  TextWrapping="{Binding Path=IsMultiline, Converter={StaticResource BTTWC}}" />
     </Grid>
 </UserControl>

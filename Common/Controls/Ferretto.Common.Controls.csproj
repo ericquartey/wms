@@ -118,6 +118,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
@@ -193,6 +194,7 @@
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Expander\Expander.cs" />
+    <Compile Include="Controls\FormControl.cs" />
     <Compile Include="Controls\Icon\WmsIconViewModel.cs" />
     <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
       <DependentUpon>WmsIcon.xaml</DependentUpon>
