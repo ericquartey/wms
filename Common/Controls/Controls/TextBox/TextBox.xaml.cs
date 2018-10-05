@@ -1,26 +1,20 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class TextBox : UserControl
+    public partial class TextBox : FormControl
     {
         #region Fields
 
         public static readonly DependencyProperty FieldNameProperty = DependencyProperty.Register(
-           nameof(FieldName), typeof(string), typeof(TextBox), new PropertyMetadata(default(string), new PropertyChangedCallback(OnFieldNameChanged)));
+            nameof(FieldName), typeof(string), typeof(TextBox), new PropertyMetadata(default(string), new PropertyChangedCallback(OnFieldNameChanged)));
 
         public static readonly DependencyProperty IsMultilineProperty = DependencyProperty.Register(
-                   nameof(IsMultiline), typeof(bool), typeof(TextBox), new PropertyMetadata(default(bool)));
+            nameof(IsMultiline), typeof(bool), typeof(TextBox), new PropertyMetadata(default(bool)));
 
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
-                    nameof(Label), typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
-
-        private static readonly string DisplayAttributeNameProperty = "Name";
-        private static readonly string DisplayAttributeResourceTypeProperty = "ResourceType";
+            nameof(Label), typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
 
         #endregion Fields
 
@@ -65,38 +59,14 @@ namespace Ferretto.Common.Controls
         {
             if (d is TextBox textBox)
             {
-                textBox.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, textBox.FieldName);
-
-                textBox.RetrieveLabel();
+                SetTextBinding(textBox);
+                textBox.Label = RetrieveLocalizedFieldName(textBox.InnerTextBox.DataContext, textBox.FieldName);
             }
         }
 
-        private void RetrieveLabel()
+        private static void SetTextBinding(TextBox textBox)
         {
-            if (this.InnerTextBox.DataContext == null || this.FieldName == null)
-            {
-                return;
-            }
-
-            var displayAttributeData = this.InnerTextBox.DataContext.GetType()
-                .GetProperty(this.FieldName)
-                .CustomAttributes
-                .FirstOrDefault(attr => attr.AttributeType == typeof(DisplayAttribute));
-
-            if (displayAttributeData == null)
-            {
-                return;
-            }
-
-            var nameArgumentValue = (string)displayAttributeData.NamedArguments.Single(arg => arg.MemberName == DisplayAttributeNameProperty).TypedValue.Value;
-
-            var resourceTypeArgument = displayAttributeData.NamedArguments.Single(arg => arg.MemberName == DisplayAttributeResourceTypeProperty);
-
-            var resourceClassType = resourceTypeArgument.TypedValue.Value as Type;
-
-            var propertyInfo = resourceClassType.GetProperty(nameArgumentValue);
-
-            this.Label = (string)propertyInfo.GetValue(null);
+            textBox.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, textBox.FieldName);
         }
 
         private void TextBox_DataContextChanged(Object sender, DependencyPropertyChangedEventArgs e)
@@ -105,14 +75,14 @@ namespace Ferretto.Common.Controls
 
             if (this.FieldName != null)
             {
-                this.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, this.FieldName);
+                SetTextBinding(this);
             }
         }
 
         private void TextBox_Loaded(Object sender, RoutedEventArgs e)
         {
-            this.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, this.FieldName);
-            this.RetrieveLabel();
+            SetTextBinding(this);
+            this.Label = RetrieveLocalizedFieldName(this.InnerTextBox.DataContext, this.FieldName);
         }
 
         #endregion Methods
