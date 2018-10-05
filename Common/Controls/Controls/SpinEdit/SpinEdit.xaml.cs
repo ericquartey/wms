@@ -17,6 +17,9 @@ namespace Ferretto.Common.Controls
                 null,
                 FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
+        public static readonly DependencyProperty EditValueTypeProperty = DependencyProperty.Register(
+            nameof(EditValueType), typeof(Type), typeof(SpinEdit), new FrameworkPropertyMetadata(typeof(int)));
+
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
                     nameof(Label), typeof(string), typeof(SpinEdit), new FrameworkPropertyMetadata(default(string)));
 
@@ -45,6 +48,12 @@ namespace Ferretto.Common.Controls
         {
             get => (int?)this.GetValue(EditValueProperty);
             set => this.SetValue(EditValueProperty, value);
+        }
+
+        public Type EditValueType
+        {
+            get => (Type)this.GetValue(EditValueTypeProperty);
+            set => this.SetValue(EditValueTypeProperty, value);
         }
 
         public string Label

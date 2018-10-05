@@ -18,7 +18,6 @@
                Style="{DynamicResource ControlLabelStyle}" />
         <dxe:SpinEdit Grid.Row="1"
                       MinWidth="100"
-                      EditValueType="{x:Type sys:Int32}"
                       EditValue="{Binding Path=EditValue, Mode=TwoWay }"
                       Mask="{Binding Path=Mask}"
                       MaskType="{Binding Path=MaskType}"
