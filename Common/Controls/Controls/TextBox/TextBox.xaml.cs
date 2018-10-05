@@ -23,7 +23,7 @@ namespace Ferretto.Common.Controls
         public TextBox()
         {
             this.InitializeComponent();
-            this.InnerLabel.DataContext = this;
+            this.GridTextBox.DataContext = this;
 
             this.DataContextChanged += this.TextBox_DataContextChanged;
             this.Loaded += this.TextBox_Loaded;
