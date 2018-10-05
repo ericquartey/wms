@@ -194,24 +194,14 @@ namespace Ferretto.Common.Controls.Services
                 return instanceModuleViewName;
             }
 
-            var idStateNotChanged = this.GetStateNotChanged(moduleViewName, viewModelBind);
-            if (idStateNotChanged != null)
-            {
-                // View state is not changed, activate this id
-                instanceModuleViewName = $"{moduleViewName}.{idStateNotChanged}";
-                this.ActivateView(moduleViewName, instanceModuleViewName);
-            }
-            else
-            {
-                // View state is changed, register new instance of same view type
-                var newRegId = viewModelBind.GetNewId();
-                instanceModuleViewName = $"{moduleViewName}.{newRegId}";
-                this.container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, instanceModuleViewName);
-                this.container.RegisterType(typeof(INavigableView), viewModelBind.View, instanceModuleViewName);
+            // Register new instance of same view type
+            var newRegId = viewModelBind.GetNewId();
+            instanceModuleViewName = $"{moduleViewName}.{newRegId}";
+            this.container.RegisterType(typeof(INavigableViewModel), viewModelBind.ViewModel, instanceModuleViewName);
+            this.container.RegisterType(typeof(INavigableView), viewModelBind.View, instanceModuleViewName);
 
-                // Map cloned type to current layout
-                this.AddToRegion(instanceModuleViewName, data);
-            }
+            // Map cloned type to current layout
+            this.AddToRegion(instanceModuleViewName, data);
 
             return instanceModuleViewName;
         }
