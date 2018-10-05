@@ -1,4 +1,7 @@
-﻿namespace Ferretto.Common.Modules.BLL.Models
+﻿using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.Resources;
+
+namespace Ferretto.Common.Modules.BLL.Models
 {
     public class CompartmentStockDetails : BusinessObject
     {
@@ -12,18 +15,21 @@
 
         #region Properties
 
+        [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]
         public int ReservedForPick
         {
             get => this.reservedForPick;
             set => SetIfPositive(ref this.reservedForPick, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentReservedToStore), ResourceType = typeof(BusinessObjects))]
         public int ReservedToStore
         {
             get => this.reservedToStore;
             set => SetIfPositive(ref this.reservedToStore, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
         public int Stock
         {
             get => this.stock;

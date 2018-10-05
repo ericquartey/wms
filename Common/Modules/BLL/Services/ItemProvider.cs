@@ -191,7 +191,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                    {
                        AbcClassDescription = a.Item.AbcClass.Description,
                        AverageWeight = a.Item.AverageWeight,
-                       AbcClassId = a.Item.AbcClassId,
                        CreationDate = a.Item.CreationDate,
                        FifoTimePick = a.Item.FifoTimePick,
                        FifoTimeStore = a.Item.FifoTimeStore,

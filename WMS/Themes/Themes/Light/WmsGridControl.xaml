@@ -11,6 +11,10 @@
     <dx:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <dx:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
 
+    <Style TargetType="dxg:GridColumn">
+        <Setter Property="IsSmart" Value="True" />
+    </Style>
+
     <!--  sort arrows control templates  -->
     <ControlTemplate x:Key="{dxgt:GridColumnHeaderThemeKey ResourceKey=SortArrowUpTemplate, ThemeName=Office2016White}">
         <StackPanel VerticalAlignment="Center"
