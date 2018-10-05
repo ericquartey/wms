@@ -22,16 +22,6 @@ namespace Ferretto.VW.Utils.Source
         Unusable
     }
 
-    public static class CreateAndPopulateTables
-    {
-        #region Fields
-
-        public static readonly string JSON_BLOCK_PATH = Environment.CurrentDirectory + "/blockstable.json";
-        public static readonly string JSON_CELL_PATH = Environment.CurrentDirectory + "/cellstable.json";
-
-        #endregion Fields
-    }
-
     public class CellsManager
     {
         #region Fields
@@ -62,166 +52,17 @@ namespace Ferretto.VW.Utils.Source
         internal List<Drawer> Drawers { get => this.drawers; set => this.drawers = value; }
 
         #endregion Properties
-
-        #region Methods
-
-        public int CalculateCellQuantityFromMachineHeight(int machineHeight)
-        {
-            int cells = machineHeight / 25;
-            return cells * 2;
-        }
-
-        public void ChangeCellStatus(int cellIndex, Status newStatus)
-        {
-            if (cellIndex >= this.Cells.Count || cellIndex < 0)
-            {
-                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
-            }
-            this.Cells[cellIndex].Status = newStatus;
-        }
-
-        public void CreateBay(int firstCellID, int lastCellID)
-        {
-            if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
-            {
-                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
-            }
-            for (int id = firstCellID; id <= lastCellID; id += 2)
-            {
-                this.ChangeCellStatus(id - 1, Status.Disabled);
-            }
-            this.Bays.Add(new Bay(++this.BayCounter, ((lastCellID - firstCellID) / 2) * 25, firstCellID));
-        }
-
-        public void CreateBlocks()
-        {
-            var watch = Stopwatch.StartNew();
-            this.Blocks = null;
-            this.Blocks = new List<CellBlock>();
-            int counter = 1;
-            for (int index = 0; index < this.Cells.Count; index += 2) //odd ID cell's index
-            {
-                if (this.Cells[index].Status == 0)
-                {
-                    int tmp = this.GetLastUpperNotDisabledCellIndex(index);
-                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
-                    this.Blocks.Add(cb);
-                    counter++;
-                    index = tmp;
-                }
-            }
-            for (int index = 1; index < this.Cells.Count; index += 2)//even ID cell's index
-            {
-                if (this.Cells[index].Status == 0)
-                {
-                    int tmp = this.GetLastUpperNotDisabledCellIndex(index);
-                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
-                    this.Blocks.Add(cb);
-                    counter++;
-                    index = tmp;
-                }
-            }
-            watch.Stop();
-            var elapsedMs = watch.ElapsedTicks;
-            Debug.Print("Create Block in RAM took " + elapsedMs + " timerticks to complete (" + (elapsedMs * ((double)Stopwatch.Frequency / 1000000D) + " microseconds). It does " + Stopwatch.Frequency + " ticks every second. " + ((double)Stopwatch.Frequency / 1000000D) + " microsecond per tick.\n"));
-            watch = Stopwatch.StartNew();
-            this.UpdateBlocksFile();
-            watch.Stop();
-            elapsedMs = watch.ElapsedMilliseconds;
-            Debug.Print("Create Block write File I/O took " + elapsedMs + " ms to complete.\n");
-        }
-
-        public void CreateCellTable(int machineHeight)
-        {
-            int cells = this.CalculateCellQuantityFromMachineHeight(machineHeight);
-            for (int id = 1; id <= cells; id++)
-            {
-                Cell c = new Cell(id);
-                this.Cells.Add(c);
-            }
-            this.UpdateCellsFile();
-        }
-
-        public void ExtractDrawer(int drawerID)
-        {
-            Drawer d = (from ret_d in this.Drawers where ret_d.Id == drawerID select ret_d).First();
-            CellManagementMethods.FreeCells(this, d.FirstCellID - 1, d.Height);
-            this.UpdateCellsFile();
-            this.UpdateBlocksFile();
-        }
-
-        public bool InsertNewDrawer(int newDrawerID, int newDrawerHeight)
-        {
-            var watch = Stopwatch.StartNew();
-            int initCellID = CellManagementMethods.FindFirstFreeCellIDForDrawerInsert(this, newDrawerHeight);
-            if (initCellID < 0)
-            {
-                return false;
-            }
-            var d = new Drawer(newDrawerID, newDrawerHeight, initCellID);
-            this.Drawers.Add(d);
-            CellManagementMethods.OccupyCells(this, initCellID - 1, newDrawerHeight);
-            this.UpdateCellsFile();
-            this.CreateBlocks();
-            this.UpdateBlocksFile();
-            watch.Stop();
-            Debug.Print("It took " + watch.ElapsedMilliseconds + " millisecond to complete InsertNewDrawer method in CellManager.\n");
-            return true;
-        }
-
-        public void UpdateBlocksFile()
-        {
-            var json = JsonConvert.SerializeObject(this.Blocks, Formatting.Indented);
-
-            if (File.Exists(CreateAndPopulateTables.JSON_BLOCK_PATH))
-            {
-                File.Delete(CreateAndPopulateTables.JSON_BLOCK_PATH);
-                File.WriteAllText(CreateAndPopulateTables.JSON_BLOCK_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CreateAndPopulateTables.JSON_BLOCK_PATH, json);
-            }
-        }
-
-        public void UpdateCellsFile()
-        {
-            var watch = Stopwatch.StartNew();
-            var json = JsonConvert.SerializeObject(this.Cells, Formatting.Indented);
-
-            if (File.Exists(CreateAndPopulateTables.JSON_CELL_PATH))
-            {
-                File.Delete(CreateAndPopulateTables.JSON_CELL_PATH);
-                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(CreateAndPopulateTables.JSON_CELL_PATH, json);
-            }
-            watch.Stop();
-            Debug.Print("Update Cells file took: " + watch.ElapsedMilliseconds + " milliseconds. \n");
-        }
-
-        private int GetLastUpperNotDisabledCellIndex(int cellIndex)
-        {
-            for (int index = cellIndex + 2; index < this.Cells.Count; index += 2)
-            {
-                if (this.Cells[index].Status != Status.Disabled && this.Cells[index].Status != Status.Occupied)
-                {
-                }
-                else
-                {
-                    return index - 2;
-                }
-            }
-            return (cellIndex % 2 == 0) ? this.Cells.Count - 2 : this.Cells.Count - 1;
-        }
-
-        #endregion Methods
     }
 
     internal static class CellManagementMethods
     {
+        #region Fields
+
+        public static readonly string JSON_BLOCK_PATH = Environment.CurrentDirectory + "/blockstable.json";
+        public static readonly string JSON_CELL_PATH = Environment.CurrentDirectory + "/cellstable.json";
+
+        #endregion Fields
+
         #region Methods
 
         public static void CompactCells(CellsManager cm)
@@ -236,12 +77,121 @@ namespace Ferretto.VW.Utils.Source
         {
         }
 
-        public static void CreateBlocks(CellsManager cm)
+        public static void CreateBay(CellsManager cm, int firstCellID, int lastCellID)
         {
-            cm.CreateBlocks();
+            if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
+            {
+                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
+            }
+            for (int id = firstCellID; id <= lastCellID; id += 2)
+            {
+                ChangeCellStatus(cm, id - 1, Status.Disabled);
+            }
+            cm.Bays.Add(new Bay(++cm.BayCounter, ((lastCellID - firstCellID) / 2) * 25, firstCellID));
         }
 
-        public static int FindFirstFreeCellIDForDrawerInsert(CellsManager cm, int drawerHeight)
+        public static void CreateBlocks(CellsManager cm)
+        {
+            var watch = Stopwatch.StartNew();
+            cm.Blocks = null;
+            cm.Blocks = new List<CellBlock>();
+            int counter = 1;
+            for (int index = 0; index < cm.Cells.Count; index += 2) //odd ID cell's index
+            {
+                if (cm.Cells[index].Status == 0)
+                {
+                    int tmp = GetLastUpperNotDisabledCellIndex(cm, index);
+                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
+                    cm.Blocks.Add(cb);
+                    counter++;
+                    index = tmp;
+                }
+            }
+            for (int index = 1; index < cm.Cells.Count; index += 2)//even ID cell's index
+            {
+                if (cm.Cells[index].Status == 0)
+                {
+                    int tmp = GetLastUpperNotDisabledCellIndex(cm, index);
+                    CellBlock cb = new CellBlock(index + 1, tmp + 1, counter);
+                    cm.Blocks.Add(cb);
+                    counter++;
+                    index = tmp;
+                }
+            }
+            watch.Stop();
+            var elapsedMs = watch.ElapsedTicks;
+            Debug.Print("Create Block in RAM took " + elapsedMs + " timerticks to complete (" + (elapsedMs * ((double)Stopwatch.Frequency / 1000000D) + " microseconds). It does " + Stopwatch.Frequency + " ticks every second. " + ((double)Stopwatch.Frequency / 1000000D) + " microsecond per tick.\n"));
+            watch = Stopwatch.StartNew();
+            UpdateBlocksFile(cm);
+            watch.Stop();
+            elapsedMs = watch.ElapsedMilliseconds;
+            Debug.Print("Create Block write File I/O took " + elapsedMs + " ms to complete.\n");
+        }
+
+        public static void CreateCellTable(CellsManager cm, int machineHeight)
+        {
+            int cells = CalculateCellQuantityFromMachineHeight(machineHeight);
+            for (int id = 1; id <= cells; id++)
+            {
+                Cell c = new Cell(id);
+                cm.Cells.Add(c);
+            }
+            UpdateCellsFile(cm);
+        }
+
+        public static void ExtractDrawer(CellsManager cm, int drawerID)
+        {
+            Drawer d = (from ret_d in cm.Drawers where ret_d.Id == drawerID select ret_d).First();
+            CellManagementMethods.FreeCells(cm, d.FirstCellID - 1, d.Height);
+            UpdateCellsFile(cm);
+            UpdateBlocksFile(cm);
+        }
+
+        public static int GetFreeCellQuantity(CellsManager cm)
+        {
+            return cm.Blocks.Sum(x => x.FinalIDCell - x.InitialIDCell);
+        }
+
+        public static int GetFreeCellQuantity(CellsManager cm, Side side)
+        {
+            return cm.Blocks.Where(x => x.Side == side).Sum(x => x.FinalIDCell - x.InitialIDCell);
+        }
+
+        public static bool InsertNewDrawer(CellsManager cm, int newDrawerID, int newDrawerHeight)
+        {
+            var watch = Stopwatch.StartNew();
+            int initCellID = CellManagementMethods.FindFirstFreeCellIDForDrawerInsert(cm, newDrawerHeight);
+            if (initCellID < 0)
+            {
+                return false;
+            }
+            var d = new Drawer(newDrawerID, newDrawerHeight, initCellID);
+            cm.Drawers.Add(d);
+            CellManagementMethods.OccupyCells(cm, initCellID - 1, newDrawerHeight);
+            UpdateCellsFile(cm);
+            CreateBlocks(cm);
+            UpdateBlocksFile(cm);
+            watch.Stop();
+            Debug.Print("It took " + watch.ElapsedMilliseconds + " millisecond to complete InsertNewDrawer method in CellManager.\n");
+            return true;
+        }
+
+        private static int CalculateCellQuantityFromMachineHeight(int machineHeight)
+        {
+            int cells = machineHeight / 25;
+            return cells * 2;
+        }
+
+        private static void ChangeCellStatus(CellsManager cm, int cellIndex, Status newStatus)
+        {
+            if (cellIndex >= cm.Cells.Count || cellIndex < 0)
+            {
+                throw new ArgumentException("CellsManagement Exception: cellID does not point to any cell in memory.", "cellID");
+            }
+            cm.Cells[cellIndex].Status = newStatus;
+        }
+
+        private static int FindFirstFreeCellIDForDrawerInsert(CellsManager cm, int drawerHeight)
         {
             var watch = Stopwatch.StartNew();
             var tempCellBlockIenumerable = cm.Blocks.Where(x => x.BlockHeight > drawerHeight);
@@ -261,32 +211,70 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        public static void FreeCells(CellsManager cm, int firstCellIndex, int drawerHeight)
+        private static void FreeCells(CellsManager cm, int firstCellIndex, int drawerHeight)
         {
             int cellsToFree = drawerHeight / 25;
             for (int index = firstCellIndex; index <= firstCellIndex + cellsToFree * 2; index += 2)
             {
-                cm.ChangeCellStatus(index, 0);
+                ChangeCellStatus(cm, index, 0);
             }
         }
 
-        public static int GetFreeCellQuantity(CellsManager cm)
+        private static int GetLastUpperNotDisabledCellIndex(CellsManager cm, int cellIndex)
         {
-            return cm.Blocks.Sum(x => x.FinalIDCell - x.InitialIDCell);
+            for (int index = cellIndex + 2; index < cm.Cells.Count; index += 2)
+            {
+                if (cm.Cells[index].Status != Status.Disabled && cm.Cells[index].Status != Status.Occupied)
+                {
+                }
+                else
+                {
+                    return index - 2;
+                }
+            }
+            return (cellIndex % 2 == 0) ? cm.Cells.Count - 2 : cm.Cells.Count - 1;
         }
 
-        public static int GetFreeCellQuantity(CellsManager cm, Side side)
-        {
-            return cm.Blocks.Where(x => x.Side == side).Sum(x => x.FinalIDCell - x.InitialIDCell);
-        }
-
-        public static void OccupyCells(CellsManager cm, int firstCellindex, int drawerHeight)
+        private static void OccupyCells(CellsManager cm, int firstCellindex, int drawerHeight)
         {
             int cellsToOccupy = drawerHeight / 25;
             for (int index = firstCellindex; index <= firstCellindex + cellsToOccupy * 2; index += 2)
             {
-                cm.ChangeCellStatus(index, Status.Occupied);
+                ChangeCellStatus(cm, index, Status.Occupied);
             }
+        }
+
+        private static void UpdateBlocksFile(CellsManager cm)
+        {
+            var json = JsonConvert.SerializeObject(cm.Blocks, Formatting.Indented);
+
+            if (File.Exists(CellManagementMethods.JSON_BLOCK_PATH))
+            {
+                File.Delete(CellManagementMethods.JSON_BLOCK_PATH);
+                File.WriteAllText(CellManagementMethods.JSON_BLOCK_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(CellManagementMethods.JSON_BLOCK_PATH, json);
+            }
+        }
+
+        private static void UpdateCellsFile(CellsManager cm)
+        {
+            var watch = Stopwatch.StartNew();
+            var json = JsonConvert.SerializeObject(cm.Cells, Formatting.Indented);
+
+            if (File.Exists(CellManagementMethods.JSON_CELL_PATH))
+            {
+                File.Delete(CellManagementMethods.JSON_CELL_PATH);
+                File.WriteAllText(CellManagementMethods.JSON_CELL_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(CellManagementMethods.JSON_CELL_PATH, json);
+            }
+            watch.Stop();
+            Debug.Print("Update Cells file took: " + watch.ElapsedMilliseconds + " milliseconds. \n");
         }
 
         #endregion Methods
