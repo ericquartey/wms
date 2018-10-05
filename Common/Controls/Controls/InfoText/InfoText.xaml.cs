@@ -65,7 +65,7 @@ namespace Ferretto.Common.Controls
             {
                 Mode = BindingMode.OneWay,
                 FallbackValue = FallbackValue,
-                Converter = new NullFallbackConverter(FallbackValue)
+                TargetNullValue = FallbackValue
             };
 
             infoText.InnerText.SetBinding(System.Windows.Controls.Label.ContentProperty, binding);
