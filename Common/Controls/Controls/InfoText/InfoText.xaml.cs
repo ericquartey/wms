@@ -14,6 +14,8 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
             nameof(Label), typeof(string), typeof(InfoText), new PropertyMetadata(default(string)));
 
+        private const string FallbackValue = "-";
+
         #endregion Fields
 
         #region Constructors
@@ -47,13 +49,6 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        private static Object CoerceValueWhenEmpty(DependencyObject d, Object baseValue)
-        {
-            var textValue = (string)baseValue;
-
-            return string.IsNullOrWhiteSpace(textValue) ? "-" : baseValue;
-        }
-
         private static void OnFieldNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is InfoText infoText)
@@ -69,7 +64,8 @@ namespace Ferretto.Common.Controls
             var binding = new Binding(infoText.FieldName)
             {
                 Mode = BindingMode.OneWay,
-                FallbackValue = "-"
+                FallbackValue = FallbackValue,
+                Converter = new NullFallbackConverter(FallbackValue)
             };
 
             infoText.InnerText.SetBinding(System.Windows.Controls.Label.ContentProperty, binding);

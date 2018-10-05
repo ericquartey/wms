@@ -236,6 +236,7 @@
     </Compile>
     <Compile Include="Controls\WmsView\WmsView.cs" />
     <Compile Include="Controls\WmsView\WmsViewType.cs" />
+    <Compile Include="Converters\NullFallbackConverter.cs" />
     <Compile Include="Converters\IntToThousandsConverter.cs" />
     <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
