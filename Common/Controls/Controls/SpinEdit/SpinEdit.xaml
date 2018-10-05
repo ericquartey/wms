@@ -18,12 +18,12 @@
                Style="{DynamicResource ControlLabelStyle}" />
         <dxe:SpinEdit Grid.Row="1"
                       MinWidth="100"
-                      EditValue="{Binding Path=EditValue, Mode=TwoWay }"
-                      Mask="{Binding Path=Mask}"
-                      MaskType="{Binding Path=MaskType}"
                       AllowNullInput="True"
+                      EditValue="{Binding Path=EditValue, Mode=TwoWay}"
+                      EditValueType="{Binding Path=EditValueType}"
                       IsFloatValue="False"
-                      IsTextEditable="True">
-        </dxe:SpinEdit>
+                      IsTextEditable="True"
+                      Mask="{Binding Path=Mask}"
+                      MaskType="{Binding Path=MaskType}" />
     </Grid>
 </UserControl>
