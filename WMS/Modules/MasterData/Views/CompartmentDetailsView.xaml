@@ -87,8 +87,7 @@
                                          IsEnabled="False" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.ColumnSpan="2"
-                                          Label="{x:Static res:BusinessObjects.LoadingUnit}"
-                                          Text="{Binding Path=LoadingUnitCode}" />
+                                          FieldName="LoadingUnitCode" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
                                           IsEnabled="False"
@@ -126,21 +125,17 @@
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          Label="{x:Static res:BusinessObjects.CompartmentHeight}"
-                                          Text="{Binding Path=Height}" />
+                                          FieldName="Height" />
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="1"
-                                          Label="{x:Static res:BusinessObjects.CompartmentWidth}"
-                                          Text="{Binding Path=Width}" />
+                                          FieldName="Width" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          Label="{x:Static res:BusinessObjects.CompartmentXPosition}"
-                                          Text="{Binding Path=XPosition}" />
+                                          FieldName="XPosition" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="1"
-                                          Label="{x:Static res:BusinessObjects.CompartmentYPosition}"
-                                          Text="{Binding Path=YPosition}" />
+                                          FieldName="YPosition" />
                         </Grid>
                     </GroupBox>
 
@@ -184,9 +179,9 @@
                                           ValueMember="Id" />
                             <wms:SpinEdit Grid.Row="2"
                                           Grid.Column="1"
+                                          EditValue="{Binding Path=Compartment.FifoTime}"
                                           IsEnabled="False"
-                                          Label="{x:Static res:BusinessObjects.CompartmentFifoTime}"
-                                          EditValue="{Binding Path=Compartment.FifoTime}" />
+                                          Label="{x:Static res:BusinessObjects.CompartmentFifoTime}" />
                             <wms:TextBox Grid.Row="3"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
@@ -223,22 +218,19 @@
                             <wms:SpinEdit Grid.Row="0"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
+                                          EditValue="{Binding Path=Compartment.MaxCapacity}"
                                           IsEnabled="False"
-                                          Label="{x:Static res:BusinessObjects.CompartmentMaxCapacity}"
-                                          EditValue="{Binding Path=Compartment.MaxCapacity}" />
+                                          Label="{x:Static res:BusinessObjects.CompartmentMaxCapacity}" />
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="1"
-                                          Label="{x:Static res:BusinessObjects.CompartmentReservedForPick}"
-                                          Text="{Binding Path=ReservedForPick}" />
+                                          FieldName="ReservedForPick" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          Label="{x:Static res:BusinessObjects.CompartmentStock}"
-                                          Text="{Binding Path=Stock}" />
+                                          FieldName="Stock" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="1"
-                                          Label="{x:Static res:BusinessObjects.CompartmentReservedToStore}"
-                                          Text="{Binding Path=ReservedToStore}" />
+                                          FieldName="ReservedToStore" />
                         </Grid>
                     </GroupBox>
 
@@ -287,28 +279,22 @@
                                 Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:General.CreationDate}"
-                                      Text="{Binding Path=CreationDate}" />
+                                      FieldName="CreationDate" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:BusinessObjects.CompartmentHandlingDate}"
-                                      Text="{Binding Path=LastHandlingDate}" />
+                                      FieldName="LastHandlingDate" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:BusinessObjects.CompartmentLastInventoryDate}"
-                                      Text="{Binding Path=InventoryDate}" />
+                                      FieldName="InventoryDate" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:BusinessObjects.CompartmentFirstStoreDate}"
-                                      Text="{Binding Path=LastStoreDate}" />
+                                      FieldName="FirstStoreDate" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:BusinessObjects.CompartmentLastStoreDate}"
-                                      Text="{Binding Path=LastStoreDate}" />
+                                      FieldName="LastStoreDate" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      Label="{x:Static res:BusinessObjects.CompartmentLastPickDate}"
-                                      Text="{Binding Path=LastPickDate}" />
+                                      FieldName="LastPickDate" />
                     </StackPanel>
                 </Grid>
             </Grid>
