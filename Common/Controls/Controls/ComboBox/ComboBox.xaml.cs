@@ -141,7 +141,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var binding = new Binding(comboBox.FieldName)
+            var binding = new Binding($"{nameof(DataContext)}.{comboBox.FieldName}")
             {
                 Mode = BindingMode.TwoWay,
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
