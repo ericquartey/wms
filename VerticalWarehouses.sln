@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InvServer", "VerticalWareho
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SWEmulatorInverter", "VerticalWarehouses\SWEmulatorInverter\SWEmulatorInverter.csproj", "{577C93BA-FB92-4A1F-A0F3-754DE016EB19}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ_CellManagementTestApp", "ZZ_CellManagementTestApp\ZZ_CellManagementTestApp.csproj", "{981DC3E9-A331-4137-A5F5-C0D22FB5F0ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ_CellManagementTestApp", "VerticalWarehouses\ZZ_CellManagementTestApp\ZZ_CellManagementTestApp.csproj", "{981DC3E9-A331-4137-A5F5-C0D22FB5F0ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
