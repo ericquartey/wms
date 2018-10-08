@@ -39,6 +39,11 @@ namespace Ferretto.Common.Controls
         {
         }
 
+        internal void UpdateCompartment(WmsCompartment comp)
+        {
+            this.
+        }
+
         #endregion Methods
     }
 }

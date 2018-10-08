@@ -6,25 +6,24 @@
                 xmlns:wms="clr-namespace:Ferretto.Common.Controls"
                 mc:Ignorable="d">
     <ContentControl.Template>
-        <ControlTemplate TargetType="wms:WmsHistoryView">
-            <wms:WmsTrayControl x:Name="canvas"
-                                Grid.Row="1"
-                                Margin="0,0,0,0"
-                                MouseUp="cnv_MouseLeftButtonDown">
-                <wms:WmsTrayControl.Background>
-                    <DrawingBrush x:Name="griglia"
+        <ControlTemplate TargetType="wms:WmsHistoryTrayControl">
+            <wms:WmsCanvas Background=""
+                           LoadingUnit="{Binding LoadingUnit}"
+                           ReadOnly="{Binding ReadOnly}">
+                <wms:WmsCanvas.Background>
+                    <DrawingBrush x:Name="DrawingBrush"
                                   TileMode="Tile">
                         <DrawingBrush.Drawing>
                             <GeometryDrawing>
                                 <GeometryDrawing.Pen>
-                                    <Pen Brush="#E0E0E0"
-                                         Thickness="1" />
+                                    <Pen Brush="{Binding PenBrush}"
+                                         Thickness="{Binding PenThickness}" />
                                 </GeometryDrawing.Pen>
                             </GeometryDrawing>
                         </DrawingBrush.Drawing>
                     </DrawingBrush>
-                </wms:WmsTrayControl.Background>
-            </wms:WmsTrayControl>
+                </wms:WmsCanvas.Background>
+            </wms:WmsCanvas>
         </ControlTemplate>
     </ContentControl.Template>
 

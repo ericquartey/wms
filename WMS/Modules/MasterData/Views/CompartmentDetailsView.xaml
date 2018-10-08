@@ -184,9 +184,9 @@
                                           ValueMember="Id" />
                             <wms:SpinEdit Grid.Row="2"
                                           Grid.Column="1"
+                                          EditValue="{Binding Path=Compartment.FifoTime}"
                                           IsEnabled="False"
-                                          Label="{x:Static res:BusinessObjects.CompartmentFifoTime}"
-                                          EditValue="{Binding Path=Compartment.FifoTime}" />
+                                          Label="{x:Static res:BusinessObjects.CompartmentFifoTime}" />
                             <wms:TextBox Grid.Row="3"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
@@ -223,9 +223,9 @@
                             <wms:SpinEdit Grid.Row="0"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
+                                          EditValue="{Binding Path=Compartment.MaxCapacity}"
                                           IsEnabled="False"
-                                          Label="{x:Static res:BusinessObjects.CompartmentMaxCapacity}"
-                                          EditValue="{Binding Path=Compartment.MaxCapacity}" />
+                                          Label="{x:Static res:BusinessObjects.CompartmentMaxCapacity}" />
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="1"
                                           Label="{x:Static res:BusinessObjects.CompartmentReservedForPick}"

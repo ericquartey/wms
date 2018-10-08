@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
 
         private float _borderThickness;
         private Color _colorBorder;
-        private Color _colorFill;
+        private string _colorFill;
         private double _height;
         private double _positionX;
         private double _positionY;
@@ -24,12 +24,13 @@ namespace Ferretto.Common.Controls
 
         #region Constructors
 
-        public WmsCompartment(double Width, double Height, double PositionX, double PositionY)
+        public WmsCompartment(double Width, double Height, double PositionX, double PositionY, string ColorFill)
         {
             this.Width = Width;
             this.Height = Height;
             this.PositionX = PositionX;
             this.PositionY = PositionY;
+            this.ColorFill = ColorFill;
         }
 
         #endregion Constructors
@@ -62,7 +63,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public Color ColorFill
+        public string ColorFill
         {
             get { return this._colorFill; }
             set

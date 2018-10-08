@@ -49,11 +49,20 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public void UpdateCompartment(WmsCompartment comp)
+        {
+            var dataContext = this.DataContext as WmsCompartmentViewModel;
+            if (dataContext != null)
+            {
+                dataContext.UpdateCompartment(comp);
+            }
+        }
+
         private static void OnCompartmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsCompartmentControl wmsImage)
+            if (d is WmsCompartmentControl wmsCompartment)
             {
-                if (wmsImage.DataContext is WmsCompartmentViewModel viewModel)
+                if (wmsCompartment.DataContext is WmsCompartmentViewModel viewModel)
                 {
                     viewModel.Refresh((CompartmentDetails)e.NewValue);
                 }
