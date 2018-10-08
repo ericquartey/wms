@@ -192,8 +192,8 @@ namespace Ferretto.VW.Utils.Source
                 return false;
             }
             InsertNewDrawer(cm, cm.Bays[(int)bayID - 1].DrawerID, cm.Drawers[cm.Bays[bayID - 1].DrawerID - 1].HeightMillimiters);
-            cm.Bays[(int)bayID - 1].Occupied = false;
-            cm.Bays[(int)bayID - 1].DrawerID = -1;
+            cm.Bays[bayID - 1].Occupied = false;
+            cm.Bays[bayID - 1].DrawerID = -1;
             CreateBlocks(cm);
             UpdateCellsFile(cm);
             UpdateBlocksFile(cm);
