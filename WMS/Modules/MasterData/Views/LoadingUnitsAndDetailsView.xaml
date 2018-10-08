@@ -6,19 +6,14 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+               xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
                Title="{x:Static res:Navigation.LoadingUnits}"
                d:DesignHeight="450"
                d:DesignWidth="800"
                mc:Ignorable="d">
     <Grid>
 
-        <ContentControl Visibility="{Binding IsDetailsViewVisible, Converter={StaticResource BTVIC}}">
-            <masterdata:LoadingUnitsView />
-        </ContentControl>
-
-        <ContentControl Visibility="{Binding IsDetailsViewVisible, Converter={StaticResource BTVC}}">
-            <masterdata:LoadingUnitDetailsView />
-        </ContentControl>
+        <ctrls:WmsHistoryView  StartModuleName="{ctrls:NameOf Type={x:Type modules:MasterData}}" StartViewName="{x:Static modules:MasterData.LOADINGUNITS}" />
 
     </Grid>
 </ctrls:WmsView>
