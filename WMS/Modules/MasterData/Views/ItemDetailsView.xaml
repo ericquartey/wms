@@ -122,11 +122,11 @@
                                       ValueMember="Id" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemFifoStoreTime}"
-                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay}" />
+                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemFifoStoreTime}" />
                         <wms:SpinEdit Grid.Column="2"
-                                      Label="{x:Static res:BusinessObjects.ItemReorderPoint}"
-                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay}" />
+                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemReorderPoint}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
@@ -137,12 +137,12 @@
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemFifoPickTime}"
-                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay}" />
+                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemFifoPickTime}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="2"
-                                      Label="{x:Static res:BusinessObjects.ItemReorderQuantity}"
-                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay}" />
+                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemReorderQuantity}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       ItemsSource="{Binding Path=ItemManagementTypeChoices}"
@@ -167,41 +167,41 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <wms:SpinEdit Grid.Column="0"
-                                      Grid.Row="0"
+                        <wms:SpinEdit Grid.Row="0"
+                                      Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemHeight}"
-                                      EditValue="{Binding Path=Item.Height, Mode=TwoWay}" />
-                        <wms:SpinEdit Grid.Column="1"
-                                      Grid.Row="0"
+                                      EditValue="{Binding Path=Item.Height, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemHeight}" />
+                        <wms:SpinEdit Grid.Row="0"
+                                      Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemPickTolerance}"
-                                      EditValue="{Binding Path=Item.PickTolerance}" />
-                        <wms:SpinEdit Grid.Column="2"
-                                      Grid.Row="0"
+                                      EditValue="{Binding Path=Item.PickTolerance}"
+                                      Label="{x:Static res:BusinessObjects.ItemPickTolerance}" />
+                        <wms:SpinEdit Grid.Row="0"
+                                      Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemAverageWeight}"
-                                      EditValue="{Binding Path=Item.AverageWeight, Mode=TwoWay}" />
-                        <wms:SpinEdit Grid.Column="0"
-                                      Grid.Row="1"
+                                      EditValue="{Binding Path=Item.AverageWeight, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemAverageWeight}" />
+                        <wms:SpinEdit Grid.Row="1"
+                                      Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemLength}"
-                                      EditValue="{Binding Path=Item.Length, Mode=TwoWay}" />
-                        <wms:SpinEdit Grid.Column="1"
-                                      Grid.Row="1"
+                                      EditValue="{Binding Path=Item.Length, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemLength}" />
+                        <wms:SpinEdit Grid.Row="1"
+                                      Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemStoreTolerance}"
-                                      EditValue="{Binding Path=Item.StoreTolerance, Mode=TwoWay}" />
-                        <wms:SpinEdit Grid.Column="0"
-                                      Grid.Row="2"
+                                      EditValue="{Binding Path=Item.StoreTolerance, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemStoreTolerance}" />
+                        <wms:SpinEdit Grid.Row="2"
+                                      Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemWidth}"
-                                      EditValue="{Binding Path=Item.Width, Mode=TwoWay}" />
-                        <wms:SpinEdit Grid.Column="1"
-                                      Grid.Row="2"
+                                      EditValue="{Binding Path=Item.Width, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemWidth}" />
+                        <wms:SpinEdit Grid.Row="2"
+                                      Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      Label="{x:Static res:BusinessObjects.ItemInventoryTolerance}"
-                                      EditValue="{Binding Path=Item.InventoryTolerance, Mode=TwoWay}" />
+                                      EditValue="{Binding Path=Item.InventoryTolerance, Mode=TwoWay}"
+                                      Label="{x:Static res:BusinessObjects.ItemInventoryTolerance}" />
                     </Grid>
                 </GroupBox>
 
@@ -263,24 +263,19 @@
                                   Path="{Binding Path=Image}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  Label="{x:Static res:General.CreationDate}"
-                                  Text="{Binding Path=CreationDate}" />
+                                  FieldName="CreationDate" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  Label="{x:Static res:General.LastModificationDate}"
-                                  Text="{Binding Path=LastModificationDate}" />
+                                  FieldName="LastModificationDate" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  Label="{x:Static res:BusinessObjects.ItemLastInventoryDate}"
-                                  Text="{Binding Path=InventoryDate}" />
+                                  FieldName="InventoryDate" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  Label="{x:Static res:BusinessObjects.ItemLastPickDate}"
-                                  Text="{Binding Path=LastPickDate}" />
+                                  FieldName="LastPickDate" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  Label="{x:Static res:BusinessObjects.ItemLastStoreDate}"
-                                  Text="{Binding Path=LastStoreDate}" />
+                                  FieldName="LastStoreDate" />
                 </StackPanel>
 
             </Grid>
