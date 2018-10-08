@@ -229,6 +229,9 @@
     </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
+      <DependentUpon>WmsTrayControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WmsView\WmsDialogView.cs" />
     <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
       <DependentUpon>WmsHistoryView.xaml</DependentUpon>
@@ -292,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TextBox\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\WmsView\WmsHistoryView.xaml">
