@@ -1,10 +1,11 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
+using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class BusinessObject : IBusinessObject
+    public class BusinessObject : BindableBase, IBusinessObject
     {
         #region Constructors
 

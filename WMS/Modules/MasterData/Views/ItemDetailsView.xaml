@@ -17,7 +17,8 @@
           Margin="20"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
-        <ScrollViewer IsTabStop="True"
+        <ScrollViewer DataContext="{Binding Item}"
+                      IsTabStop="True"
                       VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.RowDefinitions>
@@ -74,25 +75,22 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox Label="{x:Static res:BusinessObjects.ItemCode}"
-                                     Text="{Binding Path=Item.Code, Mode=TwoWay}" />
+                        <wms:TextBox FieldName="Code" />
                         <wms:TextBox Grid.Row="1"
-                                     Label="{x:Static res:General.Description}"
-                                     Text="{Binding Path=Item.Description, Mode=TwoWay}" />
+                                     FieldName="Description" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=Item.ItemCategoryChoices}"
+                                      ItemsSource="{Binding Path=ItemCategoryChoices}"
                                       Label="{x:Static res:BusinessObjects.ItemCategory}"
-                                      SelectedValue="{Binding Path=Item.ItemCategoryId, Mode=TwoWay}"
+                                      SelectedValue="{Binding Path=ItemCategoryId, Mode=TwoWay}"
                                       ValueMember="Id" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
                                      Margin="20,0,0,0"
                                      VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Stretch"
-                                     IsMultiline="True"
-                                     Label="{x:Static res:BusinessObjects.ItemNotes}"
-                                     Text="{Binding Path=Item.Note, Mode=TwoWay}" />
+                                     FieldName="Note"
+                                     IsMultiline="True" />
                     </Grid>
                 </GroupBox>
 
@@ -110,38 +108,38 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=Item.AbcClassChoices}"
+                                      ItemsSource="{Binding Path=AbcClassChoices}"
                                       Label="{x:Static res:BusinessObjects.AbcClass}"
-                                      SelectedValue="{Binding Path=Item.AbcClassId, Mode=TwoWay}"
+                                      SelectedValue="{Binding Path=AbcClassId, Mode=TwoWay}"
                                       ValueMember="Id" />
-                        <wms:TextBox Grid.Column="1"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemFifoStoreTime}"
-                                     Text="{Binding Path=Item.FifoTimeStore, Mode=TwoWay}" />
-                        <wms:TextBox Grid.Column="2"
-                                     Label="{x:Static res:BusinessObjects.ItemReorderPoint}"
-                                     Text="{Binding Path=Item.ReorderPoint, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemFifoStoreTime}"
+                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="2"
+                                      Label="{x:Static res:BusinessObjects.ItemReorderPoint}"
+                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=Item.MeasureUnitChoices}"
+                                      ItemsSource="{Binding Path=MeasureUnitChoices}"
                                       Label="{x:Static res:General.UnitOfMeasurement}"
-                                      SelectedValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay}"
+                                      SelectedValue="{Binding Path=MeasureUnitId, Mode=TwoWay}"
                                       ValueMember="Id" />
-                        <wms:TextBox Grid.Row="1"
-                                     Grid.Column="1"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemFifoPickTime}"
-                                     Text="{Binding Path=Item.FifoTimePick, Mode=TwoWay}" />
-                        <wms:TextBox Grid.Row="1"
-                                     Grid.Column="2"
-                                     Label="{x:Static res:BusinessObjects.ItemReorderQuantity}"
-                                     Text="{Binding Path=Item.ReorderQuantity, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Row="1"
+                                      Grid.Column="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemFifoPickTime}"
+                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Row="1"
+                                      Grid.Column="2"
+                                      Label="{x:Static res:BusinessObjects.ItemReorderQuantity}"
+                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      ItemsSource="{Binding Path=Item.ItemManagementTypeChoices}"
+                                      ItemsSource="{Binding Path=ItemManagementTypeChoices}"
                                       Label="{x:Static res:BusinessObjects.ItemManagementType}"
-                                      SelectedValue="{Binding Path=Item.ItemManagementTypeId, Mode=TwoWay}"
+                                      SelectedValue="{Binding Path=ItemManagementTypeId, Mode=TwoWay}"
                                       ValueMember="Id" />
                     </Grid>
                 </GroupBox>
@@ -161,41 +159,41 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <wms:TextBox Grid.Column="0"
-                                     Grid.Row="0"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemHeight}"
-                                     Text="{Binding Path=Item.Height, Mode=TwoWay}" />
-                        <wms:TextBox Grid.Column="0"
-                                     Grid.Row="1"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemLength}"
-                                     Text="{Binding Path=Item.Length, Mode=TwoWay}" />
-                        <wms:TextBox Grid.Column="0"
-                                     Grid.Row="2"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemWidth}"
-                                     Text="{Binding Path=Item.Width, Mode=TwoWay}" />
-                        <wms:TextBox Grid.Column="1"
-                                     Grid.Row="0"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemPickTolerance}"
-                                     Text="{Binding Path=Item.PickTolerance}" />
-                        <wms:TextBox Grid.Column="1"
-                                     Grid.Row="1"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemStoreTolerance}"
-                                     Text="{Binding Path=Item.StoreTolerance, Mode=TwoWay}" />
-                        <wms:TextBox Grid.Column="1"
-                                     Grid.Row="2"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemInventoryTolerance}"
-                                     Text="{Binding Path=Item.InventoryTolerance, Mode=TwoWay}" />
-                        <wms:TextBox Grid.Column="2"
-                                     Grid.Row="0"
-                                     Margin="0,0,20,0"
-                                     Label="{x:Static res:BusinessObjects.ItemAverageWeight}"
-                                     Text="{Binding Path=Item.AverageWeight, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="0"
+                                      Grid.Row="0"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemHeight}"
+                                      EditValue="{Binding Path=Item.Height, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Grid.Row="0"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemPickTolerance}"
+                                      EditValue="{Binding Path=Item.PickTolerance}" />
+                        <wms:SpinEdit Grid.Column="2"
+                                      Grid.Row="0"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemAverageWeight}"
+                                      EditValue="{Binding Path=Item.AverageWeight, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="0"
+                                      Grid.Row="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemLength}"
+                                      EditValue="{Binding Path=Item.Length, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Grid.Row="1"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemStoreTolerance}"
+                                      EditValue="{Binding Path=Item.StoreTolerance, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="0"
+                                      Grid.Row="2"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemWidth}"
+                                      EditValue="{Binding Path=Item.Width, Mode=TwoWay}" />
+                        <wms:SpinEdit Grid.Column="1"
+                                      Grid.Row="2"
+                                      Margin="0,0,20,0"
+                                      Label="{x:Static res:BusinessObjects.ItemInventoryTolerance}"
+                                      EditValue="{Binding Path=Item.InventoryTolerance, Mode=TwoWay}" />
                     </Grid>
                 </GroupBox>
 
@@ -222,29 +220,21 @@
                                                ShowSearchPanelMode="Never" />
                             </wms:WmsGridControl.View>
                             <dxg:GridColumn Width="200*"
-                                            FieldName="Code"
-                                            Header="{x:Static res:BusinessObjects.CompartmentCode}" />
+                                            FieldName="Code" />
                             <dxg:GridColumn Width="200*"
-                                            FieldName="LoadingUnitCode"
-                                            Header="{x:Static res:BusinessObjects.LoadingUnit}" />
+                                            FieldName="LoadingUnitCode" />
                             <dxg:GridColumn Width="100*"
-                                            FieldName="Sub1"
-                                            Header="{x:Static res:BusinessObjects.CompartmentSub1}" />
+                                            FieldName="Sub1" />
                             <dxg:GridColumn Width="100*"
-                                            FieldName="Sub2"
-                                            Header="{x:Static res:BusinessObjects.CompartmentSub2}" />
+                                            FieldName="Sub2" />
                             <dxg:GridColumn Width="200*"
-                                            FieldName="Lot"
-                                            Header="{x:Static res:BusinessObjects.CompartmentLot}" />
+                                            FieldName="Lot" />
                             <dxg:GridColumn Width="200*"
-                                            FieldName="CompartmentStatusDescription"
-                                            Header="{x:Static res:BusinessObjects.CompartmentStatus}" />
+                                            FieldName="CompartmentStatusDescription" />
                             <dxg:GridColumn Width="100*"
-                                            FieldName="Stock"
-                                            Header="{x:Static res:BusinessObjects.CompartmentStock}" />
+                                            FieldName="Stock" />
                             <dxg:GridColumn Width="200*"
-                                            FieldName="ItemPairing"
-                                            Header="{x:Static res:BusinessObjects.CompartmentPairing}" />
+                                            FieldName="ItemPairing" />
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>
@@ -262,27 +252,27 @@
                                   MaxWidth="400"
                                   MaxHeight="500"
                                   BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                  Path="{Binding Path=Item.Image}" />
+                                  Path="{Binding Path=Image}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:General.CreationDate}"
-                                  Text="{Binding Path=Item.CreationDate}" />
+                                  Text="{Binding Path=CreationDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:General.LastModificationDate}"
-                                  Text="{Binding Path=Item.LastModificationDate}" />
+                                  Text="{Binding Path=LastModificationDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastInventoryDate}"
-                                  Text="{Binding Path=Item.InventoryDate}" />
+                                  Text="{Binding Path=InventoryDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastPickDate}"
-                                  Text="{Binding Path=Item.LastPickDate}" />
+                                  Text="{Binding Path=LastPickDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
                                   Label="{x:Static res:BusinessObjects.ItemLastStoreDate}"
-                                  Text="{Binding Path=Item.LastStoreDate}" />
+                                  Text="{Binding Path=LastStoreDate}" />
                 </StackPanel>
 
             </Grid>

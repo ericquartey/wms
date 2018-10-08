@@ -421,6 +421,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Code.
+        /// </summary>
+        public static string ItemCode_extended {
+            get {
+                return ResourceManager.GetString("ItemCode_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string ItemDescription {
@@ -637,6 +646,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Length.
+        /// </summary>
+        public static string LoadingUnitLength {
+            get {
+                return ResourceManager.GetString("LoadingUnitLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit Status.
         /// </summary>
         public static string LoadingUnitStatus {
@@ -660,6 +678,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitTypeDescription {
             get {
                 return ResourceManager.GetString("LoadingUnitTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string LoadingUnitWidth {
+            get {
+                return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
             }
         }
         

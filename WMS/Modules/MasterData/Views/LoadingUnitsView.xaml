@@ -60,10 +60,10 @@
                                    AllowMoveColumnToDropArea="False"
                                    NavigationStyle="Row"
                                    SearchPanelHorizontalAlignment="Right"
+                                   ShowFilterPanelMode="ShowAlways"
                                    ShowGroupPanel="False"
                                    ShowIndicator="False"
-                                   ShowSearchPanelMode="Always"
-                                   ShowFilterPanelMode="ShowAlways">
+                                   ShowSearchPanelMode="Always">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.ViewDetailsCommand}" />
@@ -75,38 +75,27 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Code"
-                                    Header="{x:Static res:BusinessObjects.LoadingUnitCode}" />
+                                    FieldName="Code" />
                     <dxg:GridColumn Width="250*"
-                                    FieldName="LoadingUnitTypeDescription"
-                                    Header="{x:Static res:BusinessObjects.LoadingUnitType}" />
+                                    FieldName="LoadingUnitTypeDescription" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="LoadingUnitStatusDescription"
-                                    Header="{x:Static res:BusinessObjects.LoadingUnitStatus}" />
+                                    FieldName="LoadingUnitStatusDescription" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="AbcClassDescription"
-                                    Header="{x:Static res:BusinessObjects.ItemClass}" />
+                                    FieldName="AbcClassDescription" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="AreaName"
-                                    Header="{x:Static res:BusinessObjects.Area}" />
+                                    FieldName="AreaName" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="AisleName"
-                                    Header="{x:Static res:BusinessObjects.Aisle}" />
+                                    FieldName="AisleName" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="CellFloor"
-                                    Header="{x:Static res:BusinessObjects.CellFloor_extended}" />
+                                    FieldName="CellFloor" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="CellColumn"
-                                    Header="{x:Static res:BusinessObjects.CellColumn_extended}" />
+                                    FieldName="CellColumn" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="CellSide"
-                                    Header="{x:Static res:BusinessObjects.CellSide_extended}" />
+                                    FieldName="CellSide" />
                     <dxg:GridColumn Width="80*"
-                                    FieldName="CellNumber"
-                                    Header="{x:Static res:BusinessObjects.CellNumber_extended}" />
+                                    FieldName="CellNumber" />
                     <dxg:GridColumn Width="150*"
-                                    FieldName="CellPositionDescription"
-                                    Header="{x:Static res:BusinessObjects.CellPositionDescription}" />
+                                    FieldName="CellPositionDescription" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>

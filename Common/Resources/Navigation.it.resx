@@ -117,46 +117,85 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
+  <data name="Help" xml:space="preserve">
+    <value>Aiuto</value>
   </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
+  <data name="Lists" xml:space="preserve">
+    <value>Liste</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
+  <data name="Configuration" xml:space="preserve">
+    <value>Configurazione</value>
   </data>
-  <data name="UnitOfMeasurement" xml:space="preserve">
-    <value>Unità di misura</value>
+  <data name="CellStatuses" xml:space="preserve">
+    <value>Stati Cella</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
+  <data name="LoadingUnits" xml:space="preserve">
+    <value>Unità di Carico</value>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
+  <data name="Items" xml:space="preserve">
+    <value>Articoli</value>
   </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
+  <data name="CompartmentStatuses" xml:space="preserve">
+    <value>Stati Scomparto</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrizione</value>
+  <data name="CompartmentTypes" xml:space="preserve">
+    <value>Tipi di Scomparto</value>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
+  <data name="Import" xml:space="preserve">
+    <value>Importa</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
+  <data name="Export" xml:space="preserve">
+    <value>Esporta</value>
   </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
+  <data name="ImportExport" xml:space="preserve">
+    <value>Importa/Esporta</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
+  <data name="Cells" xml:space="preserve">
+    <value>Celle</value>
   </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
+  <data name="AbcClasses" xml:space="preserve">
+    <value>Classi ABC</value>
   </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
+  <data name="MasterData" xml:space="preserve">
+    <value>Anagrafiche</value>
+  </data>
+  <data name="Compartments" xml:space="preserve">
+    <value>Scomparti</value>
+  </data>
+  <data name="AllLists" xml:space="preserve">
+    <value>Tutte le liste</value>
+  </data>
+  <data name="ListRowStatuses" xml:space="preserve">
+    <value>Stati Riga</value>
+  </data>
+  <data name="ListStatuses" xml:space="preserve">
+    <value>Stati Liste</value>
+  </data>
+  <data name="ListTypes" xml:space="preserve">
+    <value>Tipi di Liste</value>
+  </data>
+  <data name="LoadingUnitStatuses" xml:space="preserve">
+    <value>Stati delle UdC</value>
+  </data>
+  <data name="Machine_Status" xml:space="preserve">
+    <value>Stati Macchina</value>
+  </data>
+  <data name="MachineTypes" xml:space="preserve">
+    <value>Tipi di Macchine</value>
+  </data>
+  <data name="MaterialStatuses" xml:space="preserve">
+    <value>Stati Materiali</value>
+  </data>
+  <data name="UnitsOfMeasurement" xml:space="preserve">
+    <value>Unità di Misura</value>
+  </data>
+  <data name="Others" xml:space="preserve">
+    <value>Altro</value>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="CompartmentsMapping" xml:space="preserve">
+    <value>Mappatura Scomparti</value>
   </data>
 </root>

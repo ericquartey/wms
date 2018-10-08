@@ -117,46 +117,169 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Open" xml:space="preserve">
-    <value>Apri</value>
+  <data name="AbcClass" xml:space="preserve">
+    <value>Classe ABC</value>
   </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Scarta</value>
+  <data name="Aisle" xml:space="preserve">
+    <value>Corridoio</value>
   </data>
-  <data name="Save" xml:space="preserve">
-    <value>Salva</value>
+  <data name="Area" xml:space="preserve">
+    <value>Area</value>
   </data>
-  <data name="UnitOfMeasurement" xml:space="preserve">
-    <value>Unità di misura</value>
+  <data name="ItemHeight" xml:space="preserve">
+    <value>Altezza</value>
   </data>
-  <data name="Search" xml:space="preserve">
-    <value>Cerca</value>
+  <data name="ItemLength" xml:space="preserve">
+    <value>Lunghezza</value>
   </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Aggiorna</value>
+  <data name="ItemLastInventoryDate" xml:space="preserve">
+    <value>Data Ultimo Inventario</value>
   </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Data Ultima Modifica</value>
+  <data name="ItemInventoryTolerance" xml:space="preserve">
+    <value>Tolleranza di Inventario</value>
   </data>
-  <data name="Description" xml:space="preserve">
+  <data name="ItemNotes" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Giacenza</value>
+  </data>
+  <data name="ItemWidth" xml:space="preserve">
+    <value>Larghezza</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Unità di Carico</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="ItemPickTolerance" xml:space="preserve">
+    <value>Tolleranza di Pick</value>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="ItemClass" xml:space="preserve">
+    <value>Classe</value>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
     <value>Descrizione</value>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Indietro</value>
+  <data name="ItemDescription_extended" xml:space="preserve">
+    <value>Descrizione Articolo</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Aggiungi</value>
+  <data name="ItemCategory" xml:space="preserve">
+    <value>Categoria</value>
   </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
+  <data name="ItemAvailable" xml:space="preserve">
+    <value>Disponibilità</value>
   </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
+  <data name="CompartmentWidth" xml:space="preserve">
+    <value>Larghezza</value>
   </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
+  <data name="CompartmentXPosition" xml:space="preserve">
+    <value>Posizione X</value>
   </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
+  <data name="CompartmentYPosition" xml:space="preserve">
+    <value>Posizione Y</value>
+  </data>
+  <data name="CellColumn" xml:space="preserve">
+    <value>Colonna</value>
+  </data>
+  <data name="CellColumn_extended" xml:space="preserve">
+    <value>Colonna Cella</value>
+  </data>
+  <data name="CellFloor" xml:space="preserve">
+    <value>Piano</value>
+  </data>
+  <data name="CellFloor_extended" xml:space="preserve">
+    <value>Piano Cella</value>
+  </data>
+  <data name="CellNumber" xml:space="preserve">
+    <value>Numero</value>
+  </data>
+  <data name="CellNumber_extended" xml:space="preserve">
+    <value>Numero Cella</value>
+  </data>
+  <data name="CellPosition" xml:space="preserve">
+    <value>Posizione Cella</value>
+  </data>
+  <data name="CellPositionDescription" xml:space="preserve">
+    <value>Descrizione Posizione</value>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Lato</value>
+  </data>
+  <data name="CellSide_extended" xml:space="preserve">
+    <value>Lato Cella</value>
+  </data>
+  <data name="CompartmentCode" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="CompartmentFifoTime" xml:space="preserve">
+    <value>Tempo FIFO</value>
+  </data>
+  <data name="CompartmentFirstStoreDate" xml:space="preserve">
+    <value>Data di Primo Versamento</value>
+  </data>
+  <data name="CompartmentHeight" xml:space="preserve">
+    <value>Altezza</value>
+  </data>
+  <data name="CompartmentLastInventoryDate" xml:space="preserve">
+    <value>Data Ultimo Inventario</value>
+  </data>
+  <data name="CompartmentLastPickDate" xml:space="preserve">
+    <value>Data Ultimo Pick</value>
+  </data>
+  <data name="CompartmentLastStoreDate" xml:space="preserve">
+    <value>Data Ultimo Versamento</value>
+  </data>
+  <data name="CompartmentLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="CompartmentMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
+  </data>
+  <data name="CompartmentStatus" xml:space="preserve">
+    <value>Stato Scomparto</value>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Giacenza</value>
+  </data>
+  <data name="CompartmentType" xml:space="preserve">
+    <value>Tipo Scomparto</value>
+  </data>
+  <data name="CompartmentTypeDescription" xml:space="preserve">
+    <value>Descrizione TIpo Scomparto</value>
+  </data>
+  <data name="ItemAverageWeight" xml:space="preserve">
+    <value>Peso Medio</value>
+  </data>
+  <data name="ItemInCompartmentCapacity" xml:space="preserve">
+    <value>Capacità</value>
+  </data>
+  <data name="ItemLastPickDate" xml:space="preserve">
+    <value>Data Ultimo Pick</value>
+  </data>
+  <data name="ItemLastStoreDate" xml:space="preserve">
+    <value>Data Ultimo Versamento</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Stato Materiale</value>
+  </data>
+  <data name="LoadingUnitType" xml:space="preserve">
+    <value>Tipo di UdC</value>
+  </data>
+  <data name="LoadingUnitStatus" xml:space="preserve">
+    <value>Stati UdC</value>
+  </data>
+  <data name="LoadingUnitCode_extended" xml:space="preserve">
+    <value>Codice UdC</value>
+  </data>
+  <data name="LoadingUnitTypeDescription" xml:space="preserve">
+    <value>Descrizione Tipo di UdC</value>
+  </data>
+  <data name="ItemCode_extended" xml:space="preserve">
+    <value>Codice Articolo</value>
   </data>
 </root>
