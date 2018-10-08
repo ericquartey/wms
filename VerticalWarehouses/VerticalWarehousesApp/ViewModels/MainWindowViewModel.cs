@@ -16,7 +16,6 @@ namespace Ferretto.VW.VerticalWarehousesApp.ViewModels
 
         public MainWindowViewModel()
         {
-            CellsManager cm = new CellsManager();
         }
 
         #endregion Constructors

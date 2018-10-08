@@ -283,7 +283,7 @@ namespace ZZ_CellManagementTestApp
             string logtxt1 = "";
             if (this.ReInsertDrawerDestinationBayID <= this.cm.Bays.Count)
             {
-                logtxt1 = "Drawer ID " + this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID + ", height " + this.cm.Drawers[this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID].Height + " inserted in init cell " + this.cm.Drawers[this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID].FirstCellID + ".";
+                logtxt1 = "Drawer ID " + this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID + ", height " + this.cm.Drawers[this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID].HeightMillimiters + " inserted in init cell " + this.cm.Drawers[this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID].FirstCellID + ".";
             }
             this.BayIDTofreeTextBox.Text = "";
             if (CellManagementMethods.ReInsertDrawer(this.cm, this.ReInsertDrawerDestinationBayID))
