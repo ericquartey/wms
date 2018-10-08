@@ -33,8 +33,8 @@ namespace Ferretto.VW.Utils.Source
         public const int AISLE_SIDES_COUNT = 2;
         public const int CELL_HEIGHT_MILLIMETERS = 25;
 
-        public static readonly string JSON_BLOCK_PATH = ConfigurationManager.AppSettings["BlocksFilePath"];
-        public static readonly string JSON_CELL_PATH = ConfigurationManager.AppSettings["CellsFilePath"];
+        public static readonly string JSON_BLOCK_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["BlocksFilePath"]);
+        public static readonly string JSON_CELL_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["CellsFilePath"]);
 
         #endregion Fields
 
@@ -292,11 +292,7 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
-        private int drawerID;
-        private int firstCellID;
         private int heightMillimiters;
-        private int id;
-        private bool occupied;
 
         #endregion Fields
 
@@ -313,8 +309,8 @@ namespace Ferretto.VW.Utils.Source
 
         #region Properties
 
-        public Int32 DrawerID { get => this.drawerID; set => this.drawerID = value; }
-        public Int32 FirstCellID { get => this.firstCellID; set => this.firstCellID = value; }
+        public Int32 DrawerID { get; set; }
+        public Int32 FirstCellID { get; set; }
 
         public Int32 HeightMillimiters
         {
@@ -333,24 +329,14 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        public Int32 Id { get => this.id; set => this.id = value; }
-        public Boolean Occupied { get => this.occupied; set => this.occupied = value; }
+        public Int32 Id { get; set; }
+        public Boolean Occupied { get; set; }
 
         #endregion Properties
     }
 
     public class Cell
     {
-        #region Fields
-
-        private int coord;
-        private int idCell;
-        private int priority;
-        private Side side;
-        private Status status;
-
-        #endregion Fields
-
         #region Constructors
 
         public Cell(int id)
@@ -374,11 +360,11 @@ namespace Ferretto.VW.Utils.Source
 
         #region Properties
 
-        public Int32 Coord { get => this.coord; set => this.coord = value; }
-        public Int32 IdCell { get => this.idCell; set => this.idCell = value; }
-        public Int32 Priority { get => this.priority; set => this.priority = value; }
-        public Side Side { get => this.side; set => this.side = value; }
-        public Status Status { get => this.status; set => this.status = value; }
+        public Int32 Coord { get; set; }
+        public Int32 IdCell { get; set; }
+        public Int32 Priority { get; set; }
+        public Side Side { get; set; }
+        public Status Status { get; set; }
 
         #endregion Properties
 
@@ -389,14 +375,7 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
-        private int area;
         private int blockHeightMillimiters;
-        private int finalIDCell;
-        private int idGroup;
-        private int initialIDCell;
-        private int machine;
-        private int priority;
-        private Side side;
 
         #endregion Fields
 
@@ -420,7 +399,7 @@ namespace Ferretto.VW.Utils.Source
 
         #region Properties
 
-        public Int32 Area { get => this.area; set => this.area = value; }
+        public Int32 Area { get; set; }
 
         public Int32 BlockHeightMillimiters
         {
@@ -439,44 +418,38 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        public Int32 FinalIDCell { get => this.finalIDCell; set => this.finalIDCell = value; }
-        public Int32 IdGroup { get => this.idGroup; set => this.idGroup = value; }
-        public Int32 InitialIDCell { get => this.initialIDCell; set => this.initialIDCell = value; }
-        public Int32 Machine { get => this.machine; set => this.machine = value; }
-        public Int32 Priority { get => this.priority; set => this.priority = value; }
-        public Side Side { get => this.side; set => this.side = value; }
+        public Int32 FinalIDCell { get; set; }
+        public Int32 IdGroup { get; set; }
+        public Int32 InitialIDCell { get; set; }
+        public Int32 Machine { get; set; }
+        public Int32 Priority { get; set; }
+        public Side Side { get; set; }
 
         #endregion Properties
     }
 
     public class CellsManager
     {
-        #region Fields
-
-        private int bayCounter = 0;
-        private List<Bay> bays = new List<Bay>();
-        private List<CellBlock> blocks = new List<CellBlock>();
-        private List<Cell> cells = new List<Cell>();
-        private List<Drawer> drawers = new List<Drawer>();
-
-        #endregion Fields
-
         #region Constructors
 
         public CellsManager()
         {
+            this.Bays = new List<Bay>();
+            this.Blocks = new List<CellBlock>();
+            this.Cells = new List<Cell>();
+            this.Drawers = new List<Drawer>();
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public Int32 BayCounter { get => this.bayCounter; set => this.bayCounter = value; }
+        public Int32 BayCounter { get; set; }
 
-        public List<Bay> Bays { get => this.bays; set => this.bays = value; }
-        public List<CellBlock> Blocks { get => this.blocks; set => this.blocks = value; }
-        public List<Cell> Cells { get => this.cells; set => this.cells = value; }
-        public List<Drawer> Drawers { get => this.drawers; set => this.drawers = value; }
+        public List<Bay> Bays { get; set; }
+        public List<CellBlock> Blocks { get; set; }
+        public List<Cell> Cells { get; set; }
+        public List<Drawer> Drawers { get; set; }
 
         #endregion Properties
     }
@@ -485,9 +458,7 @@ namespace Ferretto.VW.Utils.Source
     {
         #region Fields
 
-        private int firstCellID;
         private int heightMillimiters;
-        private int id;
 
         #endregion Fields
 
@@ -504,7 +475,7 @@ namespace Ferretto.VW.Utils.Source
 
         #region Properties
 
-        public Int32 FirstCellID { get => this.firstCellID; set => this.firstCellID = value; }
+        public Int32 FirstCellID { get; set; }
 
         public Int32 HeightMillimiters
         {
@@ -523,17 +494,8 @@ namespace Ferretto.VW.Utils.Source
             }
         }
 
-        public Int32 Id { get => this.id; set => this.id = value; }
+        public Int32 Id { get; set; }
 
         #endregion Properties
-
-        #region Methods
-
-        public void ChangeFirstCellID(int newFirstCellID)
-        {
-            this.FirstCellID = newFirstCellID;
-        }
-
-        #endregion Methods
     }
 }
