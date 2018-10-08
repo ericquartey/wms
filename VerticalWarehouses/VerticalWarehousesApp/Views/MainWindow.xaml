@@ -476,6 +476,10 @@
                                       VerticalContentAlignment="Center"
                                       Content="Auto"
                                       Foreground="White" />
+                        <ComboBoxItem HorizontalContentAlignment="Center"
+                                      VerticalContentAlignment="Center"
+                                      Content="Error"
+                                      Foreground="White" />
                     </ComboBox>
                 </Border>
                 <Border Width="200"

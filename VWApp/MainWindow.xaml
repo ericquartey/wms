@@ -1,0 +1,29 @@
+﻿<Window x:Class="Ferretto.VW.VWApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Ferretto.VW.VWApp"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="MainWindow"
+        Width="1024"
+        Height="768"
+        mc:Ignorable="d">
+    <Grid>
+        <StackPanel>
+            <TextBox Name="LoginTextBox"
+                     Width="200"
+                     Height="80"
+                     BorderBrush="Black"
+                     BorderThickness="3"
+                     Text="{Binding Path=UserLogin}" />
+            <Button Width="200"
+                    Height="80"
+                    BorderBrush="Red"
+                    BorderThickness="3"
+                    Click="LoginButtonMethod"
+                    FontSize="40">
+                Log In
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>
