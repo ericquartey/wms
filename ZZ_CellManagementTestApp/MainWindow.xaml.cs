@@ -18,7 +18,7 @@ namespace ZZ_CellManagementTestApp
             this.Background = Brushes.Transparent;
             this.BorderThickness = new Thickness(2, 2, 2, 2);
             this.Margin = new Thickness(5, 5, 5, 5);
-            this.Width = 550;
+            this.Width = 900;
             this.Height = 35;
             Label l = new Label();
             l.Content = text;
@@ -280,11 +280,17 @@ namespace ZZ_CellManagementTestApp
             {
                 this.ReInsertDrawerDestinationBayID = 1;
             }
+            string logtxt1 = "";
+            if (this.ReInsertDrawerDestinationBayID <= this.cm.Bays.Count)
+            {
+                logtxt1 = "Drawer ID " + this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID + ", height " + this.cm.Drawers[this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID].Height + " inserted in init cell " + this.cm.Drawers[this.cm.Bays[this.ReInsertDrawerDestinationBayID - 1].DrawerID].FirstCellID + ".";
+            }
             this.BayIDTofreeTextBox.Text = "";
             if (CellManagementMethods.ReInsertDrawer(this.cm, this.ReInsertDrawerDestinationBayID))
             {
                 string logtxt = "Bay ID " + this.ReInsertDrawerDestinationBayID + " freed.";
                 this.AddLogItemToLogStackPanel(logtxt);
+                this.AddLogItemToLogStackPanel(logtxt1);
             }
             else
             {

@@ -150,7 +150,7 @@
                 </Grid>
             </Border>
         </Grid>
-        <Border Width="560"
+        <Border Width="900"
                 Margin="5"
                 BorderBrush="White"
                 BorderThickness="2">

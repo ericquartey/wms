@@ -194,9 +194,9 @@ namespace Ferretto.VW.Utils.Source
 
         public static bool ReInsertDrawer(CellsManager cm, int bayID)
         {
-            if (!cm.Bays[bayID].Occupied)
+            if (cm.Bays.Count < bayID || !cm.Bays[bayID - 1].Occupied)
             {
-                Debug.Print("CellManagementMethods::ReInsertDrawer Error: selected bay ID " + bayID + " is not occupied.\n");
+                Debug.Print("CellManagementMethods::ReInsertDrawer Error: selected bay ID " + bayID + " is not occupied or specified ID is not present.\n");
                 return false;
             }
             InsertNewDrawer(cm, cm.Bays[bayID - 1].DrawerID, cm.Drawers[cm.Bays[bayID - 1].DrawerID - 1].Height);
@@ -302,7 +302,7 @@ namespace Ferretto.VW.Utils.Source
 
         private static void OccupyCells(CellsManager cm, int firstCellindex, int drawerHeight)
         {
-            int cellsToOccupy = drawerHeight / 25;
+            int cellsToOccupy = (drawerHeight / 25) + 1;
             for (int index = firstCellindex; index <= firstCellindex + cellsToOccupy * 2; index += 2)
             {
                 ChangeCellStatus(cm, index, Status.Occupied);
