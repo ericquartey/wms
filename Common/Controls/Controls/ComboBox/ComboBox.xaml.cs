@@ -118,6 +118,8 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ValueMemberProperty, value);
         }
 
+        private bool HasBindingForFieldName => this.dxeComboBoxEdit.GetBindingExpression(BaseEdit.EditValueProperty)?.ResolvedSourcePropertyName == this.FieldName;
+
         #endregion Properties
 
         #region Methods
@@ -134,9 +136,7 @@ namespace Ferretto.Common.Controls
 
         private static void SetTextBinding(ComboBox comboBox)
         {
-            if (comboBox.FieldName == null
-                ||
-                comboBox.dxeComboBoxEdit.GetBindingExpression(BaseEdit.EditValueProperty)?.ResolvedSourcePropertyName == comboBox.FieldName)
+            if (comboBox.FieldName == null || comboBox.HasBindingForFieldName)
             {
                 return;
             }
