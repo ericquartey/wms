@@ -88,9 +88,8 @@
                                      FieldName="Description" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
+                                      FieldName="ItemCategoryId"
                                       ItemsSource="{Binding Path=ItemCategoryChoices}"
-                                      Label="{x:Static res:BusinessObjects.ItemCategory}"
-                                      SelectedValue="{Binding Path=ItemCategoryId, Mode=TwoWay}"
                                       ValueMember="Id" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
@@ -116,9 +115,8 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
+                                      FieldName="AbcClassId"
                                       ItemsSource="{Binding Path=AbcClassChoices}"
-                                      Label="{x:Static res:BusinessObjects.AbcClass}"
-                                      SelectedValue="{Binding Path=AbcClassId, Mode=TwoWay}"
                                       ValueMember="Id" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -128,11 +126,9 @@
                                       EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay}"
                                       Label="{x:Static res:BusinessObjects.ItemReorderPoint}" />
                         <wms:ComboBox Grid.Row="1"
-                                      Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      FieldName="MeasureUnitId"
                                       ItemsSource="{Binding Path=MeasureUnitChoices}"
-                                      Label="{x:Static res:General.UnitOfMeasurement}"
-                                      SelectedValue="{Binding Path=MeasureUnitId, Mode=TwoWay}"
                                       ValueMember="Id" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
@@ -145,9 +141,8 @@
                                       Label="{x:Static res:BusinessObjects.ItemReorderQuantity}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
+                                      FieldName="ItemManagementTypeId"
                                       ItemsSource="{Binding Path=ItemManagementTypeChoices}"
-                                      Label="{x:Static res:BusinessObjects.ItemManagementType}"
-                                      SelectedValue="{Binding Path=ItemManagementTypeId, Mode=TwoWay}"
                                       ValueMember="Id" />
                     </Grid>
                 </GroupBox>
