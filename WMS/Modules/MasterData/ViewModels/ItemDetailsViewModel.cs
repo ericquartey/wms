@@ -19,9 +19,10 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
         private ItemDetails item;
-
         private bool itemHasCompartments;
         private ICommand saveCommand;
+        private object selectedCompartment;
+        private ICommand viewCompartmentDetailsCommand;
 
         #endregion Fields
 
@@ -40,6 +41,18 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
+        }
+
+        public Compartment CurrentCompartment
+        {
+            get
+            {
+                if (this.selectedCompartment == null)
+                {
+                    return default(Compartment);
+                }
+                return (Compartment)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
+            }
         }
 
         public ItemDetails Item
@@ -71,9 +84,23 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
+        public object SelectedCompartment
+        {
+            get => this.selectedCompartment;
+            set => this.SetProperty(ref this.selectedCompartment, value);
+        }
+
+        public ICommand ViewCompartmentDetailsCommand => this.viewCompartmentDetailsCommand ??
+                                      (this.viewCompartmentDetailsCommand = new DelegateCommand(this.ExecuteViewCompartmentDetailsCommand));
+
         #endregion Properties
 
         #region Methods
+
+        public void ExecuteViewCompartmentDetailsCommand()
+        {
+            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentCompartment?.Id);
+        }
 
         protected override void OnAppear()
         {

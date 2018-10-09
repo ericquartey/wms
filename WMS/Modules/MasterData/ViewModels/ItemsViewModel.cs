@@ -8,7 +8,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override void ExecuteViewDetailsCommand()
         {
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentItem?.Id);
+            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS, this.CurrentItem?.Id);
         }
 
         #endregion Methods
