@@ -102,7 +102,7 @@ namespace Ferretto.Common.Controls
                 Mode = BindingMode.TwoWay,
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
                 {
-                    AncestorType = typeof(ComboBox)
+                    AncestorType = typeof(DateEdit)
                 }
             };
 
@@ -111,8 +111,6 @@ namespace Ferretto.Common.Controls
 
         private void DateEdit_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            this.DataContext = e.NewValue;
-
             SetTextBinding(this);
         }
 
