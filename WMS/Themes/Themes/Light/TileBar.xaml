@@ -18,6 +18,7 @@
            BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.ListBoxItem,
                                                                 ThemeName=Office2016White}}"
            TargetType="{x:Type ListBoxItem}">
+        <Setter Property="Margin" Value="0,35,0,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
