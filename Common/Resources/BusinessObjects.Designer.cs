@@ -205,20 +205,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Handling Date.
-        /// </summary>
-        public static string CompartmentHandlingDate {
-            get {
-                return ResourceManager.GetString("CompartmentHandlingDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string CompartmentHeight {
             get {
                 return ResourceManager.GetString("CompartmentHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Handling Date.
+        /// </summary>
+        public static string CompartmentLastHandlingDate {
+            get {
+                return ResourceManager.GetString("CompartmentLastHandlingDate", resourceCulture);
             }
         }
         

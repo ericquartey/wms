@@ -45,7 +45,7 @@ namespace Ferretto.Common.Controls
         private void Timer_Tick(Object sender, EventArgs e)
         {
             var elapsedSeconds = (DateTime.Now - this.startTime).TotalSeconds;
-            this.Timing.Text = $"Elapsed Time: {elapsedSeconds.ToString("#")}s";
+            this.Timing.Text = $"{Common.Resources.DesktopApp.ElapsedTime}: {elapsedSeconds.ToString("#")}s";
         }
 
         #endregion Methods

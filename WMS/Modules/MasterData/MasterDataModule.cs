@@ -41,7 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void Initialize()
         {
-            SplashScreenService.SetMessage(Common.Resources.MasterData.InitializingMasterDataModule);
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMasterDataModule);
 
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
