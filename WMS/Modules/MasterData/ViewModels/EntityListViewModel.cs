@@ -95,6 +95,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public virtual void ExecuteViewDetailsCommand()
         {
+            // Nothing to do here.
+            // The derived classes can override this method to impelement the ViewDetails command behaviour.
         }
 
         public async Task UpdateFilterTilesCountsAsync()

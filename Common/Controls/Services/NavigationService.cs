@@ -268,7 +268,7 @@ namespace Ferretto.Common.Controls.Services
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
         }
 
-        private void RegisterDialog(String moduleViewName, String title)
+        private void RegisterDialog(string moduleViewName, string title)
         {
             var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
             WmsDialogView.ShowDialog(registeredView);
