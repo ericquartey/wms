@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,10 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private static readonly Predicate<DataModels.Item> AClassFilter =
+        private static readonly Expression<Func<DataModels.Item, bool>> AClassFilter =
             item => item.AbcClassId == "A";
 
-        private static readonly Predicate<DataModels.Item> FifoFilter =
+        private static readonly Expression<Func<DataModels.Item, bool>> FifoFilter =
             item => item.ItemManagementType != null && item.ItemManagementType.Description.Contains("FIFO");
 
         private readonly DatabaseContext dataContext;
@@ -45,7 +46,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.Items.Count();
+            return this.dataContext.Items.AsNoTracking().Count();
         }
 
         public ItemDetails GetById(int id)
@@ -105,26 +106,27 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetWithAClassCount()
         {
-            return this.dataContext.Items.Count(i => AClassFilter(i));
+            return this.dataContext.Items.AsNoTracking().Count(AClassFilter);
         }
 
         public IQueryable<Item> GetWithFifo()
         {
             var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
 
-            return GetAllItemsWithAggregations(context, FifoFilter).AsNoTracking();
+            return GetAllItemsWithAggregations(context, FifoFilter);
         }
 
         public int GetWithFifoCount()
         {
             return this.dataContext.Items
+                .AsNoTracking()
                 .Include(i => i.ItemManagementType)
-                .Count(i => FifoFilter(i));
+                .Count(FifoFilter);
         }
 
         public bool HasAnyCompartments(int itemId)
         {
-            return this.dataContext.Compartments.AsNoTracking().Where(c => c.ItemId == itemId).Any();
+            return this.dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
         }
 
         public int Save(ItemDetails model)
@@ -159,13 +161,18 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.SaveChanges();
         }
 
-        private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Predicate<DataModels.Item> wherePredicate = null)
+        private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null )
         {
+            if (whereFunc == null)
+            {
+                whereFunc = i => true;
+            }
+
             return context.Items
                .AsNoTracking()
-               .Where(i => wherePredicate == null || wherePredicate(i))
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
+               .Where(whereFunc)
                .GroupJoin(
                    context.Compartments
                        .AsNoTracking()

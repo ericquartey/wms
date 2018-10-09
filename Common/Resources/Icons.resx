@@ -147,13 +147,13 @@
   <data name="Export" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_downward_grey_24dp.png</value>
   </data>
-  <data name="FilterAll" xml:space="preserve">
+  <data name="ItemsViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
   </data>
-  <data name="FilterClassA" xml:space="preserve">
+  <data name="ItemsViewClassA" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png</value>
   </data>
-  <data name="FilterFIFO" xml:space="preserve">
+  <data name="ItemsViewFIFO" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Products_black.png</value>
   </data>
   <data name="Import" xml:space="preserve">
@@ -218,5 +218,11 @@
   </data>
   <data name="DropDown" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png</value>
+  </data>
+  <data name="CompartmentsViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+  </data>
+  <data name="LoadingUnitsViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
   </data>
 </root>
