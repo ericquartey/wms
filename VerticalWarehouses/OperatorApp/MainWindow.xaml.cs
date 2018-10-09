@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,23 +12,34 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.OperatorApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         #region Constructors
 
-        public MainWindow(CellsManager cm)
+        public MainWindow()
         {
             this.InitializeComponent();
-            Debug.Print(cm.ToString());
         }
 
         #endregion Constructors
+
+        #region Methods
+
+        public void BackToVWAppButtonMethod(object sender, RoutedEventArgs e)
+        {
+        }
+
+        void IDisposable.Dispose()
+        {
+        }
+
+        private void BackToVWApp()
+        {
+        }
+
+        #endregion Methods
     }
 }

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F80020FF-8655-4999-90AD-C4711173D55D}</ProjectGuid>
+    <ProjectGuid>{1EC2E502-155D-48C0-82B9-961FB97149A3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Ferretto.VW.VWApp</RootNamespace>
-    <AssemblyName>Ferretto.VW.VWApp</AssemblyName>
+    <RootNamespace>Ferretto.VW.InstallationApp</RootNamespace>
+    <AssemblyName>Ferretto.VW.InstallationApp</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -87,6 +87,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Fonts\HelveticaNeue-LightCond.otf" />
+    <Resource Include="Fonts\RobotoCondensed-Regular.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -96,15 +98,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\InstallationApp\InstallationApp.csproj">
-      <Project>{1ec2e502-155d-48c0-82b9-961fb97149a3}</Project>
-      <Name>InstallationApp</Name>
+    <ProjectReference Include="..\Navigation\Navigation.csproj">
+      <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
+      <Name>Navigation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\OperatorApp\OperatorApp.csproj">
-      <Project>{2ddc7447-9196-4c21-af86-502d0c952669}</Project>
-      <Name>OperatorApp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\VerticalWarehouses\Utils\Utils.csproj">
+    <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
       <Name>Utils</Name>
     </ProjectReference>

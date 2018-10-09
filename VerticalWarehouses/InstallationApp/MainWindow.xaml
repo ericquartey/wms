@@ -13,7 +13,8 @@
                 Height="400"
                 Background="Green"
                 BorderBrush="Blue"
-                BorderThickness="5">
+                BorderThickness="5"
+                Click="BackToVWAppButtonMethod">
             InstallationApp
         </Button>
     </Grid>
