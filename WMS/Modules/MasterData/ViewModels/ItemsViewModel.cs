@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -8,8 +8,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public override void ExecuteViewDetailsCommand()
         {
-            var id = (this.CurrentItem != null) ? ((Item)this.CurrentItem).Id : (int?)null;
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS, id);
+            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentItem?.Id);
         }
 
         #endregion Methods
