@@ -12,7 +12,7 @@ namespace Ferretto.WMS.App
         {
             base.OnStartup(e);
 
-            var defaultLanguage = ConfigurationManager.AppSettings["DefaultLanguage"];
+            var defaultLanguage = ConfigurationManager.AppSettings["DefaultLanguage"] ?? "en";
             System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
             System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
 
