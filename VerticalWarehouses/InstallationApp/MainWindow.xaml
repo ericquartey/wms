@@ -5,17 +5,49 @@
         xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="MainWindow"
-        Width="800"
-        Height="450"
+        Width="1024"
+        Height="768"
         mc:Ignorable="d">
     <Grid>
-        <Button Width="400"
-                Height="400"
-                Background="Green"
-                BorderBrush="Blue"
-                BorderThickness="5"
-                Click="BackToVWAppButtonMethod">
-            InstallationApp
-        </Button>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Border BorderBrush="{StaticResource FerrettoMediumGray}"
+                BorderThickness="2"
+                Grid.Column="0"
+                Grid.Row="0">
+            <Image Margin="5"
+               Source="/Assets/ferrettologo_768x162.jpg"
+               Stretch="Uniform" />
+        </Border>
+        <Border Grid.Column="1"
+                Grid.Row="0"
+                Background="{StaticResource FerrettoLightGray}">
+            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"></StackPanel>
+        </Border>
+        <Border Grid.Column="0"
+                Grid.Row="1"
+                Background="{StaticResource FerrettoLightGray}">
+            <ScrollViewer>
+                <StackPanel>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 0</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 1</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 2</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 3</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 4</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 5</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 6</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 7</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 8</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 9</Button>
+                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 10</Button>
+                </StackPanel>
+            </ScrollViewer>
+        </Border>
     </Grid>
 </Window>

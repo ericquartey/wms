@@ -3,5 +3,37 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
              StartupUri="MainWindow.xaml">
-    <Application.Resources />
+    <Application.Resources>
+        <FontFamily x:Key="RobotoCondensed-Regular">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
+        <FontFamily x:Key="HelveticaNeue-LightCond">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+        <SolidColorBrush x:Key="FerrettoWhiteGray">#e6e6e6</SolidColorBrush>
+        <SolidColorBrush x:Key="FerrettoLightGray">#c5c7c4</SolidColorBrush>
+        <SolidColorBrush x:Key="FerrettoMediumGray">#707173</SolidColorBrush>
+        <SolidColorBrush x:Key="FerrettoDarkGray">#293133</SolidColorBrush>
+        <SolidColorBrush x:Key="FerrettoRed">#e2001a</SolidColorBrush>
+        <SolidColorBrush x:Key="FerrettoBlack">#0A0A0A</SolidColorBrush>
+        <SolidColorBrush x:Key="FerrettoGreen">#57A639</SolidColorBrush>
+        <SolidColorBrush x:Key="FerrettoPureWhite">#ffffff</SolidColorBrush>
+        <Style x:Key="TitlesStyle"
+               TargetType="{x:Type Control}">
+            <Setter Property="FontFamily" Value="RobotoCondensed-Regular" />
+        </Style>
+        <Style x:Key="BodyStyle"
+               TargetType="{x:Type Control}">
+            <Setter Property="FontFamily" Value="HelveticaNeue-LightCond" />
+            <Setter Property="FontSize" Value="20" />
+        </Style>
+        <Style x:Key="ButtonStyle"
+               TargetType="{x:Type Button}">
+            <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+            <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+            <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+            <Setter Property="BorderBrush" Value="{StaticResource FerrettoDarkGray}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="Margin" Value="5" />
+
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Application.Resources>
 </Application>

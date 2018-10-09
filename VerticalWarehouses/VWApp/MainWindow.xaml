@@ -15,10 +15,10 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150" />
+            <RowDefinition Height="200" />
             <RowDefinition Height="auto" />
             <RowDefinition />
-            <RowDefinition Height="150" />
+            <RowDefinition Height="75" />
         </Grid.RowDefinitions>
         <Border Grid.Row="1"
                 Grid.Column="1"
@@ -51,15 +51,16 @@
             </StackPanel>
         </Border>
         <StackPanel Grid.Row="3"
-                    Grid.Column="2">
+                    Grid.Column="1">
             <Button Height="65"
-                    Style="{StaticResource ButtonStyle}">
-                Other Action
-            </Button>
-            <Button Height="65"
+                    Click="CloseSystemButtonMethod"
                     Style="{StaticResource ButtonStyle}">
                 Switch Off System
             </Button>
         </StackPanel>
+        <Image Grid.Column="1"
+               Margin="3"
+               Source="/Assets/ferrettologo_768x162.jpg"
+               Stretch="Uniform" />
     </Grid>
 </Window>
