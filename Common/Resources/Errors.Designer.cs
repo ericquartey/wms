@@ -61,7 +61,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager.
+        ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {
             get {
@@ -70,7 +70,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Converter can only convert to value of type string.
+        ///   Looks up a localized string similar to Converter can only convert to value of type string..
         /// </summary>
         public static string ConverterCanConvertOnlyToStringType {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ItemType was not specified.
+        ///   Looks up a localized string similar to ItemType was not specified..
         /// </summary>
         public static string ItemTypeWasNotSpecified {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}.
+        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
         /// </summary>
         public static string MarkupNameOfSyntax {
             get {
@@ -142,7 +142,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The specified path is not contained in the image directory.
+        ///   Looks up a localized string similar to The specified path is not contained in the image directory..
         /// </summary>
         public static string SpecifiedPathNotInConfiguredImageFolder {
             get {

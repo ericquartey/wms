@@ -36,7 +36,7 @@
                                   Stroke="{DynamicResource CommonSecondaryDark}"
                                   StrokeThickness="2">
                                 <Path.LayoutTransform>
-                                    <RotateTransform Angle="90" />
+                                    <RotateTransform Angle="-90" />
                                 </Path.LayoutTransform>
                             </Path>
                         </Grid>

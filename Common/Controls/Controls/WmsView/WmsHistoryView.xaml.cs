@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +13,8 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register("StartModuleName", typeof(string), typeof(WmsHistoryView));
-        public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register("StartViewName", typeof(string), typeof(WmsHistoryView));
+        public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(nameof(StartModuleName), typeof(string), typeof(WmsHistoryView));
+        public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsHistoryView));
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
         private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
         private ActionBar actionBarHsitoryView;
@@ -88,36 +87,33 @@ namespace Ferretto.Common.Controls
 
         public void Previous()
         {
-            if (this.registeredViews.Count() == 1)
+            if (this.registeredViews.Count == 1)
             {
                 return;
             }
 
             this.registeredViews.Pop();
-            this.Content = this.registeredViews.Last();
+            this.Content = this.registeredViews.Peek();
             this.CheckBackVisibility();
         }
 
-        private void BackViewClick(Object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        private void BackViewClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
             this.Previous();
         }
 
         private void CheckBackVisibility()
         {
-            this.actionBarHsitoryView.Visibility = (this.registeredViews.Count() == 1) ? Visibility.Hidden : Visibility.Visible;
+            this.actionBarHsitoryView.Visibility = (this.registeredViews.Count == 1) ? Visibility.Hidden : Visibility.Visible;
         }
 
-        private Object GetParentWmsViewData()
+        private object GetParentWmsViewData()
         {
             var parentWmsView = LayoutTreeHelper.GetVisualParents(this as DependencyObject)
                .OfType<WmsView>()
                .FirstOrDefault();
-            if (parentWmsView != null)
-            {
-                return parentWmsView.Data;
-            }
-            return null;
+
+            return parentWmsView?.Data;
         }
 
         #endregion Methods

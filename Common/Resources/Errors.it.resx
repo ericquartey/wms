@@ -117,8 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="InitializingCompartmentModule" xml:space="preserve">
-    <value>"Initializing Compartment module ..."</value>
-    <comment>Splash screen message</comment>
+  <data name="ConverterCanConvertOnlyToStringType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo stringa.</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToTextWrappingType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo TextWrapping.</value>
+  </data>
+  <data name="ItemTypeWasNotSpecified" xml:space="preserve">
+    <value>Tipo articolo non specificato.</value>
+  </data>
+  <data name="ParameterCannotBeNullOrWhitespace" xml:space="preserve">
+    <value>Il parametro non può essere nullo o vuoto.</value>
+  </data>
+  <data name="ParameterMustBePositive" xml:space="preserve">
+    <value>Il parametro deve essere positivo.</value>
+  </data>
+  <data name="ParameterMustBeStrictlyPositive" xml:space="preserve">
+    <value>Il parametro deve essere strettamente positivo.</value>
+  </data>
+  <data name="SpecifiedPathNotInConfiguredImageFolder" xml:space="preserve">
+    <value>Il percorso indicato non è contenuto nella directory delle immagini.</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>La sintassi per NameOf è Type={x:Type &lt;className&gt;}.</value>
+  </data>
+  <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
+    <value>Errore recuperando il document group dal Main Layout Manager.</value>
   </data>
 </root>
