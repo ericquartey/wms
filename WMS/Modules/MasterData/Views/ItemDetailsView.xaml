@@ -121,10 +121,8 @@
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       FieldName="FifoTimeStore" />
-                                      Label="{x:Static res:BusinessObjects.ItemFifoStoreTime}" />
                         <wms:SpinEdit Grid.Column="2"
                                       FieldName="ReorderPoint" />
-                                      Label="{x:Static res:BusinessObjects.ItemReorderPoint}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       FieldName="MeasureUnitId"
@@ -134,11 +132,9 @@
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       FieldName="FifoTimePick" />
-                                      Label="{x:Static res:BusinessObjects.ItemFifoPickTime}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="2"
                                       FieldName="ReorderQuantity" />
-                                      Label="{x:Static res:BusinessObjects.ItemReorderQuantity}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       FieldName="ItemManagementTypeId"
@@ -166,37 +162,30 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       FieldName="Height" />
-                                      Label="{x:Static res:BusinessObjects.ItemHeight}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       FieldName="PickTolerance" />
-                                      Label="{x:Static res:BusinessObjects.ItemPickTolerance}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       FieldName="AverageWeight" />
-                                      Label="{x:Static res:BusinessObjects.ItemAverageWeight}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       FieldName="Length" />
-                                      Label="{x:Static res:BusinessObjects.ItemLength}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       FieldName="StoreTolerance" />
-                                      Label="{x:Static res:BusinessObjects.ItemStoreTolerance}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       FieldName="Width" />
-                                      Label="{x:Static res:BusinessObjects.ItemWidth}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       FieldName="InventoryTolerance" />
-                                      Label="{x:Static res:BusinessObjects.ItemInventoryTolerance}" />
                     </Grid>
                 </GroupBox>
 
