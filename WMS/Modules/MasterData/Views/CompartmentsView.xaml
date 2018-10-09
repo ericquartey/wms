@@ -32,6 +32,7 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <wms:TileBar ItemsSource="{Binding Filters}"
+                             Margin="0,35,0,0"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
             </Grid>
         </wms:Expander>
