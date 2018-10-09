@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class MasterData {
@@ -61,11 +61,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Allowed Items.
+        /// </summary>
+        public static string AllowedItems {
+            get {
+                return ResourceManager.GetString("AllowedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string CompartmentAll {
             get {
                 return ResourceManager.GetString("CompartmentAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment Information.
+        /// </summary>
+        public static string CompartmentInformation {
+            get {
+                return ResourceManager.GetString("CompartmentInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string CompartmentPosition {
+            get {
+                return ResourceManager.GetString("CompartmentPosition", resourceCulture);
             }
         }
         
@@ -88,11 +115,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartments MasterData.
+        ///   Looks up a localized string similar to Content Information.
         /// </summary>
-        public static string CompartmentsMasterData {
+        public static string ContentInformation {
             get {
-                return ResourceManager.GetString("CompartmentsMasterData", resourceCulture);
+                return ResourceManager.GetString("ContentInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Item Information.
+        /// </summary>
+        public static string CurrentItemInformation {
+            get {
+                return ResourceManager.GetString("CurrentItemInformation", resourceCulture);
             }
         }
         
@@ -133,6 +169,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This item is not allocated in any compartments..
+        /// </summary>
+        public static string ItemIsAllocatedInNoCompartment {
+            get {
+                return ResourceManager.GetString("ItemIsAllocatedInNoCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item saved sucessfully.
         /// </summary>
         public static string ItemSavedSuccessfully {
@@ -142,11 +187,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Items MasterData.
+        ///   Looks up a localized string similar to Items Master Data.
         /// </summary>
         public static string ItemsMasterData {
             get {
                 return ResourceManager.GetString("ItemsMasterData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string LoadingUnitAll {
+            get {
+                return ResourceManager.GetString("LoadingUnitAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit saved sucessfully.
+        /// </summary>
+        public static string LoadingUnitSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("LoadingUnitSavedSuccessfully", resourceCulture);
             }
         }
         

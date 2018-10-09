@@ -147,13 +147,13 @@
   <data name="Export" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_downward_grey_24dp.png</value>
   </data>
-  <data name="FilterAll" xml:space="preserve">
+  <data name="ItemsViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
   </data>
-  <data name="FilterClassA" xml:space="preserve">
+  <data name="ItemsViewClassA" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png</value>
   </data>
-  <data name="FilterFIFO" xml:space="preserve">
+  <data name="ItemsViewFIFO" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Products_black.png</value>
   </data>
   <data name="Import" xml:space="preserve">
@@ -165,7 +165,7 @@
   <data name="Inventory" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/inventory.png</value>
   </data>
-  <data name="ItemClasses" xml:space="preserve">
+  <data name="AbcClasses" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
   <data name="ListRowStatuses" xml:space="preserve">
@@ -180,7 +180,7 @@
   <data name="ListTypes" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
-  <data name="LoadingUnit" xml:space="preserve">
+  <data name="LoadingUnits" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png</value>
   </data>
   <data name="LoadingUnitStatuses" xml:space="preserve">
@@ -204,13 +204,25 @@
   <data name="PackageTypes" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
-  <data name="UnderStock" xml:space="preserve">
+  <data name="UnderStockItems" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_trending_down_grey_24dp.png</value>
   </data>
   <data name="UnitsOfMeasurement" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
   </data>
-  <data name="WarehouseItems" xml:space="preserve">
+  <data name="Items" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png</value>
+  </data>
+  <data name="UserProfile" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_account_circle_black_18dp.png</value>
+  </data>
+  <data name="DropDown" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png</value>
+  </data>
+  <data name="CompartmentsViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+  </data>
+  <data name="LoadingUnitsViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
   </data>
 </root>

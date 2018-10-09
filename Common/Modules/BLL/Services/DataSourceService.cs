@@ -1,79 +1,78 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Modules.BLL.Models;
-using Ferretto.Common.Resources;
+using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    public enum DataSourceType
-    {
-        ItemAll,
-        ItemAClass,
-        ItemFifo,
-
-        CompartmentAll,
-    }
-
     public class DataSourceService : IDataSourceService
     {
-        #region Fields
-
-        private readonly BusinessProvider businessProvider = new BusinessProvider();
-
-        #endregion Fields
-
         #region Methods
 
-        public IEnumerable<object> GetAll(string viewName)
+        public IEnumerable<IDataSource<TModel>> GetAll<TModel>(string viewName, object parameter = null) where TModel : IBusinessObject
         {
 #pragma warning disable IDE0009
             switch (viewName)
             {
                 case "ItemsView":
+                    var itemsProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
                     return new List<DataSource<Item>>
                     {
-                        // All items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemAll,
-                            Name = MasterData.ItemAll,
-                            GetCount = filter => this.businessProvider.GetAllItemsCount(),
-                            GetData = filter => this.businessProvider.GetAllItems()
-                        },
-                        //// A-Class items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemAClass,
-                            Name = MasterData.ItemClassA,
-                            GetCount = filter => this.businessProvider.GetItemsWithAClassCount(),
-                            GetData = filter => this.businessProvider.GetItemsWithAClass()
-                        },
-                        //// FIFO items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemFifo,
-                            Name = MasterData.ItemFIFO,
-                            GetCount = filter => this.businessProvider.GetItemsWithFifoCount(),
-                            GetData = filter => this.businessProvider.GetItemsWithFifo()
-                        }
-                    };
+                        new DataSource<Item>(
+                            "ItemsViewAll",
+                            Resources.MasterData.ItemAll,
+                            () => itemsProvider.GetAll(),
+                            () => itemsProvider.GetAllCount()),
+                        new DataSource<Item>(
+                            "ItemsViewClassA",
+                            Resources.MasterData.ItemClassA,
+                            () => itemsProvider.GetWithAClass(),
+                            () => itemsProvider.GetWithAClassCount()),
+                        new DataSource<Item>(
+                            "ItemsViewFIFO",
+                            Resources.MasterData.ItemFIFO,
+                            () => itemsProvider.GetWithFifo(),
+                            () => itemsProvider.GetWithFifoCount())
+                    }.Cast<IDataSource<TModel>>();
 
-                case "CompartmentsView":
+                case "ItemDetailsView":
+                    var itemDetailsProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
                     return new List<DataSource<Compartment>>
                     {
-                        // All compartments
-                        new DataSource<Compartment>
-                        {
-                            SourceName = DataSourceType.CompartmentAll,
-                            Name = MasterData.CompartmentAll,
-                            Filter = compartments => compartments,
-                            GetCount = filter => this.businessProvider.GetAllCompartmentsCount(),
-                            GetData = filter => this.businessProvider.GetAllCompartments()
-                        }
-                    };
+                        new DataSource<Compartment>(
+                            "ItemDetailsView",
+                            Resources.MasterData.CompartmentAll,
+                            () => itemDetailsProvider.GetByItemId((int)parameter))
+                    }.Cast<IDataSource<TModel>>();
+
+                case "CompartmentsView":
+                    var compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
+                    return new List<DataSource<Compartment>>
+                    {
+                        new DataSource<Compartment>(
+                            "CompartmentsViewAll",
+                            Resources.MasterData.CompartmentAll,
+                            () => compartmentProvider.GetAll(),
+                            () => compartmentProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel>>();
+
+                case "LoadingUnitsView":
+                    var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
+                    return new List<DataSource<LoadingUnit>>
+                    {
+                        new DataSource<LoadingUnit>(
+                            "LoadingUnitsViewAll",
+                            Resources.MasterData.LoadingUnitAll,
+                            () => loadingUnitProvider.GetAll(),
+                            () => loadingUnitProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel>>();
 
                 default:
-                    return new List<object>();
+                    return new List<IDataSource<TModel>>();
             }
 #pragma warning restore IDE0009
         }

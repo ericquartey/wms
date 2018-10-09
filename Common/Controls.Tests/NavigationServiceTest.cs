@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Utils.Testing;
@@ -11,7 +12,13 @@ namespace Feretto.Common.Controls.Tests
     [TestClass]
     public class NavigationServiceTest : PrismTest
     {
+        #region Fields
+
         private INavigationService navigationService;
+
+        #endregion Fields
+
+        #region Methods
 
         [TestInitialize]
         public override void Initialize()
@@ -50,6 +57,63 @@ namespace Feretto.Common.Controls.Tests
                 &&
                 registration.Name == expectedRegistrationName
             ));
+        }
+
+        [TestMethod]
+        public void TestRegisterAndGetViewModel()
+        {
+            // Arrange
+            this.navigationService.Register<TestView, TestViewModel>();
+
+            // Act
+            var viewName = typeof(TestView).FullName;
+            var token = "a-token";
+            var data = "id=1";
+            var viewModel = this.navigationService.RegisterAndGetViewModel(viewName, token, data);
+
+            // Assert
+            Assert.IsNotNull(viewModel);
+            Assert.AreEqual(viewModel.Token, token);
+            Assert.AreEqual(viewModel.GetType(), typeof(TestViewModel));
+            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
+                registration.RegisteredType == typeof(INavigableViewModel)
+                &&
+                registration.MappedToType == typeof(TestViewModel)
+            ));
+        }
+
+        [TestMethod]
+        public void TestRegisterAndGetViewModelMoreThanOnce()
+        {
+            // Arrange
+            this.navigationService.Register<TestView, TestViewModel>();
+
+            // Act
+            var viewName = typeof(TestView).FullName;
+            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+            this.navigationService.RegisterAndGetViewModel(viewName, null, null);
+
+            // Assert
+            Assert.AreEqual(1 + 3, this.Container.Registrations.Count(registration =>
+                registration.RegisteredType == typeof(INavigableViewModel)
+                &&
+                registration.MappedToType == typeof(TestViewModel)
+            ));
+        }
+
+        [TestMethod]
+        public void TestRegisterAndGetViewModelWithoutInitialRegistration()
+        {
+            // Arrange
+            // Do not call the INavigationService.Register method so that the call INavigationService.RegisterAndGetViewModel should fail
+
+            // Act + Assert
+            var viewName = typeof(TestView).FullName;
+            var token = "a-token";
+            var data = "id=1";
+            Assert.ThrowsException<System.InvalidOperationException>(
+                () => this.navigationService.RegisterAndGetViewModel(viewName, token, data));
         }
 
         [TestMethod]
@@ -93,76 +157,36 @@ namespace Feretto.Common.Controls.Tests
             ));
         }
 
-        [TestMethod]
-        public void TestRegisterAndGetViewModel()
-        {
-            // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
+        #endregion Methods
 
-            // Act
-            var viewName = typeof(TestView).FullName;
-            var token = "a-token";
-            var viewModel = this.navigationService.RegisterAndGetViewModel(viewName, token);
-
-            // Assert
-            Assert.IsNotNull(viewModel);
-            Assert.AreEqual(viewModel.Token, token);
-            Assert.AreEqual(viewModel.GetType(), typeof(TestViewModel));
-            Assert.AreEqual(2, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableViewModel)
-                &&
-                registration.MappedToType == typeof(TestViewModel)
-            ));
-        }
-
-        [TestMethod]
-        public void TestRegisterAndGetViewModelMoreThanOnce()
-        {
-            // Arrange
-            this.navigationService.Register<TestView, TestViewModel>();
-
-            // Act
-            var viewName = typeof(TestView).FullName;
-            this.navigationService.RegisterAndGetViewModel(viewName, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null);
-            this.navigationService.RegisterAndGetViewModel(viewName, null);
-
-            // Assert
-            Assert.AreEqual(1 + 3, this.Container.Registrations.Count(registration =>
-                registration.RegisteredType == typeof(INavigableViewModel)
-                &&
-                registration.MappedToType == typeof(TestViewModel)
-            ));
-        }
-
-        [TestMethod]
-        public void TestRegisterAndGetViewModelWithoutInitialRegistration()
-        {
-            // Arrange
-            // Do not call the INavigationService.Register method so that the call INavigationService.RegisterAndGetViewModel should fail
-
-            // Act + Assert
-            var viewName = typeof(TestView).FullName;
-            var token = "a-token";
-
-            Assert.ThrowsException<System.InvalidOperationException>(
-                () => this.navigationService.RegisterAndGetViewModel(viewName, token));
-        }
-
-        #region Test Types
+        #region Classes
 
         private class TestView : INavigableView
         {
-            public string Token { get; set; }
+            #region Properties
+
+            public object Data { get; set; }
+            public object DataContext { get; set; }
             public string MapId { get; set; }
             public string Title { get; set; }
+            public string Token { get; set; }
+            public WmsViewType ViewType { get; }
+
+            #endregion Properties
         }
 
         private class TestViewModel : INavigableViewModel
         {
+            #region Properties
+
+            public System.Object Data { get; set; }
             public System.String MapId { get; set; }
-            public System.String Token { get; set; }
             public System.String StateId { get; set; }
+            public System.String Token { get; set; }
+
+            #endregion Properties
+
+            #region Methods
 
             public void Appear()
             {
@@ -173,8 +197,10 @@ namespace Feretto.Common.Controls.Tests
             {
                 // Test method. Nothing to do here.
             }
+
+            #endregion Methods
         }
 
-        #endregion
+        #endregion Classes
     }
 }

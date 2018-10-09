@@ -1,6 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using DevExpress.Xpf.Docking;
+using DevExpress.Xpf.Docking.Base;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
@@ -13,6 +17,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private readonly INavigationService navigationService;
+        private bool isControlPressed = true;
 
         #endregion Fields
 
@@ -24,6 +29,9 @@ namespace Ferretto.Common.Controls
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
             this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;
+            this.ClosedPanelsBarVisibility = ClosedPanelsBarVisibility.Never;
+            Application.Current.MainWindow.PreviewKeyDown += this.DockHost_PreviewKeyDown;
+            Application.Current.MainWindow.LostMouseCapture += this.MainWindow_LostMouseCapture;
         }
 
         #endregion Constructors
@@ -53,11 +61,12 @@ namespace Ferretto.Common.Controls
 
         public void RegisterView(string regionName, string title)
         {
-            var layoutPanel = new LayoutPanel();
-            layoutPanel.Caption = title;
-            RegionManager.SetRegionName(layoutPanel, regionName);
-
             DocumentGroup activeGroup = null;
+
+            var newLayoutPanel = new LayoutPanel();
+            newLayoutPanel.Caption = title;
+            RegionManager.SetRegionName(newLayoutPanel, regionName);
+
             if (this.ActiveDockItem != null && (this.ActiveDockItem.Parent is DocumentGroup))
             {
                 activeGroup = this.ActiveDockItem.Parent as DocumentGroup;
@@ -73,10 +82,46 @@ namespace Ferretto.Common.Controls
                 throw new System.InvalidOperationException(Errors.CannotRetrieveDocumentGroupFromLayoutManager);
             }
 
-            layoutPanel.AllowFloat = false;
-            layoutPanel.AllowHide = false;
-            activeGroup.Add(layoutPanel);
-            layoutPanel.IsActive = true;
+            newLayoutPanel.AllowFloat = false;
+            newLayoutPanel.AllowHide = false;
+            newLayoutPanel.IsActive = true;
+
+            if (this.isControlPressed == false)
+            {
+                var activePanel = this.DockController.ActiveItem as LayoutPanel;
+                if (activePanel == null)
+                {
+                    // All Views closed
+                    activeGroup.Add(newLayoutPanel);
+                    return;
+                }
+                var layoutGroup = activePanel.Parent;
+                var lastActivePosition = layoutGroup.Items.IndexOf(activePanel);
+                this.DockController.RemovePanel(activePanel);
+                layoutGroup.Items.Insert(lastActivePosition, newLayoutPanel);
+            }
+            else
+            {
+                activeGroup.Add(newLayoutPanel);
+            }
+        }
+
+        private void DockHost_PreviewKeyDown(Object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
+            {
+                this.isControlPressed = true;
+            }
+        }
+
+        private void MainWindow_LostMouseCapture(Object sender, MouseEventArgs e)
+        {
+            this.isControlPressed = false;
+        }
+
+        private void MainWindow_MouseUp(Object sender, MouseButtonEventArgs e)
+        {
+            this.isControlPressed = false;
         }
 
         private void WmsMainDockLayoutManager_DockItemClosing(System.Object sender, DevExpress.Xpf.Docking.Base.ItemCancelEventArgs e)

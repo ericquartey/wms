@@ -1,4 +1,6 @@
 ﻿using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -9,20 +11,12 @@ namespace Ferretto.WMS.Modules.Compartment
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class CompartmentModule : IModule
     {
-        #region Fields
-
-        private readonly INavigationService navigationService;
-
-        #endregion Fields
-
         #region Constructors
 
-        public CompartmentModule(IUnityContainer container, IRegionManager regionManager,
-            INavigationService navigationService)
+        public CompartmentModule(IUnityContainer container, IRegionManager regionManager)
         {
             this.Container = container;
             this.RegionManager = regionManager;
-            this.navigationService = navigationService;
         }
 
         #endregion Constructors
@@ -38,7 +32,19 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public void Initialize()
         {
-            this.navigationService.Register<CompartmentView, CompartmentViewModel>();
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingCompartmentModule);
+
+            this.Container.RegisterType<INavigationService, NavigationService>(
+                                        new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+
+            this.RegionManager.RegisterViewWithRegion(
+                $"{nameof(Common.Utils.Modules.Compartment)}.{Common.Utils.Modules.Compartment.REGION_MAINCONTENT}",
+                typeof(LayoutView));
+
+            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+            navigationService.Register<LayoutView, LayoutViewModel>();
+            navigationService.Register<CompartmentView, CompartmentViewModel>();
         }
 
         #endregion Methods

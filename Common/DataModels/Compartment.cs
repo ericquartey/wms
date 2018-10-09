@@ -34,8 +34,6 @@ namespace Ferretto.Common.DataModels
         public int? Height { get; set; }
         public int? XPosition { get; set; }
         public int? YPosition { get; set; }
-        public int? LaserPointerCoordinate1 { get; set; }
-        public int? LaserPointerCoordinate2 { get; set; }
 
         public LoadingUnit LoadingUnit { get; set; }
         public CompartmentType CompartmentType { get; set; }

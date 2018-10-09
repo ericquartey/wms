@@ -89,6 +89,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BusinessObjects.it.resx" />
+    <EmbeddedResource Include="DesktopApp.it.resx" />
+    <EmbeddedResource Include="Errors.it.resx" />
+    <EmbeddedResource Include="MasterData.it.resx" />
     <EmbeddedResource Include="MasterData.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MasterData.Designer.cs</LastGenOutput>
@@ -121,6 +125,7 @@
       <LastGenOutput>General.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Navigation.it.resx" />
     <EmbeddedResource Include="Navigation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Navigation.Designer.cs</LastGenOutput>

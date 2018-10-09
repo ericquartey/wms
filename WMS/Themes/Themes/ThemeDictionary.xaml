@@ -13,12 +13,15 @@
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DockLayoutManager.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/ActionBar.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DateEdit.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/SpinEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/ComboBoxEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/GroupBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/WmsGridControl.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/TextEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/TextBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Expander.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/TileBar.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Label.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

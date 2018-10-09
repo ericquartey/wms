@@ -204,17 +204,26 @@
     <Compile Include="CompartmentModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CompartmentViewModel.cs" />
+    <Compile Include="ViewModels\LayoutViewModel.cs" />
     <Compile Include="Views\CompartmentView.xaml.cs">
       <DependentUpon>CompartmentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LayoutView.xaml.cs">
+      <DependentUpon>LayoutView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Views\CompartmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LayoutView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

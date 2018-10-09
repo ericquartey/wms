@@ -1,6 +1,5 @@
 ﻿using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.DataAccess;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -33,15 +32,16 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void Initialize()
         {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+
             this.Container.RegisterType<INavigationService, NavigationService>(
                 new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IDialogService, Common.Controls.Services.DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
 
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
-
-            ServiceLocator.Current.GetInstance<IDataService>().Initialize();
 
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}",

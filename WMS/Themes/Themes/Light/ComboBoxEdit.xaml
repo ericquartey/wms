@@ -6,6 +6,7 @@
                     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     mc:Ignorable="cs">
 
     <DataTemplate x:Key="ComboBoxEditCustomButtonTemplate">
@@ -13,9 +14,10 @@
             <Button.Template>
                 <ControlTemplate>
                     <Border Background="Transparent">
-                        <Image x:Name="Glyph"
-                               Width="18"
-                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png" />
+                        <wms:WmsIcon x:Name="Glyph"
+                                     Width="18"
+                                     ColorizeBrush="{DynamicResource CommonSecondaryMedium}"
+                                     SymbolName="DropDown" />
                     </Border>
                 </ControlTemplate>
             </Button.Template>

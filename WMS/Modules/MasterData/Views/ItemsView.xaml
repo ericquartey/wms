@@ -13,6 +13,7 @@
              d:DesignWidth="800"
              Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
+
     <Grid>
 
         <Grid.ColumnDefinitions>
@@ -59,6 +60,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
+                                CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItem, Mode=TwoWay}"
                                 ItemType="{x:Type models:Item}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
@@ -68,6 +70,7 @@
                                    AllowMoveColumnToDropArea="False"
                                    NavigationStyle="Row"
                                    SearchPanelHorizontalAlignment="Right"
+                                   ShowFilterPanelMode="ShowAlways"
                                    ShowGroupPanel="False"
                                    ShowIndicator="False"
                                    ShowSearchPanelMode="Always">
@@ -82,26 +85,21 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Code"
-                                    Header="{x:Static res:BusinessObjects.ItemCode}" />
-                    <dxg:GridColumn Width="300*"
-                                    FieldName="Description"
-                                    Header="{x:Static res:General.Description}" />
+                                    FieldName="Code" />
+                    <dxg:GridColumn Width="400*"
+                                    FieldName="Description" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="AbcClass.Description"
-                                    Header="{x:Static res:BusinessObjects.ItemClass}" />
+                                    FieldName="ItemCategoryDescription" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="_TotalQty"
-                                    Header="{x:Static res:BusinessObjects.ItemStock}" />
-                    <dxg:GridColumn Width="200*"
-                                    FieldName="_HoldToPick"
-                                    Header="{x:Static res:BusinessObjects.ItemReservedForPick}" />
-                    <dxg:GridColumn Width="200*"
-                                    FieldName="_HoldToStore"
-                                    Header="{x:Static res:BusinessObjects.ItemReservedToStore}" />
-                    <dxg:GridColumn Width="200*"
-                                    FieldName="_Available"
-                                    Header="{x:Static res:BusinessObjects.ItemAvailable}" />
+                                    FieldName="AbcClassDescription" />
+                    <dxg:GridColumn Width="50*"
+                                    FieldName="TotalStock" />
+                    <dxg:GridColumn Width="100*"
+                                    FieldName="TotalReservedForPick" />
+                    <dxg:GridColumn Width="100*"
+                                    FieldName="TotalReservedToStore" />
+                    <dxg:GridColumn Width="50*"
+                                    FieldName="TotalAvailable" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>

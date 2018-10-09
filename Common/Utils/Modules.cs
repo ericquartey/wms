@@ -9,12 +9,9 @@
         #region Fields
 
         public const string COMPARTMENT = "CompartmentViewModel";
+        public const string REGION_MAINCONTENT = "MainContent";
 
         #endregion Fields
-    }
-
-    public static class DataAccess
-    {
     }
 
     public static class Layout
@@ -37,6 +34,9 @@
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMS = "ItemsViewModel";
         public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
+        public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
+        public const string LOADINGUNITS = "LoadingUnitsViewModel";
+        public const string LOADINGUNITSANDDETAILS = "LoadingUnitsAndDetailsViewModel";
 
         #endregion Fields
     }

@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AbcClass.cs" />
+    <Compile Include="ItemCategory.cs" />
     <Compile Include="ItemCompartmentType.cs" />
     <Compile Include="Aisle.cs" />
     <Compile Include="Area.cs" />

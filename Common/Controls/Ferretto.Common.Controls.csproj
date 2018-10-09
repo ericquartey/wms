@@ -118,6 +118,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
@@ -193,9 +194,13 @@
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Expander\Expander.cs" />
+    <Compile Include="Controls\FormControl.cs" />
     <Compile Include="Controls\Icon\WmsIconViewModel.cs" />
     <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
       <DependentUpon>WmsIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpinEdit\SpinEdit.xaml.cs">
+      <DependentUpon>SpinEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TileBar\Tile.cs" />
     <Compile Include="Controls\TileBar\TileBar.xaml.cs">
@@ -225,21 +230,32 @@
     </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
+    <Compile Include="Controls\WmsView\WmsDialogView.cs" />
+    <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
+      <DependentUpon>WmsHistoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WmsView\WmsView.cs" />
+    <Compile Include="Controls\WmsView\WmsViewType.cs" />
     <Compile Include="Converters\IntToThousandsConverter.cs" />
     <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Interfaces\IHistoryViewService.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Interfaces\IWmsGridViewModel.cs" />
+    <Compile Include="Interfaces\IWmsHistoryView.cs" />
+    <Compile Include="Markup\NameOfExtension.cs" />
+    <Compile Include="Services\SplashScreenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\HistoryViewService.cs" />
     <Compile Include="Services\Navigation.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Interfaces\INavigableViewModel.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
     <Compile Include="Controls\WmsGridControl\ViewModels\WmsGridViewModel.cs" />
+    <Compile Include="ViewModels\BaseServiceNavigationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ActionBar\ActionBar.xaml">
@@ -261,6 +277,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SpinEdit\SpinEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TileBar\TileBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -276,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TextBox\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WmsView\WmsHistoryView.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>

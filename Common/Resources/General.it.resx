@@ -126,4 +126,37 @@
   <data name="Save" xml:space="preserve">
     <value>Salva</value>
   </data>
+  <data name="UnitOfMeasurement" xml:space="preserve">
+    <value>Unità di Misura</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="LastModificationDate" xml:space="preserve">
+    <value>Data Ultima Modifica</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Aggiungi</value>
+  </data>
+  <data name="CreationDate" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="ThousandsSymbol" xml:space="preserve">
+    <value>k</value>
+  </data>
+  <data name="MillionsSymbol" xml:space="preserve">
+    <value>M</value>
+  </data>
 </root>

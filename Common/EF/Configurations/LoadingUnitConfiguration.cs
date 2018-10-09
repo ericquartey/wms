@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.DataModels;
+﻿using System;
+using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -21,7 +22,8 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(l => l.AbcClassId).IsRequired()
                 .HasColumnType("char(1)");
             builder.Property(l => l.Reference).IsRequired()
-                .HasColumnType("char(1)");
+                .HasColumnType("char(1)")
+                .HasConversion(x => (char) x, x => (ReferenceType) Enum.ToObject(typeof(ReferenceType), x));
             builder.Property(l => l.LoadingUnitStatusId).IsRequired()
                 .HasColumnType("char(1)");
             builder.Property(l => l.Note)

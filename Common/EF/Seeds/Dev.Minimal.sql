@@ -22,17 +22,28 @@ INSERT INTO ItemManagementTypes (Id, Description) VALUES (1, 'FIFO');
 INSERT INTO ItemManagementTypes (Id, Description) VALUES (2, 'Volume');
 SET IDENTITY_INSERT ItemManagementTypes OFF;
 
+SET IDENTITY_INSERT ItemCategories ON;
+INSERT INTO ItemCategories (Id, Description) VALUES (1, 'Viti');
+INSERT INTO ItemCategories (Id, Description) VALUES (2, 'Bulloni');
+INSERT INTO ItemCategories (Id, Description) VALUES (3, 'Rondelle');
+INSERT INTO ItemCategories (Id, Description) VALUES (4, 'Attrezzi');
+INSERT INTO ItemCategories (Id, Description) VALUES (5, 'Cavi');
+SET IDENTITY_INSERT ItemCategories OFF;
+
 INSERT INTO MeasureUnits (Id, Description) VALUES ('PZ', 'Pieces');
 INSERT INTO MeasureUnits (Id, Description) VALUES ('KG', 'Kilograms');
 INSERT INTO MeasureUnits (Id, Description) VALUES ('L', 'Liters');
 
 SET IDENTITY_INSERT Items ON;
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId) VALUES (1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId) VALUES (2, 'U000499', '000499        FRESA SMUSSO PUNTA KESO', 'A', 'PZ', 2);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId) VALUES (3, 'U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', 2);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId) VALUES (4, 'U000578', '000578        FRESA DORSI VAC91', 'B', 'PZ', 2);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId) VALUES (5, 'U000585', '000585        FR.PROF.COSTANTE FR.LAT.', 'C', 'PZ', 2);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId) VALUES (6, 'U000640', '000640        FRESA A PLACCHE RIPORTATE', 'C', 'PZ', 2);
+INSERT INTO FerrettoWmsDb.dbo.Items (AbcClassId, AverageWeight, Code, Description, FifoTimePick, FifoTimeStore, Height, Id, Image, InventoryDate, InventoryTolerance, ItemCategoryId, ItemManagementTypeId, LastModificationDate, LastPickDate, LastStoreDate, Length, MeasureUnitId, Note, PickTolerance, ReorderPoint, ReorderQuantity, StoreTolerance, Width)
+  VALUES ('A', 1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 2, 3, 4, 1, 'Articolo1.jpg', '2001-01-01', 5, 1, 2, '2002-02-02', '2003-03-03', '2004-04-04', 6, 'PZ', 'aaaaaaaaaa', 7, 8, 9, 10, 11);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image)
+  VALUES (1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2, 1, 'Articolo2.jpg');
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (2, 'U000499', '000499        FRESA SMUSSO PUNTA KESO', 'A', 'PZ', 2, 2);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (3, 'U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', 2, 3);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (4, 'U000578', '000578        FRESA DORSI VAC91', 'B', 'PZ', 2, 4);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (5, 'U000585', '000585        FR.PROF.COSTANTE FR.LAT.', 'C', 'PZ', 2, 5);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (6, 'U000640', '000640        FRESA A PLACCHE RIPORTATE', 'C', 'PZ', 2, 1);
 SET IDENTITY_INSERT Items OFF;
 
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, 1);
@@ -460,6 +471,8 @@ INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUE
 SET IDENTITY_INSERT Compartments ON;
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot)
   VALUES (1, 'UDC1_COMP1', 1, 1, 1, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll');
+INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot)
+  VALUES (2, 'UDC1_COMP2', 1, 1, 1, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm');
 SET IDENTITY_INSERT Compartments OFF;
 
 

@@ -186,9 +186,13 @@
     <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsViewModel.cs" />
+    <Compile Include="ViewModels\EntityListViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
+    <Compile Include="ViewModels\LoadingUnitDetailsViewModel.cs" />
+    <Compile Include="ViewModels\LoadingUnitsAndDetailsViewModel.cs" />
+    <Compile Include="ViewModels\LoadingUnitsViewModel.cs" />
     <Compile Include="Views\CompartmentDetailsView.xaml.cs">
       <DependentUpon>CompartmentDetailsView.xaml</DependentUpon>
     </Compile>
@@ -206,6 +210,15 @@
     </Compile>
     <Compile Include="Views\ItemsView.xaml.cs">
       <DependentUpon>ItemsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingUnitDetailsView.xaml.cs">
+      <DependentUpon>LoadingUnitDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingUnitsAndDetailsView.xaml.cs">
+      <DependentUpon>LoadingUnitsAndDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoadingUnitsView.xaml.cs">
+      <DependentUpon>LoadingUnitsView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -239,6 +252,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\LoadingUnitDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoadingUnitsAndDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoadingUnitsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj">
@@ -264,10 +289,6 @@
     <ProjectReference Include="..\..\..\Common\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\DataAccess\Ferretto.Common.DataAccess.csproj">
-      <Project>{842EAD3A-D1A7-46D6-8900-AC9F29B5F952}</Project>
-      <Name>Ferretto.Common.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

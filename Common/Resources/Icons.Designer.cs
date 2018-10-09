@@ -61,6 +61,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
+        /// </summary>
+        public static string AbcClasses {
+            get {
+                return ResourceManager.GetString("AbcClasses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png.
         /// </summary>
         public static string Add {
@@ -124,6 +133,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string CompartmentsViewAll {
+            get {
+                return ResourceManager.GetString("CompartmentsViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
         /// </summary>
         public static string CompartmentTypes {
@@ -142,38 +160,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png.
+        /// </summary>
+        public static string DropDown {
+            get {
+                return ResourceManager.GetString("DropDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_downward_grey_24dp.png.
         /// </summary>
         public static string Export {
             get {
                 return ResourceManager.GetString("Export", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_done_all_black_36dp.png.
-        /// </summary>
-        public static string FilterAll {
-            get {
-                return ResourceManager.GetString("FilterAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png.
-        /// </summary>
-        public static string FilterClassA {
-            get {
-                return ResourceManager.GetString("FilterClassA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Products_black.png.
-        /// </summary>
-        public static string FilterFIFO {
-            get {
-                return ResourceManager.GetString("FilterFIFO", resourceCulture);
             }
         }
         
@@ -205,11 +205,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png.
         /// </summary>
-        public static string ItemClasses {
+        public static string Items {
             get {
-                return ResourceManager.GetString("ItemClasses", resourceCulture);
+                return ResourceManager.GetString("Items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string ItemsViewAll {
+            get {
+                return ResourceManager.GetString("ItemsViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png.
+        /// </summary>
+        public static string ItemsViewClassA {
+            get {
+                return ResourceManager.GetString("ItemsViewClassA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Products_black.png.
+        /// </summary>
+        public static string ItemsViewFIFO {
+            get {
+                return ResourceManager.GetString("ItemsViewFIFO", resourceCulture);
             }
         }
         
@@ -252,9 +279,9 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png.
         /// </summary>
-        public static string LoadingUnit {
+        public static string LoadingUnits {
             get {
-                return ResourceManager.GetString("LoadingUnit", resourceCulture);
+                return ResourceManager.GetString("LoadingUnits", resourceCulture);
             }
         }
         
@@ -264,6 +291,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitStatuses {
             get {
                 return ResourceManager.GetString("LoadingUnitStatuses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string LoadingUnitsViewAll {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewAll", resourceCulture);
             }
         }
         
@@ -324,9 +360,9 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_trending_down_grey_24dp.png.
         /// </summary>
-        public static string UnderStock {
+        public static string UnderStockItems {
             get {
-                return ResourceManager.GetString("UnderStock", resourceCulture);
+                return ResourceManager.GetString("UnderStockItems", resourceCulture);
             }
         }
         
@@ -340,11 +376,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_account_circle_black_18dp.png.
         /// </summary>
-        public static string WarehouseItems {
+        public static string UserProfile {
             get {
-                return ResourceManager.GetString("WarehouseItems", resourceCulture);
+                return ResourceManager.GetString("UserProfile", resourceCulture);
             }
         }
     }
