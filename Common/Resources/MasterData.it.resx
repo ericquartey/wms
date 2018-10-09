@@ -150,9 +150,6 @@
   <data name="LoadingUnitAll" xml:space="preserve">
     <value>Tutte</value>
   </data>
-  <data name="InitializingMasterDataModule" xml:space="preserve">
-    <value>Inizializzazione modulo Anagrafiche ...</value>
-  </data>
   <data name="AllowedItems" xml:space="preserve">
     <value>Articoli Ammessi</value>
   </data>
@@ -175,7 +172,7 @@
     <value>Scomparto salvato con successo</value>
   </data>
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
-    <value>Questo articolo non è allocato in alcuno scomparto.</value>
+    <value>Questo articolo non è allocato in nessuno scomparto.</value>
   </data>
   <data name="ItemSavedSuccessfully" xml:space="preserve">
     <value>Articolo salvato con successo</value>

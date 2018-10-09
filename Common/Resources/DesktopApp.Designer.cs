@@ -88,6 +88,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Elapsed Time.
+        /// </summary>
+        public static string ElapsedTime {
+            get {
+                return ResourceManager.GetString("ElapsedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing Compartment module ....
+        /// </summary>
+        public static string InitializingCompartmentModule {
+            get {
+                return ResourceManager.GetString("InitializingCompartmentModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initializing Entity Framework ....
         /// </summary>
         public static string InitializingEntityFramework {
@@ -111,6 +129,15 @@ namespace Ferretto.Common.Resources {
         public static string InitializingMainWindow {
             get {
                 return ResourceManager.GetString("InitializingMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing Master Data module ....
+        /// </summary>
+        public static string InitializingMasterDataModule {
+            get {
+                return ResourceManager.GetString("InitializingMasterDataModule", resourceCulture);
             }
         }
         

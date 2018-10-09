@@ -154,7 +154,7 @@
     <value>Codice</value>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
-    <value>Tolleranza di Pick</value>
+    <value>Tolleranza in Prelievo</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
     <value>Codice</value>
@@ -250,7 +250,7 @@
     <value>Tipo Scomparto</value>
   </data>
   <data name="CompartmentTypeDescription" xml:space="preserve">
-    <value>Descrizione TIpo Scomparto</value>
+    <value>Descrizione Tipo Scomparto</value>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
     <value>Peso Medio</value>
@@ -287,5 +287,53 @@
   </data>
   <data name="LoadingUnitLength" xml:space="preserve">
     <value>Lunghezza</value>
+  </data>
+  <data name="CompartmentLastHandlingDate" xml:space="preserve">
+    <value>Data Ultima Movimentazione</value>
+  </data>
+  <data name="CompartmentPairing" xml:space="preserve">
+    <value>Abbinamento Articolo</value>
+  </data>
+  <data name="CompartmentReservedForPick" xml:space="preserve">
+    <value>Impegnato in Prelievo</value>
+  </data>
+  <data name="CompartmentReservedToStore" xml:space="preserve">
+    <value>Impegnato in Versamento</value>
+  </data>
+  <data name="CompartmentSub1" xml:space="preserve">
+    <value>Sub 1</value>
+  </data>
+  <data name="CompartmentSub2" xml:space="preserve">
+    <value>Sub 2</value>
+  </data>
+  <data name="ItemFifoStoreTime" xml:space="preserve">
+    <value>Periodo FIFO in Versamento</value>
+  </data>
+  <data name="ItemFifoPickTime" xml:space="preserve">
+    <value>Periodo FIFO in Prelievo</value>
+  </data>
+  <data name="ItemManagementType" xml:space="preserve">
+    <value>Tipo gestione</value>
+  </data>
+  <data name="ItemReorderPoint" xml:space="preserve">
+    <value>Quantita’ Minima Giacenza</value>
+  </data>
+  <data name="ItemReorderQuantity" xml:space="preserve">
+    <value>Quantità Minima di Riordino</value>
+  </data>
+  <data name="ItemStoreTolerance" xml:space="preserve">
+    <value>Tolleranza in Versamento</value>
+  </data>
+  <data name="ItemReservedForPick" xml:space="preserve">
+    <value>Impegnato in Prelievo</value>
+  </data>
+  <data name="ItemReservedToStore" xml:space="preserve">
+    <value>Impegnato in Versamento</value>
+  </data>
+  <data name="PackageType" xml:space="preserve">
+    <value>Tipo confezione</value>
+  </data>
+  <data name="RegistrationNumber" xml:space="preserve">
+    <value>Matricola</value>
   </data>
 </root>
