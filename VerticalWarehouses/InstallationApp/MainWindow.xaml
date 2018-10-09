@@ -8,6 +8,16 @@
         Width="1024"
         Height="768"
         mc:Ignorable="d">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextStyles.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ButtonStyles.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/FontsAndColors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280" />
@@ -17,37 +27,110 @@
             <RowDefinition Height="120" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border BorderBrush="{StaticResource FerrettoMediumGray}"
-                BorderThickness="2"
+        <Border Grid.Row="0"
                 Grid.Column="0"
-                Grid.Row="0">
+                BorderBrush="{StaticResource FerrettoMediumGray}"
+                BorderThickness="2">
             <Image Margin="5"
-               Source="/Assets/ferrettologo_768x162.jpg"
-               Stretch="Uniform" />
+                   Source="/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
+                   Stretch="Uniform" />
         </Border>
-        <Border Grid.Column="1"
-                Grid.Row="0"
+        <Border Grid.Row="0"
+                Grid.Column="1"
                 Background="{StaticResource FerrettoLightGray}">
-            <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft"></StackPanel>
+            <StackPanel FlowDirection="RightToLeft"
+                        Orientation="Horizontal">
+                <ComboBox Width="235"
+                          Margin="5"
+                          Style="{StaticResource StandardComboBoxStyle}">
+                    <ComboBoxItem IsSelected="True"
+                                  Style="{StaticResource StandardComboBoxItemStyle}">
+                        Installer
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">
+                        <Button Width="230"
+                                Click="BackToVWAppButtonMethod"
+                                Style="{StaticResource StandardButtonStyle}">
+                            Log out
+                        </Button>
+                    </ComboBoxItem>
+                </ComboBox>
+                <ComboBox Width="235"
+                          Margin="5">
+                    <ComboBoxItem>ON</ComboBoxItem>
+                    <ComboBoxItem>OFF</ComboBoxItem>
+                </ComboBox>
+                <ComboBox Width="235"
+                          Margin="5">
+                    <ComboBoxItem>Manual</ComboBoxItem>
+                    <ComboBoxItem>Auto</ComboBoxItem>
+                    <ComboBoxItem>Error</ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
         </Border>
-        <Border Grid.Column="0"
-                Grid.Row="1"
+        <Border Grid.Row="1"
+                Grid.Column="0"
                 Background="{StaticResource FerrettoLightGray}">
             <ScrollViewer>
                 <StackPanel>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 0</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 1</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 2</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 3</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 4</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 5</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 6</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 7</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 8</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 9</Button>
-                    <Button Style="{StaticResource ButtonStyle}" Height="60">Action 10</Button>
+                    <Button Height="60"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 0
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 1
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 2
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 3
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 4
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 5
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 6
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 7
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 8
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 9
+                    </Button>
+                    <Button Height="60"
+                            IsEnabled="False"
+                            Style="{StaticResource StandardButtonStyle}">
+                        Action 10
+                    </Button>
                 </StackPanel>
             </ScrollViewer>
         </Border>
+        <ContentControl Grid.Row="1"
+                        Grid.Column="1" />
     </Grid>
 </Window>

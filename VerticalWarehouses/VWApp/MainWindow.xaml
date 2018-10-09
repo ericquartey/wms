@@ -30,22 +30,22 @@
                 <Label Margin="5"
                        HorizontalContentAlignment="Center"
                        Content="User Login:"
-                       Style="{StaticResource ResourceKey=BodyStyle}" />
+                       Style="{StaticResource StandardBodyTextStyle}" />
                 <TextBox Name="UserLoginTextBox"
                          Margin="5"
                          HorizontalContentAlignment="Center"
-                         Style="{StaticResource ResourceKey=BodyStyle}" />
+                         Style="{StaticResource StandardBodyTextStyle}" />
                 <Label Margin="5"
                        HorizontalContentAlignment="Center"
                        Content="Password Login:"
-                       Style="{StaticResource ResourceKey=BodyStyle}" />
+                       Style="{StaticResource StandardBodyTextStyle}" />
                 <TextBox Name="PasswordLoginTextBox"
                          Margin="5"
                          HorizontalContentAlignment="Center"
-                         Style="{StaticResource ResourceKey=BodyStyle}" />
+                         Style="{StaticResource StandardBodyTextStyle}" />
                 <Button Height="120"
                         Click="LoginButtonMethod"
-                        Style="{StaticResource ButtonStyle}">
+                        Style="{StaticResource StandardButtonStyle}">
                     Log In
                 </Button>
             </StackPanel>
@@ -54,13 +54,13 @@
                     Grid.Column="1">
             <Button Height="65"
                     Click="CloseSystemButtonMethod"
-                    Style="{StaticResource ButtonStyle}">
-                Switch Off System
+                    Style="{StaticResource StandardButtonStyle}">
+                Switch Off
             </Button>
         </StackPanel>
         <Image Grid.Column="1"
                Margin="3"
-               Source="/Assets/ferrettologo_768x162.jpg"
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
                Stretch="Uniform" />
     </Grid>
 </Window>

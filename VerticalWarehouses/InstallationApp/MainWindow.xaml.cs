@@ -15,11 +15,18 @@ namespace Ferretto.VW.InstallationApp
 
         public MainWindow()
         {
+            this.InstallerQualification = "Installer";
             NavigationService.BackToVWAppEventHandler += this.CloseThisMainWindow;
             this.InitializeComponent();
         }
 
         #endregion Constructors
+
+        #region Properties
+
+        public string InstallerQualification { get; set; } = "Installer";
+
+        #endregion Properties
 
         #region Methods
 

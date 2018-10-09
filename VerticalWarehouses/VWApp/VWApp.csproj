@@ -101,8 +101,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\RobotoCondensed-Regular.ttf" />
-    <Resource Include="Fonts\HelveticaNeue-LightCond.otf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -112,6 +110,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+      <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\InstallationApp\InstallationApp.csproj">
       <Project>{1ec2e502-155d-48c0-82b9-961fb97149a3}</Project>
       <Name>InstallationApp</Name>
@@ -128,15 +130,6 @@
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
       <Name>Utils</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\ferrettologo_768x162.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="Assets\VertimagTreQuartiStretta.png" />
-    <Resource Include="Assets\VertimagTreQuartiDX.png" />
-    <Resource Include="Assets\VertimagFronte.png" />
-    <Resource Include="Assets\FGLogo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

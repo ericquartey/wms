@@ -87,8 +87,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\HelveticaNeue-LightCond.otf" />
-    <Resource Include="Fonts\RobotoCondensed-Regular.ttf" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -98,6 +96,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+      <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
       <Name>Navigation</Name>
@@ -106,14 +108,6 @@
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
       <Name>Utils</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\ferrettologo_768x162.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\ferrettologo_768x162.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
