@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
@@ -9,14 +8,13 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitDetailsViewModel : BaseNavigationViewModel
+    public class LoadingUnitDetailsViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private ICommand hideDetailsCommand;
         private LoadingUnitDetails loadingUnit;
+
         private ICommand saveCommand;
 
         #endregion Fields
@@ -32,9 +30,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-                    (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
-
         public LoadingUnitDetails LoadingUnit
         {
             get => this.loadingUnit;
@@ -48,9 +43,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        private void ExecuteHideDetailsCommand()
+        protected override void OnAppear()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<LoadingUnit>(this.Token, false));
+            this.LoadData(this.Data);
+            base.OnAppear();
         }
 
         private void ExecuteSaveCommand()
@@ -59,27 +55,26 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<LoadingUnitDetails>(this.LoadingUnit));
+                this.EventService.Invoke(new ItemChangedEvent<LoadingUnitDetails>(this.LoadingUnit));
 
-                ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }
         }
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
+            this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
+                    eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(object itemId)
+        private void LoadData(object itemId)
         {
             if (itemId == null)
             {
                 this.LoadingUnit = null;
                 return;
             }
-            //this.LoadingUnit = this.businessProvider.GetItemDetails((int)itemId);
+            this.LoadingUnit = this.loadingUnitProvider.GetById((int)itemId);
         }
 
         #endregion Methods

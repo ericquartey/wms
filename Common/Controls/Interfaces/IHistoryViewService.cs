@@ -10,7 +10,7 @@ namespace Ferretto.Common.Controls.Interfaces
     {
         #region Methods
 
-        void Appear(string moduleName, string viewModelName, object data);
+        void Appear(string moduleName, string viewModelName, object data = null);
 
         void Previous();
 

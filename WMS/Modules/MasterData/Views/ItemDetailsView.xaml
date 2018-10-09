@@ -41,14 +41,6 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <wms:ActionBar HorizontalAlignment="Left"
-                                   Style="{DynamicResource ActionBarNotCustomizable}">
-                        <wms:ActionBarItem Command="{Binding HideDetailsCommand}"
-                                           CustomGlyphSize="24,24"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
-                                           GlyphSize="Custom" />
-
-                    </wms:ActionBar>
 
                     <wms:ActionBar Grid.Column="1"
                                    HorizontalAlignment="Right"
