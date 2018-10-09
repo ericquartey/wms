@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +83,16 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int Save(LoadingUnitDetails model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var existingModel = this.dataContext.Items.Find(model.Id);
+
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            existingModel.LastModificationDate = DateTime.Now;
+
             return this.dataContext.SaveChanges();
         }
 
