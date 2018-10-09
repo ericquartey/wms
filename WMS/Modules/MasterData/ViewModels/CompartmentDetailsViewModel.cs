@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
@@ -51,14 +50,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.compartmentProvider.Save(this.Compartment);
+            var modifiedRowCount = this.compartmentProvider.Save(this.Compartment);
 
-            if (rowSaved != 0)
+            if (modifiedRowCount > 0)
             {
+                this.Compartment = this.compartmentProvider.GetById(this.Compartment.Id);
+
                 this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails>(this.Compartment));
 
-                ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
         }
 
