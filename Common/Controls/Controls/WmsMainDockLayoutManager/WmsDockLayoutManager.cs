@@ -87,6 +87,12 @@ namespace Ferretto.Common.Controls
             if (this.isControlPressed == false)
             {
                 var activePanel = this.DockController.ActiveItem as LayoutPanel;
+                if (activePanel == null)
+                {
+                    // All Views closed
+                    activeGroup.Add(newLayoutPanel);
+                    return;
+                }
                 var layoutGroup = activePanel.Parent;
                 var lastActivePosition = layoutGroup.Items.IndexOf(activePanel);
                 this.DockController.RemovePanel(activePanel);
