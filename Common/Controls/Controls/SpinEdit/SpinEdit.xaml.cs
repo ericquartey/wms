@@ -96,6 +96,7 @@ namespace Ferretto.Common.Controls
             var binding = new Binding($"{nameof(DataContext)}.{spinEdit.FieldName}")
             {
                 Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
                 {
                     AncestorType = typeof(SpinEdit)
