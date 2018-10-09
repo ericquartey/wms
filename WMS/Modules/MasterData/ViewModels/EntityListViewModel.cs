@@ -33,7 +33,11 @@ namespace Ferretto.WMS.Modules.MasterData
             var viewName = MvvmNaming.GetViewNameFromViewModelName(this.GetType().Name);
             this.dataSources = dataSourceService.GetAll<TModel>(viewName);
 
-            this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile { Name = dataSource.Name }).ToList());
+            this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
+            {
+                Key = dataSource.Key,
+                Name = dataSource.Name
+            }).ToList());
         }
 
         #endregion Constructors
@@ -71,7 +75,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Name == value.Name);
+                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Key == value.Key);
                 }
             }
         }
@@ -99,7 +103,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.dataSources.Single(d => d.Name == filterTile.Name).GetDataCount();
+                    filterTile.Count = this.dataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
                 }
             }).ConfigureAwait(true);
         }
