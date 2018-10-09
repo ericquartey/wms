@@ -16,36 +16,24 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public CompartmentViewModel()
         {
-            this.loadingUnitDetails = new LoadingUnitDetails();
-            this.loadingUnitDetails.Width = 1950;
-            this.loadingUnitDetails.Length = 650;
-            var lcd = new List<CompartmentDetails>();
-            lcd.Add(new CompartmentDetails { Width = 150, Height = 150 });
-            lcd.Add(new CompartmentDetails { Width = 150, Height = 150 });
-            lcd.Add(new CompartmentDetails { Width = 150, Height = 150 });
-            lcd.Add(new CompartmentDetails { Width = 150, Height = 150 });
-            this.loadingUnitDetails.Compartments = lcd;
+            this.loadingUnitDetails = new LoadingUnitDetails { Width = 1950, Length = 650 };
+            var listCompartmentDetails = new List<CompartmentDetails>();
+            for (int i = 0; i < 1000; i++)
+            {
+                listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = i + 3, YPosition = i + 1 });
+            }
+            listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = 150, YPosition = 0 });
+            listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = 300, YPosition = 0 });
 
-            //var listWmsCompartment = new List<WmsCompartment>();
-            //listWmsCompartment.Add(new WmsCompartment(150, 150, 0, 0));
-            //listWmsCompartment.Add(new WmsCompartment(150, 150, 0, 150));
-            //listWmsCompartment.Add(new WmsCompartment(150, 150, 0, 300));
-            //listWmsCompartment.Add(new WmsCompartment(150, 150, 0, 450));
-            ////
-            //listWmsCompartment.Add(new WmsCompartment(50, 150, 150, 0));
-            //listWmsCompartment.Add(new WmsCompartment(50, 150, 150, 150));
-            //listWmsCompartment.Add(new WmsCompartment(50, 150, 150, 300));
-            //listWmsCompartment.Add(new WmsCompartment(50, 150, 150, 450));
-            ////
-            //listWmsCompartment.Add(new WmsCompartment(300, 300, 200, 0));
-            //listWmsCompartment.Add(new WmsCompartment(300, 300, 200, 300));
+            this.loadingUnitDetails.Compartments = listCompartmentDetails;
+            this.RaisePropertyChanged(nameof(this.LoadingUnit));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; }
+        public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set { this.SetProperty(ref this.loadingUnitDetails, value); } }
 
         #endregion Properties
     }

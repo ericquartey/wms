@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.Controls
 {
-    internal class WmsCompartment
+    public class WmsBaseCompartment : INotifyPropertyChanged
     {
         #region Fields
 
@@ -16,24 +16,22 @@ namespace Ferretto.Common.Controls
         private Color _colorBorder;
         private string _colorFill;
         private double _height;
-        private double _positionX;
-        private double _positionY;
+        private double _left;
+        private double _top;//_positionX;
+
+        //_positionY;
         private double _width;
 
         #endregion Fields
 
-        #region Constructors
-
-        public WmsCompartment(double Width, double Height, double PositionX, double PositionY, string ColorFill)
-        {
-            this.Width = Width;
-            this.Height = Height;
-            this.PositionX = PositionX;
-            this.PositionY = PositionY;
-            this.ColorFill = ColorFill;
-        }
-
-        #endregion Constructors
+        //public WmsBaseCompartment(double Width, double Height, double PositionX, double PositionY, string ColorFill)
+        //{
+        //    this.Width = Width;
+        //    this.Height = Height;
+        //    this.PositionX = PositionX;
+        //    this.PositionY = PositionY;
+        //    this.ColorFill = ColorFill;
+        //}
 
         #region Events
 
@@ -86,26 +84,26 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public double PositionX
+        public double Left
         {
-            get
-            {
-                return this._positionX;
-            }
+            get { return this._left; }
             set
             {
-                this._positionX = value;
-                this.OnPropertyChanged("PositionX");
+                this._left = value;
+                this.OnPropertyChanged("Left");
             }
         }
 
-        public double PositionY
+        public double Top
         {
-            get { return this._positionY; }
+            get
+            {
+                return this._top;
+            }
             set
             {
-                this._positionY = value;
-                this.OnPropertyChanged("PositionY");
+                this._top = value;
+                this.OnPropertyChanged("Top");
             }
         }
 

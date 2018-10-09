@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="Ferretto.Common.Controls.WmsTrayControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrls="clr-namespace:Ferretto.Common.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <ItemsControl x:Name="ic"
+                  Width="{Binding ElementName=TheCanvas, Path=ActualWidth}"
+                  Height="{Binding ElementName=TheCanvas, Path=ActualHeight}"
+                  ItemsSource="{Binding Items, Mode=TwoWay}">
+        <ItemsControl.Resources>
+            <DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
+                <Border Width="{Binding Width, Mode=TwoWay}"
+                        Height="{Binding Height, Mode=TwoWay}">
+                    <Rectangle Width="{Binding Width, Mode=TwoWay}"
+                               Height="{Binding Height, Mode=TwoWay}"
+                               Fill="Beige"
+                               Stroke="Green" />
+                </Border>
+            </DataTemplate>
+            <!--<DataTemplate DataType="{x:Type ctrls:SmallCompartmentVM}">
+                    <StackPanel>
+                        <Ellipse Stroke="Red" Fill="{Binding BackColor}" Width="{Binding EllipseWidth}" Height="{Binding EllipseHeight}"/>
+                    </StackPanel>
+                </DataTemplate>-->
+        </ItemsControl.Resources>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <ctrls:WmsCanvas x:Name="TheCanvas"
+                                 HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch" />
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemContainerStyle>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                <Setter Property="Canvas.Left" Value="{Binding Left}" />
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+    </ItemsControl>
+</UserControl>
+<!--<wms:WmsCanvas Background=""
+                           LoadingUnit="{Binding LoadingUnit}"
+                           ReadOnly="{Binding ReadOnly}">
+                <wms:WmsCanvas.Background>
+                    <DrawingBrush x:Name="DrawingBrush"
+                                  TileMode="Tile">
+                        <DrawingBrush.Drawing>
+                            <GeometryDrawing>
+                                <GeometryDrawing.Pen>
+                                    <Pen Brush="{Binding PenBrush}"
+                                         Thickness="{Binding PenThickness}" />
+                                </GeometryDrawing.Pen>
+                            </GeometryDrawing>
+                        </DrawingBrush.Drawing>
+                    </DrawingBrush>
+                </wms:WmsCanvas.Background>
+            </wms:WmsCanvas>-->

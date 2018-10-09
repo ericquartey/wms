@@ -19,14 +19,9 @@ namespace Ferretto.Common.Controls
         protected override Size MeasureOverride(Size constraint)
         {
             base.MeasureOverride(constraint);
-            var h = base.ActualHeight;
-            var w = base.ActualWidth;
             Grid parent = base.Parent as Grid;
-            var width_parent = w;// parent.Width;
-            var height_parent = h;// parent.Height;
-
-            width_parent = 0;
-            height_parent = 0;
+            var width_parent = base.ActualWidth;
+            var height_parent = base.ActualHeight;
 
             //var x = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is Grid);
 

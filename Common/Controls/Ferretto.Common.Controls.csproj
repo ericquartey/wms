@@ -229,19 +229,13 @@
     </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsCompartment.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentControl.xaml.cs">
-      <DependentUpon>WmsCompartmentControl.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsHistoryCompartmentControl.xaml.cs">
-      <DependentUpon>WmsHistoryCompartmentControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WmsTrayControl\WmsHistoryTrayControl.xaml.cs">
-      <DependentUpon>WmsHistoryTrayControl.xaml</DependentUpon>
+    <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
+      <DependentUpon>WmsTrayControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\WmsTrayControl\WmsCanvas.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsHistoryTrayControlViewModel.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsTrayControlViewModel.cs" />
     <Compile Include="Controls\WmsView\WmsDialogView.cs" />
     <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
       <DependentUpon>WmsHistoryView.xaml</DependentUpon>
@@ -307,15 +301,7 @@
     <Page Include="Controls\TextBox\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsHistoryCompartmentControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\WmsTrayControl\WmsHistoryTrayControl.xaml">
+    <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

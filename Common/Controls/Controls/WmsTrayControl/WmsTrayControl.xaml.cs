@@ -16,47 +16,27 @@ using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Controls
 {
-    private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is WmsTrayControl wmsTrayControl)
-        {
-            if (wmsTrayControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
-            }
-        }
-        var dataContext = ((WmsTrayControl)d).DataContext;
-        if (dataContext != null)
-        {
-            var viewModel = dataContext as WmsTrayControlViewModel;
-            if (viewModel != null)
-            {
-                viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
-            }
-        }
-    }
-
     /// <summary>
     /// Interaction logic for WmsHistoryTrayControl.xaml
     /// </summary>
-    public partial class WmsHistoryTrayControl : ContentControl
+    public partial class WmsTrayControl : UserControl
     {
         #region Fields
 
         public static readonly DependencyProperty LoadingUnitProperty = DependencyProperty.Register(
-                    nameof(LoadingUnit), typeof(WmsHistoryTrayControl), typeof(WmsHistoryTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
+                    nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
 
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
-                    nameof(ReadOnly), typeof(bool), typeof(WmsHistoryTrayControl), new PropertyMetadata(false));
+                    nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
         #endregion Fields
 
         #region Constructors
 
-        public WmsHistoryTrayControl()
+        public WmsTrayControl()
         {
             this.InitializeComponent();
-            this.DataContext = new WmsHistoryTrayControlViewModel();
+            this.ic.DataContext = new WmsTrayControlViewModel();
         }
 
         #endregion Constructors
@@ -79,12 +59,15 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        private void CreateCompartments(List<WmsCompartment> compartments)
+        private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            foreach (var comp in compartments)
+            if (d is WmsTrayControl wmsTrayControl)
             {
-                WmsCompartmentControl compartment = new WmsCompartmentControl();
-                compartment.updaCompartment = comp;
+                if (wmsTrayControl.ic.DataContext is WmsTrayControlViewModel viewModel)
+                {
+                    viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
+                    //wmsTrayControl.ic.ItemsSource = viewModel.Items;
+                }
             }
         }
 

@@ -144,14 +144,14 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? XPosition
         {
             get => this.xPosition;
-            set => SetIfStrictlyPositive(ref this.xPosition, value);
+            set => SetIfPositive(ref this.xPosition, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
         public int? YPosition
         {
             get => this.yPosition;
-            set => SetIfStrictlyPositive(ref this.yPosition, value);
+            set => SetIfPositive(ref this.yPosition, value);
         }
 
         #endregion Properties

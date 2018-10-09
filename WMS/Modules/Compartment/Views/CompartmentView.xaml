@@ -4,13 +4,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             Title="Compartment"
              MinWidth="1024"
              MinHeight="768"
              d:DesignHeight="1080"
              d:DesignWidth="1920"
              mc:Ignorable="d">
     <Grid>
-        <wms:WmsHistoryTrayControl x:Name="Canvas"
-                                   LoadingUnit="{Binding LoadingUnit}" />
+        <wms:WmsTrayControl x:Name="Canvas"
+                            LoadingUnit="{Binding LoadingUnit, Mode=TwoWay}" />
+        <!--  LoadingUnit="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnit, Mode=TwoWay}" />  -->
     </Grid>
 </wms:WmsView>
