@@ -9,10 +9,12 @@ using Ferretto.Common.Controls.Interfaces;
 namespace Ferretto.Common.Controls
 {
     public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
+
     {
         #region Fields
 
         public static readonly DependencyProperty CurrentDataSourceProperty = DependencyProperty.Register(
+
             nameof(CurrentDataSource),
             typeof(object),
             typeof(WmsGridControl),
@@ -37,14 +39,14 @@ namespace Ferretto.Common.Controls
             {
                 if (value != this.itemType)
                 {
-                    if (value?.GetInterface(typeof(IBusinessObject).FullName) != null)
+                    if (value?.GetInterface(typeof(IBusinessObject<>).FullName) != null)
                     {
                         this.itemType = value;
                     }
                     else
                     {
                         throw new ArgumentException(
-                            $"The value assigned to the {nameof(this.ItemType)} property must be of type {nameof(IBusinessObject)}", nameof(value));
+                            $"The value assigned to the {nameof(this.ItemType)} property must be of type {nameof(IBusinessObject<object>)}", nameof(value));
                     }
                 }
             }
@@ -89,8 +91,8 @@ namespace Ferretto.Common.Controls
                 throw new InvalidOperationException("WmsGridControl ItemType is missing.");
             }
 
-            var viewModelClass = typeof(WmsGridViewModel<>);
-            var constructedClass = viewModelClass.MakeGenericType(this.ItemType);
+            var viewModelClass = typeof(WmsGridViewModel<,>);
+            var constructedClass = viewModelClass.MakeGenericType(this.ItemType, typeof(int));
 
             return Activator.CreateInstance(constructedClass);
         }

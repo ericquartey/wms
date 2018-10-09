@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe((ShowDetailsEventArgs<Compartment> eventArgs) =>
+            this.eventService.Subscribe((ShowDetailsEventArgs<Compartment, int> eventArgs) =>
             {
                 if (this.Token != eventArgs.Token)
                 {
@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.StateId = this.IsDetailsViewVisible ? this.selectedId : string.Empty;
             });
 
-            this.eventService.Subscribe((ItemSelectionChangedEvent<CompartmentDetails> eventArgs) =>
+            this.eventService.Subscribe((ItemSelectionChangedEvent<CompartmentDetails, int> eventArgs) =>
             {
                 if (this.Token != eventArgs.Token)
                 {

@@ -9,14 +9,14 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class EntityListViewModel<TModel> : BaseNavigationViewModel
-        where TModel : IBusinessObject
+    public class EntityListViewModel<TModel, TId> : BaseNavigationViewModel
+        where TModel : IBusinessObject<TId>
     {
         #region Fields
 
-        private readonly IEnumerable<IDataSource<TModel>> dataSources;
+        private readonly IEnumerable<IDataSource<TModel, TId>> dataSources;
         private IEnumerable<Tile> filterTiles;
-        private IDataSource<TModel> selectedDataSource;
+        private IDataSource<TModel, TId> selectedDataSource;
         private Tile selectedFilterTile;
 
         #endregion Fields
@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
             var viewName = MvvmNaming.GetViewNameFromViewModelName(this.GetType().Name);
-            this.dataSources = dataSourceService.GetAll<TModel>(viewName);
+            this.dataSources = dataSourceService.GetAll<TModel, TId>(viewName);
 
             this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile { Name = dataSource.Name }).ToList());
         }
@@ -42,7 +42,7 @@ namespace Ferretto.WMS.Modules.MasterData
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
-        public IDataSource<TModel> SelectedDataSource
+        public IDataSource<TModel, TId> SelectedDataSource
         {
             get => this.selectedDataSource;
             protected set => this.SetProperty(ref this.selectedDataSource, value);

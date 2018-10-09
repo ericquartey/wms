@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteHideDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Compartment>(this.Token, false));
+            this.eventService.Invoke(new ShowDetailsEventArgs<Compartment, int>(this.Token, false));
         }
 
         private void ExecuteSaveCommand()
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<CompartmentDetails>(this.Compartment));
+                this.eventService.Invoke(new ItemChangedEvent<CompartmentDetails, int>(this.Compartment));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Compartment>>(
+            this.eventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
         }
 

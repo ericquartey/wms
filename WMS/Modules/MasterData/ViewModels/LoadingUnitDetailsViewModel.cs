@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteHideDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<LoadingUnit>(this.Token, false));
+            this.eventService.Invoke(new ShowDetailsEventArgs<LoadingUnit, int>(this.Token, false));
         }
 
         private void ExecuteSaveCommand()
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<LoadingUnitDetails>(this.LoadingUnit));
+                this.eventService.Invoke(new ItemChangedEvent<LoadingUnitDetails, int>(this.LoadingUnit));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
+            this.eventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails, int>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
         }
 

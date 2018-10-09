@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ItemChangedEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
+    public class ItemChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class ItemSelectionChangedEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
+    public class ItemSelectionChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
     {
         #region Fields
 
@@ -82,7 +82,7 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class ShowDetailsEventArgs<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs where TPayload : IBusinessObject
+    public class ShowDetailsEventArgs<TPayload, TId> : Prism.Events.PubSubEvent<TPayload>, IEventArgs where TPayload : IBusinessObject<TId>
     {
         #region Fields
 

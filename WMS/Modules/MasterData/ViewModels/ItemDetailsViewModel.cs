@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-        private IDataSource<Compartment> compartmentsDataSource;
+        private IDataSource<Compartment, int> compartmentsDataSource;
         private ICommand hideDetailsCommand;
         private ItemDetails item;
         private bool itemHasCompartments;
@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<Compartment> CompartmentsDataSource
+        public IDataSource<Compartment, int> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     if (this.item != null)
                     {
                         var viewName = MvvmNaming.GetViewNameFromViewModelName(nameof(ItemDetailsViewModel));
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment>(viewName, this.item.Id).Single();
+                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment, int>(viewName, this.item.Id).Single();
                     }
                     else
                     {
@@ -81,7 +81,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteHideDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Item>(this.Token, false));
+            this.eventService.Invoke(new ShowDetailsEventArgs<Item, int>(this.Token, false));
         }
 
         private void ExecuteSaveCommand()
@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<ItemDetails>(this.Item));
+                this.eventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
@@ -99,7 +99,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
+            this.eventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
                     eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
         }
 

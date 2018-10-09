@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async void MainGridControl_AsyncOperationCompleted(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this.DataContext is EntityListViewModel<Item> viewModel)
+            if (this.DataContext is EntityListViewModel<Item, int> viewModel)
             {
                 await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
                 this.MainGridControl.AsyncOperationCompleted -= this.MainGridControl_AsyncOperationCompleted;

@@ -7,7 +7,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentsViewModel : EntityListViewModel<Compartment>
+    public class CompartmentsViewModel : EntityListViewModel<Compartment, int>
     {
         #region Fields
 
@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteViewDetailsCommand()
         {
             ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<Compartment>(this.Token, true));
+                .Invoke(new ShowDetailsEventArgs<Compartment, int>(this.Token, true));
         }
 
         #endregion Methods

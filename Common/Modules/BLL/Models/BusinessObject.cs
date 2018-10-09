@@ -5,14 +5,26 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class BusinessObject : BindableBase, IBusinessObject
+    public class BusinessObject<TId> : BindableBase, IBusinessObject<TId>
     {
+        #region Fields
+
+        private TId id;
+
+        #endregion Fields
+
         #region Constructors
 
         protected BusinessObject()
         { }
 
         #endregion Constructors
+
+        #region Properties
+
+        public virtual TId Id { get => this.id; set => this.SetProperty(ref this.id, value); }
+
+        #endregion Properties
 
         #region Methods
 

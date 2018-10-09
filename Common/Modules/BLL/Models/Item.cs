@@ -4,7 +4,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public sealed class Item : BusinessObject
+    public sealed class Item : BusinessObject<int>
     {
         #region Fields
 
