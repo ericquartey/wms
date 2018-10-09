@@ -82,10 +82,9 @@
                                           FieldName="LoadingUnitCode" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
+                                          FieldName="CompartmentTypeId"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentTypeChoices}"
-                                          Label="{x:Static res:BusinessObjects.CompartmentType}"
-                                          SelectedValue="{Binding Path=CompartmentTypeId, Mode=TwoWay}"
                                           ValueMember="Id" />
                             <wms:TextBox Grid.Row="2"
                                          Grid.Column="1"
@@ -93,10 +92,9 @@
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="3"
                                           Margin="0,0,20,0"
+                                          FieldName="CompartmentStatusId"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentStatusChoices}"
-                                          Label="{x:Static res:BusinessObjects.CompartmentStatus}"
-                                          SelectedValue="{Binding Path=CompartmentStatusId, Mode=TwoWay}"
                                           ValueMember="Id" />
                         </Grid>
                     </GroupBox>
@@ -164,16 +162,14 @@
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
+                                          FieldName="MaterialStatusId"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=MaterialStatusChoices}"
-                                          Label="{x:Static res:BusinessObjects.MaterialStatus}"
-                                          SelectedValue="{Binding Path=MaterialStatusId, Mode=TwoWay}"
                                           ValueMember="Id" />
                             <wms:SpinEdit Grid.Row="2"
                                           Grid.Column="1"
-                                          EditValue="{Binding Path=Compartment.FifoTime}"
-                                          IsEnabled="False"
-                                          Label="{x:Static res:BusinessObjects.CompartmentFifoTime}" />
+                                          FieldName="FifoTime"
+                                          IsEnabled="False" />
                             <wms:TextBox Grid.Row="3"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
@@ -181,10 +177,9 @@
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="3"
                                           Grid.Column="1"
+                                          FieldName="PackageTypeId"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=PackageTypeChoices}"
-                                          Label="{x:Static res:BusinessObjects.PackageType}"
-                                          SelectedValue="{Binding Path=PackageTypeId, Mode=TwoWay}"
                                           ValueMember="Id" />
                             <wms:TextBox Grid.Row="4"
                                          Grid.Column="0"
@@ -210,9 +205,8 @@
                             <wms:SpinEdit Grid.Row="0"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding Path=Compartment.MaxCapacity}"
-                                          IsEnabled="False"
-                                          Label="{x:Static res:BusinessObjects.CompartmentMaxCapacity}" />
+                                          FieldName="MaxCapacity"
+                                          IsEnabled="False" />
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="1"
                                           FieldName="ReservedForPick" />

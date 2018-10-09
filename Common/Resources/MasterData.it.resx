@@ -174,4 +174,10 @@
   <data name="CompartmentSavedSuccessfully" xml:space="preserve">
     <value>Scomparto salvato con successo</value>
   </data>
+  <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
+    <value>Questo articolo non è allocato in alcuno scomparto.</value>
+  </data>
+  <data name="ItemSavedSuccessfully" xml:space="preserve">
+    <value>Articolo salvato con successo</value>
+  </data>
 </root>
