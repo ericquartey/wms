@@ -13,25 +13,17 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private float _borderThickness;
-        private Color _colorBorder;
+        private string _colorBorder;
         private string _colorFill;
         private double _height;
         private double _left;
-        private double _top;//_positionX;
-
-        //_positionY;
+        private double _top;
         private double _width;
 
-        #endregion Fields
+        private string capacity;
+        private string select;
 
-        //public WmsBaseCompartment(double Width, double Height, double PositionX, double PositionY, string ColorFill)
-        //{
-        //    this.Width = Width;
-        //    this.Height = Height;
-        //    this.PositionX = PositionX;
-        //    this.PositionY = PositionY;
-        //    this.ColorFill = ColorFill;
-        //}
+        #endregion Fields
 
         #region Events
 
@@ -47,17 +39,27 @@ namespace Ferretto.Common.Controls
             set
             {
                 this._borderThickness = value;
-                this.OnPropertyChanged("BorderThickness");
+                this.OnPropertyChanged(nameof(this.BorderThickness));
             }
         }
 
-        public Color ColorBorder
+        public string Capacity
+        {
+            get { return this.capacity; }
+            set
+            {
+                this.capacity = value;
+                this.OnPropertyChanged(nameof(this.Capacity));
+            }
+        }
+
+        public string ColorBorder
         {
             get { return this._colorBorder; }
             set
             {
                 this._colorBorder = value;
-                this.OnPropertyChanged("ColorBorder");
+                this.OnPropertyChanged(nameof(this.ColorBorder));
             }
         }
 
@@ -67,7 +69,7 @@ namespace Ferretto.Common.Controls
             set
             {
                 this._colorFill = value;
-                this.OnPropertyChanged("ColorFill");
+                this.OnPropertyChanged(nameof(this.ColorFill));
             }
         }
 
@@ -80,7 +82,7 @@ namespace Ferretto.Common.Controls
             set
             {
                 this._height = value;
-                this.OnPropertyChanged("Height");
+                this.OnPropertyChanged(nameof(this.Height));
             }
         }
 
@@ -90,8 +92,14 @@ namespace Ferretto.Common.Controls
             set
             {
                 this._left = value;
-                this.OnPropertyChanged("Left");
+                this.OnPropertyChanged(nameof(this.Left));
             }
+        }
+
+        public string Select
+        {
+            get { return this.select; }
+            set { this.select = value; this.OnPropertyChanged(nameof(this.Select)); }
         }
 
         public double Top
@@ -103,7 +111,7 @@ namespace Ferretto.Common.Controls
             set
             {
                 this._top = value;
-                this.OnPropertyChanged("Top");
+                this.OnPropertyChanged(nameof(this.Top));
             }
         }
 
@@ -113,7 +121,7 @@ namespace Ferretto.Common.Controls
             set
             {
                 this._width = value;
-                this.OnPropertyChanged("Width");
+                this.OnPropertyChanged(nameof(this.Width));
             }
         }
 

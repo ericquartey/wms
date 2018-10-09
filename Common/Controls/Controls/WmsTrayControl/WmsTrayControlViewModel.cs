@@ -20,12 +20,20 @@ namespace Ferretto.Common.Controls
 
         private ObservableCollection<WmsBaseCompartment> items;
 
+        private string penBrush;
+
+        private int penThickness;
+
         #endregion Fields
 
         #region Constructors
 
         public WmsTrayControlViewModel()
         {
+            this.penBrush = Colors.Aqua.ToString();
+            this.penThickness = 2;
+            this.NotifyPropertyChanged(nameof(this.PenBrush));
+            this.NotifyPropertyChanged(nameof(this.PenThickness));
         }
 
         #endregion Constructors
@@ -42,12 +50,41 @@ namespace Ferretto.Common.Controls
 
         public LoadingUnitDetails LoadingUnitProperty { get; set; }
 
+        public string PenBrush
+        {
+            get { return this.penBrush; }
+            set { this.penBrush = value; }
+        }
+
+        public int PenThickness
+        {
+            get { return this.penThickness; }
+            set { this.penThickness = value; }
+        }
+
         #endregion Properties
 
         #region Methods
 
+        public void Resize(float ratio)
+        {
+            foreach (var i in this.items)
+            {
+                i.Top += 3;
+                i.Width = 150 * ratio;
+                //if (i.Width > 0)
+                //{
+                //    i.Top *= ratio;
+                //    i.Left *= ratio;
+                //    i.Width *= ratio;
+                //    i.Height *= ratio;
+                //}
+            }
+        }
+
         public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
         {
+            this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
             //TODO
             this.TransformDataInput();
@@ -62,19 +99,21 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void TransformDataInput()
+        private void TransformDataInput(float ratio = 1)
         {
             var listWmsCompartment = new List<WmsCompartmentViewModel>();
             var compartments = this.LoadingUnitProperty.Compartments;
-            this.items = new ObservableCollection<WmsBaseCompartment>();
+
             foreach (var compartment in compartments)
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
-                    Width = (int)compartment.Width,
-                    Height = (int)compartment.Height,
-                    Left = (int)compartment.XPosition,
-                    Top = (int)compartment.YPosition
+                    Width = (int)(compartment.Width * ratio),
+                    Height = (int)(compartment.Height * ratio),
+                    Left = (int)(compartment.XPosition * ratio),
+                    Top = (int)(compartment.YPosition * ratio),
+                    Capacity = Colors.Red.ToString(),
+                    Select = Colors.RoyalBlue.ToString()
                     //ColorBorder = this.ColorFill
                 });
             }

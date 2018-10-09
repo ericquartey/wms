@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Controls
@@ -14,49 +15,23 @@ namespace Ferretto.Common.Controls
         //public static readonly DependencyProperty MouseUpCommandProperty = DependencyProperty.RegisterAttached(
         //    "MouseUpCommand", typeof(ICommand), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(MouseUpCommandChanged)));
 
+        #region Constructors
+
+        public WmsCanvas()
+        {
+            Loaded += this.Canvas_Loaded;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         protected override Size MeasureOverride(Size constraint)
         {
             base.MeasureOverride(constraint);
-            Grid parent = base.Parent as Grid;
-            var width_parent = base.ActualWidth;
-            var height_parent = base.ActualHeight;
+            var width_parent = (float)base.ActualWidth;
+            var height_parent = (float)base.ActualHeight;
 
-            //var x = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is Grid);
-
-            //if (base.InternalChildren != null && base.InternalChildren.Capacity > 0)
-            //{
-            //    double width = base
-            //    .InternalChildren
-            //    .OfType<UIElement>()
-            //    .Max(i => i.DesiredSize.Width + (double)i.GetValue(Canvas.LeftProperty));
-
-            //    double height = base
-            //        .InternalChildren
-            //        .OfType<UIElement>()
-            //        .Max(i => i.DesiredSize.Height + (double)i.GetValue(Canvas.TopProperty));
-
-            //IEnumerator enumerator = base.Children.GetEnumerator();
-            //while (enumerator.MoveNext())
-            //{
-            //    Rectangle element = enumerator.Current as Rectangle;
-            //    if (element != null)
-            //    {
-            //        if (element.Name.Equals(CompartmentDrawUserControl.NAME_RECTANGLE_DRAWER))
-            //        {
-            //            element.Width = 1000;
-            //            element.Height = 200;
-            //        }
-            //    }
-            //}
-            //OK
-            //var Children = base.Children;
-            //foreach (UIElement child in Children)
-            //{
-            //    var r = child as Rectangle;
-            //    r.Width = constraint.Width - 80;
-            //}
             if (Double.IsNaN(width_parent))
             {
                 width_parent = 0;
@@ -65,7 +40,20 @@ namespace Ferretto.Common.Controls
             {
                 height_parent = 0;
             }
+
+            var dataContext = this.DataContext as WmsTrayControlViewModel;
+            if (dataContext != null && width_parent > 0 && height_parent > 0)
+            {
+                float ratio = width_parent / height_parent;
+                Console.WriteLine("Resize:misure override");
+                dataContext.Resize(ratio);
+            }
+
             return new Size(width_parent, height_parent);
+        }
+
+        private void Canvas_Loaded(object sender, RoutedEventArgs e)
+        {
         }
 
         #endregion Methods

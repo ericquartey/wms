@@ -18,12 +18,11 @@ namespace Ferretto.WMS.Modules.Compartment
         {
             this.loadingUnitDetails = new LoadingUnitDetails { Width = 1950, Length = 650 };
             var listCompartmentDetails = new List<CompartmentDetails>();
-            for (int i = 0; i < 1000; i++)
-            {
-                listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = i + 3, YPosition = i + 1 });
-            }
-            listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = 150, YPosition = 0 });
-            listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = 300, YPosition = 0 });
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = i + 10, YPosition = i + 10 });
+            //}
+            listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = 0, YPosition = 0 });
 
             this.loadingUnitDetails.Compartments = listCompartmentDetails;
             this.RaisePropertyChanged(nameof(this.LoadingUnit));

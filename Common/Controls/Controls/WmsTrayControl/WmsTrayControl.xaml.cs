@@ -37,6 +37,7 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
             this.ic.DataContext = new WmsTrayControlViewModel();
+            this.SetBackground();
         }
 
         #endregion Constructors
@@ -66,9 +67,31 @@ namespace Ferretto.Common.Controls
                 if (wmsTrayControl.ic.DataContext is WmsTrayControlViewModel viewModel)
                 {
                     viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
-                    //wmsTrayControl.ic.ItemsSource = viewModel.Items;
                 }
             }
+        }
+
+        private void SetBackground()
+        {
+            //this.Stroke = new SolidColorBrush(Colors.Blue);
+            //this.StrokeThickness = 3;
+
+            var DrawingBrush = new DrawingBrush();
+            DrawingBrush.TileMode = TileMode.Tile;
+            DrawingBrush.Viewport = new Rect(0, 0, 25, 25);
+            DrawingBrush.ViewportUnits = BrushMappingMode.Absolute;
+
+            var gGroup = new GeometryGroup();
+            gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
+            var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
+                //(SolidColorBrush)new BrushConverter().ConvertFrom("#E0E0E0")
+                , 1);
+            var checkers = new GeometryDrawing((SolidColorBrush)new BrushConverter().ConvertFrom("#BDBDBD"), drawingPen, gGroup);
+            var checkersDrawingGroup = new DrawingGroup();
+            checkersDrawingGroup.Children.Add(checkers);
+            DrawingBrush.Drawing = checkersDrawingGroup;
+
+            this.Background = DrawingBrush;
         }
 
         #endregion Methods

@@ -4,9 +4,9 @@
              xmlns:ctrls="clr-namespace:Ferretto.Common.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             d:DesignHeight="300"
-             d:DesignWidth="300"
              mc:Ignorable="d">
+    <!--  d:DesignHeight="300"
+             d:DesignWidth="300"-->
     <ItemsControl x:Name="ic"
                   Width="{Binding ElementName=TheCanvas, Path=ActualWidth}"
                   Height="{Binding ElementName=TheCanvas, Path=ActualHeight}"
@@ -17,8 +17,8 @@
                         Height="{Binding Height, Mode=TwoWay}">
                     <Rectangle Width="{Binding Width, Mode=TwoWay}"
                                Height="{Binding Height, Mode=TwoWay}"
-                               Fill="Beige"
-                               Stroke="Green" />
+                               Fill="{Binding Capacity, Mode=TwoWay}"
+                               Stroke="{Binding Select, Mode=TwoWay}" />
                 </Border>
             </DataTemplate>
             <!--<DataTemplate DataType="{x:Type ctrls:SmallCompartmentVM}">
@@ -29,15 +29,29 @@
         </ItemsControl.Resources>
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <ctrls:WmsCanvas x:Name="TheCanvas"
-                                 HorizontalAlignment="Stretch"
-                                 VerticalAlignment="Stretch" />
+                <ctrls:WmsCanvas x:Name="TheCanvas">
+                    <!--<ctrls:WmsCanvas.Background>
+                        <DrawingBrush x:Name="DrawingBrush"
+                                      TileMode="Tile">
+                            <DrawingBrush.Drawing>
+                                <GeometryDrawing>
+                                    <GeometryDrawing.Pen>
+                                        <Pen Brush="Blue"
+                                             Thickness="3" />
+                                        --><!--<Pen Brush="{Binding PenBrush, Mode=TwoWay}"
+                                             Thickness="{Binding PenThickness, Mode=TwoWay}" />--><!--
+                                    </GeometryDrawing.Pen>
+                                </GeometryDrawing>
+                            </DrawingBrush.Drawing>
+                        </DrawingBrush>
+                    </ctrls:WmsCanvas.Background>-->
+                </ctrls:WmsCanvas>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
         <ItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
-                <Setter Property="Canvas.Top" Value="{Binding Top}" />
-                <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
+                <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
             </Style>
         </ItemsControl.ItemContainerStyle>
     </ItemsControl>
