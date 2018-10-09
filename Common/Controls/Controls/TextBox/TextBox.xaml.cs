@@ -51,6 +51,8 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(LabelProperty, value);
         }
 
+        private bool HasBindingForFieldName => this.InnerTextBox.GetBindingExpression(ContentProperty)?.ResolvedSourcePropertyName == this.FieldName;
+
         #endregion Properties
 
         #region Methods
@@ -66,6 +68,11 @@ namespace Ferretto.Common.Controls
 
         private static void SetTextBinding(TextBox textBox)
         {
+            if (textBox.FieldName == null || textBox.HasBindingForFieldName)
+            {
+                return;
+            }
+
             textBox.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, textBox.FieldName);
         }
 
@@ -73,15 +80,13 @@ namespace Ferretto.Common.Controls
         {
             this.InnerTextBox.DataContext = e.NewValue;
 
-            if (this.FieldName != null)
-            {
-                SetTextBinding(this);
-            }
+            SetTextBinding(this);
         }
 
         private void TextBox_Loaded(Object sender, RoutedEventArgs e)
         {
             SetTextBinding(this);
+
             this.Label = RetrieveLocalizedFieldName(this.InnerTextBox.DataContext, this.FieldName);
         }
 

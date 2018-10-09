@@ -7,12 +7,6 @@ namespace Ferretto.Common.Modules.BLL.Models
 {
     public class BusinessObject<TId> : BindableBase, IBusinessObject<TId>
     {
-        #region Fields
-
-        private TId id;
-
-        #endregion Fields
-
         #region Constructors
 
         protected BusinessObject()
@@ -22,7 +16,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Properties
 
-        public virtual TId Id { get => this.id; set => this.SetProperty(ref this.id, value); }
+        public virtual TId Id { get; protected set; }
 
         #endregion Properties
 

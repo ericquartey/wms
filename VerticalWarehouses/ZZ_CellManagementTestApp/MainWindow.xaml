@@ -1,0 +1,237 @@
+﻿<Window x:Class="ZZ_CellManagementTestApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:ZZ_CellManagementTestApp"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Name="MainWindowCTRL"
+        Title="MainWindow"
+        WindowState="Maximized"
+        mc:Ignorable="d">
+    <DockPanel Background="Gray">
+        <StackPanel Height="auto"
+                    DockPanel.Dock="Top"
+                    Orientation="Horizontal">
+            <Button Width="180"
+                    Margin="5"
+                    Background="Transparent"
+                    BorderBrush="White"
+                    BorderThickness="2"
+                    Click="OpenInsertNewDrawerInputMaskButtonMethod"
+                    FontSize="15"
+                    Foreground="White">
+                Insert Loading Unit
+            </Button>
+            <Button Width="180"
+                    Margin="5"
+                    Background="Transparent"
+                    BorderBrush="White"
+                    BorderThickness="2"
+                    Click="OpenExtractDrawerInputMaskButtonMethod"
+                    FontSize="15"
+                    Foreground="White">
+                Extract Loading Unit
+            </Button>
+            <Button Width="180"
+                    Margin="5"
+                    Background="Transparent"
+                    BorderBrush="White"
+                    BorderThickness="2"
+                    Click="OpenInsertUnusableCellInputMaskButtonMethod"
+                    FontSize="15"
+                    Foreground="White">
+                Insert Unusable Cell
+            </Button>
+            <Button Width="180"
+                    Margin="5"
+                    Background="Transparent"
+                    BorderBrush="White"
+                    BorderThickness="2"
+                    FontSize="15"
+                    Foreground="White">
+                Compact machine
+            </Button>
+        </StackPanel>
+        <Grid DockPanel.Dock="Left">
+            <Border Width="180"
+                    Margin="5"
+                    BorderBrush="White"
+                    BorderThickness="2">
+                <Grid>
+                    <StackPanel Name="InsertLUInputMask"
+                                Visibility="Visible">
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Insert New Drawer ID</Label>
+                                <TextBox Name="InsertNewDrawerIDTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Insert New Drawer Height</Label>
+                                <TextBox Name="InsertNewDrawerHeightTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Click="InsertNewDrawerButtonMethod"
+                                Foreground="White">
+                            Insert Drawer
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Name="ExtractLUInputMask"
+                                Visibility="Hidden">
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Extract Drawer ID</Label>
+                                <TextBox Name="ExtractDrawerIDTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Destination Bay ID</Label>
+                                <TextBox Name="ExtractDrawerDestinationBayIDTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Click="ExtractDrawerButtonMethod"
+                                Foreground="White">
+                            Extract Drawer
+                        </Button>
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Destination Bay ID to free</Label>
+                                <TextBox Name="BayIDTofreeTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Click="ReInsertDrawerButtonMethod"
+                                Foreground="White">
+                            Re-Insert Drawer
+                        </Button>
+                    </StackPanel>
+                    <StackPanel Name="InsertUnusableCellInputMask"
+                                Visibility="Hidden">
+                        <Border Margin="5"
+                                BorderBrush="White"
+                                BorderThickness="2">
+                            <StackPanel>
+                                <Label Foreground="White">Unusable Cell ID</Label>
+                                <TextBox Name="InsertNewUnusableCellIDTextBox" />
+                            </StackPanel>
+                        </Border>
+                        <Button Margin="5"
+                                Background="Transparent"
+                                BorderBrush="White"
+                                BorderThickness="2"
+                                Click="InsertNewUnusableCellButtonMethod"
+                                Foreground="White">
+                            Make Unusable
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+        <Border Width="900"
+                Margin="5"
+                BorderBrush="White"
+                BorderThickness="2">
+            <ScrollViewer>
+                <StackPanel Name="LogStackPanel" />
+            </ScrollViewer>
+        </Border>
+        <Popup Name="MachineHeightPopUp"
+               Width="400"
+               Height="auto"
+               IsOpen="True"
+               Placement="Center">
+            <Border Width="auto"
+                    Height="auto"
+                    Margin="5"
+                    BorderBrush="White"
+                    BorderThickness="2">
+                <StackPanel>
+                    <Label FontSize="20"
+                           Foreground="White">
+                        Insert Machine Height (mm):
+                    </Label>
+                    <TextBox Name="MachineHeightTextbox"
+                             FontSize="20"
+                             Foreground="Black"
+                             Text="{Binding Path=MachineHeight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <Button Click="InsertMachineHeightDoneButtonMethod">OK</Button>
+                </StackPanel>
+            </Border>
+        </Popup>
+        <Popup Name="InsertBaysPopUp"
+               Width="400"
+               Height="auto"
+               IsOpen="False"
+               Placement="Center">
+            <Border Width="auto"
+                    Height="auto"
+                    Margin="5"
+                    BorderBrush="White"
+                    BorderThickness="2">
+                <StackPanel>
+                    <Label FontSize="20"
+                           Foreground="White">
+                        Insert Bay Height (mm):
+                    </Label>
+                    <TextBox Name="NewBayHeightTextBox"
+                             FontSize="20"
+                             Foreground="Black"
+                             Text="{Binding Path=NewBayHeight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <Label FontSize="20"
+                           Foreground="White">
+                        Insert Bay Height From Ground (mm):
+                    </Label>
+                    <TextBox Name="NewBayHeightFromGroundTextBox"
+                             FontSize="20"
+                             Foreground="Black"
+                             Text="{Binding Path=NewBayHeightFromGround, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <Label FontSize="20"
+                           Foreground="White">
+                        Insert Bay side:
+                    </Label>
+                    <TextBox Name="NewBaySideTextBox"
+                             FontSize="20"
+                             Foreground="Black"
+                             Text="{Binding Path=NewBaySide, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Button Width="200"
+                                Click="CreateNewBayButtonMethod"
+                                FontSize="20">
+                            Insert
+                        </Button>
+                        <Button Width="200"
+                                Click="CloseInsertNewBayPopUpButtonMethod"
+                                FontSize="20">
+                            DONE
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Popup>
+
+    </DockPanel>
+
+</Window>

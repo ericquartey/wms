@@ -4,7 +4,7 @@
     {
         #region Properties
 
-        TId Id { get; set; }
+        TId Id { get; }
 
         #endregion Properties
     }

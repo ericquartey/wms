@@ -2,14 +2,16 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
+using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class EntityListViewModel<TModel, TId> : BaseNavigationViewModel
+    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel
         where TModel : IBusinessObject<TId>
     {
         #region Fields
@@ -18,6 +20,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private IEnumerable<Tile> filterTiles;
         private IDataSource<TModel, TId> selectedDataSource;
         private Tile selectedFilterTile;
+        private object selectedItem;
+        private ICommand viewDetailsCommand;
 
         #endregion Fields
 
@@ -29,12 +33,28 @@ namespace Ferretto.WMS.Modules.MasterData
             var viewName = MvvmNaming.GetViewNameFromViewModelName(this.GetType().Name);
             this.dataSources = dataSourceService.GetAll<TModel, TId>(viewName);
 
-            this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile { Name = dataSource.Name }).ToList());
+            this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
+            {
+                Key = dataSource.Key,
+                Name = dataSource.Name
+            }).ToList());
         }
 
         #endregion Constructors
 
         #region Properties
+
+        public TModel CurrentItem
+        {
+            get
+            {
+                if (this.selectedItem == null)
+                {
+                    return default(TModel);
+                }
+                return (TModel)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
+            }
+        }
 
         public IEnumerable<Tile> Filters
         {
@@ -55,14 +75,29 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Name == value.Name);
+                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Key == value.Key);
                 }
             }
         }
 
+        public object SelectedItem
+        {
+            get => this.selectedItem;
+            set => this.SetProperty(ref this.selectedItem, value);
+        }
+
+        public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
+                        (this.viewDetailsCommand = new DelegateCommand(this.ExecuteViewDetailsCommand));
+
         #endregion Properties
 
         #region Methods
+
+        public virtual void ExecuteViewDetailsCommand()
+        {
+            // Nothing to do here.
+            // The derived classes can override this method to impelement the ViewDetails command behaviour.
+        }
 
         public async Task UpdateFilterTilesCountsAsync()
         {
@@ -70,7 +105,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.dataSources.Single(d => d.Name == filterTile.Name).GetDataCount();
+                    filterTile.Count = this.dataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
                 }
             }).ConfigureAwait(true);
         }

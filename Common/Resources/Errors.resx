@@ -132,6 +132,9 @@
   <data name="ItemTypeWasNotSpecified" xml:space="preserve">
     <value>ItemType was not specified</value>
   </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}</value>
+  </data>
   <data name="ParameterCannotBeNullOrWhitespace" xml:space="preserve">
     <value>The parameter cannot be null or whitespace.</value>
   </data>

@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public void Appear(string moduleName, string viewModelName, object data)
+        public void Appear(string moduleName, string viewModelName, object data = null)
         {
             var historyView = this.GetCurrentHistoryView();
 
@@ -40,10 +40,8 @@ namespace Ferretto.Common.Controls.Services
         public void Previous()
         {
             var historyView = this.GetCurrentHistoryView();
-            if (historyView != null)
-            {
-                historyView.Previous();
-            }
+
+            historyView?.Previous();
         }
 
         private IWmsHistoryView GetCurrentHistoryView()

@@ -106,6 +106,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}.
+        /// </summary>
+        public static string MarkupNameOfSyntax {
+            get {
+                return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter cannot be null or whitespace..
         /// </summary>
         public static string ParameterCannotBeNullOrWhitespace {

@@ -9,6 +9,7 @@ namespace Ferretto.Common.BLL.Interfaces
 
         Func<IQueryable<TModel>> GetData { get; }
         Func<int> GetDataCount { get; }
+        string Key { get; }
         string Name { get; }
 
         #endregion Properties

@@ -282,4 +282,10 @@
   <data name="ItemCode_extended" xml:space="preserve">
     <value>Codice Articolo</value>
   </data>
+  <data name="LoadingUnitWidth" xml:space="preserve">
+    <value>Larghezza</value>
+  </data>
+  <data name="LoadingUnitLength" xml:space="preserve">
+    <value>Lunghezza</value>
+  </data>
 </root>

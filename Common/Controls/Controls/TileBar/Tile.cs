@@ -18,9 +18,9 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.count, value);
         }
 
-        public string Image => this.Name != null ?
-            $"Filter{this.Name.Replace(" ", string.Empty)}"
-            : null;
+        public string Image => this.Key;
+
+        public string Key { get; set; }
 
         public string Name { get; set; }
 

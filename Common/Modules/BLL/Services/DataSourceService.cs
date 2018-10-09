@@ -20,14 +20,17 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<Item, int>>
                     {
                         new DataSource<Item, int>(
+                            "ItemsViewAll",
                             Resources.MasterData.ItemAll,
                             () => itemsProvider.GetAll(),
                             () => itemsProvider.GetAllCount()),
                         new DataSource<Item, int>(
+                            "ItemsViewClassA",
                             Resources.MasterData.ItemClassA,
                             () => itemsProvider.GetWithAClass(),
                             () => itemsProvider.GetWithAClassCount()),
                         new DataSource<Item, int>(
+                            "ItemsViewFIFO",
                             Resources.MasterData.ItemFIFO,
                             () => itemsProvider.GetWithFifo(),
                             () => itemsProvider.GetWithFifoCount())
@@ -39,6 +42,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<Compartment, int>>
                     {
                         new DataSource<Compartment, int>(
+                            "ItemDetailsView",
                             Resources.MasterData.CompartmentAll,
                             () => itemDetailsProvider.GetByItemId((int)parameter))
                     }.Cast<IDataSource<TModel, TId>>();
@@ -49,6 +53,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<Compartment, int>>
                     {
                         new DataSource<Compartment, int>(
+                            "CompartmentsViewAll",
                             Resources.MasterData.CompartmentAll,
                             () => compartmentProvider.GetAll(),
                             () => compartmentProvider.GetAllCount())
@@ -60,6 +65,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<LoadingUnit, int>>
                     {
                         new DataSource<LoadingUnit, int>(
+                            "LoadingUnitsViewAll",
                             Resources.MasterData.LoadingUnitAll,
                             () => loadingUnitProvider.GetAll(),
                             () => loadingUnitProvider.GetAllCount())

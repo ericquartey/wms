@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Data;
 
 namespace Ferretto.Common.Controls
@@ -45,6 +44,8 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(LabelProperty, value);
         }
 
+        private bool HasBindingForFieldName => this.InnerText.GetBindingExpression(ContentProperty)?.ResolvedSourcePropertyName == this.FieldName;
+
         #endregion Properties
 
         #region Methods
@@ -61,6 +62,11 @@ namespace Ferretto.Common.Controls
 
         private static void SetTextBinding(InfoText infoText)
         {
+            if (infoText.FieldName == null || infoText.HasBindingForFieldName)
+            {
+                return;
+            }
+
             var binding = new Binding(infoText.FieldName)
             {
                 Mode = BindingMode.OneWay,
@@ -68,20 +74,17 @@ namespace Ferretto.Common.Controls
                 TargetNullValue = FallbackValue
             };
 
-            infoText.InnerText.SetBinding(System.Windows.Controls.Label.ContentProperty, binding);
+            infoText.InnerText.SetBinding(ContentProperty, binding);
         }
 
-        private void InfoText_DataContextChanged(Object sender, DependencyPropertyChangedEventArgs e)
+        private void InfoText_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             this.InnerText.DataContext = e.NewValue;
 
-            if (this.FieldName != null)
-            {
-                SetTextBinding(this);
-            }
+            SetTextBinding(this);
         }
 
-        private void InfoText_Loaded(Object sender, RoutedEventArgs e)
+        private void InfoText_Loaded(object sender, RoutedEventArgs e)
         {
             SetTextBinding(this);
 

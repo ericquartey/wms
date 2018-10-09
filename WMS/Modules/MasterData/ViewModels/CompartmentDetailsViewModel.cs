@@ -9,14 +9,12 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentDetailsViewModel : BaseNavigationViewModel
+    public class CompartmentDetailsViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private CompartmentDetails compartment;
-        private ICommand hideDetailsCommand;
         private ICommand saveCommand;
 
         #endregion Fields
@@ -38,9 +36,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartment, value);
         }
 
-        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-                    (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
-
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
@@ -48,9 +43,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        private void ExecuteHideDetailsCommand()
+        protected override void OnAppear()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Compartment, int>(this.Token, false));
+            this.LoadData(this.Data);
+            base.OnAppear();
         }
 
         private void ExecuteSaveCommand()
@@ -59,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<CompartmentDetails, int>(this.Compartment));
+                this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails, int>(this.Compartment));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
@@ -68,11 +64,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
+            this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
+                    eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(object itemId)
+        private void LoadData(object itemId)
         {
             if (itemId == null)
             {
