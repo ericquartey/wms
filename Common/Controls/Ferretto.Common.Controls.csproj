@@ -230,6 +230,14 @@
     </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsCanvasItemsControl.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
+      <DependentUpon>WmsTrayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WmsTrayControl\WmsTrayCanvas.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsTrayControlViewModel.cs" />
     <Compile Include="Controls\WmsView\WmsDialogView.cs" />
     <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
       <DependentUpon>WmsHistoryView.xaml</DependentUpon>
@@ -297,6 +305,10 @@
     <Page Include="Controls\TextBox\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\WmsView\WmsHistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -311,6 +323,10 @@
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj">
       <Project>{2586C34C-DA26-4143-8359-21D8A42B8462}</Project>
       <Name>Ferretto.Common.BLL.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj">
+      <Project>{0D3E44FD-B369-4B85-AEBE-17A754D71C8D}</Project>
+      <Name>Ferretto.Common.Modules.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj">
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
