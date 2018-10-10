@@ -5,13 +5,13 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity> : BaseNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject
+    public class WmsGridViewModel<TEntity, TId> : BaseNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
     {
         #region Fields
 
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
-        private IDataSource<TEntity> currentDataSource;
-        private object selectedItem;
+        private IDataSource<TEntity, TId> currentDataSource;
+        private TEntity selectedItem;
 
         #endregion Fields
 
@@ -26,7 +26,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public IDataSource<TEntity> CurrentDataSource
+        public IDataSource<TEntity, TId> CurrentDataSource
         {
             get => this.currentDataSource;
             set
@@ -38,7 +38,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public object SelectedItem
+        public TEntity SelectedItem
         {
             get => this.selectedItem;
             set
@@ -61,9 +61,9 @@ namespace Ferretto.Common.Controls
 
         public void SetDataSource(object dataSource)
         {
-            if (dataSource == null || dataSource is IDataSource<TEntity> dataSourceEntity)
+            if (dataSource == null || dataSource is IDataSource<TEntity, TId> dataSourceEntity)
             {
-                this.CurrentDataSource = dataSource as IDataSource<TEntity>;
+                this.CurrentDataSource = dataSource as IDataSource<TEntity, TId>;
             }
             else
             {
@@ -78,8 +78,7 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            var selectedId = this.selectedItem?.GetType().GetProperty("Id")?.GetValue(this.selectedItem);
-            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity>(selectedId, this.Token));
+            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(this.selectedItem.Id, this.Token));
         }
 
         #endregion Methods

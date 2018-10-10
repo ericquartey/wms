@@ -5,7 +5,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class BusinessObject : BindableBase, IBusinessObject
+    public class BusinessObject<TId> : BindableBase, IBusinessObject<TId>
     {
         #region Constructors
 
@@ -14,9 +14,15 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #endregion Constructors
 
+        #region Properties
+
+        public virtual TId Id { get; protected set; }
+
+        #endregion Properties
+
         #region Methods
 
-        protected static void SetIfPositive(ref int? member, int? value)
+        protected bool SetIfPositive(ref int? member, int? value)
         {
             if (value.HasValue)
             {
@@ -27,22 +33,24 @@ namespace Ferretto.Common.Modules.BLL.Models
 
                 if (!member.HasValue || member.Value != value.Value)
                 {
-                    member = value;
+                    return this.SetProperty(ref member, value);
                 }
             }
+
+            return false;
         }
 
-        protected static void SetIfPositive(ref int member, int value)
+        protected bool SetIfPositive(ref int member, int value)
         {
             if (value < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
             }
 
-            member = value;
+            return this.SetProperty(ref member, value);
         }
 
-        protected static void SetIfStrictlyPositive(ref int? member, int? value)
+        protected bool SetIfStrictlyPositive(ref int? member, int? value)
         {
             if (value.HasValue)
             {
@@ -53,19 +61,21 @@ namespace Ferretto.Common.Modules.BLL.Models
 
                 if (!member.HasValue || member.Value != value.Value)
                 {
-                    member = value;
+                    return this.SetProperty(ref member, value);
                 }
             }
+
+            return false;
         }
 
-        protected static void SetIfStrictlyPositive(ref int member, int value)
+        protected bool SetIfStrictlyPositive(ref int member, int value)
         {
             if (value <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
             }
 
-            member = value;
+            return this.SetProperty(ref member, value);
         }
 
         #endregion Methods

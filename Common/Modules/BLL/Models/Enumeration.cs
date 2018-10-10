@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class Enumeration<TId> : BusinessObject
+    public class Enumeration<TId> : BusinessObject<TId>
     {
         #region Constructors
 
@@ -15,7 +15,6 @@
         #region Properties
 
         public string Description { get; }
-        public TId Id { get; }
 
         #endregion Properties
     }

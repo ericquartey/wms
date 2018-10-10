@@ -51,19 +51,21 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.loadingUnitProvider.Save(this.LoadingUnit);
+            var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
 
-            if (rowSaved != 0)
+            if (modifiedRowCount > 0)
             {
-                this.EventService.Invoke(new ItemChangedEvent<LoadingUnitDetails>(this.LoadingUnit));
+                this.LoadingUnit = this.loadingUnitProvider.GetById(this.LoadingUnit.Id);
 
-                this.EventService.Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                this.EventService.Invoke(new ItemChangedEvent<LoadingUnitDetails, int>(this.LoadingUnit.Id));
+
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }
         }
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
+            this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails, int>>(
                     eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
