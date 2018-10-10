@@ -14,7 +14,26 @@
           Margin="20"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
-        <ScrollViewer IsTabStop="True"
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Name="ToolbarGrid">
+            <wms:ActionBar HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}">
+                <wms:ActionBarItem Command="{Binding SaveCommand}"
+                                   Content="{x:Static res:General.Save}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1"
+                      DataContext="{Binding LoadingUnit}"
+                      IsTabStop="True"
                       VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.RowDefinitions>
@@ -31,31 +50,6 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Name="ToolbarGrid"
-                      Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <wms:ActionBar HorizontalAlignment="Left"
-                                   Style="{DynamicResource ActionBarNotCustomizable}">
-                        <wms:ActionBarItem Command="{Binding HideDetailsCommand}"
-                                           CustomGlyphSize="24,24"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
-                                           GlyphSize="Custom" />
-
-                    </wms:ActionBar>
-
-                    <wms:ActionBar Grid.Column="1"
-                                   HorizontalAlignment="Right"
-                                   Style="{DynamicResource ActionBarNotCustomizable}">
-                        <wms:ActionBarItem Command="{Binding SaveCommand}"
-                                           Content="{x:Static res:General.Save}"
-                                           CustomGlyphSize="24,24"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_24dp.png"
-                                           GlyphSize="Custom" />
-                    </wms:ActionBar>
-                </Grid>
             </Grid>
         </ScrollViewer>
 

@@ -44,7 +44,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? FifoTime
         {
             get => this.fifoTime;
-            set => SetIfStrictlyPositive(ref this.fifoTime, value);
+            set => this.SetIfStrictlyPositive(ref this.fifoTime, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
@@ -54,7 +54,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? Height
         {
             get => this.height;
-            set => SetIfStrictlyPositive(ref this.height, value);
+            set => this.SetIfStrictlyPositive(ref this.height, value);
         }
 
         public int Id { get; set; }
@@ -95,7 +95,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? MaxCapacity
         {
             get => this.maxCapacity;
-            set => SetIfStrictlyPositive(ref this.maxCapacity, value);
+            set => this.SetIfStrictlyPositive(ref this.maxCapacity, value);
         }
 
         public IEnumerable<Enumeration<int>> PackageTypeChoices { get; set; }
@@ -110,21 +110,21 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int ReservedForPick
         {
             get => this.reservedForPick;
-            set => SetIfPositive(ref this.reservedForPick, value);
+            set => this.SetIfPositive(ref this.reservedForPick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedToStore), ResourceType = typeof(BusinessObjects))]
         public int ReservedToStore
         {
             get => this.reservedToStore;
-            set => SetIfPositive(ref this.reservedToStore, value);
+            set => this.SetIfPositive(ref this.reservedToStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
         public int Stock
         {
             get => this.stock;
-            set => SetIfPositive(ref this.stock, value);
+            set => this.SetIfPositive(ref this.stock, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
@@ -137,7 +137,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? Width
         {
             get => this.width;
-            set => SetIfStrictlyPositive(ref this.width, value);
+            set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]

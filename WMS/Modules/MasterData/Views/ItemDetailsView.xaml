@@ -18,7 +18,33 @@
           Margin="20"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
-        <ScrollViewer DataContext="{Binding Item}"
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Name="ToolbarGrid">
+            <wms:ActionBar HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}">
+                <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
+                                   GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding SaveCommand}"
+                                   Content="{x:Static res:General.Save}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                                   GlyphSize="Custom" />
+                <wms:ActionBarItem Content="{x:Static res:General.Revert}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1"
+                      DataContext="{Binding Item}"
                       IsTabStop="True"
                       VerticalScrollBarVisibility="Auto">
             <Grid>
@@ -36,33 +62,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <Grid Name="ToolbarGrid"
-                      Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <wms:ActionBar Grid.Column="1"
-                                   HorizontalAlignment="Right"
-                                   Style="{DynamicResource ActionBarNotCustomizable}">
-                        <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
-                                           CustomGlyphSize="24,24"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
-                                           GlyphSize="Custom" />
-                        <wms:ActionBarItem Command="{Binding SaveCommand}"
-                                           Content="{x:Static res:General.Save}"
-                                           CustomGlyphSize="24,24"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_24dp.png"
-                                           GlyphSize="Custom" />
-                        <wms:ActionBarItem Content="{x:Static res:General.Revert}"
-                                           CustomGlyphSize="24,24"
-                                           Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_undo_black_24dp.png"
-                                           GlyphSize="Custom" />
-                    </wms:ActionBar>
-                </Grid>
-
-                <GroupBox Grid.Row="1"
+                <GroupBox Grid.Row="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
                           Header="{x:Static res:MasterData.ItemInformation}">
@@ -94,7 +94,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="2"
+                <GroupBox Grid.Row="1"
                           Header="{x:Static res:MasterData.WarehousingInformation}">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -136,7 +136,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="2"
+                <GroupBox Grid.Row="1"
                           Grid.Column="1"
                           Margin="20,0,0,0"
                           Header="{x:Static res:MasterData.PhysicalInformation}">
@@ -182,12 +182,12 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="3"
+                <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="2"
                           Header="{x:Static res:MasterData.Compartments}">
                     <StackPanel Margin="0,10,0,0">
                         <TextBlock Text="{x:Static res:MasterData.ItemIsAllocatedInNoCompartment}"
-                                   Visibility="{Binding Path=ItemHasCompartments, Converter={StaticResource BTVIC}}" />
+                                   Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVIC}}" />
                         <wms:WmsGridControl MinHeight="300"
                                             MaxWidth="2000"
                                             MaxHeight="5000"
@@ -262,6 +262,7 @@
                 </StackPanel>
 
             </Grid>
+            
         </ScrollViewer>
     </Grid>
 </wms:WmsView>
