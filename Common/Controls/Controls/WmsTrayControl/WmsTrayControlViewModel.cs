@@ -28,8 +28,8 @@ namespace Ferretto.Common.Controls
 
         public WmsTrayControlViewModel()
         {
-            this.penBrush = Colors.Aqua.ToString();
-            this.penThickness = 2;
+            this.PenBrush = Colors.Aqua.ToString();
+            this.PenThickness = 2;
         }
 
         #endregion Constructors
