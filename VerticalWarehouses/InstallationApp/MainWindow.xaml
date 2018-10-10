@@ -11,10 +11,10 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/FontsAndColors.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextStyles.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ButtonStyles.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/FontsAndColors.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -43,6 +43,10 @@
                 <ComboBox Width="235"
                           Margin="5"
                           Style="{StaticResource StandardComboBoxStyle}">
+                    <ComboBox.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                         Color="Red" />
+                    </ComboBox.Resources>
                     <ComboBoxItem IsSelected="True"
                                   Style="{StaticResource StandardComboBoxItemStyle}">
                         Installer
@@ -56,15 +60,31 @@
                     </ComboBoxItem>
                 </ComboBox>
                 <ComboBox Width="235"
-                          Margin="5">
-                    <ComboBoxItem>ON</ComboBoxItem>
-                    <ComboBoxItem>OFF</ComboBoxItem>
+                          Margin="5"
+                          Style="{StaticResource StandardComboBoxStyle}">
+                    <ComboBox.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                         Color="Red" />
+                    </ComboBox.Resources>
+                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">ON</ComboBoxItem>
+                    <ComboBoxItem IsSelected="True"
+                                  Style="{StaticResource StandardComboBoxItemStyle}">
+                        OFF
+                    </ComboBoxItem>
                 </ComboBox>
                 <ComboBox Width="235"
-                          Margin="5">
-                    <ComboBoxItem>Manual</ComboBoxItem>
-                    <ComboBoxItem>Auto</ComboBoxItem>
-                    <ComboBoxItem>Error</ComboBoxItem>
+                          Margin="5"
+                          Style="{StaticResource StandardComboBoxStyle}">
+                    <ComboBox.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                                         Color="Red" />
+                    </ComboBox.Resources>
+                    <ComboBoxItem IsSelected="True"
+                                  Style="{StaticResource StandardComboBoxItemStyle}">
+                        Manual
+                    </ComboBoxItem>
+                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">Auto</ComboBoxItem>
+                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">Error</ComboBoxItem>
                 </ComboBox>
             </StackPanel>
         </Border>
@@ -74,63 +94,51 @@
             <ScrollViewer>
                 <StackPanel>
                     <Button Height="60"
+                            Click="OpenVerifyCircuitIntegrityViewButtonMethod"
                             Style="{StaticResource StandardButtonStyle}">
-                        Action 0
+                        Verify Circuit Integrity
                     </Button>
                     <Button Height="60"
-                            IsEnabled="False"
+                            Click="OpenLowSpeedMovementsTestViewButtonMethod"
                             Style="{StaticResource StandardButtonStyle}">
-                        Action 1
+                        Low Speed Movements Test
                     </Button>
                     <Button Height="60"
-                            IsEnabled="False"
+                            Click="OpenVerticalAxisCalibrationViewButtonMethod"
                             Style="{StaticResource StandardButtonStyle}">
-                        Action 2
+                        Vertical Axis Calibration
                     </Button>
-                    <Button Height="60"
+                    <Button Name="OpenVerifyPanelPositionPageButton"
+                            Height="60"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}">
-                        Action 3
+                        Verify Panel Position
                     </Button>
-                    <Button Height="60"
+                    <Button Name="OpenBelBurnishingPageButton"
+                            Height="60"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}">
-                        Action 4
+                        Belt Burnishing
                     </Button>
-                    <Button Height="60"
+                    <Button Name="OpenGateSetUpPageButton"
+                            Height="60"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}">
-                        Action 5
+                        Gate Set Up
                     </Button>
-                    <Button Height="60"
+                    <Button Name="OpenVerifyWeightControllerPageButton"
+                            Height="60"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}">
-                        Action 6
-                    </Button>
-                    <Button Height="60"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Action 7
-                    </Button>
-                    <Button Height="60"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Action 8
-                    </Button>
-                    <Button Height="60"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Action 9
-                    </Button>
-                    <Button Height="60"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Action 10
+                        Verify Weight Controller
                     </Button>
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        <ContentControl Grid.Row="1"
-                        Grid.Column="1" />
+        <ContentControl Name="InstallationPageRegionContentControl"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Width="730"
+                        Height="610" />
     </Grid>
 </Window>

@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
 using System.Diagnostics;
+using System;
 
 namespace Ferretto.VW.VWApp
 {
@@ -85,6 +85,7 @@ namespace Ferretto.VW.VWApp
             }
             else
             {
+                //TODO: open a popup to communicate to the user that the login info are not correct
                 this.UserLoginTextBox.Text = "";
                 this.PasswordLoginTextBox.Text = "";
             }

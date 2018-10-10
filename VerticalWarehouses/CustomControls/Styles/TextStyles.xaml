@@ -6,11 +6,19 @@
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="20" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="StandardTitleTextStyle"
            TargetType="{x:Type Control}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource RobotoCondensed-Regular}" />
         <Setter Property="FontSize" Value="30" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="StandardBodyTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
     </Style>
 </ResourceDictionary>

@@ -3,12 +3,19 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
     <Style x:Key="StandardComboBoxStyle"
            TargetType="{x:Type ComboBox}">
-        <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+        <Setter Property="Background" Value="{StaticResource FerrettoDarkGray}" />
         <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="StandardComboBoxItemStyle"
            TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+        <Setter Property="Background" Value="{StaticResource FerrettoDarkGray}" />
         <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
     </Style>
 </ResourceDictionary>
