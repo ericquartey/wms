@@ -28,6 +28,7 @@
     {
         #region Fields
 
+        public const string CELLS = "CellsViewModel";
         public const string COMPARTMENTDETAILS = "CompartmentDetailsViewModel";
         public const string COMPARTMENTS = "CompartmentsViewModel";
         public const string COMPARTMENTSANDDETAILS = "CompartmentsAndDetailsViewModel";
