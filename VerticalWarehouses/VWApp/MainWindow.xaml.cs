@@ -63,16 +63,16 @@ namespace Ferretto.VW.VWApp
             {
                 if (this.UserLogin == "Installer")
                 { //Instances of differents' projects MainWindow are declared in App.xaml.cs, so that there will be no running processes after closing VWApp.
-                    ((App)Application.Current).InstallationAppMainWindow = new InstallationApp.MainWindow();
-                    ((App)Application.Current).InstallationAppMainWindow.Show();
+                    ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
+                    ((App)Application.Current).InstallationMainWindowInstance.Show();
                     this.Hide();
                     this.UserLoginTextBox.Text = "";
                     this.PasswordLoginTextBox.Text = "";
                 }
                 else if (this.UserLogin == "Operator")
                 {
-                    ((App)Application.Current).OperatorAppMainWindow = new OperatorApp.MainWindow();
-                    ((App)Application.Current).OperatorAppMainWindow.Show();
+                    ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
+                    ((App)Application.Current).OperatorMainWindowInstance.Show();
                     this.Hide();
                     this.UserLoginTextBox.Text = "";
                     this.PasswordLoginTextBox.Text = "";

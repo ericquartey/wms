@@ -6,9 +6,8 @@ namespace Ferretto.VW.VWApp
     {//Instances of differents' projects MainWindow are declared in App.xaml.cs, so that there will be no running processes after closing VWApp.
         #region Properties
 
-        public InstallationApp.App InstallationAppInstance { get; set; }
-        public InstallationApp.MainWindow InstallationAppMainWindow { get; set; }
-        public OperatorApp.MainWindow OperatorAppMainWindow { get; set; }
+        public InstallationApp.MainWindow InstallationMainWindowInstance { get; set; }
+        public OperatorApp.MainWindow OperatorMainWindowInstance { get; set; }
 
         #endregion Properties
     }
