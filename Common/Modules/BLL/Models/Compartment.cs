@@ -43,7 +43,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int Stock
         {
             get => this.stock;
-            set => SetIfPositive(ref this.stock, value);
+            set => this.SetIfPositive(ref this.stock, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]

@@ -110,14 +110,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.itemProvider.Save(this.Item);
+            var modifiedRowCount = this.itemProvider.Save(this.Item);
 
-            if (rowSaved != 0)
+            if (modifiedRowCount > 0)
             {
                 this.EventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item.Id));
 
-                ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
         }
 

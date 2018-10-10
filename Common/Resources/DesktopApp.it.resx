@@ -141,4 +141,13 @@
   <data name="Application_Title" xml:space="preserve">
     <value>WMS – Ferretto Group</value>
   </data>
+  <data name="InitializingCompartmentModule" xml:space="preserve">
+    <value>Inizializzazione modulo Compartment ...</value>
+  </data>
+  <data name="InitializingMasterDataModule" xml:space="preserve">
+    <value>Inizializzazione modulo Master Data ...</value>
+  </data>
+  <data name="ElapsedTime" xml:space="preserve">
+    <value>Tempo Trascorso</value>
+  </data>
 </root>

@@ -100,6 +100,7 @@ namespace Ferretto.Common.Controls
             var binding = new Binding($"{nameof(DataContext)}.{dateEdit.FieldName}")
             {
                 Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
                 {
                     AncestorType = typeof(DateEdit)

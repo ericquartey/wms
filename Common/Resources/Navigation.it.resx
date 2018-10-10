@@ -198,4 +198,10 @@
   <data name="CompartmentsMapping" xml:space="preserve">
     <value>Mappatura Scomparti</value>
   </data>
+  <data name="PackageTypes" xml:space="preserve">
+    <value>Tipi confezione</value>
+  </data>
+  <data name="UnderStockItems" xml:space="preserve">
+    <value>Articoli Sottoscorta</value>
+  </data>
 </root>
