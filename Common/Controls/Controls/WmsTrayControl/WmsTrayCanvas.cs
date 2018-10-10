@@ -27,10 +27,9 @@ namespace Ferretto.Common.Controls
         {
             base.MeasureOverride(constraint);
 
-            var dataContext = this.DataContext as WmsTrayControlViewModel;
-            if (dataContext != null && this.WidthParent > 0 && this.HeightParent > 0)
+            if (this.DataContext is WmsTrayControlViewModel viewModel && this.WidthParent > 0 && this.HeightParent > 0)
             {
-                dataContext.Resize(this.WidthParent, this.HeightParent);
+                viewModel.Resize(this.WidthParent, this.HeightParent);
             }
 
             return new Size(this.WidthParent, this.HeightParent);

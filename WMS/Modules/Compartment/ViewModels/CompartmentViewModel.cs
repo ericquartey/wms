@@ -16,10 +16,8 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public CompartmentViewModel()
         {
-            this.loadingUnitDetails = new LoadingUnitDetails { Width = 1950, Length = 650 };
+            this.loadingUnitDetails = new LoadingUnitDetails();
             var listCompartmentDetails = new List<CompartmentDetails>();
-            listCompartmentDetails.Add(new CompartmentDetails { Width = 150, Height = 150, XPosition = 0, YPosition = 0 });
-
             this.loadingUnitDetails.Compartments = listCompartmentDetails;
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
         }

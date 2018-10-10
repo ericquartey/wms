@@ -36,7 +36,7 @@ namespace Ferretto.Common.Controls
         public WmsTrayControl()
         {
             this.InitializeComponent();
-            this.ic.DataContext = new WmsTrayControlViewModel();
+            this.CanvasItemsControl.DataContext = new WmsTrayControlViewModel();
             this.SetBackground();
         }
 
@@ -62,20 +62,14 @@ namespace Ferretto.Common.Controls
 
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                if (wmsTrayControl.ic.DataContext is WmsTrayControlViewModel viewModel)
-                {
-                    viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
-                }
+                viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
             }
         }
 
         private void SetBackground()
         {
-            //this.Stroke = new SolidColorBrush(Colors.Blue);
-            //this.StrokeThickness = 3;
-
             var DrawingBrush = new DrawingBrush();
             DrawingBrush.TileMode = TileMode.Tile;
             DrawingBrush.Viewport = new Rect(0, 0, 25, 25);

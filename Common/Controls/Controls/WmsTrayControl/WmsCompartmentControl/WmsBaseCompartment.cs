@@ -10,26 +10,11 @@ namespace Ferretto.Common.Controls
 {
     public class Tray
     {
-        #region Fields
-
-        private double heightMM;
-        private double widthMM;
-
-        #endregion Fields
-
         #region Properties
 
-        public double HeightMM
-        {
-            get { return this.heightMM; }
-            set { this.heightMM = value; }
-        }
+        public double HeightMm { get; set; }
 
-        public double WidthMM
-        {
-            get { return this.widthMM; }
-            set { this.widthMM = value; }
-        }
+        public double WidthMm { get; set; }
 
         #endregion Properties
     }
@@ -38,19 +23,16 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private float _borderThickness;
-        private string _colorBorder;
-        private string _colorFill;
-        private double _height;
-        private double _left;
-        private double _top;
-        private double _width;
         private string capacity;
-        private double originHeight;
-        private double originWidth;
-
+        private string colorBorder;
+        private string colorFill;
+        private double height;
+        private double left;
+        private float rectangleBorderThickness;
         private string select;
+        private double top;
         private Tray tray;
+        private double width;
 
         #endregion Fields
 
@@ -61,16 +43,6 @@ namespace Ferretto.Common.Controls
         #endregion Events
 
         #region Properties
-
-        public float BorderThickness
-        {
-            get { return this._borderThickness; }
-            set
-            {
-                this._borderThickness = value;
-                this.OnPropertyChanged(nameof(this.BorderThickness));
-            }
-        }
 
         public string Capacity
         {
@@ -84,20 +56,20 @@ namespace Ferretto.Common.Controls
 
         public string ColorBorder
         {
-            get { return this._colorBorder; }
+            get { return this.colorBorder; }
             set
             {
-                this._colorBorder = value;
+                this.colorBorder = value;
                 this.OnPropertyChanged(nameof(this.ColorBorder));
             }
         }
 
         public string ColorFill
         {
-            get { return this._colorFill; }
+            get { return this.colorFill; }
             set
             {
-                this._colorFill = value;
+                this.colorFill = value;
                 this.OnPropertyChanged(nameof(this.ColorFill));
             }
         }
@@ -106,52 +78,58 @@ namespace Ferretto.Common.Controls
         {
             get
             {
-                return this._height;
+                return this.height;
             }
             set
             {
-                this._height = value;
+                this.height = value;
                 this.OnPropertyChanged(nameof(this.Height));
             }
         }
 
         public double Left
         {
-            get { return this._left; }
+            get { return this.left; }
             set
             {
-                this._left = value;
+                this.left = value;
                 this.OnPropertyChanged(nameof(this.Left));
             }
         }
 
-        public double OriginHeight
-        {
-            get { return this.originHeight; }
-            set { this.originHeight = value; }
-        }
+        public double OriginHeight { get; set; }
 
-        public double OriginWidth
+        public double OriginWidth { get; set; }
+
+        public float RectangleBorderThickness
         {
-            get { return this.originWidth; }
-            set { this.originWidth = value; }
+            get { return this.rectangleBorderThickness; }
+            set
+            {
+                this.rectangleBorderThickness = value;
+                this.OnPropertyChanged(nameof(this.RectangleBorderThickness));
+            }
         }
 
         public string Select
         {
             get { return this.select; }
-            set { this.select = value; this.OnPropertyChanged(nameof(this.Select)); }
+            set
+            {
+                this.select = value;
+                this.OnPropertyChanged(nameof(this.Select));
+            }
         }
 
         public double Top
         {
             get
             {
-                return this._top;
+                return this.top;
             }
             set
             {
-                this._top = value;
+                this.top = value;
                 this.OnPropertyChanged(nameof(this.Top));
             }
         }
@@ -170,10 +148,10 @@ namespace Ferretto.Common.Controls
 
         public double Width
         {
-            get { return this._width; }
+            get { return this.width; }
             set
             {
-                this._width = value;
+                this.width = value;
                 this.OnPropertyChanged(nameof(this.Width));
             }
         }

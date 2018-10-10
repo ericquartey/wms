@@ -5,14 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <ctrls:WmsCanvasItemsControl x:Name="ic"
+    <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
                                  Width="{Binding ElementName=TheCanvas, Path=ActualWidth}"
                                  Height="{Binding ElementName=TheCanvas, Path=ActualHeight}"
                                  ItemsSource="{Binding Items, Mode=TwoWay}">
         <ctrls:WmsCanvasItemsControl.Resources />
         <ctrls:WmsCanvasItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <ctrls:WmsTrayCanvas x:Name="TheCanvas" />
+                <ctrls:WmsTrayCanvas x:Name="TrayCanvas" />
             </ItemsPanelTemplate>
         </ctrls:WmsCanvasItemsControl.ItemsPanel>
         <ctrls:WmsCanvasItemsControl.ItemContainerStyle>

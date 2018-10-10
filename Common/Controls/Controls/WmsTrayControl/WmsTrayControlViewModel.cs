@@ -30,8 +30,6 @@ namespace Ferretto.Common.Controls
         {
             this.penBrush = Colors.Aqua.ToString();
             this.penThickness = 2;
-            this.NotifyPropertyChanged(nameof(this.PenBrush));
-            this.NotifyPropertyChanged(nameof(this.PenThickness));
         }
 
         #endregion Constructors
@@ -51,13 +49,21 @@ namespace Ferretto.Common.Controls
         public string PenBrush
         {
             get { return this.penBrush; }
-            set { this.penBrush = value; }
+            set
+            {
+                this.penBrush = value;
+                this.NotifyPropertyChanged(nameof(this.PenBrush));
+            }
         }
 
         public int PenThickness
         {
             get { return this.penThickness; }
-            set { this.penThickness = value; }
+            set
+            {
+                this.penThickness = value;
+                this.NotifyPropertyChanged(nameof(this.PenThickness));
+            }
         }
 
         #endregion Properties
@@ -70,10 +76,10 @@ namespace Ferretto.Common.Controls
             {
                 foreach (var i in this.items)
                 {
-                    i.Width = this.ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, i.Tray.WidthMM);
-                    i.Height = this.ConvertMillimetersToPixel(i.OriginHeight, heightTrayPixel, i.Tray.HeightMM);
-                    i.Top = this.ConvertMillimetersToPixel(i.Top, heightTrayPixel, i.Tray.HeightMM);
-                    i.Left = this.ConvertMillimetersToPixel(i.Left, widthTrayPixel, i.Tray.WidthMM);
+                    i.Width = ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, i.Tray.WidthMm);
+                    i.Height = ConvertMillimetersToPixel(i.OriginHeight, heightTrayPixel, i.Tray.HeightMm);
+                    i.Top = ConvertMillimetersToPixel(i.Top, heightTrayPixel, i.Tray.HeightMm);
+                    i.Left = ConvertMillimetersToPixel(i.Left, widthTrayPixel, i.Tray.WidthMm);
                 }
             }
         }
@@ -94,9 +100,9 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private double ConvertMillimetersToPixel(double value, double pixel, double mm, int offsetMM = 0)
+        private static double ConvertMillimetersToPixel(double value, double pixel, double mm, int offsetMM = 0)
         {
-            if (mm != null && mm > 0)
+            if (mm > 0)
             {
                 return (pixel * value) / mm + offsetMM;
             }
@@ -110,7 +116,7 @@ namespace Ferretto.Common.Controls
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
-                    Tray = new Tray { WidthMM = this.LoadingUnitProperty.Width, HeightMM = this.LoadingUnitProperty.Length },
+                    Tray = new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
                     OriginHeight = (int)compartment.Height,
                     OriginWidth = (int)compartment.Width,
                     Width = (int)(compartment.Width * ratio),
