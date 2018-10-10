@@ -1,33 +1,14 @@
-﻿using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL.Models;
-using Microsoft.Practices.ServiceLocation;
-using Prism.Commands;
+﻿using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
     public class LoadingUnitsViewModel : EntityListViewModel<LoadingUnit>
     {
-        #region Fields
-
-        private ICommand viewDetailsCommand;
-
-        #endregion Fields
-
-        #region Properties
-
-        public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
-            (this.viewDetailsCommand = new DelegateCommand(this.ExecuteViewDetailsCommand));
-
-        #endregion Properties
-
         #region Methods
 
-        private void ExecuteViewDetailsCommand()
+        public override void ExecuteViewDetailsCommand()
         {
-            ServiceLocator.Current.GetInstance<IEventService>()
-                .Invoke(new ShowDetailsEventArgs<LoadingUnit>(this.Token, true));
+            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem?.Id);
         }
 
         #endregion Methods

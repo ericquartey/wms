@@ -133,6 +133,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string CompartmentsViewAll {
+            get {
+                return ResourceManager.GetString("CompartmentsViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
         /// </summary>
         public static string CompartmentTypes {
@@ -169,33 +178,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
-        /// </summary>
-        public static string FilterAll {
-            get {
-                return ResourceManager.GetString("FilterAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png.
-        /// </summary>
-        public static string FilterClassA {
-            get {
-                return ResourceManager.GetString("FilterClassA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Products_black.png.
-        /// </summary>
-        public static string FilterFIFO {
-            get {
-                return ResourceManager.GetString("FilterFIFO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_upward_grey_24dp.png.
         /// </summary>
         public static string Import {
@@ -228,6 +210,33 @@ namespace Ferretto.Common.Resources {
         public static string Items {
             get {
                 return ResourceManager.GetString("Items", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string ItemsViewAll {
+            get {
+                return ResourceManager.GetString("ItemsViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png.
+        /// </summary>
+        public static string ItemsViewClassA {
+            get {
+                return ResourceManager.GetString("ItemsViewClassA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Products_black.png.
+        /// </summary>
+        public static string ItemsViewFIFO {
+            get {
+                return ResourceManager.GetString("ItemsViewFIFO", resourceCulture);
             }
         }
         
@@ -282,6 +291,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitStatuses {
             get {
                 return ResourceManager.GetString("LoadingUnitStatuses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string LoadingUnitsViewAll {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewAll", resourceCulture);
             }
         }
         

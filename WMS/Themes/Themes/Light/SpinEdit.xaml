@@ -2,138 +2,247 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:cs="colorscheme_ignorable_uri"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
-                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     mc:Ignorable="cs">
 
-    <ControlTemplate TargetType="{x:Type ButtonBase}"
-                     x:Key="{dxet:ButtonsThemeKey ResourceKey=SpinDownButtonTemplate, ThemeName=Office2016White}">
-        <Grid x:Name="Grid1" MinWidth="0">
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="DefaultState" Storyboard.TargetProperty="Opacity" To="1" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="HoverState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="PressedState" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="MouseOver">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="DefaultState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="HoverState" Storyboard.TargetProperty="Opacity" To="1" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="PressedState" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Pressed">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="DefaultState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="HoverState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="PressedState" Storyboard.TargetProperty="Opacity" To="1" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Disabled">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="Glyph" Storyboard.TargetProperty="Opacity" To="0.35" />
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
+    <ControlTemplate x:Key="{dxet:ButtonsThemeKey ResourceKey=SpinDownButtonTemplate,
+                                                  ThemeName=Office2016White}"
+                     TargetType="{x:Type ButtonBase}">
+        <Grid x:Name="Grid1"
+              MinWidth="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto">
-                    <!--BEGIN WPF-->
+                    <!--  BEGIN WPF  -->
                     <ColumnDefinition.SharedSizeGroup>
                         <sys:String>ComboBoxButton</sys:String>
                     </ColumnDefinition.SharedSizeGroup>
-                    <!--END WPF-->
+                    <!--  END WPF  -->
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border x:Name="DefaultState" BorderBrush="Transparent" BorderThickness="1,0,1,1" Opacity="0" cs:Name="Border_0004" Background="Transparent" />
-            <Border x:Name="HoverState" BorderBrush="Transparent" BorderThickness="1,0,1,1" Opacity="0" cs:Name="Border_0005" Background="{DynamicResource CommonSecondaryUltralight}" />
-            <Border x:Name="PressedState" BorderBrush="Transparent" BorderThickness="1,0,1,1" Opacity="0" cs:Name="Border_0006" Background="{DynamicResource CommonSecondaryLight}" />
-            <Grid x:Name="Arrow" Grid.ColumnSpan="1" SnapsToDevicePixels="True">
+            <Border x:Name="DefaultState"
+                    cs:Name="Border_0004"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="1,0,1,1"
+                    Opacity="0" />
+            <Border x:Name="HoverState"
+                    cs:Name="Border_0005"
+                    Background="{DynamicResource CommonSecondaryUltralight}"
+                    BorderBrush="Transparent"
+                    BorderThickness="1,0,1,1"
+                    Opacity="0" />
+            <Border x:Name="PressedState"
+                    cs:Name="Border_0006"
+                    Background="{DynamicResource CommonSecondaryLight}"
+                    BorderBrush="Transparent"
+                    BorderThickness="1,0,1,1"
+                    Opacity="0" />
+            <Grid x:Name="Arrow"
+                  Grid.ColumnSpan="1"
+                  SnapsToDevicePixels="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.7*" />
-                    <ColumnDefinition Width="0.3*" MinWidth="16" />
+                    <ColumnDefinition Width="0.3*"
+                                      MinWidth="16" />
                 </Grid.ColumnDefinitions>
-                <ContentPresenter x:Name="Glyph" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2" Margin="0,0,0,1">
+                <ContentPresenter x:Name="Glyph"
+                                  Grid.ColumnSpan="2"
+                                  Margin="0,0,0,1"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}">
                     <ContentPresenter.Content>
                         <SolidColorBrush Color="{DynamicResource {dxet:SpinEditThemeKey ResourceKey=ArrowBrushColor}}" />
                     </ContentPresenter.Content>
                 </ContentPresenter>
             </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DefaultState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DefaultState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DefaultState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Glyph"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0.35"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="dx:ThemeManager.IsTouchEnabled" Value="True">
-                <Setter Property="MinWidth" TargetName="Grid1" Value="44" />
+                <Setter TargetName="Grid1" Property="MinWidth" Value="44" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <ControlTemplate TargetType="{x:Type ButtonBase}"
-                     x:Key="{dxet:ButtonsThemeKey ResourceKey=SpinUpButtonTemplate, ThemeName=Office2016White}">
-        <Grid x:Name="Grid1" MinWidth="0">
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="CommonStates">
-                    <VisualState x:Name="Normal">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="DefaultState" Storyboard.TargetProperty="Opacity" To="1" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="HoverState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="PressedState" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="MouseOver">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="DefaultState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="HoverState" Storyboard.TargetProperty="Opacity" To="1" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="PressedState" Storyboard.TargetProperty="Opacity" To="0" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Pressed">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="DefaultState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="HoverState" Storyboard.TargetProperty="Opacity" To="0" />
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="PressedState" Storyboard.TargetProperty="Opacity" To="1" />
-                        </Storyboard>
-                    </VisualState>
-                    <VisualState x:Name="Disabled">
-                        <Storyboard>
-                            <DoubleAnimation Duration="0" Storyboard.TargetName="Glyph" Storyboard.TargetProperty="Opacity" To="0.35" />
-                        </Storyboard>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
+    <ControlTemplate x:Key="{dxet:ButtonsThemeKey ResourceKey=SpinUpButtonTemplate,
+                                                  ThemeName=Office2016White}"
+                     TargetType="{x:Type ButtonBase}">
+        <Grid x:Name="Grid1"
+              MinWidth="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto">
-                    <!--BEGIN WPF-->
+                    <!--  BEGIN WPF  -->
                     <ColumnDefinition.SharedSizeGroup>
                         <sys:String>ComboBoxButton</sys:String>
                     </ColumnDefinition.SharedSizeGroup>
-                    <!--END WPF-->
+                    <!--  END WPF  -->
                 </ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Border x:Name="DefaultState" BorderBrush="Transparent" BorderThickness="1,1,1,0" Opacity="0" cs:Name="Border_0007" Background="Transparent" />
-            <Border x:Name="HoverState" BorderBrush="Transparent" BorderThickness="1,1,1,0" Opacity="0" cs:Name="Border_0008" Background="{DynamicResource CommonSecondaryUltralight}" />
-            <Border x:Name="PressedState" BorderBrush="Transparent" BorderThickness="1,1,1,0" Opacity="0" cs:Name="Border_0009" Background="{DynamicResource CommonSecondaryLight}" />
-            <Grid x:Name="Arrow" Grid.ColumnSpan="1" SnapsToDevicePixels="True">
+            <Border x:Name="DefaultState"
+                    cs:Name="Border_0007"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    BorderThickness="1,1,1,0"
+                    Opacity="0" />
+            <Border x:Name="HoverState"
+                    cs:Name="Border_0008"
+                    Background="{DynamicResource CommonSecondaryUltralight}"
+                    BorderBrush="Transparent"
+                    BorderThickness="1,1,1,0"
+                    Opacity="0" />
+            <Border x:Name="PressedState"
+                    cs:Name="Border_0009"
+                    Background="{DynamicResource CommonSecondaryLight}"
+                    BorderBrush="Transparent"
+                    BorderThickness="1,1,1,0"
+                    Opacity="0" />
+            <Grid x:Name="Arrow"
+                  Grid.ColumnSpan="1"
+                  SnapsToDevicePixels="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.7*" />
-                    <ColumnDefinition Width="0.3*" MinWidth="16" />
+                    <ColumnDefinition Width="0.3*"
+                                      MinWidth="16" />
                 </Grid.ColumnDefinitions>
-                <ContentPresenter x:Name="Glyph" ContentTemplate="{TemplateBinding ContentTemplate}" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="2">
+                <ContentPresenter x:Name="Glyph"
+                                  Grid.ColumnSpan="2"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}">
                     <ContentPresenter.Content>
                         <SolidColorBrush Color="{DynamicResource {dxet:SpinEditThemeKey ResourceKey=ArrowBrushColor}}" />
                     </ContentPresenter.Content>
                 </ContentPresenter>
             </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DefaultState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="MouseOver">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DefaultState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="DefaultState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="HoverState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0"
+                                             Duration="0" />
+                            <DoubleAnimation Storyboard.TargetName="PressedState"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="1"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetName="Glyph"
+                                             Storyboard.TargetProperty="Opacity"
+                                             To="0.35"
+                                             Duration="0" />
+                        </Storyboard>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
         </Grid>
         <ControlTemplate.Triggers>
             <Trigger Property="dx:ThemeManager.IsTouchEnabled" Value="True">
-                <Setter Property="MinWidth" TargetName="Grid1" Value="44" />
+                <Setter TargetName="Grid1" Property="MinWidth" Value="44" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

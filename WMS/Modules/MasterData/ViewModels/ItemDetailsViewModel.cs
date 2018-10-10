@@ -11,18 +11,18 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : BaseNavigationViewModel
+    public class ItemDetailsViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
-        private ICommand hideDetailsCommand;
         private ItemDetails item;
         private bool itemHasCompartments;
         private ICommand saveCommand;
+        private object selectedCompartment;
+        private ICommand viewCompartmentDetailsCommand;
 
         #endregion Fields
 
@@ -43,8 +43,17 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-                                    (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
+        public Compartment CurrentCompartment
+        {
+            get
+            {
+                if (this.selectedCompartment == null)
+                {
+                    return default(Compartment);
+                }
+                return (Compartment)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
+            }
+        }
 
         public ItemDetails Item
         {
@@ -75,13 +84,28 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
+        public object SelectedCompartment
+        {
+            get => this.selectedCompartment;
+            set => this.SetProperty(ref this.selectedCompartment, value);
+        }
+
+        public ICommand ViewCompartmentDetailsCommand => this.viewCompartmentDetailsCommand ??
+                                      (this.viewCompartmentDetailsCommand = new DelegateCommand(this.ExecuteViewCompartmentDetailsCommand));
+
         #endregion Properties
 
         #region Methods
 
-        private void ExecuteHideDetailsCommand()
+        public void ExecuteViewCompartmentDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Item>(this.Token, false));
+            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentCompartment?.Id);
+        }
+
+        protected override void OnAppear()
+        {
+            this.LoadData(this.Data);
+            base.OnAppear();
         }
 
         private void ExecuteSaveCommand()
@@ -90,7 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<ItemDetails>(this.Item));
+                this.EventService.Invoke(new ItemChangedEvent<ItemDetails>(this.Item));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
@@ -99,17 +123,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.ItemId), true);
+            this.EventService.Subscribe<ItemSelectionChangedEvent<Item>>(
+                    eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(object itemId)
+        private void LoadData(object itemId)
         {
             if (itemId == null)
             {
                 this.Item = null;
                 return;
             }
+
             this.Item = this.itemProvider.GetById((int)itemId);
 
             this.ItemHasCompartments = this.itemProvider.HasAnyCompartments((int)itemId);

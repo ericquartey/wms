@@ -115,15 +115,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartments Master Data.
-        /// </summary>
-        public static string CompartmentsMasterData {
-            get {
-                return ResourceManager.GetString("CompartmentsMasterData", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Content Information.
         /// </summary>
         public static string ContentInformation {
@@ -138,15 +129,6 @@ namespace Ferretto.Common.Resources {
         public static string CurrentItemInformation {
             get {
                 return ResourceManager.GetString("CurrentItemInformation", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Initializing Master Data module ....
-        /// </summary>
-        public static string InitializingMasterDataModule {
-            get {
-                return ResourceManager.GetString("InitializingMasterDataModule", resourceCulture);
             }
         }
         
