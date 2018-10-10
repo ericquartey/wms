@@ -157,10 +157,6 @@
     <value>Item saved sucessfully</value>
     <comment>Notification - item saved</comment>
   </data>
-  <data name="CompartmentsMasterData" xml:space="preserve">
-    <value>Compartments Master Data</value>
-    <comment>Label - Compartments Page Title</comment>
-  </data>
   <data name="CompartmentAll" xml:space="preserve">
     <value>All</value>
     <comment>Filter - All Compartments</comment>
@@ -199,9 +195,5 @@
   </data>
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>This item is not allocated in any compartments.</value>
-  </data>
-  <data name="InitializingMasterDataModule" xml:space="preserve">
-    <value>Initializing Master Data module ...</value>
-    <comment>Splash screen message</comment>
   </data>
 </root>

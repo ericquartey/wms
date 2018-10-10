@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using DevExpress.Xpf.Docking;
+using DevExpress.Xpf.Docking.Base;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
@@ -28,6 +29,7 @@ namespace Ferretto.Common.Controls
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
             this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;
+            this.ClosedPanelsBarVisibility = ClosedPanelsBarVisibility.Never;
             Application.Current.MainWindow.PreviewKeyDown += this.DockHost_PreviewKeyDown;
             Application.Current.MainWindow.LostMouseCapture += this.MainWindow_LostMouseCapture;
         }
@@ -87,6 +89,12 @@ namespace Ferretto.Common.Controls
             if (this.isControlPressed == false)
             {
                 var activePanel = this.DockController.ActiveItem as LayoutPanel;
+                if (activePanel == null)
+                {
+                    // All Views closed
+                    activeGroup.Add(newLayoutPanel);
+                    return;
+                }
                 var layoutGroup = activePanel.Parent;
                 var lastActivePosition = layoutGroup.Items.IndexOf(activePanel);
                 this.DockController.RemovePanel(activePanel);

@@ -46,11 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compartment.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Compartment.resx</DependentUpon>
-    </Compile>
     <Compile Include="MasterData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -95,11 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BusinessObjects.it.resx" />
-    <EmbeddedResource Include="Compartment.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Compartment.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="DesktopApp.it.resx" />
+    <EmbeddedResource Include="Errors.it.resx" />
     <EmbeddedResource Include="MasterData.it.resx" />
     <EmbeddedResource Include="MasterData.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

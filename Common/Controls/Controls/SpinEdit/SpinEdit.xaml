@@ -1,14 +1,14 @@
-﻿<UserControl x:Class="Ferretto.Common.Controls.SpinEdit"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-             xmlns:local="clr-namespace:Ferretto.Common.Controls"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             d:DesignHeight="80"
-             d:DesignWidth="300"
-             mc:Ignorable="d">
+﻿<local:FormControl x:Class="Ferretto.Common.Controls.SpinEdit"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                   xmlns:local="clr-namespace:Ferretto.Common.Controls"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                   d:DesignHeight="80"
+                   d:DesignWidth="300"
+                   mc:Ignorable="d">
     <Grid x:Name="GridSpinEdit">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -16,14 +16,14 @@
         </Grid.RowDefinitions>
         <Label Content="{Binding Path=Label}"
                Style="{DynamicResource ControlLabelStyle}" />
-        <dxe:SpinEdit Grid.Row="1"
+        <dxe:SpinEdit x:Name="InnerSpinEdit"
+                      Grid.Row="1"
                       MinWidth="100"
-                      EditValue="{Binding Path=EditValue, Mode=TwoWay }"
-                      Mask="{Binding Path=Mask}"
-                      MaskType="{Binding Path=MaskType}"
                       AllowNullInput="True"
+                      EditValueType="{Binding Path=EditValueType}"
                       IsFloatValue="False"
-                      IsTextEditable="True">
-        </dxe:SpinEdit>
+                      IsTextEditable="True"
+                      Mask="{Binding Path=Mask}"
+                      MaskType="{Binding Path=MaskType}" />
     </Grid>
-</UserControl>
+</local:FormControl>

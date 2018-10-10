@@ -71,7 +71,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
         public DataModels.Pairing ItemPairing { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentHandlingDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastPickDate), ResourceType = typeof(BusinessObjects))]
