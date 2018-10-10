@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
@@ -20,6 +19,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? width;
 
         #endregion Fields
+
+        #region Constructors
+
+        public ItemDetails(int id) : base(id)
+        { }
+
+        #endregion Constructors
 
         #region Properties
 

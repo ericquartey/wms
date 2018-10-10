@@ -5,6 +5,13 @@ namespace Ferretto.Common.Modules.BLL.Models
 {
     public sealed class Cell : BusinessObject<int>
     {
+        #region Constructors
+
+        public Cell(int id) : base(id)
+        { }
+
+        #endregion Constructors
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]

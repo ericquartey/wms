@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
@@ -21,6 +20,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? yPosition;
 
         #endregion Fields
+
+        #region Constructors
+
+        public CompartmentDetails(int id) : base(id)
+        { }
+
+        #endregion Constructors
 
         #region Properties
 

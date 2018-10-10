@@ -13,6 +13,13 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #endregion Fields
 
+        #region Constructors
+
+        public LoadingUnit(int id) : base(id)
+        { }
+
+        #endregion Constructors
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]

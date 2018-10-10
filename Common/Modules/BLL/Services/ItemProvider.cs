@@ -53,7 +53,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             var itemDetails = this.dataContext.Items
                 .Where(i => i.Id == id)
-                .Select(i => new ItemDetails
+                .Select(i => new ItemDetails(i.Id)
                 {
                     Id = i.Id,
                     Code = i.Code,
@@ -174,7 +174,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    })
                .SelectMany(
                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                   (a, b) => new Item
+                   (a, b) => new Item(a.Item.Id)
                    {
                        AbcClassDescription = a.Item.AbcClass.Description,
                        AverageWeight = a.Item.AverageWeight,
@@ -182,7 +182,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                        FifoTimePick = a.Item.FifoTimePick,
                        FifoTimeStore = a.Item.FifoTimeStore,
                        Height = a.Item.Height,
-                       Id = a.Item.Id,
                        InventoryDate = a.Item.InventoryDate,
                        InventoryTolerance = a.Item.InventoryTolerance,
                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
