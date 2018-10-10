@@ -20,6 +20,10 @@
             <RowDefinition />
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
+        <Image Grid.Row="0"
+               Grid.Column="1"
+               Margin="3"
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg" />
         <Border Grid.Row="1"
                 Grid.Column="1"
                 Width="auto"
@@ -58,9 +62,5 @@
                 Switch Off
             </Button>
         </StackPanel>
-        <Image Grid.Column="1"
-               Margin="3"
-               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
-               Stretch="Uniform" />
     </Grid>
 </Window>

@@ -109,15 +109,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\ferrettologo_768x162.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\ferrettologo_768x162.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\FGLogo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Assets\ferrettologo_768x162.jpg" />
+    <Resource Include="Assets\ferrettologo_768x162.png" />
+    <Resource Include="Assets\FGLogo.png" />
     <Content Include="Assets\VertimagFronte.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
