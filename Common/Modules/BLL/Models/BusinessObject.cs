@@ -5,7 +5,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class BusinessObject : BindableBase, IBusinessObject
+    public class BusinessObject<TId> : BindableBase, IBusinessObject<TId>
     {
         #region Constructors
 
@@ -13,6 +13,12 @@ namespace Ferretto.Common.Modules.BLL.Models
         { }
 
         #endregion Constructors
+
+        #region Properties
+
+        public virtual TId Id { get; protected set; }
+
+        #endregion Properties
 
         #region Methods
 

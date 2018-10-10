@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-        private IDataSource<Compartment> compartmentsDataSource;
+        private IDataSource<Compartment, int> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
         private ICommand saveCommand;
@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<Compartment> CompartmentsDataSource
+        public IDataSource<Compartment, int> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     if (this.item != null)
                     {
                         var viewName = MvvmNaming.GetViewNameFromViewModelName(nameof(ItemDetailsViewModel));
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment>(viewName, this.item.Id).Single();
+                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment, int>(viewName, this.item.Id).Single();
                     }
                     else
                     {
@@ -114,8 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (modifiedRowCount > 0)
             {
-                this.Item = this.itemProvider.GetById(this.Item.Id);
-                this.EventService.Invoke(new ItemChangedEvent<ItemDetails>(this.Item));
+                this.EventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
@@ -123,7 +122,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<Item>>(
+            this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
                     eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
