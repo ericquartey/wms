@@ -37,7 +37,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int Length
         {
             get => this.length;
-            set => SetIfStrictlyPositive(ref this.length, value);
+            set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
         public IEnumerable<Enumeration<string>> LoadingUnitStatusChoices { get; set; }
@@ -54,7 +54,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int Width
         {
             get => this.width;
-            set => SetIfStrictlyPositive(ref this.width, value);
+            set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
         #endregion Properties
