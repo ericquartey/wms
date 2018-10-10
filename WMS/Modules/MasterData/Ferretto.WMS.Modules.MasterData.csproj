@@ -189,6 +189,7 @@
     <Compile Include="ViewModels\EntityListViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
     <Compile Include="ViewModels\ItemsAndDetailsViewModel.cs" />
+    <Compile Include="ViewModels\CellsViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitDetailsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitsAndDetailsViewModel.cs" />
@@ -207,6 +208,9 @@
     </Compile>
     <Compile Include="Views\ItemsAndDetailsView.xaml.cs">
       <DependentUpon>ItemsAndDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CellsView.xaml.cs">
+      <DependentUpon>CellsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemsView.xaml.cs">
       <DependentUpon>ItemsView.xaml</DependentUpon>
@@ -247,6 +251,10 @@
     <Page Include="Views\ItemsAndDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CellsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\ItemsView.xaml">
       <SubType>Designer</SubType>
