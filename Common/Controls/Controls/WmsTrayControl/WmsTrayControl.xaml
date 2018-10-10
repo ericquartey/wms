@@ -5,71 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <!--  d:DesignHeight="300"
-             d:DesignWidth="300"-->
-    <ItemsControl x:Name="ic"
-                  Width="{Binding ElementName=TheCanvas, Path=ActualWidth}"
-                  Height="{Binding ElementName=TheCanvas, Path=ActualHeight}"
-                  ItemsSource="{Binding Items, Mode=TwoWay}">
-        <ItemsControl.Resources>
-            <DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
-                <Border Width="{Binding Width, Mode=TwoWay}"
-                        Height="{Binding Height, Mode=TwoWay}">
-                    <Rectangle Width="{Binding Width, Mode=TwoWay}"
-                               Height="{Binding Height, Mode=TwoWay}"
-                               Fill="{Binding Capacity, Mode=TwoWay}"
-                               Stroke="{Binding Select, Mode=TwoWay}" />
-                </Border>
-            </DataTemplate>
-            <!--<DataTemplate DataType="{x:Type ctrls:SmallCompartmentVM}">
-                    <StackPanel>
-                        <Ellipse Stroke="Red" Fill="{Binding BackColor}" Width="{Binding EllipseWidth}" Height="{Binding EllipseHeight}"/>
-                    </StackPanel>
-                </DataTemplate>-->
-        </ItemsControl.Resources>
-        <ItemsControl.ItemsPanel>
+    <ctrls:WmsCanvasItemsControl x:Name="ic"
+                                 Width="{Binding ElementName=TheCanvas, Path=ActualWidth}"
+                                 Height="{Binding ElementName=TheCanvas, Path=ActualHeight}"
+                                 ItemsSource="{Binding Items, Mode=TwoWay}">
+        <ctrls:WmsCanvasItemsControl.Resources />
+        <ctrls:WmsCanvasItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <ctrls:WmsCanvas x:Name="TheCanvas">
-                    <!--<ctrls:WmsCanvas.Background>
-                        <DrawingBrush x:Name="DrawingBrush"
-                                      TileMode="Tile">
-                            <DrawingBrush.Drawing>
-                                <GeometryDrawing>
-                                    <GeometryDrawing.Pen>
-                                        <Pen Brush="Blue"
-                                             Thickness="3" />
-                                        --><!--<Pen Brush="{Binding PenBrush, Mode=TwoWay}"
-                                             Thickness="{Binding PenThickness, Mode=TwoWay}" />--><!--
-                                    </GeometryDrawing.Pen>
-                                </GeometryDrawing>
-                            </DrawingBrush.Drawing>
-                        </DrawingBrush>
-                    </ctrls:WmsCanvas.Background>-->
-                </ctrls:WmsCanvas>
+                <ctrls:WmsTrayCanvas x:Name="TheCanvas" />
             </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemContainerStyle>
+        </ctrls:WmsCanvasItemsControl.ItemsPanel>
+        <ctrls:WmsCanvasItemsControl.ItemContainerStyle>
             <Style TargetType="ContentPresenter">
                 <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
                 <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
             </Style>
-        </ItemsControl.ItemContainerStyle>
-    </ItemsControl>
+        </ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+    </ctrls:WmsCanvasItemsControl>
 </UserControl>
-<!--<wms:WmsCanvas Background=""
-                           LoadingUnit="{Binding LoadingUnit}"
-                           ReadOnly="{Binding ReadOnly}">
-                <wms:WmsCanvas.Background>
-                    <DrawingBrush x:Name="DrawingBrush"
-                                  TileMode="Tile">
-                        <DrawingBrush.Drawing>
-                            <GeometryDrawing>
-                                <GeometryDrawing.Pen>
-                                    <Pen Brush="{Binding PenBrush}"
-                                         Thickness="{Binding PenThickness}" />
-                                </GeometryDrawing.Pen>
-                            </GeometryDrawing>
-                        </DrawingBrush.Drawing>
-                    </DrawingBrush>
-                </wms:WmsCanvas.Background>
-            </wms:WmsCanvas>-->
+

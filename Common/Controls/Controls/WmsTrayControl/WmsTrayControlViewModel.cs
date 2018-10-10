@@ -14,8 +14,6 @@ namespace Ferretto.Common.Controls
 {
     public class WmsTrayControlViewModel : INotifyPropertyChanged
     {
-        //private readonly string ColorFill = ((SolidColorBrush)System.Windows.Application.Current.Resources["Red"]).Color.ToString();
-
         #region Fields
 
         private ObservableCollection<WmsBaseCompartment> items;
@@ -66,19 +64,17 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Resize(float ratio)
+        public void Resize(double widthTrayPixel, double heightTrayPixel)
         {
-            foreach (var i in this.items)
+            if (this.items != null)
             {
-                i.Top += 3;
-                i.Width = 150 * ratio;
-                //if (i.Width > 0)
-                //{
-                //    i.Top *= ratio;
-                //    i.Left *= ratio;
-                //    i.Width *= ratio;
-                //    i.Height *= ratio;
-                //}
+                foreach (var i in this.items)
+                {
+                    i.Width = this.ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, i.Tray.WidthMM);
+                    i.Height = this.ConvertMillimetersToPixel(i.OriginHeight, heightTrayPixel, i.Tray.HeightMM);
+                    i.Top = this.ConvertMillimetersToPixel(i.Top, heightTrayPixel, i.Tray.HeightMM);
+                    i.Left = this.ConvertMillimetersToPixel(i.Left, widthTrayPixel, i.Tray.WidthMM);
+                }
             }
         }
 
@@ -86,7 +82,6 @@ namespace Ferretto.Common.Controls
         {
             this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
-            //TODO
             this.TransformDataInput();
             this.NotifyPropertyChanged(nameof(this.Items));
         }
@@ -99,22 +94,31 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        private double ConvertMillimetersToPixel(double value, double pixel, double mm, int offsetMM = 0)
+        {
+            if (mm != null && mm > 0)
+            {
+                return (pixel * value) / mm + offsetMM;
+            }
+            return value;
+        }
+
         private void TransformDataInput(float ratio = 1)
         {
-            var listWmsCompartment = new List<WmsCompartmentViewModel>();
             var compartments = this.LoadingUnitProperty.Compartments;
-
             foreach (var compartment in compartments)
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
+                    Tray = new Tray { WidthMM = this.LoadingUnitProperty.Width, HeightMM = this.LoadingUnitProperty.Length },
+                    OriginHeight = (int)compartment.Height,
+                    OriginWidth = (int)compartment.Width,
                     Width = (int)(compartment.Width * ratio),
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
                     Capacity = Colors.Red.ToString(),
                     Select = Colors.RoyalBlue.ToString()
-                    //ColorBorder = this.ColorFill
                 });
             }
         }

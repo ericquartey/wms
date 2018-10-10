@@ -8,6 +8,32 @@ using System.Threading.Tasks;
 
 namespace Ferretto.Common.Controls
 {
+    public class Tray
+    {
+        #region Fields
+
+        private double heightMM;
+        private double widthMM;
+
+        #endregion Fields
+
+        #region Properties
+
+        public double HeightMM
+        {
+            get { return this.heightMM; }
+            set { this.heightMM = value; }
+        }
+
+        public double WidthMM
+        {
+            get { return this.widthMM; }
+            set { this.widthMM = value; }
+        }
+
+        #endregion Properties
+    }
+
     public class WmsBaseCompartment : INotifyPropertyChanged
     {
         #region Fields
@@ -19,9 +45,12 @@ namespace Ferretto.Common.Controls
         private double _left;
         private double _top;
         private double _width;
-
         private string capacity;
+        private double originHeight;
+        private double originWidth;
+
         private string select;
+        private Tray tray;
 
         #endregion Fields
 
@@ -96,6 +125,18 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public double OriginHeight
+        {
+            get { return this.originHeight; }
+            set { this.originHeight = value; }
+        }
+
+        public double OriginWidth
+        {
+            get { return this.originWidth; }
+            set { this.originWidth = value; }
+        }
+
         public string Select
         {
             get { return this.select; }
@@ -112,6 +153,18 @@ namespace Ferretto.Common.Controls
             {
                 this._top = value;
                 this.OnPropertyChanged(nameof(this.Top));
+            }
+        }
+
+        public Tray Tray
+        {
+            get
+            {
+                return this.tray;
+            }
+            set
+            {
+                this.tray = value;
             }
         }
 

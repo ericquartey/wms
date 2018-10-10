@@ -91,7 +91,7 @@ namespace Ferretto.Common.Controls
             checkersDrawingGroup.Children.Add(checkers);
             DrawingBrush.Drawing = checkersDrawingGroup;
 
-            this.Background = DrawingBrush;
+            //this.Background = DrawingBrush;
         }
 
         #endregion Methods

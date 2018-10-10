@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+    <DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
+        <Border Width="{Binding Width, Mode=TwoWay}"
+                Height="{Binding Height, Mode=TwoWay}">
+            <Rectangle Width="{Binding Width, Mode=TwoWay}"
+                       Height="{Binding Height, Mode=TwoWay}"
+                       Fill="{Binding Capacity, Mode=TwoWay}"
+                       Stroke="{Binding Select, Mode=TwoWay}" />
+        </Border>
+    </DataTemplate>
+</ResourceDictionary>
