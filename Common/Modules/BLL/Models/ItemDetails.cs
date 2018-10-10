@@ -6,7 +6,7 @@ using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class ItemDetails : BusinessObject, IEntity<int>
+    public sealed class ItemDetails : BusinessObject, IEntity<int>
     {
         #region Fields
 

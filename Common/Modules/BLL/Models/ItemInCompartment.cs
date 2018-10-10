@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class ItemInCompartment : BusinessObject
+    public sealed class ItemInCompartment : BusinessObject
     {
     }
 }
