@@ -105,10 +105,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Items.Find(model.Id);
+            var existingModel = this.dataContext.Compartments.Find(model.Id);
 
             this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-            existingModel.LastModificationDate = DateTime.Now;
 
             return this.dataContext.SaveChanges();
         }
