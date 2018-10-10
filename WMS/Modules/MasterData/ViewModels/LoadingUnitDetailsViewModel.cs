@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.EventService.Invoke(new ItemChangedEvent<LoadingUnitDetails, int>(this.LoadingUnit));
+                this.EventService.Invoke(new ItemChangedEvent<LoadingUnitDetails, int>(this.LoadingUnit.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }

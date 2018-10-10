@@ -11,7 +11,7 @@ namespace Ferretto.Common.Controls
 
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private IDataSource<TEntity, TId> currentDataSource;
-        private object selectedItem;
+        private TEntity selectedItem;
 
         #endregion Fields
 
@@ -38,7 +38,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public object SelectedItem
+        public TEntity SelectedItem
         {
             get => this.selectedItem;
             set
@@ -78,8 +78,7 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            var selectedId = this.selectedItem?.GetType().GetProperty("Id")?.GetValue(this.selectedItem);
-            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(selectedId, this.Token));
+            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(this.selectedItem.Id, this.Token));
         }
 
         #endregion Methods

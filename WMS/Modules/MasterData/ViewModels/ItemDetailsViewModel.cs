@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (rowSaved != 0)
             {
-                this.EventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item));
+                this.EventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item.Id));
 
                 ServiceLocator.Current.GetInstance<IEventService>()
                               .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));

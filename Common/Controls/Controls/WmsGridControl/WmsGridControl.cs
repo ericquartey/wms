@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using DevExpress.Mvvm.UI;
@@ -84,7 +85,7 @@ namespace Ferretto.Common.Controls
             this.View.AllowColumnFiltering = false;
         }
 
-        private Object InstantiateViewModel()
+        private object InstantiateViewModel()
         {
             if (this.ItemType == null)
             {
@@ -92,8 +93,8 @@ namespace Ferretto.Common.Controls
             }
 
             var viewModelClass = typeof(WmsGridViewModel<,>);
-            var constructedClass = viewModelClass.MakeGenericType(this.ItemType, typeof(int));
-
+            var idType = ((TypeInfo)this.itemType.GetInterface(typeof(IBusinessObject<>).FullName)).DeclaredProperties.First();
+            var constructedClass = viewModelClass.MakeGenericType(this.ItemType, idType.PropertyType);
             return Activator.CreateInstance(constructedClass);
         }
 

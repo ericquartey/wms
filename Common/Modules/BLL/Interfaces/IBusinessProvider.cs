@@ -13,7 +13,7 @@ namespace Ferretto.Common.Modules.BLL
 
         int GetAllCount();
 
-        TDetailsModel GetById(int id);
+        TDetailsModel GetById(TId id);
 
         int Save(TDetailsModel model);
 

@@ -12,7 +12,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public ItemChangedEvent(object itemId)
+        public ItemChangedEvent(TId itemId)
         {
             this.itemId = itemId;
         }
@@ -32,24 +32,24 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
-        private readonly object itemId;
+        private readonly TId itemId;
         private readonly string token;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemSelectionChangedEvent(object itemId, string token)
+        public ItemSelectionChangedEvent(TId itemId, string token)
         {
-            this.token = token;
             this.itemId = itemId;
+            this.token = token;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public object ItemId => this.itemId;
+        public TId ItemId => this.itemId;
 
         public string Token => this.token;
 
@@ -66,7 +66,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public RefreshItemsEvent(object itemId)
+        public RefreshItemsEvent(int itemId)
         {
             this.itemId = itemId;
         }
