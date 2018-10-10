@@ -5,8 +5,8 @@ using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class DataSource<TModel> : EntityInstantFeedbackSource, IDataSource<TModel>
-        where TModel : BusinessObject
+    public class DataSource<TModel, TId> : EntityInstantFeedbackSource, IDataSource<TModel, TId>
+        where TModel : BusinessObject<TId>
     {
         #region Constructors
 

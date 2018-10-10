@@ -44,7 +44,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            this.LoadData(this.Data);
+            this.LoadData((int?)this.Data);
             base.OnAppear();
         }
 
@@ -56,7 +56,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Compartment = this.compartmentProvider.GetById(this.Compartment.Id);
 
-                this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails>(this.Compartment));
+                this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails, int>(this.Compartment.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
@@ -64,11 +64,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment>>(
+            this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
                     eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
-        private void LoadData(object itemId)
+        private void LoadData(int? itemId)
         {
             if (itemId == null)
             {

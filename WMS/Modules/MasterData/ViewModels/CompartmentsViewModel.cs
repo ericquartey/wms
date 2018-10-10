@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentsViewModel : EntityListViewModel<Compartment>
+    public class CompartmentsViewModel : EntityListViewModel<Compartment, int>
     {
         #region Methods
 

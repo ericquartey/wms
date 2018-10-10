@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class CompartmentStockDetails : BusinessObject
+    public class CompartmentStockDetails : BusinessObject<int>
     {
         #region Fields
 

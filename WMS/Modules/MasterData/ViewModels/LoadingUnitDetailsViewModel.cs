@@ -57,7 +57,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.LoadingUnit = this.loadingUnitProvider.GetById(this.LoadingUnit.Id);
 
-                this.EventService.Invoke(new ItemChangedEvent<LoadingUnitDetails>(this.LoadingUnit));
+                this.EventService.Invoke(new ItemChangedEvent<LoadingUnitDetails, int>(this.LoadingUnit.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }
@@ -65,7 +65,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
+            this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails, int>>(
                     eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 

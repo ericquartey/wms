@@ -3,9 +3,9 @@ using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.Modules.BLL
 {
-    public interface IBusinessProvider<out TModel, TDetailsModel>
-        where TModel : IBusinessObject
-        where TDetailsModel : IBusinessObject
+    public interface IBusinessProvider<out TModel, TDetailsModel, TId>
+        where TModel : IBusinessObject<TId>
+        where TDetailsModel : IBusinessObject<TId>
     {
         #region Methods
 
@@ -13,7 +13,7 @@ namespace Ferretto.Common.Modules.BLL
 
         int GetAllCount();
 
-        TDetailsModel GetById(int id);
+        TDetailsModel GetById(TId id);
 
         int Save(TDetailsModel model);
 
