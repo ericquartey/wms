@@ -31,7 +31,7 @@ namespace Ferretto.VW.InvServer
         //!< Server socket
         private Socket m_sckWorker = null;
 
-        int DiffTime = 0;
+        private int DiffTime = 0;
 
         private IPEndPoint remoteIpEndPoint;
 
@@ -701,22 +701,5 @@ namespace Ferretto.VW.InvServer
         }
 
         #endregion Methods
-
-        #region Classes
-
-        public class SocketPacket
-        {
-            #region Fields
-
-            public byte[] dataBuffer = new byte[1024];
-            public System.Net.Sockets.Socket m_currentSocket;
-
-            #endregion Fields
-
-            //!< Current socket
-            //!< Data buffer
-        }
-
-        #endregion Classes
     }
 }

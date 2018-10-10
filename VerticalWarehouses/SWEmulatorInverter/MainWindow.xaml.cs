@@ -20,14 +20,14 @@ namespace Ferretto.VW.UI
     {
         #region Fields
 
-        private Program programma;
+        private Program Inverter;
 
         #endregion Fields
 
         public List<InverterCmd> Cmd { get; set; }
         byte OpStatus;
         byte[] SendClient;
-        int NumMessaggi;
+        int MessageNumber;
 
         #region Constructors
 
@@ -36,13 +36,13 @@ namespace Ferretto.VW.UI
 
             this.InitializeComponent();
 
-            this.programma = new Program();
+            this.Inverter = new Program();
 
             this.OpStatus = 0x01;
-            this.NumMessaggi = 0;
-            this.programma.SetStateInverter = true;
+            this.MessageNumber = 0;
+            this.Inverter.SetStateInverter = true;
 
-            var ipAddress = this.programma.GetIPAddress();
+            var ipAddress = this.Inverter.GetIPAddress();
 
             this.TextBox.Text = "IP Address: " + ipAddress;
             this.TextBox1.Text = "0";
@@ -55,16 +55,16 @@ namespace Ferretto.VW.UI
             this.BtnEsci.Background = Brushes.Red;
 
             // Evento per la gestione della ricezione dei messaggi
-            this.programma.ThrowEvent += new Program.MessageEventHandler(this.AggiornaTextBox);
+            this.Inverter.ThrowEvent += new Program.MessageEventHandler(this.AggiornaTextBox);
 
             // Evento per la gestione del client connesso
-            this.programma.SendClientEvent += new Program.ConnClientHandler(this.MexConnClient);
+            this.Inverter.SendClientEvent += new Program.ConnClientHandler(this.MexConnClient);
 
             // Evento per la gestione della disconnessione del cavo
-            this.programma.DiscSockets += new Program.DisconnectedSocketsEventHandler(this.DisconWire);
+            this.Inverter.DiscSockets += new Program.DisconnectedSocketsEventHandler(this.DisconWire);
 
             // Evento per la gestione della disconnessione del Client
-            this.programma.DiscClient += new Program.DisconnectedClientEventHandler(this.DisconClient);
+            this.Inverter.DiscClient += new Program.DisconnectedClientEventHandler(this.DisconClient);
 
             this.Cmd = new List<InverterCmd>();
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.UI
         {
             byte OpCode = Convert.ToByte(SingleCmd.CodeOp);
 
-            this.NumMessaggi++;
+            this.MessageNumber++;
 
             this.SendClient = new byte[]{ 0x03, OpCode, this.OpStatus };
 
@@ -92,7 +92,7 @@ namespace Ferretto.VW.UI
             this.Dispatcher.Invoke(() =>
             {
                 this.Cmd.Add(SingleCmd);
-                this.TextBox1.Text = this.NumMessaggi.ToString();
+                this.TextBox1.Text = this.MessageNumber.ToString();
 
                 this.TextBoxArea.AppendText("Received Op. Code: " + SingleCmd.CodeOp);
                 this.TextBoxArea.AppendText(Environment.NewLine);
@@ -106,52 +106,33 @@ namespace Ferretto.VW.UI
         private void Button_Click_Start(object sender, RoutedEventArgs e)
         {
             // Socket starting to wait for a client
-            string StartLitener = this.programma.StartListen();
+            string StartLitener = this.Inverter.StartListen();
 
             // Start Server
             this.StartMessages(StartLitener);
 
-            //this.RBYES.IsChecked = true;
+            this.TextBoxAS.Text = StartLitener;
 
-            //this.TextBoxAS.Text = sLitener;
+            this.TextBoxArea.AppendText("Server Avviato ...");
+            this.TextBoxArea.AppendText(Environment.NewLine);
 
-            //this.TextBoxArea.AppendText("Server Avviato ... in attesa di un Client");
-            //this.TextBoxArea.AppendText(Environment.NewLine);
-
-            //this.Btn_Start.IsEnabled = false;
-            //this.Btn_Stop.IsEnabled = true;
-            //this.Btn_Stop.IsEnabled = true;
+            this.Btn_Start.IsEnabled = false;
+            this.Btn_Stop.IsEnabled = true;
+            this.Btn_Stop.IsEnabled = true;
+ 
         }
 
         private void Button_Click_Stop(object sender, RoutedEventArgs e)
         {
-            string StopListen = this.programma.StopListen();
+            string StopListen = this.Inverter.StopListen();
 
             // Stop the server messages
             this.StopMessages(StopListen);
-
-            /*
-            this.RBNO.IsChecked = true;
-
-            this.TextBoxAS.Text = StopListen;
-
-            this.TextBoxArea.AppendText("Server Arrestato");
-            this.TextBoxArea.AppendText(Environment.NewLine);
-
-            this.Btn_Start.IsEnabled = true;
-            this.Btn_Stop.IsEnabled = false;
-
-            // When the client disconnect or the server is
-            // being stopped, the ListView has to be empty.
-            this.Cmd.Clear();
-            this.CmdList.ItemsSource = null;
-            this.CmdList.ItemsSource = this.Cmd;
-            */
         }
 
         private void Button_Done(Object sender, RoutedEventArgs e)
         {
-            this.programma.sendDataToClient(this.SendClient);
+            this.Inverter.sendDataToClient(this.SendClient);
 
             this.TextBoxArea.AppendText("Premuto pulsante DONE");
             this.TextBoxArea.AppendText(Environment.NewLine);
@@ -175,9 +156,6 @@ namespace Ferretto.VW.UI
 
                 // Stop the server
                 this.StopMessages(StopListen);
-
-                // Come lanciare il Trigger associato ad un pulsante
-                // this.Btn_Stop.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
             });
         }
 
@@ -191,9 +169,6 @@ namespace Ferretto.VW.UI
 
                 // Stop the server
                 this.StopMessages(StopListen);
-
-                // Come lanciare il Trigger associato ad un pulsante
-                // this.Btn_Stop.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
 
                 // Start Server
                 this.StartMessages(StartLitener);
@@ -221,8 +196,8 @@ namespace Ferretto.VW.UI
         {
             this.Dispatcher.Invoke(() =>
             {
-                this.NumMessaggi = 0;
-                this.TextBox1.Text = this.NumMessaggi.ToString();
+                this.MessageNumber = 0;
+                this.TextBox1.Text = this.MessageNumber.ToString();
 
                 this.RBNO.IsChecked = true;
                 this.TextBoxAS.Text = StopLiten;
@@ -243,7 +218,7 @@ namespace Ferretto.VW.UI
 
         private void MexConnClient()
         {
-            this.programma.ClientConn(out var IPAddressClient, out var PortClient);
+            this.Inverter.ClientConn(out var IPAddressClient, out var PortClient);
 
             // Serve per evitare l'errore di modificare il TextBox1 che si trova su un Task separato
             this.Dispatcher.Invoke(() =>
@@ -263,7 +238,7 @@ namespace Ferretto.VW.UI
             // dell'Inverter) che deve essere 0, perché devo simulare un errore.
             this.SendClient = new byte[] { 0x03, 0xFE, 0x00 };
 
-            this.programma.sendDataToClient(this.SendClient);
+            this.Inverter.sendDataToClient(this.SendClient);
 
             // Serve per evitare l'errore di modificare il TextBox1 che si trova su un Task separato
             this.Dispatcher.Invoke(() =>
@@ -275,18 +250,18 @@ namespace Ferretto.VW.UI
 
         private void RBYES_Checked(Object sender, RoutedEventArgs e)
         {
-            if (this.programma!=null)
+            if (this.Inverter!=null)
             { 
-                this.programma.SetStateInverter = true;
+                this.Inverter.SetStateInverter = true;
                 this.OpStatus = 0x01;
             }
         }
 
         private void RBNO_Checked(Object sender, RoutedEventArgs e)
         {
-            if (this.programma != null)
+            if (this.Inverter != null)
             {
-                this.programma.SetStateInverter = false;
+                this.Inverter.SetStateInverter = false;
                 this.OpStatus = 0x00;
             }
         }
