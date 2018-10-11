@@ -1,4 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using DevExpress.Mvvm;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Modules.BLL.Models;
 
@@ -8,6 +13,10 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
+        private CompartmentDetails compartmentInput;
+        private ICommand createNewCompartmentCommand;
+
+        //private ObservableCollection<WmsBaseCompartment> items;
         private LoadingUnitDetails loadingUnitDetails;
 
         #endregion Fields
@@ -16,18 +25,79 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public CompartmentViewModel()
         {
-            this.loadingUnitDetails = new LoadingUnitDetails();
-            this.RaisePropertyChanged(nameof(this.LoadingUnit));
+            this.compartmentInput = new CompartmentDetails();
+            this.compartmentInput.Width = 1;
+            this.compartmentInput.Height = 1;
+            this.compartmentInput.XPosition = 0;
+            this.compartmentInput.YPosition = 0;
+            //this.compartmentInput.MaxCapacity = 0;
+            this.compartmentInput.Stock = 0;
+            this.compartmentInput.ItemCode = "Item";
+            this.CompartmentInput = this.compartmentInput;
         }
 
         #endregion Constructors
 
+        #region Events
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion Events
+
         #region Properties
+
+        public CompartmentDetails CompartmentInput
+        {
+            get
+            {
+                return this.compartmentInput;
+            }
+            set
+            {
+                this.compartmentInput = value;
+                this.RaisePropertyChanged(nameof(this.compartmentInput));
+            }
+        }
+
+        public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
+                 (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
+
+        //public ObservableCollection<WmsBaseCompartment> Items { get { return this.items; } set { this.items = value; } }
 
         public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set { this.SetProperty(ref this.loadingUnitDetails, value); } }
 
-        //public ICommand
-
         #endregion Properties
+
+        #region Methods
+
+        public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
+        {
+            //this.items = new ObservableCollection<WmsBaseCompartment>();
+            this.LoadingUnit = loadingUnitDetails;
+            //this.RaisePropertyChanged(nameof(this.Items));
+        }
+
+        protected override void OnAppear()
+        {
+            this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
+            //this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 150, Height = 150, XPosition = 10, YPosition = 10 });
+            this.RaisePropertyChanged(nameof(this.LoadingUnit));
+        }
+
+        private void ExecuteNewCreateCompartmentCommand()
+        {
+            CompartmentDetails compartmentDetails = new CompartmentDetails
+            {
+                Width = this.CompartmentInput.Width,
+                Height = this.CompartmentInput.Height,
+                XPosition = this.CompartmentInput.XPosition,
+                YPosition = this.CompartmentInput.YPosition
+            };
+            this.LoadingUnit.AddCompartment(compartmentDetails);
+
+            this.LoadingUnit.OnAddedCompartmentEvent(null);
+        }
+
+        #endregion Methods
     }
 }

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using Ferretto.Common.Modules.BLL.Models;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
@@ -28,8 +23,9 @@ namespace Ferretto.Common.Controls
 
         public WmsTrayControlViewModel()
         {
-            this.PenBrush = new SolidColorBrush(Colors.Black);
-            this.PenThickness = 10;
+            //NOT WORK
+            //this.PenBrush = new SolidColorBrush(Colors.Black);
+            //this.PenThickness = 10;
         }
 
         #endregion Constructors
@@ -88,6 +84,8 @@ namespace Ferretto.Common.Controls
         {
             this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
+            loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
+            loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
             this.TransformDataInput();
             this.NotifyPropertyChanged(nameof(this.Items));
         }
@@ -109,6 +107,12 @@ namespace Ferretto.Common.Controls
             return value;
         }
 
+        private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
+        {
+            this.TransformDataInput();
+            this.NotifyPropertyChanged(nameof(this.Items));
+        }
+
         private void TransformDataInput(float ratio = 1)
         {
             var compartments = this.LoadingUnitProperty.Compartments;
@@ -127,7 +131,6 @@ namespace Ferretto.Common.Controls
                     Select = Colors.RoyalBlue.ToString()
                 });
             }
-            
         }
 
         #endregion Methods
