@@ -7,6 +7,7 @@
         Title="MainWindow"
         Width="1024"
         Height="768"
+        WindowStyle="None"
         mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary>
@@ -15,6 +16,7 @@
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextStyles.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ButtonStyles.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ComboBoxTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
@@ -29,6 +31,7 @@
         </Grid.RowDefinitions>
         <Border Grid.Row="0"
                 Grid.Column="0"
+                Background="{StaticResource FerrettoLightGray}"
                 BorderBrush="{StaticResource FerrettoMediumGray}"
                 BorderThickness="2">
             <Image Margin="5"
@@ -37,105 +40,91 @@
         </Border>
         <Border Grid.Row="0"
                 Grid.Column="1"
-                Background="{StaticResource FerrettoLightGray}">
+                Background="{StaticResource FerrettoLightGray}"
+                BorderBrush="{StaticResource FerrettoMediumGray}"
+                BorderThickness="0,2,2,2">
             <StackPanel FlowDirection="RightToLeft"
                         Orientation="Horizontal">
                 <ComboBox Width="235"
                           Margin="5"
-                          Style="{StaticResource StandardComboBoxStyle}">
-                    <ComboBox.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="Red" />
-                    </ComboBox.Resources>
-                    <ComboBoxItem IsSelected="True"
-                                  Style="{StaticResource StandardComboBoxItemStyle}">
-                        Installer
-                    </ComboBoxItem>
-                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">
-                        <Button Width="230"
-                                Click="BackToVWAppButtonMethod"
-                                Style="{StaticResource StandardButtonStyle}">
-                            Log out
-                        </Button>
-                    </ComboBoxItem>
+                          IsEditable="False"
+                          Style="{StaticResource StandardComboBoxStyle}"
+                          Template="{DynamicResource StandardComboBoxTemplate}">
+                    <ComboBoxItem Content="Installer"
+                                  IsSelected="True"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
+                    <ComboBoxItem Content="Log Off"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
                 </ComboBox>
                 <ComboBox Width="235"
                           Margin="5"
-                          Style="{StaticResource StandardComboBoxStyle}">
-                    <ComboBox.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="Red" />
-                    </ComboBox.Resources>
-                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">ON</ComboBoxItem>
-                    <ComboBoxItem IsSelected="True"
-                                  Style="{StaticResource StandardComboBoxItemStyle}">
-                        OFF
-                    </ComboBoxItem>
+                          IsEditable="False"
+                          Style="{StaticResource StandardComboBoxStyle}"
+                          Template="{DynamicResource StandardComboBoxTemplate}">
+                    <ComboBoxItem Content="ON"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
+                    <ComboBoxItem Content="OFF"
+                                  IsSelected="True"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
                 </ComboBox>
                 <ComboBox Width="235"
                           Margin="5"
-                          Style="{StaticResource StandardComboBoxStyle}">
-                    <ComboBox.Resources>
-                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}"
-                                         Color="Red" />
-                    </ComboBox.Resources>
-                    <ComboBoxItem IsSelected="True"
-                                  Style="{StaticResource StandardComboBoxItemStyle}">
-                        Manual
-                    </ComboBoxItem>
-                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">Auto</ComboBoxItem>
-                    <ComboBoxItem Style="{StaticResource StandardComboBoxItemStyle}">Error</ComboBoxItem>
+                          IsEditable="False"
+                          Style="{StaticResource StandardComboBoxStyle}"
+                          Template="{DynamicResource StandardComboBoxTemplate}">
+                    <ComboBoxItem Content="Manual"
+                                  IsSelected="True"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
+                    <ComboBoxItem Content="Auto"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
+                    <ComboBoxItem Content="Error"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
                 </ComboBox>
             </StackPanel>
         </Border>
         <Border Grid.Row="1"
                 Grid.Column="0"
-                Background="{StaticResource FerrettoLightGray}">
-            <ScrollViewer>
+                Background="{StaticResource FerrettoLightGray}"
+                BorderBrush="{StaticResource FerrettoMediumGray}"
+                BorderThickness="2,0,2,2">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden">
                 <StackPanel>
                     <Button Height="60"
                             Click="OpenVerifyCircuitIntegrityViewButtonMethod"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Verify Circuit Integrity
-                    </Button>
+                            Content="Verify Circuit Integrity"
+                            Style="{StaticResource StandardButtonStyle}" />
                     <Button Height="60"
                             Click="OpenLowSpeedMovementsTestViewButtonMethod"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Low Speed Movements Test
-                    </Button>
+                            Content="Low Speed Movements Test"
+                            Style="{StaticResource StandardButtonStyle}" />
                     <Button Height="60"
                             Click="OpenVerticalAxisCalibrationViewButtonMethod"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Vertical Axis Calibration
-                    </Button>
-                    <Button Name="OpenVerifyPanelPositionPageButton"
+                            Content="Vertical Axis Calibration"
+                            Style="{StaticResource StandardButtonStyle}" />
+                    <Button x:Name="OpenVerifyPanelPositionPageButton"
                             Height="60"
+                            Content="Verify Panel Position"
                             IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Verify Panel Position
-                    </Button>
-                    <Button Name="OpenBelBurnishingPageButton"
+                            Style="{StaticResource StandardButtonStyle}" />
+                    <Button x:Name="OpenBelBurnishingPageButton"
                             Height="60"
+                            Content="Belt Burnishing"
                             IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Belt Burnishing
-                    </Button>
-                    <Button Name="OpenGateSetUpPageButton"
+                            Style="{StaticResource StandardButtonStyle}" />
+                    <Button x:Name="OpenGateSetUpPageButton"
                             Height="60"
+                            Content="Gate Set Up"
                             IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Gate Set Up
-                    </Button>
-                    <Button Name="OpenVerifyWeightControllerPageButton"
+                            Style="{StaticResource StandardButtonStyle}" />
+                    <Button x:Name="OpenVerifyWeightControllerPageButton"
                             Height="60"
+                            Content="Verify Weight Controller"
                             IsEnabled="False"
-                            Style="{StaticResource StandardButtonStyle}">
-                        Verify Weight Controller
-                    </Button>
+                            Style="{StaticResource StandardButtonStyle}" />
                 </StackPanel>
             </ScrollViewer>
         </Border>
-        <ContentControl Name="InstallationPageRegionContentControl"
+        <ContentControl x:Name="InstallationPageRegionContentControl"
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="730"

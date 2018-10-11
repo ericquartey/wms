@@ -11,5 +11,15 @@
                Style="{StaticResource StandardTitleTextStyle}">
             Low Speed Movements Test
         </Label>
+        <TabControl DockPanel.Dock="Bottom">
+            <TabItem Header="Vertical Engine"
+                     Style="{StaticResource StandardBodyTextStyle}">
+                <Frame Source="LSMTVerticalEngineView.xaml" />
+            </TabItem>
+            <TabItem Header="Horizontal Engine"
+                     Style="{StaticResource StandardBodyTextStyle}" />
+            <TabItem Header="Gate Engine"
+                     Style="{StaticResource StandardBodyTextStyle}" />
+        </TabControl>
     </DockPanel>
 </UserControl>
