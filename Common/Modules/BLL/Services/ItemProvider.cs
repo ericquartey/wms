@@ -55,7 +55,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Where(i => i.Id == id)
                 .Select(i => new ItemDetails(i.Id)
                 {
-                    Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     ItemCategoryId = i.ItemCategoryId,
