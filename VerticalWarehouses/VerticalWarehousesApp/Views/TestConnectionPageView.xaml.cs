@@ -242,6 +242,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             var regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
             e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
+            this.tbStatus.Text = String.Format("Client [handle: {0}] is {1}", szHandle, szConnectStatus);
         }
 
         private void updateUI(bool State)

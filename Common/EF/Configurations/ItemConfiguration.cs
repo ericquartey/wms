@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Models;
+﻿using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -19,7 +19,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasIndex(i => i.Code).IsUnique();
 
             builder.Property(i => i.Code).IsRequired();
-            builder.Property(i => i.ClassId).IsRequired()
+            builder.Property(i => i.AbcClassId).IsRequired()
                 .HasColumnType("char(1)");
             builder.Property(i => i.Note)
                 .HasColumnType("text");
@@ -28,7 +28,7 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasOne(i => i.AbcClass)
                 .WithMany(a => a.Items)
-                .HasForeignKey(i => i.ClassId)
+                .HasForeignKey(i => i.AbcClassId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             builder.HasOne(i => i.MeasureUnit)
                 .WithMany(m => m.Items)
@@ -37,6 +37,10 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasOne(i => i.ItemManagementType)
                 .WithMany(i => i.Items)
                 .HasForeignKey(i => i.ItemManagementTypeId)
+                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.HasOne(i => i.ItemCategory)
+                .WithMany(i => i.Items)
+                .HasForeignKey(i => i.ItemCategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
     }

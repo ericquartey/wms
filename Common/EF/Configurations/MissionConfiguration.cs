@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.Models;
+﻿using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -6,8 +6,15 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class MissionConfiguration : IEntityTypeConfiguration<Mission>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<Mission> builder)
         {
+            if (builder == null)
+            {
+                throw new System.ArgumentNullException(nameof(builder));
+            }
+
             builder.HasKey(m => m.Id);
 
             builder.Property(m => m.MissionStatusId).HasColumnType("char(1)");
@@ -66,5 +73,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(m => m.PackageTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion Methods
     }
 }

@@ -1,5 +1,6 @@
-﻿using System.Windows;
-using DevExpress.Xpf.Core;
+﻿using System.Configuration;
+using System.Windows;
+using Ferretto.Common.Controls.Services;
 
 namespace Ferretto.WMS.App
 {
@@ -11,7 +12,11 @@ namespace Ferretto.WMS.App
         {
             base.OnStartup(e);
 
-            DXSplashScreen.Show<Common.Controls.SplashScreen>();
+            var defaultLanguage = ConfigurationManager.AppSettings["DefaultLanguage"] ?? "en";
+            System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
+
+            SplashScreenService.Show();
 
             new Bootstrapper().Run();
         }

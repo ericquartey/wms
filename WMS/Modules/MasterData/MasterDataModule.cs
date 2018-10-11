@@ -1,4 +1,8 @@
-﻿using Ferretto.Common.Controls.Interfaces;
+using System.Linq;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL;
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
@@ -9,22 +13,36 @@ namespace Ferretto.WMS.Modules.MasterData
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class MasterDataModule : IModule
     {
-        #region IModule Members
+        #region Fields
 
-        public IUnityContainer Container { get; private set; }
-        public IRegionManager RegionManager { get; private set; }
         private readonly INavigationService navigationService;
 
-        public MasterDataModule(IUnityContainer container, IRegionManager regionManager,
-            INavigationService navigationService)
+        #endregion Fields
+
+        #region Constructors
+
+        public MasterDataModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
         {
             this.Container = container;
             this.RegionManager = regionManager;
             this.navigationService = navigationService;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
+        public IUnityContainer Container { get; private set; }
+        public IRegionManager RegionManager { get; private set; }
+
+        #endregion Properties
+
+        #region Methods
+
         public void Initialize()
         {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMasterDataModule);
+
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
             this.navigationService.Register<ItemsAndDetailsView, ItemsAndDetailsViewModel>();
@@ -32,8 +50,18 @@ namespace Ferretto.WMS.Modules.MasterData
             this.navigationService.Register<CompartmentsView, CompartmentsViewModel>();
             this.navigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
             this.navigationService.Register<CompartmentsAndDetailsView, CompartmentsAndDetailsViewModel>();
+
+            this.navigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
+            this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
+            this.navigationService.Register<LoadingUnitsAndDetailsView, LoadingUnitsAndDetailsViewModel>();
+
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
+
+            ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
+
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
         }
 
-        #endregion
+        #endregion Methods
     }
 }

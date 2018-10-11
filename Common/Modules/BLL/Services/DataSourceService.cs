@@ -1,85 +1,80 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Models;
 using Ferretto.Common.Modules.BLL.Models;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
-    // All EF Item DataSources
-    public enum DataSourceType
-    {
-        ItemAll,
-        ItemAClass,
-        ItemFifo,
-
-        CompartmentAll,
-    }
-
     public class DataSourceService : IDataSourceService
     {
-        #region Fields
-
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
-
-        #endregion Fields
-
         #region Methods
 
-        public IEnumerable<object> GetAll(string viewName)
+        public IEnumerable<IDataSource<TModel, TId>> GetAll<TModel, TId>(string viewName, object parameter = null) where TModel : IBusinessObject<TId>
         {
+#pragma warning disable IDE0009
             switch (viewName)
             {
                 case "ItemsView":
-                    return new List<DataSource<Item>>
+                    var itemsProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+                    return new List<DataSource<Item, int>>
                     {
-                        // All items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemAll,
-                            Name = MasterData.ItemAll,
-                            Filter = items => items,
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
-                        },
-                        // A-Class items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemAClass,
-                            Name = MasterData.ItemClassA,
-                            Filter = items => items.Where(item => item.AbcClass.Id == "A"),
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
-                        },
-                        // FIFO items
-                        new DataSource<Item>
-                        {
-                            SourceName = DataSourceType.ItemFifo,
-                            Name = MasterData.ItemFIFO,
-                            Filter = items => items.Where(item => item.ItemManagementType.Description.Contains("FIFO")),
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
-                        }
-                    };
+                        new DataSource<Item, int>(
+                            "ItemsViewAll",
+                            Resources.MasterData.ItemAll,
+                            () => itemsProvider.GetAll(),
+                            () => itemsProvider.GetAllCount()),
+                        new DataSource<Item, int>(
+                            "ItemsViewClassA",
+                            Resources.MasterData.ItemClassA,
+                            () => itemsProvider.GetWithAClass(),
+                            () => itemsProvider.GetWithAClassCount()),
+                        new DataSource<Item, int>(
+                            "ItemsViewFIFO",
+                            Resources.MasterData.ItemFIFO,
+                            () => itemsProvider.GetWithFifo(),
+                            () => itemsProvider.GetWithFifoCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
+                case "ItemDetailsView":
+                    var itemDetailsProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
+                    return new List<DataSource<Compartment, int>>
+                    {
+                        new DataSource<Compartment, int>(
+                            "ItemDetailsView",
+                            Resources.MasterData.CompartmentAll,
+                            () => itemDetailsProvider.GetByItemId((int)parameter))
+                    }.Cast<IDataSource<TModel, TId>>();
 
                 case "CompartmentsView":
-                    return new List<DataSource<Compartment>>
+                    var compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
+                    return new List<DataSource<Compartment, int>>
                     {
-                        // All compartments
-                        new DataSource<Compartment>
-                        {
-                            SourceName = DataSourceType.CompartmentAll,
-                            Name = MasterData.CompartmentAll,
-                            Filter = compartments => compartments,
-                            GetCount = filter => this.dataService.GetData(filter).Count(),
-                            GetData = filter => this.dataService.GetData(filter)
-                        }
-                    };
+                        new DataSource<Compartment, int>(
+                            "CompartmentsViewAll",
+                            Resources.MasterData.CompartmentAll,
+                            () => compartmentProvider.GetAll(),
+                            () => compartmentProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
+                case "LoadingUnitsView":
+                    var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
+                    return new List<DataSource<LoadingUnit, int>>
+                    {
+                        new DataSource<LoadingUnit, int>(
+                            "LoadingUnitsViewAll",
+                            Resources.MasterData.LoadingUnitAll,
+                            () => loadingUnitProvider.GetAll(),
+                            () => loadingUnitProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
                 default:
-                    return null;
+                    return new List<IDataSource<TModel, TId>>();
             }
+#pragma warning restore IDE0009
         }
 
         #endregion Methods

@@ -523,10 +523,11 @@
                                                             <RowDefinition Height="*" />
                                                             <RowDefinition Height="Auto" />
                                                         </Grid.RowDefinitions>
-                                                        <Image Height="24"
-                                                               HorizontalAlignment="Left"
-                                                               VerticalAlignment="Top"
-                                                               Source="{Binding Image}" />
+                                                        <ctrls:WmsIcon Height="24"
+                                                                       HorizontalAlignment="Left"
+                                                                       VerticalAlignment="Top"
+                                                                       ColorizeBrush="{DynamicResource CommonSecondaryMedium}"
+                                                                       SymbolName="{Binding Image}" />
                                                         <TextBlock x:Name="ChildBarItemTB"
                                                                    Grid.Row="1"
                                                                    VerticalAlignment="Bottom"

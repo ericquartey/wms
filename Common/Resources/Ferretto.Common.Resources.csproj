@@ -56,10 +56,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
-    <Compile Include="Models.Designer.cs">
+    <Compile Include="BusinessObjects.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Models.resx</DependentUpon>
+      <DependentUpon>BusinessObjects.resx</DependentUpon>
     </Compile>
     <Compile Include="DesktopApp.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -89,6 +89,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BusinessObjects.it.resx" />
+    <EmbeddedResource Include="DesktopApp.it.resx" />
+    <EmbeddedResource Include="Errors.it.resx" />
+    <EmbeddedResource Include="MasterData.it.resx" />
     <EmbeddedResource Include="MasterData.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>MasterData.Designer.cs</LastGenOutput>
@@ -98,9 +102,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Icons.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Models.resx">
+    <EmbeddedResource Include="BusinessObjects.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Models.Designer.cs</LastGenOutput>
+      <LastGenOutput>BusinessObjects.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="DesktopApp.resx">
@@ -121,6 +125,7 @@
       <LastGenOutput>General.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Navigation.it.resx" />
     <EmbeddedResource Include="Navigation.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Navigation.Designer.cs</LastGenOutput>

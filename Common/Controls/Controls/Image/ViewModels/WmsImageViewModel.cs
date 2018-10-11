@@ -9,7 +9,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly IImageService imageService;
+        private readonly IImageProvider imageService;
         private ImageSource source;
 
         #endregion Fields
@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls
 
         public WmsImageViewModel()
         {
-            this.imageService = ServiceLocator.Current.GetInstance<IImageService>();
+            this.imageService = ServiceLocator.Current.GetInstance<IImageProvider>();
         }
 
         #endregion Constructors

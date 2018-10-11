@@ -7,19 +7,18 @@ namespace Ferretto.WMS.App
 {
     public partial class Shell : DXWindow
     {
+        #region Fields
+
         private readonly IModuleManager moduleManager;
         private readonly IRegionManager regionManager;
+
+        #endregion Fields
+
+        #region Constructors
 
         public Shell()
         {
             this.InitializeComponent();
-
-            this.Loaded += this.Shell_Loaded;
-        }
-
-        private void Shell_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
-        {
-            DXSplashScreen.Close();
         }
 
         public Shell(IModuleManager moduleManager, IRegionManager regionManager)
@@ -32,5 +31,7 @@ namespace Ferretto.WMS.App
             this.moduleManager.LoadModule(nameof(Layout));
             this.moduleManager.LoadModule(nameof(MasterData));
         }
+
+        #endregion Constructors
     }
 }

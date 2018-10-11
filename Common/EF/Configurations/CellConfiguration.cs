@@ -1,4 +1,6 @@
-﻿using Ferretto.Common.Models;
+﻿using System;
+using System.Linq;
+using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,16 +19,17 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.Property(c => c.Floor).IsRequired();
             builder.Property(c => c.Column).IsRequired();
-            builder.Property(c => c.ClassId).IsRequired()
+            builder.Property(c => c.AbcClassId).IsRequired()
                 .HasColumnType("char(1)");
             builder.Property(c => c.Side).IsRequired()
-                .HasColumnType("char(1)");
+                .HasColumnType("char(1)")
+                .HasConversion(x => (char) x, x => (Side) Enum.ToObject(typeof(Side), x));
             builder.Property(c => c.Priority)
                 .HasDefaultValue(1);
 
             builder.HasOne(c => c.AbcClass)
                 .WithMany(a => a.Cells)
-                .HasForeignKey(c => c.ClassId)
+                .HasForeignKey(c => c.AbcClassId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
             builder.HasOne(c => c.Aisle)
                 .WithMany(a => a.Cells)

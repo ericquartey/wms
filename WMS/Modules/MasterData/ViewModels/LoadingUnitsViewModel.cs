@@ -1,0 +1,16 @@
+﻿using Ferretto.Common.Modules.BLL.Models;
+
+namespace Ferretto.WMS.Modules.MasterData
+{
+    public class LoadingUnitsViewModel : EntityListViewModel<LoadingUnit, int>
+    {
+        #region Methods
+
+        public override void ExecuteViewDetailsCommand()
+        {
+            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITDETAILS, this.CurrentItem?.Id);
+        }
+
+        #endregion Methods
+    }
+}

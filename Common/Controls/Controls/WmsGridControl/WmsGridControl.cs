@@ -1,66 +1,129 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using DevExpress.Mvvm.UI;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
     public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
+
     {
-        #region Properties
+        #region Fields
 
-        public Type ItemType { get; set; }
+        public static readonly DependencyProperty CurrentDataSourceProperty = DependencyProperty.Register(
 
-        #endregion
-
-        #region Dependency properties  
-
-        public object CurrentDataSource
-        {
-            get => (object)this.GetValue(CurrentDataSourcesProperty);
-            set => this.SetValue(CurrentDataSourcesProperty, value);
-        }
-
-        public static readonly DependencyProperty CurrentDataSourcesProperty = DependencyProperty.Register(
             nameof(CurrentDataSource),
             typeof(object),
             typeof(WmsGridControl),
             new PropertyMetadata(CurrentDataSourceChanged));
 
-        private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        private Type itemType;
+
+        #endregion Fields
+
+        #region Properties
+
+        public object CurrentDataSource
         {
-            if (dependencyObject is WmsGridControl gridControl)
-            {                
-                if (gridControl.DataContext is IWmsGridViewModel dataContext)
+            get => this.GetValue(CurrentDataSourceProperty);
+            set => this.SetValue(CurrentDataSourceProperty, value);
+        }
+
+        public Type ItemType
+        {
+            get => this.itemType;
+            set
+            {
+                if (value != this.itemType)
                 {
-                    dataContext.SetDataSource(e.NewValue);
+                    if (value?.GetInterface(typeof(IBusinessObject<>).FullName) != null)
+                    {
+                        this.itemType = value;
+                    }
+                    else
+                    {
+                        throw new ArgumentException(
+                            $"The value assigned to the {nameof(this.ItemType)} property must be of type {nameof(IBusinessObject<object>)}", nameof(value));
+                    }
                 }
             }
         }
 
-        #endregion
+        #endregion Properties
 
         #region Methods
 
         protected override void OnInitialized(System.EventArgs e)
         {
-            if (this.ItemType == null)
-            {
-                throw new Exception("WmsGridControl ItemType is missing.");
-            }
             base.OnInitialized(e);
 
-            Type viewModelClass = typeof(WmsGridViewModel<>);
-            Type constructedClass = viewModelClass.MakeGenericType(this.ItemType);
-            this.DataContext = Activator.CreateInstance(constructedClass);            
+            this.DisableColumnFiltering();
 
+            this.DataContext = this.InstantiateViewModel();
+
+            this.SetToken();
+
+            this.SetupBindings();
+        }
+
+        private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        {
+            if (dependencyObject is WmsGridControl gridControl
+                &&
+                gridControl.DataContext is IWmsGridViewModel dataContext)
+            {
+                dataContext.SetDataSource(e.NewValue);
+            }
+        }
+
+        private void DisableColumnFiltering()
+        {
+            this.View.AllowColumnFiltering = false;
+        }
+
+        private object InstantiateViewModel()
+        {
+            if (this.ItemType == null)
+            {
+                throw new InvalidOperationException("WmsGridControl ItemType is missing.");
+            }
+
+            var viewModelClass = typeof(WmsGridViewModel<,>);
+            var idType = ((TypeInfo)this.itemType.GetInterface(typeof(IBusinessObject<>).FullName)).DeclaredProperties.First();
+            var constructedClass = viewModelClass.MakeGenericType(this.ItemType, idType.PropertyType);
+            return Activator.CreateInstance(constructedClass);
+        }
+
+        private void SetToken()
+        {
+            this.Loaded += this.WmsGridControl_Loaded;
+        }
+
+        private void SetupBindings()
+        {
             var selectedItemBinding = new Binding("SelectedItem")
             {
                 Mode = BindingMode.TwoWay,
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
-            this.SetBinding(ItemsSourceProperty, "Items");
+            this.SetBinding(ItemsSourceProperty, "CurrentDataSource");
+        }
+
+        private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)
+        {
+            var wmsViews = LayoutTreeHelper.GetVisualParents(this.Parent).OfType<WmsView>();
+            if (wmsViews != null && wmsViews.Any())
+            {
+                var wmsView = wmsViews.First();
+                var wmsViewViewModel = ((INavigableView)wmsView).DataContext;
+                var token = ((INavigableViewModel)wmsViewViewModel).Token;
+                ((INavigableViewModel)this.DataContext).Token = token;
+            }
         }
 
         #endregion Methods

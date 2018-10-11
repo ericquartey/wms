@@ -1,23 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
+﻿using System.Windows.Input;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Models;
+using Ferretto.Common.Modules.BLL;
+using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentDetailsViewModel : BaseNavigationViewModel
+    public class CompartmentDetailsViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
-        private Compartment compartment;
-        private ICommand hideDetailsCommand;
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private CompartmentDetails compartment;
         private ICommand saveCommand;
 
         #endregion Fields
@@ -33,16 +29,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IEnumerable<AbcClass> AbcClassChoices => this.dataService.GetData<AbcClass>().AsEnumerable();
-
-        public Compartment Compartment
+        public CompartmentDetails Compartment
         {
             get => this.compartment;
             set => this.SetProperty(ref this.compartment, value);
         }
-
-        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-                    (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
@@ -51,33 +42,40 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        private void ExecuteHideDetailsCommand()
+        protected override void OnAppear()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Compartment>(false));
+            this.LoadData((int?)this.Data);
+            base.OnAppear();
         }
 
         private void ExecuteSaveCommand()
         {
-            int rowSaved = this.dataService.SaveChanges();
+            var modifiedRowCount = this.compartmentProvider.Save(this.Compartment);
 
-            if (rowSaved != 0)
+            if (modifiedRowCount > 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<Compartment>(this.Compartment));
+                this.Compartment = this.compartmentProvider.GetById(this.Compartment.Id);
 
-                ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.CompartmentSavedSuccessfully));
+                this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails, int>(this.Compartment.Id));
+
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
         }
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Compartment>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
+            this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
+                    eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(Compartment selectedCompartment)
+        private void LoadData(int? itemId)
         {
-            this.Compartment = selectedCompartment;
+            if (itemId == null)
+            {
+                this.Compartment = null;
+                return;
+            }
+            this.Compartment = this.compartmentProvider.GetById((int)itemId);
         }
 
         #endregion Methods

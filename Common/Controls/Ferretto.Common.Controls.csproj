@@ -118,6 +118,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows" />
@@ -193,9 +194,13 @@
       <DependentUpon>DateEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Expander\Expander.cs" />
+    <Compile Include="Controls\FormControl.cs" />
     <Compile Include="Controls\Icon\WmsIconViewModel.cs" />
     <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
       <DependentUpon>WmsIcon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SpinEdit\SpinEdit.xaml.cs">
+      <DependentUpon>SpinEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\TileBar\Tile.cs" />
     <Compile Include="Controls\TileBar\TileBar.xaml.cs">
@@ -225,21 +230,40 @@
     </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsCanvasItemsControl.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
+      <DependentUpon>WmsTrayControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WmsTrayControl\WmsTrayCanvas.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsTrayControlViewModel.cs" />
+    <Compile Include="Controls\WmsView\WmsDialogView.cs" />
+    <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
+      <DependentUpon>WmsHistoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WmsView\WmsView.cs" />
+    <Compile Include="Controls\WmsView\WmsViewType.cs" />
     <Compile Include="Converters\IntToThousandsConverter.cs" />
     <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Interfaces\IHistoryViewService.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
     <Compile Include="Interfaces\IWmsGridViewModel.cs" />
+    <Compile Include="Interfaces\IWmsHistoryView.cs" />
+    <Compile Include="Markup\NameOfExtension.cs" />
+    <Compile Include="Services\SplashScreenService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\HistoryViewService.cs" />
     <Compile Include="Services\Navigation.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Interfaces\INavigableViewModel.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
     <Compile Include="Controls\WmsGridControl\ViewModels\WmsGridViewModel.cs" />
+    <Compile Include="ViewModels\BaseServiceNavigationViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ActionBar\ActionBar.xaml">
@@ -261,6 +285,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\SpinEdit\SpinEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\TileBar\TileBar.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -278,6 +305,14 @@
     <Page Include="Controls\TextBox\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WmsView\WmsHistoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
@@ -288,6 +323,10 @@
     <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj">
       <Project>{2586C34C-DA26-4143-8359-21D8A42B8462}</Project>
       <Name>Ferretto.Common.BLL.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj">
+      <Project>{0D3E44FD-B369-4B85-AEBE-17A754D71C8D}</Project>
+      <Name>Ferretto.Common.Modules.BLL</Name>
     </ProjectReference>
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj">
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>

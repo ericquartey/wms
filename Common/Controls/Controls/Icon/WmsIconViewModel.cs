@@ -43,9 +43,12 @@ namespace Ferretto.Common.Controls
 
             var sourcePath = Resources.Icons.ResourceManager.GetString(symbolName);
 
-            var bitmapImage = new BitmapImage(new Uri(sourcePath, UriKind.RelativeOrAbsolute));
+            if (sourcePath != null)
+            {
+                var bitmapImage = new BitmapImage(new Uri(sourcePath, UriKind.RelativeOrAbsolute));
 
-            this.Source = this.ColorizeImage(bitmapImage);
+                this.Source = this.ColorizeImage(bitmapImage);
+            }
         }
 
         private ImageSource ColorizeImage(ImageSource image)

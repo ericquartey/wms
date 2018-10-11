@@ -1,20 +1,21 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System;
+using System.Windows;
+using System.Windows.Data;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class TextBox : UserControl
+    public partial class TextBox : FormControl
     {
         #region Fields
 
+        public static readonly DependencyProperty FieldNameProperty = DependencyProperty.Register(
+            nameof(FieldName), typeof(string), typeof(TextBox), new PropertyMetadata(default(string), new PropertyChangedCallback(OnFieldNameChanged)));
+
         public static readonly DependencyProperty IsMultilineProperty = DependencyProperty.Register(
-           nameof(IsMultiline), typeof(bool), typeof(TextBox), new PropertyMetadata(default(bool)));
+            nameof(IsMultiline), typeof(bool), typeof(TextBox), new PropertyMetadata(default(bool)));
 
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register(
-                    nameof(Label), typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
-
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-            nameof(Text), typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
+            nameof(Label), typeof(string), typeof(TextBox), new PropertyMetadata(default(string)));
 
         #endregion Fields
 
@@ -24,16 +25,25 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
             this.GridTextBox.DataContext = this;
+
+            this.DataContextChanged += this.TextBox_DataContextChanged;
+            this.Loaded += this.TextBox_Loaded;
         }
 
         #endregion Constructors
 
         #region Properties
 
+        public string FieldName
+        {
+            get => (string)this.GetValue(FieldNameProperty);
+            set => this.SetValue(FieldNameProperty, value);
+        }
+
         public bool IsMultiline
         {
-            get => (bool)this.GetValue(TextProperty);
-            set => this.SetValue(TextProperty, value);
+            get => (bool)this.GetValue(IsMultilineProperty);
+            set => this.SetValue(IsMultilineProperty, value);
         }
 
         public string Label
@@ -42,12 +52,51 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(LabelProperty, value);
         }
 
-        public string Text
-        {
-            get => (string)this.GetValue(TextProperty);
-            set => this.SetValue(TextProperty, value);
-        }
+        private bool HasBindingForFieldName => this.InnerTextBox.GetBindingExpression(ContentProperty)?.ResolvedSourcePropertyName == this.FieldName;
 
         #endregion Properties
+
+        #region Methods
+
+        private static void OnFieldNameChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is TextBox textBox)
+            {
+                SetTextBinding(textBox);
+                textBox.Label = RetrieveLocalizedFieldName(textBox.InnerTextBox.DataContext, textBox.FieldName);
+            }
+        }
+
+        private static void SetTextBinding(TextBox textBox)
+        {
+            if (textBox.FieldName == null || textBox.HasBindingForFieldName)
+            {
+                return;
+            }
+
+            var binding = new Binding(textBox.FieldName)
+            {
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+
+            textBox.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, binding);
+        }
+
+        private void TextBox_DataContextChanged(Object sender, DependencyPropertyChangedEventArgs e)
+        {
+            this.InnerTextBox.DataContext = e.NewValue;
+
+            SetTextBinding(this);
+        }
+
+        private void TextBox_Loaded(Object sender, RoutedEventArgs e)
+        {
+            SetTextBinding(this);
+
+            this.Label = RetrieveLocalizedFieldName(this.InnerTextBox.DataContext, this.FieldName);
+        }
+
+        #endregion Methods
     }
 }

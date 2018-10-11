@@ -35,22 +35,21 @@
                           HorizontalScrollBarVisibility="Disabled"
                           VerticalScrollBarVisibility="Auto" />
         </DockPanel>
-        <Grid Margin="0,22,25,0"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top">
+        <Grid Margin="0,0,25,0"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <Image Width="18"
-                   Height="18"
-                   Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/social/ic_person_black_18dp.png"
-                   VerticalAlignment="Center"/>
-            <TextBlock Text="Warehouse Manager"
-                       Grid.Column="1"
+            <ctrls:WmsIcon VerticalAlignment="Center"
+                           ColorizeBrush="{DynamicResource CommonSecondaryDark}"
+                           SymbolName="UserProfile" />
+            <TextBlock Grid.Column="1"
+                       Padding="5,0,0,0"
                        VerticalAlignment="Center"
                        Foreground="{DynamicResource CommonSecondaryDark}"
-                       Padding="5,0,0,0"/>
+                       Text="Warehouse Manager" />
         </Grid>
     </Grid>
 </ctrls:WmsView>

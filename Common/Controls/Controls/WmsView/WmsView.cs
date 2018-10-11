@@ -13,51 +13,36 @@ namespace Ferretto.Common.Controls
         private readonly INavigationService
             navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
-        #endregion
+        private readonly WmsViewType viewType;
 
-        #region Properties
+        #endregion Fields
 
-        public string Token { get; set; }
-        public string MapId { get; set; }
-        public string Title { get; set; }
-
-        #endregion
-
-        #region Ctor
+        #region Constructors
 
         protected WmsView()
         {
+            this.viewType = WmsViewType.Docking;
             this.Loaded += this.WMSView_Loaded;
         }
 
-        #endregion
+        #endregion Constructors
 
-        #region Event
+        #region Properties
 
-        private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (this.IsWrongDataContext() == false)
-            {
-                return;
-            }
+        public object Data { get; set; }
+        public string MapId { get; set; }
+        public string Title { get; set; }
+        public string Token { get; set; }
+        public WmsViewType ViewType => this.viewType;
 
-            if (string.IsNullOrEmpty(this.MapId) == false)
-            {
-                // Is Main WMSView registered
-                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId);
-            }
-            else
-            {
-                this.DataContext =
-                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken());
-            }
-
-            ( (INavigableViewModel) this.DataContext )?.Appear();
-        }
-
-        #endregion
+        #endregion Properties
 
         #region Methods
+
+        private string GetAttachedViewModel()
+        {
+            return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
+        }
 
         private string GetMainViewToken()
         {
@@ -65,7 +50,7 @@ namespace Ferretto.Common.Controls
             var parentMainView = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsView);
             if (parentMainView != null)
             {
-                token = ( (WmsView) parentMainView ).Token;
+                token = ((WmsView)parentMainView).Token;
             }
 
             return token;
@@ -82,11 +67,27 @@ namespace Ferretto.Common.Controls
             return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
         }
 
-        private string GetAttachedViewModel()
+        private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
+            if (this.IsWrongDataContext() == false)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.MapId) == false)
+            {
+                // Is Main WMSView registered
+                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId, this.Data);
+            }
+            else
+            {
+                this.DataContext =
+                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
+            }
+
+            ((INavigableViewModel)this.DataContext)?.Appear();
         }
 
-        #endregion
+        #endregion Methods
     }
 }

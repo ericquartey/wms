@@ -68,5 +68,95 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Application_Title", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Configuring Prism module catalog ....
+        /// </summary>
+        public static string ConfiguringPrismModuleCatalog {
+            get {
+                return ResourceManager.GetString("ConfiguringPrismModuleCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing Entity Framework ... done..
+        /// </summary>
+        public static string DoneInitializingEntityFramework {
+            get {
+                return ResourceManager.GetString("DoneInitializingEntityFramework", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elapsed Time.
+        /// </summary>
+        public static string ElapsedTime {
+            get {
+                return ResourceManager.GetString("ElapsedTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing Compartment module ....
+        /// </summary>
+        public static string InitializingCompartmentModule {
+            get {
+                return ResourceManager.GetString("InitializingCompartmentModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing Entity Framework ....
+        /// </summary>
+        public static string InitializingEntityFramework {
+            get {
+                return ResourceManager.GetString("InitializingEntityFramework", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing Layout module ....
+        /// </summary>
+        public static string InitializingLayoutModule {
+            get {
+                return ResourceManager.GetString("InitializingLayoutModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing main window ....
+        /// </summary>
+        public static string InitializingMainWindow {
+            get {
+                return ResourceManager.GetString("InitializingMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Initializing Master Data module ....
+        /// </summary>
+        public static string InitializingMasterDataModule {
+            get {
+                return ResourceManager.GetString("InitializingMasterDataModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Prism module catalog ....
+        /// </summary>
+        public static string LoadingPrismModuleCatalog {
+            get {
+                return ResourceManager.GetString("LoadingPrismModuleCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Opening main window ....
+        /// </summary>
+        public static string OpeningMainWindow {
+            get {
+                return ResourceManager.GetString("OpeningMainWindow", resourceCulture);
+            }
+        }
     }
 }

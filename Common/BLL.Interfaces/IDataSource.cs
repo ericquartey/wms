@@ -3,20 +3,15 @@ using System.Linq;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IDataSource<TEntity> where TEntity : class
+    public interface IDataSource<TModel, TId> where TModel : IBusinessObject<TId>
     {
         #region Properties
 
-        int Count { get; }
+        Func<IQueryable<TModel>> GetData { get; }
+        Func<int> GetDataCount { get; }
+        string Key { get; }
         string Name { get; }
-        Func<IQueryable<TEntity>, IQueryable<TEntity>> Filter { get; }
 
         #endregion Properties
-
-        #region Methods
-
-        IQueryable<TEntity> Load();
-
-        #endregion
     }
 }

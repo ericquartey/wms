@@ -1,5 +1,5 @@
 ﻿using System.Configuration;
-using Ferretto.Common.Models;
+using Ferretto.Common.DataModels;
 using Ferretto.Common.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,7 +26,7 @@ namespace Ferretto.Common.EF
         }
 
         public virtual DbSet<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
-        public virtual DbSet<Common.Models.CellConfiguration> CellConfigurations { get; set; }
+        public virtual DbSet<Common.DataModels.CellConfiguration> CellConfigurations { get; set; }
         public virtual DbSet<CellHeightClass> CellHeightClasses { get; set; }
         public virtual DbSet<CellPosition> CellPositions { get; set; }
         public virtual DbSet<Cell> Cells { get; set; }
@@ -48,8 +48,10 @@ namespace Ferretto.Common.EF
         public virtual DbSet<ItemListStatus> ItemListStatuses { get; set; }
         public virtual DbSet<ItemListType> ItemListTypes { get; set; }
         public virtual DbSet<ItemManagementType> ItemManagementTypes { get; set; }
+        public virtual DbSet<ItemCategory> ItemCategories { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemArea> ItemsAreas { get; set; }
+        public virtual DbSet<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
         public virtual DbSet<LoadingUnitHeightClass> LoadingUnitHeightClasses { get; set; }
         public virtual DbSet<LoadingUnitRange> LoadingUnitRanges { get; set; }
         public virtual DbSet<LoadingUnit> LoadingUnits { get; set; }
@@ -122,12 +124,14 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new DefaultLoadingUnitConfiguration());
             modelBuilder.ApplyConfiguration(new ItemConfiguration());
             modelBuilder.ApplyConfiguration(new ItemAreaConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemCompartmentTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListRowConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListRowStatusConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListStatusConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ItemManagementTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new ItemCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitHeightClassConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitRangeConfiguration());

@@ -1,12 +1,9 @@
-﻿using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls.Interfaces;
+﻿using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Models;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
-using System.Linq;
 
 namespace Ferretto.WMS.Modules.Layout
 {
@@ -35,16 +32,16 @@ namespace Ferretto.WMS.Modules.Layout
 
         public void Initialize()
         {
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
+
             this.Container.RegisterType<INavigationService, NavigationService>(
                 new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IDialogService, Common.Controls.Services.DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
 
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
-
-            // TODO: review this call to ensure we do a proper initialization of the entity framework
-            ServiceLocator.Current.GetInstance<IDataService>().GetData<Item>().FirstOrDefault(item => item.Id == 4);
 
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MAINCONTENT}",

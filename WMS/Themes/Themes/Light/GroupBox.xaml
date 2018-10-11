@@ -11,7 +11,7 @@
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0"
                                 BorderThickness="0">
-                            <ContentPresenter Margin="4"
+                            <ContentPresenter Margin="4,4,4,0"
                                               ContentSource="Header"
                                               RecognizesAccessKey="True"
                                               TextBlock.FontSize="11pt"
@@ -20,7 +20,7 @@
 
                         <Border Grid.Row="1"
                                 BorderThickness="0">
-                            <ContentPresenter Margin="4" />
+                            <ContentPresenter Margin="4,0,4,4" />
                         </Border>
                     </Grid>
                 </ControlTemplate>

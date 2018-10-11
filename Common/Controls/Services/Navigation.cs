@@ -2,61 +2,103 @@
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ItemChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
+    public class ItemChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
     {
-        public ItemChangedEvent(TPayload changedItem)
+        #region Fields
+
+        private readonly object itemId;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public ItemChangedEvent(TId itemId)
         {
-            this.ChangedItem = changedItem;
+            this.itemId = itemId;
         }
 
-        public TPayload ChangedItem { get; set; }
+        #endregion Constructors
+
+        #region Properties
+
+        public object ItemId => this.itemId;
 
         public string Token => null;
+
+        #endregion Properties
     }
 
-    public class ItemSelectionChangedEvent<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
+    public class ItemSelectionChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
     {
-        public ItemSelectionChangedEvent(TPayload selectedItem)
+        #region Fields
+
+        private readonly TId itemId;
+        private readonly string token;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public ItemSelectionChangedEvent(TId itemId, string token)
         {
-            this.SelectedItem = selectedItem;
+            this.itemId = itemId;
+            this.token = token;
         }
 
-        public TPayload SelectedItem { get; private set; }
+        #endregion Constructors
 
-        public string Token => null;
+        #region Properties
+
+        public TId ItemId => this.itemId;
+
+        public string Token => this.token;
+
+        #endregion Properties
     }
 
-    public class RefreshItemsEvent<TItem> : Prism.Events.PubSubEvent<TItem>, IEventArgs
+    public class RefreshItemsEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs
     {
-        public RefreshItemsEvent()
+        #region Fields
+
+        private readonly object itemId;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public RefreshItemsEvent(int itemId)
         {
+            this.itemId = itemId;
         }
 
-        public TItem Item { get; set; }
+        #endregion Constructors
+
+        #region Properties
+
+        public object ItemId => this.itemId;
 
         public string Token => null;
+
+        #endregion Properties
     }
 
-    public class ShowDetailsEventArgs<TPayload> : Prism.Events.PubSubEvent<TPayload>, IEventArgs
+    public class StatusEventArgs : Prism.Events.PubSubEvent, IEventArgs
     {
-        public ShowDetailsEventArgs(bool isDetailsViewVisible)
-        {
-            this.IsDetailsViewVisible = isDetailsViewVisible;
-        }
+        #region Constructors
 
-        public bool IsDetailsViewVisible { get; private set; }
-        public string Token => null;
-    }
-
-    public class StatusEvent : Prism.Events.PubSubEvent, IEventArgs
-    {
-        public StatusEvent(string info)
+        public StatusEventArgs(string info)
         {
             this.Info = info;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         public string Info { get; set; }
 
         public string Token => null;
+
+        #endregion Properties
     }
 }

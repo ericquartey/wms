@@ -1,27 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Models;
+using Ferretto.Common.Modules.BLL;
+using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : BaseNavigationViewModel
+    public class ItemDetailsViewModel : BaseServiceNavigationViewModel
     {
         #region Fields
 
-        private readonly IDataService dataService = ServiceLocator.Current.GetInstance<IDataService>();
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
-
-        private CompartmentsDataSource compartmentsDataSource;
-        private ICommand hideDetailsCommand;
-        private Item item;
+        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+        private IDataSource<Compartment, int> compartmentsDataSource;
+        private ItemDetails item;
+        private bool itemHasCompartments;
         private ICommand saveCommand;
+        private object selectedCompartment;
+        private ICommand viewCompartmentDetailsCommand;
 
         #endregion Fields
 
@@ -36,108 +37,108 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IEnumerable<AbcClass> AbcClassChoices => this.dataService.GetData<AbcClass>().AsEnumerable();
-
-        public CompartmentsDataSource CompartmentsSource
+        public IDataSource<Compartment, int> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public ICommand HideDetailsCommand => this.hideDetailsCommand ??
-                            (this.hideDetailsCommand = new DelegateCommand(this.ExecuteHideDetailsCommand));
+        public Compartment CurrentCompartment
+        {
+            get
+            {
+                if (this.selectedCompartment == null)
+                {
+                    return default(Compartment);
+                }
+                return (Compartment)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
+            }
+        }
 
-        public Item Item
+        public ItemDetails Item
         {
             get => this.item;
             set
             {
                 if (this.SetProperty(ref this.item, value))
                 {
-                    this.CompartmentsSource = new CompartmentsDataSource(this.item, this.dataService);
+                    if (this.item != null)
+                    {
+                        var viewName = MvvmNaming.GetViewNameFromViewModelName(nameof(ItemDetailsViewModel));
+                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment, int>(viewName, this.item.Id).Single();
+                    }
+                    else
+                    {
+                        this.CompartmentsDataSource = null;
+                    }
                 }
             }
         }
 
-        public IEnumerable<ItemManagementType> ItemManagementTypeChoices => this.dataService.GetData<ItemManagementType>().AsEnumerable();
+        public bool ItemHasCompartments
+        {
+            get => this.itemHasCompartments;
+            set => this.SetProperty(ref this.itemHasCompartments, value);
+        }
 
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
-        public IEnumerable<MeasureUnit> UnitOfMeasurementChoices => this.dataService.GetData<MeasureUnit>().AsEnumerable();
+        public object SelectedCompartment
+        {
+            get => this.selectedCompartment;
+            set => this.SetProperty(ref this.selectedCompartment, value);
+        }
+
+        public ICommand ViewCompartmentDetailsCommand => this.viewCompartmentDetailsCommand ??
+                                      (this.viewCompartmentDetailsCommand = new DelegateCommand(this.ExecuteViewCompartmentDetailsCommand));
 
         #endregion Properties
 
         #region Methods
 
-        private void ExecuteHideDetailsCommand()
+        public void ExecuteViewCompartmentDetailsCommand()
         {
-            this.eventService.Invoke(new ShowDetailsEventArgs<Item>(false));
+            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentCompartment?.Id);
+        }
+
+        protected override void OnAppear()
+        {
+            this.LoadData(this.Data);
+            base.OnAppear();
         }
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.dataService.SaveChanges();
+            var modifiedRowCount = this.itemProvider.Save(this.Item);
 
-            if (rowSaved != 0)
+            if (modifiedRowCount > 0)
             {
-                this.eventService.Invoke(new ItemChangedEvent<Item>(this.Item));
+                this.EventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item.Id));
 
-                ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEvent(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
         }
 
         private void Initialize()
         {
-            this.eventService.Subscribe<ItemSelectionChangedEvent<Item>>(
-                    eventArgs => this.OnItemSelectionChanged(eventArgs.SelectedItem), true);
+            this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
+                    eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
-        private void OnItemSelectionChanged(Item selectedItem)
+        private void LoadData(object itemId)
         {
-            this.Item = selectedItem;
+            if (itemId == null)
+            {
+                this.Item = null;
+                return;
+            }
+
+            this.Item = this.itemProvider.GetById((int)itemId);
+
+            this.ItemHasCompartments = this.itemProvider.HasAnyCompartments((int)itemId);
         }
 
         #endregion Methods
-
-        #region Classes
-
-        public class CompartmentsDataSource : IDataSource<Compartment>
-        {
-            #region Constructors
-
-            public CompartmentsDataSource(Item item, IDataService dataService)
-            {
-                this.Item = item;
-                this.DataService = dataService;
-            }
-
-            #endregion Constructors
-
-            #region Properties
-
-            public Int32 Count => 0;
-
-            public IDataService DataService { get; private set; }
-            public Func<IQueryable<Compartment>, IQueryable<Compartment>> Filter => compartments => compartments;
-            public Item Item { get; private set; }
-            public String Name => "Item Compartments";
-
-            #endregion Properties
-
-            #region Methods
-
-            public IQueryable<Compartment> Load()
-            {
-                return this.Item != null ?
-                           this.DataService.GetData<Compartment>().Where(compartment => compartment.ItemId == this.Item.Id)
-                           : null;
-            }
-
-            #endregion Methods
-        }
-
-        #endregion Classes
     }
 }

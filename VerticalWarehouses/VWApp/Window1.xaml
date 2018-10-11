@@ -1,0 +1,47 @@
+﻿<Window x:Class="Ferretto.VW.VWApp.Window1"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="clr-namespace:Ferretto.VW.VWApp"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="Window1"
+        Width="1024"
+        Height="768"
+        mc:Ignorable="d">
+    <DockPanel>
+        <Image Margin="5"
+               DockPanel.Dock="Left"
+               Source="/Assets/VertimagFronte.png" />
+        <StackPanel>
+            <Image Margin="5"
+                   Source="/Assets/ferrettologo_768x162.jpg"
+                   Stretch="Uniform" />
+            <Rectangle Height="100" />
+            <Label Margin="5"
+                   HorizontalContentAlignment="Center"
+                   Content="User Login:"
+                   Style="{StaticResource ResourceKey=BodyStyle}" />
+            <TextBox Name="UserLoginTextBox"
+                     Margin="5"
+                     HorizontalContentAlignment="Center"
+                     Style="{StaticResource ResourceKey=BodyStyle}" />
+            <Label Margin="5"
+                   HorizontalContentAlignment="Center"
+                   Content="Password Login:"
+                   Style="{StaticResource ResourceKey=BodyStyle}" />
+            <TextBox Name="PasswordLoginTextBox"
+                     Margin="5"
+                     HorizontalContentAlignment="Center"
+                     Style="{StaticResource ResourceKey=BodyStyle}" />
+            <Button Height="120"
+                    Style="{StaticResource ButtonStyle}">
+                Log In
+            </Button>
+            <Rectangle Height="140" />
+            <Button Height="60"
+                    Style="{StaticResource ButtonStyle}">
+                Switch Off System
+            </Button>
+        </StackPanel>
+    </DockPanel>
+</Window>
