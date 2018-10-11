@@ -26,9 +26,9 @@ namespace Ferretto.VW.VWApp
 
         #region Methods
 
-        public void CloseSystemButtonMethod(object sender, RoutedEventArgs e)
+        public void ShutDownApplicationButtonMethod(object sender, RoutedEventArgs e)
         {
-            this.CloseSystem();
+            this.ShutDownApplication();
         }
 
         public void LoginButtonMethod(object sender, RoutedEventArgs e)
@@ -46,12 +46,6 @@ namespace Ferretto.VW.VWApp
             Debug.Print("VWApp::CheckLoginInput executed.\n");
             return true;
             //TODO: check correctness of inputs
-        }
-
-        private void CloseSystem()
-        {
-            //TODO: implement system closing
-            Debug.Print("VWApp::CloseSystem executed.\n");
         }
 
         private void LoginMethod()
@@ -100,6 +94,11 @@ namespace Ferretto.VW.VWApp
         private void RestoreVWAppWindow()
         {
             this.Show();
+        }
+
+        private void ShutDownApplication()
+        {
+            Application.Current.Shutdown();
         }
 
         #endregion Methods

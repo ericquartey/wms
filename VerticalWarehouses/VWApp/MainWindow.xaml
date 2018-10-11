@@ -7,6 +7,9 @@
         Title="MainWindow"
         Width="1024"
         Height="768"
+        ResizeMode="NoResize"
+        WindowState="Maximized"
+        WindowStyle="None"
         mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -57,7 +60,7 @@
         <StackPanel Grid.Row="3"
                     Grid.Column="1">
             <Button Height="65"
-                    Click="CloseSystemButtonMethod"
+                    Click="ShutDownApplicationButtonMethod"
                     Style="{StaticResource StandardButtonStyle}">
                 Switch Off
             </Button>

@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
         Title="MainWindow"
         Width="1024"
         Height="768"
+        ResizeMode="NoResize"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
     <Window.Resources>
@@ -26,7 +29,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="120" />
+            <RowDefinition Height="80" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0"
@@ -50,10 +53,31 @@
                           IsEditable="False"
                           Style="{StaticResource StandardComboBoxStyle}"
                           Template="{DynamicResource StandardComboBoxTemplate}">
-                    <ComboBoxItem Content="Installer"
+                    <ComboBoxItem Content="{x:Static res:InstallationApp.Installer}"
                                   IsSelected="True"
                                   Style="{StaticResource StandardComboBoxItemStyle}" />
-                    <ComboBoxItem Content="Log Off"
+                    <ComboBoxItem Content="{x:Static res:InstallationApp.LogOff}">
+                        <ComboBoxItem.Style>
+                            <Style TargetType="ComboBoxItem">
+                                <EventSetter Event="ComboBoxItem.PreviewMouseDown"
+                                             Handler="BackToVWAppButtonMethod" />
+                                <Setter Property="Background" Value="{StaticResource FerrettoDarkGray}" />
+                                <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+                                <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+                                <Setter Property="FontSize" Value="20" />
+                            </Style>
+                        </ComboBoxItem.Style>
+                    </ComboBoxItem>
+                </ComboBox>
+                <ComboBox Width="235"
+                          Margin="5"
+                          IsEditable="False"
+                          Style="{StaticResource StandardComboBoxStyle}"
+                          Template="{DynamicResource StandardComboBoxTemplate}">
+                    <ComboBoxItem Content="{x:Static res:InstallationApp.On}"
+                                  Style="{StaticResource StandardComboBoxItemStyle}" />
+                    <ComboBoxItem Content="{x:Static res:InstallationApp.Off}"
+                                  IsSelected="True"
                                   Style="{StaticResource StandardComboBoxItemStyle}" />
                 </ComboBox>
                 <ComboBox Width="235"
@@ -61,23 +85,12 @@
                           IsEditable="False"
                           Style="{StaticResource StandardComboBoxStyle}"
                           Template="{DynamicResource StandardComboBoxTemplate}">
-                    <ComboBoxItem Content="ON"
-                                  Style="{StaticResource StandardComboBoxItemStyle}" />
-                    <ComboBoxItem Content="OFF"
+                    <ComboBoxItem Content="{x:Static res:InstallationApp.Manual}"
                                   IsSelected="True"
                                   Style="{StaticResource StandardComboBoxItemStyle}" />
-                </ComboBox>
-                <ComboBox Width="235"
-                          Margin="5"
-                          IsEditable="False"
-                          Style="{StaticResource StandardComboBoxStyle}"
-                          Template="{DynamicResource StandardComboBoxTemplate}">
-                    <ComboBoxItem Content="Manual"
-                                  IsSelected="True"
+                    <ComboBoxItem Content="{x:Static res:InstallationApp.Auto}"
                                   Style="{StaticResource StandardComboBoxItemStyle}" />
-                    <ComboBoxItem Content="Auto"
-                                  Style="{StaticResource StandardComboBoxItemStyle}" />
-                    <ComboBoxItem Content="Error"
+                    <ComboBoxItem Content="{x:Static res:InstallationApp.Error}"
                                   Style="{StaticResource StandardComboBoxItemStyle}" />
                 </ComboBox>
             </StackPanel>
@@ -91,34 +104,34 @@
                 <StackPanel>
                     <Button Height="60"
                             Click="OpenVerifyCircuitIntegrityViewButtonMethod"
-                            Content="Verify Circuit Integrity"
+                            Content="{x:Static res:InstallationApp.VerifyCircuitIntegrity}"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button Height="60"
                             Click="OpenLowSpeedMovementsTestViewButtonMethod"
-                            Content="Low Speed Movements Test"
+                            Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button Height="60"
                             Click="OpenVerticalAxisCalibrationViewButtonMethod"
-                            Content="Vertical Axis Calibration"
+                            Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button x:Name="OpenVerifyPanelPositionPageButton"
                             Height="60"
-                            Content="Verify Panel Position"
+                            Content="{x:Static res:InstallationApp.VerifyPanelPosition}"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button x:Name="OpenBelBurnishingPageButton"
                             Height="60"
-                            Content="Belt Burnishing"
+                            Content="{x:Static res:InstallationApp.BeltBurnishing}"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button x:Name="OpenGateSetUpPageButton"
                             Height="60"
-                            Content="Gate Set Up"
+                            Content="{x:Static res:InstallationApp.GateSetUp}"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button x:Name="OpenVerifyWeightControllerPageButton"
                             Height="60"
-                            Content="Verify Weight Controller"
+                            Content="{x:Static res:InstallationApp.VerifyWeightController}"
                             IsEnabled="False"
                             Style="{StaticResource StandardButtonStyle}" />
                 </StackPanel>

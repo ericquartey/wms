@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ferretto.Common.Resources</RootNamespace>
     <AssemblyName>Ferretto.Common.Resources</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,6 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InstallationApp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>InstallationApp.resx</DependentUpon>
+    </Compile>
     <Compile Include="MasterData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -92,6 +98,10 @@
     <EmbeddedResource Include="BusinessObjects.it.resx" />
     <EmbeddedResource Include="DesktopApp.it.resx" />
     <EmbeddedResource Include="Errors.it.resx" />
+    <EmbeddedResource Include="InstallationApp.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="MasterData.it.resx" />
     <EmbeddedResource Include="MasterData.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

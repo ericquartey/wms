@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.InstallationApp.Views;
+using System.Windows.Input;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -39,7 +40,7 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
-        public void BackToVWAppButtonMethod(object sender, RoutedEventArgs e)
+        public void BackToVWAppButtonMethod(object sender, MouseButtonEventArgs e)
         {
             this.BackToVWApp();
         }
