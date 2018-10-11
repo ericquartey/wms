@@ -109,6 +109,7 @@ namespace Ferretto.Common.Controls
             }
             else
             {
+                
                 this.Background = null;
             }
         }

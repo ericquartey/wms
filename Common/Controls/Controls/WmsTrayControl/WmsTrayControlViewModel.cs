@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls
 
         private ObservableCollection<WmsBaseCompartment> items;
 
-        private string penBrush;
+        private SolidColorBrush penBrush;
 
         private int penThickness;
 
@@ -28,8 +28,8 @@ namespace Ferretto.Common.Controls
 
         public WmsTrayControlViewModel()
         {
-            this.PenBrush = Colors.Aqua.ToString();
-            this.PenThickness = 2;
+            this.PenBrush = new SolidColorBrush(Colors.Black);
+            this.PenThickness = 10;
         }
 
         #endregion Constructors
@@ -46,7 +46,7 @@ namespace Ferretto.Common.Controls
 
         public LoadingUnitDetails LoadingUnitProperty { get; set; }
 
-        public string PenBrush
+        public SolidColorBrush PenBrush
         {
             get { return this.penBrush; }
             set
@@ -127,6 +127,7 @@ namespace Ferretto.Common.Controls
                     Select = Colors.RoyalBlue.ToString()
                 });
             }
+            
         }
 
         #endregion Methods
