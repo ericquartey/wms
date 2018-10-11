@@ -45,7 +45,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                    Code = c.Code,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
                    CompartmentTypeDescription = c.CompartmentType.Description,
-                   Id = c.Id,
                    ItemDescription = c.Item.Description,
                    LoadingUnitCode = c.LoadingUnit.Code,
                    Lot = c.Lot,
@@ -118,7 +117,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                Code = c.Code,
                CompartmentStatusDescription = c.CompartmentStatus?.Description,
                CompartmentTypeDescription = c.CompartmentType?.Description,
-               Id = c.Id,
                ItemDescription = c.Item?.Description,
                LoadingUnitCode = c.LoadingUnit?.Code,
                Lot = c.Lot,
@@ -132,7 +130,6 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static CompartmentDetails ProjectCompartmentDetails(DataModels.Compartment c) =>
             new CompartmentDetails(c.Id)
             {
-                Id = c.Id,
                 Code = c.Code,
                 LoadingUnitCode = c.LoadingUnit?.Code,
                 CompartmentTypeId = c.CompartmentTypeId,

@@ -43,7 +43,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Include(l => l.CellPosition)
                 .Select(l => new LoadingUnit(l.Id)
                 {
-                    Id = l.Id,
                     Code = l.Code,
                     LoadingUnitTypeDescription = l.LoadingUnitType.Description,
                     LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
@@ -98,7 +97,6 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static LoadingUnitDetails ProjectLoadingUnitDetails(DataModels.LoadingUnit l) =>
             new LoadingUnitDetails(l.Id)
             {
-                Id = l.Id,
                 Code = l.Code,
                 AbcClassId = l.AbcClassId,
                 CellPositionId = l.CellPositionId,
