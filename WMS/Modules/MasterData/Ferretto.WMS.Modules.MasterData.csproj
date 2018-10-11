@@ -184,6 +184,7 @@
     <Compile Include="MasterDataModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
+    <Compile Include="ViewModels\CellsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsViewModel.cs" />
     <Compile Include="ViewModels\EntityListViewModel.cs" />
@@ -196,6 +197,9 @@
     <Compile Include="ViewModels\LoadingUnitsViewModel.cs" />
     <Compile Include="Views\CompartmentDetailsView.xaml.cs">
       <DependentUpon>CompartmentDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CellsAndDetailsView.xaml.cs">
+      <DependentUpon>CellsAndDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CompartmentsAndDetailsView.xaml.cs">
       <DependentUpon>CompartmentsAndDetailsView.xaml</DependentUpon>
@@ -235,6 +239,10 @@
     <Page Include="Views\CompartmentDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CellsAndDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CompartmentsAndDetailsView.xaml">
       <SubType>Designer</SubType>
