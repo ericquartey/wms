@@ -336,4 +336,22 @@
   <data name="RegistrationNumber" xml:space="preserve">
     <value>Matricola</value>
   </data>
+  <data name="CellPriority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="CellStatus" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="CellType" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="CellXCoordinate" xml:space="preserve">
+    <value>Coordinata X</value>
+  </data>
+  <data name="CellYCoordinate" xml:space="preserve">
+    <value>Coordinata Y</value>
+  </data>
+  <data name="CellZCoordinate" xml:space="preserve">
+    <value>Coordinata Z</value>
+  </data>
 </root>

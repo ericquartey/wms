@@ -196,4 +196,8 @@
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>This item is not allocated in any compartments.</value>
   </data>
+  <data name="CellAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Cells</comment>
+  </data>
 </root>
