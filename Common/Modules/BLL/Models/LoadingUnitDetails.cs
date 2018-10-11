@@ -37,8 +37,6 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public IEnumerable<CompartmentDetails> Compartments { get; set; }
 
-        public int Id { get; set; }
-
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public int Length
         {

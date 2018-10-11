@@ -63,8 +63,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => this.SetIfStrictlyPositive(ref this.height, value);
         }
 
-        public int Id { get; set; }
-
         [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
 
