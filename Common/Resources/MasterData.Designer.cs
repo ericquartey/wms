@@ -72,6 +72,15 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
+        public static string CellAll {
+            get {
+                return ResourceManager.GetString("CellAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
         public static string CompartmentAll {
             get {
                 return ResourceManager.GetString("CompartmentAll", resourceCulture);

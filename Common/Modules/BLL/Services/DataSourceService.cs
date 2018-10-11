@@ -59,6 +59,18 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => compartmentProvider.GetAllCount())
                     }.Cast<IDataSource<TModel, TId>>();
 
+                case "CellsView":
+                    var cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
+
+                    return new List<DataSource<Cell, int>>
+                    {
+                        new DataSource<Cell, int>(
+                            "CompartmentsViewAll",
+                            Resources.MasterData.CellAll,
+                            () => cellProvider.GetAll(),
+                            () => cellProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
                 case "LoadingUnitsView":
                     var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
