@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
+    <FontFamily x:Key="RobotoCondensed-Regular">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
+    <FontFamily x:Key="HelveticaNeue-LightCond">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <SolidColorBrush x:Key="FerrettoWhiteGray">#e6e6e6</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoLightGray">#c5c7c4</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoMediumGray">#707173</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoDarkGray">#293133</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoRed">#e2001a</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoBlack">#0A0A0A</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoGreen">#57A639</SolidColorBrush>
+    <SolidColorBrush x:Key="FerrettoPureWhite">#ffffff</SolidColorBrush>
+</ResourceDictionary>
