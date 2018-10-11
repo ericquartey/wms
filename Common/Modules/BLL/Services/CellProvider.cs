@@ -35,7 +35,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
 
-            return GetAllCellsWithAggregations(context);
+            return GetAllCellsWithFilter(context);
         }
 
         public int GetAllCount()
@@ -62,7 +62,7 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.SaveChanges();
         }
 
-        private static IQueryable<Cell> GetAllCellsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Cell, bool>> whereFunc = null)
+        private static IQueryable<Cell> GetAllCellsWithFilter(DatabaseContext context, Expression<Func<DataModels.Cell, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
 
