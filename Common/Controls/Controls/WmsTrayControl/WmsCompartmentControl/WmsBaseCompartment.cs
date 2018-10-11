@@ -22,8 +22,8 @@ namespace Ferretto.Common.Controls
     public class WmsBaseCompartment : INotifyPropertyChanged
     {
         #region Fields
-
-        private string capacity;
+        private int quantity;
+        private int capacity;
         private string colorBorder;
         private string colorFill;
         private double height;
@@ -33,6 +33,8 @@ namespace Ferretto.Common.Controls
         private double top;
         private Tray tray;
         private double width;
+        private string article;
+
 
         #endregion Fields
 
@@ -43,8 +45,16 @@ namespace Ferretto.Common.Controls
         #endregion Events
 
         #region Properties
-
-        public string Capacity
+        public string Article
+        {
+            get { return this.article; }
+            set
+            {
+                this.article = value;
+                this.OnPropertyChanged(nameof(this.Article));
+            }
+        }
+        public int Capacity
         {
             get { return this.capacity; }
             set
@@ -109,6 +119,12 @@ namespace Ferretto.Common.Controls
                 this.rectangleBorderThickness = value;
                 this.OnPropertyChanged(nameof(this.RectangleBorderThickness));
             }
+        }
+
+        public int Quantity
+        {
+            get { return this.quantity; }
+            set { this.quantity = value; }
         }
 
         public string Select

@@ -123,7 +123,7 @@ namespace Ferretto.Common.Controls
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
-                    Capacity = Colors.Red.ToString(),
+                    ColorFill = Colors.Red.ToString(),
                     Select = Colors.RoyalBlue.ToString()
                 });
             }

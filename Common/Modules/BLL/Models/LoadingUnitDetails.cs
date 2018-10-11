@@ -29,7 +29,32 @@ namespace Ferretto.Common.Modules.BLL.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public IEnumerable<CompartmentDetails> Compartments { get; set; }
+        private readonly List<CompartmentDetails> compartments = new List<CompartmentDetails>();
+        public IEnumerable<CompartmentDetails> Compartments { get { return this.compartments.AsReadOnly(); } }
+       
+
+        public bool CanAddCompartment(CompartmentDetails compartmentDetails)
+        {
+            //TODO
+            return true;
+        }
+        public void AddCompartment(CompartmentDetails compartmentDetails)
+        {
+            //TODO
+            if (this.CanAddCompartment(null))
+            {
+
+            }
+        }
+        public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
+        {
+            //TODO
+            int n = 0;//Calculate 
+            for(int i = 0; i < n; i++)
+            {
+                this.AddCompartment(null);
+            }
+        }
 
         public int Id { get; set; }
 

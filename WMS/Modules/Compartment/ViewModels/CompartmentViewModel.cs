@@ -17,8 +17,6 @@ namespace Ferretto.WMS.Modules.Compartment
         public CompartmentViewModel()
         {
             this.loadingUnitDetails = new LoadingUnitDetails();
-            var listCompartmentDetails = new List<CompartmentDetails>();
-            this.loadingUnitDetails.Compartments = listCompartmentDetails;
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
         }
 
@@ -27,6 +25,8 @@ namespace Ferretto.WMS.Modules.Compartment
         #region Properties
 
         public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set { this.SetProperty(ref this.loadingUnitDetails, value); } }
+
+        //public ICommand
 
         #endregion Properties
     }

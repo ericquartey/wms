@@ -233,6 +233,11 @@
     <Compile Include="Controls\WmsTrayControl\WmsCanvasItemsControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsInputCompartmentControl\EventUI.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsInputCompartmentControl\WmsInputCompartmentControl.xaml.cs">
+      <DependentUpon>WmsInputCompartmentControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WmsTrayControl\WmsInputCompartmentControl\WmsInputCompartmentControlViewModel.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
       <DependentUpon>WmsTrayControl.xaml</DependentUpon>
     </Compile>
@@ -247,6 +252,7 @@
     <Compile Include="Converters\IntToThousandsConverter.cs" />
     <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Interfaces\IEventUI.cs" />
     <Compile Include="Interfaces\IHistoryViewService.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
@@ -303,6 +309,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TextBox\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WmsTrayControl\WmsInputCompartmentControl\WmsInputCompartmentControl.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">

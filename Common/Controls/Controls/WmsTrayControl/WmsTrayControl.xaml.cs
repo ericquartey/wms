@@ -29,6 +29,9 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
+                    nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
+
         #endregion Fields
 
         #region Constructors
@@ -37,7 +40,9 @@ namespace Ferretto.Common.Controls
         {
             this.InitializeComponent();
             this.CanvasItemsControl.DataContext = new WmsTrayControlViewModel();
-            this.SetBackground();
+            this.SetBackground(this.ShowBackground);
+            
+
         }
 
         #endregion Constructors
@@ -55,6 +60,11 @@ namespace Ferretto.Common.Controls
             get => (bool)this.GetValue(ReadOnlyProperty);
             set => this.SetValue(ReadOnlyProperty, value);
         }
+        public bool ShowBackground
+        {
+            get => (bool)this.GetValue(ShowBackgroundProperty);
+            set => this.SetValue(ShowBackgroundProperty, value);
+        }
 
         #endregion Properties
 
@@ -63,29 +73,44 @@ namespace Ferretto.Common.Controls
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
+            {  
                 viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
             }
         }
 
-        private void SetBackground()
+        private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var DrawingBrush = new DrawingBrush();
-            DrawingBrush.TileMode = TileMode.Tile;
-            DrawingBrush.Viewport = new Rect(0, 0, 25, 25);
-            DrawingBrush.ViewportUnits = BrushMappingMode.Absolute;
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                wmsTrayControl.SetBackground((bool)e.NewValue);
+            }
+        }
 
-            var gGroup = new GeometryGroup();
-            gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
-            var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
-                //(SolidColorBrush)new BrushConverter().ConvertFrom("#E0E0E0")
-                , 1);
-            var checkers = new GeometryDrawing((SolidColorBrush)new BrushConverter().ConvertFrom("#BDBDBD"), drawingPen, gGroup);
-            var checkersDrawingGroup = new DrawingGroup();
-            checkersDrawingGroup.Children.Add(checkers);
-            DrawingBrush.Drawing = checkersDrawingGroup;
+        private void SetBackground(bool show)
+        {
+            if (show)
+            {
+                var DrawingBrush = new DrawingBrush();
+                DrawingBrush.TileMode = TileMode.Tile;
+                DrawingBrush.Viewport = new Rect(0, 0, 25, 25);
+                DrawingBrush.ViewportUnits = BrushMappingMode.Absolute;
 
-            //this.Background = DrawingBrush;
+                var gGroup = new GeometryGroup();
+                gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
+                var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
+                    //(SolidColorBrush)new BrushConverter().ConvertFrom("#E0E0E0")
+                    , 1);
+                var checkers = new GeometryDrawing((SolidColorBrush)new BrushConverter().ConvertFrom("#BDBDBD"), drawingPen, gGroup);
+                var checkersDrawingGroup = new DrawingGroup();
+                checkersDrawingGroup.Children.Add(checkers);
+                DrawingBrush.Drawing = checkersDrawingGroup;
+
+                this.Background = DrawingBrush;
+            }
+            else
+            {
+                this.Background = null;
+            }
         }
 
         #endregion Methods

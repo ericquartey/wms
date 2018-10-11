@@ -80,7 +80,8 @@
 
     </Style>
 
-    <Style x:Key="TileBarStyle" TargetType="{x:Type wms:TileBar}">
+    <Style x:Key="TileBarStyle"
+           TargetType="{x:Type wms:TileBar}">
         <Setter Property="Margin" Value="0,35,0,0" />
     </Style>
 
