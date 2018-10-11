@@ -65,7 +65,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     return new List<DataSource<Cell, int>>
                     {
                         new DataSource<Cell, int>(
-                            "CompartmentsViewAll",
+                            "CellsViewAll",
                             Resources.MasterData.CellAll,
                             () => cellProvider.GetAll(),
                             () => cellProvider.GetAllCount())
