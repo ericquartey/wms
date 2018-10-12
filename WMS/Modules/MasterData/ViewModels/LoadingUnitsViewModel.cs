@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.Modules.BLL.Models;
+﻿using Ferretto.Common.Controls;
+using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {

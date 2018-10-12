@@ -4,12 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.Controls;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.Common.Controls
 {
     public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel
         where TModel : IBusinessObject<TId>

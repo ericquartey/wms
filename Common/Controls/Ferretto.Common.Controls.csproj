@@ -266,6 +266,7 @@
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
     <Compile Include="Controls\WmsGridControl\ViewModels\WmsGridViewModel.cs" />
     <Compile Include="ViewModels\BaseServiceNavigationViewModel.cs" />
+    <Compile Include="ViewModels\EntityListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\ActionBar\ActionBar.xaml">
