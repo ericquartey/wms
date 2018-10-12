@@ -23,15 +23,16 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private string capacity;
+        private string article;
+        private int capacity;
         private string colorBorder;
         private string colorFill;
         private double height;
         private double left;
+        private int quantity;
         private float rectangleBorderThickness;
-        private string select;
+        private string selected;
         private double top;
-        private Tray tray;
         private double width;
 
         #endregion Fields
@@ -44,7 +45,17 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public string Capacity
+        public string Article
+        {
+            get { return this.article; }
+            set
+            {
+                this.article = value;
+                this.OnPropertyChanged(nameof(this.Article));
+            }
+        }
+
+        public int Capacity
         {
             get { return this.capacity; }
             set
@@ -101,6 +112,12 @@ namespace Ferretto.Common.Controls
 
         public double OriginWidth { get; set; }
 
+        public int Quantity
+        {
+            get { return this.quantity; }
+            set { this.quantity = value; }
+        }
+
         public float RectangleBorderThickness
         {
             get { return this.rectangleBorderThickness; }
@@ -111,13 +128,13 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public string Select
+        public string Selected
         {
-            get { return this.select; }
+            get { return this.selected; }
             set
             {
-                this.select = value;
-                this.OnPropertyChanged(nameof(this.Select));
+                this.selected = value;
+                this.OnPropertyChanged(nameof(this.Selected));
             }
         }
 
@@ -136,14 +153,8 @@ namespace Ferretto.Common.Controls
 
         public Tray Tray
         {
-            get
-            {
-                return this.tray;
-            }
-            set
-            {
-                this.tray = value;
-            }
+            get;
+            set;
         }
 
         public double Width

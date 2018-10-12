@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
@@ -8,6 +9,7 @@ namespace Ferretto.Common.Modules.BLL.Models
     {
         #region Fields
 
+        private readonly List<CompartmentDetails> compartments = new List<CompartmentDetails>();
         private int length;
         private int width;
 
@@ -15,10 +17,19 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Constructors
 
+        public LoadingUnitDetails()
+        { }
+
         public LoadingUnitDetails(int id) : base(id)
         { }
 
         #endregion Constructors
+
+        #region Events
+
+        public event EventHandler AddedCompartmentEvent;
+
+        #endregion Events
 
         #region Properties
 
@@ -35,7 +46,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public IEnumerable<CompartmentDetails> Compartments { get; set; }
+        public IEnumerable<CompartmentDetails> Compartments { get { return this.compartments.AsReadOnly(); } }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public int Length
@@ -62,5 +73,45 @@ namespace Ferretto.Common.Modules.BLL.Models
         }
 
         #endregion Properties
+
+        #region Methods
+
+        public void AddCompartment(CompartmentDetails compartmentDetails)
+        {
+            if (this.CanAddCompartment(compartmentDetails))
+            {
+                this.compartments.Add(compartmentDetails);
+            }
+        }
+
+        public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
+        {
+            //TODO: add logic of dynamic scompartition
+            //      n: is calculated number of compartment to add
+            //      n: based on row/column
+            int n = 0;
+            for (int i = 0; i < n; i++)
+            {
+                this.AddCompartment(null);
+            }
+        }
+
+        public bool CanAddCompartment(CompartmentDetails compartmentDetails)
+        {
+            //TODO: add logic if possible add new compartment
+            //      return FALSE if exit from tray or overlaps other compartment
+            return true;
+        }
+
+        public void OnAddedCompartmentEvent(EventArgs e)
+        {
+            EventHandler handler = AddedCompartmentEvent;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion Methods
     }
 }

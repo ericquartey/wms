@@ -9,13 +9,13 @@ namespace Ferretto.Common.Modules.BLL.Models
     {
         #region Constructors
 
+        public BusinessObject()
+        { }
+
         protected BusinessObject(TId id)
         {
             this.Id = id;
         }
-
-        private BusinessObject()
-        { }
 
         #endregion Constructors
 
