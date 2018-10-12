@@ -85,7 +85,7 @@ namespace Ferretto.Common.Controls
                 selectedModelId = model.Id;
             }
 
-            this.EventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(this.selectedItem.Id, this.Token));
+            this.EventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
         }
 
         protected override void OnDispose()
