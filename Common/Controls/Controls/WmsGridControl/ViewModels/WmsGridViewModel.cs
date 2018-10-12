@@ -11,7 +11,7 @@ namespace Ferretto.Common.Controls
 
         private readonly object refreshItemsEventSubscription;
         private IDataSource<TEntity, TId> currentDataSource;
-        private TEntity selectedItem;
+        private object selectedItem;
 
         #endregion Fields
 
@@ -38,7 +38,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public TEntity SelectedItem
+        public object SelectedItem
         {
             get => this.selectedItem;
             set
@@ -78,7 +78,14 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            this.EventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(this.selectedItem.Id, this.Token));
+            var selectedModelId = default(TId);
+            if(this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
+            {
+                var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
+                selectedModelId = model.Id;
+            }
+
+            this.EventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
         }
 
         protected override void OnDispose()
