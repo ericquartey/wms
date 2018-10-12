@@ -26,14 +26,14 @@ namespace Ferretto.VW.VWApp
 
         #region Methods
 
-        public void ShutDownApplicationButtonMethod(object sender, RoutedEventArgs e)
-        {
-            this.ShutDownApplication();
-        }
-
         public void LoginButtonMethod(object sender, RoutedEventArgs e)
         {
             this.LoginMethod();
+        }
+
+        public void ShutDownApplicationButtonMethod(object sender, RoutedEventArgs e)
+        {
+            this.ShutDownApplication();
         }
 
         private bool CheckLoginInput(string user, string password)
@@ -55,28 +55,28 @@ namespace Ferretto.VW.VWApp
                     ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
                     ((App)Application.Current).InstallationMainWindowInstance.Show();
                     this.Hide();
-                    this.UserLoginTextBox.Text = "";
-                    this.PasswordLoginTextBox.Text = "";
+                    this.UserLoginTextBox.Text = string.Empty;
+                    this.PasswordLoginTextBox.Text = string.Empty;
                 }
                 else if (this.UserLogin == "Operator")
                 {
                     ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
                     ((App)Application.Current).OperatorMainWindowInstance.Show();
                     this.Hide();
-                    this.UserLoginTextBox.Text = "";
-                    this.PasswordLoginTextBox.Text = "";
+                    this.UserLoginTextBox.Text = string.Empty;
+                    this.PasswordLoginTextBox.Text = string.Empty;
                 }
                 else //TODO: remove this block once CheckLoginInput is implemented.
                 {
-                    this.UserLoginTextBox.Text = "";
-                    this.PasswordLoginTextBox.Text = "";
+                    this.UserLoginTextBox.Text = string.Empty;
+                    this.PasswordLoginTextBox.Text = string.Empty;
                 }
             }
             else
             {
                 //TODO: open a popup to communicate to the user that the login info are not correct
-                this.UserLoginTextBox.Text = "";
-                this.PasswordLoginTextBox.Text = "";
+                this.UserLoginTextBox.Text = string.Empty;
+                this.PasswordLoginTextBox.Text = string.Empty;
             }
         }
 
