@@ -5,7 +5,6 @@ using Ferretto.Common.Modules.BLL;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -46,7 +45,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            this.LoadData((int?)this.Data);
+            if (this.Data is int modelId)
+            {
+                this.LoadData(modelId);
+            }
+
             base.OnAppear();
         }
 
@@ -73,17 +76,23 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Initialize()
         {
             this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
-                                        eventArgs => this.LoadData(eventArgs.ItemId), true);
+                eventArgs =>
+                {
+                    if (eventArgs.ModelIdHasValue)
+                    {
+                        this.LoadData(eventArgs.ModelId);
+                    }
+                    else
+                    {
+                        this.Compartment = null;
+                    }
+                },
+                true);
         }
 
-        private void LoadData(int? itemId)
+        private void LoadData(int modelId)
         {
-            if (itemId == null)
-            {
-                this.Compartment = null;
-                return;
-            }
-            this.Compartment = this.compartmentProvider.GetById((int)itemId);
+            this.Compartment = this.compartmentProvider.GetById(modelId);
         }
 
         #endregion Methods
