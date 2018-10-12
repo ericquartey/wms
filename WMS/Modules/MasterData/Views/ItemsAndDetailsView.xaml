@@ -5,15 +5,16 @@
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:masterdata="clr-namespace:Ferretto.WMS.Modules.MasterData"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
+               xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                Title="{x:Static res:Navigation.Items}"
                d:DesignHeight="450"
                d:DesignWidth="800"
                mc:Ignorable="d">
     <Grid>
 
-        <ctrls:WmsHistoryView StartModuleName="{ctrls:NameOf Type={x:Type modules:MasterData}}" StartViewName="{x:Static modules:MasterData.ITEMS}" />
+        <ctrls:WmsHistoryView StartModuleName="{ctrls:NameOf Type={x:Type modules:MasterData}}"
+                              StartViewName="{x:Static modules:MasterData.ITEMS}" />
 
     </Grid>
 </ctrls:WmsView>

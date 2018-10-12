@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.Common.BusinessModels
 {
     public sealed class CompartmentDetails : BusinessObject<int>
     {
@@ -76,7 +76,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public string ItemDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public DataModels.Pairing ItemPairing { get; set; }
+        public string ItemPairing { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }

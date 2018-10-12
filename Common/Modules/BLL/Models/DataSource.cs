@@ -2,6 +2,7 @@
 using System.Linq;
 using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {

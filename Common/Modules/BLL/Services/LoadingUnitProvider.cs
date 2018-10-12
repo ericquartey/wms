@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Practices.ServiceLocation;
 
@@ -75,7 +75,8 @@ namespace Ferretto.Common.Modules.BLL.Services
             loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
             loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
             loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
-            foreach(var compartment in this.compartmentProvider.GetByLoadingUnitId(id)){
+            foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
+            {
                 loadingUnitDetails.AddCompartment(compartment);
             }
 
