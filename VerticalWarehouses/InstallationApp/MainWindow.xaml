@@ -35,7 +35,7 @@
         <Border Grid.Row="0"
                 Grid.Column="0"
                 Background="{StaticResource FerrettoLightGray}"
-                BorderBrush="{StaticResource FerrettoMediumGray}"
+                BorderBrush="{StaticResource FerrettoLightGray}"
                 BorderThickness="2">
             <Image Margin="5"
                    Source="/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
@@ -44,7 +44,7 @@
         <Border Grid.Row="0"
                 Grid.Column="1"
                 Background="{StaticResource FerrettoLightGray}"
-                BorderBrush="{StaticResource FerrettoMediumGray}"
+                BorderBrush="{StaticResource FerrettoLightGray}"
                 BorderThickness="0,2,2,2">
             <StackPanel FlowDirection="RightToLeft"
                         Orientation="Horizontal">
@@ -98,7 +98,7 @@
         <Border Grid.Row="1"
                 Grid.Column="0"
                 Background="{StaticResource FerrettoLightGray}"
-                BorderBrush="{StaticResource FerrettoMediumGray}"
+                BorderBrush="{StaticResource FerrettoLightGray}"
                 BorderThickness="2,0,2,2">
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
                 <StackPanel>

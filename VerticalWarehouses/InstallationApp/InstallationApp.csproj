@@ -61,6 +61,12 @@
     <Compile Include="Views\LowSpeedMovementsTestView.xaml.cs">
       <DependentUpon>LowSpeedMovementsTestView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LSMTGateEngineView.xaml.cs">
+      <DependentUpon>LSMTGateEngineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LSMTHorizontalEngineView.xaml.cs">
+      <DependentUpon>LSMTHorizontalEngineView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\LSMTVerticalEngineView.xaml.cs">
       <DependentUpon>LSMTVerticalEngineView.xaml</DependentUpon>
     </Compile>
@@ -79,6 +85,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\LowSpeedMovementsTestView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LSMTGateEngineView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LSMTHorizontalEngineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

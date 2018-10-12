@@ -61,11 +61,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Actual Position:.
+        /// </summary>
+        public static string ActualPosition {
+            get {
+                return ResourceManager.GetString("ActualPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto.
         /// </summary>
         public static string Auto {
             get {
                 return ResourceManager.GetString("Auto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backward.
+        /// </summary>
+        public static string Backward {
+            get {
+                return ResourceManager.GetString("Backward", resourceCulture);
             }
         }
         
@@ -79,11 +97,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Down.
+        /// </summary>
+        public static string Down {
+            get {
+                return ResourceManager.GetString("Down", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Feed Rate:.
+        /// </summary>
+        public static string FeedRate {
+            get {
+                return ResourceManager.GetString("FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forward.
+        /// </summary>
+        public static string Forward {
+            get {
+                return ResourceManager.GetString("Forward", resourceCulture);
             }
         }
         
@@ -124,11 +169,74 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gate Engine.
+        /// </summary>
+        public static string LSMTGateEngineButton {
+            get {
+                return ResourceManager.GetString("LSMTGateEngineButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate Engine Movements.
+        /// </summary>
+        public static string LSMTGateEngineTitle {
+            get {
+                return ResourceManager.GetString("LSMTGateEngineTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal Engine.
+        /// </summary>
+        public static string LSMTHorizontalEngineButton {
+            get {
+                return ResourceManager.GetString("LSMTHorizontalEngineButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Horizontal Engine Movements.
+        /// </summary>
+        public static string LSMTHorizontalEngineTitle {
+            get {
+                return ResourceManager.GetString("LSMTHorizontalEngineTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Engine.
+        /// </summary>
+        public static string LSMTVerticalEngineButton {
+            get {
+                return ResourceManager.GetString("LSMTVerticalEngineButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Engine Movements.
+        /// </summary>
+        public static string LSMTVerticalEngineTitle {
+            get {
+                return ResourceManager.GetString("LSMTVerticalEngineTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manual.
         /// </summary>
         public static string Manual {
             get {
                 return ResourceManager.GetString("Manual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to   Next &gt;  .
+        /// </summary>
+        public static string NextButton {
+            get {
+                return ResourceManager.GetString("NextButton", resourceCulture);
             }
         }
         
@@ -156,6 +264,15 @@ namespace Ferretto.Common.Resources {
         public static string On {
             get {
                 return ResourceManager.GetString("On", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Up.
+        /// </summary>
+        public static string Up {
+            get {
+                return ResourceManager.GetString("Up", resourceCulture);
             }
         }
         

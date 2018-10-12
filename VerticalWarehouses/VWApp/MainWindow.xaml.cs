@@ -36,11 +36,6 @@ namespace Ferretto.VW.VWApp
             this.LoginMethod();
         }
 
-        public void OtherActionButtonMethod(object sender, RoutedEventArgs e)
-        {
-            this.OtherAction();
-        }
-
         private bool CheckLoginInput(string user, string password)
         {
             Debug.Print("VWApp::CheckLoginInput executed.\n");
@@ -83,12 +78,6 @@ namespace Ferretto.VW.VWApp
                 this.UserLoginTextBox.Text = "";
                 this.PasswordLoginTextBox.Text = "";
             }
-        }
-
-        private void OtherAction()
-        {
-            //TODO: implement system closing
-            Debug.Print("VWApp::OtherAction executed.\n");
         }
 
         private void RestoreVWAppWindow()
