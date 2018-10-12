@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Navigation", "VerticalWareh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomControls", "VerticalWarehouses\CustomControls\CustomControls.csproj", "{3C8A3855-897A-4395-BF65-D9D597896A3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalWarehousesApp", "VerticalWarehouses\VerticalWarehousesApp\VerticalWarehousesApp.csproj", "{044A9872-DD3B-4505-9B32-CAB24A16DD3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{3C8A3855-897A-4395-BF65-D9D597896A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C8A3855-897A-4395-BF65-D9D597896A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C8A3855-897A-4395-BF65-D9D597896A3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +106,7 @@ Global
 		{2DDC7447-9196-4C21-AF86-502D0C952669} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
 		{8F34417E-3C32-4694-91AF-B286FBF0E1AC} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
 		{3C8A3855-897A-4395-BF65-D9D597896A3E} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

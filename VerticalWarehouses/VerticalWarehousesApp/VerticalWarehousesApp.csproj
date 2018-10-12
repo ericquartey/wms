@@ -62,24 +62,6 @@
     <Compile Include="ViewModels\DrawerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\TestConnectionPageViewModel.cs" />
-    <Compile Include="Views\CompartmentationPageView.xaml.cs">
-      <DependentUpon>CompartmentationPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DrawerPage.xaml.cs">
-      <DependentUpon>DrawerPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DrawGridPage.xaml.cs">
-      <DependentUpon>DrawGridPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ManualCompartmentPage.xaml.cs">
-      <DependentUpon>ManualCompartmentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SwitchCameraPage.xaml.cs">
-      <DependentUpon>SwitchCameraPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TestConnectionPageView.xaml.cs">
       <DependentUpon>TestConnectionPageView.xaml</DependentUpon>
     </Compile>
@@ -87,30 +69,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\CompartmentationPageView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DrawerPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DrawGridPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ManualCompartmentPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SwitchCameraPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\TestConnectionPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,7 +101,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CustomControls\CustomControls.csproj">
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
       <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
       <Name>CustomControls</Name>
     </ProjectReference>

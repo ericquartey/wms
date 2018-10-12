@@ -132,7 +132,7 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class CommandBase : ICommandBase
     {
-        private readonly CommandId m_cmdId;          //<! Command identifier (Id) 
+        private readonly CommandId cmdId;   
 
         /// <summary>
         /// Class c-tor.
@@ -140,7 +140,7 @@ namespace Ferretto.VW.InverterDriver
         /// <param name="id"><see cref="CommandId"/> code</param>
         public CommandBase(CommandId id)
         {
-            this.m_cmdId = id;
+            this.cmdId = id;
         }
 
         /// <summary>
@@ -150,16 +150,11 @@ namespace Ferretto.VW.InverterDriver
         {
             get
             {
-                return this.m_cmdId;
+                return this.cmdId;
             }
         }
 
-    } // CommandBase class
-
-
-    // -------------------------------------------------------------------------------------
-    // SetVerticalAxisOrigin
-    // -------------------------------------------------------------------------------------
+    } 
 
     /// <summary>
     /// Set Vertical Axis Origin command class.
@@ -167,10 +162,9 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class SetVerticalAxisOriginCmd : CommandBase
     {
-        // Internal instance
-        private static readonly SetVerticalAxisOriginCmd m_instance = new SetVerticalAxisOriginCmd();
+        private static readonly SetVerticalAxisOriginCmd instance0 = new SetVerticalAxisOriginCmd();
 
-        private bool m_bExecuted = false;          //!< true if command has been executed
+        private bool executed = false;        
 
         /// <summary>
         /// Initialize a new instance of the <see cref="SetVerticalAxisOriginCmd"/> class.
@@ -182,7 +176,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static SetVerticalAxisOriginCmd Instance
         {
-            get { return m_instance; }
+            get { return instance0; }
         }
 
         /// <summary>
@@ -190,7 +184,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public bool Executed
         {
-            get { return this.m_bExecuted; }
+            get { return this.executed; }
         }
 
 
@@ -210,8 +204,6 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(byte direction, float vSearch, float vCam0, float a, float a1, float a2, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
@@ -219,42 +211,36 @@ namespace Ferretto.VW.InverterDriver
 
             ExitStatus exitCode = ExitStatus.Success;
 
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // direction
+               
                 byte[] convertionBuffer = new byte[sizeof(byte)];
                 convertionBuffer = BitConverter.GetBytes(direction);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(byte);
 
-                // vSearch
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(vSearch);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // vCam0
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(vCam0);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a1
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a1);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a2
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a2);
                 convertionBuffer.CopyTo(ans, posx);
@@ -265,7 +251,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -282,8 +267,7 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-            
-            // Check argument
+
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -293,7 +277,6 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Read parameter from data array bytes
                         int currIndex = 0;
                         byte direction = ans[currIndex];
                         currIndex += sizeof(byte);
@@ -307,57 +290,42 @@ namespace Ferretto.VW.InverterDriver
                         currIndex += sizeof(float);
                         float a2 = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-
-                        // Build the telegram (see the protocol)
                         
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.SetVerticalAxisOrigin));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;        
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
-
-                        // set execution flag
-                        this.m_bExecuted = true;
+                        this.executed = true;
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
 
-    } // SetVerticalAxisOriginCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // MoveAlongVerticalAxisToPoint
-    // -------------------------------------------------------------------------------------
+    } 
 
     /// <summary>
     /// Move along vertical axis to point command class.
@@ -365,8 +333,7 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class MoveAlongVerticalAxisToPointCmd : CommandBase
     {
-        // Internal instance
-        private static readonly MoveAlongVerticalAxisToPointCmd _instance = new MoveAlongVerticalAxisToPointCmd();
+        private static readonly MoveAlongVerticalAxisToPointCmd instance1 = new MoveAlongVerticalAxisToPointCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="MoveAlongVerticalAxisToPointCmd"/> class.
@@ -378,7 +345,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static MoveAlongVerticalAxisToPointCmd Instance
         {
-            get { return _instance; }
+            get { return instance1; }
         }
 
         /// <summary>
@@ -396,44 +363,36 @@ namespace Ferretto.VW.InverterDriver
         {
             nBytes = 0;
 
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // x
                 byte[] convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(x);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // vMax
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(vMax);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a1
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a1);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // w
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(w);
                 convertionBuffer.CopyTo(ans, posx);
@@ -444,8 +403,6 @@ namespace Ferretto.VW.InverterDriver
             {
                 exitCode = ExitStatus.Failure;
             }
-
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -462,8 +419,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -473,7 +428,6 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Read parameter from data array bytes
                         int currIndex = 0;
                         short x = ans[currIndex];
                         currIndex += sizeof(short);
@@ -485,54 +439,40 @@ namespace Ferretto.VW.InverterDriver
                         currIndex += sizeof(float);
                         float w = BitConverter.ToSingle(ans, currIndex);
 
-                        // Build the telegram (see the protocol)
-
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.MoveAlongVerticalAxisToPoint));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;    
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
 
 
-    } // MoveAlongVerticalAxisToPointCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // SelectMovement
-    // -------------------------------------------------------------------------------------
+    }
 
     /// <summary>
     /// Select movement command class.
@@ -541,8 +481,7 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class SelectMovementCmd : CommandBase
     {
-        // Internal instance
-        private static readonly SelectMovementCmd _instance = new SelectMovementCmd();
+        private static readonly SelectMovementCmd instance2 = new SelectMovementCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="SelectMovementCmd"/> class.
@@ -554,7 +493,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static SelectMovementCmd Instance
         {
-            get { return _instance; }
+            get { return instance2; }
         }
 
         /// <summary>
@@ -567,8 +506,6 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(byte m, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
@@ -576,7 +513,6 @@ namespace Ferretto.VW.InverterDriver
 
             ExitStatus exitCode = ExitStatus.Success;
 
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
@@ -593,7 +529,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -611,7 +546,6 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
 
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -621,57 +555,41 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Read parameter from data array bytes
                         int currIndex = 0;
                         byte m = ans[currIndex];
-
-                        // Build the telegram (see the protocol)
-
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.SelectMovement));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;        
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
 
-    } // SelectMovementCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // MoveAlongHorizontalAxisWithProfile
-    // -------------------------------------------------------------------------------------
+    } 
 
     /// <summary>
     /// Move along horizontal axis with profile command class.
@@ -679,8 +597,7 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class MoveAlongHorizontalAxisWithProfileCmd : CommandBase
     {
-        // Internal instance
-        private static readonly MoveAlongHorizontalAxisWithProfileCmd m_instance = new MoveAlongHorizontalAxisWithProfileCmd();
+        private static readonly MoveAlongHorizontalAxisWithProfileCmd instance3 = new MoveAlongHorizontalAxisWithProfileCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="SetVerticalAxisOriginCmd"/> class.
@@ -692,7 +609,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static MoveAlongHorizontalAxisWithProfileCmd Instance
         {
-            get { return m_instance; }
+            get { return instance3; }
         }
 
         /// <summary>
@@ -719,99 +636,81 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(float v1, float a, short s1, short s2, float v2, float a1, short s3, short s4, float v3, float a2, short s5, short s6, float a3, short s7, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // v1
                 byte[] convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(v1);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // s1
                 convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(s1);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // s2
                 convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(s2);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // a1
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a1);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a2
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a2);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // s3
                 convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(s3);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // s4
                 convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(s4);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // v3
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(v3);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a2
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a2);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // s5
                 convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(s5);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // s6
                 convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(s6);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // a3
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a3);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // s7
                 convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(s7);
                 convertionBuffer.CopyTo(ans, posx);
@@ -823,7 +722,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -841,7 +739,6 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
 
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -851,7 +748,6 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Read parameter from data array bytes
                         int currIndex = 0;
                         float direction = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
@@ -884,53 +780,40 @@ namespace Ferretto.VW.InverterDriver
                         short s7 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
 
-                        // Build the telegram (see the protocol)
-
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.MoveAlongHorizontalAxisWithProfile));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;      
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
+                       
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
 
-    } // MoveAlongHorizontalAxisWithProfileCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // RunShutter
-    // -------------------------------------------------------------------------------------
+    } 
 
     /// <summary>
     /// Run bay shutter command class.
@@ -939,8 +822,7 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class RunShutterCmd : CommandBase
     {
-        // Internal instance
-        private static readonly RunShutterCmd m_instance = new RunShutterCmd();
+        private static readonly RunShutterCmd instance5 = new RunShutterCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="RunShutterCmd"/> class.
@@ -952,7 +834,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static RunShutterCmd Instance
         {
-            get { return m_instance; }
+            get { return instance5; }
         }
 
 
@@ -976,22 +858,19 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Build the telegram
 
                         byte[] inputBuffer = new byte[40];
-                        // create the buffer according to the parameters
                         nBytes = 40;
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return exitCode;
@@ -1007,21 +886,16 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(byte m, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // m
                 byte[] convertionBuffer = new byte[1];
                 convertionBuffer = BitConverter.GetBytes(m);
                 convertionBuffer.CopyTo(ans, posx);
@@ -1033,7 +907,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -1050,8 +923,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -1061,67 +932,48 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Read parameter from data array bytes
                         int currIndex = 0;
                         byte m = ans[currIndex];
 
-                        // Build the telegram (see the protocol)
-
                         int posx = 0;
-
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.RunShutter));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;        
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
 
-
-    } // RunShutterCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // RunDrawerWeightRoutine
-    // -------------------------------------------------------------------------------------
-
+    } 
     /// <summary>
     /// Run routine to measure the drawer weight command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
     internal class RunDrawerWeightRoutineCmd : CommandBase
     {
-        // Internal instance
-        private static readonly RunDrawerWeightRoutineCmd m_instance = new RunDrawerWeightRoutineCmd();
+        private static readonly RunDrawerWeightRoutineCmd instance6 = new RunDrawerWeightRoutineCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="RunDrawerWeightRoutineCmd"/> class.
@@ -1133,7 +985,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static RunDrawerWeightRoutineCmd Instance
         {
-            get { return m_instance; }
+            get { return instance6; }
         }
 
         /// <summary>
@@ -1158,39 +1010,31 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(short d, float w, float a, byte e, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // d
                 byte[] convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(d);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
 
-                // w
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(w);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // a
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(a);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
 
-                // e
                 convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(e);
                 convertionBuffer.CopyTo(ans, posx);
@@ -1202,7 +1046,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -1219,8 +1062,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -1230,7 +1071,6 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Read parameter from data array bytes
                         int currIndex = 0;
                         short d = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
@@ -1241,62 +1081,45 @@ namespace Ferretto.VW.InverterDriver
                         float e = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
 
-                        // Build the telegram (see the protocol)
-
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.RunDrawerWeightRoutine));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61; 
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
-
-    } // RunDrawerWeightRoutineCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // GetDrawerWeight
-    // -------------------------------------------------------------------------------------
-
+    } 
     /// <summary>
     /// Get the drawer weight command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
     internal class GetDrawerWeightCmd : CommandBase
     {
-        // Internal instance
-        private static readonly GetDrawerWeightCmd m_instance = new GetDrawerWeightCmd();
+        private static readonly GetDrawerWeightCmd instance7 = new GetDrawerWeightCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="GetDrawerWeight"/> class.
@@ -1308,7 +1131,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static GetDrawerWeightCmd Instance
         {
-            get { return m_instance; }
+            get { return instance7; }
         }
 
         /// <summary>
@@ -1320,16 +1143,12 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
@@ -1347,7 +1166,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -1364,8 +1182,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -1375,42 +1191,34 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Build the telegram (see the protocol)
 
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetDrawerWeight));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;   
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
-
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
-                    {
-                        // TODO: Build the telegram  
+                    { 
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
@@ -1419,16 +1227,9 @@ namespace Ferretto.VW.InverterDriver
 
         public float Current
         {
-            // retrieve a internal parameter return this.m_Ic;
             get { return 0.0f; }
         }
-
-    } // GetDrawerWeightCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // Stop
-    // -------------------------------------------------------------------------------------
+    } 
 
     /// <summary>
     /// Stop command class.
@@ -1436,8 +1237,7 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class StopCmd : CommandBase
     {
-        // Internal instance
-        private static readonly StopCmd m_instance = new StopCmd();
+        private static readonly StopCmd instance8 = new StopCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="StopCmd"/> class.
@@ -1449,7 +1249,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static StopCmd Instance
         {
-            get { return m_instance; }
+            get { return instance8; }
         }
 
         /// <summary>
@@ -1461,29 +1261,22 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // no parameter caching
 
             }
             catch (Exception)
             {
                 exitCode = ExitStatus.Failure;
             }
-
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -1500,8 +1293,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -1511,62 +1302,47 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Build the telegram (see the protocol)
 
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.Stop));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;         
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
 
-    } // StopCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // GetMainState
-    // -------------------------------------------------------------------------------------
-
+    } 
     /// <summary>
     /// Get main status command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
     internal class GetMainStateCmd : CommandBase
     {
-        // Internal instance
-        private static readonly GetMainStateCmd m_instance = new GetMainStateCmd();
+        private static readonly GetMainStateCmd instance9 = new GetMainStateCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
@@ -1578,7 +1354,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static GetMainStateCmd Instance
         {
-            get { return m_instance; }
+            get { return instance9; }
         }
 
         /// <summary>
@@ -1591,20 +1367,16 @@ namespace Ferretto.VW.InverterDriver
         {
             nBytes = 0;
 
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // no caching parameters
 
             }
             catch (Exception)
@@ -1612,7 +1384,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -1629,8 +1400,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -1640,42 +1409,35 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Build the telegram (see the protocol)
 
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetMainState));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;        
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
+
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
@@ -1684,25 +1446,18 @@ namespace Ferretto.VW.InverterDriver
 
         public byte State
         {
-            // retrieve the bits mask for status return this.m_state;    byte m_state; 
+
             get { return 0x00; }
         }
 
-    } // GetMainStateCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // GetIOState
-    // -------------------------------------------------------------------------------------
-
+    } 
     /// <summary>
     /// Get I/O sensors status command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
     internal class GetIOStateCmd : CommandBase
     {
-        // Internal instance
-        private static readonly GetIOStateCmd m_instance = new GetIOStateCmd();
+        private static readonly GetIOStateCmd instance_A = new GetIOStateCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
@@ -1714,7 +1469,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static GetIOStateCmd Instance
         {
-            get { return m_instance; }
+            get { return instance_A; }
         }
 
         /// <summary>
@@ -1726,21 +1481,16 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // no caching parameters
 
             }
             catch (Exception)
@@ -1748,7 +1498,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -1765,8 +1514,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -1776,42 +1523,34 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Build the telegram (see the protocol)
-
+                        
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetIOState));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;       
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
@@ -1820,25 +1559,17 @@ namespace Ferretto.VW.InverterDriver
 
         public int[] IOState
         {
-            // retrieve the bits mask for status return this.m_state;    int[] m_state;    4 int ==> sizeof=16 bytes
             get { return null; }
         }
 
-    } // GetIOStateCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // GetIOEmergencyState
-    // -------------------------------------------------------------------------------------
-
+    }
     /// <summary>
     /// Get I/O emergency sensors status command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
     internal class GetIOEmergencyStateCmd : CommandBase
     {
-        // Internal instance
-        private static readonly GetIOEmergencyStateCmd m_instance = new GetIOEmergencyStateCmd();
+        private static readonly GetIOEmergencyStateCmd instance_B = new GetIOEmergencyStateCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
@@ -1850,7 +1581,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static GetIOEmergencyStateCmd Instance
         {
-            get { return m_instance; }
+            get { return instance_B; }
         }
 
         
@@ -1864,21 +1595,16 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
             {
-                // no caching parameters
 
             }
             catch (Exception)
@@ -1886,7 +1612,6 @@ namespace Ferretto.VW.InverterDriver
                 exitCode = ExitStatus.Failure;
             }
 
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -1903,8 +1628,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -1914,42 +1637,34 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Build the telegram (see the protocol)
 
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetIOEmergencyState));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;        
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
@@ -1958,17 +1673,10 @@ namespace Ferretto.VW.InverterDriver
 
         public int[] IOEmergencyState
         {
-            // retrieve the bits mask for status return this.m_state;    byte[] m_emergencyState;    4 bytes ==> sizeof=16 bytes
             get { return null; }
         }
 
-    } // GetIOEmergencyStateCmd class
-
-
-    // -------------------------------------------------------------------------------------
-    // Set
-    // -------------------------------------------------------------------------------------
-
+    } 
     /// <summary>
     /// Set command class.
     /// It is ON/OFF command type
@@ -1976,8 +1684,7 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class SetCmd : CommandBase
     {
-        // Internal instance
-        private static readonly SetCmd m_instance = new SetCmd();
+        private static readonly SetCmd instance_C = new SetCmd();
 
         /// <summary>
         /// Initialize a new instance of the <see cref="SetCmd"/> class.
@@ -1989,7 +1696,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public static SetCmd Instance
         {
-            get { return m_instance; }
+            get { return instance_C; }
         }
 
         /// <summary>
@@ -2003,16 +1710,12 @@ namespace Ferretto.VW.InverterDriver
         public ExitStatus CacheData(int i, byte value, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
-
-            // check parameter
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
             ExitStatus exitCode = ExitStatus.Success;
-
-            // store parameters in the preallocated data buffer
             int posx = 0;
 
             try
@@ -2033,8 +1736,6 @@ namespace Ferretto.VW.InverterDriver
             {
                 exitCode = ExitStatus.Failure;
             }
-
-            // assign number of bytes
             nBytes = posx;
 
             return exitCode;
@@ -2051,8 +1752,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
-            // Check argument
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -2062,56 +1761,43 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        // Read parameter from data array bytes
                         int currIndex = 0;
                         int i = BitConverter.ToInt32(ans, currIndex);
                         currIndex += sizeof(int);
                         byte value = ans[currIndex];
 
-                        // Build the telegram (see the protocol)
-
                         int posx = 0;
 
-                        // cmd Id
                         byte[] convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.Set));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // header byte
-                        byte header = 0x61;         // see the protocol
+                        byte header = 0x61;         
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        // nBytes
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
-
-                        // payload
-                        // ...
-
-                        // TODO Add your implementation code here
 
                         break;
                     }
 
                 case AdapterType.CustomAdapter:
                     {
-                        // TODO: Build the telegram  
                         break;
                     }
+                default:
+                    break;
             }
 
             return ExitStatus.Success;
         }
 
-    } // SetCmd class
+    } 
 
 }
-
-
-// EOF

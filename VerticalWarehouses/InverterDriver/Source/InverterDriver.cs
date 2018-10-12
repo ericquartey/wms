@@ -192,49 +192,62 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        // Consts
+        /// <summary>
+        /// Consts
+        /// </summary>
         public const string IP_ADDR_INVERTER_DEFAULT = "172.16.199.200";
 
         public const int PORT_ADDR_INVERTER_DEFAULT = 8000;
 
         public const int SIZEMAX_DATABUFFER = 1024;
 
-        // Maximum size of data buffer for command
-        public const int TIME_OUT = 150; //50;
+        /// <summary>
+        /// Maximum size of data buffer for command
+        /// </summary>
+        public const int TIME_OUT = 150;
 
         private static readonly object g_lock = new object();
 
-        // Time out for main thread (ms)
-        private readonly InverterDriverState m_state;
+        /// <summary>
+        /// Time out for main thread (ms)
+        /// </summary>
+        private readonly InverterDriverState state;
 
-        // Port address of inverter (manifactured port address)
-        private byte[] m_DataBufferCommand;
+        /// <summary>
+        /// Port address of inverter (manifactured port address)
+        /// </summary>
+        private byte[] DataBufferCommand;
 
-        // IP address of inverter (manifactured IP address)
-        private InverterDriverErrors m_error;
+        /// <summary>
+        /// IP address of inverter (manifactured IP address)
+        /// </summary>
+        private InverterDriverErrors error;
 
-        //!< Data buffer containing the operation arguments
-        private AutoResetEvent m_hevAckTerminate;
+        /// <summary>
+        ///  Data buffer containing the operation arguments
+        /// </summary>
+        private AutoResetEvent hevAckTerminate;
+        private AutoResetEvent hevTerminate;
+        private HardwareInverterStatus hwInverterState;
 
-        //!< State
-        //!< Error flag
-        private AutoResetEvent m_hevTerminate;
+        /// <summary>
+        /// Stop event for automated operation
+        /// Acknowledge for terminate
+        /// </summary>
+        private Thread opThread;
 
-        private HardwareInverterStatus m_hwInverterState;
+        private int portAddressToConnect;
 
-        //!< Stop event for automated operation
-        //!< Acknowledge for terminate
-        private Thread m_opThread;
-
-        private int m_portAddressToConnect;
-
-        //!< IP address to connect
-        private string m_szIPAddressToConnect;
+        /// <summary>
+        /// IP address to connect
+        /// </summary>
+        private string ipAddressToConnect;
 
         private int msgCounter;
 
-        //!< Address port to connect
-        //!< Reference to a callback for connecting to server socket
+        /// <summary>
+        /// Address port to connect
+        /// </summary>
         private IAsyncResult result;
 
         private Socket sckClient;
@@ -248,18 +261,13 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public CInverterDriver()
         {
-            this.m_error = InverterDriverErrors.NoError;
-            this.m_state = InverterDriverState.Idle;
+            this.error = InverterDriverErrors.NoError;
+            this.state = InverterDriverState.Idle;
+            this.ipAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
+            this.portAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
 
-            this.m_hevTerminate = null;
-            this.m_hevAckTerminate = null;
-            this.m_opThread = null;
-
-            this.m_szIPAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
-            this.m_portAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
-
-            this.m_DataBufferCommand = new byte[SIZEMAX_DATABUFFER];
-            Array.Clear(this.m_DataBufferCommand, 0, SIZEMAX_DATABUFFER);
+            this.DataBufferCommand = new byte[SIZEMAX_DATABUFFER];
+    
         }
 
         #endregion Constructors
@@ -280,21 +288,18 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public string IPAddressToConnect
         {
-            get => this.m_szIPAddressToConnect;
-            set => this.m_szIPAddressToConnect = value;
+            get => this.ipAddressToConnect;
+            set => this.ipAddressToConnect = value;
         }
 
-        //!< Asynchronuos operation status
-        //!< Socket client
-        //!< Messages from server counter
         /// <summary>
         /// Set/Get port address to connect.
         /// Specify the IPv4 address family.
         /// </summary>
         public int PortAddressToConnect
         {
-            set => this.m_portAddressToConnect = value;
-            get => this.m_portAddressToConnect;
+            set => this.portAddressToConnect = value;
+            get => this.portAddressToConnect;
         }
 
         #endregion Properties
@@ -310,48 +315,46 @@ namespace Ferretto.VW.InverterDriver
             GC.SuppressFinalize(this);
         }
 
-        //! Get the drawer weight
+        /// <summary>
+        /// Get the drawer weight
+        /// </summary>
+        /// <param name="ic"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus GetDrawerWeight(float ic)
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.GetDrawerWeight);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetDrawerWeight);
 
-            // ic
+           
             var convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(ic);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 3);
-            // set the byte of command to be executed
+            convertionBuffer.CopyTo(this.DataBufferCommand, 3);
+            /// <summary>
+            ///  set the byte of command to be executed
+            /// </summary>
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
             return InverterDriverExitStatus.Success;
         }
 
-        // -------
-        // Events
-        //! Get IO emergency sensors state.
         public InverterDriverExitStatus GetIOEmergencyState()
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.GetIOEmergencyState);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetIOEmergencyState);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
             return InverterDriverExitStatus.Success;
         }
-
-        //!< Data buffer for the command
-        //! Get IO sensor state.
         public InverterDriverExitStatus GetIOState()
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.GetIOState);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetIOState);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
             return InverterDriverExitStatus.Success;
         }
@@ -363,40 +366,38 @@ namespace Ferretto.VW.InverterDriver
         public string GetIP()
         {
             var strHostName = Dns.GetHostName();
-
-            // Find host by name
             var iphostentry = Dns.GetHostEntry(strHostName);
 
-            // Get the first IP addresses
-            var szIP = "";
+            var IP = "";
             foreach (var ipaddress in iphostentry.AddressList)
             {
-                // IPv4
+                
                 if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    szIP = ipaddress.ToString();
-                    return szIP;
+                    IP = ipaddress.ToString();
+                    return IP;
                 }
 
-                // IPv6
                 if (ipaddress.AddressFamily == AddressFamily.InterNetworkV6)
                 {
-                    // TODO: Add your implementation code here
+                    
                 }
             }
 
-            return szIP;
+            return IP;
         }
 
-        //! Get main status of inverter.
+        /// <summary>
+        /// Get main status of inverter.
+        /// </summary>
+        /// <returns></returns>
         public InverterDriverExitStatus GetMainState()
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.GetMainState);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetMainState);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
 
             return InverterDriverExitStatus.Success;
@@ -408,122 +409,134 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public bool Initialize()
         {
-            // create the thread
             this.createThread();
-
-            // create the socket and connect to inverter
             var bResult = this.connect_to_inverter();
-
             return bResult;
         }
 
-        //! Move along horizontal axis with given profile.
+        /// <summary>
+        /// Move along horizontal axis with given profile.
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="a"></param>
+        /// <param name="s1"></param>
+        /// <param name="s2"></param>
+        /// <param name="v2"></param>
+        /// <param name="a1"></param>
+        /// <param name="s3"></param>
+        /// <param name="s4"></param>
+        /// <param name="v3"></param>
+        /// <param name="a2"></param>
+        /// <param name="s5"></param>
+        /// <param name="s6"></param>
+        /// <param name="a3"></param>
+        /// <param name="s7"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus MoveAlongHorizontalAxisWithProfile(float v1, float a, short s1, short s2,
             float v2, float a1, short s3, short s4, float v3, float a2, short s5, short s6, float a3, short s7)
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.MoveAlongHorizontalAxisWithProfile);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.MoveAlongHorizontalAxisWithProfile);
 
-            // v1
             var convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(v1);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 3);
-            // a
+            convertionBuffer.CopyTo(this.DataBufferCommand, 3);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 7);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 7);
 
-            // s1
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s1);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 11);
-            // s2
+            convertionBuffer.CopyTo(this.DataBufferCommand, 11);
+
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s2);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 13);
-            //v2
+            convertionBuffer.CopyTo(this.DataBufferCommand, 13);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(v2);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 15);
-            // a1
+            convertionBuffer.CopyTo(this.DataBufferCommand, 15);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a1);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 19);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 19);
 
-            // s3
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s3);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 23);
-            // s4
+            convertionBuffer.CopyTo(this.DataBufferCommand, 23);
+ 
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s4);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 25);
-            //v3
+            convertionBuffer.CopyTo(this.DataBufferCommand, 25);
+  
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(v3);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 27);
-            // a2
+            convertionBuffer.CopyTo(this.DataBufferCommand, 27);
+   
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a2);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 31);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 31);
 
-            // s5
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s5);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 35);
-            // s6
+            convertionBuffer.CopyTo(this.DataBufferCommand, 35);
+
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s6);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 37);
-            // a3
+            convertionBuffer.CopyTo(this.DataBufferCommand, 37);
+  
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a3);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 39);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 39);
 
-            // s7
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s7);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 43);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 43);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
 
             return InverterDriverExitStatus.Success;
         }
 
-        //! Move along vertical axis to given point.
+        /// <summary>
+        /// Move along vertical axis to given point.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="vMax"></param>
+        /// <param name="a"></param>
+        /// <param name="a1"></param>
+        /// <param name="w"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus MoveAlongVerticalAxisToPoint(short x, float vMax, float a, float a1, float w)
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.MoveAlongVerticalAxisToPoint);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.MoveAlongVerticalAxisToPoint);
 
-            // x
             var convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(x);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 3);
-            // vMax
+            convertionBuffer.CopyTo(this.DataBufferCommand, 3);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(vMax);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 5);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 5);
 
-            // a
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 9);
-            // a1
+            convertionBuffer.CopyTo(this.DataBufferCommand, 9);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a1);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 13);
-            //w
+            convertionBuffer.CopyTo(this.DataBufferCommand, 13);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(w);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 17);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 17);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
 
             return InverterDriverExitStatus.Success;
@@ -539,14 +552,10 @@ namespace Ferretto.VW.InverterDriver
             {
                 var theSockId = (SocketPacket)asyn.AsyncState;
                 var iRx = theSockId.thisSocket.EndReceive(asyn);
-
-                // theSockId.dataBuffer is the data buffer containing the response send by the inverter
-
-                // Translate this data buffer according to the Bonfiglioli protocol inverter
                 var nBytes = theSockId.dataBuffer[0];
                 var cmdId = theSockId.dataBuffer[1];
                 var state = theSockId.dataBuffer[2];
-                var szMessage = (state == 0x00) ? "Failed" : "Success";
+                var Message = (state == 0x00) ? "Failed" : "Success";
                 var id = CommandId.None;
                 switch (cmdId)
                 {
@@ -585,11 +594,11 @@ namespace Ferretto.VW.InverterDriver
                     case 0x09:
                         {
                             id = CommandId.GetMainState;
-                            this.m_hwInverterState = (0x01 == theSockId.dataBuffer[2])
+                            this.hwInverterState = (0x01 == theSockId.dataBuffer[2])
                                 ? HardwareInverterStatus.Operative
                                 : HardwareInverterStatus.NotOperative;
 
-                            szMessage = this.m_hwInverterState.ToString();
+                            Message = this.hwInverterState.ToString();
                             break;
                         }
                     case 0x0A:
@@ -607,6 +616,9 @@ namespace Ferretto.VW.InverterDriver
                     case 0xFF:
                         id = CommandId.None;
                         break;
+
+                    default:
+                        break;
                 }
 
                 var result = theSockId.dataBuffer[2];
@@ -615,7 +627,7 @@ namespace Ferretto.VW.InverterDriver
 
                 if (null != GetMessageFromServer)
                 {
-                    GetMessageFromServer(this, new GetMessageFromServerEventArgs(szMessage, id));
+                    GetMessageFromServer(this, new GetMessageFromServerEventArgs(Message, id));
                 }
 
                 this.waitForData();
@@ -626,141 +638,158 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (SocketException)
             {
-                // TODO: Log a warning?
+               
             }
         }
 
-        //! Run routine for detect the weight of current drawer.
+        /// <summary>
+        /// Run routine for detect the weight of current drawer.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="w"></param>
+        /// <param name="a"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus RunDrawerWeightRoutine(short d, float w, float a, byte e)
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.RunDrawerWeightRoutine);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.RunDrawerWeightRoutine);
 
-            // d
             var convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(d);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 3);
-            // w
+            convertionBuffer.CopyTo(this.DataBufferCommand, 3);
+  
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(w);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 5);
-            // a
+            convertionBuffer.CopyTo(this.DataBufferCommand, 5);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 9);
-            // e
-            this.m_DataBufferCommand[13] = e;
-            // set the byte of command to be executed
+            convertionBuffer.CopyTo(this.DataBufferCommand, 9);
+
+            this.DataBufferCommand[13] = e;
+
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
             return InverterDriverExitStatus.Success;
         }
 
-        //! Run shutter on opening movement or closing movement.
+        /// <summary>
+        /// Run shutter on opening movement or closing movement.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus RunShutter(byte m)
         {
-            // write the command id in the data buffer
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.RunShutter);
 
-            // set the byte of command to be executed
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.RunShutter);
+
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
             return InverterDriverExitStatus.Success;
         }
 
-        //! Select movement among vertical movement and horizontal movement.
+        /// <summary>
+        /// Select movement among vertical movement and horizontal movement.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus SelectMovement(byte m)
         {
-            //
-            this.m_DataBufferCommand[3] = m;
+            this.DataBufferCommand[3] = m;
 
-            // write the command id in the data buffer
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.SelectMovement);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.SelectMovement);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
 
             return InverterDriverExitStatus.Success;
         }
 
-        //! Set ON/OFF value to the given line.
+        /// <summary>
+        /// Set ON/OFF value to the given line.
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus Set(int i, byte value)
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.Set);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.Set);
 
-            //i
             var convertionBuffer = new byte[sizeof(int)];
             convertionBuffer = BitConverter.GetBytes(i);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 3);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 3);
 
-            // value
-            this.m_DataBufferCommand[7] = value;
+            this.DataBufferCommand[7] = value;
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
             return InverterDriverExitStatus.Success;
         }
 
-        //! Set vertical axis origin routine.
+        /// <summary>
+        /// Set vertical axis origin routine.
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="vSearch"></param>
+        /// <param name="vCam0"></param>
+        /// <param name="a"></param>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <returns></returns>
         public InverterDriverExitStatus SetVerticalAxisOrigin(byte direction, float vSearch, float vCam0, float a,
             float a1, float a2)
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.SetVerticalAxisOrigin);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.SetVerticalAxisOrigin);
 
-            // direction
-            this.m_DataBufferCommand[3] = direction;
+            this.DataBufferCommand[3] = direction;
 
-            // vSearch
             var convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(vSearch);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 4);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 4);
 
-            // vCam0
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(vCam0);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 8);
-            // a
+            convertionBuffer.CopyTo(this.DataBufferCommand, 8);
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 12);
-            // a1
+            convertionBuffer.CopyTo(this.DataBufferCommand, 12);
+  
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a1);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 16);
-            //a2
+            convertionBuffer.CopyTo(this.DataBufferCommand, 16);
+  
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a2);
-            convertionBuffer.CopyTo(this.m_DataBufferCommand, 20);
+            convertionBuffer.CopyTo(this.DataBufferCommand, 20);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
 
             return InverterDriverExitStatus.Success;
         }
 
-        // -----------------------------------------------------------------
-        // IDriver interface
-        //! Stop.
+        /// <summary>
+        /// Stop.
+        /// </summary>
+        /// <returns></returns>
         public InverterDriverExitStatus Stop()
         {
-            this.m_DataBufferCommand[2] = Convert.ToByte(CommandId.Stop);
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.Stop);
 
-            // set the byte of command to be executed
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x01;
+                this.DataBufferCommand[1] = 0x01;
             }
             return InverterDriverExitStatus.Success;
         }
@@ -770,13 +799,9 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public void Terminate()
         {
-            this.m_hevTerminate.Set();
-
-            // destroy thread resources
+            this.hevTerminate.Set();
             this.destroyThread();
-
-            this.m_DataBufferCommand = null;
-
+            this.DataBufferCommand = null;
             this.disconnect_from_inverter();
         }
 
@@ -788,7 +813,7 @@ namespace Ferretto.VW.InverterDriver
         {
             if (disposing)
             {
-                // release unmanaged resources
+ 
             }
         }
 
@@ -800,7 +825,7 @@ namespace Ferretto.VW.InverterDriver
 
         private bool build_telegram_and_send()
         {
-            var cmdId = this.byte2CommandId(this.m_DataBufferCommand[2]);
+            var cmdId = this.byte2CommandId(this.DataBufferCommand[2]);
             byte nBytes = 0;
             switch (cmdId)
             {
@@ -851,21 +876,21 @@ namespace Ferretto.VW.InverterDriver
                 case CommandId.Set:
                     nBytes = 6;
                     break;
+
+                default:
+                    break;
             }
 
-            // read arguments from data buffer
 
             var byTelegramToSend = new byte[nBytes + 1];
             byTelegramToSend[0] = nBytes;
-            Array.Copy(this.m_DataBufferCommand, 2, byTelegramToSend, 1, nBytes);
-
-            // build the telegram according the arguments and the protocol provided by Bonfiglioli inverter
+            Array.Copy(this.DataBufferCommand, 2, byTelegramToSend, 1, nBytes);
 
             this.sendDataToServer(byTelegramToSend);
 
             lock (g_lock)
             {
-                this.m_DataBufferCommand[1] = 0x00;
+                this.DataBufferCommand[1] = 0x00;
             }
 
             return true;
@@ -923,6 +948,9 @@ namespace Ferretto.VW.InverterDriver
                 case 0x0C:
                     cmdId = CommandId.Set;
                     break;
+
+                default:
+                    break;
             }
 
             return cmdId;
@@ -930,53 +958,35 @@ namespace Ferretto.VW.InverterDriver
 
         private bool connect_to_inverter()
         {
-            this.m_error = InverterDriverErrors.NoError;
+            this.error = InverterDriverErrors.NoError;
 
-            // See if we have text on the IP and Port text fields
-            if (this.m_szIPAddressToConnect == "" || this.m_portAddressToConnect <= 0)
+            if (this.ipAddressToConnect == "" || this.portAddressToConnect <= 0)
             {
-                this.m_error = InverterDriverErrors.IOError;
+                this.error = InverterDriverErrors.IOError;
                 return false;
             }
 
             try
             {
-                // Create one SocketPermission for socket access restrictions
+
                 var permission = new SocketPermission(
-                    NetworkAccess.Connect, // Connection permission
-                    TransportType.Tcp, // Defines transport types
-                    "", // Gets the IP addresses
-                    SocketPermission.AllPorts // All ports
+                    NetworkAccess.Connect, 
+                    TransportType.Tcp, 
+                    "", 
+                    SocketPermission.AllPorts 
                 );
 
-                // Ensures the code to have permission to access a Socket
                 permission.Demand();
 
-                // Resolves a host name to an IPHostEntry instance
                 var ipHost = Dns.GetHostEntry("");
-
-                // Gets first IP address associated with a localhost
-                //IPAddress ipAddr = ipHost.AddressList[0];
-
-                // Get the given IP address
-                var ipAddr = IPAddress.Parse(this.m_szIPAddressToConnect);
-                // Assign the address port
-                var iPortNumber = this.m_portAddressToConnect;
-
-                // Create the socket instance
+                var ipAddr = IPAddress.Parse(this.ipAddressToConnect);
+                var iPortNumber = this.portAddressToConnect;
                 this.sckClient = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-
-                //m_sckClient.NoDelay = false;   // Using the Nagle algorithm
-
-                // Create the end point
                 var ipEnd = new IPEndPoint(ipAddr, iPortNumber);
-                // Connect to the remote host
                 this.sckClient.Connect(ipEnd);
                 if (this.sckClient.Connected)
                 {
                     Connected?.Invoke(this, new ConnectedEventArgs(true));
-
-                    // Wait for data asynchronously
                     this.waitForData();
                 }
                 else
@@ -986,8 +996,7 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (SocketException)
             {
-                // TODO: Log a warning?
-                this.m_error = InverterDriverErrors.GenericError;
+                this.error = InverterDriverErrors.GenericError;
             }
 
             return true;
@@ -998,13 +1007,11 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         private void createThread()
         {
-            this.m_hevTerminate = new AutoResetEvent(false);
-            this.m_hevAckTerminate = new AutoResetEvent(false);
-
-            // Run an internal thread to perform operation
-            this.m_opThread = new Thread(this.mainThread);
-            this.m_opThread.Name = "workingInverterThread";
-            this.m_opThread.Start();
+            this.hevTerminate = new AutoResetEvent(false);
+            this.hevAckTerminate = new AutoResetEvent(false);
+            this.opThread = new Thread(this.mainThread);
+            this.opThread.Name = "workingInverterThread";
+            this.opThread.Start();
         }
 
         /// <summary>
@@ -1013,27 +1020,27 @@ namespace Ferretto.VW.InverterDriver
         private void destroyThread()
         {
             var handles = new WaitHandle[1];
-            handles[0] = this.m_hevAckTerminate;
+            handles[0] = this.hevAckTerminate;
             WaitHandle.WaitAny(handles, -1);
 
-            if (null != this.m_opThread)
+            if (null != this.opThread)
             {
-                this.m_opThread.Abort();
+                this.opThread.Abort();
             }
 
-            if (null != this.m_hevTerminate)
+            if (null != this.hevTerminate)
             {
-                this.m_hevTerminate.Close();
+                this.hevTerminate.Close();
             }
 
-            this.m_hevTerminate = null;
+            this.hevTerminate = null;
 
-            if (null != this.m_hevAckTerminate)
+            if (null != this.hevAckTerminate)
             {
-                this.m_hevAckTerminate.Close();
+                this.hevAckTerminate.Close();
             }
 
-            this.m_hevAckTerminate = null;
+            this.hevAckTerminate = null;
         }
 
         private void disconnect_from_inverter()
@@ -1053,18 +1060,17 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         private bool existPendingOperation()
         {
-            var bExistsPendingOperation = false;
+            var ExistsPendingOperation = false;
             lock (g_lock)
             {
-                bExistsPendingOperation = (this.m_DataBufferCommand[1] == 0x01);
+                ExistsPendingOperation = (this.DataBufferCommand[1] == 0x01);
             }
 
-            return bExistsPendingOperation;
+            return ExistsPendingOperation;
         }
 
         private bool get_main_state_of_inverter()
         {
-            //
             var exitCode = this.GetMainState();
 
             return true;
@@ -1078,7 +1084,7 @@ namespace Ferretto.VW.InverterDriver
             const int EV_TERMINATE = 0;
 
             var handles = new WaitHandle[1];
-            handles[0] = this.m_hevTerminate;
+            handles[0] = this.hevTerminate;
 
             var bExit = false;
             while (!bExit)
@@ -1088,7 +1094,6 @@ namespace Ferretto.VW.InverterDriver
                 {
                     case EV_TERMINATE:
                         {
-                            // Exit from thread
                             bExit = true;
                             break;
                         }
@@ -1096,21 +1101,22 @@ namespace Ferretto.VW.InverterDriver
                         {
                             if (this.existPendingOperation())
                             {
-                                // an operation must be executed, so I send it to the inverter
                                 this.build_telegram_and_send();
                             }
                             else
                             {
-                                // if no operation, then check the status of inverter (send a command to inverter to check the state)
-                                //this.get_main_state_of_inverter();
+                        
+                                this.get_main_state_of_inverter();
                             }
 
                             break;
                         }
+                    default:
+                        break;
                 }
             }
 
-            this.m_hevAckTerminate.Set();
+            this.hevAckTerminate.Set();
         }
 
         /// <summary>
@@ -1125,14 +1131,12 @@ namespace Ferretto.VW.InverterDriver
                 {
                     if (this.sckClient != null)
                     {
-                        // Send data
                         this.sckClient.Send(byTelegramToSend);
                     }
                 }
             }
             catch (SocketException)
             {
-                // TODO: Log a warning?
             }
         }
 
@@ -1145,7 +1149,6 @@ namespace Ferretto.VW.InverterDriver
             {
                 var theSocPkt = new SocketPacket();
                 theSocPkt.thisSocket = this.sckClient;
-                // Start listening to the data asynchronously
                 this.result = this.sckClient.BeginReceive(
                     theSocPkt.dataBuffer,
                     0,
@@ -1157,7 +1160,6 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (SocketException)
             {
-                // TODO: Log a warning
             }
         }
 
@@ -1205,9 +1207,9 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Constructors
 
-        public GetMessageFromServerEventArgs(string szMsg, CommandId cmdId)
+        public GetMessageFromServerEventArgs(string Msg, CommandId cmdId)
         {
-            this.Message = szMsg;
+            this.Message = Msg;
             this.CmdId = cmdId;
         }
 
