@@ -6,12 +6,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              mc:Ignorable="d">
-    <DockPanel Width="730"
-               Height="530">
+    <DockPanel>
         <Label HorizontalAlignment="Center"
                Content="{x:Static res:InstallationApp.VerifyCircuitIntegrity}"
                DockPanel.Dock="Top"
                Style="{StaticResource StandardTitleTextStyle}" />
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1"
+                    Height="60"
+                    Content="{x:Static res:InstallationApp.NextButton}"
+                    Style="{StaticResource StandardButtonStyle}" />
+        </Grid>
         <Grid DockPanel.Dock="Bottom">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -32,10 +41,6 @@
                     Width="200"
                     Height="80"
                     Content="{x:Static res:InstallationApp.VerifyCircuitIntegrity}"
-                    Style="{StaticResource StandardButtonStyle}" />
-            <Button Grid.Row="4"
-                    Grid.Column="4"
-                    Content="{x:Static res:InstallationApp.NextButton}"
                     Style="{StaticResource StandardButtonStyle}" />
         </Grid>
     </DockPanel>

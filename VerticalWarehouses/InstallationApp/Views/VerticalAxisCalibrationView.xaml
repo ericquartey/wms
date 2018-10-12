@@ -4,101 +4,105 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              mc:Ignorable="d">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0"
-               HorizontalAlignment="Center"
+    <DockPanel>
+        <Label HorizontalAlignment="Center"
+               DockPanel.Dock="Top"
                Style="{StaticResource StandardTitleTextStyle}">
             Vertical Axis Calibration
         </Label>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+        <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0"
-                    Grid.Column="0"
+            <Button Grid.Column="4"
+                    Height="60"
+                    Content="{x:Static res:InstallationApp.NextButton}"
+                    Style="{StaticResource StandardButtonStyle}" />
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="1"
+                    Grid.Column="1"
                     Style="{StaticResource StandardButtonStyle}">
                 START
             </Button>
-            <Button Grid.Row="3"
-                    Grid.Column="0"
+            <Button Grid.Row="4"
+                    Grid.Column="1"
                     Style="{StaticResource StandardButtonStyle}">
                 STOP
             </Button>
-            <Label Grid.Row="0"
-                   Grid.Column="2"
+            <Label Grid.Row="1"
+                   Grid.Column="3"
                    Style="{StaticResource StandardBodyTextStyle}">
                 Resolution
             </Label>
-            <Label Grid.Row="1"
-                   Grid.Column="2"
+            <Label Grid.Row="2"
+                   Grid.Column="3"
                    Style="{StaticResource StandardBodyTextStyle}">
                 Offset
             </Label>
-            <Label Grid.Row="2"
-                   Grid.Column="2"
+            <Label Grid.Row="3"
+                   Grid.Column="3"
                    Style="{StaticResource StandardBodyTextStyle}">
                 Upper Bound
             </Label>
-            <Label Grid.Row="3"
-                   Grid.Column="2"
+            <Label Grid.Row="4"
+                   Grid.Column="3"
                    Style="{StaticResource StandardBodyTextStyle}">
                 Lower Bound
             </Label>
-            <Label Grid.Row="4"
-                   Grid.Column="2"
+            <Label Grid.Row="5"
+                   Grid.Column="3"
                    Style="{StaticResource StandardBodyTextStyle}">
                 Output:
             </Label>
             <TextBox Name="VerticalAxisCalibrationResolutionTextBox"
-                     Grid.Row="0"
-                     Grid.Column="3"
+                     Grid.Row="1"
+                     Grid.Column="4"
                      Margin="2"
                      Style="{StaticResource StandardBodyTextStyle}" />
             <TextBox Name="VerticalAxisCalibrationOffsetTextBox"
-                     Grid.Row="1"
-                     Grid.Column="3"
+                     Grid.Row="2"
+                     Grid.Column="4"
                      Margin="2"
                      Style="{StaticResource StandardBodyTextStyle}" />
             <TextBox Name="VerticalAxisCalibrationUpperBoundTextBox"
-                     Grid.Row="2"
-                     Grid.Column="3"
+                     Grid.Row="3"
+                     Grid.Column="4"
                      Margin="2"
                      Style="{StaticResource StandardBodyTextStyle}" />
             <TextBox Name="VerticalAxisCalibrationLowerBoundTextBox"
-                     Grid.Row="3"
-                     Grid.Column="3"
+                     Grid.Row="4"
+                     Grid.Column="4"
                      Margin="2"
                      Style="{StaticResource StandardBodyTextStyle}" />
             <TextBlock Name="VerticalAxisCalibrationOutputTextBlock"
-                       Grid.Row="4"
-                       Grid.Column="3"
+                       Grid.Row="5"
+                       Grid.Column="4"
                        Margin="2"
                        VerticalAlignment="Center"
                        Style="{StaticResource StandardBodyTextBlockStyle}">
                 Axis not calibrated yet.
             </TextBlock>
-            <Button Grid.Row="5"
-                    Grid.Column="4"
-                    Style="{StaticResource StandardButtonStyle}">
-                Next &gt;
-            </Button>
         </Grid>
-    </Grid>
+    </DockPanel>
 </UserControl>
