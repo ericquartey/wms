@@ -37,7 +37,6 @@ namespace Ferretto.Common.Modules.BLL.Models
         public string Code { get; set; }
 
         public IEnumerable<CompartmentDetails> Compartments { get { return this.compartments.AsReadOnly(); } }
-        public int Id { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public int Length
@@ -89,7 +88,7 @@ namespace Ferretto.Common.Modules.BLL.Models
             return true;
         }
 
-        public virtual void OnAddedCompartmentEvent(EventArgs e)
+        public void OnAddedCompartmentEvent(EventArgs e)
         {
             EventHandler handler = AddedCompartmentEvent;
             if (handler != null)
