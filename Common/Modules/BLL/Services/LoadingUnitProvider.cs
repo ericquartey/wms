@@ -75,7 +75,9 @@ namespace Ferretto.Common.Modules.BLL.Services
             loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
             loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
             loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
-            loadingUnitDetails.Compartments = this.compartmentProvider.GetByLoadingUnitId(id);
+            foreach(var compartment in this.compartmentProvider.GetByLoadingUnitId(id)){
+                loadingUnitDetails.AddCompartment(compartment);
+            }
 
             return loadingUnitDetails;
         }
