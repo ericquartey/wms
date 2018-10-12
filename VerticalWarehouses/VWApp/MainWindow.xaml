@@ -37,7 +37,7 @@
             <StackPanel>
                 <Label Margin="5"
                        HorizontalContentAlignment="Center"
-                       Content="User Login:"
+                       Content="{x:Static res:General.UserLogin}"
                        Style="{StaticResource StandardBodyTextStyle}" />
                 <TextBox Name="UserLoginTextBox"
                          Margin="5"
@@ -45,7 +45,7 @@
                          Style="{StaticResource StandardBodyTextStyle}" />
                 <Label Margin="5"
                        HorizontalContentAlignment="Center"
-                       Content="Password Login:"
+                       Content="{x:Static res:General.PasswordLogin}"
                        Style="{StaticResource StandardBodyTextStyle}" />
                 <TextBox Name="PasswordLoginTextBox"
                          Margin="5"
@@ -53,18 +53,16 @@
                          Style="{StaticResource StandardBodyTextStyle}" />
                 <Button Height="120"
                         Click="LoginButtonMethod"
-                        Style="{StaticResource StandardButtonStyle}">
-                    Log In
-                </Button>
+                        Content="{x:Static res:General.Login}"
+                        Style="{StaticResource StandardButtonStyle}" />
             </StackPanel>
         </Border>
         <StackPanel Grid.Row="3"
                     Grid.Column="1">
             <Button Height="65"
                     Click="ShutDownApplicationButtonMethod"
-                    Style="{StaticResource StandardButtonStyle}">
-                Switch Off
-            </Button>
+                    Content="{x:Static res:General.SwitchOff}"
+                    Style="{StaticResource StandardButtonStyle}" />
         </StackPanel>
     </Grid>
 </Window>
