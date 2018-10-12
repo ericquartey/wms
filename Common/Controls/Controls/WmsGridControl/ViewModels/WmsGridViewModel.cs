@@ -5,11 +5,11 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity, TId> : BaseNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
+    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
     {
         #region Fields
 
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private readonly object refreshItemsEventSubscription;
         private IDataSource<TEntity, TId> currentDataSource;
         private TEntity selectedItem;
 
@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            this.eventService.Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
+            this.refreshItemsEventSubscription = this.EventService.Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
         }
 
         #endregion Constructors
@@ -78,7 +78,13 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(this.selectedItem.Id, this.Token));
+            this.EventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(this.selectedItem.Id, this.Token));
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<RefreshItemsEvent<TEntity>>(this.refreshItemsEventSubscription);
+            base.OnDispose();
         }
 
         #endregion Methods

@@ -20,6 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private IDataSource<Compartment, int> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
+        private object itemSelectionChangedSubscription;
         private ICommand saveCommand;
         private object selectedCompartment;
         private ICommand viewCompartmentDetailsCommand;
@@ -108,6 +109,12 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Item, int>>(this.itemSelectionChangedSubscription);
+            base.OnDispose();
+        }
+
         private void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.itemProvider.Save(this.Item);
@@ -122,7 +129,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
+            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
                     eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 

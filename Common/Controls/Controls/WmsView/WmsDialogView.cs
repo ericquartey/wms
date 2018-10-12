@@ -36,6 +36,7 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public object Data { get; set; }
+        public bool IsClosed { get; set; }
         public string MapId { get; set; }
         public string Token { get; set; }
         public WmsViewType ViewType => this.viewType;
@@ -54,6 +55,22 @@ namespace Ferretto.Common.Controls
             wmsDialog.Owner = Application.Current.MainWindow;
             wmsDialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
             wmsDialog.ShowDialog();
+        }
+
+        public void Close()
+        {
+            if (this.IsClosed == false)
+            {
+                this.IsClosed = true;
+                var childViews = LayoutTreeHelper.GetVisualChildren(this).OfType<WmsView>();
+                foreach (var childView in childViews)
+                {
+                    childView.Close();
+                }
+                ((INavigableViewModel)this.DataContext).Disappear();
+                this.navigationService.Disappear(this.DataContext as INavigableViewModel);
+                ((INavigableViewModel)this.DataContext).Dispose();
+            }
         }
 
         private string GetAttachedViewModel()
