@@ -4,6 +4,8 @@ namespace Ferretto.Common.BLL.Interfaces
 {
     public interface IEventService
     {
+        #region Methods
+
         void Invoke<T>(T eventArgs) where T : IEventArgs;
 
         /// <summary>
@@ -14,7 +16,7 @@ namespace Ferretto.Common.BLL.Interfaces
         /// <param name="token">Specifies the subscriber token. Events will be routed only if the event's token matches the subscriber's token.</param>
         /// <param name="keepSubscriberReferenceAlive">When true, the EventService keeps a reference to the subscriber so it does not get garbage collected.</param>
         /// <param name="forceUiThread">Force the call to be done on the UI thread, instead of the same thread on which the event was published.</param>
-        void Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive,
+        object Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive,
             bool forceUiThread = false) where TEventArgs : IEventArgs;
 
         /// <summary>
@@ -23,8 +25,10 @@ namespace Ferretto.Common.BLL.Interfaces
         /// <typeparam name="TEventArgs">The type of the event arguments.</typeparam>
         /// <param name="action">The delegate that gets executed when the event is raised.</param>
         /// <param name="forceUiThread">Force the call to be done on the UI thread, instead of the same thread on which the event was published.</param>
-        void Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false) where TEventArgs : IEventArgs;
+        object Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false) where TEventArgs : IEventArgs;
 
-        void Unsubscribe<T>(Action<T> action) where T : IEventArgs;
+        void Unsubscribe<T>(object subscriptionToken) where T : IEventArgs;
+
+        #endregion Methods
     }
 }

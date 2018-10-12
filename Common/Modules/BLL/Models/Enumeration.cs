@@ -4,9 +4,8 @@
     {
         #region Constructors
 
-        public Enumeration(TId id, string description)
+        public Enumeration(TId id, string description) : base(id)
         {
-            this.Id = id;
             this.Description = description;
         }
 

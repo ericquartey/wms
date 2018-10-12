@@ -32,16 +32,16 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
-        private readonly TId itemId;
+        private readonly TId modelId;
         private readonly string token;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemSelectionChangedEvent(TId itemId, string token)
+        public ItemSelectionChangedEvent(TId modelId, string token)
         {
-            this.itemId = itemId;
+            this.modelId = modelId;
             this.token = token;
         }
 
@@ -49,8 +49,8 @@ namespace Ferretto.Common.Controls.Services
 
         #region Properties
 
-        public TId ItemId => this.itemId;
-
+        public TId ModelId => this.modelId;
+        public bool ModelIdHasValue => default(TId).Equals(this.modelId) == false;
         public string Token => this.token;
 
         #endregion Properties

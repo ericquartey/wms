@@ -45,7 +45,7 @@ namespace Ferretto.Common.Utils.Menu
                     Children = new List<MainMenuItem>
                     {
                         new MainMenuItem(Navigation.Items, bgColor, nameof(Navigation.Items), nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS),
-                        new MainMenuItem(Navigation.Cells, bgColor, nameof(Navigation.Cells), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.Cells, bgColor, nameof(Navigation.Cells),  nameof(Modules.MasterData), Modules.MasterData.CELLSANDDETAILS),
                         new MainMenuItem(Navigation.LoadingUnits, bgColor, nameof(Navigation.LoadingUnits), nameof(Modules.MasterData), Modules.MasterData.LOADINGUNITSANDDETAILS),
                         new MainMenuItem(Navigation.Compartments, bgColor,  nameof(Navigation.Compartments), nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS)
                     }

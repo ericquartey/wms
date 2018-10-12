@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class LoadingUnit : BusinessObject<int>
+    public sealed class LoadingUnit : BusinessObject<int>
     {
         #region Fields
 
@@ -12,6 +12,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? cellNumber;
 
         #endregion Fields
+
+        #region Constructors
+
+        public LoadingUnit(int id) : base(id)
+        { }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -53,8 +60,6 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
-
-        public int Id { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitStatusDescription { get; set; }

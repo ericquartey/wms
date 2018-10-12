@@ -20,6 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private IDataSource<Compartment, int> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
+        private object itemSelectionChangedSubscription;
         private ICommand saveCommand;
         private object selectedCompartment;
         private ICommand viewCompartmentDetailsCommand;
@@ -104,8 +105,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            this.LoadData(this.Data);
+            if (this.Data is int modelId)
+            {
+                this.LoadData(modelId);
+            }
+
             base.OnAppear();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Item, int>>(this.itemSelectionChangedSubscription);
+            base.OnDispose();
         }
 
         private void ExecuteSaveCommand()
@@ -122,21 +133,26 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
-                    eventArgs => this.LoadData(eventArgs.ItemId), true);
+            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
+                eventArgs =>
+                {
+                    if (eventArgs.ModelIdHasValue)
+                    {
+                        this.LoadData(eventArgs.ModelId);
+                    }
+                    else
+                    {
+                        this.Item = null;
+                    }
+                },
+                true);
         }
 
-        private void LoadData(object itemId)
+        private void LoadData(int modelId)
         {
-            if (itemId == null)
-            {
-                this.Item = null;
-                return;
-            }
+            this.Item = this.itemProvider.GetById(modelId);
 
-            this.Item = this.itemProvider.GetById((int)itemId);
-
-            this.ItemHasCompartments = this.itemProvider.HasAnyCompartments((int)itemId);
+            this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
         }
 
         #endregion Methods

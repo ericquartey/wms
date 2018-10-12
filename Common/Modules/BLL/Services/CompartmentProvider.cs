@@ -40,12 +40,11 @@ namespace Ferretto.Common.Modules.BLL.Services
                .Include(c => c.CompartmentType)
                .Include(c => c.CompartmentStatus)
                .Include(c => c.PackageType)
-               .Select(c => new Compartment
+               .Select(c => new Compartment(c.Id)
                {
                    Code = c.Code,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
                    CompartmentTypeDescription = c.CompartmentType.Description,
-                   Id = c.Id,
                    ItemDescription = c.Item.Description,
                    LoadingUnitCode = c.LoadingUnit.Code,
                    Lot = c.Lot,
@@ -113,12 +112,11 @@ namespace Ferretto.Common.Modules.BLL.Services
         }
 
         private static Compartment ProjectCompartment(DataModels.Compartment c) =>
-           new Compartment
+           new Compartment(c.Id)
            {
                Code = c.Code,
                CompartmentStatusDescription = c.CompartmentStatus?.Description,
                CompartmentTypeDescription = c.CompartmentType?.Description,
-               Id = c.Id,
                ItemDescription = c.Item?.Description,
                LoadingUnitCode = c.LoadingUnit?.Code,
                Lot = c.Lot,
@@ -130,9 +128,8 @@ namespace Ferretto.Common.Modules.BLL.Services
            };
 
         private static CompartmentDetails ProjectCompartmentDetails(DataModels.Compartment c) =>
-            new CompartmentDetails
+            new CompartmentDetails(c.Id)
             {
-                Id = c.Id,
                 Code = c.Code,
                 LoadingUnitCode = c.LoadingUnit?.Code,
                 CompartmentTypeId = c.CompartmentTypeId,

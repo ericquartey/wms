@@ -28,26 +28,26 @@ namespace Ferretto.Common.Modules.BLL.Services
             this.GetEventBus<TEventArgs>()?.Publish(eventArgs);
         }
 
-        public void Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive,
+        public object Subscribe<TEventArgs>(Action<TEventArgs> action, string token, bool keepSubscriberReferenceAlive,
             bool forceUiThread = false) where TEventArgs : IEventArgs
         {
-            this.GetEventBus<TEventArgs>().Subscribe(
+            return this.GetEventBus<TEventArgs>().Subscribe(
                 action,
                 forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread,
                 keepSubscriberReferenceAlive,
                 x => string.IsNullOrEmpty(x.Token) || x.Token == token);
         }
 
-        public void Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false)
+        public object Subscribe<TEventArgs>(Action<TEventArgs> action, bool forceUiThread = false)
             where TEventArgs : IEventArgs
         {
-            this.GetEventBus<TEventArgs>()
+            return this.GetEventBus<TEventArgs>()
                 .Subscribe(action, forceUiThread ? ThreadOption.UIThread : ThreadOption.PublisherThread);
         }
 
-        public void Unsubscribe<TEventArgs>(Action<TEventArgs> action) where TEventArgs : IEventArgs
+        public void Unsubscribe<TEventArgs>(object subscriptionToken) where TEventArgs : IEventArgs
         {
-            this.GetEventBus<TEventArgs>().Unsubscribe(action);
+            this.GetEventBus<TEventArgs>().Unsubscribe(subscriptionToken as SubscriptionToken);
         }
 
         private PubSubEvent<TEventArgs> GetEventBus<TEventArgs>() where TEventArgs : IEventArgs
