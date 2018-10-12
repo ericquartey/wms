@@ -15,7 +15,6 @@
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <compartment:InputCompartmentView Grid.Row="0" />
-        <!--  LoadingUnit="{Binding LoadingUnit, Mode=TwoWay}"  -->
         <wms:WmsTrayControl x:Name="Canvas"
                             Grid.Row="1"
                             Margin="0,0,0,0"
