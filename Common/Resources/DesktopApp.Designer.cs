@@ -124,6 +124,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing Machines module ....
+        /// </summary>
+        public static string InitializingMachinesModule {
+            get {
+                return ResourceManager.GetString("InitializingMachinesModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initializing main window ....
         /// </summary>
         public static string InitializingMainWindow {

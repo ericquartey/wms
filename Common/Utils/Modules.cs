@@ -24,6 +24,10 @@
         #endregion Fields
     }
 
+    public static class Machines
+    {
+    }
+
     public static class MasterData
     {
         #region Fields
