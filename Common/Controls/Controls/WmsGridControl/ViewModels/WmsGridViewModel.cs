@@ -5,11 +5,11 @@ using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity, TId> : BaseNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
+    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
     {
         #region Fields
 
-        private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
+        private readonly object refreshItemsEventSubscription;
         private IDataSource<TEntity, TId> currentDataSource;
         private object selectedItem;
 
@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            this.eventService.Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
+            this.refreshItemsEventSubscription = this.EventService.Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
         }
 
         #endregion Constructors
@@ -80,12 +80,18 @@ namespace Ferretto.Common.Controls
         {
             var selectedModelId = default(TId);
             if(this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
-            { 
+            {
                 var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
                 selectedModelId = model.Id;
             }
 
-            this.eventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
+            this.EventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(this.selectedItem.Id, this.Token));
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<RefreshItemsEvent<TEntity>>(this.refreshItemsEventSubscription);
+            base.OnDispose();
         }
 
         #endregion Methods

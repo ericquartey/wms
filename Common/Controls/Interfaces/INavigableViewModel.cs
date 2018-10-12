@@ -17,6 +17,8 @@
 
         void Disappear();
 
+        void Dispose();
+
         #endregion Methods
     }
 }
