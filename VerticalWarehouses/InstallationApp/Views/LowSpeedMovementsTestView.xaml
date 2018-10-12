@@ -14,7 +14,8 @@
         <TabControl DockPanel.Dock="Bottom">
             <TabItem Header="{x:Static res:InstallationApp.LSMTVerticalEngineButton}"
                      Style="{StaticResource StandardBodyTextStyle}">
-                <Frame Source="LSMTVerticalEngineView.xaml" />
+                <Frame Source="LSMTVerticalEngineView.xaml"
+                       IsEnabled="True"/>
             </TabItem>
             <TabItem Header="{x:Static res:InstallationApp.LSMTHorizontalEngineButton}"
                      Style="{StaticResource StandardBodyTextStyle}">
