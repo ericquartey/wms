@@ -62,6 +62,12 @@
     <Compile Include="ViewModels\DrawerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\TestConnectionPageViewModel.cs" />
+    <Compile Include="Views\CompartmentationPageView.xaml.cs" />
+    <Compile Include="Views\DrawerPage.xaml.cs" />
+    <Compile Include="Views\DrawGridPage.xaml.cs" />
+    <Compile Include="Views\MainWindow.xaml.cs" />
+    <Compile Include="Views\ManualCompartmentPage.xaml.cs" />
+    <Compile Include="Views\SwitchCameraPage.xaml.cs" />
     <Compile Include="Views\TestConnectionPageView.xaml.cs">
       <DependentUpon>TestConnectionPageView.xaml</DependentUpon>
     </Compile>
@@ -69,6 +75,30 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\CompartmentationPageView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DrawerPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DrawGridPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ManualCompartmentPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SwitchCameraPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\TestConnectionPageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
