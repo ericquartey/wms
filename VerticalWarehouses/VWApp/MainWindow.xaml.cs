@@ -26,19 +26,14 @@ namespace Ferretto.VW.VWApp
 
         #region Methods
 
-        public void CloseSystemButtonMethod(object sender, RoutedEventArgs e)
-        {
-            this.CloseSystem();
-        }
-
         public void LoginButtonMethod(object sender, RoutedEventArgs e)
         {
             this.LoginMethod();
         }
 
-        public void OtherActionButtonMethod(object sender, RoutedEventArgs e)
+        public void ShutDownApplicationButtonMethod(object sender, RoutedEventArgs e)
         {
-            this.OtherAction();
+            this.ShutDownApplication();
         }
 
         private bool CheckLoginInput(string user, string password)
@@ -46,12 +41,6 @@ namespace Ferretto.VW.VWApp
             Debug.Print("VWApp::CheckLoginInput executed.\n");
             return true;
             //TODO: check correctness of inputs
-        }
-
-        private void CloseSystem()
-        {
-            //TODO: implement system closing
-            Debug.Print("VWApp::CloseSystem executed.\n");
         }
 
         private void LoginMethod()
@@ -66,40 +55,39 @@ namespace Ferretto.VW.VWApp
                     ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
                     ((App)Application.Current).InstallationMainWindowInstance.Show();
                     this.Hide();
-                    this.UserLoginTextBox.Text = "";
-                    this.PasswordLoginTextBox.Text = "";
+                    this.UserLoginTextBox.Text = string.Empty;
+                    this.PasswordLoginTextBox.Text = string.Empty;
                 }
                 else if (this.UserLogin == "Operator")
                 {
                     ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
                     ((App)Application.Current).OperatorMainWindowInstance.Show();
                     this.Hide();
-                    this.UserLoginTextBox.Text = "";
-                    this.PasswordLoginTextBox.Text = "";
+                    this.UserLoginTextBox.Text = string.Empty;
+                    this.PasswordLoginTextBox.Text = string.Empty;
                 }
                 else //TODO: remove this block once CheckLoginInput is implemented.
                 {
-                    this.UserLoginTextBox.Text = "";
-                    this.PasswordLoginTextBox.Text = "";
+                    this.UserLoginTextBox.Text = string.Empty;
+                    this.PasswordLoginTextBox.Text = string.Empty;
                 }
             }
             else
             {
                 //TODO: open a popup to communicate to the user that the login info are not correct
-                this.UserLoginTextBox.Text = "";
-                this.PasswordLoginTextBox.Text = "";
+                this.UserLoginTextBox.Text = string.Empty;
+                this.PasswordLoginTextBox.Text = string.Empty;
             }
-        }
-
-        private void OtherAction()
-        {
-            //TODO: implement system closing
-            Debug.Print("VWApp::OtherAction executed.\n");
         }
 
         private void RestoreVWAppWindow()
         {
             this.Show();
+        }
+
+        private void ShutDownApplication()
+        {
+            Application.Current.Shutdown();
         }
 
         #endregion Methods
