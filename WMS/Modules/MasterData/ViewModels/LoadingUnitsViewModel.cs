@@ -2,7 +2,7 @@
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitsViewModel : EntityListViewModel<LoadingUnit>
+    public class LoadingUnitsViewModel : EntityListViewModel<LoadingUnit, int>
     {
         #region Methods
 

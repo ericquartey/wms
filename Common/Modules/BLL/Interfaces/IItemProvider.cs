@@ -3,7 +3,7 @@ using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Modules.BLL
 {
-    public interface IItemProvider : IBusinessProvider<Item, ItemDetails>
+    public interface IItemProvider : IBusinessProvider<Item, ItemDetails, int>
     {
         #region Methods
 

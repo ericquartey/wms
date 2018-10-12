@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class LoadingUnitDetails : BusinessObject, IEntity<int>
+    public sealed class LoadingUnitDetails : BusinessObject<int>
     {
         #region Fields
 

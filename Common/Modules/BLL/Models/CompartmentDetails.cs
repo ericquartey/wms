@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class CompartmentDetails : BusinessObject, IEntity<int>
+    public sealed class CompartmentDetails : BusinessObject<int>
     {
         #region Fields
 
@@ -21,6 +20,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? yPosition;
 
         #endregion Fields
+
+        #region Constructors
+
+        public CompartmentDetails(int id) : base(id)
+        { }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -56,8 +62,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             get => this.height;
             set => this.SetIfStrictlyPositive(ref this.height, value);
         }
-
-        public int Id { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }

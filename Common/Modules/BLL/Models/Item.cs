@@ -4,7 +4,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public sealed class Item : BusinessObject
+    public sealed class Item : BusinessObject<int>
     {
         #region Fields
 
@@ -24,6 +24,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? width;
 
         #endregion Fields
+
+        #region Constructors
+
+        public Item(int id) : base(id)
+        { }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -66,8 +73,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             get => this.height;
             set => this.SetIfStrictlyPositive(ref this.height, value);
         }
-
-        public int Id { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
