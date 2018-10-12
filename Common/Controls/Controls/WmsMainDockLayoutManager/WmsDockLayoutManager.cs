@@ -97,8 +97,8 @@ namespace Ferretto.Common.Controls
                 }
                 var layoutGroup = activePanel.Parent;
                 var lastActivePosition = layoutGroup.Items.IndexOf(activePanel);
-                this.DockController.RemovePanel(activePanel);
                 layoutGroup.Items.Insert(lastActivePosition, newLayoutPanel);
+                this.DockController.RemovePanel(activePanel);
             }
             else
             {
@@ -130,8 +130,8 @@ namespace Ferretto.Common.Controls
             {
                 return;
             }
-            var viewModel = ((UserControl)vmsView).DataContext;
-            this.navigationService.Disappear(viewModel as INavigableViewModel);
+
+            ((INavigableView)vmsView).Close();           
         }
 
         private void WmsMainDockLayoutManager_DockOperationCompleted(System.Object sender, DevExpress.Xpf.Docking.Base.DockOperationCompletedEventArgs e)

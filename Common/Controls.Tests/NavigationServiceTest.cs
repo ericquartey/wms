@@ -167,12 +167,21 @@ namespace Feretto.Common.Controls.Tests
 
             public object Data { get; set; }
             public object DataContext { get; set; }
+            public bool IsClosed { get; set; }
             public string MapId { get; set; }
             public string Title { get; set; }
             public string Token { get; set; }
             public WmsViewType ViewType { get; }
 
             #endregion Properties
+
+            #region Methods
+
+            public void Close()
+            {
+            }
+
+            #endregion Methods
         }
 
         private class TestViewModel : INavigableViewModel
@@ -196,6 +205,11 @@ namespace Feretto.Common.Controls.Tests
             public void Disappear()
             {
                 // Test method. Nothing to do here.
+            }
+
+            public void Dispose()
+            {
+                // Test method. Implement dispose
             }
 
             #endregion Methods

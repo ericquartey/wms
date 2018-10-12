@@ -13,8 +13,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private object itemSelectionChangedSubscription;
         private LoadingUnitDetails loadingUnit;
-
         private ICommand saveCommand;
 
         #endregion Fields
@@ -49,6 +49,12 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Compartment>>(this.itemSelectionChangedSubscription);
+            base.OnDispose();
+        }
+
         private void ExecuteSaveCommand()
         {
             var rowSaved = this.loadingUnitProvider.Save(this.LoadingUnit);
@@ -63,7 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
+            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails>>(
                     eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
