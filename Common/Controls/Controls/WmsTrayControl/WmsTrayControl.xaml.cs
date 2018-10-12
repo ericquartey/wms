@@ -41,8 +41,6 @@ namespace Ferretto.Common.Controls
             this.InitializeComponent();
             this.CanvasItemsControl.DataContext = new WmsTrayControlViewModel();
             this.SetBackground(this.ShowBackground);
-            
-
         }
 
         #endregion Constructors
@@ -60,6 +58,7 @@ namespace Ferretto.Common.Controls
             get => (bool)this.GetValue(ReadOnlyProperty);
             set => this.SetValue(ReadOnlyProperty, value);
         }
+
         public bool ShowBackground
         {
             get => (bool)this.GetValue(ShowBackgroundProperty);
@@ -73,7 +72,7 @@ namespace Ferretto.Common.Controls
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
-            {  
+            {
                 viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
             }
         }
@@ -98,7 +97,6 @@ namespace Ferretto.Common.Controls
                 var gGroup = new GeometryGroup();
                 gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
                 var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
-                    //(SolidColorBrush)new BrushConverter().ConvertFrom("#E0E0E0")
                     , 1);
                 var checkers = new GeometryDrawing((SolidColorBrush)new BrushConverter().ConvertFrom("#BDBDBD"), drawingPen, gGroup);
                 var checkersDrawingGroup = new DrawingGroup();
@@ -109,7 +107,6 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                
                 this.Background = null;
             }
         }

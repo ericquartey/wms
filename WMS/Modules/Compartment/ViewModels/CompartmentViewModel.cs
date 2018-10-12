@@ -16,7 +16,6 @@ namespace Ferretto.WMS.Modules.Compartment
         private CompartmentDetails compartmentInput;
         private ICommand createNewCompartmentCommand;
 
-        //private ObservableCollection<WmsBaseCompartment> items;
         private LoadingUnitDetails loadingUnitDetails;
 
         #endregion Fields
@@ -26,11 +25,10 @@ namespace Ferretto.WMS.Modules.Compartment
         public CompartmentViewModel()
         {
             this.compartmentInput = new CompartmentDetails();
-            this.compartmentInput.Width = 1;
-            this.compartmentInput.Height = 1;
+            this.compartmentInput.Width = 150;
+            this.compartmentInput.Height = 150;
             this.compartmentInput.XPosition = 0;
             this.compartmentInput.YPosition = 0;
-            //this.compartmentInput.MaxCapacity = 0;
             this.compartmentInput.Stock = 0;
             this.compartmentInput.ItemCode = "Item";
             this.CompartmentInput = this.compartmentInput;
@@ -62,8 +60,6 @@ namespace Ferretto.WMS.Modules.Compartment
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                  (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
-        //public ObservableCollection<WmsBaseCompartment> Items { get { return this.items; } set { this.items = value; } }
-
         public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set { this.SetProperty(ref this.loadingUnitDetails, value); } }
 
         #endregion Properties
@@ -72,15 +68,12 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
         {
-            //this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnit = loadingUnitDetails;
-            //this.RaisePropertyChanged(nameof(this.Items));
         }
 
         protected override void OnAppear()
         {
             this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
-            //this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 150, Height = 150, XPosition = 10, YPosition = 10 });
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
         }
 

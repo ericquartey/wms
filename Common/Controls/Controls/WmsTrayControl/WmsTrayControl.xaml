@@ -12,12 +12,14 @@
                                      Width="{Binding ElementName=CanvasItemsControl, Path=ActualWidth}"
                                      Height="{Binding ElementName=CanvasItemsControl, Path=ActualHeight}"
                                      ItemsSource="{Binding Items, Mode=TwoWay}">
+
             <ctrls:WmsCanvasItemsControl.Resources />
             <ctrls:WmsCanvasItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-
-
-                    <ctrls:WmsTrayCanvas x:Name="TrayCanvas" />
+                    <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
+                                         Width="{Binding WidthTray, Mode=TwoWay}"
+                                         Height="{Binding HeightTray, Mode=TwoWay}"
+                                         Margin="0,0,0,0" />
                 </ItemsPanelTemplate>
             </ctrls:WmsCanvasItemsControl.ItemsPanel>
             <ctrls:WmsCanvasItemsControl.ItemContainerStyle>

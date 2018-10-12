@@ -11,11 +11,14 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private int heightTray;
         private ObservableCollection<WmsBaseCompartment> items;
 
         private SolidColorBrush penBrush;
 
         private int penThickness;
+
+        private int widthTray;
 
         #endregion Fields
 
@@ -23,9 +26,6 @@ namespace Ferretto.Common.Controls
 
         public WmsTrayControlViewModel()
         {
-            //NOT WORK
-            //this.PenBrush = new SolidColorBrush(Colors.Black);
-            //this.PenThickness = 10;
         }
 
         #endregion Constructors
@@ -37,6 +37,16 @@ namespace Ferretto.Common.Controls
         #endregion Events
 
         #region Properties
+
+        public int HeightTray
+        {
+            get { return this.heightTray; }
+            set
+            {
+                this.heightTray = value;
+                this.NotifyPropertyChanged(nameof(this.HeightTray));
+            }
+        }
 
         public ObservableCollection<WmsBaseCompartment> Items { get { return this.items; } set { this.items = value; } }
 
@@ -62,6 +72,16 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public int WidthTray
+        {
+            get { return this.widthTray; }
+            set
+            {
+                this.widthTray = value;
+                this.NotifyPropertyChanged(nameof(this.WidthTray));
+            }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -84,6 +104,7 @@ namespace Ferretto.Common.Controls
         {
             this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
+
             loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
             loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
             this.TransformDataInput();

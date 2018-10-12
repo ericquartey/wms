@@ -70,7 +70,6 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public void AddCompartment(CompartmentDetails compartmentDetails)
         {
-            //TODO
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
@@ -79,8 +78,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
         {
-            //TODO
-            int n = 0;//Calculate
+            int n = 0;
             for (int i = 0; i < n; i++)
             {
                 this.AddCompartment(null);
@@ -89,7 +87,6 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
-            //TODO
             return true;
         }
 
