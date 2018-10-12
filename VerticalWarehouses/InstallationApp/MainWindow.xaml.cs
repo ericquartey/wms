@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.InstallationApp.Views;
+using System.Windows.Input;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -24,7 +25,6 @@ namespace Ferretto.VW.InstallationApp
 
         public MainWindow()
         {
-            this.InstallerQualification = "Installer";
             NavigationService.BackToVWAppEventHandler += this.CloseThisMainWindow;
             this.InitializeComponent();
         }
@@ -33,13 +33,13 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public string InstallerQualification { get; set; } = "Installer";
+        public string InstallerQualification { get; set; }
 
         #endregion Properties
 
         #region Methods
 
-        public void BackToVWAppButtonMethod(object sender, RoutedEventArgs e)
+        public void BackToVWAppButtonMethod(object sender, MouseButtonEventArgs e)
         {
             this.BackToVWApp();
         }

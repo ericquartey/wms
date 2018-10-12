@@ -45,6 +45,7 @@ namespace Ferretto.WMS.Modules.Compartment
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<CompartmentView, CompartmentViewModel>();
+
         }
 
         #endregion Methods

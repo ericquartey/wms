@@ -177,4 +177,7 @@
   <data name="ItemSavedSuccessfully" xml:space="preserve">
     <value>Articolo salvato con successo</value>
   </data>
+  <data name="CellAll" xml:space="preserve">
+    <value>Tutte</value>
+  </data>
 </root>

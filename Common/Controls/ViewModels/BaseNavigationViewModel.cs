@@ -1,9 +1,10 @@
-﻿using Ferretto.Common.Controls.Interfaces;
+﻿using System;
+using Ferretto.Common.Controls.Interfaces;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class BaseNavigationViewModel : BindableBase, INavigableViewModel
+    public class BaseNavigationViewModel : BindableBase, INavigableViewModel, IDisposable
     {
         #region Constructors
 
@@ -13,9 +14,27 @@ namespace Ferretto.Common.Controls
 
         #endregion Constructors
 
+        #region Destructors
+
+        // Use C# destructor syntax for finalization code.
+        ~BaseNavigationViewModel()
+        {
+            // Simply call Dispose(false).
+            this.Dispose(false);
+        }
+
+        #endregion Destructors
+
         #region Properties
 
         public object Data { get; set; }
+
+        public bool IsDisposed
+        {
+            get;
+            private set;
+        }
+
         public string MapId { get; set; }
         public string StateId { get; set; }
         public string Token { get; set; }
@@ -34,6 +53,12 @@ namespace Ferretto.Common.Controls
             this.OnDisappear();
         }
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         protected virtual void OnAppear()
         {
             // Nothing to do here.
@@ -44,6 +69,36 @@ namespace Ferretto.Common.Controls
         {
             // Nothing to do here.
             // Derived classes can implement custom logic overriding this method.
+        }
+
+        protected virtual void OnDispose()
+        {
+        }
+
+        protected virtual void OnFinalize()
+        {
+        }
+
+        /// <summary>
+        /// Delete the object created from the object.
+        /// <para>Free resources</para>
+        /// </summary>
+        /// <param name="disposing">If true the delete of managed object is required</param>
+        private void Dispose(bool disposing)
+        {
+            if (this.IsDisposed == false)
+            {
+                this.IsDisposed = true;
+
+                if (disposing)
+                {
+                    // Free other state (managed objects).
+                    this.OnDispose();
+                }
+
+                // Free your own state (unmanaged objects).
+                this.OnFinalize();
+            }
         }
 
         #endregion Methods

@@ -90,7 +90,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\ICellProvider.cs" />
     <Compile Include="Models\BusinessObject.cs" />
+    <Compile Include="Models\Cell.cs" />
+    <Compile Include="Models\CellDetails.cs" />
     <Compile Include="Models\CompartmentStockDetails.cs" />
     <Compile Include="Models\Compartment.cs" />
     <Compile Include="Models\CompartmentDetails.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="Interfaces\ICompartmentProvider.cs" />
     <Compile Include="Interfaces\IItemProvider.cs" />
     <Compile Include="Interfaces\ILoadingUnitProvider.cs" />
+    <Compile Include="Services\CellProvider.cs" />
     <Compile Include="Services\ItemProvider.cs" />
     <Compile Include="Services\LoadingUnitProvider.cs" />
     <Compile Include="Services\EventService.cs" />

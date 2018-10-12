@@ -14,6 +14,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private CompartmentDetails compartment;
+        private object itemSelectionChangedSubscription;
         private ICommand saveCommand;
 
         #endregion Fields
@@ -44,8 +45,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            this.LoadData((int?)this.Data);
+            if (this.Data is int modelId)
+            {
+                this.LoadData(modelId);
+            }
+
             base.OnAppear();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Compartment, int>>(this.itemSelectionChangedSubscription);
+            base.OnDispose();
         }
 
         private void ExecuteSaveCommand()
@@ -64,18 +75,24 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
-                    eventArgs => this.LoadData(eventArgs.ItemId), true);
+            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
+                eventArgs =>
+                {
+                    if (eventArgs.ModelIdHasValue)
+                    {
+                        this.LoadData(eventArgs.ModelId);
+                    }
+                    else
+                    {
+                        this.Compartment = null;
+                    }
+                },
+                true);
         }
 
-        private void LoadData(int? itemId)
+        private void LoadData(int modelId)
         {
-            if (itemId == null)
-            {
-                this.Compartment = null;
-                return;
-            }
-            this.Compartment = this.compartmentProvider.GetById((int)itemId);
+            this.Compartment = this.compartmentProvider.GetById(modelId);
         }
 
         #endregion Methods

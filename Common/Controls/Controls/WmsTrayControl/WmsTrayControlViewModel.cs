@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using Ferretto.Common.Modules.BLL.Models;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
@@ -17,10 +12,10 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private ObservableCollection<WmsBaseCompartment> items;
-
-        private string penBrush;
-
+        private SolidColorBrush penBrush;
         private int penThickness;
+        private int trayHeight;
+        private int trayWidth;
 
         #endregion Fields
 
@@ -28,8 +23,6 @@ namespace Ferretto.Common.Controls
 
         public WmsTrayControlViewModel()
         {
-            this.PenBrush = Colors.Aqua.ToString();
-            this.PenThickness = 2;
         }
 
         #endregion Constructors
@@ -46,7 +39,7 @@ namespace Ferretto.Common.Controls
 
         public LoadingUnitDetails LoadingUnitProperty { get; set; }
 
-        public string PenBrush
+        public SolidColorBrush PenBrush
         {
             get { return this.penBrush; }
             set
@@ -63,6 +56,26 @@ namespace Ferretto.Common.Controls
             {
                 this.penThickness = value;
                 this.NotifyPropertyChanged(nameof(this.PenThickness));
+            }
+        }
+
+        public int TrayHeight
+        {
+            get { return this.trayHeight; }
+            set
+            {
+                this.trayHeight = value;
+                this.NotifyPropertyChanged(nameof(this.TrayHeight));
+            }
+        }
+
+        public int TrayWidth
+        {
+            get { return this.trayWidth; }
+            set
+            {
+                this.trayWidth = value;
+                this.NotifyPropertyChanged(nameof(this.TrayWidth));
             }
         }
 
@@ -88,15 +101,18 @@ namespace Ferretto.Common.Controls
         {
             this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
+
+            loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
+            loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
             this.TransformDataInput();
             this.NotifyPropertyChanged(nameof(this.Items));
         }
 
         protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            if (PropertyChanged != null)
+            if (this.PropertyChanged != null)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
 
@@ -109,10 +125,15 @@ namespace Ferretto.Common.Controls
             return value;
         }
 
+        private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
+        {
+            this.TransformDataInput();
+            this.NotifyPropertyChanged(nameof(this.Items));
+        }
+
         private void TransformDataInput(float ratio = 1)
         {
-            var compartments = this.LoadingUnitProperty.Compartments;
-            foreach (var compartment in compartments)
+            foreach (var compartment in this.LoadingUnitProperty.Compartments)
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
@@ -123,8 +144,8 @@ namespace Ferretto.Common.Controls
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
-                    Capacity = Colors.Red.ToString(),
-                    Select = Colors.RoyalBlue.ToString()
+                    ColorFill = Colors.Red.ToString(),
+                    Selected = Colors.RoyalBlue.ToString()
                 });
             }
         }

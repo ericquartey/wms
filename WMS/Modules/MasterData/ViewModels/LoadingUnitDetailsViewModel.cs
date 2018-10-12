@@ -13,8 +13,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private object itemSelectionChangedSubscription;
         private LoadingUnitDetails loadingUnit;
-
         private ICommand saveCommand;
 
         #endregion Fields
@@ -45,8 +45,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            this.LoadData(this.Data);
+            if (this.Data is int modelId)
+            {
+                this.LoadData(modelId);
+            }
+
             base.OnAppear();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Compartment, int>>(this.itemSelectionChangedSubscription);
+            base.OnDispose();
         }
 
         private void ExecuteSaveCommand()
@@ -65,18 +75,24 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails, int>>(
-                    eventArgs => this.LoadData(eventArgs.ItemId), true);
+            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails, int>>(
+                eventArgs =>
+                {
+                    if (eventArgs.ModelIdHasValue)
+                    {
+                        this.LoadData(eventArgs.ModelId);
+                    }
+                    else
+                    {
+                        this.LoadingUnit = null;
+                    }
+                },
+                true);
         }
 
-        private void LoadData(object itemId)
+        private void LoadData(int modelId)
         {
-            if (itemId == null)
-            {
-                this.LoadingUnit = null;
-                return;
-            }
-            this.LoadingUnit = this.loadingUnitProvider.GetById((int)itemId);
+            this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
         }
 
         #endregion Methods
