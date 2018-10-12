@@ -4,15 +4,28 @@ namespace Ferretto.Common.Controls
 {
     public class EventUI
     {
-        public EventArgs eventArgs { get; set; }
-        public object sender { get; set; }
-        public object data;
+        #region Fields
+
+        public object Data;
+
+        #endregion Fields
+
+        #region Constructors
 
         public EventUI(object sender, EventArgs eventArgs, object data)
         {
-            this.sender = sender;
-            this.eventArgs = eventArgs;
-            this.data = data;
+            this.Sender = sender;
+            this.EventUIArgs = eventArgs;
+            this.Data = data;
         }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public EventArgs EventUIArgs { get; set; }
+        public object Sender { get; set; }
+
+        #endregion Properties
     }
 }

@@ -6,8 +6,8 @@
                 Height="{Binding Height, Mode=TwoWay}">
             <Rectangle Width="{Binding Width, Mode=TwoWay}"
                        Height="{Binding Height, Mode=TwoWay}"
-                       Fill="{Binding Capacity, Mode=TwoWay}"
-                       Stroke="{Binding Select, Mode=TwoWay}" />
+                       Fill="{Binding ColorFill, Mode=TwoWay}"
+                       Stroke="{Binding Selected, Mode=TwoWay}" />
         </Border>
     </DataTemplate>
 </ResourceDictionary>

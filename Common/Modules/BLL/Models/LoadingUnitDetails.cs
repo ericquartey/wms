@@ -15,6 +15,16 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #endregion Fields
 
+        #region Constructors
+
+        public LoadingUnitDetails()
+        { }
+
+        public LoadingUnitDetails(int id) : base(id)
+        { }
+
+        #endregion Constructors
+
         #region Events
 
         public event EventHandler AddedCompartmentEvent;
@@ -76,6 +86,9 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
         {
+            //TODO: add logic of dynamic scompartition
+            //      n: is calculated number of compartment to add
+            //      n: based on row/column
             int n = 0;
             for (int i = 0; i < n; i++)
             {
@@ -85,6 +98,8 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
+            //TODO: add logic if possible add new compartment
+            //      return FALSE if exit from tray or overlaps other compartment
             return true;
         }
 

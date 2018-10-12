@@ -22,19 +22,18 @@ namespace Ferretto.Common.Controls
     public class WmsBaseCompartment : INotifyPropertyChanged
     {
         #region Fields
-        private int quantity;
+
+        private string article;
         private int capacity;
         private string colorBorder;
         private string colorFill;
         private double height;
         private double left;
+        private int quantity;
         private float rectangleBorderThickness;
-        private string select;
+        private string selected;
         private double top;
-        private Tray tray;
         private double width;
-        private string article;
-
 
         #endregion Fields
 
@@ -45,6 +44,7 @@ namespace Ferretto.Common.Controls
         #endregion Events
 
         #region Properties
+
         public string Article
         {
             get { return this.article; }
@@ -54,6 +54,7 @@ namespace Ferretto.Common.Controls
                 this.OnPropertyChanged(nameof(this.Article));
             }
         }
+
         public int Capacity
         {
             get { return this.capacity; }
@@ -111,6 +112,12 @@ namespace Ferretto.Common.Controls
 
         public double OriginWidth { get; set; }
 
+        public int Quantity
+        {
+            get { return this.quantity; }
+            set { this.quantity = value; }
+        }
+
         public float RectangleBorderThickness
         {
             get { return this.rectangleBorderThickness; }
@@ -121,19 +128,13 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public int Quantity
+        public string Selected
         {
-            get { return this.quantity; }
-            set { this.quantity = value; }
-        }
-
-        public string Select
-        {
-            get { return this.select; }
+            get { return this.selected; }
             set
             {
-                this.select = value;
-                this.OnPropertyChanged(nameof(this.Select));
+                this.selected = value;
+                this.OnPropertyChanged(nameof(this.Selected));
             }
         }
 
@@ -152,14 +153,8 @@ namespace Ferretto.Common.Controls
 
         public Tray Tray
         {
-            get
-            {
-                return this.tray;
-            }
-            set
-            {
-                this.tray = value;
-            }
+            get;
+            set;
         }
 
         public double Width

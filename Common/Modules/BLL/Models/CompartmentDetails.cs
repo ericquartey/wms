@@ -23,6 +23,9 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #region Constructors
 
+        public CompartmentDetails()
+        { }
+
         public CompartmentDetails(int id) : base(id)
         { }
 

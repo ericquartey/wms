@@ -11,14 +11,11 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private int heightTray;
         private ObservableCollection<WmsBaseCompartment> items;
-
         private SolidColorBrush penBrush;
-
         private int penThickness;
-
-        private int widthTray;
+        private int trayHeight;
+        private int trayWidth;
 
         #endregion Fields
 
@@ -37,16 +34,6 @@ namespace Ferretto.Common.Controls
         #endregion Events
 
         #region Properties
-
-        public int HeightTray
-        {
-            get { return this.heightTray; }
-            set
-            {
-                this.heightTray = value;
-                this.NotifyPropertyChanged(nameof(this.HeightTray));
-            }
-        }
 
         public ObservableCollection<WmsBaseCompartment> Items { get { return this.items; } set { this.items = value; } }
 
@@ -72,13 +59,23 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public int WidthTray
+        public int TrayHeight
         {
-            get { return this.widthTray; }
+            get { return this.trayHeight; }
             set
             {
-                this.widthTray = value;
-                this.NotifyPropertyChanged(nameof(this.WidthTray));
+                this.trayHeight = value;
+                this.NotifyPropertyChanged(nameof(this.TrayHeight));
+            }
+        }
+
+        public int TrayWidth
+        {
+            get { return this.trayWidth; }
+            set
+            {
+                this.trayWidth = value;
+                this.NotifyPropertyChanged(nameof(this.TrayWidth));
             }
         }
 
@@ -136,8 +133,7 @@ namespace Ferretto.Common.Controls
 
         private void TransformDataInput(float ratio = 1)
         {
-            var compartments = this.LoadingUnitProperty.Compartments;
-            foreach (var compartment in compartments)
+            foreach (var compartment in this.LoadingUnitProperty.Compartments)
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
@@ -149,7 +145,7 @@ namespace Ferretto.Common.Controls
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
                     ColorFill = Colors.Red.ToString(),
-                    Select = Colors.RoyalBlue.ToString()
+                    Selected = Colors.RoyalBlue.ToString()
                 });
             }
         }
