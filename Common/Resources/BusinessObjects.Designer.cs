@@ -160,6 +160,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string CellPriority {
+            get {
+                return ResourceManager.GetString("CellPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Side.
         /// </summary>
         public static string CellSide {
@@ -174,6 +183,51 @@ namespace Ferretto.Common.Resources {
         public static string CellSide_extended {
             get {
                 return ResourceManager.GetString("CellSide_extended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string CellStatus {
+            get {
+                return ResourceManager.GetString("CellStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string CellType {
+            get {
+                return ResourceManager.GetString("CellType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to X Coordinate.
+        /// </summary>
+        public static string CellXCoordinate {
+            get {
+                return ResourceManager.GetString("CellXCoordinate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Y Coordinate.
+        /// </summary>
+        public static string CellYCoordinate {
+            get {
+                return ResourceManager.GetString("CellYCoordinate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z Coordinate.
+        /// </summary>
+        public static string CellZCoordinate {
+            get {
+                return ResourceManager.GetString("CellZCoordinate", resourceCulture);
             }
         }
         

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class LoadingUnitDetails : BusinessObject, IEntity<int>
+    public sealed class LoadingUnitDetails : BusinessObject<int>
     {
         #region Fields
 
@@ -13,6 +12,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int width;
 
         #endregion Fields
+
+        #region Constructors
+
+        public LoadingUnitDetails(int id) : base(id)
+        { }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -31,13 +37,11 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public IEnumerable<CompartmentDetails> Compartments { get; set; }
 
-        public int Id { get; set; }
-
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public int Length
         {
             get => this.length;
-            set => SetIfStrictlyPositive(ref this.length, value);
+            set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
         public IEnumerable<Enumeration<string>> LoadingUnitStatusChoices { get; set; }
@@ -54,7 +58,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int Width
         {
             get => this.width;
-            set => SetIfStrictlyPositive(ref this.width, value);
+            set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
         #endregion Properties

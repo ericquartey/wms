@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-        private IDataSource<Compartment> compartmentsDataSource;
+        private IDataSource<Compartment, int> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
         private object itemSelectionChangedSubscription;
@@ -38,7 +38,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<Compartment> CompartmentsDataSource
+        public IDataSource<Compartment, int> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     if (this.item != null)
                     {
                         var viewName = MvvmNaming.GetViewNameFromViewModelName(nameof(ItemDetailsViewModel));
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment>(viewName, this.item.Id).Single();
+                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment, int>(viewName, this.item.Id).Single();
                     }
                     else
                     {
@@ -111,26 +111,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Item>>(this.itemSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Item, int>>(this.itemSelectionChangedSubscription);
             base.OnDispose();
         }
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.itemProvider.Save(this.Item);
+            var modifiedRowCount = this.itemProvider.Save(this.Item);
 
-            if (rowSaved != 0)
+            if (modifiedRowCount > 0)
             {
-                this.EventService.Invoke(new ItemChangedEvent<ItemDetails>(this.Item));
+                this.EventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item.Id));
 
-                ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEventArgs(Ferretto.Common.Resources.MasterData.ItemSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
         }
 
         private void Initialize()
         {
-            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Item>>(
+            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
                     eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 

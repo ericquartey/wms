@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class CompartmentStockDetails : BusinessObject
+    public sealed class CompartmentStockDetails : BusinessObject<int>
     {
         #region Fields
 
@@ -13,27 +13,34 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #endregion Fields
 
+        #region Constructors
+
+        public CompartmentStockDetails(int id) : base(id)
+        { }
+
+        #endregion Constructors
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]
         public int ReservedForPick
         {
             get => this.reservedForPick;
-            set => SetIfPositive(ref this.reservedForPick, value);
+            set => this.SetIfPositive(ref this.reservedForPick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedToStore), ResourceType = typeof(BusinessObjects))]
         public int ReservedToStore
         {
             get => this.reservedToStore;
-            set => SetIfPositive(ref this.reservedToStore, value);
+            set => this.SetIfPositive(ref this.reservedToStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStock), ResourceType = typeof(BusinessObjects))]
         public int Stock
         {
             get => this.stock;
-            set => SetIfPositive(ref this.stock, value);
+            set => this.SetIfPositive(ref this.stock, value);
         }
 
         #endregion Properties

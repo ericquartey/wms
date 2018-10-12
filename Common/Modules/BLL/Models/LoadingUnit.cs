@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class LoadingUnit : BusinessObject
+    public sealed class LoadingUnit : BusinessObject<int>
     {
         #region Fields
 
@@ -12,6 +12,13 @@ namespace Ferretto.Common.Modules.BLL.Models
         private int? cellNumber;
 
         #endregion Fields
+
+        #region Constructors
+
+        public LoadingUnit(int id) : base(id)
+        { }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -28,21 +35,21 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? CellColumn
         {
             get => this.cellColumn;
-            set => SetIfStrictlyPositive(ref this.cellColumn, value);
+            set => this.SetIfStrictlyPositive(ref this.cellColumn, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellFloor_extended), ResourceType = typeof(BusinessObjects))]
         public int? CellFloor
         {
             get => this.cellFloor;
-            set => SetIfStrictlyPositive(ref this.cellFloor, value);
+            set => this.SetIfStrictlyPositive(ref this.cellFloor, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellNumber_extended), ResourceType = typeof(BusinessObjects))]
         public int? CellNumber
         {
             get => this.cellNumber;
-            set => SetIfStrictlyPositive(ref this.cellNumber, value);
+            set => this.SetIfStrictlyPositive(ref this.cellNumber, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellPositionDescription), ResourceType = typeof(BusinessObjects))]
@@ -53,8 +60,6 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
-
-        public int Id { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitStatusDescription { get; set; }

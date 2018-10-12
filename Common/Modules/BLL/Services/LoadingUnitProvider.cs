@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -40,9 +41,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
-                .Select(l => new LoadingUnit
+                .Select(l => new LoadingUnit(l.Id)
                 {
-                    Id = l.Id,
                     Code = l.Code,
                     LoadingUnitTypeDescription = l.LoadingUnitType.Description,
                     LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
@@ -82,13 +82,21 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int Save(LoadingUnitDetails model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var existingModel = this.dataContext.LoadingUnits.Find(model.Id);
+
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
             return this.dataContext.SaveChanges();
         }
 
         private static LoadingUnitDetails ProjectLoadingUnitDetails(DataModels.LoadingUnit l) =>
-            new LoadingUnitDetails
+            new LoadingUnitDetails(l.Id)
             {
-                Id = l.Id,
                 Code = l.Code,
                 AbcClassId = l.AbcClassId,
                 CellPositionId = l.CellPositionId,

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
-using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class ItemDetails : BusinessObject, IEntity<int>
+    public sealed class ItemDetails : BusinessObject<int>
     {
         #region Fields
 
@@ -21,6 +20,13 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #endregion Fields
 
+        #region Constructors
+
+        public ItemDetails(int id) : base(id)
+        { }
+
+        #endregion Constructors
+
         #region Properties
 
         public IEnumerable<Enumeration<string>> AbcClassChoices { get; set; }
@@ -32,7 +38,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? AverageWeight
         {
             get => this.averageWeight;
-            set => SetIfStrictlyPositive(ref this.averageWeight, value);
+            set => this.SetIfStrictlyPositive(ref this.averageWeight, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
@@ -56,10 +62,10 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? Height
         {
             get => this.height;
-            set => SetIfStrictlyPositive(ref this.height, value);
+            set => this.SetIfStrictlyPositive(ref this.height, value);
         }
 
-        public int Id { get; set; }
+     
         public string Image { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]
@@ -69,7 +75,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
-            set => SetIfStrictlyPositive(ref this.inventoryTolerance, value);
+            set => this.SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
         public IEnumerable<Enumeration<int>> ItemCategoryChoices { get; set; }
@@ -95,7 +101,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? Length
         {
             get => this.length;
-            set => SetIfStrictlyPositive(ref this.length, value);
+            set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
         public IEnumerable<Enumeration<string>> MeasureUnitChoices { get; set; }
@@ -110,7 +116,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? PickTolerance
         {
             get => this.pickTolerance;
-            set => SetIfStrictlyPositive(ref this.pickTolerance, value);
+            set => this.SetIfStrictlyPositive(ref this.pickTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReorderPoint), ResourceType = typeof(BusinessObjects))]
@@ -120,21 +126,21 @@ namespace Ferretto.Common.Modules.BLL.Models
         public int? ReorderQuantity
         {
             get => this.reorderQuantity;
-            set => SetIfStrictlyPositive(ref this.reorderQuantity, value);
+            set => this.SetIfStrictlyPositive(ref this.reorderQuantity, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemStoreTolerance), ResourceType = typeof(BusinessObjects))]
         public int? StoreTolerance
         {
             get => this.storeTolerance;
-            set => SetIfStrictlyPositive(ref this.storeTolerance, value);
+            set => this.SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
         public int? Width
         {
             get => this.width;
-            set => SetIfStrictlyPositive(ref this.width, value);
+            set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
         #endregion Properties

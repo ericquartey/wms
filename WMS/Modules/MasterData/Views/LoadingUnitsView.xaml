@@ -51,6 +51,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
+                                CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItem, Mode=TwoWay}"
                                 ItemType="{x:Type models:LoadingUnit}"
                                 SelectionMode="Row"
                                 ShowBorder="False">

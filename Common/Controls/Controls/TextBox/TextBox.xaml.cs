@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Data;
 
 namespace Ferretto.Common.Controls
 {
@@ -73,7 +74,13 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            textBox.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, textBox.FieldName);
+            var binding = new Binding(textBox.FieldName)
+            {
+                Mode = BindingMode.TwoWay,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+
+            textBox.InnerTextBox.SetBinding(System.Windows.Controls.TextBox.TextProperty, binding);
         }
 
         private void TextBox_DataContextChanged(Object sender, DependencyPropertyChangedEventArgs e)

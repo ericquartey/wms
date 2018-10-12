@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
@@ -47,36 +46,37 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            this.LoadData(this.Data);
+            this.LoadData((int?)this.Data);
             base.OnAppear();
         }
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Compartment>>(this.itemSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Compartment, int>>(this.itemSelectionChangedSubscription);
             base.OnDispose();
         }
 
         private void ExecuteSaveCommand()
         {
-            var rowSaved = this.compartmentProvider.Save(this.Compartment);
+            var modifiedRowCount = this.compartmentProvider.Save(this.Compartment);
 
-            if (rowSaved != 0)
+            if (modifiedRowCount > 0)
             {
-                this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails>(this.Compartment));
+                this.Compartment = this.compartmentProvider.GetById(this.Compartment.Id);
 
-                ServiceLocator.Current.GetInstance<IEventService>()
-                              .Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
+                this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails, int>(this.Compartment.Id));
+
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
         }
 
         private void Initialize()
         {
-            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment>>(
+            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
                                         eventArgs => this.LoadData(eventArgs.ItemId), true);
         }
 
-        private void LoadData(object itemId)
+        private void LoadData(int? itemId)
         {
             if (itemId == null)
             {

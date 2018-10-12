@@ -53,9 +53,8 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             var itemDetails = this.dataContext.Items
                 .Where(i => i.Id == id)
-                .Select(i => new ItemDetails
+                .Select(i => new ItemDetails(i.Id)
                 {
-                    Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     ItemCategoryId = i.ItemCategoryId,
@@ -131,48 +130,28 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int Save(ItemDetails model)
         {
-            var item = this.dataContext.Items.Single(i => i.Id == model.Id);
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
 
-            item.AbcClassId = model.AbcClassId;
-            item.AverageWeight = model.AverageWeight;
-            item.Code = model.Code;
-            item.CreationDate = model.CreationDate;
-            item.Description = model.Description;
-            item.FifoTimePick = model.FifoTimePick;
-            item.FifoTimeStore = model.FifoTimeStore;
-            item.Height = model.Height;
-            item.Image = model.Image;
-            item.InventoryDate = model.InventoryDate;
-            item.InventoryTolerance = model.InventoryTolerance;
-            item.ItemCategoryId = model.ItemCategoryId;
-            item.ItemManagementTypeId = model.ItemManagementTypeId;
-            item.LastModificationDate = model.LastModificationDate;
-            item.LastPickDate = model.LastPickDate;
-            item.LastStoreDate = model.LastStoreDate;
-            item.Length = model.Length;
-            item.MeasureUnitId = model.MeasureUnitId;
-            item.Note = model.Note;
-            item.PickTolerance = model.PickTolerance;
-            item.ReorderPoint = model.ReorderPoint;
-            item.ReorderQuantity = model.ReorderQuantity;
-            item.StoreTolerance = model.StoreTolerance;
-            item.Width = model.Width;
+            var existingModel = this.dataContext.Items.Find(model.Id);
+
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            existingModel.LastModificationDate = DateTime.Now;
 
             return this.dataContext.SaveChanges();
         }
 
-        private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null )
+        private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)
         {
-            if (whereFunc == null)
-            {
-                whereFunc = i => true;
-            }
+            var actualWhereFunc = whereFunc ?? ((i) => true);
 
             return context.Items
                .AsNoTracking()
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
-               .Where(whereFunc)
+               .Where(actualWhereFunc)
                .GroupJoin(
                    context.Compartments
                        .AsNoTracking()
@@ -194,7 +173,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    })
                .SelectMany(
                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                   (a, b) => new Item
+                   (a, b) => new Item(a.Item.Id)
                    {
                        AbcClassDescription = a.Item.AbcClass.Description,
                        AverageWeight = a.Item.AverageWeight,
@@ -202,7 +181,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                        FifoTimePick = a.Item.FifoTimePick,
                        FifoTimeStore = a.Item.FifoTimeStore,
                        Height = a.Item.Height,
-                       Id = a.Item.Id,
                        InventoryDate = a.Item.InventoryDate,
                        InventoryTolerance = a.Item.InventoryTolerance,
                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,

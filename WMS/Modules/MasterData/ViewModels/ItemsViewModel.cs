@@ -2,7 +2,7 @@ using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemsViewModel : EntityListViewModel<Item>
+    public class ItemsViewModel : EntityListViewModel<Item, int>
     {
         #region Methods
 
