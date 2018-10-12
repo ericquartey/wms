@@ -11,6 +11,13 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #endregion Fields
 
+        #region Constructors
+
+        public Compartment(int id) : base(id)
+        { }
+
+        #endregion Constructors
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
@@ -21,8 +28,6 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
         public string CompartmentTypeDescription { get; set; }
-
-        public int Id { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemDescription_extended), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }

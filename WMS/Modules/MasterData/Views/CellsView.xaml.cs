@@ -3,11 +3,11 @@ using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public partial class ItemsView : WmsView
+    public partial class CellsView : WmsView
     {
         #region Constructors
 
-        public ItemsView()
+        public CellsView()
         {
             this.InitializeComponent();
 
@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async void MainGridControl_AsyncOperationCompleted(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this.DataContext is EntityListViewModel<Item, int> viewModel)
+            if (this.DataContext is EntityListViewModel<Cell, int> viewModel)
             {
                 await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
                 this.MainGridControl.AsyncOperationCompleted -= this.MainGridControl_AsyncOperationCompleted;

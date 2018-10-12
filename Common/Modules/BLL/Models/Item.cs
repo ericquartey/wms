@@ -25,6 +25,13 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         #endregion Fields
 
+        #region Constructors
+
+        public Item(int id) : base(id)
+        { }
+
+        #endregion Constructors
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
@@ -66,8 +73,6 @@ namespace Ferretto.Common.Modules.BLL.Models
             get => this.height;
             set => this.SetIfStrictlyPositive(ref this.height, value);
         }
-
-        public int Id { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
