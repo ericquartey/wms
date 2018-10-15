@@ -70,6 +70,7 @@ namespace Ferretto.VW.VWApp
                 {
                     this.UserLoginTextBox.Text = string.Empty;
                     this.PasswordLoginTextBox.Text = string.Empty;
+                    //TODO: create error message for both wrong user/password and installation incomplete
                 }
             }
             else

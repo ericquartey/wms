@@ -31,7 +31,6 @@ namespace Ferretto.VW.Navigation
             if (CurrentInstallationProcedureCompleteEventHandler != null)
             {
                 CurrentInstallationProcedureCompleteEventHandler();
-                CurrentInstallationProcedureCompleteEventHandler = null;
             }
         }
 

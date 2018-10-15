@@ -89,6 +89,7 @@ namespace Ferretto.VW.InstallationApp
 
         private void OpenVerticalAxisCalibrationViewMethod()
         {
+            Debug.Print("OpenVerticalAxisCalibrationViewMethod executed.\n");
             this.verticalAxisCalibrationViewInstance = new VerticalAxisCalibrationView();
             this.verticalAxisCalibrationViewInstance.Width = this.InstallationPageRegionContentControl.ActualWidth;
             this.verticalAxisCalibrationViewInstance.Height = this.InstallationPageRegionContentControl.ActualHeight;
