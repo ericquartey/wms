@@ -58,7 +58,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Cells.Find(model.Id);
+            var existingModel = this.dataContext.Machines.Find(model.Id);
 
             this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
