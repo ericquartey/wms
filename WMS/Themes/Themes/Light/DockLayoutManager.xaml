@@ -218,7 +218,7 @@
                             Margin="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BackgroundMarginConverter}}"
                             ve:DockPane.HitTestType="Content"
                             Background="{DynamicResource CommonBackground}"
-                            BorderBrush="Transparent"
+                            BorderBrush="{DynamicResource CommonSecondaryLight}"
                             BorderThickness="{Binding CaptionLocation, Converter={StaticResource ResourceKey=BorderThicknessConverter}}">
                         <ve:LayoutTabFastRenderPanel x:Name="PART_FastRenderPanel"
                                                      ve:DockPane.HitTestType="Content" />
