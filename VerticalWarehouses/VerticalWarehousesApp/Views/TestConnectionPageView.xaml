@@ -102,7 +102,7 @@
                   SelectedIndex="0">
             <ComboBoxItem>0. Set Vertical Axis Origin</ComboBoxItem>
             <ComboBoxItem>1. Move Along Vertical Axis To Point</ComboBoxItem>
-            <ComboBoxItem>2. Select Movement</ComboBoxItem>
+            <ComboBoxItem>2. Set Type of Motor Movement</ComboBoxItem>
             <ComboBoxItem>3. Move Along Horizontal Axis With Profile</ComboBoxItem>
             <ComboBoxItem>5. Run Shutter</ComboBoxItem>
             <ComboBoxItem>6. Run Drawer Weight Routine</ComboBoxItem>
