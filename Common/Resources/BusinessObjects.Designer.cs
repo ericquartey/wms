@@ -961,6 +961,60 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nickname.
+        /// </summary>
+        public static string MachineNickname {
+            get {
+                return ResourceManager.GetString("MachineNickname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OutputLoadingUnitsCount.
+        /// </summary>
+        public static string MachineOutputLoadingUnitsCount {
+            get {
+                return ResourceManager.GetString("MachineOutputLoadingUnitsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power On Time.
+        /// </summary>
+        public static string MachinePowerOnTime {
+            get {
+                return ResourceManager.GetString("MachinePowerOnTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string MachineRegistrationNumber {
+            get {
+                return ResourceManager.GetString("MachineRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Date.
+        /// </summary>
+        public static string MachineTestDate {
+            get {
+                return ResourceManager.GetString("MachineTestDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Max Weight.
+        /// </summary>
+        public static string MachineTotalMaxWeight {
+            get {
+                return ResourceManager.GetString("MachineTotalMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string MachineTypeDescription {

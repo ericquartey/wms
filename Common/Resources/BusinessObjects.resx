@@ -533,4 +533,28 @@
     <value>Type</value>
     <comment>Machine - Type</comment>
   </data>
+  <data name="MachineNickname" xml:space="preserve">
+    <value>Nickname</value>
+    <comment>Machine - Nickname</comment>
+  </data>
+  <data name="MachineOutputLoadingUnitsCount" xml:space="preserve">
+    <value>OutputLoadingUnitsCount</value>
+    <comment>Machine - Output Loading Units Count</comment>
+  </data>
+  <data name="MachinePowerOnTime" xml:space="preserve">
+    <value>Power On Time</value>
+    <comment>Machine - Power On Time</comment>
+  </data>
+  <data name="MachineRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Machine - Registration Number</comment>
+  </data>
+  <data name="MachineTestDate" xml:space="preserve">
+    <value>Test Date</value>
+    <comment>Machine - Test Date</comment>
+  </data>
+  <data name="MachineTotalMaxWeight" xml:space="preserve">
+    <value>Total Max Weight</value>
+    <comment>Machine - Total Max Weight</comment>
+  </data>
 </root>

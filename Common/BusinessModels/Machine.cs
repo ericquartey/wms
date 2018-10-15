@@ -73,7 +73,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineLongitude), ResourceType = typeof(BusinessObjects))]
         public double? Longitude { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.MachineMachineTypeDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.MachineTypeDescription), ResourceType = typeof(BusinessObjects))]
         public string MachineTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineManualTime), ResourceType = typeof(BusinessObjects))]
