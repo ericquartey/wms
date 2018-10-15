@@ -63,6 +63,8 @@ namespace Ferretto.Common.Controls
 
             this.DisableColumnFiltering();
 
+            this.UpdateFilterTiles();
+
             this.DataContext = this.InstantiateViewModel();
 
             this.SetToken();
@@ -77,6 +79,22 @@ namespace Ferretto.Common.Controls
                 gridControl.DataContext is IWmsGridViewModel dataContext)
             {
                 dataContext.SetDataSource(e.NewValue);
+            }
+        }
+
+        private async void AsyncOperationCompletedAsync(Object sender, RoutedEventArgs e)
+        {
+            var wmsView = (LayoutTreeHelper.GetVisualParents(this)
+                    .OfType<INavigableView>()
+                    .FirstOrDefault());
+            if (wmsView == null)
+            {
+                return;
+            }
+            if (wmsView.DataContext is IEntityListViewModel viewModel)
+            {
+                await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
+                this.AsyncOperationCompleted -= this.AsyncOperationCompletedAsync;
             }
         }
 
@@ -112,6 +130,11 @@ namespace Ferretto.Common.Controls
             };
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
             this.SetBinding(ItemsSourceProperty, "CurrentDataSource");
+        }
+
+        private void UpdateFilterTiles()
+        {
+            this.AsyncOperationCompleted += this.AsyncOperationCompletedAsync;
         }
 
         private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)
