@@ -62,24 +62,7 @@
     <Compile Include="ViewModels\DrawerViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\TestConnectionPageViewModel.cs" />
-    <Compile Include="Views\CompartmentationPageView.xaml.cs">
-      <DependentUpon>CompartmentationPageView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DrawerPage.xaml.cs">
-      <DependentUpon>DrawerPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DrawGridPage.xaml.cs">
-      <DependentUpon>DrawGridPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ManualCompartmentPage.xaml.cs">
-      <DependentUpon>ManualCompartmentPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\SwitchCameraPage.xaml.cs">
-      <DependentUpon>SwitchCameraPage.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Views\MainWindow.xaml.cs" />
     <Compile Include="Views\TestConnectionPageView.xaml.cs">
       <DependentUpon>TestConnectionPageView.xaml</DependentUpon>
     </Compile>
@@ -87,29 +70,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\CompartmentationPageView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DrawerPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\DrawGridPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ManualCompartmentPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\SwitchCameraPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TestConnectionPageView.xaml">
       <SubType>Designer</SubType>
@@ -143,13 +106,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
+      <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
+      <Name>CustomControls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
       <Project>{ecdc6d6c-e5d2-4ec3-9aac-6336c2048fff}</Project>
       <Name>ActionBlocks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
-      <Project>{3C8A3855-897A-4395-BF65-D9D597896A3E}</Project>
-      <Name>CustomControls</Name>
+    <ProjectReference Include="..\InverterDriver\InverterDriver.csproj">
+      <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
+      <Name>InverterDriver</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>

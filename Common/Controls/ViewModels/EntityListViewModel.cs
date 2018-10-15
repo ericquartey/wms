@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel
+    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel, IEntityListViewModel
         where TModel : IBusinessObject<TId>
     {
         #region Fields
