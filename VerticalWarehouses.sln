@@ -33,6 +33,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{3472F6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.Common.Resources", "Common\Resources\Ferretto.Common.Resources.csproj", "{EC02D26C-F149-496C-BC7C-75D229B4333F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VerticalWarehousesApp", "VerticalWarehouses\VerticalWarehousesApp\VerticalWarehousesApp.csproj", "{044A9872-DD3B-4505-9B32-CAB24A16DD3B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{EC02D26C-F149-496C-BC7C-75D229B4333F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC02D26C-F149-496C-BC7C-75D229B4333F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC02D26C-F149-496C-BC7C-75D229B4333F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{8F34417E-3C32-4694-91AF-B286FBF0E1AC} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
 		{3C8A3855-897A-4395-BF65-D9D597896A3E} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
 		{EC02D26C-F149-496C-BC7C-75D229B4333F} = {3472F69C-FE04-4C3E-A20E-7E70E570254C}
+		{044A9872-DD3B-4505-9B32-CAB24A16DD3B} = {2ED9180C-3A78-44C2-AB9C-83B6944848B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}
