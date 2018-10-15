@@ -22,6 +22,17 @@
         #region Properties
 
         /// <summary>
+        /// Get last error.
+        /// </summary>
+        InverterDriverErrors GetLastError { get; }
+
+        /// <summary>
+        /// Get main status.
+        /// </summary>
+        /// <returns></returns>
+        InverterDriverState GetMainState { get; }
+
+        /// <summary>
         ///  Set/Get IP address to connect
         /// </summary>
         string IPAddressToConnect { set; get; }
@@ -53,12 +64,6 @@
         /// </summary>
         /// <returns></returns>
         InverterDriverExitStatus GetIOState();
-
-        /// <summary>
-        /// Get main status.
-        /// </summary>
-        /// <returns></returns>
-        InverterDriverExitStatus GetMainState();
 
         /// <summary>
         /// Move along horizontal axis with given profile.
@@ -109,19 +114,19 @@
         InverterDriverExitStatus RunShutter(byte m);
 
         /// <summary>
-        /// Select movement among vertical movement and horizontal movement.
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus SelectMovement(byte m);
-
-        /// <summary>
         /// Set ON/OFF value to the given line.
         /// </summary>
         /// <param name="i"></param>
         /// <param name="value"></param>
         /// <returns></returns>
         InverterDriverExitStatus Set(int i, byte value);
+
+        /// <summary>
+        /// Set type of motor movement between vertical or horizontal.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        InverterDriverExitStatus SetTypeOfMotorMovement(byte m);
 
         /// <summary>
         /// Set vertical axis origin routine.
@@ -142,5 +147,5 @@
         InverterDriverExitStatus Stop();
 
         #endregion Methods
-    } 
+    }
 }
