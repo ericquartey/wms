@@ -46,6 +46,7 @@
         <ScrollViewer Grid.Row="1"
                       DataContext="{Binding Item}"
                       IsTabStop="True"
+                      Focusable="False"
                       VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.RowDefinitions>

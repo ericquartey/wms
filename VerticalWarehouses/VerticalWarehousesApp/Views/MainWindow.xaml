@@ -532,30 +532,6 @@
                                 FontSize="20"
                                 Foreground="White" />
                     </Border>
-                    <Border Height="100"
-                            Margin="5"
-                            BorderBrush="White"
-                            BorderThickness="1"
-                            IsEnabled="True">
-                        <Button Background="Transparent"
-                                BorderThickness="0"
-                                Click="ButtonNavigateToCompartmentationPage"
-                                Content="Compartmentation"
-                                FontSize="20"
-                                Foreground="White" />
-                    </Border>
-                    <Border Height="100"
-                            Margin="5"
-                            BorderBrush="White"
-                            BorderThickness="1"
-                            IsEnabled="True">
-                        <Button Background="Transparent"
-                                BorderThickness="0"
-                                Click="ButtonNavigateToManualPage"
-                                Content="Manual"
-                                FontSize="20"
-                                Foreground="White" />
-                    </Border>
                 </StackPanel>
             </ScrollViewer>
         </Border>
