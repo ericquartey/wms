@@ -103,6 +103,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="Assets\icona_misuratore_0.jpg" />
+    <Resource Include="Assets\icona_misuratore_1.jpg" />
     <Content Include="Fonts\HelveticaNeue-LightCond.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -8,10 +8,9 @@
              mc:Ignorable="d">
     <DockPanel>
         <Label HorizontalAlignment="Center"
+               Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
                DockPanel.Dock="Top"
-               Style="{StaticResource StandardTitleTextStyle}">
-            Vertical Axis Calibration
-        </Label>
+               Style="{StaticResource StandardTitleTextStyle}" />
         <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -24,13 +23,13 @@
         </Grid>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -42,39 +41,32 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Row="1"
                     Grid.Column="1"
-                    Style="{StaticResource StandardButtonStyle}">
-                START
-            </Button>
+                    Content="{x:Static res:InstallationApp.Start}"
+                    Style="{StaticResource StandardButtonStyle}" />
             <Button Grid.Row="4"
                     Grid.Column="1"
-                    Style="{StaticResource StandardButtonStyle}">
-                STOP
-            </Button>
+                    Content="{x:Static res:InstallationApp.Stop}"
+                    Style="{StaticResource StandardButtonStyle}" />
             <Label Grid.Row="1"
                    Grid.Column="3"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Resolution
-            </Label>
+                   Content="{x:Static res:InstallationApp.Resolution}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <Label Grid.Row="2"
                    Grid.Column="3"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Offset
-            </Label>
+                   Content="{x:Static res:InstallationApp.Offset}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <Label Grid.Row="3"
                    Grid.Column="3"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Upper Bound
-            </Label>
+                   Content="{x:Static res:InstallationApp.UpperBound}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <Label Grid.Row="4"
                    Grid.Column="3"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Lower Bound
-            </Label>
+                   Content="{x:Static res:InstallationApp.LowerBound}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <Label Grid.Row="5"
                    Grid.Column="3"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Output:
-            </Label>
+                   Content="{x:Static res:InstallationApp.Output}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <TextBox Name="VerticalAxisCalibrationResolutionTextBox"
                      Grid.Row="1"
                      Grid.Column="4"
@@ -100,9 +92,8 @@
                        Grid.Column="4"
                        Margin="2"
                        VerticalAlignment="Center"
-                       Style="{StaticResource StandardBodyTextBlockStyle}">
-                Axis not calibrated yet.
-            </TextBlock>
+                       Style="{StaticResource StandardBodyTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.AxisNotCalibratedYet}" />
         </Grid>
     </DockPanel>
 </UserControl>

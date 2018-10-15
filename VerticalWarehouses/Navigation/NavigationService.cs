@@ -12,19 +12,35 @@ namespace Ferretto.VW.Navigation
 
         public delegate void BackToVWAppEvent();
 
+        public delegate void CurrentInstallationProcedureCompleteEvent();
+
         #endregion Delegates
 
         #region Events
 
         public static event BackToVWAppEvent BackToVWAppEventHandler;
 
+        public static event CurrentInstallationProcedureCompleteEvent CurrentInstallationProcedureCompleteEventHandler;
+
         #endregion Events
 
         #region Methods
 
+        public static void RaiseAndResetCurrentInstallationProcedureCompleteEvent()
+        {
+            if (CurrentInstallationProcedureCompleteEventHandler != null)
+            {
+                CurrentInstallationProcedureCompleteEventHandler();
+                CurrentInstallationProcedureCompleteEventHandler = null;
+            }
+        }
+
         public static void RaiseBackToVWAppEvent()
         {
-            BackToVWAppEventHandler();
+            if (BackToVWAppEventHandler != null)
+            {
+                BackToVWAppEventHandler();
+            }
         }
 
         #endregion Methods

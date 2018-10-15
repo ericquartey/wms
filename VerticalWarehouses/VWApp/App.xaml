@@ -9,6 +9,8 @@
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/FontsAndColors.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ButtonStyles.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextStyles.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ComboBoxTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
