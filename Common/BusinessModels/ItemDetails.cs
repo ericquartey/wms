@@ -1,41 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Item : BusinessObject<int>
+    public sealed class ItemDetails : BusinessObject<int>
     {
         #region Fields
 
         private int? averageWeight;
-        private int? fifoTimePick;
-        private int? fifoTimeStore;
         private int? height;
         private int? inventoryTolerance;
         private int? length;
         private int? pickTolerance;
         private int? reorderQuantity;
         private int? storeTolerance;
-        private int totalAvailable;
-        private int totalReservedForPick;
-        private int totalReservedToStore;
-        private int totalStock;
         private int? width;
 
         #endregion Fields
 
         #region Constructors
 
-        public Item(int id) : base(id)
+        public ItemDetails(int id) : base(id)
         { }
 
         #endregion Constructors
 
         #region Properties
 
+        public IEnumerable<Enumeration<string>> AbcClassChoices { get; set; }
+
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
-        public string AbcClassDescription { get; set; }
+        public string AbcClassId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemAverageWeight), ResourceType = typeof(BusinessObjects))]
         public int? AverageWeight
@@ -47,6 +44,8 @@ namespace Ferretto.Common.Modules.BLL.Models
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
+        public IEnumerable<Compartment> Compartments { get; set; }
+
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
@@ -54,18 +53,10 @@ namespace Ferretto.Common.Modules.BLL.Models
         public string Description { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemFifoPickTime), ResourceType = typeof(BusinessObjects))]
-        public int? FifoTimePick
-        {
-            get => this.fifoTimePick;
-            set => this.SetIfStrictlyPositive(ref this.fifoTimePick, value);
-        }
+        public int? FifoTimePick { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemFifoStoreTime), ResourceType = typeof(BusinessObjects))]
-        public int? FifoTimeStore
-        {
-            get => this.fifoTimeStore;
-            set => this.SetIfStrictlyPositive(ref this.fifoTimeStore, value);
-        }
+        public int? FifoTimeStore { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
         public int? Height
@@ -73,6 +64,8 @@ namespace Ferretto.Common.Modules.BLL.Models
             get => this.height;
             set => this.SetIfStrictlyPositive(ref this.height, value);
         }
+
+        public string Image { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
@@ -84,11 +77,15 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => this.SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
+        public IEnumerable<Enumeration<int>> ItemCategoryChoices { get; set; }
+
         [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
-        public string ItemCategoryDescription { get; set; }
+        public int? ItemCategoryId { get; set; }
+
+        public IEnumerable<Enumeration<int>> ItemManagementTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ItemManagementTypeDescription { get; set; }
+        public int? ItemManagementTypeId { get; set; }
 
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
@@ -106,8 +103,13 @@ namespace Ferretto.Common.Modules.BLL.Models
             set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
+        public IEnumerable<Enumeration<string>> MeasureUnitChoices { get; set; }
+
         [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
-        public string MeasureUnitDescription { get; set; }
+        public string MeasureUnitId { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.ItemNotes), ResourceType = typeof(BusinessObjects))]
+        public string Note { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemPickTolerance), ResourceType = typeof(BusinessObjects))]
         public int? PickTolerance
@@ -131,34 +133,6 @@ namespace Ferretto.Common.Modules.BLL.Models
         {
             get => this.storeTolerance;
             set => this.SetIfStrictlyPositive(ref this.storeTolerance, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public int TotalAvailable
-        {
-            get => this.totalAvailable;
-            set => this.SetIfPositive(ref this.totalAvailable, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.ItemReservedForPick), ResourceType = typeof(BusinessObjects))]
-        public int TotalReservedForPick
-        {
-            get => this.totalReservedForPick;
-            set => this.SetIfPositive(ref this.totalReservedForPick, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.ItemReservedToStore), ResourceType = typeof(BusinessObjects))]
-        public int TotalReservedToStore
-        {
-            get => this.totalReservedToStore;
-            set => this.SetIfPositive(ref this.totalReservedToStore, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.ItemStock), ResourceType = typeof(BusinessObjects))]
-        public int TotalStock
-        {
-            get => this.totalStock;
-            set => this.SetIfPositive(ref this.totalStock, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]

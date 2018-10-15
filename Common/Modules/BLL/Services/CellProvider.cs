@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Practices.ServiceLocation;
 

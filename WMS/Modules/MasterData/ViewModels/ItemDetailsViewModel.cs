@@ -1,10 +1,10 @@
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
-using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;

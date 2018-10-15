@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.Common.BusinessModels
 {
     public sealed class Cell : BusinessObject<int>
     {

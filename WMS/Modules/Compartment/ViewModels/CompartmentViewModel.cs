@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel;
 using System.Windows.Input;
 using DevExpress.Mvvm;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
-using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.WMS.Modules.Compartment
 {
@@ -46,10 +43,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public CompartmentDetails CompartmentInput
         {
-            get
-            {
-                return this.compartmentInput;
-            }
+            get => this.compartmentInput;
             set
             {
                 this.compartmentInput = value;
@@ -60,7 +54,7 @@ namespace Ferretto.WMS.Modules.Compartment
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                  (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
-        public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set { this.SetProperty(ref this.loadingUnitDetails, value); } }
+        public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set => this.SetProperty(ref this.loadingUnitDetails, value); }
 
         #endregion Properties
 
@@ -79,7 +73,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private void ExecuteNewCreateCompartmentCommand()
         {
-            CompartmentDetails compartmentDetails = new CompartmentDetails
+            var compartmentDetails = new CompartmentDetails
             {
                 Width = this.CompartmentInput.Width,
                 Height = this.CompartmentInput.Height,
