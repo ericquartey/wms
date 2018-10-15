@@ -67,7 +67,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                     }
                 case 2:
                     {
-                        this.driver.SelectMovement(Convert.ToByte(this.TxtBoxP1.Text));
+                        this.driver.SetTypeOfMotorMovement(Convert.ToByte(this.TxtBoxP1.Text));
                         break;
                     }
                 case 3:
@@ -100,7 +100,6 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                     }
                 case 8:
                     {
-                        this.driver.GetMainState();
                         break;
                     }
                 case 9:

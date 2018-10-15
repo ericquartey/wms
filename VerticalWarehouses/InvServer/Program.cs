@@ -19,7 +19,7 @@ namespace Ferretto.VW.InvServer
         private const int DEFAULT_PORT = 8000;
 
         // Resource synchronization
-        private static object g_lock = new object();
+        private static readonly object g_lock = new object();
 
         // Rivedere dove salva il Log
         private readonly string LOG_PATH;

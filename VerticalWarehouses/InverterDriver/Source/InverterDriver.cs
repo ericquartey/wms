@@ -7,182 +7,7 @@ using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.InverterDriver
 {
-    /// <summary>
-    ///Delegate for the Connected event.
-    /// </summary>
-    public delegate void ConnectedEventHandler(object sender, ConnectedEventArgs eventArgs);
-
-    /// <summary>
-    /// Delegate for Getting Messages From the Server
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="eventArgs"></param>
-    public delegate void GetMessageFromServerEventHandler(object sender, GetMessageFromServerEventArgs eventArgs);
-
-    /// <summary>
-    /// Status of inverter machine.
-    /// </summary>
-    public enum HardwareInverterStatus
-    {
-        NotOperative = 0x0,
-        Operative = 0x1
-    }
-
-    /// <summary>
-    /// Inverter Driver errors.
-    /// </summary>
-    public enum InverterDriverErrors
-    {
-        /// <summary>
-        /// No error: no error encountered
-        /// </summary>
-        NoError = 0x00,
-
-        /// <summary>
-        /// Hardware error: not recovery condition
-        /// </summary>
-        HardwareError,
-
-        /// <summary>
-        /// IO error: communication error
-        /// </summary>
-        IOError,
-
-        /// <summary>
-        /// Internal error: software errors
-        /// </summary>
-        InternalError,
-
-        /// <summary>
-        /// Generic error: generic error
-        /// </summary>
-        GenericError = 0xFF
-    }
-
-    /// <summary>
-    /// Inverter Driver exist status.
-    /// </summary>
-    public enum InverterDriverExitStatus
-    {
-        /// <summary>
-        /// Successful operation
-        /// </summary>
-        Success = 0x0,
-
-        /// <summary>
-        /// Invalid argument
-        /// </summary>
-        InvalidArgument,
-
-        /// <summary>
-        /// Invalid operation
-        /// </summary>
-        InvalidOperation,
-
-        /// <summary>
-        /// Generic failure: see Errors enum
-        /// </summary>
-        Failure = 0xFF
-    }
-
-    /// <summary>
-    /// Inverter states.
-    /// </summary>
-    public enum InverterDriverState
-    {
-        /// <summary>
-        /// Idle: not connected
-        /// </summary>
-        Idle,
-
-        /// <summary>
-        /// Ready: initialized and ready to operate
-        /// </summary>
-        Ready,
-
-        /// <summary>
-        /// Working: perform an operation
-        /// </summary>
-        Working,
-
-        /// <summary>
-        /// Error: the Inverter occurs in an irreversible error state
-        /// </summary>
-        Error
-    }
-
-    /// <summary>
-    /// Connected interface IConnectedEvent
-    /// </summary>
-
-    [
-        InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    ]
-    public interface IConnectedEvent
-    {
-        #region Methods
-
-        void Connected(object sender, ConnectedEventArgs eventArgs);
-
-        #endregion Methods
-    }
-
-    /// <summary>
-    /// Connected event arguments interface.
-    /// Use IDispatch.
-    /// </summary>
-    [
-        InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
-    ]
-    public interface IConnectedEventArgs
-    {
-        #region Properties
-
-        bool State { get; }
-
-        #endregion Properties
-    }
-
-    /// <summary>
-    /// GetMessageFromServer event interface.
-    /// </summary>
-    [
-        InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    ]
-    public interface IGetMessageFromServerEvent
-    {
-        #region Methods
-
-        /// <summary>
-        /// GetMessageFromServer Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
-        void GetMessageFromServer(object sender, GetMessageFromServerEventArgs eventArgs);
-
-        #endregion Methods
-    }
-
-    [
-            InterfaceType(ComInterfaceType.InterfaceIsIDispatch),
-        ]
-    public interface IGetMessageFromServerEventArgs
-    {
-        #region Properties
-
-        /// <summary>
-        /// Command Id.
-        /// </summary>
-        CommandId CmdId { get; }
-
-        /// <summary>
-        /// Message.
-        /// </summary>
-        string Message { get; }
-
-        #endregion Properties
-    }
-
+   
     /// <summary>
     /// Inverter manager class.
     /// This class manages a socket to comunicate with a device via TCP/IP protocol. The socket in the class acts as a client in an client/server architecture
@@ -195,9 +20,9 @@ namespace Ferretto.VW.InverterDriver
         /// <summary>
         /// Consts
         /// </summary>
-        public const string IP_ADDR_INVERTER_DEFAULT = "172.16.199.200";
+        public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
 
-        public const int PORT_ADDR_INVERTER_DEFAULT = 8000;
+        public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
 
         public const int SIZEMAX_DATABUFFER = 1024;
 
@@ -227,8 +52,16 @@ namespace Ferretto.VW.InverterDriver
         ///  Data buffer containing the operation arguments
         /// </summary>
         private AutoResetEvent hevAckTerminate;
+
         private AutoResetEvent hevTerminate;
         private HardwareInverterStatus hwInverterState;
+
+        /// <summary>
+        /// IP address to connect
+        /// </summary>
+        private string ipAddressToConnect;
+
+        private int msgCounter;
 
         /// <summary>
         /// Stop event for automated operation
@@ -237,13 +70,6 @@ namespace Ferretto.VW.InverterDriver
         private Thread opThread;
 
         private int portAddressToConnect;
-
-        /// <summary>
-        /// IP address to connect
-        /// </summary>
-        private string ipAddressToConnect;
-
-        private int msgCounter;
 
         /// <summary>
         /// Address port to connect
@@ -267,7 +93,6 @@ namespace Ferretto.VW.InverterDriver
             this.portAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
 
             this.DataBufferCommand = new byte[SIZEMAX_DATABUFFER];
-    
         }
 
         #endregion Constructors
@@ -276,7 +101,10 @@ namespace Ferretto.VW.InverterDriver
 
         public event ConnectedEventHandler Connected;
 
+        // note: Does it remove?
         public event GetMessageFromServerEventHandler GetMessageFromServer;
+
+        public event OperationDoneEventHandler OperationDone;
 
         #endregion Events
 
@@ -302,6 +130,16 @@ namespace Ferretto.VW.InverterDriver
             get => this.portAddressToConnect;
         }
 
+        public InverterDriverErrors GetLastError
+        {
+            get => this.error;
+        }
+
+        public InverterDriverState GetMainState
+        {
+            get => this.state;
+        }
+
         #endregion Properties
 
         #region Methods
@@ -324,7 +162,6 @@ namespace Ferretto.VW.InverterDriver
         {
             this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetDrawerWeight);
 
-           
             var convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(ic);
             convertionBuffer.CopyTo(this.DataBufferCommand, 3);
@@ -348,6 +185,7 @@ namespace Ferretto.VW.InverterDriver
             }
             return InverterDriverExitStatus.Success;
         }
+
         public InverterDriverExitStatus GetIOState()
         {
             this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetIOState);
@@ -371,7 +209,6 @@ namespace Ferretto.VW.InverterDriver
             var IP = "";
             foreach (var ipaddress in iphostentry.AddressList)
             {
-                
                 if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
                 {
                     IP = ipaddress.ToString();
@@ -380,27 +217,10 @@ namespace Ferretto.VW.InverterDriver
 
                 if (ipaddress.AddressFamily == AddressFamily.InterNetworkV6)
                 {
-                    
                 }
             }
 
             return IP;
-        }
-
-        /// <summary>
-        /// Get main status of inverter.
-        /// </summary>
-        /// <returns></returns>
-        public InverterDriverExitStatus GetMainState()
-        {
-            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetMainState);
-
-            lock (g_lock)
-            {
-                this.DataBufferCommand[1] = 0x01;
-            }
-
-            return InverterDriverExitStatus.Success;
         }
 
         /// <summary>
@@ -464,15 +284,15 @@ namespace Ferretto.VW.InverterDriver
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s3);
             convertionBuffer.CopyTo(this.DataBufferCommand, 23);
- 
+
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s4);
             convertionBuffer.CopyTo(this.DataBufferCommand, 25);
-  
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(v3);
             convertionBuffer.CopyTo(this.DataBufferCommand, 27);
-   
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a2);
             convertionBuffer.CopyTo(this.DataBufferCommand, 31);
@@ -484,7 +304,7 @@ namespace Ferretto.VW.InverterDriver
             convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(s6);
             convertionBuffer.CopyTo(this.DataBufferCommand, 37);
-  
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a3);
             convertionBuffer.CopyTo(this.DataBufferCommand, 39);
@@ -568,7 +388,7 @@ namespace Ferretto.VW.InverterDriver
                         break;
 
                     case 0x02:
-                        id = CommandId.SelectMovement;
+                        id = CommandId.SetTypeOfMotorMovement;
                         break;
 
                     case 0x03:
@@ -638,7 +458,6 @@ namespace Ferretto.VW.InverterDriver
             }
             catch (SocketException)
             {
-               
             }
         }
 
@@ -657,7 +476,7 @@ namespace Ferretto.VW.InverterDriver
             var convertionBuffer = new byte[sizeof(short)];
             convertionBuffer = BitConverter.GetBytes(d);
             convertionBuffer.CopyTo(this.DataBufferCommand, 3);
-  
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(w);
             convertionBuffer.CopyTo(this.DataBufferCommand, 5);
@@ -682,32 +501,12 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus RunShutter(byte m)
         {
-
             this.DataBufferCommand[2] = Convert.ToByte(CommandId.RunShutter);
 
             lock (g_lock)
             {
                 this.DataBufferCommand[1] = 0x01;
             }
-            return InverterDriverExitStatus.Success;
-        }
-
-        /// <summary>
-        /// Select movement among vertical movement and horizontal movement.
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        public InverterDriverExitStatus SelectMovement(byte m)
-        {
-            this.DataBufferCommand[3] = m;
-
-            this.DataBufferCommand[2] = Convert.ToByte(CommandId.SelectMovement);
-
-            lock (g_lock)
-            {
-                this.DataBufferCommand[1] = 0x01;
-            }
-
             return InverterDriverExitStatus.Success;
         }
 
@@ -731,6 +530,25 @@ namespace Ferretto.VW.InverterDriver
             {
                 this.DataBufferCommand[1] = 0x01;
             }
+            return InverterDriverExitStatus.Success;
+        }
+
+        /// <summary>
+        /// Select type of motor movement: vertical or horizontal movement.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns></returns>
+        public InverterDriverExitStatus SetTypeOfMotorMovement(byte m)
+        {
+            this.DataBufferCommand[3] = m;
+
+            this.DataBufferCommand[2] = Convert.ToByte(CommandId.SetTypeOfMotorMovement);
+
+            lock (g_lock)
+            {
+                this.DataBufferCommand[1] = 0x01;
+            }
+
             return InverterDriverExitStatus.Success;
         }
 
@@ -762,11 +580,11 @@ namespace Ferretto.VW.InverterDriver
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a);
             convertionBuffer.CopyTo(this.DataBufferCommand, 12);
-  
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a1);
             convertionBuffer.CopyTo(this.DataBufferCommand, 16);
-  
+
             convertionBuffer = new byte[sizeof(float)];
             convertionBuffer = BitConverter.GetBytes(a2);
             convertionBuffer.CopyTo(this.DataBufferCommand, 20);
@@ -813,7 +631,6 @@ namespace Ferretto.VW.InverterDriver
         {
             if (disposing)
             {
- 
             }
         }
 
@@ -837,7 +654,7 @@ namespace Ferretto.VW.InverterDriver
                     nBytes = 19;
                     break;
 
-                case CommandId.SelectMovement:
+                case CommandId.SetTypeOfMotorMovement:
                     nBytes = 2;
                     break;
 
@@ -881,7 +698,6 @@ namespace Ferretto.VW.InverterDriver
                     break;
             }
 
-
             var byTelegramToSend = new byte[nBytes + 1];
             byTelegramToSend[0] = nBytes;
             Array.Copy(this.DataBufferCommand, 2, byTelegramToSend, 1, nBytes);
@@ -910,7 +726,7 @@ namespace Ferretto.VW.InverterDriver
                     break;
 
                 case 0x02:
-                    cmdId = CommandId.SelectMovement;
+                    cmdId = CommandId.SetTypeOfMotorMovement;
                     break;
 
                 case 0x03:
@@ -968,12 +784,11 @@ namespace Ferretto.VW.InverterDriver
 
             try
             {
-
                 var permission = new SocketPermission(
-                    NetworkAccess.Connect, 
-                    TransportType.Tcp, 
-                    "", 
-                    SocketPermission.AllPorts 
+                    NetworkAccess.Connect,
+                    TransportType.Tcp,
+                    "",
+                    SocketPermission.AllPorts
                 );
 
                 permission.Demand();
@@ -1071,8 +886,7 @@ namespace Ferretto.VW.InverterDriver
 
         private bool get_main_state_of_inverter()
         {
-            var exitCode = this.GetMainState();
-
+            
             return true;
         }
 
@@ -1105,7 +919,6 @@ namespace Ferretto.VW.InverterDriver
                             }
                             else
                             {
-                        
                                 this.get_main_state_of_inverter();
                             }
 
@@ -1166,60 +979,5 @@ namespace Ferretto.VW.InverterDriver
         #endregion Methods
     }
 
-    /// <summary>
-    /// Connected event arguments.
-    /// </summary>
-    [
-        ClassInterface(ClassInterfaceType.None),
-    ]
-    public class ConnectedEventArgs : EventArgs, IConnectedEventArgs
-    {
-        #region Fields
-
-        private readonly bool _state;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public ConnectedEventArgs(bool State)
-        {
-            this._state = State;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public bool State => this._state;
-
-        #endregion Properties
-    }
-
-    /// <summary>
-    /// GetMessageFromServer Event Arguments
-    /// </summary>
-
-    [
-        ClassInterface(ClassInterfaceType.None),
-    ]
-    public class GetMessageFromServerEventArgs : EventArgs, IGetMessageFromServerEventArgs
-    {
-        #region Constructors
-
-        public GetMessageFromServerEventArgs(string Msg, CommandId cmdId)
-        {
-            this.Message = Msg;
-            this.CmdId = cmdId;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public CommandId CmdId { get; }
-        public string Message { get; }
-
-        #endregion Properties
-    }
+  
 }

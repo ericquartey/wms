@@ -1,114 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Ferretto.VW.Utils;
 
 namespace Ferretto.VW.InverterDriver
 {
-
-    /// <summary>
-    /// Command Id codes.
-    /// </summary>
-    public enum CommandId
-    {
-        /// <summary>
-        /// Set Vertical axis origin.
-        /// </summary>
-        SetVerticalAxisOrigin = 0x00,
-        /// <summary>
-        /// Move along vertical axis to point.
-        /// </summary>
-        MoveAlongVerticalAxisToPoint = 0x01,
-        /// <summary>
-        /// Select movement (horizontal/vertical).
-        /// </summary>
-        SelectMovement = 0x02,
-        /// <summary>
-        /// Move with given profile along horizontal axis.
-        /// </summary>
-        MoveAlongHorizontalAxisWithProfile = 0x03,
-        /// <summary>
-        /// Horizontal axis move point to point.
-        /// </summary>
-        //x MoveAlongHorizontalAxisToPoint = 0x04,
-        /// <summary>
-        /// Run the bay shutter (open/close).
-        /// </summary>
-        RunShutter = 0x05,
-        /// <summary>
-        /// Run weight detection routine.
-        /// </summary>
-        RunDrawerWeightRoutine = 0x06,
-        /// <summary>
-        /// Get drawer weight.
-        /// </summary>
-        GetDrawerWeight = 0x07,
-        /// <summary>
-        /// Stop.
-        /// </summary>
-        Stop = 0x08,
-        /// <summary>
-        /// Get main state of inverter.
-        /// </summary>
-        GetMainState = 0x09,
-        /// <summary>
-        /// Get IO sensors state.
-        /// </summary>
-        GetIOState = 0x0A,
-        /// <summary>
-        /// Get IO emergency sensors state.
-        /// </summary>
-        GetIOEmergencyState = 0x0B,
-        /// <summary>
-        /// Set custom command.
-        /// </summary>
-        Set = 0x0C,
-
-        /// <summary>
-        /// Get the height of drawer.
-        /// See LightCurtainsDriver project
-        /// </summary>
-        //GetHeight = 0x0F,
-
-        /// <summary>
-        /// None.
-        /// </summary>
-        None = 0xFF
-
-    }
-
-
-    /// <summary>
-    /// Exit status codes for command.
-    /// </summary>
-    public enum ExitStatus
-    {
-        /// <summary>
-        /// Successful operation
-        /// </summary>
-        Success = 0x00,
-        /// <summary>
-        /// Invalid code
-        /// </summary>
-        InvalidCode,
-        /// <summary>
-        /// Invalid argument
-        /// </summary>
-        InvalidArgument,
-        /// <summary>
-        /// Invalid operation
-        /// </summary>
-        InvalidOperation,
-        /// <summary>
-        /// Generic hardware failure
-        /// </summary>
-        Failure = 0xFF
-    }
-
-
     /// <summary>
     /// The adapter type code.
     /// It is related to the hardware device.
@@ -121,6 +14,7 @@ namespace Ferretto.VW.InverterDriver
         /// Transparent adapter (Use with Bonfiglioli inverter).
         /// </summary>
         Vectron = 0x00,
+
         /// <summary>
         /// PLC + inverter.
         /// </summary>
@@ -128,11 +22,121 @@ namespace Ferretto.VW.InverterDriver
     }
 
     /// <summary>
+    /// Command Id codes.
+    /// </summary>
+    public enum CommandId
+    {
+        /// <summary>
+        /// Set Vertical axis origin.
+        /// </summary>
+        SetVerticalAxisOrigin = 0x00,
+
+        /// <summary>
+        /// Move along vertical axis to point.
+        /// </summary>
+        MoveAlongVerticalAxisToPoint = 0x01,
+
+        /// <summary>
+        /// Select type of motor movement (horizontal/vertical).
+        /// </summary>
+        SetTypeOfMotorMovement = 0x02,
+
+        /// <summary>
+        /// Move with given profile along horizontal axis.
+        /// </summary>
+        MoveAlongHorizontalAxisWithProfile = 0x03,
+
+        /// <summary>
+        /// Run the bay shutter (open/close).
+        /// </summary>
+        RunShutter = 0x05,
+
+        /// <summary>
+        /// Run weight detection routine.
+        /// </summary>
+        RunDrawerWeightRoutine = 0x06,
+
+        /// <summary>
+        /// Get drawer weight.
+        /// </summary>
+        GetDrawerWeight = 0x07,
+
+        /// <summary>
+        /// Stop.
+        /// </summary>
+        Stop = 0x08,
+
+        /// <summary>
+        /// Get main state of inverter.
+        /// </summary>
+        GetMainState = 0x09,
+
+        /// <summary>
+        /// Get IO sensors state.
+        /// </summary>
+        GetIOState = 0x0A,
+
+        /// <summary>
+        /// Get IO emergency sensors state.
+        /// </summary>
+        GetIOEmergencyState = 0x0B,
+
+        /// <summary>
+        /// Set custom command.
+        /// </summary>
+        Set = 0x0C,
+
+        /// <summary>
+        /// None.
+        /// </summary>
+        None = 0xFF
+    }
+
+    /// <summary>
+    /// Exit status codes for command.
+    /// </summary>
+    public enum ExitStatus
+    {
+        /// <summary>
+        /// Successful operation
+        /// </summary>
+        Success = 0x00,
+
+        /// <summary>
+        /// Invalid code
+        /// </summary>
+        InvalidCode,
+
+        /// <summary>
+        /// Invalid argument
+        /// </summary>
+        InvalidArgument,
+
+        /// <summary>
+        /// Invalid operation
+        /// </summary>
+        InvalidOperation,
+
+        /// <summary>
+        /// Generic hardware failure
+        /// </summary>
+        Failure = 0xFF
+    }
+
+    /// <summary>
     /// Command base class.
     /// </summary>
     internal class CommandBase : ICommandBase
     {
-        private readonly CommandId cmdId;   
+        #region Fields
+
+        private readonly CommandId cmdId;
+
+        #endregion Fields
+
+
+
+        #region Constructors
 
         /// <summary>
         /// Class c-tor.
@@ -143,367 +147,59 @@ namespace Ferretto.VW.InverterDriver
             this.cmdId = id;
         }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Get the command Id.
         /// </summary>
-        public CommandId CmdId
-        {
-            get
-            {
-                return this.cmdId;
-            }
-        }
+        public CommandId CmdId => this.cmdId;
 
-    } 
-
-    /// <summary>
-    /// Set Vertical Axis Origin command class.
-    /// It inherits from <see cref="CommandBase"/> class.
-    /// </summary>
-    internal class SetVerticalAxisOriginCmd : CommandBase
-    {
-        private static readonly SetVerticalAxisOriginCmd instance0 = new SetVerticalAxisOriginCmd();
-
-        private bool executed = false;        
-
-        /// <summary>
-        /// Initialize a new instance of the <see cref="SetVerticalAxisOriginCmd"/> class.
-        /// </summary>
-        private SetVerticalAxisOriginCmd() : base(CommandId.SetVerticalAxisOrigin) { }
-
-        /// <summary>
-        /// Gets the instance
-        /// </summary>
-        public static SetVerticalAxisOriginCmd Instance
-        {
-            get { return instance0; }
-        }
-
-        /// <summary>
-        /// <c>True</c> if command instance has been executed.
-        /// </summary>
-        public bool Executed
-        {
-            get { return this.executed; }
-        }
-
-
-        /// <summary>
-        /// Cache data for the command in a bytes array.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="direction"></param>
-        /// <param name="vSearch"></param>
-        /// <param name="vCam0"></param>
-        /// <param name="a"></param>
-        /// <param name="a1"></param>
-        /// <param name="a2"></param>
-        /// <param name="ans">Data buffer</param>
-        /// <param name="nBytes">Number of written bytes</param>
-        /// <returns></returns>
-        public ExitStatus CacheData(byte direction, float vSearch, float vCam0, float a, float a1, float a2, ref byte[] ans, out int nBytes)
-        {
-            nBytes = 0;
-            if (null == ans)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            ExitStatus exitCode = ExitStatus.Success;
-
-            int posx = 0;
-
-            try
-            {
-               
-                byte[] convertionBuffer = new byte[sizeof(byte)];
-                convertionBuffer = BitConverter.GetBytes(direction);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(byte);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(vSearch);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(vCam0);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(a);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(a1);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(a2);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-            }
-            catch (Exception)
-            {
-                exitCode = ExitStatus.Failure;
-            }
-
-            nBytes = posx;
-
-            return exitCode;
-        }
-
-
-        /// <summary>
-        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="ans"></param>
-        /// <param name="nBytes"></param>
-        /// <param name="outData"></param>
-        /// <returns></returns>
-        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
-        {
-
-            if (null == ans && nBytes > 0)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-            
-            switch (type)
-            {
-                case AdapterType.Vectron:
-                    {
-                        int currIndex = 0;
-                        byte direction = ans[currIndex];
-                        currIndex += sizeof(byte);
-                        float vSearch = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        float vCam0 = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        float a = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        float a1 = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        float a2 = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        
-                        int posx = 0;
-
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.SetVerticalAxisOrigin));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        byte header = 0x61;        
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(header);
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        this.executed = true;
-
-                        break;
-                    }
-
-                case AdapterType.CustomAdapter:
-                    {
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return ExitStatus.Success;
-        }
-
-    } 
-
-    /// <summary>
-    /// Move along vertical axis to point command class.
-    /// It inherits from <see cref="CommandBase"/> class.
-    /// </summary>
-    internal class MoveAlongVerticalAxisToPointCmd : CommandBase
-    {
-        private static readonly MoveAlongVerticalAxisToPointCmd instance1 = new MoveAlongVerticalAxisToPointCmd();
-
-        /// <summary>
-        /// Initialize a new instance of the <see cref="MoveAlongVerticalAxisToPointCmd"/> class.
-        /// </summary>
-        private MoveAlongVerticalAxisToPointCmd() : base(CommandId.MoveAlongVerticalAxisToPoint) { }
-
-        /// <summary>
-        /// Gets the instance
-        /// </summary>
-        public static MoveAlongVerticalAxisToPointCmd Instance
-        {
-            get { return instance1; }
-        }
-
-        /// <summary>
-        /// Cache data for the command in a bytes array.
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="vMax"></param>
-        /// <param name="a"></param>
-        /// <param name="a1"></param>
-        /// <param name="w"></param>
-        /// <param name="ans">Data buffer</param>
-        /// <param name="nBytes">Number of written bytes</param>
-        /// <returns></returns>
-        public ExitStatus CacheData(short x, float vMax, float a, float a1, float w, ref byte[] ans, out int nBytes)
-        {
-            nBytes = 0;
-
-            if (null == ans)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
-
-            try
-            {
-                byte[] convertionBuffer = new byte[sizeof(short)];
-                convertionBuffer = BitConverter.GetBytes(x);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(short);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(vMax);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(a);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(a1);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-                convertionBuffer = new byte[sizeof(float)];
-                convertionBuffer = BitConverter.GetBytes(w);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(float);
-
-            }
-            catch (Exception)
-            {
-                exitCode = ExitStatus.Failure;
-            }
-            nBytes = posx;
-
-            return exitCode;
-        }
-
-
-        /// <summary>
-        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="ans"></param>
-        /// <param name="nBytes"></param>
-        /// <param name="outData"></param>
-        /// <returns></returns>
-        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
-        {
-            if (null == ans && nBytes > 0)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            switch (type)
-            {
-                case AdapterType.Vectron:
-                    {
-                        int currIndex = 0;
-                        short x = ans[currIndex];
-                        currIndex += sizeof(short);
-                        float vMax = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        float a = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        float a1 = BitConverter.ToSingle(ans, currIndex);
-                        currIndex += sizeof(float);
-                        float w = BitConverter.ToSingle(ans, currIndex);
-
-                        int posx = 0;
-
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.MoveAlongVerticalAxisToPoint));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        byte header = 0x61;    
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(header);
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        break;
-                    }
-
-                case AdapterType.CustomAdapter:
-                    {
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return ExitStatus.Success;
-        }
-
-
+        #endregion Properties
     }
 
     /// <summary>
-    /// Select movement command class.
-    /// The movements available are: horizontal movement, vertical movement.
+    /// Get the drawer weight command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
-    internal class SelectMovementCmd : CommandBase
+    internal class GetDrawerWeightCmd : CommandBase
     {
-        private static readonly SelectMovementCmd instance2 = new SelectMovementCmd();
+        #region Fields
+
+        private static readonly GetDrawerWeightCmd instance7 = new GetDrawerWeightCmd();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="SelectMovementCmd"/> class.
+        /// Initialize a new instance of the <see cref="GetDrawerWeight"/> class.
         /// </summary>
-        private SelectMovementCmd() : base(CommandId.SelectMovement) { }
+        private GetDrawerWeightCmd() : base(CommandId.GetDrawerWeight) { }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the instance
         /// </summary>
-        public static SelectMovementCmd Instance
-        {
-            get { return instance2; }
-        }
+        public static GetDrawerWeightCmd Instance => instance7;
+
+        public float Current => 0.0f;
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Cache data for the command in a bytes array.
         /// </summary>
-        /// <param name="m"></param>
         /// <param name="ans">Data buffer</param>
         /// <param name="nBytes">Number of written bytes</param>
         /// <returns></returns>
-        public ExitStatus CacheData(byte m, ref byte[] ans, out int nBytes)
+        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
             if (null == ans)
@@ -511,18 +207,18 @@ namespace Ferretto.VW.InverterDriver
                 return ExitStatus.InvalidArgument;
             }
 
-            ExitStatus exitCode = ExitStatus.Success;
-
-            int posx = 0;
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
 
             try
             {
-                // m
-                byte[] convertionBuffer = new byte[sizeof(byte)];
-                convertionBuffer = BitConverter.GetBytes(m);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(byte);
+                short ic = 0x00;
 
+                // ic
+                var convertionBuffer = new byte[sizeof(short)];
+                convertionBuffer = BitConverter.GetBytes(ic);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(short);
             }
             catch (Exception)
             {
@@ -534,7 +230,6 @@ namespace Ferretto.VW.InverterDriver
             return exitCode;
         }
 
-
         /// <summary>
         /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
         /// </summary>
@@ -545,7 +240,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -555,16 +249,14 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        int currIndex = 0;
-                        byte m = ans[currIndex];
-                        int posx = 0;
+                        var posx = 0;
 
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.SelectMovement));
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetDrawerWeight));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        byte header = 0x61;        
+                        byte header = 0x61;
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
@@ -589,7 +281,364 @@ namespace Ferretto.VW.InverterDriver
             return ExitStatus.Success;
         }
 
-    } 
+        #endregion Methods
+    }
+
+    /// <summary>
+    /// Get I/O emergency sensors status command class.
+    /// It inherits from <see cref="CommandBase"/> class.
+    /// </summary>
+    internal class GetIOEmergencyStateCmd : CommandBase
+    {
+        #region Fields
+
+        private static readonly GetIOEmergencyStateCmd instance_B = new GetIOEmergencyStateCmd();
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
+        /// </summary>
+        private GetIOEmergencyStateCmd() : base(CommandId.GetIOEmergencyState) { }
+
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the instance
+        /// </summary>
+        public static GetIOEmergencyStateCmd Instance => instance_B;
+
+        public int[] IOEmergencyState => null;
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Cache data for the command in a bytes array.
+        /// </summary>
+        /// // /// <param name="state">4 bytes mask bits</param>
+        /// <param name="ans">Data buffer</param>
+        /// <param name="nBytes">Number of written bytes</param>
+        /// <returns></returns>
+        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
+        {
+            nBytes = 0;
+            if (null == ans)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
+
+            try
+            {
+            }
+            catch (Exception)
+            {
+                exitCode = ExitStatus.Failure;
+            }
+
+            nBytes = posx;
+
+            return exitCode;
+        }
+
+        /// <summary>
+        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ans"></param>
+        /// <param name="nBytes"></param>
+        /// <param name="outData"></param>
+        /// <returns></returns>
+        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
+        {
+            if (null == ans && nBytes > 0)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            switch (type)
+            {
+                case AdapterType.Vectron:
+                    {
+                        var posx = 0;
+
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetIOEmergencyState));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        byte header = 0x61;
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(header);
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        break;
+                    }
+
+                case AdapterType.CustomAdapter:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            return ExitStatus.Success;
+        }
+
+        #endregion Methods
+    }
+
+    /// <summary>
+    /// Get I/O sensors status command class.
+    /// It inherits from <see cref="CommandBase"/> class.
+    /// </summary>
+    internal class GetIOStateCmd : CommandBase
+    {
+        #region Fields
+
+        private static readonly GetIOStateCmd instance_A = new GetIOStateCmd();
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
+        /// </summary>
+        private GetIOStateCmd() : base(CommandId.GetIOState) { }
+
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the instance
+        /// </summary>
+        public static GetIOStateCmd Instance => instance_A;
+
+        public int[] IOState => null;
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Cache data for the command in a bytes array.
+        /// </summary>
+        /// <param name="ans">Data buffer</param>
+        /// <param name="nBytes">Number of written bytes</param>
+        /// <returns></returns>
+        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
+        {
+            nBytes = 0;
+            if (null == ans)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
+
+            try
+            {
+            }
+            catch (Exception)
+            {
+                exitCode = ExitStatus.Failure;
+            }
+
+            nBytes = posx;
+
+            return exitCode;
+        }
+
+        /// <summary>
+        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ans"></param>
+        /// <param name="nBytes"></param>
+        /// <param name="outData"></param>
+        /// <returns></returns>
+        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
+        {
+            if (null == ans && nBytes > 0)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            switch (type)
+            {
+                case AdapterType.Vectron:
+                    {
+                        var posx = 0;
+
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetIOState));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        byte header = 0x61;
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(header);
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        break;
+                    }
+
+                case AdapterType.CustomAdapter:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            return ExitStatus.Success;
+        }
+
+        #endregion Methods
+    }
+
+    /// <summary>
+    /// Get main status command class.
+    /// It inherits from <see cref="CommandBase"/> class.
+    /// </summary>
+    internal class GetMainStateCmd : CommandBase
+    {
+        #region Fields
+
+        private static readonly GetMainStateCmd instance9 = new GetMainStateCmd();
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
+        /// </summary>
+        private GetMainStateCmd() : base(CommandId.GetMainState) { }
+
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the instance
+        /// </summary>
+        public static GetMainStateCmd Instance => instance9;
+
+        public byte State => 0x00;
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Cache data for the command in a bytes array.
+        /// </summary>
+        /// <param name="ans">Data buffer</param>
+        /// <param name="nBytes">Number of written bytes</param>
+        /// <returns></returns>
+        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
+        {
+            nBytes = 0;
+
+            if (null == ans)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
+
+            try
+            {
+            }
+            catch (Exception)
+            {
+                exitCode = ExitStatus.Failure;
+            }
+
+            nBytes = posx;
+
+            return exitCode;
+        }
+
+        /// <summary>
+        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ans"></param>
+        /// <param name="nBytes"></param>
+        /// <param name="outData"></param>
+        /// <returns></returns>
+        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
+        {
+            if (null == ans && nBytes > 0)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            switch (type)
+            {
+                case AdapterType.Vectron:
+                    {
+                        var posx = 0;
+
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetMainState));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        byte header = 0x61;
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(header);
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        break;
+                    }
+
+                case AdapterType.CustomAdapter:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            return ExitStatus.Success;
+        }
+
+        #endregion Methods
+    }
 
     /// <summary>
     /// Move along horizontal axis with profile command class.
@@ -597,20 +646,31 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class MoveAlongHorizontalAxisWithProfileCmd : CommandBase
     {
+        #region Fields
+
         private static readonly MoveAlongHorizontalAxisWithProfileCmd instance3 = new MoveAlongHorizontalAxisWithProfileCmd();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initialize a new instance of the <see cref="SetVerticalAxisOriginCmd"/> class.
         /// </summary>
         private MoveAlongHorizontalAxisWithProfileCmd() : base(CommandId.MoveAlongHorizontalAxisWithProfile) { }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Gets the instance
         /// </summary>
-        public static MoveAlongHorizontalAxisWithProfileCmd Instance
-        {
-            get { return instance3; }
-        }
+        public static MoveAlongHorizontalAxisWithProfileCmd Instance => instance3;
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Cache data for the command in a bytes array.
@@ -641,12 +701,12 @@ namespace Ferretto.VW.InverterDriver
                 return ExitStatus.InvalidArgument;
             }
 
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
 
             try
             {
-                byte[] convertionBuffer = new byte[sizeof(float)];
+                var convertionBuffer = new byte[sizeof(float)];
                 convertionBuffer = BitConverter.GetBytes(v1);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
@@ -715,7 +775,6 @@ namespace Ferretto.VW.InverterDriver
                 convertionBuffer = BitConverter.GetBytes(s7);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
-
             }
             catch (Exception)
             {
@@ -727,7 +786,6 @@ namespace Ferretto.VW.InverterDriver
             return exitCode;
         }
 
-
         /// <summary>
         /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
         /// </summary>
@@ -738,7 +796,6 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
         {
-
             if (null == ans && nBytes > 0)
             {
                 return ExitStatus.InvalidArgument;
@@ -748,46 +805,46 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        int currIndex = 0;
-                        float direction = BitConverter.ToSingle(ans, currIndex);
+                        var currIndex = 0;
+                        var direction = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        float v1 = BitConverter.ToSingle(ans, currIndex);
+                        var v1 = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        float a = BitConverter.ToSingle(ans, currIndex);
+                        var a = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        short s1 = BitConverter.ToInt16(ans, currIndex);
+                        var s1 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
-                        short s2 = BitConverter.ToInt16(ans, currIndex);
+                        var s2 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
-                        float v2 = BitConverter.ToSingle(ans, currIndex);
+                        var v2 = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        float a1 = BitConverter.ToSingle(ans, currIndex);
+                        var a1 = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        short s3 = BitConverter.ToInt16(ans, currIndex);
+                        var s3 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
-                        short s4 = BitConverter.ToInt16(ans, currIndex);
+                        var s4 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
-                        float v3 = BitConverter.ToSingle(ans, currIndex);
+                        var v3 = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        float a2 = BitConverter.ToSingle(ans, currIndex);
+                        var a2 = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        short s5 = BitConverter.ToInt16(ans, currIndex);
+                        var s5 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
-                        short s6 = BitConverter.ToInt16(ans, currIndex);
+                        var s6 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
-                        float a3 = BitConverter.ToSingle(ans, currIndex);
+                        var a3 = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        short s7 = BitConverter.ToInt16(ans, currIndex);
+                        var s7 = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
 
-                        int posx = 0;
+                        var posx = 0;
 
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
+                        var convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.MoveAlongHorizontalAxisWithProfile));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        byte header = 0x61;      
+                        byte header = 0x61;
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
@@ -803,7 +860,6 @@ namespace Ferretto.VW.InverterDriver
 
                 case AdapterType.CustomAdapter:
                     {
-                       
                         break;
                     }
                 default:
@@ -813,105 +869,99 @@ namespace Ferretto.VW.InverterDriver
             return ExitStatus.Success;
         }
 
-    } 
+        #endregion Methods
+    }
 
     /// <summary>
-    /// Run bay shutter command class.
-    /// Two movements are available: open shutter and close shutter.
+    /// Move along vertical axis to point command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
-    internal class RunShutterCmd : CommandBase
+    internal class MoveAlongVerticalAxisToPointCmd : CommandBase
     {
-        private static readonly RunShutterCmd instance5 = new RunShutterCmd();
+        #region Fields
+
+        private static readonly MoveAlongVerticalAxisToPointCmd instance1 = new MoveAlongVerticalAxisToPointCmd();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="RunShutterCmd"/> class.
+        /// Initialize a new instance of the <see cref="MoveAlongVerticalAxisToPointCmd"/> class.
         /// </summary>
-        private RunShutterCmd() : base(CommandId.RunShutter) { }
+        private MoveAlongVerticalAxisToPointCmd() : base(CommandId.MoveAlongVerticalAxisToPoint) { }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the instance
         /// </summary>
-        public static RunShutterCmd Instance
-        {
-            get { return instance5; }
-        }
+        public static MoveAlongVerticalAxisToPointCmd Instance => instance1;
 
+        #endregion Properties
 
-        /// <summary>
-        /// Translate the command in a given adapter interface.
-        /// TO REMOVE
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="m"></param>
-        /// <param name="ans"></param>
-        /// <param name="nBytes"></param>
-        /// <returns></returns>
-        public ExitStatus Execute(AdapterType type, byte m, out byte[] ans, out int nBytes)
-        {
-            ans = null;
-            nBytes = 0;
-
-            ExitStatus exitCode = ExitStatus.Success;
-
-            switch (type)
-            {
-                case AdapterType.Vectron:
-                    {
-
-                        byte[] inputBuffer = new byte[40];
-                        nBytes = 40;
-
-                        break;
-                    }
-
-                case AdapterType.CustomAdapter:
-                    {
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return exitCode;
-        }
+        #region Methods
 
         /// <summary>
         /// Cache data for the command in a bytes array.
         /// </summary>
-        /// <param name="m"></param>
+        /// <param name="x"></param>
+        /// <param name="vMax"></param>
+        /// <param name="a"></param>
+        /// <param name="a1"></param>
+        /// <param name="w"></param>
         /// <param name="ans">Data buffer</param>
         /// <param name="nBytes">Number of written bytes</param>
         /// <returns></returns>
-        public ExitStatus CacheData(byte m, ref byte[] ans, out int nBytes)
+        public ExitStatus CacheData(short x, float vMax, float a, float a1, float w, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
+
             if (null == ans)
             {
                 return ExitStatus.InvalidArgument;
             }
 
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
 
             try
             {
-                byte[] convertionBuffer = new byte[1];
-                convertionBuffer = BitConverter.GetBytes(m);
+                var convertionBuffer = new byte[sizeof(short)];
+                convertionBuffer = BitConverter.GetBytes(x);
                 convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(byte);
+                posx += sizeof(short);
 
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(vMax);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(a);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(a1);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(w);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
             }
             catch (Exception)
             {
                 exitCode = ExitStatus.Failure;
             }
-
             nBytes = posx;
 
             return exitCode;
         }
-
 
         /// <summary>
         /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
@@ -932,16 +982,25 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        int currIndex = 0;
-                        byte m = ans[currIndex];
+                        var currIndex = 0;
+                        short x = ans[currIndex];
+                        currIndex += sizeof(short);
+                        var vMax = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+                        var a = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+                        var a1 = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+                        var w = BitConverter.ToSingle(ans, currIndex);
 
-                        int posx = 0;
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.RunShutter));
+                        var posx = 0;
+
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.MoveAlongVerticalAxisToPoint));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        byte header = 0x61;        
+                        byte header = 0x61;
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
@@ -966,27 +1025,36 @@ namespace Ferretto.VW.InverterDriver
             return ExitStatus.Success;
         }
 
-    } 
+        #endregion Methods
+    }
+
     /// <summary>
     /// Run routine to measure the drawer weight command class.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
     internal class RunDrawerWeightRoutineCmd : CommandBase
     {
+        #region Fields
+
         private static readonly RunDrawerWeightRoutineCmd instance6 = new RunDrawerWeightRoutineCmd();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initialize a new instance of the <see cref="RunDrawerWeightRoutineCmd"/> class.
         /// </summary>
         private RunDrawerWeightRoutineCmd() : base(CommandId.RunDrawerWeightRoutine) { this.Executed = false; }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Gets the instance
         /// </summary>
-        public static RunDrawerWeightRoutineCmd Instance
-        {
-            get { return instance6; }
-        }
+        public static RunDrawerWeightRoutineCmd Instance => instance6;
 
         /// <summary>
         /// <c>True</c> if command has been executed.
@@ -996,6 +1064,10 @@ namespace Ferretto.VW.InverterDriver
             get;
             set;
         }
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Cache data for the command in a bytes array.
@@ -1015,12 +1087,12 @@ namespace Ferretto.VW.InverterDriver
                 return ExitStatus.InvalidArgument;
             }
 
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
 
             try
             {
-                byte[] convertionBuffer = new byte[sizeof(short)];
+                var convertionBuffer = new byte[sizeof(short)];
                 convertionBuffer = BitConverter.GetBytes(d);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(short);
@@ -1039,7 +1111,6 @@ namespace Ferretto.VW.InverterDriver
                 convertionBuffer = BitConverter.GetBytes(e);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(float);
-
             }
             catch (Exception)
             {
@@ -1050,7 +1121,6 @@ namespace Ferretto.VW.InverterDriver
 
             return exitCode;
         }
-
 
         /// <summary>
         /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
@@ -1071,246 +1141,24 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        int currIndex = 0;
-                        short d = BitConverter.ToInt16(ans, currIndex);
+                        var currIndex = 0;
+                        var d = BitConverter.ToInt16(ans, currIndex);
                         currIndex += sizeof(short);
-                        float w = BitConverter.ToSingle(ans, currIndex);
+                        var w = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        float a = BitConverter.ToSingle(ans, currIndex);
+                        var a = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
-                        float e = BitConverter.ToSingle(ans, currIndex);
+                        var e = BitConverter.ToSingle(ans, currIndex);
                         currIndex += sizeof(float);
 
-                        int posx = 0;
+                        var posx = 0;
 
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
+                        var convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.RunDrawerWeightRoutine));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        byte header = 0x61; 
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(header);
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        break;
-                    }
-
-                case AdapterType.CustomAdapter:
-                    {
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return ExitStatus.Success;
-        }
-    } 
-    /// <summary>
-    /// Get the drawer weight command class.
-    /// It inherits from <see cref="CommandBase"/> class.
-    /// </summary>
-    internal class GetDrawerWeightCmd : CommandBase
-    {
-        private static readonly GetDrawerWeightCmd instance7 = new GetDrawerWeightCmd();
-
-        /// <summary>
-        /// Initialize a new instance of the <see cref="GetDrawerWeight"/> class.
-        /// </summary>
-        private GetDrawerWeightCmd() : base(CommandId.GetDrawerWeight) { }
-
-        /// <summary>
-        /// Gets the instance
-        /// </summary>
-        public static GetDrawerWeightCmd Instance
-        {
-            get { return instance7; }
-        }
-
-        /// <summary>
-        /// Cache data for the command in a bytes array.
-        /// </summary>
-        /// <param name="ans">Data buffer</param>
-        /// <param name="nBytes">Number of written bytes</param>
-        /// <returns></returns>
-        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
-        {
-            nBytes = 0;
-            if (null == ans)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
-
-            try
-            {
-                short ic = 0x00;
-
-                // ic
-                byte[] convertionBuffer = new byte[sizeof(short)];
-                convertionBuffer = BitConverter.GetBytes(ic);
-                convertionBuffer.CopyTo(ans, posx);
-                posx += sizeof(short);
-            }
-            catch (Exception)
-            {
-                exitCode = ExitStatus.Failure;
-            }
-
-            nBytes = posx;
-
-            return exitCode;
-        }
-
-
-        /// <summary>
-        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="ans"></param>
-        /// <param name="nBytes"></param>
-        /// <param name="outData"></param>
-        /// <returns></returns>
-        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
-        {
-            if (null == ans && nBytes > 0)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            switch (type)
-            {
-                case AdapterType.Vectron:
-                    {
-
-                        int posx = 0;
-
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetDrawerWeight));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        byte header = 0x61;   
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(header);
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        break;
-                    }
-
-                case AdapterType.CustomAdapter:
-                    { 
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return ExitStatus.Success;
-        }
-
-
-        public float Current
-        {
-            get { return 0.0f; }
-        }
-    } 
-
-    /// <summary>
-    /// Stop command class.
-    /// It inherits from <see cref="CommandBase"/> class.
-    /// </summary>
-    internal class StopCmd : CommandBase
-    {
-        private static readonly StopCmd instance8 = new StopCmd();
-
-        /// <summary>
-        /// Initialize a new instance of the <see cref="StopCmd"/> class.
-        /// </summary>
-        private StopCmd() : base(CommandId.Stop) { }
-
-        /// <summary>
-        /// Gets the instance
-        /// </summary>
-        public static StopCmd Instance
-        {
-            get { return instance8; }
-        }
-
-        /// <summary>
-        /// Cache data for the command in a bytes array.
-        /// </summary>
-        /// <param name="ans">Data buffer</param>
-        /// <param name="nBytes">Number of written bytes</param>
-        /// <returns></returns>
-        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
-        {
-            nBytes = 0;
-            if (null == ans)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
-
-            try
-            {
-
-            }
-            catch (Exception)
-            {
-                exitCode = ExitStatus.Failure;
-            }
-            nBytes = posx;
-
-            return exitCode;
-        }
-
-
-        /// <summary>
-        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="ans"></param>
-        /// <param name="nBytes"></param>
-        /// <param name="outData"></param>
-        /// <returns></returns>
-        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
-        {
-            if (null == ans && nBytes > 0)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            switch (type)
-            {
-                case AdapterType.Vectron:
-                    {
-
-                        int posx = 0;
-
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.Stop));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        byte header = 0x61;         
+                        byte header = 0x61;
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
@@ -1335,264 +1183,50 @@ namespace Ferretto.VW.InverterDriver
             return ExitStatus.Success;
         }
 
-    } 
-    /// <summary>
-    /// Get main status command class.
-    /// It inherits from <see cref="CommandBase"/> class.
-    /// </summary>
-    internal class GetMainStateCmd : CommandBase
-    {
-        private static readonly GetMainStateCmd instance9 = new GetMainStateCmd();
-
-        /// <summary>
-        /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
-        /// </summary>
-        private GetMainStateCmd() : base(CommandId.GetMainState) { }
-
-        /// <summary>
-        /// Gets the instance
-        /// </summary>
-        public static GetMainStateCmd Instance
-        {
-            get { return instance9; }
-        }
-
-        /// <summary>
-        /// Cache data for the command in a bytes array.
-        /// </summary>
-        /// <param name="ans">Data buffer</param>
-        /// <param name="nBytes">Number of written bytes</param>
-        /// <returns></returns>
-        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
-        {
-            nBytes = 0;
-
-            if (null == ans)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
-
-            try
-            {
-
-            }
-            catch (Exception)
-            {
-                exitCode = ExitStatus.Failure;
-            }
-
-            nBytes = posx;
-
-            return exitCode;
-        }
-
-
-        /// <summary>
-        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="ans"></param>
-        /// <param name="nBytes"></param>
-        /// <param name="outData"></param>
-        /// <returns></returns>
-        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
-        {
-            if (null == ans && nBytes > 0)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            switch (type)
-            {
-                case AdapterType.Vectron:
-                    {
-
-                        int posx = 0;
-
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetMainState));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        byte header = 0x61;        
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(header);
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        break;
-                    }
-
-                case AdapterType.CustomAdapter:
-                    {
-
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return ExitStatus.Success;
-        }
-
-
-        public byte State
-        {
-
-            get { return 0x00; }
-        }
-
-    } 
-    /// <summary>
-    /// Get I/O sensors status command class.
-    /// It inherits from <see cref="CommandBase"/> class.
-    /// </summary>
-    internal class GetIOStateCmd : CommandBase
-    {
-        private static readonly GetIOStateCmd instance_A = new GetIOStateCmd();
-
-        /// <summary>
-        /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
-        /// </summary>
-        private GetIOStateCmd() : base(CommandId.GetIOState) { }
-
-        /// <summary>
-        /// Gets the instance
-        /// </summary>
-        public static GetIOStateCmd Instance
-        {
-            get { return instance_A; }
-        }
-
-        /// <summary>
-        /// Cache data for the command in a bytes array.
-        /// </summary>
-        /// <param name="ans">Data buffer</param>
-        /// <param name="nBytes">Number of written bytes</param>
-        /// <returns></returns>
-        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
-        {
-            nBytes = 0;
-            if (null == ans)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
-
-            try
-            {
-
-            }
-            catch (Exception)
-            {
-                exitCode = ExitStatus.Failure;
-            }
-
-            nBytes = posx;
-
-            return exitCode;
-        }
-
-
-        /// <summary>
-        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="ans"></param>
-        /// <param name="nBytes"></param>
-        /// <param name="outData"></param>
-        /// <returns></returns>
-        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
-        {
-            if (null == ans && nBytes > 0)
-            {
-                return ExitStatus.InvalidArgument;
-            }
-
-            switch (type)
-            {
-                case AdapterType.Vectron:
-                    {
-                        
-                        int posx = 0;
-
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetIOState));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        byte header = 0x61;       
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(header);
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
-                        convertionBuffer.CopyTo(outData, posx);
-                        posx += sizeof(byte);
-
-                        break;
-                    }
-
-                case AdapterType.CustomAdapter:
-                    {
-                        break;
-                    }
-                default:
-                    break;
-            }
-
-            return ExitStatus.Success;
-        }
-
-
-        public int[] IOState
-        {
-            get { return null; }
-        }
-
+        #endregion Methods
     }
+
     /// <summary>
-    /// Get I/O emergency sensors status command class.
+    /// Run bay shutter command class.
+    /// Two movements are available: open shutter and close shutter.
     /// It inherits from <see cref="CommandBase"/> class.
     /// </summary>
-    internal class GetIOEmergencyStateCmd : CommandBase
+    internal class RunShutterCmd : CommandBase
     {
-        private static readonly GetIOEmergencyStateCmd instance_B = new GetIOEmergencyStateCmd();
+        #region Fields
+
+        private static readonly RunShutterCmd instance5 = new RunShutterCmd();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
-        /// Initialize a new instance of the <see cref="GetMainStateCmd"/> class.
+        /// Initialize a new instance of the <see cref="RunShutterCmd"/> class.
         /// </summary>
-        private GetIOEmergencyStateCmd() : base(CommandId.GetIOEmergencyState) { }
+        private RunShutterCmd() : base(CommandId.RunShutter) { }
+
+        #endregion Constructors
+
+        #region Properties
 
         /// <summary>
         /// Gets the instance
         /// </summary>
-        public static GetIOEmergencyStateCmd Instance
-        {
-            get { return instance_B; }
-        }
+        public static RunShutterCmd Instance => instance5;
 
-        
+        #endregion Properties
+
+        #region Methods
+
         /// <summary>
         /// Cache data for the command in a bytes array.
         /// </summary>
-        /// // /// <param name="state">4 bytes mask bits</param>
+        /// <param name="m"></param>
         /// <param name="ans">Data buffer</param>
         /// <param name="nBytes">Number of written bytes</param>
         /// <returns></returns>
-        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
+        public ExitStatus CacheData(byte m, ref byte[] ans, out int nBytes)
         {
             nBytes = 0;
             if (null == ans)
@@ -1600,12 +1234,15 @@ namespace Ferretto.VW.InverterDriver
                 return ExitStatus.InvalidArgument;
             }
 
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
 
             try
             {
-
+                var convertionBuffer = new byte[1];
+                convertionBuffer = BitConverter.GetBytes(m);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(byte);
             }
             catch (Exception)
             {
@@ -1617,6 +1254,42 @@ namespace Ferretto.VW.InverterDriver
             return exitCode;
         }
 
+        /// <summary>
+        /// Translate the command in a given adapter interface.
+        /// TO REMOVE
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="m"></param>
+        /// <param name="ans"></param>
+        /// <param name="nBytes"></param>
+        /// <returns></returns>
+        public ExitStatus Execute(AdapterType type, byte m, out byte[] ans, out int nBytes)
+        {
+            ans = null;
+            nBytes = 0;
+
+            var exitCode = ExitStatus.Success;
+
+            switch (type)
+            {
+                case AdapterType.Vectron:
+                    {
+                        var inputBuffer = new byte[40];
+                        nBytes = 40;
+
+                        break;
+                    }
+
+                case AdapterType.CustomAdapter:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            return exitCode;
+        }
 
         /// <summary>
         /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
@@ -1637,15 +1310,16 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
+                        var currIndex = 0;
+                        var m = ans[currIndex];
 
-                        int posx = 0;
-
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
-                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.GetIOEmergencyState));
+                        var posx = 0;
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.RunShutter));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        byte header = 0x61;        
+                        byte header = 0x61;
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
@@ -1670,13 +1344,135 @@ namespace Ferretto.VW.InverterDriver
             return ExitStatus.Success;
         }
 
+        #endregion Methods
+    }
 
-        public int[] IOEmergencyState
+    /// <summary>
+    /// Select movement command class.
+    /// The movements available are: horizontal movement, vertical movement.
+    /// It inherits from <see cref="CommandBase"/> class.
+    /// </summary>
+    internal class SelectMovementCmd : CommandBase
+    {
+        #region Fields
+
+        private static readonly SelectMovementCmd instance2 = new SelectMovementCmd();
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initialize a new instance of the <see cref="SelectMovementCmd"/> class.
+        /// </summary>
+        private SelectMovementCmd() : base(CommandId.SetTypeOfMotorMovement) { }
+
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the instance
+        /// </summary>
+        public static SelectMovementCmd Instance => instance2;
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Cache data for the command in a bytes array.
+        /// </summary>
+        /// <param name="m"></param>
+        /// <param name="ans">Data buffer</param>
+        /// <param name="nBytes">Number of written bytes</param>
+        /// <returns></returns>
+        public ExitStatus CacheData(byte m, ref byte[] ans, out int nBytes)
         {
-            get { return null; }
+            nBytes = 0;
+            if (null == ans)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            var exitCode = ExitStatus.Success;
+
+            var posx = 0;
+
+            try
+            {
+                // m
+                var convertionBuffer = new byte[sizeof(byte)];
+                convertionBuffer = BitConverter.GetBytes(m);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(byte);
+            }
+            catch (Exception)
+            {
+                exitCode = ExitStatus.Failure;
+            }
+
+            nBytes = posx;
+
+            return exitCode;
         }
 
-    } 
+        /// <summary>
+        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ans"></param>
+        /// <param name="nBytes"></param>
+        /// <param name="outData"></param>
+        /// <returns></returns>
+        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
+        {
+            if (null == ans && nBytes > 0)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            switch (type)
+            {
+                case AdapterType.Vectron:
+                    {
+                        var currIndex = 0;
+                        var m = ans[currIndex];
+                        var posx = 0;
+
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.SetTypeOfMotorMovement));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        byte header = 0x61;
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(header);
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        break;
+                    }
+
+                case AdapterType.CustomAdapter:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            return ExitStatus.Success;
+        }
+
+        #endregion Methods
+    }
+
     /// <summary>
     /// Set command class.
     /// It is ON/OFF command type
@@ -1684,20 +1480,31 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     internal class SetCmd : CommandBase
     {
+        #region Fields
+
         private static readonly SetCmd instance_C = new SetCmd();
+
+        #endregion Fields
+
+        #region Constructors
 
         /// <summary>
         /// Initialize a new instance of the <see cref="SetCmd"/> class.
         /// </summary>
         private SetCmd() : base(CommandId.Set) { }
 
+        #endregion Constructors
+
+        #region Properties
+
         /// <summary>
         /// Gets the instance
         /// </summary>
-        public static SetCmd Instance
-        {
-            get { return instance_C; }
-        }
+        public static SetCmd Instance => instance_C;
+
+        #endregion Properties
+
+        #region Methods
 
         /// <summary>
         /// Cache data for the command in a bytes array.
@@ -1715,13 +1522,13 @@ namespace Ferretto.VW.InverterDriver
                 return ExitStatus.InvalidArgument;
             }
 
-            ExitStatus exitCode = ExitStatus.Success;
-            int posx = 0;
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
 
             try
             {
                 // i
-                byte[] convertionBuffer = new byte[sizeof(int)];
+                var convertionBuffer = new byte[sizeof(int)];
                 convertionBuffer = BitConverter.GetBytes(i);
                 convertionBuffer.CopyTo(ans, posx);
                 posx += sizeof(int);
@@ -1741,7 +1548,6 @@ namespace Ferretto.VW.InverterDriver
             return exitCode;
         }
 
-
         /// <summary>
         /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
         /// </summary>
@@ -1761,19 +1567,19 @@ namespace Ferretto.VW.InverterDriver
             {
                 case AdapterType.Vectron:
                     {
-                        int currIndex = 0;
-                        int i = BitConverter.ToInt32(ans, currIndex);
+                        var currIndex = 0;
+                        var i = BitConverter.ToInt32(ans, currIndex);
                         currIndex += sizeof(int);
-                        byte value = ans[currIndex];
+                        var value = ans[currIndex];
 
-                        int posx = 0;
+                        var posx = 0;
 
-                        byte[] convertionBuffer = new byte[sizeof(byte)];
+                        var convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.Set));
                         convertionBuffer.CopyTo(outData, posx);
                         posx += sizeof(byte);
 
-                        byte header = 0x61;         
+                        byte header = 0x61;
                         convertionBuffer = new byte[sizeof(byte)];
                         convertionBuffer = BitConverter.GetBytes(header);
                         convertionBuffer.CopyTo(outData, posx);
@@ -1798,6 +1604,299 @@ namespace Ferretto.VW.InverterDriver
             return ExitStatus.Success;
         }
 
-    } 
+        #endregion Methods
+    }
 
+    /// <summary>
+    /// Set Vertical Axis Origin command class.
+    /// It inherits from <see cref="CommandBase"/> class.
+    /// </summary>
+    internal class SetVerticalAxisOriginCmd : CommandBase
+    {
+        #region Fields
+
+        private static readonly SetVerticalAxisOriginCmd instance0 = new SetVerticalAxisOriginCmd();
+
+        private bool executed = false;
+
+        #endregion Fields
+
+
+
+        #region Constructors
+
+        /// <summary>
+        /// Initialize a new instance of the <see cref="SetVerticalAxisOriginCmd"/> class.
+        /// </summary>
+        private SetVerticalAxisOriginCmd() : base(CommandId.SetVerticalAxisOrigin) { }
+
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the instance
+        /// </summary>
+        public static SetVerticalAxisOriginCmd Instance => instance0;
+
+        /// <summary>
+        /// <c>True</c> if command instance has been executed.
+        /// </summary>
+        public bool Executed => this.executed;
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Cache data for the command in a bytes array.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="direction"></param>
+        /// <param name="vSearch"></param>
+        /// <param name="vCam0"></param>
+        /// <param name="a"></param>
+        /// <param name="a1"></param>
+        /// <param name="a2"></param>
+        /// <param name="ans">Data buffer</param>
+        /// <param name="nBytes">Number of written bytes</param>
+        /// <returns></returns>
+        public ExitStatus CacheData(byte direction, float vSearch, float vCam0, float a, float a1, float a2, ref byte[] ans, out int nBytes)
+        {
+            nBytes = 0;
+            if (null == ans)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            var exitCode = ExitStatus.Success;
+
+            var posx = 0;
+
+            try
+            {
+                var convertionBuffer = new byte[sizeof(byte)];
+                convertionBuffer = BitConverter.GetBytes(direction);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(byte);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(vSearch);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(vCam0);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(a);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(a1);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+
+                convertionBuffer = new byte[sizeof(float)];
+                convertionBuffer = BitConverter.GetBytes(a2);
+                convertionBuffer.CopyTo(ans, posx);
+                posx += sizeof(float);
+            }
+            catch (Exception)
+            {
+                exitCode = ExitStatus.Failure;
+            }
+
+            nBytes = posx;
+
+            return exitCode;
+        }
+
+        /// <summary>
+        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ans"></param>
+        /// <param name="nBytes"></param>
+        /// <param name="outData"></param>
+        /// <returns></returns>
+        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
+        {
+            if (null == ans && nBytes > 0)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            switch (type)
+            {
+                case AdapterType.Vectron:
+                    {
+                        var currIndex = 0;
+                        var direction = ans[currIndex];
+                        currIndex += sizeof(byte);
+                        var vSearch = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+                        var vCam0 = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+                        var a = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+                        var a1 = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+                        var a2 = BitConverter.ToSingle(ans, currIndex);
+                        currIndex += sizeof(float);
+
+                        var posx = 0;
+
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.SetVerticalAxisOrigin));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        byte header = 0x61;
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(header);
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        this.executed = true;
+
+                        break;
+                    }
+
+                case AdapterType.CustomAdapter:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            return ExitStatus.Success;
+        }
+
+        #endregion Methods
+    }
+
+    /// <summary>
+    /// Stop command class.
+    /// It inherits from <see cref="CommandBase"/> class.
+    /// </summary>
+    internal class StopCmd : CommandBase
+    {
+        #region Fields
+
+        private static readonly StopCmd instance8 = new StopCmd();
+
+        #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Initialize a new instance of the <see cref="StopCmd"/> class.
+        /// </summary>
+        private StopCmd() : base(CommandId.Stop) { }
+
+        #endregion Constructors
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the instance
+        /// </summary>
+        public static StopCmd Instance => instance8;
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Cache data for the command in a bytes array.
+        /// </summary>
+        /// <param name="ans">Data buffer</param>
+        /// <param name="nBytes">Number of written bytes</param>
+        /// <returns></returns>
+        public ExitStatus CacheData(ref byte[] ans, out int nBytes)
+        {
+            nBytes = 0;
+            if (null == ans)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            var exitCode = ExitStatus.Success;
+            var posx = 0;
+
+            try
+            {
+            }
+            catch (Exception)
+            {
+                exitCode = ExitStatus.Failure;
+            }
+            nBytes = posx;
+
+            return exitCode;
+        }
+
+        /// <summary>
+        /// Translate the command in a well-formatted array of bytes according to the given adapter interface.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="ans"></param>
+        /// <param name="nBytes"></param>
+        /// <param name="outData"></param>
+        /// <returns></returns>
+        public ExitStatus Translate(AdapterType type, byte[] ans, int nBytes, ref byte[] outData)
+        {
+            if (null == ans && nBytes > 0)
+            {
+                return ExitStatus.InvalidArgument;
+            }
+
+            switch (type)
+            {
+                case AdapterType.Vectron:
+                    {
+                        var posx = 0;
+
+                        var convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(CommandId.Stop));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        byte header = 0x61;
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(header);
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        convertionBuffer = new byte[sizeof(byte)];
+                        convertionBuffer = BitConverter.GetBytes(Convert.ToByte(nBytes));
+                        convertionBuffer.CopyTo(outData, posx);
+                        posx += sizeof(byte);
+
+                        break;
+                    }
+
+                case AdapterType.CustomAdapter:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            return ExitStatus.Success;
+        }
+
+        #endregion Methods
+    }
 }
