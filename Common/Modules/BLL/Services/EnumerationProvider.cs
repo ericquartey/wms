@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.Modules.BLL.Services

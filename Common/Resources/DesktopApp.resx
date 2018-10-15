@@ -145,6 +145,9 @@
     <value>Initializing Layout module ...</value>
     <comment>Splash screen message</comment>
   </data>
+  <data name="InitializingMachinesModule" xml:space="preserve">
+    <value>Initializing Machines module ...</value>
+  </data>
   <data name="InitializingMainWindow" xml:space="preserve">
     <value>Initializing main window ...</value>
     <comment>Splash screen message</comment>
