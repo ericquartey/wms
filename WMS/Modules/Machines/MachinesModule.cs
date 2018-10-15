@@ -4,7 +4,7 @@ using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
 
-namespace Ferretto.WMS.Modules.Compartment
+namespace Ferretto.WMS.Modules.Machines
 {
     [Module(ModuleName = nameof(Common.Utils.Modules.Machines), OnDemand = true)]
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
