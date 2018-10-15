@@ -1,4 +1,4 @@
-﻿using System.Windows.Input;
+using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Compartment, int>>(this.itemSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<CompartmentDetails, int>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -75,7 +75,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<LoadingUnitDetails, int>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnitDetails, int>>(
                 eventArgs =>
                 {
                     if (eventArgs.ModelIdHasValue)

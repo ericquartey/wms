@@ -2,33 +2,33 @@
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ItemChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
+    public class ModelChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
     {
         #region Fields
 
-        private readonly object itemId;
+        private readonly object modelId;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemChangedEvent(TId itemId)
+        public ModelChangedEvent(TId modelId)
         {
-            this.itemId = itemId;
+            this.modelId = modelId;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public object ItemId => this.itemId;
+        public object ModelId => this.modelId;
 
         public string Token => null;
 
         #endregion Properties
     }
 
-    public class ItemSelectionChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
+    public class ModelSelectionChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject<TId>
     {
         #region Fields
 
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public ItemSelectionChangedEvent(TId modelId, string token)
+        public ModelSelectionChangedEvent(TId modelId, string token)
         {
             this.modelId = modelId;
             this.token = token;
@@ -56,26 +56,26 @@ namespace Ferretto.Common.Controls.Services
         #endregion Properties
     }
 
-    public class RefreshItemsEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs
+    public class RefreshModelsEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs
     {
         #region Fields
 
-        private readonly object itemId;
+        private readonly object modelId;
 
         #endregion Fields
 
         #region Constructors
 
-        public RefreshItemsEvent(int itemId)
+        public RefreshModelsEvent(int modelId)
         {
-            this.itemId = itemId;
+            this.modelId = modelId;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public object ItemId => this.itemId;
+        public object ModelId => this.modelId;
 
         public string Token => null;
 
