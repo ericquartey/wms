@@ -354,4 +354,7 @@
   <data name="CellZCoordinate" xml:space="preserve">
     <value>Coordinata Z</value>
   </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Macchina</value>
+  </data>
 </root>
