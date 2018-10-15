@@ -84,6 +84,17 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => loadingUnitProvider.GetAllCount())
                     }.Cast<IDataSource<TModel, TId>>();
 
+                case "LoadingUnitDetailsView":
+                    var loadingUnitDetailsProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
+                    return new List<DataSource<CompartmentDetails, int>>
+                    {
+                        new DataSource<CompartmentDetails, int>(
+                            "LoadingUnitDetailsView",
+                            Resources.MasterData.CompartmentAll,
+                            () => loadingUnitDetailsProvider.GetByLoadingUnitId((int)parameter))
+                    }.Cast<IDataSource<TModel, TId>>();
+
                 default:
                     return new List<IDataSource<TModel, TId>>();
             }

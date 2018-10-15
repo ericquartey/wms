@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
-    Microsoft ResX Schema 
-    
+  <!--
+    Microsoft ResX Schema
+
     Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
     associated with the data types.
-    
+
     Example:
-    
+
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-                
-    There are any number of "resheader" rows that contain simple 
+
+    There are any number of "resheader" rows that contain simple
     name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
     mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
     extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
     read any of the formats listed below.
-    
+
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-    
+
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
+    value   : The object must be serialized with
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
+    value   : The object must be serialized into a byte array
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -229,7 +229,7 @@
     <value>Data Ultimo Inventario</value>
   </data>
   <data name="CompartmentLastPickDate" xml:space="preserve">
-    <value>Data Ultimo Pick</value>
+    <value>Data Ultimo Prelievo</value>
   </data>
   <data name="CompartmentLastStoreDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
@@ -259,7 +259,7 @@
     <value>Capacità</value>
   </data>
   <data name="ItemLastPickDate" xml:space="preserve">
-    <value>Data Ultimo Pick</value>
+    <value>Data Ultimo Prelievo</value>
   </data>
   <data name="ItemLastStoreDate" xml:space="preserve">
     <value>Data Ultimo Versamento</value>
@@ -336,6 +336,48 @@
   <data name="RegistrationNumber" xml:space="preserve">
     <value>Matricola</value>
   </data>
+  <data name="LoadingUnitNotes" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="LoadingUnitReferenceType" xml:space="preserve">
+    <value>Tipo Referenza</value>
+  </data>
+  <data name="LoadingUnitCellPairing" xml:space="preserve">
+    <value>Abbinamento Cella</value>
+  </data>
+  <data name="LoadingUnitWeight" xml:space="preserve">
+    <value>Peso</value>
+  </data>
+  <data name="LoadingUnitHeight" xml:space="preserve">
+    <value>Altezza</value>
+  </data>
+  <data name="LoadingUnitHandlingParametersCorrection" xml:space="preserve">
+    <value>Correzione Parametri Movimentazione</value>
+  </data>
+  <data name="LoadingUnitInventoryDate" xml:space="preserve">
+    <value>Data Ultimo Inventario</value>
+  </data>
+  <data name="LoadingUnitLastPickDate" xml:space="preserve">
+    <value>Data Ultimo Prelievo</value>
+  </data>
+  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
+    <value>Data Ultimo Versamento</value>
+  </data>
+  <data name="LoadingUnitLastHandlingDate" xml:space="preserve">
+    <value>Data Ultima Movimentazione</value>
+  </data>
+  <data name="LoadingUnitCreationDate" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="LoadingUnitInCycleCount" xml:space="preserve">
+    <value>Numero Cicli Ingresso</value>
+  </data>
+  <data name="LoadingUnitOutCycleCount" xml:space="preserve">
+    <value>Numero Cicli Prelievo</value>
+  </data>
+  <data name="LoadingUnitOtherCycleCount" xml:space="preserve">
+    <value>Numero Altri Cicli</value>
+  </data>
   <data name="CellPriority" xml:space="preserve">
     <value>Priorità</value>
   </data>
@@ -353,5 +395,8 @@
   </data>
   <data name="CellZCoordinate" xml:space="preserve">
     <value>Coordinata Z</value>
+  </data>
+  <data name="LoadingUnitCurrentCell" xml:space="preserve">
+    <value>Cella Corrente</value>
   </data>
 </root>

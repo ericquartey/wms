@@ -682,6 +682,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell Pairing.
+        /// </summary>
+        public static string LoadingUnitCellPairing {
+            get {
+                return ResourceManager.GetString("LoadingUnitCellPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string LoadingUnitCode {
@@ -700,11 +709,128 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creation Date.
+        /// </summary>
+        public static string LoadingUnitCreationDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitCreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Cell.
+        /// </summary>
+        public static string LoadingUnitCurrentCell {
+            get {
+                return ResourceManager.GetString("LoadingUnitCurrentCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handling Parameters Correction.
+        /// </summary>
+        public static string LoadingUnitHandlingParametersCorrection {
+            get {
+                return ResourceManager.GetString("LoadingUnitHandlingParametersCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string LoadingUnitHeight {
+            get {
+                return ResourceManager.GetString("LoadingUnitHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Cycle Count.
+        /// </summary>
+        public static string LoadingUnitInCycleCount {
+            get {
+                return ResourceManager.GetString("LoadingUnitInCycleCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory Date.
+        /// </summary>
+        public static string LoadingUnitInventoryDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitInventoryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Handling Date.
+        /// </summary>
+        public static string LoadingUnitLastHandlingDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitLastHandlingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Pick Date.
+        /// </summary>
+        public static string LoadingUnitLastPickDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitLastPickDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Store Date.
+        /// </summary>
+        public static string LoadingUnitLastStoreDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitLastStoreDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Length.
         /// </summary>
         public static string LoadingUnitLength {
             get {
                 return ResourceManager.GetString("LoadingUnitLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string LoadingUnitNotes {
+            get {
+                return ResourceManager.GetString("LoadingUnitNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other Cycle Count.
+        /// </summary>
+        public static string LoadingUnitOtherCycleCount {
+            get {
+                return ResourceManager.GetString("LoadingUnitOtherCycleCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Out Cycle Count.
+        /// </summary>
+        public static string LoadingUnitOutCycleCount {
+            get {
+                return ResourceManager.GetString("LoadingUnitOutCycleCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference Type.
+        /// </summary>
+        public static string LoadingUnitReferenceType {
+            get {
+                return ResourceManager.GetString("LoadingUnitReferenceType", resourceCulture);
             }
         }
         
@@ -732,6 +858,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitTypeDescription {
             get {
                 return ResourceManager.GetString("LoadingUnitTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Weight.
+        /// </summary>
+        public static string LoadingUnitWeight {
+            get {
+                return ResourceManager.GetString("LoadingUnitWeight", resourceCulture);
             }
         }
         
