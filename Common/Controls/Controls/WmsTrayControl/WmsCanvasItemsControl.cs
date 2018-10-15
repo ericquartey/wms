@@ -15,7 +15,6 @@ namespace Ferretto.Common.Controls
 
         private WmsTrayCanvas canvas;
         private LoadingUnitDetails loadingUnitDetails;
-        private int offsetTray = 50;
 
         #endregion Fields
 
@@ -44,17 +43,10 @@ namespace Ferretto.Common.Controls
                 this.loadingUnitDetails = wmsTrayControlViewModel.LoadingUnitProperty;
 
                 var widthNewCalculated = this.ActualWidth;
+                var heightNewCalculated = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, widthNewCalculated, this.loadingUnitDetails.Width);
 
-                this.canvas.Width = widthNewCalculated;// - this.offsetTray;
-                this.canvas.Height = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, widthNewCalculated, this.loadingUnitDetails.Width);
-                //this.canvas.HeightParent = this.ActualWidth;// - this.offsetTray;
-                //this.canvas.WidthParent = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, this.canvas.ActualWidth, this.loadingUnitDetails.Width);
-
-                //int x = 200;
-                //this.canvas.Width = x;
-                //this.canvas.Height = x;
-                //this.canvas.HeightParent = x;
-                //this.canvas.WidthParent = x;
+                this.canvas.Width = widthNewCalculated;
+                this.canvas.Height = heightNewCalculated;
             }
         }
 
@@ -64,28 +56,19 @@ namespace Ferretto.Common.Controls
             {
                 this.canvas = LayoutTreeHelper.GetVisualChildren(this).OfType<WmsTrayCanvas>().FirstOrDefault();
             }
-            bool widthB = true;
+
             if (this.loadingUnitDetails != null)
             {
-                var w = this.ActualWidth;// - this.offsetTray;
-                var h = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, w, this.loadingUnitDetails.Width);
-                //this.canvas.HeightParent = this.ActualWidth - this.offsetTray;
-                //this.canvas.WidthParent = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, this.canvas.ActualWidth, this.loadingUnitDetails.Width);
-                if (h > this.ActualHeight)
+                var widthNewCalculated = this.ActualWidth;
+                var heightNewCalculated = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, widthNewCalculated, this.loadingUnitDetails.Width);
+
+                if (heightNewCalculated > this.ActualHeight)
                 {
-                    widthB = false;
-                    var hh = this.ActualHeight;// - this.offsetTray;
-                    this.canvas.Height = hh;
-                    this.canvas.Width = ConvertMillimetersToPixel(this.loadingUnitDetails.Width, hh, this.loadingUnitDetails.Length);// - this.offsetTray;
-                    //this.canvas.HeightParent = this.ActualHeight - this.offsetTray;
-                    //this.canvas.WidthParent = ConvertMillimetersToPixel(this.loadingUnitDetails.Width, this.canvas.ActualHeight, this.loadingUnitDetails.Length) - this.offsetTray;
+                    heightNewCalculated = this.ActualHeight;
+                    widthNewCalculated = ConvertMillimetersToPixel(this.loadingUnitDetails.Width, heightNewCalculated, this.loadingUnitDetails.Length);
                 }
-                else
-                {
-                    this.canvas.Height = h;
-                    this.canvas.Width = w;
-                }
-                Console.WriteLine($"width: {this.canvas.Width} height: {this.canvas.Height}  HEIGHT({h}, {this.ActualHeight}) bool={widthB}");
+                this.canvas.Height = heightNewCalculated;
+                this.canvas.Width = widthNewCalculated;
             }
         }
 
