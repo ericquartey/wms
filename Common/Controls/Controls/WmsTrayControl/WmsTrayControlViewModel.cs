@@ -12,10 +12,14 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private ObservableCollection<WmsBaseCompartment> items;
+        private int left;
         private SolidColorBrush penBrush;
         private int penThickness;
-        private int trayHeight;
-        private int trayWidth;
+        private int top;
+        private double trayHeight;
+        private double trayWidth;
+
+        private int xxx = 800;
 
         #endregion Fields
 
@@ -36,6 +40,16 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public ObservableCollection<WmsBaseCompartment> Items { get { return this.items; } set { this.items = value; } }
+
+        public int Left
+        {
+            get { return this.left; }
+            set
+            {
+                this.left = value;
+                this.NotifyPropertyChanged(nameof(this.Left));
+            }
+        }
 
         public LoadingUnitDetails LoadingUnitProperty { get; set; }
 
@@ -59,7 +73,13 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public int TrayHeight
+        public int Top
+        {
+            get { return this.top; }
+            set { this.top = value; }
+        }
+
+        public double TrayHeight
         {
             get { return this.trayHeight; }
             set
@@ -69,7 +89,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public int TrayWidth
+        public double TrayWidth
         {
             get { return this.trayWidth; }
             set
@@ -85,14 +105,45 @@ namespace Ferretto.Common.Controls
 
         public void Resize(double widthTrayPixel, double heightTrayPixel)
         {
+            this.TrayHeight = xxx;// this.LoadingUnitProperty.Length;
+            this.TrayWidth = xxx;//this.LoadingUnitProperty.Width;
+
+            //double ratioW = widthTrayPixel / this.LoadingUnitProperty.Width;
+            //double ratioH = heightTrayPixel / this.LoadingUnitProperty.Length;
+
+            double ratio = this.LoadingUnitProperty.Width / this.LoadingUnitProperty.Length;
+
+            //PIXEL NEW
+            this.TrayWidth = widthTrayPixel;//this.LoadingUnitProperty.Width;// * ratio;
+            this.TrayHeight = ConvertMillimetersToPixel(this.LoadingUnitProperty.Length, this.TrayWidth, this.LoadingUnitProperty.Width);
+            //RATIO PIXEL NEW
+            double ratioW = this.TrayWidth / this.TrayHeight; //widthTrayPixel / this.LoadingUnitProperty.Width;
+            double ratioH = this.TrayHeight / this.TrayWidth; //heightTrayPixel / this.LoadingUnitProperty.Length;
+
+            //(this.LoadingUnitProperty.Length * this.TrayWidth) / widthTrayPixel;
+
+            //this.LoadingUnitProperty.Width = ConvertMillimetersToPixel(this.LoadingUnitProperty.Width, widthTrayPixel, this.LoadingUnitProperty.Width);
+
+            this.PenBrush = new SolidColorBrush(Colors.Black);
+            this.PenThickness = 10;
+
             if (this.items != null)
             {
                 foreach (var i in this.items)
                 {
-                    i.Width = ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, i.Tray.WidthMm);
-                    i.Height = ConvertMillimetersToPixel(i.OriginHeight, heightTrayPixel, i.Tray.HeightMm);
-                    i.Top = ConvertMillimetersToPixel(i.Top, heightTrayPixel, i.Tray.HeightMm);
-                    i.Left = ConvertMillimetersToPixel(i.Left, widthTrayPixel, i.Tray.WidthMm);
+                    //i.Width = i.OriginWidth * ratioW;
+                    //i.Height = i.OriginHeight * ratioH;
+                    //i.Top = i.OriginTop * ratioH;
+                    //i.Left = i.OriginLeft * ratioW;
+
+                    i.Width = //(this.TrayHeight * i.OriginWidth) / this.TrayWidth;
+                        ConvertMillimetersToPixel(i.OriginWidth, this.TrayWidth, this.LoadingUnitProperty.Width);
+                    i.Height = //(this.TrayHeight * i.OriginHeight) / this.TrayWidth;
+                        ConvertMillimetersToPixel(i.OriginHeight, this.TrayWidth, this.LoadingUnitProperty.Width);
+                    i.Top = //(this.TrayHeight * i.OriginTop) / this.TrayWidth;
+                        ConvertMillimetersToPixel(i.OriginTop, this.TrayWidth, this.LoadingUnitProperty.Width);
+                    i.Left = //(this.TrayHeight * i.OriginLeft) / this.TrayWidth;
+                        ConvertMillimetersToPixel(i.OriginLeft, this.TrayWidth, this.LoadingUnitProperty.Width);
                 }
             }
         }
@@ -101,6 +152,18 @@ namespace Ferretto.Common.Controls
         {
             this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
+
+            ///
+
+            this.TrayHeight = this.LoadingUnitProperty.Length;
+            this.TrayWidth = this.LoadingUnitProperty.Width;
+
+            this.Top = 0;
+            this.Left = 0;
+
+            this.PenBrush = new SolidColorBrush(Colors.Black);
+            this.PenThickness = 10;
+            ////
 
             loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
             loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
@@ -125,6 +188,10 @@ namespace Ferretto.Common.Controls
             return value;
         }
 
+        private void CalculateDimensionPixelOfTray(double widthPixel, double heightPixel, double widthMm, double heightMm)
+        {
+        }
+
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
         {
             this.TransformDataInput();
@@ -140,6 +207,8 @@ namespace Ferretto.Common.Controls
                     Tray = new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
                     OriginHeight = (int)compartment.Height,
                     OriginWidth = (int)compartment.Width,
+                    OriginLeft = (int)compartment.XPosition,
+                    OriginTop = (int)compartment.YPosition,
                     Width = (int)(compartment.Width * ratio),
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),

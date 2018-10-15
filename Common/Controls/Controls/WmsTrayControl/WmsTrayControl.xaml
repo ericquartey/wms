@@ -8,17 +8,48 @@
     <Border x:Name="CanvasBorder"
             BorderBrush="Black"
             BorderThickness="2">
+        <!--  BorderThickness="{Binding PenThickness, Mode=TwoWay}"  -->
         <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
-                                     Width="{Binding ElementName=CanvasItemsControl, Path=ActualWidth}"
-                                     Height="{Binding ElementName=CanvasItemsControl, Path=ActualHeight}"
-                                     ItemsSource="{Binding Items, Mode=TwoWay}">
+                                     Height="{Binding TrayHeight, Mode=TwoWay}"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     ItemsSource="{Binding Items, Mode=TwoWay}"
+                                     Background="SkyBlue">
+            <!--
+                Width="{Binding TrayWidth, Mode=TwoWay}"
+                Width="{Binding ElementName=CanvasItemsControl, Path=ActualWidth}"
+                Height="{Binding ElementName=CanvasItemsControl, Path=ActualHeight}"
+            -->
 
             <ctrls:WmsCanvasItemsControl.Resources />
             <ctrls:WmsCanvasItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
                                          
-                                         Margin="0,0,0,0" />
+                                         >
+                        <!--<ctrls:WmsTrayCanvas.Background>
+
+                            <DrawingBrush AlignmentX="Right"
+                                          AlignmentY="Top"
+                                          Stretch="None">
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <GeometryDrawing Brush="PaleGreen">
+                                            <GeometryDrawing.Geometry>
+                                                <RectangleGeometry Rect="-60,-60,120,120" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                        <GeometryDrawing Brush="Green">
+                                            <GeometryDrawing.Geometry>
+                                                <EllipseGeometry RadiusX="60.0"
+                                                                 RadiusY="60.0" />
+                                            </GeometryDrawing.Geometry>
+                                        </GeometryDrawing>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>>
+                        </ctrls:WmsTrayCanvas.Background-->
+                    </ctrls:WmsTrayCanvas>
                 </ItemsPanelTemplate>
             </ctrls:WmsCanvasItemsControl.ItemsPanel>
             <ctrls:WmsCanvasItemsControl.ItemContainerStyle>
