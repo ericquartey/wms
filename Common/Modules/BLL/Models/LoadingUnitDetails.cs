@@ -10,6 +10,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         #region Fields
 
         private readonly List<CompartmentDetails> compartments = new List<CompartmentDetails>();
+        private string info;
         private int length;
         private int width;
 
@@ -47,6 +48,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         public string Code { get; set; }
 
         public IEnumerable<CompartmentDetails> Compartments { get { return this.compartments.AsReadOnly(); } }
+        public string Info { get { return info; } set { this.SetProperty(ref this.info, value); } }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public int Length

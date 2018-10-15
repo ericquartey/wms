@@ -9,25 +9,30 @@
             BorderBrush="Black"
             BorderThickness="2">
         <!--  BorderThickness="{Binding PenThickness, Mode=TwoWay}"  -->
-        <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
-                                     Height="{Binding TrayHeight, Mode=TwoWay}"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Stretch"
-                                     ItemsSource="{Binding Items, Mode=TwoWay}"
-                                     Background="SkyBlue">
-            <!--
-                Width="{Binding TrayWidth, Mode=TwoWay}"
-                Width="{Binding ElementName=CanvasItemsControl, Path=ActualWidth}"
-                Height="{Binding ElementName=CanvasItemsControl, Path=ActualHeight}"
-            -->
+        <Grid>
+            <Label HorizontalAlignment="Right"
+                   Content="{Binding Info}" />
 
-            <ctrls:WmsCanvasItemsControl.Resources />
-            <ctrls:WmsCanvasItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
-                                         
-                                         >
-                        <!--<ctrls:WmsTrayCanvas.Background>
+            <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
+                                         Background="SkyBlue"
+                                         ItemsSource="{Binding Items, Mode=TwoWay}">
+
+                <!--
+                    Width="{Binding TrayWidth, Mode=TwoWay}"
+                    Height="{Binding TrayHeight, Mode=TwoWay}"
+                    Width="{Binding TrayWidth, Mode=TwoWay}"
+                    Width="{Binding ElementName=CanvasItemsControl, Path=ActualWidth}"
+                    Height="{Binding ElementName=CanvasItemsControl, Path=ActualHeight}"
+                -->
+
+                <ctrls:WmsCanvasItemsControl.Resources />
+                <ctrls:WmsCanvasItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top"
+                                             Background="Orange">
+                            <!--<ctrls:WmsTrayCanvas.Background>
 
                             <DrawingBrush AlignmentX="Right"
                                           AlignmentY="Top"
@@ -49,16 +54,17 @@
                                 </DrawingBrush.Drawing>
                             </DrawingBrush>>
                         </ctrls:WmsTrayCanvas.Background-->
-                    </ctrls:WmsTrayCanvas>
-                </ItemsPanelTemplate>
-            </ctrls:WmsCanvasItemsControl.ItemsPanel>
-            <ctrls:WmsCanvasItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
-                    <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
-                </Style>
-            </ctrls:WmsCanvasItemsControl.ItemContainerStyle>
-        </ctrls:WmsCanvasItemsControl>
+                        </ctrls:WmsTrayCanvas>
+                    </ItemsPanelTemplate>
+                </ctrls:WmsCanvasItemsControl.ItemsPanel>
+                <ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                        <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
+                        <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
+                    </Style>
+                </ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+            </ctrls:WmsCanvasItemsControl>
+        </Grid>
     </Border>
 
 </UserControl>
