@@ -71,6 +71,8 @@ namespace Ferretto.Common.Modules.BLL.Services
 
             return context.Machines
                .AsNoTracking()
+               .Include(m => m.Aisle)
+               .Include(m => m.MachineType)
                .Where(actualWhereFunc)
                .Select(m => new Machine(m.Id)
                {

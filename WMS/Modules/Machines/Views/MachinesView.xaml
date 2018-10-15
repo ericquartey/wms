@@ -87,19 +87,19 @@
                     <dxg:GridColumn Width="100*"
                                     FieldName="MachineTypeDescription" />
                     <dxg:GridColumn Width="400*"
-                                    FieldName="Description" />
+                                    FieldName="AisleName" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="ItemCategoryDescription" />
+                                    FieldName="BuildDate" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="AbcClassDescription" />
+                                    FieldName="CustomerName" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="TotalStock" />
+                                    FieldName="LastPowerOn" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="TotalReservedForPick" />
+                                    FieldName="MovedLoadingUnitsCount" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="TotalReservedToStore" />
+                                    FieldName="RegistrationNumber" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="TotalAvailable" />
+                                    FieldName="TotalMaxWeight" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>
