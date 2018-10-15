@@ -61,6 +61,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="ViewModels\VerticalAxisCalibrationViewModel.cs" />
     <Compile Include="Views\LowSpeedMovementsTestView.xaml.cs">
       <DependentUpon>LowSpeedMovementsTestView.xaml</DependentUpon>

@@ -91,15 +91,15 @@
             <ScrollViewer VerticalScrollBarVisibility="Hidden">
                 <StackPanel>
                     <Button Height="60"
-                            Click="OpenVerifyCircuitIntegrityViewButtonMethod"
+                            Command="{Binding VerifyCircuitIntegrityButtonCommand}"
                             Content="{x:Static res:InstallationApp.VerifyCircuitIntegrity}"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button Height="60"
-                            Click="OpenLowSpeedMovementsTestViewButtonMethod"
+                            Command="{Binding LowSpeedMovementsTestButtonCommand}"
                             Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button Height="60"
-                            Click="OpenVerticalAxisCalibrationViewButtonMethod"
+                            Command="{Binding VerticalAxisCalibrationButtonCommand}"
                             Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
                             Style="{StaticResource StandardButtonStyle}" />
                     <Button x:Name="OpenVerifyPanelPositionPageButton"
@@ -129,6 +129,7 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="730"
-                        Height="610" />
+                        Height="610"
+                        Content="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

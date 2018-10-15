@@ -7,10 +7,6 @@
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:vm="clr-namespace:Ferretto.VW.InstallationApp.ViewModels"
              mc:Ignorable="d">
-    <!--<UserControl.Resources>
-        <vm:VerticalAxisCalibrationViewModel x:Key="VerticalAxisCalibrationViewModel" />
-    </UserControl.Resources>
-    Text="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={StaticResource VerticalAxisCalibrationViewModel}}" />-->
     <DockPanel>
         <Label HorizontalAlignment="Center"
                Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
@@ -49,6 +45,7 @@
             <Button Name="StartButton"
                     Grid.Row="1"
                     Grid.Column="1"
+                    Command="{Binding StartButtonCommand}"
                     Content="{x:Static res:InstallationApp.Start}"
                     IsEnabled="{Binding EnableStartButton, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource StandardButtonStyle}" />
