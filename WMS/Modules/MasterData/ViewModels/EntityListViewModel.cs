@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel
+    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel, IEntityListViewModel
         where TModel : IBusinessObject<TId>
     {
         #region Fields
