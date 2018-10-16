@@ -36,7 +36,7 @@ namespace Ferretto.Common.Utils.Menu
             const string bgColor = "CommonSecondaryDark";
 
             this.menu.Items.Add(
-                new MainMenuItem(Navigation.Machine_Status, bgColor, Icons.MachineStatus, string.Empty, string.Empty)
+                new MainMenuItem(Navigation.Machine_Status, bgColor, Icons.MachineStatus, nameof(Modules.Machines), Modules.Machines.MACHINESANDDETAILS)
                 );
 
             this.menu.Items.Add(
@@ -44,10 +44,10 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.Items, bgColor, nameof(Navigation.Items), nameof(Modules.MasterData), Modules.MasterData.ITEMSANDDETAILS),
-                        new MainMenuItem(Navigation.Cells, bgColor, nameof(Navigation.Cells),  nameof(Modules.MasterData), Modules.MasterData.CELLSANDDETAILS),
-                        new MainMenuItem(Navigation.LoadingUnits, bgColor, nameof(Navigation.LoadingUnits), nameof(Modules.MasterData), Modules.MasterData.LOADINGUNITSANDDETAILS),
-                        new MainMenuItem(Navigation.Compartments, bgColor,  nameof(Navigation.Compartments), nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTSANDDETAILS)
+                        new MainMenuItem(Navigation.Items, bgColor, nameof(Navigation.Items), nameof(Modules.MasterData), Modules.MasterData.ITEMS),
+                        new MainMenuItem(Navigation.Cells, bgColor, nameof(Navigation.Cells),  nameof(Modules.MasterData), Modules.MasterData.CELLS),
+                        new MainMenuItem(Navigation.LoadingUnits, bgColor, nameof(Navigation.LoadingUnits), nameof(Modules.MasterData), Modules.MasterData.LOADINGUNITS),
+                        new MainMenuItem(Navigation.Compartments, bgColor,  nameof(Navigation.Compartments), nameof(Modules.MasterData), Modules.MasterData.COMPARTMENTS)
                     }
                 }
             );

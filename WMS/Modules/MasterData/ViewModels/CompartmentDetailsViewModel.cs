@@ -14,7 +14,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private CompartmentDetails compartment;
-        private object itemSelectionChangedSubscription;
+        private object modelSelectionChangedSubscription;
         private ICommand saveCommand;
 
         #endregion Fields
@@ -55,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Compartment, int>>(this.itemSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<Compartment, int>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Compartment = this.compartmentProvider.GetById(this.Compartment.Id);
 
-                this.EventService.Invoke(new ItemChangedEvent<CompartmentDetails, int>(this.Compartment.Id));
+                this.EventService.Invoke(new ModelChangedEvent<CompartmentDetails, int>(this.Compartment.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
@@ -75,7 +75,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Compartment, int>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Compartment, int>>(
                 eventArgs =>
                 {
                     if (eventArgs.ModelIdHasValue)

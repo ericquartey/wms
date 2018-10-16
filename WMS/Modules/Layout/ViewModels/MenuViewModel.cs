@@ -9,10 +9,22 @@ namespace Ferretto.WMS.Modules.Layout
 {
     public class MenuViewModel : BaseNavigationViewModel
     {
+        #region Constructors
+
         public MenuViewModel()
         {
             this.Inizialize();
         }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ObservableCollection<NavMenuItem> Items { get; set; }
+
+        #endregion Properties
+
+        #region Methods
 
         private void Inizialize()
         {
@@ -24,9 +36,9 @@ namespace Ferretto.WMS.Modules.Layout
             }
 
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            navigationService.Appear(nameof(MasterData), MasterData.ITEMSANDDETAILS);
+            navigationService.Appear(nameof(MasterData), MasterData.ITEMS);
         }
 
-        public ObservableCollection<NavMenuItem> Items { get; set; }
+        #endregion Methods
     }
 }
