@@ -56,7 +56,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 case 0:
                     {
                         this.driver.SetVerticalAxisOrigin(Convert.ToByte(this.TxtBoxP1.Text), Convert.ToSingle(this.TxtBoxP2.Text), Convert.ToSingle(this.TxtBoxP3.Text),
-                                                          Convert.ToSingle(this.TxtBoxP4.Text), Convert.ToSingle(this.TxtBoxP5.Text), Convert.ToSingle(this.TxtBoxP6.Text));
+                                                          Convert.ToSingle(this.TxtBoxP4.Text));
                         break;
                     }
                 case 1:

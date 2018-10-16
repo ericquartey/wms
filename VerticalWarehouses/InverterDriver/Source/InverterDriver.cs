@@ -4,12 +4,14 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Ferretto.VW.Utils;
+using NLog;
 
 namespace Ferretto.VW.InverterDriver
 {
     /// <summary>
-    /// Inverter manager class.
-    /// This class manages a socket to comunicate with a device via TCP/IP protocol. The socket in the class acts as a client in an client/server architecture
+    /// Inverter driver Manager class.
+    /// This class manages a socket to communicate with the inverter via TCP/IP protocol.
+    /// This class has an internal thread to manage the basic automation for the inverter.
     /// (see System.Net.Sockets.Socket class for the implementation details).
     /// </summary>
     public class InverterDriver : IDriverBase, IDriver, IDisposable
@@ -24,6 +26,7 @@ namespace Ferretto.VW.InverterDriver
         public const int TIME_OUT = 150;
 
         private static readonly object Lock = new object();
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly HardwareInverterStatus hwInverterState;
         private readonly InverterDriverState state;
         private AutoResetEvent ackTerminateEvent;
@@ -54,6 +57,8 @@ namespace Ferretto.VW.InverterDriver
             this.ipAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
             this.portAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
             this.DataBufferCommand = new byte[SIZEMAX_DATABUFFER];
+
+            logger.Log(LogLevel.Info, String.Format("InverterDriver in a new incarnation..."));
         }
 
         #endregion Constructors
@@ -123,40 +128,28 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus GetDrawerWeight(float ic)
         {
-            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetDrawerWeight);
+            logger.Log(LogLevel.Debug, String.Format("> Execute GetDrawerWeight operation."));
 
-            var convertionBuffer = new byte[sizeof(float)];
-            convertionBuffer = BitConverter.GetBytes(ic);
-            convertionBuffer.CopyTo(this.DataBufferCommand, 3);
-            /// <summary>
-            ///  set the byte of command to be executed
-            /// </summary>
-            lock (Lock)
-            {
-                this.DataBufferCommand[1] = 0x01;
-            }
+            // Add your implementation code here
+
             return InverterDriverExitStatus.Success;
         }
 
         public InverterDriverExitStatus GetIOEmergencyState()
         {
-            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetIOEmergencyState);
+            logger.Log(LogLevel.Debug, String.Format("> Execute GetIOEmergencyState operation."));
 
-            lock (Lock)
-            {
-                this.DataBufferCommand[1] = 0x01;
-            }
+            // Add your implementation code here
+
             return InverterDriverExitStatus.Success;
         }
 
         public InverterDriverExitStatus GetIOState()
         {
-            this.DataBufferCommand[2] = Convert.ToByte(CommandId.GetIOState);
+            logger.Log(LogLevel.Debug, String.Format("> Execute GetIOState operation."));
 
-            lock (Lock)
-            {
-                this.DataBufferCommand[1] = 0x01;
-            }
+            // Add your implementation code here
+
             return InverterDriverExitStatus.Success;
         }
 
@@ -191,6 +184,8 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public bool Initialize()
         {
+            logger.Log(LogLevel.Info, String.Format("InverterDriver initialization"));
+
             this.requestList = new RequestList();
             this.executeRequestOnRunning = false;
 
@@ -221,6 +216,8 @@ namespace Ferretto.VW.InverterDriver
         public InverterDriverExitStatus MoveAlongHorizontalAxisWithProfile(float v1, float a, short s1, short s2,
             float v2, float a1, short s3, short s4, float v3, float a2, short s5, short s6, float a3, short s7)
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute MoveAlongHorizontalAxisWithProfile operation."));
+
             // Add your implementation code here
 
             return InverterDriverExitStatus.Success;
@@ -237,6 +234,8 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus MoveAlongVerticalAxisToPoint(short x, float vMax, float acc, float dec, float w)
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute MoveAlongVerticalAxisToPoint operation."));
+
             // Build the request list to perform the [MoveAlongVerticalAxisToPoint] operation
             this.requestList.build_For_MoveAlongVerticalAxisToPoint_Operation(x, vMax, acc, dec, w);
 
@@ -311,6 +310,8 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus RunDrawerWeightRoutine(short d, float w, float a, byte e)
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute RunDrawerWeightRoutine operation."));
+
             // Add your implementation code here
 
             return InverterDriverExitStatus.Success;
@@ -322,6 +323,8 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus RunShutter(byte m)
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute RunShutter operation."));
+
             // Add your implementation code here
 
             return InverterDriverExitStatus.Success;
@@ -333,6 +336,8 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus Set(int i, byte value)
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute Set operation."));
+
             // Add your implementation code here
 
             return InverterDriverExitStatus.Success;
@@ -344,6 +349,8 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus SetTypeOfMotorMovement(byte m)
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute SetTypeOfMotorMovement operation."));
+
             // Add your implementation code here
 
             return InverterDriverExitStatus.Success;
@@ -359,6 +366,8 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus SetVerticalAxisOrigin(byte mode, float vSearch, float vCam0, float offset)
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute SetVerticalAxisOrigin operation."));
+
             // Build the request list to perform the [SetVerticalAxisOrigin] operation
             this.requestList.build_For_SetVerticalAxisOrigin_Operation(mode, vSearch, vCam0, offset);
 
@@ -373,6 +382,8 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public InverterDriverExitStatus Stop()
         {
+            logger.Log(LogLevel.Debug, String.Format("> Execute Stop operation."));
+
             // Add your implementation code here
 
             return InverterDriverExitStatus.Success;
@@ -387,6 +398,8 @@ namespace Ferretto.VW.InverterDriver
             this.destroyThread();
             this.DataBufferCommand = null;
             this.disconnect_from_inverter();
+
+            logger.Log(LogLevel.Info, String.Format("Release InverterDriver object."));
         }
 
         /// <summary>
@@ -414,6 +427,7 @@ namespace Ferretto.VW.InverterDriver
 
             if (this.ipAddressToConnect == "" || this.portAddressToConnect <= 0)
             {
+                logger.Log(LogLevel.Error, String.Format("Invalid IP address [IP:{0}, port:{1}]", this.ipAddressToConnect, this.portAddressToConnect));
                 this.error = InverterDriverErrors.IOError;
                 Error?.Invoke(this, new ErrorEventArgs(this.error));
                 return false;
@@ -438,16 +452,19 @@ namespace Ferretto.VW.InverterDriver
                 this.sckClient.Connect(ipEnd);
                 if (this.sckClient.Connected)
                 {
+                    logger.Log(LogLevel.Info, String.Format("Connection to inverter [IP:{0}] established", this.ipAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(true));
                     this.waitForData();
                 }
                 else
                 {
+                    logger.Log(LogLevel.Error, String.Format("Unable to connect to inverter [IP:{0}]", this.ipAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(false));
                 }
             }
-            catch (SocketException)
+            catch (SocketException exc)
             {
+                logger.Log(LogLevel.Error, String.Format("Connection to inverter failed [error message: {0}]", exc.Message));
                 this.error = InverterDriverErrors.GenericError;
                 Error?.Invoke(this, new ErrorEventArgs(this.error));
                 bSuccess = false;
@@ -461,6 +478,8 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         private void createThread()
         {
+            logger.Log(LogLevel.Info, String.Format("Create main Working thread."));
+
             this.terminateEvent = new AutoResetEvent(false);
             this.ackTerminateEvent = new AutoResetEvent(false);
             this.mainAutomationThread = new Thread(this.mainWorkingThread);
@@ -500,6 +519,8 @@ namespace Ferretto.VW.InverterDriver
                 this.ackTerminateEvent.Close();
             }
             this.ackTerminateEvent = null;
+
+            logger.Log(LogLevel.Info, String.Format("Release main Working thread."));
         }
 
         private void disconnect_from_inverter()
@@ -544,12 +565,14 @@ namespace Ferretto.VW.InverterDriver
 
                     case MAKEREQUEST:
                         {
-                            // event for execute a new request belonging to the list, has been signalled (it is fired at the start of execution operation
+                            // the event, for execute a new request belonging to the list, has been signalled (it is fired at the start of execution operation
                             // and when telegram messages are received from the inverter via socket)
 
                             // 1. read current request from the list (select the first) and
                             // 2. update the internal variable related to the <current_request_to_perform>
                             this.currentRequest = this.requestList[0];
+
+                            logger.Log(LogLevel.Debug, String.Format("Execute request => TypeOf:{0}, ParamID:{1}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString()));
 
                             // 3. build the telegram according to data of request to send to inverter
                             this.send_request_to_inverter();
@@ -567,6 +590,7 @@ namespace Ferretto.VW.InverterDriver
             }
 
             this.ackTerminateEvent.Set();
+            logger.Log(LogLevel.Debug, String.Format("Exit from main Working thread."));
             return;
         }
 
@@ -623,8 +647,9 @@ namespace Ferretto.VW.InverterDriver
                     }
                 }
             }
-            catch (SocketException)
+            catch (SocketException exc)
             {
+                logger.Log(LogLevel.Error, String.Format("Send telegram to inverter failed [error Message: {0}]", exc.Message));
                 // TODO: Warning? Handle the exception?
             }
         }
@@ -647,8 +672,9 @@ namespace Ferretto.VW.InverterDriver
                     theSocPkt
                 );
             }
-            catch (SocketException)
+            catch (SocketException exc)
             {
+                logger.Log(LogLevel.Error, String.Format("Asyncronously receive message invoke failed [error Message: {0}]", exc.Message));
                 // TODO: Warning? Handle the exception?
             }
         }
