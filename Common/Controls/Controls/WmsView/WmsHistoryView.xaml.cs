@@ -18,6 +18,7 @@ namespace Ferretto.Common.Controls
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
         private readonly Stack<INavigableView> registeredViews = new Stack<INavigableView>();
         private ActionBar actionBarHsitoryView;
+        private INavigableView viewToAdd;
 
         #endregion Fields
 
@@ -26,6 +27,11 @@ namespace Ferretto.Common.Controls
         public WmsHistoryView()
         {
             this.InitializeComponent();
+        }
+
+        public WmsHistoryView(INavigableView view) : this()
+        {
+            this.viewToAdd = view;
         }
 
         #endregion Constructors
@@ -48,6 +54,13 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public void AddView(INavigableView registeredView)
+        {
+            this.registeredViews.Push(registeredView);
+            this.Content = registeredView;
+            this.CheckBackVisibility();
+        }
+
         public void Appear(string moduleName, string viewModelName, object data = null)
         {
             if (string.IsNullOrEmpty(viewModelName))
@@ -64,9 +77,7 @@ namespace Ferretto.Common.Controls
             }
             var instanceModuleViewName = $"{moduleViewName}.{id}";
             var registeredView = this.navigationService.GetView(instanceModuleViewName, data);
-            this.registeredViews.Push(registeredView);
-            this.Content = registeredView;
-            this.CheckBackVisibility();
+            this.AddView(registeredView);
         }
 
         public override void OnApplyTemplate()
@@ -82,6 +93,11 @@ namespace Ferretto.Common.Controls
             {
                 var data = this.GetParentWmsViewData();
                 this.Appear(this.StartModuleName, this.StartViewName, data);
+            }
+
+            if (this.viewToAdd != null)
+            {
+                this.AddView(this.viewToAdd);
             }
         }
 
