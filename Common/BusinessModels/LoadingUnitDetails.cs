@@ -137,7 +137,7 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                Console.WriteLine("ERORRE ADD NEW SCOMPARTMENT: è sovrapposto o fuori dalla finestra.");
+                System.Diagnostics.Debug.WriteLine("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
             }
         }
 
