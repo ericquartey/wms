@@ -41,14 +41,7 @@
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
-                <wms:ActionBarItem Content="{x:Static res:General.Add}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
-                                   GlyphSize="Custom" />
+
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
@@ -64,24 +57,33 @@
                                 ItemType="{x:Type models:Machine}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
-                <wms:WmsGridControl.View>
-                    <dxg:TableView AllowEditing="False"
-                                   AllowGrouping="False"
-                                   AllowMoveColumnToDropArea="False"
-                                   NavigationStyle="Row"
-                                   SearchPanelHorizontalAlignment="Right"
-                                   ShowFilterPanelMode="ShowAlways"
-                                   ShowGroupPanel="False"
-                                   ShowIndicator="False"
-                                   ShowSearchPanelMode="Always">
+
+                <dxg:GridControl.View>
+                    <dxg:CardView Name="view"
+                                  AllowCardResizing="false"
+                                  AllowEditing="False"
+                                  CardHeaderBinding="{Binding Path=Nickname}"
+                                  CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
+                                  CardTemplate="{StaticResource cardTemplate}"
+                                  FixedSize="250"
+                                  MinFixedSize="100"
+                                  NavigationStyle="Row"
+                                  PrintAutoCardWidth="False"
+                                  SearchPanelHorizontalAlignment="Right"
+                                  SeparatorThickness="0"
+                                  ShowCardExpandButton="False"
+                                  ShowColumnHeaders="False"
+                                  ShowGroupPanel="False"
+                                  ShowGroupedColumns="False"
+                                  ShowSearchPanelMode="Always"
+                                  ShowSelectionRectangle="False">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
                                 <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.ViewDetailsCommand}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
-                    </dxg:TableView>
-
-                </wms:WmsGridControl.View>
+                    </dxg:CardView>
+                </dxg:GridControl.View>
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
@@ -89,17 +91,9 @@
                     <dxg:GridColumn Width="400*"
                                     FieldName="AisleName" />
                     <dxg:GridColumn Width="100*"
-                                    FieldName="BuildDate" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="CustomerName" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="LastPowerOn" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="MovedLoadingUnitsCount" />
+                                    FieldName="Nickname" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="RegistrationNumber" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="TotalMaxWeight" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>
