@@ -222,6 +222,11 @@
     <Compile Include="Configurations\MissionTypeConfiguration.cs" />
     <Compile Include="Configurations\PackageTypeConfiguration.cs" />
     <Compile Include="DatabaseContext.cs" />
+    <Compile Include="Migrations\20181016140443_Initial.cs" />
+    <Compile Include="Migrations\20181016140443_Initial.designer.cs">
+      <DependentUpon>20181016140443_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\DatabaseContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
