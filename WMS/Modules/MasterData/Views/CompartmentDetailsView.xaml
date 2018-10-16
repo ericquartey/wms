@@ -86,8 +86,7 @@
                                           Margin="0,0,20,0"
                                           FieldName="CompartmentTypeId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=CompartmentTypeChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=CompartmentTypeChoices}" />
                             <wms:TextBox Grid.Row="2"
                                          Grid.Column="1"
                                          FieldName="ItemPairingDescription"
@@ -96,8 +95,7 @@
                                           Margin="0,0,20,0"
                                           FieldName="CompartmentStatusId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=CompartmentStatusChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=CompartmentStatusChoices}" />
                         </Grid>
                     </GroupBox>
 
@@ -166,8 +164,7 @@
                                           Margin="0,0,20,0"
                                           FieldName="MaterialStatusId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=MaterialStatusChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=MaterialStatusChoices}" />
                             <wms:SpinEdit Grid.Row="2"
                                           Grid.Column="1"
                                           FieldName="FifoTime"
@@ -181,8 +178,7 @@
                                           Grid.Column="1"
                                           FieldName="PackageTypeId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=PackageTypeChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=PackageTypeChoices}" />
                             <wms:TextBox Grid.Row="4"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
@@ -257,7 +253,7 @@
                               Header="{x:Static res:MasterData.CompartmentPosition}">
                         <Image HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
-                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/images/udc_png" />
+                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/images/udc_compartment.png" />
                     </GroupBox>
 
                     <StackPanel Grid.Row="0"

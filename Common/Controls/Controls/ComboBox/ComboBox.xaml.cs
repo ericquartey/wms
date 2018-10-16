@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls
             nameof(SelectedText), typeof(string), typeof(ComboBox), new PropertyMetadata(default(string)));
 
         public static readonly DependencyProperty ValueMemberProperty = DependencyProperty.Register(
-            nameof(ValueMember), typeof(string), typeof(ComboBox), new PropertyMetadata("Value"));
+            nameof(ValueMember), typeof(string), typeof(ComboBox), new PropertyMetadata("Id"));
 
         #endregion Fields
 

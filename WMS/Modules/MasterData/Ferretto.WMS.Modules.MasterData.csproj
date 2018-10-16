@@ -183,33 +183,20 @@
     <Compile Include="MasterDataModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
-    <Compile Include="ViewModels\CellsAndDetailsViewModel.cs" />
-    <Compile Include="ViewModels\CompartmentsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
-    <Compile Include="ViewModels\ItemsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\CellsViewModel.cs" />
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitDetailsViewModel.cs" />
-    <Compile Include="ViewModels\LoadingUnitsAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitsViewModel.cs" />
     <Compile Include="Views\CompartmentDetailsView.xaml.cs">
       <DependentUpon>CompartmentDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CellsAndDetailsView.xaml.cs">
-      <DependentUpon>CellsAndDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CompartmentsAndDetailsView.xaml.cs">
-      <DependentUpon>CompartmentsAndDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CompartmentsView.xaml.cs">
       <DependentUpon>CompartmentsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ItemDetailsView.xaml.cs">
       <DependentUpon>ItemDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ItemsAndDetailsView.xaml.cs">
-      <DependentUpon>ItemsAndDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CellsView.xaml.cs">
       <DependentUpon>CellsView.xaml</DependentUpon>
@@ -219,9 +206,6 @@
     </Compile>
     <Compile Include="Views\LoadingUnitDetailsView.xaml.cs">
       <DependentUpon>LoadingUnitDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LoadingUnitsAndDetailsView.xaml.cs">
-      <DependentUpon>LoadingUnitsAndDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoadingUnitsView.xaml.cs">
       <DependentUpon>LoadingUnitsView.xaml</DependentUpon>
@@ -238,23 +222,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CellsAndDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CompartmentsAndDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\CompartmentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ItemDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ItemsAndDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -267,10 +239,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoadingUnitDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\LoadingUnitsAndDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
