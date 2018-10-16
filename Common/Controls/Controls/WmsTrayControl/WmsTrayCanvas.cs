@@ -21,7 +21,14 @@ namespace Ferretto.Common.Controls
             base.MeasureOverride(constraint);
 
             var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
-            var parentWmsCanvasItemControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsCanvasItemsControl) as WmsCanvasItemsControl;
+
+            if (parentWmsTrayControl != null)
+            {
+                if (this.DataContext is WmsTrayControlViewModel viewModel && constraint.Width > 0 && constraint.Height > 0)
+                {
+                    viewModel.Resize(constraint.Width, constraint.Height);
+                }
+            }
 
             return new Size(constraint.Width, constraint.Height);
         }

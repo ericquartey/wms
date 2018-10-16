@@ -13,11 +13,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly int offsetTray = 10;
-
-        //private Binding bindingWidth, bindingHeight;
         private ObservableCollection<WmsBaseCompartment> items;
-
         private int left;
         private SolidColorBrush penBrush;
         private int penThickness;
@@ -107,63 +103,16 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Resize(WmsCanvasItemsControl wmsTrayControl, double widthTrayPixel, double heightTrayPixel)
+        public void Resize(double widthTrayPixel, double heightTrayPixel)
         {
-            //PIXEL NEW
-            //this.TrayWidth = widthTrayPixel - this.offsetTray;
-            //this.TrayHeight = ConvertMillimetersToPixel(this.LoadingUnitProperty.Length, this.TrayWidth, this.LoadingUnitProperty.Width);
-
-            //var bindingWidth = BindingOperations.GetBinding(wmsTrayControl, WmsCanvasItemsControl.WidthProperty);
-            //var bindingHeight = BindingOperations.GetBinding(wmsTrayControl, WmsCanvasItemsControl.HeightProperty);
-
-            //if (this.TrayHeight > heightTrayPixel)
-            //{
-            //    this.TrayHeight = heightTrayPixel - this.offsetTray;
-            //    this.TrayWidth = ConvertMillimetersToPixel(this.LoadingUnitProperty.Width, this.TrayHeight, this.LoadingUnitProperty.Length) - this.offsetTray;
-
-            //    if (bindingHeight.Mode.Equals(BindingMode.TwoWay))
-            //    {
-            //    var myBinding = new Binding();
-            //    myBinding.Path = new PropertyPath("TrayHeight");
-            //    myBinding.Mode = BindingMode.OneWayToSource;
-            //    myBinding.UpdateSourceTrigger = UpdateSourceTrigger.Default; BindingOperations.SetBinding(wmsTrayControl, WmsCanvasItemsControl.HeightProperty, myBinding);
-
-            //    myBinding = new Binding();
-            //    myBinding.Path = new PropertyPath("TrayWidth");
-            //    myBinding.Mode = BindingMode.TwoWay;
-            //    myBinding.UpdateSourceTrigger = UpdateSourceTrigger.Default;
-            //    BindingOperations.SetBinding(wmsTrayControl, WmsCanvasItemsControl.WidthProperty, myBinding);
-            //    }
-            //}
-            //else
-            //{
-            //    if (bindingWidth.Mode.Equals(BindingMode.TwoWay))
-            //    {
-            //    var myBinding = new Binding();
-            //    myBinding.Path = new PropertyPath("TrayHeight");
-            //    myBinding.Mode = BindingMode.TwoWay;
-            //    myBinding.UpdateSourceTrigger = UpdateSourceTrigger.Default;
-            //    BindingOperations.SetBinding(wmsTrayControl, WmsCanvasItemsControl.HeightProperty, myBinding);
-
-            //    myBinding = new Binding();
-            //    myBinding.Path = new PropertyPath("TrayWidth");
-            //    myBinding.Mode = BindingMode.OneWayToSource;
-            //    myBinding.UpdateSourceTrigger = UpdateSourceTrigger.Default;
-            //    BindingOperations.SetBinding(wmsTrayControl, WmsCanvasItemsControl.WidthProperty, myBinding);
-            //    }
-            //}
-
-            this.PenBrush = new SolidColorBrush(Colors.Blue);
-            this.PenThickness = 10;
-
             if (this.items != null)
             {
                 foreach (var i in this.items)
                 {
-                    i.Width = ConvertMillimetersToPixel(i.OriginWidth, this.TrayWidth, this.LoadingUnitProperty.Width);
-                    i.Height = ConvertMillimetersToPixel(i.OriginHeight, this.TrayWidth, this.LoadingUnitProperty.Width);
-                    i.Top = ConvertMillimetersToPixel(i.OriginTop, this.TrayWidth, this.LoadingUnitProperty.Width);
-                    i.Left = ConvertMillimetersToPixel(i.OriginLeft, this.TrayWidth, this.LoadingUnitProperty.Width);
+                    i.Width = ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Height = ConvertMillimetersToPixel(i.OriginHeight, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Top = ConvertMillimetersToPixel(i.OriginTop, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Left = ConvertMillimetersToPixel(i.OriginLeft, widthTrayPixel, this.LoadingUnitProperty.Width);
                 }
             }
         }

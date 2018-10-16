@@ -15,7 +15,6 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private CompartmentDetails compartmentInput;
         private ICommand createNewCompartmentCommand;
-
         private LoadingUnitDetails loadingUnitDetails;
 
         #endregion Fields
@@ -35,12 +34,6 @@ namespace Ferretto.WMS.Modules.Compartment
         }
 
         #endregion Constructors
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
 
         #region Properties
 
