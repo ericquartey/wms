@@ -76,11 +76,17 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
-        public void AddCompartment(CompartmentDetails compartmentDetails)
+        public bool AddCompartment(CompartmentDetails compartmentDetails)
         {
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("ERORRE ADD NEW SCOMPARTMENT: è sovrapposto o fuori dalla finestra.");
+                return false;
             }
         }
 
@@ -98,8 +104,29 @@ namespace Ferretto.Common.BusinessModels
 
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
-            //TODO: add logic if possible add new compartment
-            //      return FALSE if exit from tray or overlaps other compartment
+            //CHECK: greater of origin
+            if (compartmentDetails.XPosition < 0 || compartmentDetails.YPosition < 0)
+            {
+                return false;
+            }
+            //CHECK: exit from window
+            var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
+            var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
+            if (xPositionFinal > this.Width || yPositionFinal > this.Length)
+            {
+                return false;
+            }
+            //
+            //CHECK: collision among compartments
+            //       return TRUE if there are any collisions
+            for (int i = 0; i < this.compartments.Count; i++)
+            {
+                bool areCollisions = this.CheckCollision(compartmentDetails, this.compartments[i]);
+                if (areCollisions)
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -110,6 +137,40 @@ namespace Ferretto.Common.BusinessModels
             {
                 handler(this, e);
             }
+        }
+
+        private bool CheckCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
+        {
+            var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
+            var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
+
+            var xBPositionFinal = compartmentB.XPosition + compartmentB.Width;
+            var yBPositionFinal = compartmentB.YPosition + compartmentB.Height;
+            //A: Top-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //B: Top-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //C: Bottom-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            //D: Bottom-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion Methods

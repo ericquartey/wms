@@ -147,6 +147,7 @@ namespace Ferretto.Common.Controls
 
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
         {
+            this.items = new ObservableCollection<WmsBaseCompartment>();
             this.TransformDataInput();
             this.NotifyPropertyChanged(nameof(this.Items));
         }
