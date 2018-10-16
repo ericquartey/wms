@@ -5,7 +5,6 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
-using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -65,8 +64,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     if (this.loadingUnit != null)
                     {
-                        var viewName = MvvmNaming.GetViewNameFromViewModelName(nameof(LoadingUnitDetailsViewModel));
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<CompartmentDetails, int>(viewName, this.loadingUnit.Id).Single();
+                        this.CompartmentsDataSource = this.dataSourceService.GetAll<CompartmentDetails, int>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id).Single();
                     }
                     else
                     {
