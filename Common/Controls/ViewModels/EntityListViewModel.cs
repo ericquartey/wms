@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -30,8 +29,7 @@ namespace Ferretto.Common.Controls
         protected EntityListViewModel()
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            var viewName = MvvmNaming.GetViewNameFromViewModelName(this.GetType().Name);
-            this.dataSources = dataSourceService.GetAll<TModel, TId>(viewName);
+            this.dataSources = dataSourceService.GetAll<TModel, TId>(this.GetType().Name);
 
             this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
             {

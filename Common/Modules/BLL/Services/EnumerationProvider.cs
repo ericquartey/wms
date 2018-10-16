@@ -1,4 +1,6 @@
-﻿using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +79,35 @@ namespace Ferretto.Common.Modules.BLL.Services
         public IQueryable<Enumeration<int>> GetAllPackageTypes()
         {
             return this.dataContext.PackageTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+        }
+
+        public IQueryable<Enumeration<int>> GetCellsByAisleId(int aisleId)
+        {
+            return this.dataContext.Cells
+                .AsNoTracking()
+                .Include(c => c.Aisle)
+                .ThenInclude(a => a.Area)
+                .Where(c => c.AisleId == aisleId)
+                .OrderBy(c => c.CellNumber)
+                .Select(c => new Enumeration<int>(
+                    c.Id,
+                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
+                );
+        }
+
+        public IQueryable<Enumeration<int>> GetCellsByAreaId(int areaId)
+        {
+            return this.dataContext.Cells
+                .AsNoTracking()
+                .Include(c => c.Aisle)
+                .ThenInclude(a => a.Area)
+                .Where(c => c.Aisle.AreaId == areaId)
+                .OrderBy(c => c.Aisle.Name)
+                .ThenBy(c => c.CellNumber)
+                .Select(c => new Enumeration<int>(
+                    c.Id,
+                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
+                );
         }
 
         #endregion Methods
