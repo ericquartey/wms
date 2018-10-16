@@ -109,10 +109,10 @@ namespace Ferretto.Common.Controls
             {
                 foreach (var i in this.items)
                 {
-                    i.Width = ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Height = ConvertMillimetersToPixel(i.OriginHeight, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Top = ConvertMillimetersToPixel(i.OriginTop, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Left = ConvertMillimetersToPixel(i.OriginLeft, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Width = GraphicUtils.ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Height = GraphicUtils.ConvertMillimetersToPixel(i.OriginHeight, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Top = GraphicUtils.ConvertMillimetersToPixel(i.OriginTop, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Left = GraphicUtils.ConvertMillimetersToPixel(i.OriginLeft, widthTrayPixel, this.LoadingUnitProperty.Width);
                 }
             }
         }
@@ -139,15 +139,6 @@ namespace Ferretto.Common.Controls
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-
-        private static double ConvertMillimetersToPixel(double value, double pixel, double mm, int offsetMM = 0)
-        {
-            if (mm > 0)
-            {
-                return (pixel * value) / mm + offsetMM;
-            }
-            return value;
         }
 
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)

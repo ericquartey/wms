@@ -27,15 +27,6 @@ namespace Ferretto.Common.Controls
             this.Loaded += this.WmsCanvasItemsControl_Loaded;
         }
 
-        private static double ConvertMillimetersToPixel(double value, double pixel, double mm, int offsetMM = 0)
-        {
-            if (mm > 0)
-            {
-                return (pixel * value) / mm + offsetMM;
-            }
-            return value;
-        }
-
         private void WmsCanvasItemsControl_Loaded(Object sender, System.Windows.RoutedEventArgs e)
         {
             if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
@@ -43,7 +34,7 @@ namespace Ferretto.Common.Controls
                 this.loadingUnitDetails = wmsTrayControlViewModel.LoadingUnitProperty;
 
                 var widthNewCalculated = this.ActualWidth;
-                var heightNewCalculated = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, widthNewCalculated, this.loadingUnitDetails.Width);
+                var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.loadingUnitDetails.Length, widthNewCalculated, this.loadingUnitDetails.Width);
 
                 this.canvas.Width = widthNewCalculated;
                 this.canvas.Height = heightNewCalculated;
@@ -60,12 +51,12 @@ namespace Ferretto.Common.Controls
             if (this.loadingUnitDetails != null)
             {
                 var widthNewCalculated = this.ActualWidth;
-                var heightNewCalculated = ConvertMillimetersToPixel(this.loadingUnitDetails.Length, widthNewCalculated, this.loadingUnitDetails.Width);
+                var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.loadingUnitDetails.Length, widthNewCalculated, this.loadingUnitDetails.Width);
 
                 if (heightNewCalculated > this.ActualHeight)
                 {
                     heightNewCalculated = this.ActualHeight;
-                    widthNewCalculated = ConvertMillimetersToPixel(this.loadingUnitDetails.Width, heightNewCalculated, this.loadingUnitDetails.Length);
+                    widthNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.loadingUnitDetails.Width, heightNewCalculated, this.loadingUnitDetails.Length);
                 }
                 this.canvas.Height = heightNewCalculated;
                 this.canvas.Width = widthNewCalculated;
