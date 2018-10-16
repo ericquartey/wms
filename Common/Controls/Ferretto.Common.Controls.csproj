@@ -235,6 +235,9 @@
     <Compile Include="Controls\WmsTrayControl\WmsCanvasItemsControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsRulerControl.xaml.cs">
+      <DependentUpon>WmsRulerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
       <DependentUpon>WmsTrayControl.xaml</DependentUpon>
     </Compile>
@@ -308,6 +311,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TextBox\TextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WmsTrayControl\WmsRulerControl.xaml">
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">
