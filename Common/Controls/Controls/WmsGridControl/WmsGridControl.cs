@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
@@ -87,11 +87,8 @@ namespace Ferretto.Common.Controls
             var wmsView = (LayoutTreeHelper.GetVisualParents(this)
                     .OfType<INavigableView>()
                     .FirstOrDefault());
-            if (wmsView == null)
-            {
-                return;
-            }
-            if (wmsView.DataContext is IEntityListViewModel viewModel)
+
+            if (wmsView?.DataContext is IEntityListViewModel viewModel)
             {
                 await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
                 this.AsyncOperationCompleted -= this.AsyncOperationCompletedAsync;
