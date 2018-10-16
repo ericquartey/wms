@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
-using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
@@ -39,7 +39,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public ObservableCollection<WmsBaseCompartment> Items { get { return this.items; } set { this.items = value; } }
+        public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
         {
@@ -55,7 +55,7 @@ namespace Ferretto.Common.Controls
 
         public SolidColorBrush PenBrush
         {
-            get { return this.penBrush; }
+            get => this.penBrush;
             set
             {
                 this.penBrush = value;
@@ -65,7 +65,7 @@ namespace Ferretto.Common.Controls
 
         public int PenThickness
         {
-            get { return this.penThickness; }
+            get => this.penThickness;
             set
             {
                 this.penThickness = value;
@@ -81,7 +81,7 @@ namespace Ferretto.Common.Controls
 
         public double TrayHeight
         {
-            get { return this.trayHeight; }
+            get => this.trayHeight;
             set
             {
                 this.trayHeight = value;
@@ -91,7 +91,7 @@ namespace Ferretto.Common.Controls
 
         public double TrayWidth
         {
-            get { return this.trayWidth; }
+            get => this.trayWidth;
             set
             {
                 this.trayWidth = value;

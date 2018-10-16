@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media;
 using Ferretto.VW.VerticalWarehousesApp.ViewModels;
 using Ferretto.VW.VerticalWarehousesApp.Views;
 
@@ -23,7 +23,6 @@ namespace Ferretto.VW.VerticalWarehousesApp
         {
             this.InitializeComponent();
             this.currentTestConnectionPage = new TestConnectionPageView();
-            this.currentCompartmentationPage = new CompartmentationPageView();
             this._NavigationRegion.Navigate(this.currentTestConnectionPage);
         }
 
@@ -39,27 +38,6 @@ namespace Ferretto.VW.VerticalWarehousesApp
             this.SetUserLoggedInRectColour();
         }
 
-        public void NavigateToDrawerPage()
-        {
-            this._NavigationRegion.Navigate(new DrawerPage(this));
-        }
-
-        public void NavigateToDrawGridPage()
-        {
-            this._NavigationRegion.Navigate(new DrawGridPage(this, this.drawerSelected));
-        }
-
-        public void NavigateToManualPage(string drawer)
-        {
-            this._NavigationRegion.Navigate(new ManualCompartmentPage(this));
-        }
-
-        public void NavigateToSwitchPage(string drawer)
-        {
-            this.drawerSelected = drawer;
-            this._NavigationRegion.Navigate(new SwitchCameraPage(this, drawer));
-        }
-
         public void OpenUserLogInPopUp(object sender, EventArgs e)
         {
             this.UserLoginPopup.IsOpen = true;
@@ -68,11 +46,6 @@ namespace Ferretto.VW.VerticalWarehousesApp
         private void ButtonNavigateToCompartmentationPage(object sender, RoutedEventArgs e)
         {
             this.NavigateToCompartmentationPage();
-        }
-
-        private void ButtonNavigateToManualPage(Object sender, RoutedEventArgs e)
-        {
-            this.NavigateToDrawerPage();
         }
 
         private void ButtonNavigateToTestConnectionPage(object sender, RoutedEventArgs e)
@@ -92,7 +65,7 @@ namespace Ferretto.VW.VerticalWarehousesApp
 
         private void SetButtonRegionActive()
         {
-            for (int i = 0; i < this.ButtonRegionStackPanel.Children.Count; i++)
+            for (var i = 0; i < this.ButtonRegionStackPanel.Children.Count; i++)
             {
                 this.ButtonRegionStackPanel.Children[i].IsEnabled = true;
             }
