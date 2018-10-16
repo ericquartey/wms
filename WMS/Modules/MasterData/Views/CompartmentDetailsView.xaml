@@ -89,7 +89,7 @@
                                           ItemsSource="{Binding Path=CompartmentTypeChoices}" />
                             <wms:TextBox Grid.Row="2"
                                          Grid.Column="1"
-                                         FieldName="ItemPairingDescription"
+                                         FieldName="ItemPairing"
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="3"
                                           Margin="0,0,20,0"
@@ -149,7 +149,7 @@
                             <wms:TextBox Grid.Row="0"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
-                                         FieldName="Item.Description"
+                                         FieldName="ItemDescription"
                                          IsEnabled="False" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.Column="0"

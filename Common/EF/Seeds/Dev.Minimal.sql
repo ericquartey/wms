@@ -504,13 +504,13 @@ INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellC
 
 SET IDENTITY_INSERT LoadingUnits ON;
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (1, 'UDC1', 1, 1, 1, 1, 1600, 900, 'U', 'M', 'A');
+VALUES (1, 'UDC1', 1, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A');
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (2, 'UDC2', 2, 1, 1, 1, 1600, 900, 'U', 'M', 'A');
+VALUES (2, 'UDC2', 2, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A');
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (3, 'VERTIMAG1.1', 301, 1, 2, 3, 800, 400, 'U', 'M', 'A');
+VALUES (3, 'VERTIMAG1.1', 301, 'Free', 2, 3, 800, 400, 'U', 'M', 'A');
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (4, 'VERTIMAG1.2', 302, 1, 2, 3, 700, 300, 'U', 'M', 'A');
+VALUES (4, 'VERTIMAG1.2', 302, 'Free', 2, 3, 700, 300, 'U', 'M', 'A');
 SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments
@@ -548,15 +548,15 @@ INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUE
 
 SET IDENTITY_INSERT Compartments ON;
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot)
-  VALUES (1, 'UDC1_COMP1', 1, 1, 1, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll');
+  VALUES (1, 'UDC1_COMP1', 1, 1, 'Free', 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll');
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot)
-  VALUES (2, 'UDC1_COMP2', 1, 1, 1, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm');
+  VALUES (2, 'UDC1_COMP2', 1, 1, 'Free', 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm');
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height)
-  VALUES (3, 'VERTIMAG1.1_COMP1', 3, 2, 1, 3, 1, 1, 2, 20, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, 100, 100);
+  VALUES (3, 'VERTIMAG1.1_COMP1', 3, 2, 'Free', 3, 1, 1, 2, 20, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, 100, 100);
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height)
-  VALUES (4, 'VERTIMAG1.1_COMP2', 3, 2, 1, 3, 1, 1, 2, 30, 's7s7s7', 's8s8s8', 'pppppp', 0, 100, 100, 100);
+  VALUES (4, 'VERTIMAG1.1_COMP2', 3, 2, 'Free', 3, 1, 1, 2, 30, 's7s7s7', 's8s8s8', 'pppppp', 0, 100, 100, 100);
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height)
-  VALUES (5, 'VERTIMAG1.2_COMP1', 4, 2, 1, 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, 200, 200);
+  VALUES (5, 'VERTIMAG1.2_COMP1', 4, 2, 'Free', 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, 200, 200);
 SET IDENTITY_INSERT Compartments OFF;
 
 
