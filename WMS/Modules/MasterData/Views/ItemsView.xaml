@@ -8,12 +8,13 @@
              xmlns:models="clr-namespace:Ferretto.Common.Modules.BLL.Models;assembly=Ferretto.Common.Modules.BLL"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             Title="{x:Static res:Navigation.Items}"
              MinHeight="300"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             EnableHistoryView="True"
              Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
-
     <Grid>
 
         <Grid.ColumnDefinitions>

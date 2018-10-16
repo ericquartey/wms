@@ -45,18 +45,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.navigationService.Register<ItemsView, ItemsViewModel>();
             this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
-            this.navigationService.Register<ItemsAndDetailsView, ItemsAndDetailsViewModel>();
 
             this.navigationService.Register<CellsView, CellsViewModel>();
-            this.navigationService.Register<CellsAndDetailsView, CellsAndDetailsViewModel>();
 
             this.navigationService.Register<CompartmentsView, CompartmentsViewModel>();
             this.navigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
-            this.navigationService.Register<CompartmentsAndDetailsView, CompartmentsAndDetailsViewModel>();
 
             this.navigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
             this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
-            this.navigationService.Register<LoadingUnitsAndDetailsView, LoadingUnitsAndDetailsViewModel>();
 
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
 
