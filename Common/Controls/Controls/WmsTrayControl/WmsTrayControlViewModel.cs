@@ -76,7 +76,11 @@ namespace Ferretto.Common.Controls
         public int Top
         {
             get { return this.top; }
-            set { this.top = value; }
+            set
+            {
+                this.top = value;
+                this.NotifyPropertyChanged(nameof(this.Top));
+            }
         }
 
         public double TrayHeight
