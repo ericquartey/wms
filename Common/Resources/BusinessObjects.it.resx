@@ -399,4 +399,97 @@
   <data name="LoadingUnitCurrentCell" xml:space="preserve">
     <value>Cella Corrente</value>
   </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Macchina</value>
+  </data>
+  <data name="MachineActualWeight" xml:space="preserve">
+    <value>Peso Effettivo</value>
+  </data>
+  <data name="MachineTotalMaxWeight" xml:space="preserve">
+    <value>Peso Massimo Totale</value>
+  </data>
+  <data name="MachineTestDate" xml:space="preserve">
+    <value>Data di Test</value>
+  </data>
+  <data name="MachineRegistrationNumber" xml:space="preserve">
+    <value>Numero di Registrazione</value>
+  </data>
+  <data name="MachineTypeDescription" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="MachineImage" xml:space="preserve">
+    <value>Immagine</value>
+  </data>
+  <data name="MachineLatitude" xml:space="preserve">
+    <value>Latitudine</value>
+  </data>
+  <data name="MachineLongitude" xml:space="preserve">
+    <value>Longitudine</value>
+  </data>
+  <data name="MachineNextServiceDate" xml:space="preserve">
+    <value>Prossima Data di Servizio</value>
+  </data>
+  <data name="MachineInstallationDate" xml:space="preserve">
+    <value>Data di Installazione</value>
+  </data>
+  <data name="MachineErrorTime" xml:space="preserve">
+    <value>Tempo di Errore</value>
+  </data>
+  <data name="MachineCustomerName" xml:space="preserve">
+    <value>Nome Cliente</value>
+  </data>
+  <data name="MachineCustomerCode" xml:space="preserve">
+    <value>Codice Cliente</value>
+  </data>
+  <data name="MachineCustomerCity" xml:space="preserve">
+    <value>Città del Cliente</value>
+  </data>
+  <data name="MachineCustomerCountry" xml:space="preserve">
+    <value>Paese Cliente</value>
+  </data>
+  <data name="MachineCustomerAddress" xml:space="preserve">
+    <value>Indirizzo Cliente</value>
+  </data>
+  <data name="MachineBuildDate" xml:space="preserve">
+    <value>Data di Costruzione</value>
+  </data>
+  <data name="MachineAutomaticTime" xml:space="preserve">
+    <value>Tempo in Modalità Automatica</value>
+  </data>
+  <data name="MachineManualTime" xml:space="preserve">
+    <value>Tempo in Modalità Manuale</value>
+  </data>
+  <data name="MachinePowerOnTime" xml:space="preserve">
+    <value>Tempo Accesa</value>
+  </data>
+  <data name="MachineAisle" xml:space="preserve">
+    <value>Corridoio</value>
+  </data>
+  <data name="MachineLastPowerOn" xml:space="preserve">
+    <value>Data Ultima Accensione</value>
+  </data>
+  <data name="MachineLastServiceDate" xml:space="preserve">
+    <value>Data Ultimo Servizio</value>
+  </data>
+  <data name="MachineLoadingUnitsPerCradle" xml:space="preserve">
+    <value>UdC per Culla</value>
+  </data>
+  <data name="MachineCradlesCount" xml:space="preserve">
+    <value>Numero di Culle</value>
+  </data>
+  <data name="MachineMissionTime" xml:space="preserve">
+    <value>Tempo Totale di Missione</value>
+  </data>
+  <data name="MachineNickname" xml:space="preserve">
+    <value>Soprannome</value>
+  </data>
+  <data name="MachineOutputLoadingUnitsCount" xml:space="preserve">
+    <value>Numero di UdC Estratte</value>
+  </data>
+  <data name="MachineInputLoadingUnitsCount" xml:space="preserve">
+    <value>Numero di Udc Inserite</value>
+  </data>
+  <data name="MachineMovedLoadingUnitsCount" xml:space="preserve">
+    <value>Numero di UdC Movimentate</value>
+  </data>
 </root>
