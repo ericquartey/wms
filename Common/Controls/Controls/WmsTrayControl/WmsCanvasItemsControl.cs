@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Controls

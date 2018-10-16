@@ -10,7 +10,6 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private readonly List<CompartmentDetails> compartments = new List<CompartmentDetails>();
-        private string info;
         private int length;
         private int width;
 
