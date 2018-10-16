@@ -1,12 +1,12 @@
 ﻿using Ferretto.Common.Controls;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.WMS.Modules.Machines
 {
-    public partial class CellsAndDetailsView : WmsView
+    public partial class MachinesAndDetailsView : WmsView
     {
         #region Constructors
 
-        public CellsAndDetailsView()
+        public MachinesAndDetailsView()
         {
             this.InitializeComponent();
         }

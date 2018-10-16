@@ -436,6 +436,8 @@ INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellC
 SET IDENTITY_INSERT LoadingUnits ON;
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
 VALUES (1, 'UDC1', 1, 1, 1, 1, 1600, 900, 'U', 'M', 'A');
+INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
+VALUES (2, 'UDC2', 2, 1, 1, 1, 1600, 900, 'U', 'M', 'A');
 SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments

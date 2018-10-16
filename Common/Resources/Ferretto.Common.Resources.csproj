@@ -52,6 +52,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InstallationApp.resx</DependentUpon>
     </Compile>
+    <Compile Include="Machines.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Machines.resx</DependentUpon>
+    </Compile>
     <Compile Include="MasterData.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -106,6 +111,10 @@
     <EmbeddedResource Include="InstallationApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Machines.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Machines.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="MasterData.it.resx" />
     <EmbeddedResource Include="MasterData.resx">

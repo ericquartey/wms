@@ -322,6 +322,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string MachinesViewAll {
+            get {
+                return ResourceManager.GetString("MachinesViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
         /// </summary>
         public static string MachineTypes {

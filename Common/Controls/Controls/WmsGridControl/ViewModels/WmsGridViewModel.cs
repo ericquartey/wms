@@ -9,7 +9,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly object refreshItemsEventSubscription;
+        private readonly object refreshModelsEventSubscription;
         private IDataSource<TEntity, TId> currentDataSource;
         private object selectedItem;
 
@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            this.refreshItemsEventSubscription = this.EventService.Subscribe<RefreshItemsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
+            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
         }
 
         #endregion Constructors
@@ -79,18 +79,18 @@ namespace Ferretto.Common.Controls
         protected void NotifySelectionChanged()
         {
             var selectedModelId = default(TId);
-            if(this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
+            if (this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
             {
                 var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
                 selectedModelId = model.Id;
             }
 
-            this.EventService.Invoke(new ItemSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
+            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
         }
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshItemsEvent<TEntity>>(this.refreshItemsEventSubscription);
+            this.EventService.Unsubscribe<RefreshModelsEvent<TEntity>>(this.refreshModelsEventSubscription);
             base.OnDispose();
         }
 

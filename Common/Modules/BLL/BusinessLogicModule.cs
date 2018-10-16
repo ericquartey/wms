@@ -27,13 +27,14 @@ namespace Ferretto.Common.Modules.BLL
 
         public void Initialize()
         {
-            this.Container.RegisterType<IEventService, EventService>();
-            this.Container.RegisterType<IDataSourceService, DataSourceService>();
-            this.Container.RegisterType<IImageProvider, ImageProvider>();
-            this.Container.RegisterType<IItemProvider, ItemProvider>();
             this.Container.RegisterType<ICellProvider, CellProvider>();
             this.Container.RegisterType<ICompartmentProvider, CompartmentProvider>();
+            this.Container.RegisterType<IDataSourceService, DataSourceService>();
+            this.Container.RegisterType<IEventService, EventService>();
+            this.Container.RegisterType<IImageProvider, ImageProvider>();
+            this.Container.RegisterType<IItemProvider, ItemProvider>();
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
+            this.Container.RegisterType<IMachineProvider, MachineProvider>();
         }
 
         #endregion Methods

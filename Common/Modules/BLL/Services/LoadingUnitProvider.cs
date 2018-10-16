@@ -68,6 +68,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Where(l => l.Id == id)
                 .Include(l => l.LoadingUnitType)
                 .ThenInclude(l => l.LoadingUnitSizeClass)
+                .Include(l => l.Cell)
+                .ThenInclude(c => c.Aisle)
                 .Select(l => ProjectLoadingUnitDetails(l))
                 .Single();
 
@@ -79,8 +81,20 @@ namespace Ferretto.Common.Modules.BLL.Services
             {
                 loadingUnitDetails.AddCompartment(compartment);
             }
+            loadingUnitDetails.CellPairingChoices =
+                ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                .Select(i => new Enumeration<string>(i.ToString(), i.ToString())).ToList();
+            loadingUnitDetails.ReferenceTypeChoices =
+                ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
+                .Select(i => new Enumeration<string>(i.ToString(), i.ToString())).ToList();
+            loadingUnitDetails.CellChoices = this.enumerationProvider.GetCellsByAreaId(loadingUnitDetails.AreaId);
 
             return loadingUnitDetails;
+        }
+
+        public bool HasAnyCompartments(int loadingUnitId)
+        {
+            return this.dataContext.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
         }
 
         public int Save(LoadingUnitDetails model)
@@ -107,6 +121,23 @@ namespace Ferretto.Common.Modules.BLL.Services
                 LoadingUnitTypeId = l.LoadingUnitTypeId,
                 Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
                 Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
+                Note = l.Note,
+                CellPairing = l.CellPairing.ToString(),
+                ReferenceType = l.Reference.ToString(),
+                Height = l.Height,
+                Weight = l.Weight,
+                HandlingParametersCorrection = l.HandlingParametersCorrection,
+                CreationDate = l.CreationDate,
+                LastHandlingDate = l.LastHandlingDate,
+                InventoryDate = l.InventoryDate,
+                LastPickDate = l.LastPickDate,
+                LastStoreDate = l.LastStoreDate,
+                InCycleCount = l.InCycleCount,
+                OutCycleCount = l.OutCycleCount,
+                OtherCycleCount = l.OtherCycleCount,
+                CellId = l.CellId,
+                AisleId = l.Cell.AisleId,
+                AreaId = l.Cell.Aisle.AreaId,
             };
 
         #endregion Methods

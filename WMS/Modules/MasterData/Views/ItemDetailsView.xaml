@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -83,8 +82,7 @@
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       FieldName="ItemCategoryId"
-                                      ItemsSource="{Binding Path=ItemCategoryChoices}"
-                                      ValueMember="Id" />
+                                      ItemsSource="{Binding Path=ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
                                      Margin="20,0,0,0"
@@ -110,8 +108,7 @@
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
                                       FieldName="AbcClassId"
-                                      ItemsSource="{Binding Path=AbcClassChoices}"
-                                      ValueMember="Id" />
+                                      ItemsSource="{Binding Path=AbcClassChoices}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       FieldName="FifoTimeStore" />
@@ -120,8 +117,7 @@
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       FieldName="MeasureUnitId"
-                                      ItemsSource="{Binding Path=MeasureUnitChoices}"
-                                      ValueMember="Id" />
+                                      ItemsSource="{Binding Path=MeasureUnitChoices}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -132,8 +128,7 @@
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       FieldName="ItemManagementTypeId"
-                                      ItemsSource="{Binding Path=ItemManagementTypeChoices}"
-                                      ValueMember="Id" />
+                                      ItemsSource="{Binding Path=ItemManagementTypeChoices}" />
                     </Grid>
                 </GroupBox>
 

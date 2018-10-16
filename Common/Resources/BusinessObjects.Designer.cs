@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -682,6 +682,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell Pairing.
+        /// </summary>
+        public static string LoadingUnitCellPairing {
+            get {
+                return ResourceManager.GetString("LoadingUnitCellPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string LoadingUnitCode {
@@ -700,11 +709,128 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Creation Date.
+        /// </summary>
+        public static string LoadingUnitCreationDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitCreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Cell.
+        /// </summary>
+        public static string LoadingUnitCurrentCell {
+            get {
+                return ResourceManager.GetString("LoadingUnitCurrentCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Handling Parameters Correction.
+        /// </summary>
+        public static string LoadingUnitHandlingParametersCorrection {
+            get {
+                return ResourceManager.GetString("LoadingUnitHandlingParametersCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Height.
+        /// </summary>
+        public static string LoadingUnitHeight {
+            get {
+                return ResourceManager.GetString("LoadingUnitHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In Cycle Count.
+        /// </summary>
+        public static string LoadingUnitInCycleCount {
+            get {
+                return ResourceManager.GetString("LoadingUnitInCycleCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory Date.
+        /// </summary>
+        public static string LoadingUnitInventoryDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitInventoryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Handling Date.
+        /// </summary>
+        public static string LoadingUnitLastHandlingDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitLastHandlingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Pick Date.
+        /// </summary>
+        public static string LoadingUnitLastPickDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitLastPickDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Store Date.
+        /// </summary>
+        public static string LoadingUnitLastStoreDate {
+            get {
+                return ResourceManager.GetString("LoadingUnitLastStoreDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Length.
         /// </summary>
         public static string LoadingUnitLength {
             get {
                 return ResourceManager.GetString("LoadingUnitLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string LoadingUnitNotes {
+            get {
+                return ResourceManager.GetString("LoadingUnitNotes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other Cycle Count.
+        /// </summary>
+        public static string LoadingUnitOtherCycleCount {
+            get {
+                return ResourceManager.GetString("LoadingUnitOtherCycleCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Out Cycle Count.
+        /// </summary>
+        public static string LoadingUnitOutCycleCount {
+            get {
+                return ResourceManager.GetString("LoadingUnitOutCycleCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reference Type.
+        /// </summary>
+        public static string LoadingUnitReferenceType {
+            get {
+                return ResourceManager.GetString("LoadingUnitReferenceType", resourceCulture);
             }
         }
         
@@ -736,11 +862,299 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Weight.
+        /// </summary>
+        public static string LoadingUnitWeight {
+            get {
+                return ResourceManager.GetString("LoadingUnitWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Width.
         /// </summary>
         public static string LoadingUnitWidth {
             get {
                 return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine.
+        /// </summary>
+        public static string Machine {
+            get {
+                return ResourceManager.GetString("Machine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Actual Weight.
+        /// </summary>
+        public static string MachineActualWeight {
+            get {
+                return ResourceManager.GetString("MachineActualWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aisle.
+        /// </summary>
+        public static string MachineAisle {
+            get {
+                return ResourceManager.GetString("MachineAisle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic Time.
+        /// </summary>
+        public static string MachineAutomaticTime {
+            get {
+                return ResourceManager.GetString("MachineAutomaticTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build Date.
+        /// </summary>
+        public static string MachineBuildDate {
+            get {
+                return ResourceManager.GetString("MachineBuildDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cradles Count.
+        /// </summary>
+        public static string MachineCradlesCount {
+            get {
+                return ResourceManager.GetString("MachineCradlesCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer Address.
+        /// </summary>
+        public static string MachineCustomerAddress {
+            get {
+                return ResourceManager.GetString("MachineCustomerAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer City.
+        /// </summary>
+        public static string MachineCustomerCity {
+            get {
+                return ResourceManager.GetString("MachineCustomerCity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer Code.
+        /// </summary>
+        public static string MachineCustomerCode {
+            get {
+                return ResourceManager.GetString("MachineCustomerCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer Country.
+        /// </summary>
+        public static string MachineCustomerCountry {
+            get {
+                return ResourceManager.GetString("MachineCustomerCountry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Customer Name.
+        /// </summary>
+        public static string MachineCustomerName {
+            get {
+                return ResourceManager.GetString("MachineCustomerName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Time.
+        /// </summary>
+        public static string MachineErrorTime {
+            get {
+                return ResourceManager.GetString("MachineErrorTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        public static string MachineImage {
+            get {
+                return ResourceManager.GetString("MachineImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input Loading Units Count.
+        /// </summary>
+        public static string MachineInputLoadingUnitsCount {
+            get {
+                return ResourceManager.GetString("MachineInputLoadingUnitsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Installation Date.
+        /// </summary>
+        public static string MachineInstallationDate {
+            get {
+                return ResourceManager.GetString("MachineInstallationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Power On.
+        /// </summary>
+        public static string MachineLastPowerOn {
+            get {
+                return ResourceManager.GetString("MachineLastPowerOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Service Date.
+        /// </summary>
+        public static string MachineLastServiceDate {
+            get {
+                return ResourceManager.GetString("MachineLastServiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Latitude.
+        /// </summary>
+        public static string MachineLatitude {
+            get {
+                return ResourceManager.GetString("MachineLatitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Units Per Cradle.
+        /// </summary>
+        public static string MachineLoadingUnitsPerCradle {
+            get {
+                return ResourceManager.GetString("MachineLoadingUnitsPerCradle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Longitude.
+        /// </summary>
+        public static string MachineLongitude {
+            get {
+                return ResourceManager.GetString("MachineLongitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual Time.
+        /// </summary>
+        public static string MachineManualTime {
+            get {
+                return ResourceManager.GetString("MachineManualTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mission Time.
+        /// </summary>
+        public static string MachineMissionTime {
+            get {
+                return ResourceManager.GetString("MachineMissionTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moved Loading Units Count.
+        /// </summary>
+        public static string MachineMovedLoadingUnitsCount {
+            get {
+                return ResourceManager.GetString("MachineMovedLoadingUnitsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next Service Date.
+        /// </summary>
+        public static string MachineNextServiceDate {
+            get {
+                return ResourceManager.GetString("MachineNextServiceDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nickname.
+        /// </summary>
+        public static string MachineNickname {
+            get {
+                return ResourceManager.GetString("MachineNickname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to OutputLoadingUnitsCount.
+        /// </summary>
+        public static string MachineOutputLoadingUnitsCount {
+            get {
+                return ResourceManager.GetString("MachineOutputLoadingUnitsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power On Time.
+        /// </summary>
+        public static string MachinePowerOnTime {
+            get {
+                return ResourceManager.GetString("MachinePowerOnTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string MachineRegistrationNumber {
+            get {
+                return ResourceManager.GetString("MachineRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Date.
+        /// </summary>
+        public static string MachineTestDate {
+            get {
+                return ResourceManager.GetString("MachineTestDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total Max Weight.
+        /// </summary>
+        public static string MachineTotalMaxWeight {
+            get {
+                return ResourceManager.GetString("MachineTotalMaxWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string MachineTypeDescription {
+            get {
+                return ResourceManager.GetString("MachineTypeDescription", resourceCulture);
             }
         }
         

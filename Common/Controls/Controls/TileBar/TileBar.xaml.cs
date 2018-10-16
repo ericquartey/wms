@@ -27,7 +27,7 @@ namespace Ferretto.Common.Controls
 
         private void SelectFirstItem()
         {
-            this.SelectedItem = this.Items?.GetItemAt(0);
+            this.SelectedItem = this.Items?.Count > 0 ? this.Items.GetItemAt(0) : null;
         }
 
         private void TileBar_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)

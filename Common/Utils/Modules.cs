@@ -26,6 +26,13 @@
 
     public static class Machines
     {
+        #region Fields
+
+        public const string MACHINEDETAILS = "MachineDetailsViewModel";
+        public const string MACHINES = "MachinesViewModel";
+        public const string MACHINESANDDETAILS = "MachinesAndDetailsViewModel";
+
+        #endregion Fields
     }
 
     public static class MasterData
@@ -34,16 +41,12 @@
 
         public const string CELLDETAILS = "CellDetailsViewModel";
         public const string CELLS = "CellsViewModel";
-        public const string CELLSANDDETAILS = "CellsAndDetailsViewModel";
         public const string COMPARTMENTDETAILS = "CompartmentDetailsViewModel";
         public const string COMPARTMENTS = "CompartmentsViewModel";
-        public const string COMPARTMENTSANDDETAILS = "CompartmentsAndDetailsViewModel";
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMS = "ItemsViewModel";
-        public const string ITEMSANDDETAILS = "ItemsAndDetailsViewModel";
         public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
         public const string LOADINGUNITS = "LoadingUnitsViewModel";
-        public const string LOADINGUNITSANDDETAILS = "LoadingUnitsAndDetailsViewModel";
 
         #endregion Fields
     }

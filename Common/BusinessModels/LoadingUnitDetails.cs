@@ -38,6 +38,17 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
         public string AbcClassId { get; set; }
 
+        public int AisleId { get; set; }
+        public int AreaId { get; set; }
+        public IEnumerable<Enumeration<int>> CellChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
+        public int CellId { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitCellPairing), ResourceType = typeof(BusinessObjects))]
+        public string CellPairing { get; set; }
+
+        public IEnumerable<Enumeration<string>> CellPairingChoices { get; set; }
         public IEnumerable<Enumeration<int>> CellPositionChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
@@ -47,6 +58,30 @@ namespace Ferretto.Common.BusinessModels
         public string Code { get; set; }
 
         public IEnumerable<CompartmentDetails> Compartments => this.compartments.AsReadOnly();
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime CreationDate { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection), ResourceType = typeof(BusinessObjects))]
+        public int? HandlingParametersCorrection { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
+        public int Height { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitInCycleCount), ResourceType = typeof(BusinessObjects))]
+        public int InCycleCount { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitInventoryDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? InventoryDate { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitLastHandlingDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastHandlingDate { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitLastPickDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastPickDate { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitLastStoreDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? LastStoreDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public int Length
@@ -65,6 +100,23 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitTypeId { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.LoadingUnitNotes), ResourceType = typeof(BusinessObjects))]
+        public string Note { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitOtherCycleCount), ResourceType = typeof(BusinessObjects))]
+        public int OtherCycleCount { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitOutCycleCount), ResourceType = typeof(BusinessObjects))]
+        public int OutCycleCount { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
+        public string ReferenceType { get; set; }
+
+        public IEnumerable<Enumeration<string>> ReferenceTypeChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitWeight), ResourceType = typeof(BusinessObjects))]
+        public int Weight { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitWidth), ResourceType = typeof(BusinessObjects))]
         public int Width
         {
@@ -81,6 +133,11 @@ namespace Ferretto.Common.BusinessModels
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
+                this.OnAddedCompartmentEvent(null);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
             }
         }
 
@@ -98,18 +155,72 @@ namespace Ferretto.Common.BusinessModels
 
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
-            //TODO: add logic if possible add new compartment
-            //      return FALSE if exit from tray or overlaps other compartment
+            //CHECK: exit from window
+            var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
+            var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
+            if (xPositionFinal > this.Width || yPositionFinal > this.Length)
+            {
+                return false;
+            }
+
+            foreach (var compartment in this.compartments)
+            {
+                bool areCollisions = this.HasCollision(compartmentDetails, compartment);
+                if (areCollisions)
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
         public void OnAddedCompartmentEvent(EventArgs e)
         {
-            var handler = AddedCompartmentEvent;
+            var handler = this.AddedCompartmentEvent;
             if (handler != null)
             {
                 handler(this, e);
             }
+        }
+
+        /// <summary>
+        /// Checks if the specified compartments are physically overlapping.
+        /// </summary>
+        /// <returns>
+        /// True if the specified compartments are overlapping, False otherwise.
+        /// <returns>
+        private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
+        {
+            var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
+            var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
+
+            var xBPositionFinal = compartmentB.XPosition + compartmentB.Width;
+            var yBPositionFinal = compartmentB.YPosition + compartmentB.Height;
+            //A: Top-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //B: Top-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //C: Bottom-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            //D: Bottom-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion Methods

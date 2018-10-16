@@ -3,7 +3,9 @@ using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Utils.Modules;
 using Microsoft.Practices.ServiceLocation;
+using Compartment = Ferretto.Common.BusinessModels.Compartment;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -11,12 +13,12 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Methods
 
-        public IEnumerable<IDataSource<TModel, TId>> GetAll<TModel, TId>(string viewName, object parameter = null) where TModel : IBusinessObject<TId>
+        public IEnumerable<IDataSource<TModel, TId>> GetAll<TModel, TId>(string viewModelName, object parameter = null) where TModel : IBusinessObject<TId>
         {
 #pragma warning disable IDE0009
-            switch (viewName)
+            switch (viewModelName)
             {
-                case "ItemsView":
+                case MasterData.ITEMS:
                     var itemsProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
                     return new List<DataSource<Item, int>>
                     {
@@ -37,7 +39,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => itemsProvider.GetWithFifoCount())
                     }.Cast<IDataSource<TModel, TId>>();
 
-                case "ItemDetailsView":
+                case MasterData.ITEMDETAILS:
                     var itemDetailsProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
                     return new List<DataSource<Compartment, int>>
@@ -48,7 +50,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => itemDetailsProvider.GetByItemId((int)parameter))
                     }.Cast<IDataSource<TModel, TId>>();
 
-                case "CompartmentsView":
+                case MasterData.COMPARTMENTS:
                     var compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
                     return new List<DataSource<Compartment, int>>
@@ -60,7 +62,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => compartmentProvider.GetAllCount())
                     }.Cast<IDataSource<TModel, TId>>();
 
-                case "CellsView":
+                case MasterData.CELLS:
                     var cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
 
                     return new List<DataSource<Cell, int>>
@@ -72,7 +74,19 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => cellProvider.GetAllCount())
                     }.Cast<IDataSource<TModel, TId>>();
 
-                case "LoadingUnitsView":
+                case Machines.MACHINES:
+                    var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
+
+                    return new List<DataSource<Machine, int>>
+                    {
+                        new DataSource<Machine, int>(
+                            "MachinesViewAll",
+                            Resources.Machines.MachineAll,
+                            () => machineProvider.GetAll(),
+                            () => machineProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
+                case MasterData.LOADINGUNITS:
                     var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
                     return new List<DataSource<LoadingUnit, int>>
@@ -82,6 +96,17 @@ namespace Ferretto.Common.Modules.BLL.Services
                             Resources.MasterData.LoadingUnitAll,
                             () => loadingUnitProvider.GetAll(),
                             () => loadingUnitProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
+                case MasterData.LOADINGUNITDETAILS:
+                    var loadingUnitDetailsProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
+                    return new List<DataSource<CompartmentDetails, int>>
+                    {
+                        new DataSource<CompartmentDetails, int>(
+                            "LoadingUnitDetailsView",
+                            Resources.MasterData.CompartmentAll,
+                            () => loadingUnitDetailsProvider.GetByLoadingUnitId((int)parameter))
                     }.Cast<IDataSource<TModel, TId>>();
 
                 default:
