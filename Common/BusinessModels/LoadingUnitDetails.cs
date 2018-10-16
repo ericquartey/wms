@@ -121,7 +121,7 @@ namespace Ferretto.Common.BusinessModels
             //       return TRUE if there are any collisions
             for (int i = 0; i < this.compartments.Count; i++)
             {
-                bool areCollisions = this.CheckCollision(compartmentDetails, this.compartments[i]);
+                bool areCollisions = this.HasCollision(compartmentDetails, this.compartments[i]);
                 if (areCollisions)
                 {
                     return false;
@@ -139,7 +139,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        private bool CheckCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
+        private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
         {
             var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
             var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
