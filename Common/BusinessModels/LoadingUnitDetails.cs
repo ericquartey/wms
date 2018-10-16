@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.Common.BusinessModels
 {
     public sealed class LoadingUnitDetails : BusinessObject<int>
     {
@@ -46,7 +46,7 @@ namespace Ferretto.Common.Modules.BLL.Models
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public IEnumerable<CompartmentDetails> Compartments { get { return this.compartments.AsReadOnly(); } }
+        public IEnumerable<CompartmentDetails> Compartments => this.compartments.AsReadOnly();
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLength), ResourceType = typeof(BusinessObjects))]
         public int Length
@@ -89,8 +89,8 @@ namespace Ferretto.Common.Modules.BLL.Models
             //TODO: add logic of dynamic scompartition
             //      n: is calculated number of compartment to add
             //      n: based on row/column
-            int n = 0;
-            for (int i = 0; i < n; i++)
+            var n = 0;
+            for (var i = 0; i < n; i++)
             {
                 this.AddCompartment(null);
             }
@@ -105,7 +105,7 @@ namespace Ferretto.Common.Modules.BLL.Models
 
         public void OnAddedCompartmentEvent(EventArgs e)
         {
-            EventHandler handler = AddedCompartmentEvent;
+            var handler = AddedCompartmentEvent;
             if (handler != null)
             {
                 handler(this, e);

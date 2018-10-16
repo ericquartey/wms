@@ -3,7 +3,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 using Prism.Mvvm;
 
-namespace Ferretto.Common.Modules.BLL.Models
+namespace Ferretto.Common.BusinessModels
 {
     public abstract class BusinessObject<TId> : BindableBase, IBusinessObject<TId>
     {

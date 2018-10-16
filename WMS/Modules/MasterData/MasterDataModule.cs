@@ -13,19 +13,13 @@ namespace Ferretto.WMS.Modules.MasterData
     [ModuleDependency(nameof(Common.Utils.Modules.BusinessLogic))]
     public class MasterDataModule : IModule
     {
-        #region Fields
-
-        private readonly INavigationService navigationService;
-
-        #endregion Fields
-
         #region Constructors
 
         public MasterDataModule(IUnityContainer container, IRegionManager regionManager, INavigationService navigationService)
         {
             this.Container = container;
             this.RegionManager = regionManager;
-            this.navigationService = navigationService;
+            this.NavigationService = navigationService;
         }
 
         #endregion Constructors
@@ -33,6 +27,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public IUnityContainer Container { get; private set; }
+        public INavigationService NavigationService { get; private set; }
         public IRegionManager RegionManager { get; private set; }
 
         #endregion Properties
@@ -43,16 +38,16 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMasterDataModule);
 
-            this.navigationService.Register<ItemsView, ItemsViewModel>();
-            this.navigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
+            this.NavigationService.Register<ItemsView, ItemsViewModel>();
+            this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
 
-            this.navigationService.Register<CellsView, CellsViewModel>();
+            this.NavigationService.Register<CellsView, CellsViewModel>();
 
-            this.navigationService.Register<CompartmentsView, CompartmentsViewModel>();
-            this.navigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
+            this.NavigationService.Register<CompartmentsView, CompartmentsViewModel>();
+            this.NavigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();
 
-            this.navigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
-            this.navigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
+            this.NavigationService.Register<LoadingUnitsView, LoadingUnitsViewModel>();
+            this.NavigationService.Register<LoadingUnitDetailsView, LoadingUnitDetailsViewModel>();
 
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
 

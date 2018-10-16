@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 
@@ -69,6 +70,18 @@ namespace Ferretto.Common.Modules.BLL.Services
                             Resources.MasterData.CellAll,
                             () => cellProvider.GetAll(),
                             () => cellProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
+                case "MachinesView":
+                    var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
+
+                    return new List<DataSource<Machine, int>>
+                    {
+                        new DataSource<Machine, int>(
+                            "MachinesViewAll",
+                            Resources.Machines.MachineAll,
+                            () => machineProvider.GetAll(),
+                            () => machineProvider.GetAllCount())
                     }.Cast<IDataSource<TModel, TId>>();
 
                 case "LoadingUnitsView":

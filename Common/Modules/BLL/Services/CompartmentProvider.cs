@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
-using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Practices.ServiceLocation;
 
@@ -133,7 +133,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                 Code = c.Code,
                 LoadingUnitCode = c.LoadingUnit?.Code,
                 CompartmentTypeId = c.CompartmentTypeId,
-                ItemPairing = c.ItemPairing,
+                ItemPairing = c.ItemPairing.ToString(),
                 ItemCode = c.Item?.Code,
                 ItemDescription = c.Item?.Description,
                 Sub1 = c.Sub1,

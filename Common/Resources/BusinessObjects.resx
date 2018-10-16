@@ -433,4 +433,128 @@
     <value>Z Coordinate</value>
     <comment>Cell - Z Coordinate</comment>
   </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Machine</value>
+    <comment>Machine</comment>
+  </data>
+  <data name="MachineActualWeight" xml:space="preserve">
+    <value>Actual Weight</value>
+    <comment>Machine - Actual Weight</comment>
+  </data>
+  <data name="MachineAisle" xml:space="preserve">
+    <value>Aisle</value>
+    <comment>Machine - Aisle</comment>
+  </data>
+  <data name="MachineAutomaticTime" xml:space="preserve">
+    <value>Automatic Time</value>
+    <comment>Machine - Automatic Time</comment>
+  </data>
+  <data name="MachineBuildDate" xml:space="preserve">
+    <value>Build Date</value>
+    <comment>Machine - Build Date</comment>
+  </data>
+  <data name="MachineCradlesCount" xml:space="preserve">
+    <value>Cradles Count</value>
+    <comment>Machine - Cradles Count</comment>
+  </data>
+  <data name="MachineCustomerAddress" xml:space="preserve">
+    <value>Customer Address</value>
+    <comment>Machine - Customer Address</comment>
+  </data>
+  <data name="MachineCustomerCity" xml:space="preserve">
+    <value>Customer City</value>
+    <comment>Machine - Customer City</comment>
+  </data>
+  <data name="MachineCustomerCode" xml:space="preserve">
+    <value>Customer Code</value>
+    <comment>Machine - Customer Code</comment>
+  </data>
+  <data name="MachineCustomerCountry" xml:space="preserve">
+    <value>Customer Country</value>
+    <comment>Machine - Customer Country</comment>
+  </data>
+  <data name="MachineCustomerName" xml:space="preserve">
+    <value>Customer Name</value>
+    <comment>Machine - Customer Name</comment>
+  </data>
+  <data name="MachineErrorTime" xml:space="preserve">
+    <value>Error Time</value>
+    <comment>Machine - Error Time</comment>
+  </data>
+  <data name="MachineImage" xml:space="preserve">
+    <value>Image</value>
+    <comment>Machine - Image</comment>
+  </data>
+  <data name="MachineInputLoadingUnitsCount" xml:space="preserve">
+    <value>Input Loading Units Count</value>
+    <comment>Machine - Input Loading Units Count</comment>
+  </data>
+  <data name="MachineInstallationDate" xml:space="preserve">
+    <value>Installation Date</value>
+    <comment>Machine - Installation Date</comment>
+  </data>
+  <data name="MachineLastPowerOn" xml:space="preserve">
+    <value>Last Power On</value>
+    <comment>Machine - Last Power On</comment>
+  </data>
+  <data name="MachineLastServiceDate" xml:space="preserve">
+    <value>Last Service Date</value>
+    <comment>Machine - Last Service Date</comment>
+  </data>
+  <data name="MachineLatitude" xml:space="preserve">
+    <value>Latitude</value>
+    <comment>Machine - Latitude</comment>
+  </data>
+  <data name="MachineLoadingUnitsPerCradle" xml:space="preserve">
+    <value>Loading Units Per Cradle</value>
+    <comment>Machine - Loading Units Per Cradle</comment>
+  </data>
+  <data name="MachineLongitude" xml:space="preserve">
+    <value>Longitude</value>
+    <comment>Machine - Longitude</comment>
+  </data>
+  <data name="MachineManualTime" xml:space="preserve">
+    <value>Manual Time</value>
+    <comment>Machine - Manual Time</comment>
+  </data>
+  <data name="MachineMissionTime" xml:space="preserve">
+    <value>Mission Time</value>
+    <comment>Machine - Mission Time</comment>
+  </data>
+  <data name="MachineMovedLoadingUnitsCount" xml:space="preserve">
+    <value>Moved Loading Units Count</value>
+    <comment>Machine - Moved Loading Units Count</comment>
+  </data>
+  <data name="MachineNextServiceDate" xml:space="preserve">
+    <value>Next Service Date</value>
+    <comment>Machine - Next Service Date</comment>
+  </data>
+  <data name="MachineTypeDescription" xml:space="preserve">
+    <value>Type</value>
+    <comment>Machine - Type</comment>
+  </data>
+  <data name="MachineNickname" xml:space="preserve">
+    <value>Nickname</value>
+    <comment>Machine - Nickname</comment>
+  </data>
+  <data name="MachineOutputLoadingUnitsCount" xml:space="preserve">
+    <value>OutputLoadingUnitsCount</value>
+    <comment>Machine - Output Loading Units Count</comment>
+  </data>
+  <data name="MachinePowerOnTime" xml:space="preserve">
+    <value>Power On Time</value>
+    <comment>Machine - Power On Time</comment>
+  </data>
+  <data name="MachineRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Machine - Registration Number</comment>
+  </data>
+  <data name="MachineTestDate" xml:space="preserve">
+    <value>Test Date</value>
+    <comment>Machine - Test Date</comment>
+  </data>
+  <data name="MachineTotalMaxWeight" xml:space="preserve">
+    <value>Total Max Weight</value>
+    <comment>Machine - Total Max Weight</comment>
+  </data>
 </root>

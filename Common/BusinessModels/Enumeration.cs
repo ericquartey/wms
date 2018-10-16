@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.Modules.BLL.Models
+﻿namespace Ferretto.Common.BusinessModels
 {
     public class Enumeration<TId> : BusinessObject<TId>
     {
