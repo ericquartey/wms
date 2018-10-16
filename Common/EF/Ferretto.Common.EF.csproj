@@ -184,7 +184,6 @@
     <Compile Include="Configurations\CellConfigurationConfiguration.cs" />
     <Compile Include="Configurations\CellHeightClassConfiguration.cs" />
     <Compile Include="Configurations\CellPositionConfiguration.cs" />
-    <Compile Include="Configurations\CellsGroupConfiguration.cs" />
     <Compile Include="Configurations\CellSizeClassConfiguration.cs" />
     <Compile Include="Configurations\CellStatusConfiguration.cs" />
     <Compile Include="Configurations\CellTotalConfiguration.cs" />

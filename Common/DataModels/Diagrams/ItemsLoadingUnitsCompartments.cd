@@ -66,9 +66,7 @@
       <Property Name="CellTypeId" Hidden="true" />
       <Property Name="AbcClassId" Hidden="true" />
       <Property Name="DestinationMissions" Hidden="true" />
-      <Property Name="FirstCellsGroups" Hidden="true" />
       <Property Name="Id" Hidden="true" />
-      <Property Name="LastCellsGroups" Hidden="true" />
       <Property Name="LoadingUnits" Hidden="true" />
       <Property Name="SourceMissions" Hidden="true" />
     </Members>
