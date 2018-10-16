@@ -90,11 +90,11 @@
         /// </summary>
         /// <param name="x"></param>
         /// <param name="vMax"></param>
-        /// <param name="a"></param>
-        /// <param name="a1"></param>
+        /// <param name="acc"></param>
+        /// <param name="dec"></param>
         /// <param name="w"></param>
         /// <returns></returns>
-        InverterDriverExitStatus MoveAlongVerticalAxisToPoint(short x, float vMax, float a, float a1, float w);
+        InverterDriverExitStatus MoveAlongVerticalAxisToPoint(short x, float vMax, float acc, float dec, float w);
 
         /// <summary>
         /// Run routine for detect the weight of current drawer.
@@ -131,14 +131,12 @@
         /// <summary>
         /// Set vertical axis origin routine.
         /// </summary>
-        /// <param name="direction"></param>
+        /// <param name="mode"></param>
         /// <param name="vSearch"></param>
         /// <param name="vCam0"></param>
-        /// <param name="a"></param>
-        /// <param name="a1"></param>
-        /// <param name="a2"></param>
+        /// <param name="offset"></param>
         /// <returns></returns>
-        InverterDriverExitStatus SetVerticalAxisOrigin(byte direction, float vSearch, float vCam0, float a, float a1, float a2);
+        InverterDriverExitStatus SetVerticalAxisOrigin(byte mode, float vSearch, float vCam0, float offset);
 
         /// <summary>
         /// Stop.
