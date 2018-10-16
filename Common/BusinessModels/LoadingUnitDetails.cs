@@ -128,17 +128,16 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
-        public bool AddCompartment(CompartmentDetails compartmentDetails)
+        public void AddCompartment(CompartmentDetails compartmentDetails)
         {
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
-                return true;
+                this.OnAddedCompartmentEvent(null);
             }
             else
             {
                 Console.WriteLine("ERORRE ADD NEW SCOMPARTMENT: è sovrapposto o fuori dalla finestra.");
-                return false;
             }
         }
 
@@ -156,11 +155,6 @@ namespace Ferretto.Common.BusinessModels
 
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
-            //CHECK: greater of origin
-            if (compartmentDetails.XPosition < 0 || compartmentDetails.YPosition < 0)
-            {
-                return false;
-            }
             //CHECK: exit from window
             var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
             var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
@@ -168,12 +162,10 @@ namespace Ferretto.Common.BusinessModels
             {
                 return false;
             }
-            //
-            //CHECK: collision among compartments
-            //       return TRUE if there are any collisions
-            for (int i = 0; i < this.compartments.Count; i++)
+
+            foreach (var compartment in this.compartments)
             {
-                bool areCollisions = this.HasCollision(compartmentDetails, this.compartments[i]);
+                bool areCollisions = this.HasCollision(compartmentDetails, compartment);
                 if (areCollisions)
                 {
                     return false;
@@ -191,6 +183,12 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        /// <summary>
+        /// Checks if the specified compartments are physically overlapping.
+        /// </summary>
+        /// <returns>
+        /// True if the specified compartments are overlapping, False otherwise.
+        /// <returns>
         private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
         {
             var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
