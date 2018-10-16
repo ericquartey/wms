@@ -228,4 +228,7 @@
   <data name="CellsViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
   </data>
+  <data name="MachinesViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+  </data>
 </root>
