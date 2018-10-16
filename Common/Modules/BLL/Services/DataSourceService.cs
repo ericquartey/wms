@@ -74,7 +74,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => cellProvider.GetAllCount())
                     }.Cast<IDataSource<TModel, TId>>();
 
-                case MasterData.:
+                case Machines.MACHINES:
                     var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 
                     return new List<DataSource<Machine, int>>
