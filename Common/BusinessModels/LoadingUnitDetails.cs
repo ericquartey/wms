@@ -133,6 +133,11 @@ namespace Ferretto.Common.BusinessModels
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
+                this.OnAddedCompartmentEvent(null);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
             }
         }
 
@@ -150,8 +155,22 @@ namespace Ferretto.Common.BusinessModels
 
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
-            //TODO: add logic if possible add new compartment
-            //      return FALSE if exit from tray or overlaps other compartment
+            //CHECK: exit from window
+            var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
+            var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
+            if (xPositionFinal > this.Width || yPositionFinal > this.Length)
+            {
+                return false;
+            }
+
+            foreach (var compartment in this.compartments)
+            {
+                bool areCollisions = this.HasCollision(compartmentDetails, compartment);
+                if (areCollisions)
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -162,6 +181,46 @@ namespace Ferretto.Common.BusinessModels
             {
                 handler(this, e);
             }
+        }
+
+        /// <summary>
+        /// Checks if the specified compartments are physically overlapping.
+        /// </summary>
+        /// <returns>
+        /// True if the specified compartments are overlapping, False otherwise.
+        /// <returns>
+        private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
+        {
+            var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
+            var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
+
+            var xBPositionFinal = compartmentB.XPosition + compartmentB.Width;
+            var yBPositionFinal = compartmentB.YPosition + compartmentB.Height;
+            //A: Top-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //B: Top-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //C: Bottom-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            //D: Bottom-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion Methods
