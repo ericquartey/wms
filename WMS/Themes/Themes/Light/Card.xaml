@@ -4,45 +4,88 @@
                     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
                     xmlns:dxbt="http://schemas.devexpress.com/winfx/2008/xaml/bars/themekeys"
                     xmlns:dxcn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
+                    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                    xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     mc:Ignorable="cs">
 
-    <DataTemplate x:Key="cardTemplate">
-        <StackPanel Orientation="Vertical">
-            <Grid Margin="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <wms:WmsImage Grid.Column="0"
-                              Width="64"
-                              Height="70"
-                              Path="{Binding Path=Row.Image}" />
-                <StackPanel Grid.Column="1"
-                            Margin="12,0,12,0"
-                            VerticalAlignment="Top"
-                            Orientation="Vertical">
-                    <StackPanel Margin="0,0,0,4"
-                                Orientation="Horizontal">
-                        <TextBlock FontWeight="Bold"
-                                   Text="Registration number: " />
-                        <TextBlock Text="{Binding Path=Row.RegistrationNumber}"
-                                   TextTrimming="CharacterEllipsis" />
-                    </StackPanel>
+    <ControlTemplate x:Key="{dxgt:GridCardThemeKey ThemeName=Office2016White,
+                                                   ResourceKey=ContainerTemplate}"
+                     TargetType="{x:Type ContentControl}">
+        <Grid x:Name="Root">
+            <Border x:Name="Focus"
+                    Margin="-2"
+                    cs:Name="Border_0008"
+                    Background="{DynamicResource CommonSecondaryDark}"
+                    Opacity="0" />
+            <Border x:Name="Border"
+                    Grid.RowSpan="1"
+                    cs:Name="Border_0010"
+                    Background="{DynamicResource CommonBackground}"
+                    BorderBrush="{DynamicResource CommonSecondaryMedium}"
+                    BorderThickness="1">
+                <ContentPresenter />
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="dxg:GridViewBase.IsFocusedRow" Value="False" />
+                </MultiTrigger.Conditions>
+            </MultiTrigger>
+            <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
+                         Value="Focused">
+                <Setter cs:Name="Setter_0025" TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
+                <Setter cs:Name="Setter_0026" TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
+                <Setter TargetName="Focus" Property="Opacity" Value="0.25" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
+                         Value="Selected">
+                <Setter cs:Name="Setter_0027" TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryDark}" />
+                <Setter cs:Name="Setter_0028" TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
+                <Setter TargetName="Focus" Property="Opacity" Value="0.25" />
+            </DataTrigger>
+            <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True" />
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
-                </StackPanel>
-            </Grid>
-
-        </StackPanel>
-    </DataTemplate>
-
-    <DataTemplate x:Key="cardHeaderTemplate">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Margin="4,0,0,0"
-                       VerticalAlignment="Center"
-                       Text="{Binding Path=Row.Nickname}" />
-        </StackPanel>
-    </DataTemplate>
+    <ControlTemplate x:Key="{dxgt:GridCardThemeKey ThemeName=Office2016White,
+                                                   ResourceKey=HeaderPanelTemplate}"
+                     TargetType="{x:Type ContentControl}">
+        <Border x:Name="Root"
+                cs:Name="Border_0006"
+                Background="{DynamicResource CommonBackground}">
+            <Border x:Name="Border"
+                    cs:Name="Border_0007"
+                    BorderBrush="{DynamicResource CommonBackground}"
+                    BorderThickness="0,0,0,1">
+                <ContentPresenter />
+            </Border>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True" />
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsMouseOver" Value="True" />
+                    <Condition Property="dxg:GridViewBase.IsFocusedRow" Value="False" />
+                </MultiTrigger.Conditions>
+                <Setter cs:Name="Setter_0022" TargetName="Root" Property="Background" Value="{DynamicResource CommonBackground}" />
+            </MultiTrigger>
+            <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
+                         Value="Focused">
+                <Setter cs:Name="Setter_0023" TargetName="Root" Property="Background" Value="{DynamicResource CommonBackground}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
+                         Value="Selected">
+                <Setter cs:Name="Setter_0024" TargetName="Root" Property="Background" Value="{DynamicResource CommonBackground}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IsExpanded}"
+                         Value="False">
+                <Setter TargetName="Border" Property="BorderThickness" Value="0" />
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
 </ResourceDictionary>

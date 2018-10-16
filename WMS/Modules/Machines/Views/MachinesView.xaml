@@ -16,6 +16,45 @@
 
     <Grid>
 
+        <Grid.Resources>
+            <DataTemplate x:Key="cardTemplate">
+                <StackPanel Orientation="Vertical">
+                    <Grid Margin="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <wms:WmsImage Grid.Column="0"
+                                      Width="64"
+                                      Height="70"
+                                      Path="{Binding Path=Row.Image}" />
+                        <StackPanel Grid.Column="1"
+                                    Margin="12,0,12,0"
+                                    VerticalAlignment="Top"
+                                    Orientation="Vertical">
+                            <wms:InfoText FieldName="RegistrationNumber" />
+                            <StackPanel Margin="0,0,0,4"
+                                        Orientation="Horizontal">
+                                <TextBlock Text="Registration number" />
+                                <TextBlock Text="{Binding Path=Row.RegistrationNumber}"
+                                           TextTrimming="CharacterEllipsis" />
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Grid>
+
+                </StackPanel>
+            </DataTemplate>
+
+            <DataTemplate x:Key="cardHeaderTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="4,0,0,0"
+                               VerticalAlignment="Center"
+                               Text="{Binding Path=Row.Nickname}" />
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -58,7 +97,6 @@
                     <dxg:CardView Name="view"
                                   AllowCardResizing="false"
                                   AllowEditing="False"
-                                  CardHeaderBinding="{Binding Path=Nickname}"
                                   CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
                                   CardTemplate="{StaticResource cardTemplate}"
                                   FixedSize="250"
@@ -82,14 +120,10 @@
                 </dxg:GridControl.View>
 
                 <wms:WmsGridControl.Columns>
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="MachineTypeDescription" />
-                    <dxg:GridColumn Width="400*"
-                                    FieldName="AisleName" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="Nickname" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="RegistrationNumber" />
+                    <dxg:GridColumn FieldName="MachineTypeDescription" />
+                    <dxg:GridColumn FieldName="AisleName" />
+                    <dxg:GridColumn FieldName="Nickname" />
+                    <dxg:GridColumn FieldName="RegistrationNumber" />
                 </wms:WmsGridControl.Columns>
 
             </wms:WmsGridControl>
