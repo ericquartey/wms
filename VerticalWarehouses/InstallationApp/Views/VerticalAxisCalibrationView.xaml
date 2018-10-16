@@ -79,24 +79,28 @@
                      Grid.Row="1"
                      Grid.Column="4"
                      Margin="2"
+                     InputScope="Number"
                      Style="{StaticResource StandardBodyTextStyle}"
                      Text="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Name="VerticalAxisCalibrationOffsetTextBox"
                      Grid.Row="2"
                      Grid.Column="4"
                      Margin="2"
+                     InputScope="Number"
                      Style="{StaticResource StandardBodyTextStyle}"
                      Text="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Name="VerticalAxisCalibrationUpperBoundTextBox"
                      Grid.Row="3"
                      Grid.Column="4"
                      Margin="2"
+                     InputScope="Number"
                      Style="{StaticResource StandardBodyTextStyle}"
                      Text="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBox Name="VerticalAxisCalibrationLowerBoundTextBox"
                      Grid.Row="4"
                      Grid.Column="4"
                      Margin="2"
+                     InputScope="Number"
                      Style="{StaticResource StandardBodyTextStyle}"
                      Text="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Name="VerticalAxisCalibrationOutputTextBlock"

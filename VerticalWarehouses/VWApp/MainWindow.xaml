@@ -41,7 +41,8 @@
                 <TextBox Name="UserLoginTextBox"
                          Margin="5"
                          HorizontalContentAlignment="Center"
-                         Style="{StaticResource StandardBodyTextStyle}" />
+                         Style="{StaticResource StandardBodyTextStyle}"
+                         Text="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Margin="5"
                        HorizontalContentAlignment="Center"
                        Content="{x:Static res:General.PasswordLogin}"
@@ -49,9 +50,10 @@
                 <TextBox Name="PasswordLoginTextBox"
                          Margin="5"
                          HorizontalContentAlignment="Center"
-                         Style="{StaticResource StandardBodyTextStyle}" />
+                         Style="{StaticResource StandardBodyTextStyle}"
+                         Text="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Height="120"
-                        Click="LoginButtonMethod"
+                        Command="{Binding LoginButtonCommand}"
                         Content="{x:Static res:General.Login}"
                         Style="{StaticResource StandardButtonStyle}" />
             </StackPanel>
@@ -59,9 +61,32 @@
         <StackPanel Grid.Row="3"
                     Grid.Column="1">
             <Button Height="65"
-                    Click="ShutDownApplicationButtonMethod"
+                    Command="{Binding SwitchOffButtonCommand}"
                     Content="{x:Static res:General.SwitchOff}"
                     Style="{StaticResource StandardButtonStyle}" />
         </StackPanel>
+        <Popup Name="LoginErrorPopup"
+               Grid.Row="1"
+               Grid.Column="1"
+               Width="auto"
+               Height="auto"
+               IsOpen="{Binding EnableErrorPopup, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+               Placement="Center">
+            <Border Background="{StaticResource FerrettoPureWhite}"
+                    BorderBrush="{StaticResource FerrettoMediumGray}"
+                    BorderThickness="2">
+                <StackPanel>
+                    <Label Height="100"
+                           Margin="5"
+                           Content="{x:Static res:VWApp.ErrorLogin}"
+                           Foreground="{StaticResource FerrettoRed}"
+                           Style="{StaticResource StandardBodyTextStyle}" />
+                    <Button Height="100"
+                            Command="{Binding CloseErrorPopupButtonCommand}"
+                            Content="{x:Static res:VWApp.Ok}"
+                            Style="{StaticResource StandardButtonStyle}" />
+                </StackPanel>
+            </Border>
+        </Popup>
     </Grid>
 </Window>

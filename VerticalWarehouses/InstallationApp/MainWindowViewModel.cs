@@ -20,6 +20,9 @@ namespace Ferretto.VW.InstallationApp
         private readonly VerifyCircuitIntegrityView verifyCircuitIntegrityViewInstance;
         private readonly VerticalAxisCalibrationView verticalAxisCalibrationViewInstance;
         private UserControl currentPage;
+        private bool enableComboBox1IsDropDownOpen;
+        private bool enableComboBox2IsDropDownOpen;
+        private bool enableComboBox3IsDropDownOpen;
         private bool enableLowSpeedMovementsTestButton;
         private bool enableVerifyCircuitIntegrityButton;
         private bool enableVerticalAxisCalibrationButton;
@@ -43,6 +46,9 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public UserControl CurrentPage { get => this.currentPage; set => this.SetProperty(ref this.currentPage, value); }
+        public Boolean EnableComboBox1IsDropDownOpen { get => this.enableComboBox1IsDropDownOpen; set => this.SetProperty(ref this.enableComboBox1IsDropDownOpen, value); }
+        public Boolean EnableComboBox2IsDropDownOpen { get => this.enableComboBox2IsDropDownOpen; set => this.SetProperty(ref this.enableComboBox2IsDropDownOpen, value); }
+        public Boolean EnableComboBox3IsDropDownOpen { get => this.enableComboBox3IsDropDownOpen; set => this.SetProperty(ref this.enableComboBox3IsDropDownOpen, value); }
         public Boolean EnableLowSpeedMovementsTestButton { get => this.enableLowSpeedMovementsTestButton; set => this.enableLowSpeedMovementsTestButton = value; }
         public Boolean EnableVerifyCircuitIntegrityButton { get => this.enableVerifyCircuitIntegrityButton; set => this.enableVerifyCircuitIntegrityButton = value; }
         public Boolean EnableVerticalAxisCalibrationButton { get => this.enableVerticalAxisCalibrationButton; set => this.enableVerticalAxisCalibrationButton = value; }

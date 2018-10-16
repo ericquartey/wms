@@ -13,14 +13,6 @@ namespace Ferretto.VW.InstallationApp
 {
     public partial class MainWindow : Window
     {
-        #region Fields
-
-        private LowSpeedMovementsTestView lowSpeddMovementsTestViewInstance;
-        private VerifyCircuitIntegrityView verifyCircuitIntegrityViewInstance;
-        private VerticalAxisCalibrationView verticalAxisCalibrationViewInstance;
-
-        #endregion Fields
-
         #region Constructors
 
         public MainWindow()
@@ -32,12 +24,6 @@ namespace Ferretto.VW.InstallationApp
 
         #endregion Constructors
 
-        #region Properties
-
-        public string InstallerQualification { get; set; }
-
-        #endregion Properties
-
         #region Methods
 
         public void BackToVWAppButtonMethod(object sender, MouseButtonEventArgs e)
@@ -45,19 +31,19 @@ namespace Ferretto.VW.InstallationApp
             this.BackToVWApp();
         }
 
-        public void OpenLowSpeedMovementsTestViewButtonMethod(object sender, RoutedEventArgs e)
+        public void ChangeComboBox1IsDropDownOpenButtonMethod(object sender, MouseButtonEventArgs e)
         {
-            this.OpenLowSpeedMovementsViewMethod();
+            this.ChangeComboBox1IsDropDownOpen();
         }
 
-        public void OpenVerifyCircuitIntegrityViewButtonMethod(object sender, RoutedEventArgs e)
+        public void ChangeComboBox2IsDropDownOpenButtonMethod(object sender, MouseButtonEventArgs e)
         {
-            this.OpenVerifyCircuitIntegrityViewMethod();
+            this.ChangeComboBox2IsDropDownOpen();
         }
 
-        public void OpenVerticalAxisCalibrationViewButtonMethod(object sender, RoutedEventArgs e)
+        public void ChangeComboBox3IsDropDownOpenButtonMethod(object sender, MouseButtonEventArgs e)
         {
-            this.OpenVerticalAxisCalibrationViewMethod();
+            this.ChangeComboBox3IsDropDownOpen();
         }
 
         private void BackToVWApp()
@@ -65,36 +51,45 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.RaiseBackToVWAppEvent();
         }
 
+        private void ChangeComboBox1IsDropDownOpen()
+        {
+            var d = this.DataContext as MainWindowViewModel;
+            if (d != null)
+            {
+                if (d.EnableComboBox1IsDropDownOpen)
+                {
+                    Action action = () => d.EnableComboBox1IsDropDownOpen = false;
+                    Application.Current.Dispatcher.BeginInvoke(action);
+                }
+                else
+                {
+                    Action action = () => d.EnableComboBox1IsDropDownOpen = true;
+                    Application.Current.Dispatcher.BeginInvoke(action);
+                }
+            }
+        }
+
+        private void ChangeComboBox2IsDropDownOpen()
+        {
+            var d = this.DataContext as MainWindowViewModel;
+            if (d != null)
+            {
+                d.EnableComboBox2IsDropDownOpen = !d.EnableComboBox2IsDropDownOpen;
+            }
+        }
+
+        private void ChangeComboBox3IsDropDownOpen()
+        {
+            MainWindowViewModel d = (MainWindowViewModel)this.DataContext;
+            if (d != null)
+            {
+                d.EnableComboBox3IsDropDownOpen = !d.EnableComboBox3IsDropDownOpen;
+            }
+        }
+
         private void CloseThisMainWindow()
         {
             this.Close();
-        }
-
-        private void OpenLowSpeedMovementsViewMethod()
-        {
-            this.lowSpeddMovementsTestViewInstance = new LowSpeedMovementsTestView();
-            this.lowSpeddMovementsTestViewInstance.Width = this.InstallationPageRegionContentControl.ActualWidth;
-            this.lowSpeddMovementsTestViewInstance.Height = this.InstallationPageRegionContentControl.ActualHeight;
-            this.InstallationPageRegionContentControl.Content = null;
-            this.InstallationPageRegionContentControl.Content = this.lowSpeddMovementsTestViewInstance;
-        }
-
-        private void OpenVerifyCircuitIntegrityViewMethod()
-        {
-            this.verifyCircuitIntegrityViewInstance = new VerifyCircuitIntegrityView();
-            this.verifyCircuitIntegrityViewInstance.Width = this.InstallationPageRegionContentControl.ActualWidth;
-            this.verifyCircuitIntegrityViewInstance.Height = this.InstallationPageRegionContentControl.ActualHeight;
-            this.InstallationPageRegionContentControl.Content = null;
-            this.InstallationPageRegionContentControl.Content = this.verifyCircuitIntegrityViewInstance;
-        }
-
-        private void OpenVerticalAxisCalibrationViewMethod()
-        {
-            this.verticalAxisCalibrationViewInstance = new VerticalAxisCalibrationView();
-            this.verticalAxisCalibrationViewInstance.Width = this.InstallationPageRegionContentControl.ActualWidth;
-            this.verticalAxisCalibrationViewInstance.Height = this.InstallationPageRegionContentControl.ActualHeight;
-            this.InstallationPageRegionContentControl.Content = null;
-            this.InstallationPageRegionContentControl.Content = this.verticalAxisCalibrationViewInstance;
         }
 
         #endregion Methods

@@ -92,6 +92,7 @@ namespace Ferretto.VW.InstallationApp.ViewModels
 
         private void ExecuteNextButtonCommand()
         {
+            //TODO: implement next button functionality
         }
 
         private void ExecuteStartButtonCommand()

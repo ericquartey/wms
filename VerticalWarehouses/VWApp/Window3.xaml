@@ -10,18 +10,20 @@
         mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="650" />
             <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="10" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="0"
                     Width="300">
-            <Rectangle Height="50" />
-            <Image Margin="5"
+            <Rectangle Height="10" />
+            <Image Width="250"
+                   Height="100"
+                   Margin="5"
                    Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
                    Stretch="Uniform" />
-            <Rectangle Height="50" />
-            <Label Margin="5"
+            <Rectangle Height="460" />
+            <!--<Label Margin="5"
                    HorizontalContentAlignment="Center"
                    Content="User Login:"
                    Style="{StaticResource StandardBodyTextStyle}" />
@@ -36,19 +38,16 @@
             <TextBox Name="PasswordLoginTextBox"
                      Margin="5"
                      HorizontalContentAlignment="Center"
-                     Style="{StaticResource StandardBodyTextStyle}" />
-            <Button Height="120"
+                     Style="{StaticResource StandardBodyTextStyle}" />-->
+            <Button Width="150"
+                    Height="80"
                     Style="{StaticResource StandardButtonStyle}">
                 Log In
             </Button>
             <Rectangle Height="200" />
-            <Button Height="60"
-                    Style="{StaticResource StandardButtonStyle}">
-                Switch Off System
-            </Button>
         </StackPanel>
         <Image Grid.Column="1"
-               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/VertimagFronte.png" />
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/VertimagTreQuartiDX.png" />
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -58,18 +57,18 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="1">
-                <Image Width="200"
+                <!--<Image Width="200"
                        Height="200"
-                       Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/icona_misuratore_0.jpg" />
-                <Label Content="Riempimento medio cassetti"
-                       Style="{StaticResource StandardBodyTextStyle}" />
+                       Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/icona_misuratore_0.jpg" />-->
+                <!--<Label Content="Riempimento medio cassetti"
+                       Style="{StaticResource StandardBodyTextStyle}" />-->
             </StackPanel>
             <StackPanel Grid.Row="3">
-                <Image Width="200"
+                <!--<Image Width="200"
                        Height="200"
-                       Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/icona_misuratore_1.jpg" />
-                <Label Content="Riempimento Macchina"
-                       Style="{StaticResource StandardBodyTextStyle}" />
+                       Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/icona_misuratore_1.jpg" />-->
+                <!--<Label Content="Riempimento Macchina"
+                       Style="{StaticResource StandardBodyTextStyle}" />-->
             </StackPanel>
         </Grid>
     </Grid>
