@@ -79,9 +79,10 @@
                             <wms:TextBox Grid.Row="0"
                                          Grid.ColumnSpan="2"
                                          FieldName="Code" />
-                            <wms:InfoText Grid.Row="1"
-                                          Grid.ColumnSpan="2"
-                                          FieldName="LoadingUnitCode" />
+                            <wms:TextBox Grid.Row="1"
+                                         Grid.ColumnSpan="2"
+                                         FieldName="LoadingUnitCode"
+                                         IsEnabled="False" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
                                           FieldName="CompartmentTypeId"
