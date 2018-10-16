@@ -28,10 +28,6 @@
                       ExpandDirection="Left"
                       IsExpanded="True">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
                 <wms:TileBar ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
             </Grid>
