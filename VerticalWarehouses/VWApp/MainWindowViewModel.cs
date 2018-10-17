@@ -47,34 +47,39 @@ namespace Ferretto.VW.VWApp
         {
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
-                if (this.UserLogin == "Installer")
+                switch (this.UserLogin)
                 {
-                    ((App)Application.Current).MainWindow.Hide();
-                    ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
-                    ((App)Application.Current).InstallationMainWindowInstance.Show();
-                }
-                else if (this.UserLogin == "Operator")
-                {
-                    ((App)Application.Current).MainWindow.Hide();
-                    ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
-                    ((App)Application.Current).OperatorMainWindowInstance.Show();
-                }
-                else if (this.UserLogin == "Installer1") //PRESENTATION ONLY: REMOVE THOSE 2 BLOCKS BEFORE PRODUCTION
-                {
-                    ((App)Application.Current).MainWindow.Hide();
-                    ((App)Application.Current).InstallationWindow1Instance = new InstallationApp.Window1();
-                    ((App)Application.Current).InstallationWindow1Instance.Show();
-                }
-                else if (this.UserLogin == "Installer2")
-                {
-                    ((App)Application.Current).MainWindow.Hide();
-                    ((App)Application.Current).InstallationWindow2Instance = new InstallationApp.Window2();
-                    ((App)Application.Current).InstallationWindow2Instance.Show();
-                }
-                else //TODO: remove this block once CheckLoginInput is implemented.
-                {
-                    this.EnableErrorPopup = true;
-                    //TODO: create error message for both wrong user/password and installation incomplete
+                    case "Installer":
+                        ((App)Application.Current).MainWindow.Hide();
+                        ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
+                        ((App)Application.Current).InstallationMainWindowInstance.Show();
+                        break;
+
+                    case "Operator":
+
+                        ((App)Application.Current).MainWindow.Hide();
+                        ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
+                        ((App)Application.Current).OperatorMainWindowInstance.Show();
+                        break;
+
+                    case "Installer1": //PRESENTATION ONLY: REMOVE THOSE 2 BLOCKS BEFORE PRODUCTION
+
+                        ((App)Application.Current).MainWindow.Hide();
+                        ((App)Application.Current).InstallationWindow1Instance = new InstallationApp.Window1();
+                        ((App)Application.Current).InstallationWindow1Instance.Show();
+                        break;
+
+                    case "Installer2":
+
+                        ((App)Application.Current).MainWindow.Hide();
+                        ((App)Application.Current).InstallationWindow2Instance = new InstallationApp.Window2();
+                        ((App)Application.Current).InstallationWindow2Instance.Show();
+                        break;
+
+                    default: //TODO SUGGESTION: remove this once CheckLoginInput is implemented.
+                        this.EnableErrorPopup = true;
+                        //TODO: create error message for both wrong user/password and installation incomplete
+                        break;
                 }
             }
             else
