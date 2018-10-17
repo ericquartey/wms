@@ -5,13 +5,5 @@ namespace Ferretto.WMS.Modules.Machines
 {
     public class MachinesViewModel : EntityListViewModel<Machine>
     {
-        #region Methods
-
-        public override void ExecuteViewDetailsCommand()
-        {
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.Machines), Common.Utils.Modules.Machines.MACHINEDETAILS, this.CurrentItem?.Id);
-        }
-
-        #endregion Methods
     }
 }

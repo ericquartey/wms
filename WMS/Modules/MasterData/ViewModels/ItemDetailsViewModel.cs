@@ -22,7 +22,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelSelectionChangedSubscription;
         private ICommand saveCommand;
         private object selectedCompartment;
-        private ICommand viewCompartmentDetailsCommand;
 
         #endregion Fields
 
@@ -48,6 +47,10 @@ namespace Ferretto.WMS.Modules.MasterData
             get
             {
                 if (this.selectedCompartment == null)
+                {
+                    return default(Compartment);
+                }
+                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
                 {
                     return default(Compartment);
                 }
@@ -86,20 +89,16 @@ namespace Ferretto.WMS.Modules.MasterData
         public object SelectedCompartment
         {
             get => this.selectedCompartment;
-            set => this.SetProperty(ref this.selectedCompartment, value);
+            set
+            {
+                this.SetProperty(ref this.selectedCompartment, value);
+                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
+            }
         }
-
-        public ICommand ViewCompartmentDetailsCommand => this.viewCompartmentDetailsCommand ??
-                                      (this.viewCompartmentDetailsCommand = new DelegateCommand(this.ExecuteViewCompartmentDetailsCommand));
 
         #endregion Properties
 
         #region Methods
-
-        public void ExecuteViewCompartmentDetailsCommand()
-        {
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentCompartment?.Id);
-        }
 
         protected override void OnAppear()
         {

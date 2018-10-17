@@ -50,6 +50,11 @@ namespace Ferretto.Common.Controls
                 {
                     return default(TModel);
                 }
+                if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                {
+                    return default(TModel);
+                }
+
                 return (TModel)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
             }
         }
@@ -81,7 +86,13 @@ namespace Ferretto.Common.Controls
         public object SelectedItem
         {
             get => this.selectedItem;
-            set => this.SetProperty(ref this.selectedItem, value);
+            set
+            {
+                if (this.SetProperty(ref this.selectedItem, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.CurrentItem));
+                }
+            }
         }
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??

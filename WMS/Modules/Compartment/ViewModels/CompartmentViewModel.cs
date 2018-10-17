@@ -74,8 +74,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 YPosition = this.CompartmentInput.YPosition
             };
             this.LoadingUnit.AddCompartment(compartmentDetails);
-
-            this.LoadingUnit.OnAddedCompartmentEvent(null);
         }
 
         #endregion Methods
