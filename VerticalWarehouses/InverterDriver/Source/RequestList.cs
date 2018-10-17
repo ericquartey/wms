@@ -72,24 +72,25 @@ namespace Ferretto.VW.InverterDriver
 
             // Write the target position parameter
             var rq = new Request(TypeOfRequest.Write, Request.POSITION_TARGET_POSITION_PARAM);
+            rq.DataType = ValueDataType.Int16;
             rq.ParameterValueInt16 = x;
             this.list.Add(rq);
 
             // Write the target speed parameter
-            rq.Type = TypeOfRequest.Write;
-            rq.ParameterID = Request.POSITION_TARGET_SPEED_PARAM;
+            rq = new Request(TypeOfRequest.Write, Request.POSITION_TARGET_SPEED_PARAM);
+            rq.DataType = ValueDataType.Float;
             rq.ParameterValueFloat = vMax;
             this.list.Add(rq);
 
             // Write the acceleration parameter
-            rq.Type = TypeOfRequest.Write;
-            rq.ParameterID = Request.POSITION_ACCELERATION_PARAM;
+            rq = new Request(TypeOfRequest.Write, Request.POSITION_ACCELERATION_PARAM);
+            rq.DataType = ValueDataType.Float;
             rq.ParameterValueFloat = acc;
             this.list.Add(rq);
 
             // Write the deceleration parameter
-            rq.Type = TypeOfRequest.Write;
-            rq.ParameterID = Request.POSITION_DECELERATION_PARAM;
+            rq = new Request(TypeOfRequest.Write, Request.POSITION_DECELERATION_PARAM);
+            rq.DataType = ValueDataType.Float;
             rq.ParameterValueFloat = dec;
             this.list.Add(rq);
 
@@ -113,24 +114,25 @@ namespace Ferretto.VW.InverterDriver
 
             // Write the homing mode parameter
             var rq = new Request(TypeOfRequest.Write, Request.HOMING_MODE_PARAM);
+            rq.DataType = ValueDataType.Byte;
             rq.ParameterValueByte = mode;
             this.list.Add(rq);
 
             // Write the offset parameter
-            rq.Type = TypeOfRequest.Write;
-            rq.ParameterID = Request.HOMING_OFFSET_PARAM;
+            rq = new Request(TypeOfRequest.Write, Request.HOMING_OFFSET_PARAM);
+            rq.DataType = ValueDataType.Float;
             rq.ParameterValueFloat = offset;
             this.list.Add(rq);
 
             // Write the fast speed parameter
-            rq.Type = TypeOfRequest.Write;
-            rq.ParameterID = Request.HOMING_FAST_SPEED_PARAM;
+            rq = new Request(TypeOfRequest.Write, Request.HOMING_FAST_SPEED_PARAM);
+            rq.DataType = ValueDataType.Float;
             rq.ParameterValueFloat = vSearch;
             this.list.Add(rq);
 
             // Write the creep speed parameter
-            rq.Type = TypeOfRequest.Write;
-            rq.ParameterID = Request.HOMING_CREEP_SPEED_PARAM;
+            rq = new Request(TypeOfRequest.Write, Request.HOMING_CREEP_SPEED_PARAM);
+            rq.DataType = ValueDataType.Float;
             rq.ParameterValueFloat = vCam0;
             this.list.Add(rq);
 

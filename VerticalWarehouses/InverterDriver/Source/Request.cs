@@ -17,6 +17,37 @@
     }
 
     /// <summary>
+    /// Data type of the payload parameter for a request.
+    /// </summary>
+    public enum ValueDataType
+    {
+        /// <summary>
+        /// byte data type (1 byte)
+        /// </summary>
+        Byte = 0x0,
+
+        /// <summary>
+        /// float data type (4 bytes)
+        /// </summary>
+        Float,
+
+        /// <summary>
+        /// short data type (2 bytes)
+        /// </summary>
+        Int16,
+
+        /// <summary>
+        /// int data type (4 bytes)
+        /// </summary>
+        Int32,
+
+        /// <summary>
+        /// string data type (array of bytes)
+        /// </summary>
+        String
+    }
+
+    /// <summary>
     /// This class contains the parameter of a request for the inverter.
     /// There are 2 type of request:
     ///  - the read parameter request (a.k.a. SendRequest),
@@ -45,8 +76,13 @@
         public const short POSITION_TARGET_SPEED_PARAM = 1456;
         public const short SET_OPERATING_MODE_PARAM = 1454;
 
-        private int parameterId;
+        public const short STATUS_WORD_PARAM = 411;
+
+        private byte dataSetIndex;
+        private short parameterId;
+        private byte systemIndex;
         private TypeOfRequest typeOfRequest;
+        private ValueDataType valueDataType;
         private byte valueParameterByte;
         private float valueParameterFloat;
         private short valueParameterInt16;
@@ -57,7 +93,7 @@
 
         #region Constructors
 
-        public Request(TypeOfRequest t, int parameterId)
+        public Request(TypeOfRequest t, short parameterId)
         {
             this.typeOfRequest = t;
             this.parameterId = parameterId;
@@ -67,7 +103,19 @@
 
         #region Properties
 
-        public int ParameterID
+        public byte DataSetIndex
+        {
+            get => this.dataSetIndex;
+            set => this.dataSetIndex = value;
+        }
+
+        public ValueDataType DataType
+        {
+            get => this.valueDataType;
+            set => this.valueDataType = value;
+        }
+
+        public short ParameterID
         {
             get => this.parameterId;
             set => this.parameterId = value;
@@ -81,7 +129,7 @@
 
         public float ParameterValueFloat
         {
-            get => this.ParameterValueFloat;
+            get => this.valueParameterFloat;
             set => this.valueParameterFloat = value;
         }
 
@@ -101,6 +149,12 @@
         {
             get => this.valueParameterString;
             set => this.valueParameterString = value;
+        }
+
+        public byte SystemIndex
+        {
+            get => this.systemIndex;
+            set => this.systemIndex = value;
         }
 
         public TypeOfRequest Type
