@@ -6,8 +6,6 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void RefreshGrid();
 
-        void SetDataSource(object dataSource);
-
         #endregion Methods
     }
 }

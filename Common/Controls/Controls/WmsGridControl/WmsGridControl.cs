@@ -14,24 +14,11 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty CurrentDataSourceProperty = DependencyProperty.Register(
-
-            nameof(CurrentDataSource),
-            typeof(object),
-            typeof(WmsGridControl),
-            new PropertyMetadata(CurrentDataSourceChanged));
-
         private Type itemType;
 
         #endregion Fields
 
         #region Properties
-
-        public object CurrentDataSource
-        {
-            get => this.GetValue(CurrentDataSourceProperty);
-            set => this.SetValue(CurrentDataSourceProperty, value);
-        }
 
         public Type ItemType
         {
@@ -40,14 +27,14 @@ namespace Ferretto.Common.Controls
             {
                 if (value != this.itemType)
                 {
-                    if (value?.GetInterface(typeof(IBusinessObject<>).FullName) != null)
+                    if (value?.GetInterface(typeof(IBusinessObject).FullName) != null)
                     {
                         this.itemType = value;
                     }
                     else
                     {
                         throw new ArgumentException(
-                            $"The value assigned to the {nameof(this.ItemType)} property must be of type {nameof(IBusinessObject<object>)}", nameof(value));
+                            $"The value assigned to the {nameof(this.ItemType)} property must be of type {nameof(IBusinessObject)}", nameof(value));
                     }
                 }
             }
@@ -70,16 +57,6 @@ namespace Ferretto.Common.Controls
             this.SetToken();
 
             this.SetupBindings();
-        }
-
-        private static void CurrentDataSourceChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
-        {
-            if (dependencyObject is WmsGridControl gridControl
-                &&
-                gridControl.DataContext is IWmsGridViewModel dataContext)
-            {
-                dataContext.SetDataSource(e.NewValue);
-            }
         }
 
         private async void AsyncOperationCompletedAsync(Object sender, RoutedEventArgs e)
@@ -108,7 +85,7 @@ namespace Ferretto.Common.Controls
             }
 
             var viewModelClass = typeof(WmsGridViewModel<,>);
-            var idType = ((TypeInfo)this.itemType.GetInterface(typeof(IBusinessObject<>).FullName)).DeclaredProperties.First();
+            var idType = ((TypeInfo)this.itemType.GetInterface(typeof(IBusinessObject).FullName)).DeclaredProperties.First();
             var constructedClass = viewModelClass.MakeGenericType(this.ItemType, idType.PropertyType);
             return Activator.CreateInstance(constructedClass);
         }
@@ -126,7 +103,6 @@ namespace Ferretto.Common.Controls
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
-            this.SetBinding(ItemsSourceProperty, "CurrentDataSource");
         }
 
         private void UpdateFilterTiles()

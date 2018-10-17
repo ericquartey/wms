@@ -1,16 +1,15 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
+    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject
     {
         #region Fields
 
         private readonly object refreshModelsEventSubscription;
-        private IDataSource<TEntity, TId> currentDataSource;
+
         private object selectedItem;
 
         #endregion Fields
@@ -25,18 +24,6 @@ namespace Ferretto.Common.Controls
         #endregion Constructors
 
         #region Properties
-
-        public IDataSource<TEntity, TId> CurrentDataSource
-        {
-            get => this.currentDataSource;
-            set
-            {
-                if (this.SetProperty(ref this.currentDataSource, value))
-                {
-                    this.NotifyDataSourceChanged();
-                }
-            }
-        }
 
         public object SelectedItem
         {
@@ -53,28 +40,6 @@ namespace Ferretto.Common.Controls
         #endregion Properties
 
         #region Methods
-
-        public void RefreshGrid()
-        {
-            // do nothing
-        }
-
-        public void SetDataSource(object dataSource)
-        {
-            if (dataSource == null || dataSource is IDataSource<TEntity, TId> dataSourceEntity)
-            {
-                this.CurrentDataSource = dataSource as IDataSource<TEntity, TId>;
-            }
-            else
-            {
-                throw new System.ArgumentException("Data source is not of the right type", nameof(dataSource));
-            }
-        }
-
-        protected void NotifyDataSourceChanged()
-        {
-            this.RefreshGrid();
-        }
 
         protected void NotifySelectionChanged()
         {
