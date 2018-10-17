@@ -13,16 +13,129 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.Common.Controls.Controls.WmsTrayControl
+namespace Ferretto.Common.Controls
 {
     /// <summary>
     /// Interaction logic for WmsRulerControl.xaml
     /// </summary>
     public partial class WmsRulerControl : UserControl
     {
+        #region Fields
+
+        public static readonly DependencyProperty LittleMarkLengthProperty =
+            DependencyProperty.Register("LittleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
+            new UIPropertyMetadata(8));
+
+        public static readonly DependencyProperty MajorIntervalProperty =
+                    DependencyProperty.Register("MajorIntervalProperty", typeof(int), typeof(WmsRulerControl),
+            new UIPropertyMetadata(100));
+
+        public static readonly DependencyProperty MarkLengthProperty =
+            DependencyProperty.Register("MarkLengthProperty", typeof(int), typeof(WmsRulerControl),
+            new UIPropertyMetadata(20));
+
+        public static readonly DependencyProperty MiddleMarkLengthProperty =
+            DependencyProperty.Register("MiddleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
+            new UIPropertyMetadata(14));
+
+        #endregion Fields
+
+        #region Constructors
+
         public WmsRulerControl()
         {
-            InitializeComponent();
+            //this.InitializeComponent();
         }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public int LittleMarkLength
+        {
+            get { return (int)base.GetValue(LittleMarkLengthProperty); }
+            set { this.SetValue(LittleMarkLengthProperty, value); }
+        }
+
+        public int MajorInterval
+        {
+            get { return (int)base.GetValue(MajorIntervalProperty); }
+            set { this.SetValue(MajorIntervalProperty, value); }
+        }
+
+        public int MarkLength
+        {
+            get { return (int)base.GetValue(MarkLengthProperty); }
+            set { this.SetValue(MarkLengthProperty, value); }
+        }
+
+        public int MiddleMarkLength
+        {
+            get { return (int)base.GetValue(MiddleMarkLengthProperty); }
+            set { this.SetValue(MiddleMarkLengthProperty, value); }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        protected override void OnRender(DrawingContext drawingContext)
+        {
+            base.OnRender(drawingContext);
+            RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
+            double psuedoStartValue = 0;// StartValue;
+
+            //if (this.Orientation == enumOrientation.Horizontal)
+            //{
+            for (int i = 0; i < this.ActualWidth / this.MajorInterval; i++)
+            {
+                var ft = new FormattedText((psuedoStartValue * this.MajorInterval).ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+                drawingContext.DrawText(ft, new Point(i * this.MajorInterval, 0));
+                drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 2), new Point(i * this.MajorInterval, this.MarkLength), new Point(i * this.MajorInterval, 0));
+                drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
+                    new Point(i * this.MajorInterval + (this.MajorInterval / 2), this.MiddleMarkLength),
+                    new Point(i * this.MajorInterval + (this.MajorInterval / 2), 0));
+                for (int j = 1; j < 10; j++)
+                {
+                    if (j == 5)
+                    {
+                        continue;
+                    }
+                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
+                    new Point(i * this.MajorInterval + (((this.MajorInterval * j) / 10)), this.LittleMarkLength),
+                    new Point(i * this.MajorInterval + (((this.MajorInterval * j) / 10)), 0));
+                }
+                psuedoStartValue++;
+            }
+            //}
+
+            //else
+            //{
+            //    psuedoStartValue = StartValue;
+            //    for (int i = 0; i < this.ActualHeight / MajorInterval; i++)
+            //    {
+            //        var ft = new FormattedText((psuedoStartValue * MajorInterval).ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+            //        drawingContext.DrawText(ft, new Point(0, i * MajorInterval));
+            //        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Violet), 1), new Point(MarkLength, i * MajorInterval), new Point(0, i * MajorInterval));
+            //        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red), 1), new Point(MarkLength, i * MajorInterval), new Point(0, i * MajorInterval));
+            //        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green), 1),
+            //            new Point(MiddleMarkLength, i * MajorInterval + (MajorInterval / 2)),
+            //            new Point(0, i * MajorInterval + (MajorInterval / 2)));
+            //        for (int j = 1; j < 10; j++)
+            //        {
+            //            if (j == 5)
+            //            {
+            //                continue;
+            //            }
+            //            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Blue), 1),
+            //            new Point(LittleMarkLength, i * MajorInterval + (((MajorInterval * j) / 10))),
+            //            new Point(0, i * MajorInterval + (((MajorInterval * j) / 10))));
+            //        }
+            //        psuedoStartValue++;
+            //    }
+            //}
+        }
+
+        #endregion Methods
     }
 }
