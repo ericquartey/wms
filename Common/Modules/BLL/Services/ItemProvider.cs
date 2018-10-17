@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
@@ -53,8 +53,9 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             var itemDetails = this.dataContext.Items
                 .Where(i => i.Id == id)
-                .Select(i => new ItemDetails(i.Id)
+                .Select(i => new ItemDetails
                 {
+                    Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     ItemCategoryId = i.ItemCategoryId,

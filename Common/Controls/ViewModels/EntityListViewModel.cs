@@ -15,7 +15,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly IEnumerable<IDataSource<TModel, TId>> dataSources;
+        private readonly IEnumerable<IDataSource<TModel>> dataSources;
         private IEnumerable<Tile> filterTiles;
         private IDataSource<TModel, TId> selectedDataSource;
         private Tile selectedFilterTile;
@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls
         protected EntityListViewModel()
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.dataSources = dataSourceService.GetAll<TModel, TId>(this.GetType().Name);
+            this.dataSources = dataSourceService.GetAll<TModel>(this.GetType().Name);
 
             this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
             {
