@@ -7,6 +7,8 @@ namespace Ferretto.Common.Modules.BLL
     {
         #region Methods
 
+        IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId);
+
         IQueryable<Item> GetWithAClass();
 
         int GetWithAClassCount();

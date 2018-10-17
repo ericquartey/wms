@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -60,6 +61,17 @@ namespace Ferretto.Common.Modules.BLL.Services
                             Resources.MasterData.CompartmentAll,
                             () => compartmentProvider.GetAll(),
                             () => compartmentProvider.GetAllCount())
+                    }.Cast<IDataSource<TModel, TId>>();
+
+                case MasterData.COMPARTMENTDETAILS:
+                    var itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
+                    return new List<DataSource<AllowedItemInCompartment, int>>
+                    {
+                        new DataSource<AllowedItemInCompartment, int>(
+                            "CompartmentDetailsView",
+                            Resources.MasterData.ItemAll,
+                            () => itemProvider.GetAllowedByCompartmentId((int)parameter))
                     }.Cast<IDataSource<TModel, TId>>();
 
                 case MasterData.CELLS:
