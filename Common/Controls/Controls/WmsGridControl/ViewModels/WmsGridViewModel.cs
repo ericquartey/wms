@@ -1,4 +1,4 @@
-using Ferretto.Common.BLL.Interfaces;
+﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 
@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
+            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => { }, true);
         }
 
         #endregion Constructors
@@ -43,14 +43,14 @@ namespace Ferretto.Common.Controls
 
         protected void NotifySelectionChanged()
         {
-            var selectedModelId = default(TId);
+            var selectedModelId = 0;
             if (this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
             {
                 var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
                 selectedModelId = model.Id;
             }
 
-            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
+            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, int>(selectedModelId, this.Token));
         }
 
         protected override void OnDispose()

@@ -1,8 +1,9 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.Practices.ServiceLocation;
@@ -17,7 +18,7 @@ namespace Ferretto.Common.Controls
 
         private readonly IEnumerable<IDataSource<TModel>> dataSources;
         private IEnumerable<Tile> filterTiles;
-        private IDataSource<TModel, TId> selectedDataSource;
+        private EntityInstantFeedbackSource selectedDataSource;
         private Tile selectedFilterTile;
         private object selectedItem;
         private ICommand viewDetailsCommand;
@@ -65,7 +66,7 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
-        public IDataSource<TModel, TId> SelectedDataSource
+        public EntityInstantFeedbackSource SelectedDataSource
         {
             get => this.selectedDataSource;
             protected set => this.SetProperty(ref this.selectedDataSource, value);
@@ -78,7 +79,7 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Key == value.Key);
+                    this.SelectedDataSource = this.dataSources.Single(d => d.Key == value.Key) as EntityInstantFeedbackSource;
                 }
             }
         }

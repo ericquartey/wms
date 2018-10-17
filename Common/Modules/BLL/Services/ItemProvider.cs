@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
@@ -174,8 +174,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                    })
                .SelectMany(
                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                   (a, b) => new Item(a.Item.Id)
+                   (a, b) => new Item
                    {
+                       Id = a.Item.Id,
                        AbcClassDescription = a.Item.AbcClass.Description,
                        AverageWeight = a.Item.AverageWeight,
                        CreationDate = a.Item.CreationDate,
