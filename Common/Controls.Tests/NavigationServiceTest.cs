@@ -177,7 +177,7 @@ namespace Feretto.Common.Controls.Tests
 
             #region Methods
 
-            public void Close()
+            public void Disappear()
             {
             }
 

@@ -10,6 +10,6 @@
         bool IsClosed { get; set; }
         WmsViewType ViewType { get; }
 
-        void Close();
+        void Disappear();
     }
 }
