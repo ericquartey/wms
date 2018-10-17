@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Compartment : BusinessObject<int>
+    public sealed class Compartment : BusinessObject
     {
         #region Fields
 

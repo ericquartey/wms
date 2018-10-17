@@ -5,7 +5,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class CompartmentDetails : BusinessObject<int>
+    public sealed class CompartmentDetails : BusinessObject
     {
         #region Fields
 
@@ -36,12 +36,12 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public IEnumerable<Enumeration<int>> CompartmentStatusChoices { get; set; }
+        public IEnumerable<Enumeration> CompartmentStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public int? CompartmentStatusId { get; set; }
 
-        public IEnumerable<Enumeration<int>> CompartmentTypeChoices { get; set; }
+        public IEnumerable<Enumeration> CompartmentTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
         public int CompartmentTypeId { get; set; }
@@ -93,7 +93,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
-        public IEnumerable<Enumeration<int>> MaterialStatusChoices { get; set; }
+        public IEnumerable<Enumeration> MaterialStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public int? MaterialStatusId { get; set; }
@@ -105,7 +105,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.maxCapacity, value);
         }
 
-        public IEnumerable<Enumeration<int>> PackageTypeChoices { get; set; }
+        public IEnumerable<Enumeration> PackageTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public int? PackageTypeId { get; set; }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,8 +10,8 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel, IEntityListViewModel
-        where TModel : IBusinessObject<TId>
+    public class EntityListViewModel<TModel> : BaseServiceNavigationViewModel, IEntityListViewModel
+        where TModel : IBusinessObject
     {
         #region Fields
 

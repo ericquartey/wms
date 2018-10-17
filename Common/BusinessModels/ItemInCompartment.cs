@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.BusinessModels
 {
-    public sealed class ItemInCompartment : BusinessObject<int>
+    public sealed class ItemInCompartment : BusinessObject
     {
         #region Constructors
 
@@ -8,5 +8,11 @@
         { }
 
         #endregion Constructors
+
+        #region Properties
+
+  
+
+        #endregion Properties
     }
 }

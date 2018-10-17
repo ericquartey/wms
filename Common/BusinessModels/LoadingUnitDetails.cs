@@ -5,7 +5,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class LoadingUnitDetails : BusinessObject<int>
+    public sealed class LoadingUnitDetails : BusinessObject
     {
         #region Fields
 
@@ -33,14 +33,14 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public IEnumerable<Enumeration<string>> AbcClassChoices { get; set; }
+        public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
         public string AbcClassId { get; set; }
 
         public int AisleId { get; set; }
         public int AreaId { get; set; }
-        public IEnumerable<Enumeration<int>> CellChoices { get; set; }
+        public IEnumerable<Enumeration> CellChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
         public int CellId { get; set; }
@@ -48,8 +48,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCellPairing), ResourceType = typeof(BusinessObjects))]
         public string CellPairing { get; set; }
 
-        public IEnumerable<Enumeration<string>> CellPairingChoices { get; set; }
-        public IEnumerable<Enumeration<int>> CellPositionChoices { get; set; }
+        public IEnumerable<EnumerationString> CellPairingChoices { get; set; }
+        public IEnumerable<Enumeration> CellPositionChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
         public int CellPositionId { get; set; }
@@ -90,12 +90,12 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
-        public IEnumerable<Enumeration<string>> LoadingUnitStatusChoices { get; set; }
+        public IEnumerable<EnumerationString> LoadingUnitStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitStatusId { get; set; }
 
-        public IEnumerable<Enumeration<int>> LoadingUnitTypeChoices { get; set; }
+        public IEnumerable<Enumeration> LoadingUnitTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitTypeId { get; set; }
@@ -112,7 +112,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
         public string ReferenceType { get; set; }
 
-        public IEnumerable<Enumeration<string>> ReferenceTypeChoices { get; set; }
+        public IEnumerable<EnumerationString> ReferenceTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWeight), ResourceType = typeof(BusinessObjects))]
         public int Weight { get; set; }

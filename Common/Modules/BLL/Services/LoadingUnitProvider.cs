@@ -83,10 +83,10 @@ namespace Ferretto.Common.Modules.BLL.Services
             }
             loadingUnitDetails.CellPairingChoices =
                 ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
-                .Select(i => new Enumeration<string>(i.ToString(), i.ToString())).ToList();
+                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
             loadingUnitDetails.ReferenceTypeChoices =
                 ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
-                .Select(i => new Enumeration<string>(i.ToString(), i.ToString())).ToList();
+                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
             loadingUnitDetails.CellChoices = this.enumerationProvider.GetCellsByAreaId(loadingUnitDetails.AreaId);
 
             return loadingUnitDetails;

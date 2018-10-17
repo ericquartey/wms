@@ -55,6 +55,7 @@
     <Compile Include="CompartmentStockDetails.cs" />
     <Compile Include="CompartmentType.cs" />
     <Compile Include="Enumeration.cs" />
+    <Compile Include="EnumerationString.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemDetails.cs" />
     <Compile Include="ItemInCompartment.cs" />

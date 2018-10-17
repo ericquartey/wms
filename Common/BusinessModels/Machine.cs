@@ -4,7 +4,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Machine : BusinessObject<int>
+    public sealed class Machine : BusinessObject
     {
         #region Constructors
 
@@ -48,6 +48,8 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.MachineErrorTime), ResourceType = typeof(BusinessObjects))]
         public long? ErrorTime { get; set; }
+
+      
 
         [Display(Name = nameof(BusinessObjects.MachineImage), ResourceType = typeof(BusinessObjects))]
         public string Image { get; set; }
