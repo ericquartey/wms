@@ -49,6 +49,26 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.Items.AsNoTracking().Count();
         }
 
+        public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
+        {
+            return this.dataContext.Compartments
+                .Where(c => c.Id == compartmentId)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .ThenInclude(ict => ict.Item)
+                .SelectMany(
+                    c => c.CompartmentType.ItemsCompartmentTypes,
+                    (c, ict) => new AllowedItemInCompartment
+                    {
+                        Id = ict.Item.Id,
+                        Code = ict.Item.Code,
+                        Description = ict.Item.Description,
+                        MaxCapacity = ict.MaxCapacity,
+                    }
+                )
+                .AsNoTracking();
+        }
+
         public ItemDetails GetById(int id)
         {
             var itemDetails = this.dataContext.Items

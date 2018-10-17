@@ -25,8 +25,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion Fields
 
-
-
         #region Constructors
 
         public LoadingUnitDetailsViewModel()
@@ -65,17 +63,16 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.loadingUnit;
             set
             {
-                if (this.SetProperty(ref this.loadingUnit, value))
+                if (!this.SetProperty(ref this.loadingUnit, value))
                 {
-                    if (this.loadingUnit != null)
-                    {
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id).Single();
-                    }
-                    else
-                    {
-                        this.CompartmentsDataSource = null;
-                    }
+                    return;
                 }
+
+                this.CompartmentsDataSource = this.loadingUnit != null
+                    ? this.dataSourceService
+                        .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
+                        .Single()
+                    : null;
             }
         }
 

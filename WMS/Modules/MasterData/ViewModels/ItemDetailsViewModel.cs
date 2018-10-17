@@ -63,17 +63,16 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.item;
             set
             {
-                if (this.SetProperty(ref this.item, value))
+                if (!this.SetProperty(ref this.item, value))
                 {
-                    if (this.item != null)
-                    {
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment>(nameof(ItemDetailsViewModel), this.item.Id).Single();
-                    }
-                    else
-                    {
-                        this.CompartmentsDataSource = null;
-                    }
+                    return;
                 }
+
+                this.CompartmentsDataSource = this.item != null
+                    ? this.dataSourceService
+                        .GetAll<Compartment>(nameof(ItemDetailsViewModel), this.item.Id)
+                        .Single()
+                    : null;
             }
         }
 

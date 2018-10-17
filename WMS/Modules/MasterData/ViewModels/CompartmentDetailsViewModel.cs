@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Linq;
+using System.Windows.Input;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
@@ -13,9 +15,13 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+        private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
         private CompartmentDetails compartment;
+        private bool compartmentHasAllowedItems;
         private object modelSelectionChangedSubscription;
         private ICommand saveCommand;
+        private object selectedAllowedItem;
 
         #endregion Fields
 
@@ -30,14 +36,67 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public IDataSource<AllowedItemInCompartment> AllowedItemsDataSource
+        {
+            get => this.allowedItemsDataSource;
+            set => this.SetProperty(ref this.allowedItemsDataSource, value);
+        }
+
         public CompartmentDetails Compartment
         {
             get => this.compartment;
-            set => this.SetProperty(ref this.compartment, value);
+            set
+            {
+                if (!this.SetProperty(ref this.compartment, value))
+                {
+                    return;
+                }
+
+                this.AllowedItemsDataSource = this.compartment != null
+                    ? this.dataSourceService
+                        .GetAll<AllowedItemInCompartment>(nameof(CompartmentDetailsViewModel), this.compartment.Id)
+                        .Single()
+                    : null;
+            }
+        }
+
+        public bool CompartmentHasAllowedItems
+        {
+            get => this.compartmentHasAllowedItems;
+            set => this.SetProperty(ref this.compartmentHasAllowedItems, value);
+        }
+
+        public AllowedItemInCompartment CurrentAllowedItemInCompartment
+        {
+            get
+            {
+                if (this.SelectedAllowedItem == null)
+                {
+                    return default(AllowedItemInCompartment);
+                }
+                if ((this.SelectedAllowedItem is DevExpress.Data.Async.Helpers
+                        .ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                {
+                    return default(AllowedItemInCompartment);
+                }
+                return (AllowedItemInCompartment)
+                    (((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this
+                        .SelectedAllowedItem).OriginalRow);
+            }
         }
 
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+
+        public object SelectedAllowedItem
+        {
+            get => this.selectedAllowedItem;
+            set
+            {
+                this.SetProperty(ref this.selectedAllowedItem, value);
+                this.RaisePropertyChanged(nameof(this.CurrentAllowedItemInCompartment));
+            }
+        }
 
         #endregion Properties
 
@@ -93,6 +152,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private void LoadData(int modelId)
         {
             this.Compartment = this.compartmentProvider.GetById(modelId);
+
+            this.CompartmentHasAllowedItems = this.compartmentProvider.HasAnyAllowedItem(modelId);
         }
 
         #endregion Methods
