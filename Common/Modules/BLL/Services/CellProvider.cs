@@ -73,8 +73,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                .Include(c => c.CellStatus)
                .Include(c => c.CellType)
                .Where(actualWhereFunc)
-               .Select(c => new Cell(c.Id)
+               .Select(c => new Cell
                {
+                   Id = c.Id,
                    AbcClass = c.AbcClass.Description,
                    Column = c.Column,
                    Floor = c.Floor,

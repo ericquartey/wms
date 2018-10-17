@@ -3,7 +3,7 @@ using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemsViewModel : EntityListViewModel<Item, int>
+    public class ItemsViewModel : EntityListViewModel<Item>
     {
     }
 }

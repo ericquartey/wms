@@ -74,8 +74,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                .Include(m => m.Aisle)
                .Include(m => m.MachineType)
                .Where(actualWhereFunc)
-               .Select(m => new Machine(m.Id)
+               .Select(m => new Machine
                {
+                   Id = m.Id,
                    ActualWeight = m.ActualWeight,
                    AisleName = m.Aisle.Name,
                    AutomaticTime = m.AutomaticTime,

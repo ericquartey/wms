@@ -4,16 +4,8 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Machine : BusinessObject<int>
+    public sealed class Machine : BusinessObject
     {
-        #region Constructors
-
-        public Machine(int id) : base(id)
-        {
-        }
-
-        #endregion Constructors
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]

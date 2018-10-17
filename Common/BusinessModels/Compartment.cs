@@ -3,20 +3,13 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Compartment : BusinessObject<int>
+    public sealed class Compartment : BusinessObject
     {
         #region Fields
 
         private int stock;
 
         #endregion Fields
-
-        #region Constructors
-
-        public Compartment(int id) : base(id)
-        { }
-
-        #endregion Constructors
 
         #region Properties
 

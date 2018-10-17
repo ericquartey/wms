@@ -30,10 +30,6 @@
                       ExpandDirection="Left"
                       IsExpanded="True">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
                 <wms:TileBar ItemsSource="{Binding Filters}"
                              SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
             </Grid>
@@ -53,9 +49,9 @@
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"
-                                CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
                                 CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItem, Mode=TwoWay}"
                                 ItemType="{x:Type models:Compartment}"
+                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
