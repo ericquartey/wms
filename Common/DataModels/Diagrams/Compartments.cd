@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Ferretto.Common.DataModels.Compartment">
-    <Position X="4.25" Y="0.75" Width="2.5" />
+    <Position X="7.75" Y="0.75" Width="2.5" />
     <Members>
       <Property Name="CompartmentStatusId" Hidden="true" />
       <Property Name="CompartmentTypeId" Hidden="true" />
@@ -13,7 +13,7 @@
       <Property Name="PackageTypeId" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>YABCAAAsBABAgAACgBosYEAEgCgAAEAAAACIAIJAEAA=</HashCode>
+      <HashCode>YABCAAAsBABAgAACgBooYEAEgCgAAEAAAAAIAIJAEAA=</HashCode>
       <FileName>Compartment.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -23,7 +23,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Ferretto.Common.DataModels.CompartmentType">
-    <Position X="8.75" Y="1" Width="1.75" />
+    <Position X="12.25" Y="1" Width="1.75" />
     <Members>
       <Property Name="Compartments" Hidden="true" />
       <Property Name="DefaultCompartments" Hidden="true" />
@@ -35,7 +35,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Ferretto.Common.DataModels.Item">
-    <Position X="8.75" Y="5" Width="2" />
+    <Position X="12.25" Y="5" Width="2" />
     <Members>
       <Property Name="AbcClassId" Hidden="true" />
       <Property Name="Compartments" Hidden="true" />
@@ -47,12 +47,12 @@
       <Property Name="Missions" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>YgAiAAAEhAQgBQACQAkoAEBIQCAQABACBQAQAAEAAAA=</HashCode>
+      <HashCode>YgAiAAAEhAQgBQACQCkoAEBIQCAQABADBQAQAAEAAAA=</HashCode>
       <FileName>Item.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Ferretto.Common.DataModels.LoadingUnit">
-    <Position X="0.5" Y="1.25" Width="2.5" />
+    <Position X="4" Y="0.75" Width="2.5" />
     <Members>
       <Property Name="AbcClassId" Hidden="true" />
       <Property Name="CellId" Hidden="true" />
@@ -67,9 +67,12 @@
       <HashCode>wAAKBAKEBAAAAQACQEhwQCAAAGAAAAAAAESQAAEAAAA=</HashCode>
       <FileName>LoadingUnit.cs</FileName>
     </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Cell" />
+    </ShowAsAssociation>
   </Class>
   <Class Name="Ferretto.Common.DataModels.ItemCompartmentType">
-    <Position X="8.75" Y="3.5" Width="2.5" />
+    <Position X="12.25" Y="3.25" Width="2.5" />
     <Members>
       <Property Name="CompartmentTypeId" Hidden="true" />
       <Property Name="ItemId" Hidden="true" />
@@ -82,6 +85,23 @@
       <Property Name="CompartmentType" />
       <Property Name="Item" />
     </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.Cell">
+    <Position X="0.75" Y="0.75" Width="2" />
+    <Members>
+      <Property Name="AbcClassId" Hidden="true" />
+      <Property Name="AisleId" Hidden="true" />
+      <Property Name="CellStatusId" Hidden="true" />
+      <Property Name="CellTypeId" Hidden="true" />
+      <Property Name="DestinationMissions" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+      <Property Name="SourceMissions" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIQCAAQgAAAAgQgEgAJAAAAgAgAAAAAAAAkQAAAAAAg=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

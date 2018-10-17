@@ -80,7 +80,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    AisleName = m.Aisle.Name,
                    AutomaticTime = m.AutomaticTime,
                    BuildDate = m.BuildDate,
-                   CradlesCount = m.Cradles, // TODO: update DataModel to use CradlesCount
+                   CradlesCount = m.CradlesCount,
                    CustomerAddress = m.CustomerAddress,
                    CustomerCity = m.CustomerCity,
                    CustomerCountry = m.CustomerCountry,
@@ -90,7 +90,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    Image = m.Image,
                    InputLoadingUnitsCount = m.InputLoadingUnitsCount,
                    InstallationDate = m.InstallationDate,
-                   LastPowerOn = m.LastPoweOn,  // TODO: update LastPoweOn
+                   LastPowerOn = m.LastPowerOn,
                    LastServiceDate = m.LastServiceDate,
                    Latitude = m.Latitude,
                    Longitude = m.Longitude,

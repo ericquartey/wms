@@ -151,6 +151,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                .AsNoTracking()
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
+               .Include(i => i.ItemCategory)
                .Where(actualWhereFunc)
                .GroupJoin(
                    context.Compartments
@@ -184,6 +185,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                        InventoryDate = a.Item.InventoryDate,
                        InventoryTolerance = a.Item.InventoryTolerance,
                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                       ItemCategoryDescription = a.Item.ItemCategory.Description,
                        LastModificationDate = a.Item.LastModificationDate,
                        LastPickDate = a.Item.LastPickDate,
                        LastStoreDate = a.Item.LastStoreDate,
