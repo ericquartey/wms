@@ -82,7 +82,10 @@ namespace Ferretto.Common.Controls
             if (this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
             {
                 var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
-                selectedModelId = model.Id;
+                if (model != null)
+                {
+                    selectedModelId = model.Id;
+                }
             }
 
             this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
