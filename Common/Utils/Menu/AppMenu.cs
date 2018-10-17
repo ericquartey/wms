@@ -36,7 +36,7 @@ namespace Ferretto.Common.Utils.Menu
             const string bgColor = "CommonSecondaryDark";
 
             this.menu.Items.Add(
-                new MainMenuItem(Navigation.Machine_Status, bgColor, Icons.MachineStatus, nameof(Modules.Machines), Modules.Machines.MACHINESANDDETAILS)
+                new MainMenuItem(Navigation.Machine_Status, bgColor, Icons.MachineStatus, nameof(Modules.Machines), Modules.Machines.MACHINES)
                 );
 
             this.menu.Items.Add(

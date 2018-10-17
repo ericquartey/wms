@@ -265,6 +265,7 @@
     <Compile Include="Services\Navigation.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Interfaces\INavigableViewModel.cs" />
+    <Compile Include="Triggers\WmsHistoryViewAppear.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
     <Compile Include="Controls\WmsGridControl\ViewModels\WmsGridViewModel.cs" />
     <Compile Include="ViewModels\BaseServiceNavigationViewModel.cs" />

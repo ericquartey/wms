@@ -30,9 +30,9 @@
 
         public const string MACHINEDETAILS = "MachineDetailsViewModel";
         public const string MACHINES = "MachinesViewModel";
-        public const string MACHINESANDDETAILS = "MachinesAndDetailsViewModel";
 
         #endregion Fields
+
     }
 
     public static class MasterData
