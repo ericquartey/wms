@@ -25,13 +25,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Constructors
-
-        public Item(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]

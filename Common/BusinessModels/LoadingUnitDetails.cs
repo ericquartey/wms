@@ -15,16 +15,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Constructors
-
-        public LoadingUnitDetails()
-        { }
-
-        public LoadingUnitDetails(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Events
 
         public event EventHandler AddedCompartmentEvent;

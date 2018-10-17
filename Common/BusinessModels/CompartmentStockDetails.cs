@@ -13,13 +13,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Constructors
-
-        public CompartmentStockDetails(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]

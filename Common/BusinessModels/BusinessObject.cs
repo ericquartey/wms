@@ -12,11 +12,6 @@ namespace Ferretto.Common.BusinessModels
         public BusinessObject()
         { }
 
-        protected BusinessObject(int id)
-        {
-            this.Id = id;
-        }
-
         #endregion Constructors
 
         #region Properties

@@ -21,16 +21,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Constructors
-
-        public CompartmentDetails()
-        { }
-
-        public CompartmentDetails(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
