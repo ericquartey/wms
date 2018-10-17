@@ -3,7 +3,7 @@ using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentsViewModel : EntityListViewModel<Compartment, int>
+    public class CompartmentsViewModel : EntityListViewModel<Compartment>
     {
         #region Methods
 
