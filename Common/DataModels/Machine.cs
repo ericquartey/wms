@@ -10,7 +10,7 @@ namespace Ferretto.Common.DataModels
         public string MachineTypeId { get; set; }
         public string Nickname { get; set; }
         public string RegistrationNumber { get; set; }
-        public int? Cradles { get; set; }
+        public int? CradlesCount { get; set; }
         public int? LoadingUnitsPerCradle { get; set; }
         public double? Latitude { get; set; }
         public double? Longitude { get; set; }
@@ -27,7 +27,7 @@ namespace Ferretto.Common.DataModels
         public string Image { get; set; }
         public long? TotalMaxWeight { get; set; }
         public long? ActualWeight { get; set; }
-        public DateTime? LastPoweOn { get; set; }
+        public DateTime? LastPowerOn { get; set; }
         public long? PowerOnTime { get; set; }
         public long? AutomaticTime { get; set; }
         public long? ManualTime { get; set; }
