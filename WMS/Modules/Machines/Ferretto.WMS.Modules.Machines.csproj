@@ -154,11 +154,7 @@
   <ItemGroup>
     <Compile Include="MachinesModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\MachinesAndDetailsViewModel.cs" />
     <Compile Include="ViewModels\MachinesViewModel.cs" />
-    <Compile Include="Views\MachinesAndDetailsView.xaml.cs">
-      <DependentUpon>MachinesAndDetailsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MachinesView.xaml.cs">
       <DependentUpon>MachinesView.xaml</DependentUpon>
     </Compile>
@@ -204,10 +200,6 @@
     </CodeAnalysisDictionary>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\MachinesAndDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\MachinesView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

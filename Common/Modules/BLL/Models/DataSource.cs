@@ -6,8 +6,8 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class DataSource<TModel, TId> : EntityInstantFeedbackSource, IDataSource<TModel, TId>
-        where TModel : BusinessObject<TId>
+    public class DataSource<TModel> : EntityInstantFeedbackSource, IDataSource<TModel>
+        where TModel : BusinessObject
     {
         #region Constructors
 

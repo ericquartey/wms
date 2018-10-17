@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface IBusinessObject<TId>
+    public interface IBusinessObject
     {
         #region Properties
 
-        TId Id { get; }
+        int Id { get; set; }
 
         #endregion Properties
     }

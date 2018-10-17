@@ -188,9 +188,9 @@
                         <wms:WmsGridControl MinHeight="300"
                                             MaxWidth="2000"
                                             MaxHeight="5000"
-                                            CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
                                             CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                             ItemType="{x:Type models:Compartment}"
+                                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
                                             SelectionMode="Row"
                                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>

@@ -4,7 +4,7 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Modules.BLL
 {
-    public interface ICompartmentProvider : IBusinessProvider<Compartment, CompartmentDetails, int>
+    public interface ICompartmentProvider : IBusinessProvider<Compartment, CompartmentDetails>
     {
         #region Methods
 

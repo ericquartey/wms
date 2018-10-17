@@ -41,8 +41,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
-                .Select(l => new LoadingUnit(l.Id)
+                .Select(l => new LoadingUnit
                 {
+                    Id = l.Id,
                     Code = l.Code,
                     LoadingUnitTypeDescription = l.LoadingUnitType.Description,
                     LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
@@ -83,10 +84,10 @@ namespace Ferretto.Common.Modules.BLL.Services
             }
             loadingUnitDetails.CellPairingChoices =
                 ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
-                .Select(i => new Enumeration<string>(i.ToString(), i.ToString())).ToList();
+                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
             loadingUnitDetails.ReferenceTypeChoices =
                 ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
-                .Select(i => new Enumeration<string>(i.ToString(), i.ToString())).ToList();
+                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
             loadingUnitDetails.CellChoices = this.enumerationProvider.GetCellsByAreaId(loadingUnitDetails.AreaId);
 
             return loadingUnitDetails;
@@ -112,8 +113,9 @@ namespace Ferretto.Common.Modules.BLL.Services
         }
 
         private static LoadingUnitDetails ProjectLoadingUnitDetails(DataModels.LoadingUnit l) =>
-            new LoadingUnitDetails(l.Id)
+            new LoadingUnitDetails
             {
+                Id = l.Id,
                 Code = l.Code,
                 AbcClassId = l.AbcClassId,
                 CellPositionId = l.CellPositionId,

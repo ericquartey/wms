@@ -5,7 +5,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class ItemDetails : BusinessObject<int>
+    public sealed class ItemDetails : BusinessObject
     {
         #region Fields
 
@@ -20,16 +20,9 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Constructors
-
-        public ItemDetails(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Properties
 
-        public IEnumerable<Enumeration<string>> AbcClassChoices { get; set; }
+        public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
         public string AbcClassId { get; set; }
@@ -77,12 +70,12 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
-        public IEnumerable<Enumeration<int>> ItemCategoryChoices { get; set; }
+        public IEnumerable<Enumeration> ItemCategoryChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
         public int? ItemCategoryId { get; set; }
 
-        public IEnumerable<Enumeration<int>> ItemManagementTypeChoices { get; set; }
+        public IEnumerable<Enumeration> ItemManagementTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
         public int? ItemManagementTypeId { get; set; }
@@ -103,7 +96,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
-        public IEnumerable<Enumeration<string>> MeasureUnitChoices { get; set; }
+        public IEnumerable<EnumerationString> MeasureUnitChoices { get; set; }
 
         [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
         public string MeasureUnitId { get; set; }

@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        private IDataSource<AllowedItemInCompartment, int> allowedItemsDataSource;
+        private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
         private CompartmentDetails compartment;
         private bool compartmentHasAllowedItems;
         private object modelSelectionChangedSubscription;
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<AllowedItemInCompartment, int> AllowedItemsDataSource
+        public IDataSource<AllowedItemInCompartment> AllowedItemsDataSource
         {
             get => this.allowedItemsDataSource;
             set => this.SetProperty(ref this.allowedItemsDataSource, value);
@@ -54,7 +54,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 this.AllowedItemsDataSource = this.compartment != null
                     ? this.dataSourceService
-                        .GetAll<AllowedItemInCompartment, int>(nameof(CompartmentDetailsViewModel), this.compartment.Id)
+                        .GetAll<AllowedItemInCompartment>(nameof(CompartmentDetailsViewModel), this.compartment.Id)
                         .Single()
                     : null;
             }
@@ -74,14 +74,14 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return default(AllowedItemInCompartment);
                 }
-                if (( this.SelectedAllowedItem is DevExpress.Data.Async.Helpers
-                        .ReadonlyThreadSafeProxyForObjectFromAnotherThread ) == false)
+                if ((this.SelectedAllowedItem is DevExpress.Data.Async.Helpers
+                        .ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
                 {
                     return default(AllowedItemInCompartment);
                 }
                 return (AllowedItemInCompartment)
-                    ( ( (DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) this
-                        .SelectedAllowedItem ).OriginalRow );
+                    (((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this
+                        .SelectedAllowedItem).OriginalRow);
             }
         }
 
