@@ -54,7 +54,6 @@
     <Compile Include="CellConfigurationCellType.cs" />
     <Compile Include="CellHeightClass.cs" />
     <Compile Include="CellPosition.cs" />
-    <Compile Include="CellsGroup.cs" />
     <Compile Include="CellSizeClass.cs" />
     <Compile Include="CellStatus.cs" />
     <Compile Include="CellTotal.cs" />

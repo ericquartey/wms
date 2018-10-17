@@ -131,7 +131,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            ((INavigableView)vmsView).Close();           
+            ((INavigableView)vmsView).Disappear();
         }
 
         private void WmsMainDockLayoutManager_DockOperationCompleted(System.Object sender, DevExpress.Xpf.Docking.Base.DockOperationCompletedEventArgs e)

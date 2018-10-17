@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -30,8 +29,7 @@ namespace Ferretto.Common.Controls
         protected EntityListViewModel()
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            var viewName = MvvmNaming.GetViewNameFromViewModelName(this.GetType().Name);
-            this.dataSources = dataSourceService.GetAll<TModel, TId>(viewName);
+            this.dataSources = dataSourceService.GetAll<TModel, TId>(this.GetType().Name);
 
             this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
             {
@@ -52,6 +50,11 @@ namespace Ferretto.Common.Controls
                 {
                     return default(TModel);
                 }
+                if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                {
+                    return default(TModel);
+                }
+
                 return (TModel)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
             }
         }
@@ -83,7 +86,13 @@ namespace Ferretto.Common.Controls
         public object SelectedItem
         {
             get => this.selectedItem;
-            set => this.SetProperty(ref this.selectedItem, value);
+            set
+            {
+                if (this.SetProperty(ref this.selectedItem, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.CurrentItem));
+                }
+            }
         }
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??

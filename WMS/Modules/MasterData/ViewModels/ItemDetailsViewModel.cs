@@ -5,7 +5,6 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
-using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -20,10 +19,9 @@ namespace Ferretto.WMS.Modules.MasterData
         private IDataSource<Compartment, int> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
-        private object itemSelectionChangedSubscription;
+        private object modelSelectionChangedSubscription;
         private ICommand saveCommand;
         private object selectedCompartment;
-        private ICommand viewCompartmentDetailsCommand;
 
         #endregion Fields
 
@@ -52,6 +50,10 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return default(Compartment);
                 }
+                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                {
+                    return default(Compartment);
+                }
                 return (Compartment)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
             }
         }
@@ -61,18 +63,16 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.item;
             set
             {
-                if (this.SetProperty(ref this.item, value))
+                if (!this.SetProperty(ref this.item, value))
                 {
-                    if (this.item != null)
-                    {
-                        var viewName = MvvmNaming.GetViewNameFromViewModelName(nameof(ItemDetailsViewModel));
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment, int>(viewName, this.item.Id).Single();
-                    }
-                    else
-                    {
-                        this.CompartmentsDataSource = null;
-                    }
+                    return;
                 }
+
+                this.CompartmentsDataSource = this.item != null
+                    ? this.dataSourceService
+                        .GetAll<Compartment, int>(nameof(ItemDetailsViewModel), this.item.Id)
+                        .Single()
+                    : null;
             }
         }
 
@@ -88,20 +88,16 @@ namespace Ferretto.WMS.Modules.MasterData
         public object SelectedCompartment
         {
             get => this.selectedCompartment;
-            set => this.SetProperty(ref this.selectedCompartment, value);
+            set
+            {
+                this.SetProperty(ref this.selectedCompartment, value);
+                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
+            }
         }
-
-        public ICommand ViewCompartmentDetailsCommand => this.viewCompartmentDetailsCommand ??
-                                      (this.viewCompartmentDetailsCommand = new DelegateCommand(this.ExecuteViewCompartmentDetailsCommand));
 
         #endregion Properties
 
         #region Methods
-
-        public void ExecuteViewCompartmentDetailsCommand()
-        {
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentCompartment?.Id);
-        }
 
         protected override void OnAppear()
         {
@@ -115,7 +111,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ItemSelectionChangedEvent<Item, int>>(this.itemSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<Item, int>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -125,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (modifiedRowCount > 0)
             {
-                this.EventService.Invoke(new ItemChangedEvent<ItemDetails, int>(this.Item.Id));
+                this.EventService.Invoke(new ModelChangedEvent<ItemDetails, int>(this.Item.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
@@ -133,7 +129,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.itemSelectionChangedSubscription = this.EventService.Subscribe<ItemSelectionChangedEvent<Item, int>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Item, int>>(
                 eventArgs =>
                 {
                     if (eventArgs.ModelIdHasValue)

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
@@ -10,10 +11,13 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty EnableHistoryViewProperty = DependencyProperty.Register(nameof(EnableHistoryView), typeof(bool), typeof(WmsView));
+
         private readonly INavigationService
             navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
         private readonly WmsViewType viewType;
+        private WmsHistoryView wmsHistoryView;
 
         #endregion Fields
 
@@ -30,8 +34,17 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public object Data { get; set; }
+
+        public bool EnableHistoryView
+        {
+            get => (bool)this.GetValue(EnableHistoryViewProperty);
+            set => this.SetValue(EnableHistoryViewProperty, value);
+        }
+
         public bool IsClosed { get; set; }
+
         public string MapId { get; set; }
+
         public string Title { get; set; }
         public string Token { get; set; }
         public WmsViewType ViewType => this.viewType;
@@ -40,7 +53,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Close()
+        public void Disappear()
         {
             if (this.IsClosed == false)
             {
@@ -48,7 +61,7 @@ namespace Ferretto.Common.Controls
                 var childViews = LayoutTreeHelper.GetVisualChildren(this).OfType<WmsView>();
                 foreach (var childView in childViews)
                 {
-                    childView.Close();
+                    childView.Disappear();
                 }
                 ((INavigableViewModel)this.DataContext).Disappear();
                 this.navigationService.Disappear(this.DataContext as INavigableViewModel);
@@ -56,9 +69,39 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        private void CheckToAddHistoryView()
+        {
+            if (this.wmsHistoryView != null)
+            {
+                return;
+            }
+
+            if (this.EnableHistoryView == false)
+            {
+                return;
+            }
+
+            var newWmsView = this.GetCloned();
+            this.wmsHistoryView = new WmsHistoryView(newWmsView);
+            this.Content = this.wmsHistoryView;
+        }
+
         private string GetAttachedViewModel()
         {
             return $"{this.GetType().ToString()}{Utils.Common.MODEL_SUFFIX}";
+        }
+
+        private WmsView GetCloned()
+        {
+            var clonedView = new WmsView()
+            {
+                MapId = this.MapId,
+                Data = this.Data,
+                DataContext = this.DataContext,
+                Token = this.Token,
+                Content = this.Content
+            };
+            return clonedView;
         }
 
         private string GetMainViewToken()
@@ -102,6 +145,7 @@ namespace Ferretto.Common.Controls
                     this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
             }
 
+            this.CheckToAddHistoryView();
             ((INavigableViewModel)this.DataContext)?.Appear();
         }
 

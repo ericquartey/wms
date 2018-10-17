@@ -97,6 +97,17 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .AsNoTracking();
         }
 
+        public bool HasAnyAllowedItem(int modelId)
+        {
+            return this.dataContext.Compartments
+                .Where(c => c.Id == modelId)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
+                .AsNoTracking()
+                .Any();
+        }
+
         public int Save(CompartmentDetails model)
         {
             if (model == null)

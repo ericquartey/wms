@@ -230,7 +230,8 @@
     </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
-    <Compile Include="Controls\WmsTrayControl\EventUI.cs" />
+    <Compile Include="Controls\WmsTrayControl\Utils\EventUI.cs" />
+    <Compile Include="Controls\WmsTrayControl\Utils\GraphicUtils.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCanvasItemsControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="Services\Navigation.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Interfaces\INavigableViewModel.cs" />
+    <Compile Include="Triggers\WmsHistoryViewAppear.cs" />
     <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
     <Compile Include="Controls\WmsGridControl\ViewModels\WmsGridViewModel.cs" />
     <Compile Include="ViewModels\BaseServiceNavigationViewModel.cs" />

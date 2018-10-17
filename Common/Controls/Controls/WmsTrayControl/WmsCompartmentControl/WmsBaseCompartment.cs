@@ -110,6 +110,8 @@ namespace Ferretto.Common.Controls
 
         public double OriginHeight { get; set; }
 
+        public double OriginLeft { get; set; }
+        public double OriginTop { get; set; }
         public double OriginWidth { get; set; }
 
         public int Quantity

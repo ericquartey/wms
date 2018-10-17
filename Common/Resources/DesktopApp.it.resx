@@ -150,4 +150,7 @@
   <data name="ElapsedTime" xml:space="preserve">
     <value>Tempo Trascorso</value>
   </data>
+  <data name="InitializingMachinesModule" xml:space="preserve">
+    <value>Inizializzazione modulo Macchine ...</value>
+  </data>
 </root>

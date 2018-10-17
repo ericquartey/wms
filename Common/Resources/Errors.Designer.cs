@@ -149,5 +149,14 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("SpecifiedPathNotInConfiguredImageFolder", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} ..
+        /// </summary>
+        public static string WmsHistoryViewAppearSyntax {
+            get {
+                return ResourceManager.GetString("WmsHistoryViewAppearSyntax", resourceCulture);
+            }
+        }
     }
 }

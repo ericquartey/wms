@@ -3,8 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
+             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
@@ -79,25 +81,24 @@
                             <wms:TextBox Grid.Row="0"
                                          Grid.ColumnSpan="2"
                                          FieldName="Code" />
-                            <wms:InfoText Grid.Row="1"
-                                          Grid.ColumnSpan="2"
-                                          FieldName="LoadingUnitCode" />
+                            <wms:TextBox Grid.Row="1"
+                                         Grid.ColumnSpan="2"
+                                         FieldName="LoadingUnitCode"
+                                         IsEnabled="False" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
                                           FieldName="CompartmentTypeId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=CompartmentTypeChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=CompartmentTypeChoices}" />
                             <wms:TextBox Grid.Row="2"
                                          Grid.Column="1"
-                                         FieldName="ItemPairingDescription"
+                                         FieldName="ItemPairing"
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="3"
                                           Margin="0,0,20,0"
                                           FieldName="CompartmentStatusId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=CompartmentStatusChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=CompartmentStatusChoices}" />
                         </Grid>
                     </GroupBox>
 
@@ -151,7 +152,7 @@
                             <wms:TextBox Grid.Row="0"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
-                                         FieldName="Item.Description"
+                                         FieldName="ItemDescription"
                                          IsEnabled="False" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.Column="0"
@@ -166,8 +167,7 @@
                                           Margin="0,0,20,0"
                                           FieldName="MaterialStatusId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=MaterialStatusChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=MaterialStatusChoices}" />
                             <wms:SpinEdit Grid.Row="2"
                                           Grid.Column="1"
                                           FieldName="FifoTime"
@@ -181,8 +181,7 @@
                                           Grid.Column="1"
                                           FieldName="PackageTypeId"
                                           IsEnabled="False"
-                                          ItemsSource="{Binding Path=PackageTypeChoices}"
-                                          ValueMember="Id" />
+                                          ItemsSource="{Binding Path=PackageTypeChoices}" />
                             <wms:TextBox Grid.Row="4"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
@@ -226,28 +225,42 @@
                               Grid.Column="0"
                               Margin="0"
                               Header="{x:Static res:MasterData.AllowedItems}">
-                        <wms:WmsGridControl MinHeight="300"
-                                            MaxWidth="2000"
-                                            MaxHeight="5000"
-                                            CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AllowedItemsSource, Mode=OneWay}"
-                                            ItemType="{x:Type models:ItemInCompartment}"
-                                            SelectionMode="Row">
-                            <wms:WmsGridControl.View>
-                                <dxg:TableView AllowEditing="False"
-                                               AllowGrouping="False"
-                                               AllowMoveColumnToDropArea="False"
-                                               NavigationStyle="Row"
-                                               ShowGroupPanel="False"
-                                               ShowIndicator="False"
-                                               ShowSearchPanelMode="Never" />
-                            </wms:WmsGridControl.View>
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Code" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Description" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Capacity" />
-                        </wms:WmsGridControl>
+                        <StackPanel Margin="0,10,0,0">
+                            <TextBlock Text="{x:Static res:MasterData.CompartmentHasNoAllowedItems}"
+                                       Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVIC}}" />
+                            <wms:WmsGridControl MinHeight="200"
+                                                MaxWidth="2000"
+                                                MaxHeight="1000"
+                                                CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AllowedItemsDataSource, Mode=OneWay}"
+                                                CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedAllowedItem, Mode=TwoWay}"
+                                                ItemType="{x:Type models:AllowedItemInCompartment}"
+                                                SelectionMode="Row"
+                                                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
+                                <wms:WmsGridControl.View>
+                                    <dxg:TableView AllowEditing="False"
+                                                   AllowGrouping="False"
+                                                   AllowMoveColumnToDropArea="False"
+                                                   NavigationStyle="Row"
+                                                   ShowGroupPanel="False"
+                                                   ShowIndicator="False"
+                                                   ShowSearchPanelMode="Never">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="RowDoubleClick">
+                                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentAllowedItemInCompartment.Id, Mode=OneWay}"
+                                                                          StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                                          StartViewName="{x:Static modules:MasterData.ITEMDETAILS}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </dxg:TableView>
+                                </wms:WmsGridControl.View>
+                                <dxg:GridColumn Width="70*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="150*"
+                                                FieldName="Description" />
+                                <dxg:GridColumn Width="50*"
+                                                FieldName="MaxCapacity" />
+                            </wms:WmsGridControl>
+                        </StackPanel>
                     </GroupBox>
 
                     <GroupBox Grid.Row="2"
@@ -257,7 +270,7 @@
                               Header="{x:Static res:MasterData.CompartmentPosition}">
                         <Image HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
-                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/images/udc_png" />
+                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/images/udc_compartment.png" />
                     </GroupBox>
 
                     <StackPanel Grid.Row="0"

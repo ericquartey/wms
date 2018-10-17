@@ -30,7 +30,6 @@ namespace Ferretto.Common.EF
         public virtual DbSet<CellHeightClass> CellHeightClasses { get; set; }
         public virtual DbSet<CellPosition> CellPositions { get; set; }
         public virtual DbSet<Cell> Cells { get; set; }
-        public virtual DbSet<CellsGroup> CellsGroups { get; set; }
         public virtual DbSet<CellSizeClass> CellSizeClasses { get; set; }
         public virtual DbSet<CellStatus> CellStatuses { get; set; }
         public virtual DbSet<CellTotal> CellTotals { get; set; }
@@ -110,7 +109,6 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new CellConfigurationCellTypeConfiguration());
             modelBuilder.ApplyConfiguration(new CellHeightClassConfiguration());
             modelBuilder.ApplyConfiguration(new CellPositionConfiguration());
-            modelBuilder.ApplyConfiguration(new CellsGroupConfiguration());
             modelBuilder.ApplyConfiguration(new CellSizeClassConfiguration());
             modelBuilder.ApplyConfiguration(new CellStatusConfiguration());
             modelBuilder.ApplyConfiguration(new CellTotalConfiguration());

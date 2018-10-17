@@ -17,7 +17,6 @@ namespace Ferretto.Common.DataModels
         public IEnumerable<CellTypeAisle> AisleCellsTypes { get; set; }
         public IEnumerable<LoadingUnitTypeAisle> AisleLoadingUnitTypes { get; set; }
         public IEnumerable<CellTotal> CellTotals { get; set; }
-        public IEnumerable<CellsGroup> CellsGroups { get; set; }
         public IEnumerable<Machine> Machines { get; set; }
     }
 }

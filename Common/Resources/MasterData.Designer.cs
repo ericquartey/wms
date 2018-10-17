@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This compartment has no allowed items..
+        /// </summary>
+        public static string CompartmentHasNoAllowedItems {
+            get {
+                return ResourceManager.GetString("CompartmentHasNoAllowedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Information.
         /// </summary>
         public static string CompartmentInformation {
@@ -129,6 +138,15 @@ namespace Ferretto.Common.Resources {
         public static string ContentInformation {
             get {
                 return ResourceManager.GetString("ContentInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Cell Information.
+        /// </summary>
+        public static string CurrentCellInformation {
+            get {
+                return ResourceManager.GetString("CurrentCellInformation", resourceCulture);
             }
         }
         
@@ -214,11 +232,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Information.
+        /// </summary>
+        public static string LoadingUnitInformation {
+            get {
+                return ResourceManager.GetString("LoadingUnitInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit saved sucessfully.
         /// </summary>
         public static string LoadingUnitSavedSuccessfully {
             get {
                 return ResourceManager.GetString("LoadingUnitSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This loading unit has no compartments..
+        /// </summary>
+        public static string LoadingUnitWithNoCompartment {
+            get {
+                return ResourceManager.GetString("LoadingUnitWithNoCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Other Information.
+        /// </summary>
+        public static string OtherInformation {
+            get {
+                return ResourceManager.GetString("OtherInformation", resourceCulture);
             }
         }
         

@@ -6,7 +6,7 @@ namespace Ferretto.Common.BLL.Interfaces
     {
         #region Methods
 
-        IEnumerable<IDataSource<TModel, TId>> GetAll<TModel, TId>(string viewName, object parameter = null) where TModel : IBusinessObject<TId>;
+        IEnumerable<IDataSource<TModel, TId>> GetAll<TModel, TId>(string viewModelName, object parameter = null) where TModel : IBusinessObject<TId>;
 
         #endregion Methods
     }
