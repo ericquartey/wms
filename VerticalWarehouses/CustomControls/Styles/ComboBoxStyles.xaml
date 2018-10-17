@@ -7,11 +7,18 @@
         <Setter Property="Background" Value="{StaticResource FerrettoDarkGray}" />
         <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
-        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <EventSetter Event="PreviewMouseDown"
-                     Handler="OpenDropDownList" />
+    </Style>
+    <Style x:Key="UserComboBoxStyle"
+           TargetType="{x:Type ComboBox}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="StandardComboBoxItemStyle"
            TargetType="{x:Type ComboBoxItem}">
@@ -19,13 +26,16 @@
         <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="20" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
-    <Style x:Key="StandardMainWindowComboBoxItemStyle"
+    <Style x:Key="UserComboBoxItemStyle"
            TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="Background" Value="{StaticResource FerrettoLightGray}" />
-        <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="20" />
-        <Setter Property="Height" Value="80" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 </ResourceDictionary>

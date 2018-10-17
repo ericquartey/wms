@@ -23,4 +23,10 @@
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="20" />
     </Style>
+    <Style x:Key="UserBodyTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
+    </Style>
 </ResourceDictionary>

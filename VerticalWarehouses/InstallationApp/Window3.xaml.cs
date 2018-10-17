@@ -19,9 +19,13 @@ namespace Ferretto.VW.InstallationApp
     /// </summary>
     public partial class Window3 : Window
     {
+        #region Constructors
+
         public Window3()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion Constructors
     }
 }

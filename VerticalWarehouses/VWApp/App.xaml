@@ -11,6 +11,8 @@
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextStyles.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ComboBoxTemplates.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/UserComboBoxTemplates.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ComboBoxItemsTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.Navigation;
 using Ferretto.VW.InstallationApp.Views;
 using Prism.Mvvm;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Prism.Commands;
+using System.Windows.Media;
+using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -16,6 +13,14 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private const string FERRETTOBLACK = "#0A0A0A";
+        private const string FERRETTODARKGRAY = "#293133";
+        private const string FERRETTOGREEN = "#57A639";
+        private const string FERRETTOLIGHTGRAY = "#c5c7c4";
+        private const string FERRETTOMEDIUMGRAY = "#707173";
+        private const string FERRETTOPUREWHITE = "#ffffff";
+        private const string FERRETTORED = "#e2001a";
+        private const string FERRETTOWHITEGRAY = "#e6e6e6";
         private readonly LowSpeedMovementsTestView lowSpeddMovementsTestViewInstance;
         private readonly VerifyCircuitIntegrityView verifyCircuitIntegrityViewInstance;
         private readonly VerticalAxisCalibrationView verticalAxisCalibrationViewInstance;
@@ -27,6 +32,10 @@ namespace Ferretto.VW.InstallationApp
         private bool enableVerifyCircuitIntegrityButton;
         private bool enableVerticalAxisCalibrationButton;
         private ICommand lowSpeedMovementsTestButtonCommand;
+        private SolidColorBrush machineModeComboBoxForegroundBrush = new SolidColorBrush();
+        private int machineModeComboBoxSelection;
+        private SolidColorBrush machineOnMarchComboBoxForegroundBrush = new SolidColorBrush();
+        private int machineOnMarchComboBoxSelection;
         private ICommand verifyCircuitIntegrityButtonCommand;
         private ICommand verticalAxisCalibrationButtonCommand;
 
@@ -53,6 +62,58 @@ namespace Ferretto.VW.InstallationApp
         public Boolean EnableVerifyCircuitIntegrityButton { get => this.enableVerifyCircuitIntegrityButton; set => this.enableVerifyCircuitIntegrityButton = value; }
         public Boolean EnableVerticalAxisCalibrationButton { get => this.enableVerticalAxisCalibrationButton; set => this.enableVerticalAxisCalibrationButton = value; }
         public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(this.ExecuteLowSpeedMovementsTestButtonCommand));
+
+        public SolidColorBrush MachineModeComboBoxForegroundBrush
+        {
+            get => this.machineModeComboBoxForegroundBrush; set
+            {
+                Debug.Print("Selected machineMode: " + this.MachineModeComboBoxSelection + "\n");
+                switch (this.MachineModeComboBoxSelection)
+                {
+                    case 0:
+                        this.machineModeComboBoxForegroundBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom("#0000ff"));
+                        this.SetProperty(ref this.machineModeComboBoxForegroundBrush, (SolidColorBrush)(new BrushConverter().ConvertFrom("#0000ff")));
+                        break;
+
+                    case 1:
+                        this.machineModeComboBoxForegroundBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOGREEN));
+                        this.SetProperty(ref this.machineModeComboBoxForegroundBrush, (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOGREEN)));
+                        break;
+
+                    default:
+                        this.SetProperty(ref this.machineModeComboBoxForegroundBrush, (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOPUREWHITE)));
+                        break;
+                }
+            }
+        }
+
+        public Int32 MachineModeComboBoxSelection { get => this.machineModeComboBoxSelection; set => this.SetProperty(ref this.machineModeComboBoxSelection, value); }
+
+        public SolidColorBrush MachineOnMarchComboBoxForegroundBrush
+        {
+            get => this.machineOnMarchComboBoxForegroundBrush;
+            set
+            {
+                switch (this.MachineOnMarchComboBoxSelection)
+                {
+                    case 0:
+                        this.machineOnMarchComboBoxForegroundBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOGREEN));
+                        this.SetProperty(ref this.machineOnMarchComboBoxForegroundBrush, (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOGREEN)));
+                        break;
+
+                    case 1:
+                        this.machineOnMarchComboBoxForegroundBrush = (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOWHITEGRAY));
+                        this.SetProperty(ref this.machineOnMarchComboBoxForegroundBrush, (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOWHITEGRAY)));
+                        break;
+
+                    default:
+                        this.SetProperty(ref this.machineOnMarchComboBoxForegroundBrush, (SolidColorBrush)(new BrushConverter().ConvertFrom(FERRETTOPUREWHITE)));
+                        break;
+                }
+            }
+        }
+
+        public Int32 MachineOnMarchComboBoxSelection { get => this.machineOnMarchComboBoxSelection; set => this.SetProperty(ref this.machineOnMarchComboBoxSelection, value); }
         public ICommand VerifyCircuitIntegrityButtonCommand => this.verifyCircuitIntegrityButtonCommand ?? (this.verifyCircuitIntegrityButtonCommand = new DelegateCommand(this.ExecuteVerifyCircuitIntegrityButtonCommand));
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(this.ExecuteVerticalAxisCalibrationButtonCommand));
 
