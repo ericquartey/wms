@@ -74,6 +74,9 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineMissionTime), ResourceType = typeof(BusinessObjects))]
         public long? MissionTime { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.MachineModel), ResourceType = typeof(BusinessObjects))]
+        public string Model { get; set; }
+
         [Display(Name = nameof(BusinessObjects.MachineMovedLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
         public long? MovedLoadingUnitsCount { get; set; }
 
