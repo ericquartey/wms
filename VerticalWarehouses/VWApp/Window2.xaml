@@ -10,36 +10,36 @@
         mc:Ignorable="d">
     <Grid>
         <Image Opacity=".5"
-               Source="/Assets/VertimagFronte.png" />
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/VertimagFronte.png" />
         <StackPanel Width="300">
             <Rectangle Height="50" />
             <Image Margin="5"
-                   Source="/Assets/ferrettologo_768x162.jpg"
+                   Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
                    Stretch="Uniform" />
             <Rectangle Height="50" />
             <Label Margin="5"
                    HorizontalContentAlignment="Center"
                    Content="User Login:"
-                   Style="{StaticResource ResourceKey=BodyStyle}" />
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <TextBox Name="UserLoginTextBox"
                      Margin="5"
                      HorizontalContentAlignment="Center"
-                     Style="{StaticResource ResourceKey=BodyStyle}" />
+                     Style="{StaticResource StandardBodyTextStyle}" />
             <Label Margin="5"
                    HorizontalContentAlignment="Center"
                    Content="Password Login:"
-                   Style="{StaticResource ResourceKey=BodyStyle}" />
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <TextBox Name="PasswordLoginTextBox"
                      Margin="5"
                      HorizontalContentAlignment="Center"
-                     Style="{StaticResource ResourceKey=BodyStyle}" />
+                     Style="{StaticResource StandardBodyTextStyle}" />
             <Button Height="120"
-                    Style="{StaticResource ButtonStyle}">
+                    Style="{StaticResource StandardButtonStyle}">
                 Log In
             </Button>
             <Rectangle Height="200" />
             <Button Height="60"
-                    Style="{StaticResource ButtonStyle}">
+                    Style="{StaticResource StandardButtonStyle}">
                 Switch Off System
             </Button>
         </StackPanel>
