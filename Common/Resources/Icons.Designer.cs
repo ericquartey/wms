@@ -331,6 +331,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/traslo_icon4_gray_alpha.png.
+        /// </summary>
+        public static string MachinesViewTraslo {
+            get {
+                return ResourceManager.GetString("MachinesViewTraslo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/vertimag_m_icon_gray_alpha.png.
+        /// </summary>
+        public static string MachinesViewVertimagM {
+            get {
+                return ResourceManager.GetString("MachinesViewVertimagM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/vertimag_xs_icon_gray_alpha.png.
+        /// </summary>
+        public static string MachinesViewVertimagXS {
+            get {
+                return ResourceManager.GetString("MachinesViewVertimagXS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png.
         /// </summary>
         public static string MachineTypes {
