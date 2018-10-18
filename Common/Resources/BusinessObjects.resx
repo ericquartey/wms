@@ -621,4 +621,8 @@
     <value>Model</value>
     <comment>Machine - Model</comment>
   </data>
+  <data name="MachineArea" xml:space="preserve">
+    <value>Area</value>
+    <comment>Machine - Area</comment>
+  </data>
 </root>

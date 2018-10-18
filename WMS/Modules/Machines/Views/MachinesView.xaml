@@ -21,7 +21,7 @@
         <Grid.Resources>
             <DataTemplate x:Key="cardTemplate">
 
-                <Grid>
+                <Grid DataContext="{Binding Row}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
@@ -30,16 +30,14 @@
                                   Width="70"
                                   Height="70"
                                   VerticalAlignment="Top"
-                                  Path="{Binding Path=Row.Image}" />
+                                  Path="{Binding Path=Image}" />
                     <StackPanel Grid.Column="1"
-                                Margin="12,0,12,0"
+                                Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
-                                DataContext="{Binding Row}"
                                 Orientation="Vertical">
                         <wms:InfoText FieldName="MovedLoadingUnitsCount" />
-                        <wms:InfoText FieldName="NextServiceDate" />
+                        <wms:InfoText FieldName="AreaName" />
                         <wms:InfoText FieldName="RegistrationNumber" />
-
 
                     </StackPanel>
                 </Grid>
@@ -48,7 +46,7 @@
 
             <DataTemplate x:Key="cardHeaderTemplate">
                 <TextBlock VerticalAlignment="Center"
-                           FontSize="23"
+                           FontSize="20"
                            Text="{Binding Path=RowData.Row.Nickname}" />
             </DataTemplate>
         </Grid.Resources>
@@ -121,7 +119,7 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn FieldName="MachineTypeDescription" />
-                    <dxg:GridColumn FieldName="AisleName" />
+                    <dxg:GridColumn FieldName="AreaName" />
                     <dxg:GridColumn FieldName="Nickname" />
                     <dxg:GridColumn FieldName="RegistrationNumber" />
                 </wms:WmsGridControl.Columns>

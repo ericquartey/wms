@@ -907,6 +907,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string MachineArea {
+            get {
+                return ResourceManager.GetString("MachineArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic Time.
         /// </summary>
         public static string MachineAutomaticTime {
