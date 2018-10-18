@@ -115,6 +115,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to M.
         /// </summary>
         public static string MillionsSymbol {
@@ -129,6 +138,15 @@ namespace Ferretto.Common.Resources {
         public static string Open {
             get {
                 return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Login:.
+        /// </summary>
+        public static string PasswordLogin {
+            get {
+                return ResourceManager.GetString("PasswordLogin", resourceCulture);
             }
         }
         
@@ -169,6 +187,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Switch Off.
+        /// </summary>
+        public static string SwitchOff {
+            get {
+                return ResourceManager.GetString("SwitchOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to k.
         /// </summary>
         public static string ThousandsSymbol {
@@ -183,6 +210,15 @@ namespace Ferretto.Common.Resources {
         public static string UnitOfMeasurement {
             get {
                 return ResourceManager.GetString("UnitOfMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Login:.
+        /// </summary>
+        public static string UserLogin {
+            get {
+                return ResourceManager.GetString("UserLogin", resourceCulture);
             }
         }
     }

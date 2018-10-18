@@ -11,4 +11,12 @@
     <SolidColorBrush x:Key="FerrettoBlack">#0A0A0A</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoGreen">#57A639</SolidColorBrush>
     <SolidColorBrush x:Key="FerrettoPureWhite">#ffffff</SolidColorBrush>
+    <Color x:Key="ColorFerrettoWhiteGray">#e6e6e6</Color>
+    <Color x:Key="ColorFerrettoLightGray">#c5c7c4</Color>
+    <Color x:Key="ColorFerrettoMediumGray">#707173</Color>
+    <Color x:Key="ColorFerrettoDarkGray">#293133</Color>
+    <Color x:Key="ColorFerrettoRed">#e2001a</Color>
+    <Color x:Key="ColorFerrettoBlack">#0A0A0A</Color>
+    <Color x:Key="ColorFerrettoGreen">#57A639</Color>
+    <Color x:Key="ColorFerrettoPureWhite">#ffffff</Color>
 </ResourceDictionary>

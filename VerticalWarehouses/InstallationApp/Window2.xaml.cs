@@ -1,21 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Ferretto.VW.Navigation;
-using Ferretto.VW.InstallationApp.Views;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public partial class MainWindow : Window
+    /// <summary>
+    /// Interaction logic for Window2.xaml
+    /// </summary>
+    public partial class Window2 : Window
     {
         #region Constructors
 
-        public MainWindow()
+        public Window2()
         {
             NavigationService.BackToVWAppEventHandler += this.CloseThisMainWindow;
             this.InitializeComponent();
