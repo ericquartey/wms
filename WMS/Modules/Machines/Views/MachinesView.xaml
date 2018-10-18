@@ -20,40 +20,36 @@
 
         <Grid.Resources>
             <DataTemplate x:Key="cardTemplate">
-                <StackPanel Orientation="Vertical">
-                    <Grid Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <wms:WmsImage Grid.Column="0"
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <wms:WmsImage Grid.Column="0"
                                   Width="70"
                                   Height="70"
-                                      Path="{Binding Path=Row.Image}" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="12,0,12,0"
-                                    VerticalAlignment="Top"
-                                    Orientation="Vertical">
-                            <wms:InfoText FieldName="RegistrationNumber" />
-                            <StackPanel Margin="0,0,0,4"
-                                        Orientation="Horizontal">
-                                <TextBlock Text="Registration number" />
-                                <TextBlock Text="{Binding Path=Row.RegistrationNumber}"
-                                           TextTrimming="CharacterEllipsis" />
-                            </StackPanel>
+                                  VerticalAlignment="Top"
+                                  Path="{Binding Path=Row.Image}" />
+                    <StackPanel Grid.Column="1"
+                                Margin="12,0,12,0"
+                                VerticalAlignment="Top"
+                                DataContext="{Binding Row}"
+                                Orientation="Vertical">
+                        <wms:InfoText FieldName="MovedLoadingUnitsCount" />
+                        <wms:InfoText FieldName="NextServiceDate" />
+                        <wms:InfoText FieldName="RegistrationNumber" />
 
-                        </StackPanel>
-                    </Grid>
 
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
+
             </DataTemplate>
 
             <DataTemplate x:Key="cardHeaderTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="4,0,0,0"
-                               VerticalAlignment="Center"
-                               Text="{Binding Path=Row.Nickname}" />
-                </StackPanel>
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="23"
+                           Text="{Binding Path=RowData.Row.Nickname}" />
             </DataTemplate>
         </Grid.Resources>
 
@@ -96,12 +92,12 @@
                                 ShowBorder="False">
 
                 <dxg:GridControl.View>
-                    <dxg:CardView Name="view"
-                                  AllowCardResizing="false"
+                    <dxg:CardView AllowCardResizing="false"
                                   AllowEditing="False"
                                   CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
+                                  CardLayout="Rows"
                                   CardTemplate="{StaticResource cardTemplate}"
-                                  FixedSize="250"
+                                  FixedSize="230"
                                   MinFixedSize="100"
                                   NavigationStyle="Row"
                                   PrintAutoCardWidth="False"

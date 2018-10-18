@@ -1,15 +1,15 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
+    public class WmsGridControl : GridControl
 
     {
         #region Fields
@@ -61,9 +61,9 @@ namespace Ferretto.Common.Controls
 
         private async void AsyncOperationCompletedAsync(Object sender, RoutedEventArgs e)
         {
-            var wmsView = (LayoutTreeHelper.GetVisualParents(this)
+            var wmsView = LayoutTreeHelper.GetVisualParents(this)
                     .OfType<INavigableView>()
-                    .FirstOrDefault());
+                    .FirstOrDefault();
 
             if (wmsView?.DataContext is IEntityListViewModel viewModel)
             {
@@ -84,9 +84,7 @@ namespace Ferretto.Common.Controls
                 throw new InvalidOperationException("WmsGridControl ItemType is missing.");
             }
 
-            var viewModelClass = typeof(WmsGridViewModel<,>);
-            var idType = ((TypeInfo)this.itemType.GetInterface(typeof(IBusinessObject).FullName)).DeclaredProperties.First();
-            var constructedClass = viewModelClass.MakeGenericType(this.ItemType, idType.PropertyType);
+            var constructedClass = typeof(WmsGridViewModel<>).MakeGenericType(this.ItemType);
             return Activator.CreateInstance(constructedClass);
         }
 
