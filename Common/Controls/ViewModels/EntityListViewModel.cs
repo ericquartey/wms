@@ -3,7 +3,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.Practices.ServiceLocation;
@@ -18,7 +17,8 @@ namespace Ferretto.Common.Controls
 
         private readonly IEnumerable<IDataSource<TModel>> dataSources;
         private IEnumerable<Tile> filterTiles;
-        private EntityInstantFeedbackSource selectedDataSource;
+        private bool flattenDataSource;
+        private object selectedDataSource;
         private Tile selectedFilterTile;
         private object selectedItem;
         private ICommand viewDetailsCommand;
@@ -66,7 +66,16 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
-        public EntityInstantFeedbackSource SelectedDataSource
+        /// <summary>
+        /// When set to True, skips the usage of the DevExpress InstantFeedbackSource.
+        /// </summary>
+        public bool FlattenDataSource
+        {
+            get => this.flattenDataSource;
+            protected set => this.SetProperty(ref this.flattenDataSource, value);
+        }
+
+        public object SelectedDataSource
         {
             get => this.selectedDataSource;
             protected set => this.SetProperty(ref this.selectedDataSource, value);
@@ -79,7 +88,8 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedDataSource = this.dataSources.Single(d => d.Key == value.Key) as EntityInstantFeedbackSource;
+                    var dataSource = this.dataSources.Single(d => d.Key == value.Key);
+                    this.SelectedDataSource = this.flattenDataSource ? dataSource.GetData() : (object)dataSource;
                 }
             }
         }
@@ -97,7 +107,7 @@ namespace Ferretto.Common.Controls
         }
 
         public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
-                        (this.viewDetailsCommand = new DelegateCommand(this.ExecuteViewDetailsCommand));
+                                (this.viewDetailsCommand = new DelegateCommand(this.ExecuteViewDetailsCommand));
 
         #endregion Properties
 
