@@ -2,12 +2,37 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
     <DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
-        <Border Width="{Binding Width, Mode=TwoWay}"
-                Height="{Binding Height, Mode=TwoWay}">
-            <Rectangle Width="{Binding Width, Mode=TwoWay}"
-                       Height="{Binding Height, Mode=TwoWay}"
-                       Fill="{Binding ColorFill, Mode=TwoWay}"
-                       Stroke="{Binding Selected, Mode=TwoWay}" />
-        </Border>
+        <!--<Border Width="{Binding Width, Mode=TwoWay}"
+                Height="{Binding Height, Mode=TwoWay}">-->
+        <Rectangle x:Name="Rectangle"
+                   Width="{Binding Width, Mode=TwoWay}"
+                   Height="{Binding Height, Mode=TwoWay}"
+                   Fill="{Binding ColorFill, Mode=TwoWay}"
+                   Stroke="{Binding Selected, Mode=TwoWay}">
+            <Rectangle.InputBindings>
+                <MouseBinding Command="{Binding IsSelected}"
+                              Gesture="LeftClick" />
+            </Rectangle.InputBindings>
+        </Rectangle>
+        <!--</Border>-->
+        <!--<DataTemplate.Resources>
+            <Style>
+                <Setter Property="Margin" Value="0,0,0,0" />
+            </Style>
+        </DataTemplate.Resources>-->
+        <DataTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="Rectangle" Property="Fill" Value="Blue" />
+                <Setter TargetName="Rectangle" Property="Stroke" Value="Black" />
+                <Setter TargetName="Rectangle" Property="StrokeThickness" Value="3" />
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter TargetName="Rectangle" Property="Fill" Value="Green" />
+                <Setter TargetName="Rectangle" Property="Stroke" Value="Black" />
+                <Setter TargetName="Rectangle" Property="StrokeThickness" Value="3" />
+            </Trigger>
+            <!--<Trigger Property="IsSelected" Value="True" />-->
+
+        </DataTemplate.Triggers>
     </DataTemplate>
 </ResourceDictionary>

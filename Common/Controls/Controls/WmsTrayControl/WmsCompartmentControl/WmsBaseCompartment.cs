@@ -5,6 +5,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
@@ -21,6 +23,9 @@ namespace Ferretto.Common.Controls
 
     public class WmsBaseCompartment : INotifyPropertyChanged
     {
+        //public static readonly DependencyProperty IsSelectProperty = DependencyProperty.Register(
+        //            nameof(IsSelect), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnSelectChanged)));
+
         #region Fields
 
         private string article;
@@ -28,6 +33,7 @@ namespace Ferretto.Common.Controls
         private string colorBorder;
         private string colorFill;
         private double height;
+        private bool isSelect;
         private double left;
         private int quantity;
         private float rectangleBorderThickness;
@@ -85,6 +91,8 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public CompartmentDetails CompartmentDetails { get; set; }
+
         public double Height
         {
             get
@@ -98,6 +106,12 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public bool IsSelect
+        {
+            get { return this.isSelect; }
+            set { this.isSelect = value; this.OnPropertyChanged(nameof(this.IsSelect)); }
+        }
+
         public double Left
         {
             get { return this.left; }
@@ -108,11 +122,13 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public double OriginHeight { get; set; }
+        //public double OriginHeight { get; set; }
 
-        public double OriginLeft { get; set; }
-        public double OriginTop { get; set; }
-        public double OriginWidth { get; set; }
+        //public double OriginLeft { get; set; }
+
+        //public double OriginTop { get; set; }
+
+        //public double OriginWidth { get; set; }
 
         public int Quantity
         {
@@ -180,6 +196,11 @@ namespace Ferretto.Common.Controls
             {
                 handler(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        private static void OnSelectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Methods

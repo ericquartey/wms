@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
@@ -13,13 +14,16 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty LoadingUnitProperty = DependencyProperty.Register(
-                    nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
+                            nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
 
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
+                                    nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentSelectedChanged)));
+
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
-                    nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
+                            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
 
         #endregion Fields
 
@@ -30,6 +34,8 @@ namespace Ferretto.Common.Controls
             this.InitializeComponent();
             this.CanvasItemsControl.DataContext = new WmsTrayControlViewModel();
             this.SetBackground(this.ShowBackground);
+
+            this.CanvasItemsControl.TrayControl = this;
         }
 
         #endregion Constructors
@@ -48,6 +54,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ReadOnlyProperty, value);
         }
 
+        public CompartmentDetails SelectedItem
+        {
+            get => (CompartmentDetails)this.GetValue(SelectedItemProperty);
+            set => this.SetValue(SelectedItemProperty, value);
+        }
+
         public bool ShowBackground
         {
             get => (bool)this.GetValue(ShowBackgroundProperty);
@@ -58,6 +70,14 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                //viewModel.UpdateInputForm((CompartmentDetails)e.NewValue);
+            }
+        }
+
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
@@ -65,6 +85,11 @@ namespace Ferretto.Common.Controls
                 viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
             }
         }
+
+        //private static void OnSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.Common.BusinessModels;
@@ -27,7 +28,10 @@ namespace Ferretto.WMS.Modules.Compartment
             this.compartmentInput.YPosition = 0;
             this.compartmentInput.Stock = 0;
             this.compartmentInput.ItemCode = "Item";
+
             this.CompartmentInput = this.compartmentInput;
+
+            this.CompartmentInput.UpdateCompartmentEvent += this.CompatmentSelected_UpdateCompartmentEvent;
         }
 
         #endregion Constructors
@@ -51,17 +55,34 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #endregion Properties
 
-        #region Methods
+        //public LoadingUnitDetails CompartmentSelected { get => this.compa; set => this.SetProperty(ref this.loadingUnitDetails, value); }
+        //public void UpdateInput(CompartmentDetails compartmentDetails)
+        //{
+        //    //TODO
+        //    this.CompartmentSelected = compartmentDetails;
+        //}
 
-        public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
-        {
-            this.LoadingUnit = loadingUnitDetails;
-        }
+        //public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
+        //{
+        //    this.LoadingUnit = loadingUnitDetails;
+        //}
+
+        #region Methods
 
         protected override void OnAppear()
         {
             this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
+
+            //this.CompartmentSelected = new CompartmentDetails();
+            //this.CompartmentSelected.UpdateCompartmentEvent += this.CompatmentSelected_UpdateCompartmentEvent;
+        }
+
+        private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
+        {
+            this.CompartmentInput = (CompartmentDetails)sender;
+            //this.CompartmentInput;
+            //throw new NotImplementedException();
         }
 
         private void ExecuteNewCreateCompartmentCommand()

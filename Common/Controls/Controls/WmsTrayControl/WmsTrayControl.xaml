@@ -11,7 +11,15 @@
         <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
                                      Background="SkyBlue"
                                      ItemsSource="{Binding Items, Mode=TwoWay}">
-            <ctrls:WmsCanvasItemsControl.Resources />
+            <!--<ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" />-->
+
+            <!--  Selected="{Binding Path=(ItemsControls.AlternativeIndex)}"  -->
+            <!--<ctrls:WmsCanvasItemsControl.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </ctrls:WmsCanvasItemsControl.Resources>-->
             <ctrls:WmsCanvasItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
@@ -21,11 +29,55 @@
                 </ItemsPanelTemplate>
             </ctrls:WmsCanvasItemsControl.ItemsPanel>
             <ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
+                    <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
+                    <Setter Property="Margin" Value="0" />
+                    <!--<Setter Property="FocusVisualStyle" Value="{x:Null}" />-->
+                    <Style.Triggers>
+                        <!--<EventTrigger RoutedEvent="Mouse.MouseEnter">
+                            <EventTrigger.Actions>
+                                <BeginStoryboard>
+                        -->
+                        <!--<Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="MaxHeight"
+                                                         To="90"
+                                                         Duration="0:0:0.2" />
+                                    </Storyboard>-->
+                        <!--
+                                </BeginStoryboard>
+                            </EventTrigger.Actions>
+                        </EventTrigger>-->
+                        <Trigger Property="IsSelected" Value="True">
+                            <!--<Setter Property="Opacity" Value="1.0" />-->
+                            <Setter Property="Background" Value="Red" />
+                            <Setter Property="BorderBrush" Value="Red" />
+                            <Setter Property="BorderThickness" Value="3" />
+                        </Trigger>
+                        <!--<Trigger Property="IsSelect" Value="True">
+                            <Setter Property="Opacity" Value="1.0" />
+                            <Setter Property="Background" Value="Red" />
+                            <Setter Property="BorderBrush" Value="Red" />
+                            <Setter Property="BorderThickness" Value="3" />
+                        </Trigger>-->
+                        <Trigger Property="Control.IsMouseOver" Value="True">
+                            <Setter Property="Control.ToolTip" Value="CIao" />
+                            <Setter Property="BorderBrush" Value="Red" />
+                            <Setter Property="BorderThickness" Value="3" />
+                            <Setter Property="Background" Value="Yellow" />
+                        </Trigger>
+
+                    </Style.Triggers>
+                </Style>
+
+            </ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+            <!--<ctrls:WmsCanvasItemsControl.ItemContainerStyle>
                 <Style TargetType="ContentPresenter">
                     <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
                     <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
                 </Style>
-            </ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+            </ctrls:WmsCanvasItemsControl.ItemContainerStyle>-->
         </ctrls:WmsCanvasItemsControl>
     </Border>
 

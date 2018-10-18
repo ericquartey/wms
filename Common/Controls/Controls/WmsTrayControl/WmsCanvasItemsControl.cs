@@ -1,23 +1,46 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Forms;
+using System.Windows.Input;
+using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsCanvasItemsControl : ItemsControl
+    public class WmsCanvasItemsControl : System.Windows.Controls.ListBox
     {
         #region Fields
 
+        public ICommand IsSelect;
         private WmsTrayCanvas canvas;
+
         private LoadingUnitDetails loadingUnitDetails;
 
         #endregion Fields
+
+        #region Constructors
+
+        public WmsCanvasItemsControl()
+        {
+            //this.DataSource =
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public WmsTrayControl TrayControl { get; set; }
+
+        #endregion Properties
 
         #region Methods
 
@@ -28,10 +51,58 @@ namespace Ferretto.Common.Controls
             this.Loaded += this.WmsCanvasItemsControl_Loaded;
         }
 
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {
+            base.OnSelectionChanged(e);
+
+            //var selectedCompartment = e.AddedItems[0];
+            if (e.AddedItems.Count > 0)
+            {
+                if (e.AddedItems[0] is WmsCompartmentViewModel compartment)
+                {
+                    this.TrayControl.SelectedItem = compartment.CompartmentDetails;
+
+                    //TODO:: pass to COmpartmentViewModel
+
+                    //Command = "{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.CreateNewCompartmentCommand}"
+
+                    //Binding binding = new Binding("CompartmentSelectedProperty", compartment, null);
+                    //BindingOperations.SetBinding()
+
+                    //if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
+                    //{
+                    //    //wmsTrayControlViewModel.CompartmentDetailsProperty = new CompartmentDetails()
+                    //    //{
+                    //    //    Width = (int)compartment.OriginWidth,
+                    //    //    Height = (int)compartment.OriginHeight,
+                    //    //    XPosition = (int)compartment.OriginLeft,
+                    //    //    YPosition = (int)compartment.OriginTop
+                    //    //};
+                    //    //wmsTrayControlViewModel.CompartmentDetailsProperty.OnUpdateCompartmentEvent(null);
+
+                    //    wmsTrayControlViewModel.UpdateInputForm(new CompartmentDetails()
+                    //    {
+                    //        Width = (int)compartment.CompartmentDetails.Width,
+                    //        Height = (int)compartment.CompartmentDetails.Height,
+                    //        XPosition = (int)compartment.CompartmentDetails.XPosition,
+                    //        YPosition = (int)compartment.CompartmentDetails.YPosition
+                    //    });
+                    //}
+                }
+            }
+        }
+
+        //private static void OnSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
         private void WmsCanvasItemsControl_Loaded(Object sender, System.Windows.RoutedEventArgs e)
         {
             if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
             {
+                this.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+
                 this.loadingUnitDetails = wmsTrayControlViewModel.LoadingUnitProperty;
 
                 var widthNewCalculated = this.ActualWidth;

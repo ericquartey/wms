@@ -59,6 +59,8 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<CompartmentDetails> Compartments => this.compartments.AsReadOnly();
 
+        public CompartmentDetails CompartmentSelected { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
