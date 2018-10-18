@@ -4,7 +4,7 @@ using System.Drawing.Printing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Ferretto.VW.Utils.Source;
+using Ferretto.VW.Utils.Source.CellManagement;
 
 namespace ZZ_CellManagementTestApp
 {
