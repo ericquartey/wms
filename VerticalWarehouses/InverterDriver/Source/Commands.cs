@@ -49,42 +49,42 @@ namespace Ferretto.VW.InverterDriver
         /// <summary>
         /// Run the bay shutter (open/close).
         /// </summary>
-        RunShutter = 0x05,
+        RunShutter = 0x04,
 
         /// <summary>
         /// Run weight detection routine.
         /// </summary>
-        RunDrawerWeightRoutine = 0x06,
+        RunDrawerWeightRoutine = 0x05,
 
         /// <summary>
         /// Get drawer weight.
         /// </summary>
-        GetDrawerWeight = 0x07,
+        GetDrawerWeight = 0x06,
 
         /// <summary>
         /// Stop.
         /// </summary>
-        Stop = 0x08,
+        Stop = 0x07,
 
         /// <summary>
         /// Get main state of inverter.
         /// </summary>
-        GetMainState = 0x09,
+        GetMainState = 0x08,
 
         /// <summary>
         /// Get IO sensors state.
         /// </summary>
-        GetIOState = 0x0A,
+        GetIOState = 0x09,
 
         /// <summary>
         /// Get IO emergency sensors state.
         /// </summary>
-        GetIOEmergencyState = 0x0B,
+        GetIOEmergencyState = 0x0A,
 
         /// <summary>
         /// Set custom command.
         /// </summary>
-        Set = 0x0C,
+        Set = 0x0B,
 
         /// <summary>
         /// None.
@@ -133,8 +133,6 @@ namespace Ferretto.VW.InverterDriver
         private readonly CommandId cmdId;
 
         #endregion Fields
-
-
 
         #region Constructors
 
@@ -1620,8 +1618,6 @@ namespace Ferretto.VW.InverterDriver
         private bool executed = false;
 
         #endregion Fields
-
-
 
         #region Constructors
 

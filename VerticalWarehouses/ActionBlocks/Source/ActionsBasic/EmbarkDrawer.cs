@@ -1,5 +1,4 @@
 ﻿using System.Threading;
-using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.ActionBlocks.ActionsBasic
 {
@@ -11,7 +10,7 @@ namespace Ferretto.VW.ActionBlocks.ActionsBasic
 
         private const int TIME_OUT = 100;                   // Time out
 
-        private CInverterDriver driver;
+        private InverterDriver.InverterDriver driver;
         private AutoResetEvent hevAckTerminate;
         private AutoResetEvent hevTerminate;
         private Thread threadMain;
@@ -40,7 +39,7 @@ namespace Ferretto.VW.ActionBlocks.ActionsBasic
 
         #region Methods
 
-        public bool Initialize(CInverterDriver drv)
+        public bool Initialize(InverterDriver.InverterDriver drv)
         {
             // Assign the driver
             this.driver = drv;
