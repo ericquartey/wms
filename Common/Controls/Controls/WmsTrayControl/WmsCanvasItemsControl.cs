@@ -47,59 +47,25 @@ namespace Ferretto.Common.Controls
             base.OnApplyTemplate();
             this.SizeChanged += this.WmsCanvasItemsControl_SizeChanged;
             this.Loaded += this.WmsCanvasItemsControl_Loaded;
-            //this.UnselectAll();
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
             base.OnSelectionChanged(e);
 
-            //var selectedCompartment = e.AddedItems[0];
-            if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
-            {
-                newCompartment.IsSelected = true;
-                this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
-                newCompartment.ColorFill = Colors.Red.ToString();
-                newCompartment.ColorBorder = Colors.Gray.ToString();
-
-                //TODO:: pass to COmpartmentViewModel
-
-                //Command = "{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.CreateNewCompartmentCommand}"
-
-                //Binding binding = new Binding("CompartmentSelectedProperty", compartment, null);
-                //BindingOperations.SetBinding()
-
-                //if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
-                //{
-                //    //wmsTrayControlViewModel.CompartmentDetailsProperty = new CompartmentDetails()
-                //    //{
-                //    //    Width = (int)compartment.OriginWidth,
-                //    //    Height = (int)compartment.OriginHeight,
-                //    //    XPosition = (int)compartment.OriginLeft,
-                //    //    YPosition = (int)compartment.OriginTop
-                //    //};
-                //    //wmsTrayControlViewModel.CompartmentDetailsProperty.OnUpdateCompartmentEvent(null);
-
-                //    wmsTrayControlViewModel.UpdateInputForm(new CompartmentDetails()
-                //    {
-                //        Width = (int)compartment.CompartmentDetails.Width,
-                //        Height = (int)compartment.CompartmentDetails.Height,
-                //        XPosition = (int)compartment.CompartmentDetails.XPosition,
-                //        YPosition = (int)compartment.CompartmentDetails.YPosition
-                //    });
-                //}
-            }
-            if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
-            {
-                oldCompartment.ColorFill = Colors.Aquamarine.ToString();
-                oldCompartment.ColorBorder = Colors.RoyalBlue.ToString();
-            }
+            //if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
+            //{
+            //    newCompartment.IsSelected = true;
+            //    this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
+            //    newCompartment.ColorFill = Colors.Red.ToString();
+            //    newCompartment.ColorBorder = Colors.Gray.ToString();
+            //}
+            //if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
+            //{
+            //    oldCompartment.ColorFill = Colors.Aquamarine.ToString();
+            //    oldCompartment.ColorBorder = Colors.RoyalBlue.ToString();
+            //}
         }
-
-        //private static void OnSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         private void WmsCanvasItemsControl_Loaded(Object sender, System.Windows.RoutedEventArgs e)
         {
