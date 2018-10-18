@@ -65,9 +65,9 @@
                         </ComboBoxItem.Style>
                     </ComboBoxItem>
                 </ComboBox>
-                <Image Height="40"
+                <Image Height="30"
                        Margin="0,0,50,0"
-                       Source="/Ferretto.VW.CustomControls;Component/Assets/user_icon.png" />
+                       Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
                 <ComboBox Name="machineOnMarchComboBox"
                           Width="130"
                           Margin="5"

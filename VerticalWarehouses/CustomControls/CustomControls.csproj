@@ -116,6 +116,8 @@
     <Resource Include="Assets\gear_icon.png" />
     <Resource Include="Assets\movement_icon.png" />
     <Resource Include="Assets\user_icon.png" />
+    <Resource Include="Assets\ic_account_circle_black_18dp.png" />
+    <Resource Include="Assets\ic_account_circle_black_48dp.png" />
     <Content Include="Fonts\HelveticaNeue-LightCond.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
