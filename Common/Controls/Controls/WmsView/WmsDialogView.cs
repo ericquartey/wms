@@ -104,6 +104,12 @@ namespace Ferretto.Common.Controls
                 return true;
             }
 
+            if (this.MapId != null && this.DataContext is INavigableViewModel navViewModel &&
+             this.MapId.Equals(navViewModel.MapId, System.StringComparison.InvariantCulture))
+            {
+                return false;
+            }
+
             var dataContextName = this.DataContext.GetType().ToString();
             return !this.GetAttachedViewModel().Equals(dataContextName, System.StringComparison.InvariantCulture);
         }

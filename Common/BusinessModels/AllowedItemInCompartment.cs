@@ -3,20 +3,13 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class AllowedItemInCompartment : BusinessObject<int>
+    public sealed class AllowedItemInCompartment : BusinessObject
     {
         #region Fields
 
         private int? maxCapacity;
 
         #endregion Fields
-
-        #region Constructors
-
-        public AllowedItemInCompartment(int id) : base(id)
-        { }
-
-        #endregion Constructors
 
         #region Properties
 

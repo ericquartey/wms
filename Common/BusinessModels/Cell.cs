@@ -3,15 +3,8 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Cell : BusinessObject<int>
+    public sealed class Cell : BusinessObject
     {
-        #region Constructors
-
-        public Cell(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]

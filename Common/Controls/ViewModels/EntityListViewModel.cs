@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Microsoft.Practices.ServiceLocation;
@@ -10,14 +11,14 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel, IEntityListViewModel
-        where TModel : IBusinessObject<TId>
+    public class EntityListViewModel<TModel> : BaseServiceNavigationViewModel, IEntityListViewModel
+        where TModel : IBusinessObject
     {
         #region Fields
 
-        private readonly IEnumerable<IDataSource<TModel, TId>> dataSources;
+        private readonly IEnumerable<IDataSource<TModel>> dataSources;
         private IEnumerable<Tile> filterTiles;
-        private IDataSource<TModel, TId> selectedDataSource;
+        private EntityInstantFeedbackSource selectedDataSource;
         private Tile selectedFilterTile;
         private object selectedItem;
         private ICommand viewDetailsCommand;
@@ -29,7 +30,7 @@ namespace Ferretto.Common.Controls
         protected EntityListViewModel()
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.dataSources = dataSourceService.GetAll<TModel, TId>(this.GetType().Name);
+            this.dataSources = dataSourceService.GetAll<TModel>(this.GetType().Name);
 
             this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
             {
@@ -65,7 +66,7 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
-        public IDataSource<TModel, TId> SelectedDataSource
+        public EntityInstantFeedbackSource SelectedDataSource
         {
             get => this.selectedDataSource;
             protected set => this.SetProperty(ref this.selectedDataSource, value);
@@ -78,7 +79,7 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Key == value.Key);
+                    this.SelectedDataSource = this.dataSources.Single(d => d.Key == value.Key) as EntityInstantFeedbackSource;
                 }
             }
         }

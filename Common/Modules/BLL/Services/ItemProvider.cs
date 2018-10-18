@@ -58,8 +58,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .ThenInclude(ict => ict.Item)
                 .SelectMany(
                     c => c.CompartmentType.ItemsCompartmentTypes,
-                    (c, ict) => new AllowedItemInCompartment(ict.Item.Id)
+                    (c, ict) => new AllowedItemInCompartment
                     {
+                        Id = ict.Item.Id,
                         Code = ict.Item.Code,
                         Description = ict.Item.Description,
                         MaxCapacity = ict.MaxCapacity,
@@ -72,8 +73,9 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             var itemDetails = this.dataContext.Items
                 .Where(i => i.Id == id)
-                .Select(i => new ItemDetails(i.Id)
+                .Select(i => new ItemDetails
                 {
+                    Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     ItemCategoryId = i.ItemCategoryId,
@@ -193,8 +195,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                    })
                .SelectMany(
                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                   (a, b) => new Item(a.Item.Id)
+                   (a, b) => new Item
                    {
+                       Id = a.Item.Id,
                        AbcClassDescription = a.Item.AbcClass.Description,
                        AverageWeight = a.Item.AverageWeight,
                        CreationDate = a.Item.CreationDate,
