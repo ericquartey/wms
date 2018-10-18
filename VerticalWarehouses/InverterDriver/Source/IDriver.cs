@@ -22,11 +22,6 @@
         #region Properties
 
         /// <summary>
-        /// Get last error.
-        /// </summary>
-        InverterDriverErrors GetLastError { get; }
-
-        /// <summary>
         /// Get main status.
         /// </summary>
         /// <returns></returns>
@@ -36,6 +31,11 @@
         ///  Set/Get IP address to connect
         /// </summary>
         string IPAddressToConnect { set; get; }
+
+        /// <summary>
+        /// Get last error.
+        /// </summary>
+        InverterDriverErrors LastError { get; }
 
         /// <summary>
         /// Set/Get port address to connect

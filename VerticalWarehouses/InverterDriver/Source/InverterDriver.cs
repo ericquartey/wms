@@ -26,19 +26,21 @@ namespace Ferretto.VW.InverterDriver
         public const int SIZEMAX_DATABUFFER = 1024;
         public const int TIME_OUT = 150;
 
-        private static readonly object Lock = new object();
+        private static readonly object lockObj = new object();
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly InverterDriverState state;
         private AutoResetEvent ackTerminateEvent;
         private Request currentRequest;
-        private InverterDriverErrors error;
+
         private bool executeRequestOnRunning;
+
         private HardwareInverterStatus hwInverterState;
-        private string ipAddressToConnect;
+
         private Thread mainAutomationThread;
+
         private AutoResetEvent makeRequestEvent;
-        private int portAddressToConnect;
         private RequestList requestList;
+
         private Socket sckClient;
         private AutoResetEvent terminateEvent;
         private int timeOut;
@@ -52,10 +54,10 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public InverterDriver()
         {
-            this.error = InverterDriverErrors.NoError;
+            this.LastError = InverterDriverErrors.NoError;
             this.state = InverterDriverState.Idle;
-            this.ipAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
-            this.portAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
+            this.IPAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
+            this.PortAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
             this.hwInverterState = HardwareInverterStatus.NotOperative;
 
             logger.Log(LogLevel.Debug, String.Format("InverterDriver in a new incarnation..."));
@@ -79,11 +81,6 @@ namespace Ferretto.VW.InverterDriver
         #region Properties
 
         /// <summary>
-        /// Get the last error.
-        /// </summary>
-        public InverterDriverErrors GetLastError => this.error;
-
-        /// <summary>
         /// Get the main state of inverter driver.
         /// See the InverterDriverState enum
         /// </summary>
@@ -93,21 +90,18 @@ namespace Ferretto.VW.InverterDriver
         /// Set/Get IP address to connect.
         /// Specify the IPv4 address family.
         /// </summary>
-        public string IPAddressToConnect
-        {
-            get => this.ipAddressToConnect;
-            set => this.ipAddressToConnect = value;
-        }
+        public string IPAddressToConnect { get; set; }
+
+        /// <summary>
+        /// Get the last error.
+        /// </summary>
+        public InverterDriverErrors LastError { get; private set; }
 
         /// <summary>
         /// Set/Get port address to connect.
         /// Specify the IPv4 address family.
         /// </summary>
-        public int PortAddressToConnect
-        {
-            set => this.portAddressToConnect = value;
-            get => this.portAddressToConnect;
-        }
+        public int PortAddressToConnect { set; get; }
 
         #endregion Properties
 
@@ -266,7 +260,7 @@ namespace Ferretto.VW.InverterDriver
                         }
                     }
 
-                    lock (Lock)
+                    lock (lockObj)
                     {
                         this.executeRequestOnRunning = false;
                     }
@@ -411,14 +405,14 @@ namespace Ferretto.VW.InverterDriver
 
         private bool connect_to_inverter()
         {
-            this.error = InverterDriverErrors.NoError;
+            this.LastError = InverterDriverErrors.NoError;
             var bSuccess = true;
 
-            if (this.ipAddressToConnect == "" || this.portAddressToConnect <= 0)
+            if (this.IPAddressToConnect == "" || this.PortAddressToConnect <= 0)
             {
-                logger.Log(LogLevel.Debug, String.Format("Invalid IP address [IP:{0}, port:{1}]", this.ipAddressToConnect, this.portAddressToConnect));
-                this.error = InverterDriverErrors.IOError;
-                Error?.Invoke(this, new ErrorEventArgs(this.error));
+                logger.Log(LogLevel.Debug, String.Format("Invalid IP address [IP:{0}, port:{1}]", this.IPAddressToConnect, this.PortAddressToConnect));
+                this.LastError = InverterDriverErrors.IOError;
+                Error?.Invoke(this, new ErrorEventArgs(this.LastError));
                 return false;
             }
 
@@ -434,28 +428,28 @@ namespace Ferretto.VW.InverterDriver
                 permission.Demand();
 
                 var ipHost = Dns.GetHostEntry("");
-                var ipAddr = IPAddress.Parse(this.ipAddressToConnect);
-                var iPortNumber = this.portAddressToConnect;
+                var ipAddr = IPAddress.Parse(this.IPAddressToConnect);
+                var iPortNumber = this.PortAddressToConnect;
                 this.sckClient = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 var ipEnd = new IPEndPoint(ipAddr, iPortNumber);
                 this.sckClient.Connect(ipEnd);
                 if (this.sckClient.Connected)
                 {
-                    logger.Log(LogLevel.Debug, String.Format("Connection to inverter [IP:{0}] established", this.ipAddressToConnect));
+                    logger.Log(LogLevel.Debug, String.Format("Connection to inverter [IP:{0}] established", this.IPAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(true));
                     this.waitForData();
                 }
                 else
                 {
-                    logger.Log(LogLevel.Debug, String.Format("Unable to connect to inverter [IP:{0}]", this.ipAddressToConnect));
+                    logger.Log(LogLevel.Debug, String.Format("Unable to connect to inverter [IP:{0}]", this.IPAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(false));
                 }
             }
             catch (SocketException exc)
             {
                 logger.Log(LogLevel.Debug, String.Format("Connection to inverter failed [error message: {0}]", exc.Message));
-                this.error = InverterDriverErrors.GenericError;
-                Error?.Invoke(this, new ErrorEventArgs(this.error));
+                this.LastError = InverterDriverErrors.GenericError;
+                Error?.Invoke(this, new ErrorEventArgs(this.LastError));
                 bSuccess = false;
             }
 
@@ -487,27 +481,16 @@ namespace Ferretto.VW.InverterDriver
             handles[0] = this.ackTerminateEvent;
             WaitHandle.WaitAny(handles, -1);
 
-            if (null != this.mainAutomationThread)
-            {
-                this.mainAutomationThread.Abort();
-            }
+            this.mainAutomationThread?.Abort();
+            this.mainAutomationThread = null;
 
-            if (null != this.terminateEvent)
-            {
-                this.terminateEvent.Close();
-            }
+            this.terminateEvent?.Close();
             this.terminateEvent = null;
 
-            if (null != this.makeRequestEvent)
-            {
-                this.makeRequestEvent.Close();
-            }
+            this.makeRequestEvent?.Close();
             this.makeRequestEvent = null;
 
-            if (null != this.ackTerminateEvent)
-            {
-                this.ackTerminateEvent.Close();
-            }
+            this.ackTerminateEvent?.Close();
             this.ackTerminateEvent = null;
 
             logger.Log(LogLevel.Debug, String.Format("Release main Working thread."));
@@ -515,11 +498,8 @@ namespace Ferretto.VW.InverterDriver
 
         private void disconnect_from_inverter()
         {
-            if (this.sckClient != null)
-            {
-                this.sckClient.Close();
-                this.sckClient = null;
-            }
+            this.sckClient?.Close();
+            this.sckClient = null;
 
             Connected?.Invoke(this, new ConnectedEventArgs(false));
         }
@@ -561,7 +541,7 @@ namespace Ferretto.VW.InverterDriver
 
             this.sendDataToInverter(telegramToSend);
 
-            lock (Lock)
+            lock (lockObj)
             {
                 this.executeRequestOnRunning = true;
             }
@@ -650,8 +630,8 @@ namespace Ferretto.VW.InverterDriver
                                 // A request was made, but no response has been collected
                                 // Handle it!
 
-                                this.error = InverterDriverErrors.IOError;
-                                Error?.Invoke(this, new ErrorEventArgs(this.error));
+                                this.LastError = InverterDriverErrors.IOError;
+                                Error?.Invoke(this, new ErrorEventArgs(this.LastError));
                             }
                             else
                             {
@@ -818,7 +798,7 @@ namespace Ferretto.VW.InverterDriver
             this.sendDataToInverter(telegramToSend);
 
             // Update the flag
-            lock (Lock)
+            lock (lockObj)
             {
                 this.executeRequestOnRunning = true;
             }
@@ -834,10 +814,7 @@ namespace Ferretto.VW.InverterDriver
             {
                 if (null != byTelegramToSend)
                 {
-                    if (this.sckClient != null)
-                    {
-                        this.sckClient.Send(byTelegramToSend);
-                    }
+                    this.sckClient?.Send(byTelegramToSend);
                 }
             }
             catch (SocketException exc)
