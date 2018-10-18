@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-        private IDataSource<Compartment, int> compartmentsDataSource;
+        private IDataSource<Compartment> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
         private object modelSelectionChangedSubscription;
@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<Compartment, int> CompartmentsDataSource
+        public IDataSource<Compartment> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -63,17 +63,16 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.item;
             set
             {
-                if (this.SetProperty(ref this.item, value))
+                if (!this.SetProperty(ref this.item, value))
                 {
-                    if (this.item != null)
-                    {
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<Compartment, int>(nameof(ItemDetailsViewModel), this.item.Id).Single();
-                    }
-                    else
-                    {
-                        this.CompartmentsDataSource = null;
-                    }
+                    return;
                 }
+
+                this.CompartmentsDataSource = this.item != null
+                    ? this.dataSourceService
+                        .GetAll<Compartment>(nameof(ItemDetailsViewModel), this.item.Id)
+                        .Single()
+                    : null;
             }
         }
 

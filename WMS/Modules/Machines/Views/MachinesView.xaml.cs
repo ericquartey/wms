@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Modules.Machines
 
         private async void MainGridControl_AsyncOperationCompleted(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this.DataContext is EntityListViewModel<Machine, int> viewModel)
+            if (this.DataContext is EntityListViewModel<Machine> viewModel)
             {
                 await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
                 this.MainGridControl.AsyncOperationCompleted -= this.MainGridControl_AsyncOperationCompleted;

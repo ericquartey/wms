@@ -255,8 +255,8 @@
   <data name="ItemAverageWeight" xml:space="preserve">
     <value>Peso Medio</value>
   </data>
-  <data name="ItemInCompartmentCapacity" xml:space="preserve">
-    <value>Capacità</value>
+  <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
+    <value>Capacità Massima</value>
   </data>
   <data name="ItemLastPickDate" xml:space="preserve">
     <value>Data Ultimo Prelievo</value>

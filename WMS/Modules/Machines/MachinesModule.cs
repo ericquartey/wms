@@ -36,7 +36,6 @@ namespace Ferretto.WMS.Modules.Machines
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMachinesModule);
 
             this.NavigationService.Register<MachinesView, MachinesViewModel>();
-            this.NavigationService.Register<MachinesAndDetailsView, MachinesAndDetailsViewModel>();
         }
 
         #endregion Methods

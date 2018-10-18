@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private IDataSource<CompartmentDetails, int> compartmentsDataSource;
+        private IDataSource<CompartmentDetails> compartmentsDataSource;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private object modelSelectionChangedSubscription;
@@ -24,8 +24,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object selectedCompartment;
 
         #endregion Fields
-
-
 
         #region Constructors
 
@@ -38,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<CompartmentDetails, int> CompartmentsDataSource
+        public IDataSource<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -65,17 +63,16 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.loadingUnit;
             set
             {
-                if (this.SetProperty(ref this.loadingUnit, value))
+                if (!this.SetProperty(ref this.loadingUnit, value))
                 {
-                    if (this.loadingUnit != null)
-                    {
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<CompartmentDetails, int>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id).Single();
-                    }
-                    else
-                    {
-                        this.CompartmentsDataSource = null;
-                    }
+                    return;
                 }
+
+                this.CompartmentsDataSource = this.loadingUnit != null
+                    ? this.dataSourceService
+                        .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
+                        .Single()
+                    : null;
             }
         }
 

@@ -1,16 +1,15 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
+    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject
     {
         #region Fields
 
         private readonly object refreshModelsEventSubscription;
-        private IDataSource<TEntity, TId> currentDataSource;
+
         private object selectedItem;
 
         #endregion Fields
@@ -19,24 +18,12 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
+            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => { }, true);
         }
 
         #endregion Constructors
 
         #region Properties
-
-        public IDataSource<TEntity, TId> CurrentDataSource
-        {
-            get => this.currentDataSource;
-            set
-            {
-                if (this.SetProperty(ref this.currentDataSource, value))
-                {
-                    this.NotifyDataSourceChanged();
-                }
-            }
-        }
 
         public object SelectedItem
         {
@@ -54,38 +41,19 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void RefreshGrid()
-        {
-            // do nothing
-        }
-
-        public void SetDataSource(object dataSource)
-        {
-            if (dataSource == null || dataSource is IDataSource<TEntity, TId> dataSourceEntity)
-            {
-                this.CurrentDataSource = dataSource as IDataSource<TEntity, TId>;
-            }
-            else
-            {
-                throw new System.ArgumentException("Data source is not of the right type", nameof(dataSource));
-            }
-        }
-
-        protected void NotifyDataSourceChanged()
-        {
-            this.RefreshGrid();
-        }
-
         protected void NotifySelectionChanged()
         {
-            var selectedModelId = default(TId);
+            var selectedModelId = 0;
             if (this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
             {
                 var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
-                selectedModelId = model.Id;
+                if (model != null)
+                {
+                    selectedModelId = model.Id;
+                }
             }
 
-            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
+            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, int>(selectedModelId, this.Token));
         }
 
         protected override void OnDispose()

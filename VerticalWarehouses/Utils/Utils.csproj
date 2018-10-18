@@ -58,7 +58,6 @@
     <Compile Include="Source\FileManagement\DataManager.cs" />
     <Compile Include="Source\GeneralInfo.cs" />
     <Compile Include="Source\InstallationInfo.cs" />
-    <Compile Include="Source\PlanarGeometryMethods.cs" />
     <Compile Include="Source\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

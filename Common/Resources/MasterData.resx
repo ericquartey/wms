@@ -216,4 +216,7 @@
   <data name="LoadingUnitWithNoCompartment" xml:space="preserve">
     <value>This loading unit has no compartments.</value>
   </data>
+  <data name="CompartmentHasNoAllowedItems" xml:space="preserve">
+    <value>This compartment has no allowed items.</value>
+  </data>
 </root>

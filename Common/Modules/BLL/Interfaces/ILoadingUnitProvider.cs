@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Modules.BLL
 {
-    public interface ILoadingUnitProvider : IBusinessProvider<LoadingUnit, LoadingUnitDetails, int>
+    public interface ILoadingUnitProvider : IBusinessProvider<LoadingUnit, LoadingUnitDetails>
     {
         #region Methods
 

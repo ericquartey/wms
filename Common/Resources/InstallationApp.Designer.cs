@@ -79,6 +79,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis calibrated successfully.
+        /// </summary>
+        public static string AxisCalibratedSuccessfully {
+            get {
+                return ResourceManager.GetString("AxisCalibratedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Axis not calibrated yet.
+        /// </summary>
+        public static string AxisNotCalibratedYet {
+            get {
+                return ResourceManager.GetString("AxisNotCalibratedYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Backward.
         /// </summary>
         public static string Backward {
@@ -156,6 +174,15 @@ namespace Ferretto.Common.Resources {
         public static string LogOff {
             get {
                 return ResourceManager.GetString("LogOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lower Bound:.
+        /// </summary>
+        public static string LowerBound {
+            get {
+                return ResourceManager.GetString("LowerBound", resourceCulture);
             }
         }
         
@@ -250,6 +277,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Offset:.
+        /// </summary>
+        public static string Offset {
+            get {
+                return ResourceManager.GetString("Offset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Offset Calibration.
         /// </summary>
         public static string OffsetCalibration {
@@ -268,11 +304,74 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Output:.
+        /// </summary>
+        public static string Output {
+            get {
+                return ResourceManager.GetString("Output", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolution:.
+        /// </summary>
+        public static string Resolution {
+            get {
+                return ResourceManager.GetString("Resolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Resolution Calibration.
+        /// </summary>
+        public static string ResolutionCalibration {
+            get {
+                return ResourceManager.GetString("ResolutionCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sensors&apos; State.
+        /// </summary>
+        public static string SensorsState {
+            get {
+                return ResourceManager.GetString("SensorsState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string Start {
+            get {
+                return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stop.
+        /// </summary>
+        public static string Stop {
+            get {
+                return ResourceManager.GetString("Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>
         public static string Up {
             get {
                 return ResourceManager.GetString("Up", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upper Bound:.
+        /// </summary>
+        public static string UpperBound {
+            get {
+                return ResourceManager.GetString("UpperBound", resourceCulture);
             }
         }
         

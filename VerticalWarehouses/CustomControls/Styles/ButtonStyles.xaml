@@ -6,11 +6,19 @@
         <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
-        <Setter Property="BorderBrush" Value="{StaticResource FerrettoDarkGray}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="FontSize" Value="20" />
+        <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="Margin" Value="5" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
-
+    <Style x:Key="StandardMainWindowButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource FerrettoLightGray}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="Margin" Value="5" />
+    </Style>
 </ResourceDictionary>

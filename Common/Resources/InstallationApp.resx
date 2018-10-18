@@ -229,4 +229,48 @@
     <value>Vertical Axis Calibration</value>
     <comment>Title - Button text</comment>
   </data>
+  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
+    <value>Axis calibrated successfully</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="AxisNotCalibratedYet" xml:space="preserve">
+    <value>Axis not calibrated yet</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Lower Bound:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Offset:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Resolution" xml:space="preserve">
+    <value>Resolution:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="UpperBound" xml:space="preserve">
+    <value>Upper Bound:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ResolutionCalibration" xml:space="preserve">
+    <value>Resolution Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SensorsState" xml:space="preserve">
+    <value>Sensors' State</value>
+    <comment>Title - Button text</comment>
+  </data>
 </root>

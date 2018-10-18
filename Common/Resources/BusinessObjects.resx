@@ -301,9 +301,9 @@
     <value>Height</value>
     <comment>Item - Height</comment>
   </data>
-  <data name="ItemInCompartmentCapacity" xml:space="preserve">
-    <value>Capacity</value>
-    <comment>Item In Compartment - Capacity</comment>
+  <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+    <comment>Allowed Item In Compartment - Max Capacity</comment>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
     <value>Inventory Tolerance</value>

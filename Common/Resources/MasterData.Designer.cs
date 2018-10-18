@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This compartment has no allowed items..
+        /// </summary>
+        public static string CompartmentHasNoAllowedItems {
+            get {
+                return ResourceManager.GetString("CompartmentHasNoAllowedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment Information.
         /// </summary>
         public static string CompartmentInformation {
