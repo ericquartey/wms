@@ -50,26 +50,11 @@ namespace Ferretto.Common.Controls
 
             this.DisableColumnFiltering();
 
-            this.UpdateFilterTiles();
-
             this.DataContext = this.InstantiateViewModel();
 
             this.SetToken();
 
             this.SetupBindings();
-        }
-
-        private async void AsyncOperationCompletedAsync(Object sender, RoutedEventArgs e)
-        {
-            var wmsView = LayoutTreeHelper.GetVisualParents(this)
-                    .OfType<INavigableView>()
-                    .FirstOrDefault();
-
-            if (wmsView?.DataContext is IEntityListViewModel viewModel)
-            {
-                await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
-                this.AsyncOperationCompleted -= this.AsyncOperationCompletedAsync;
-            }
         }
 
         private void DisableColumnFiltering()
@@ -101,11 +86,6 @@ namespace Ferretto.Common.Controls
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
             };
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
-        }
-
-        private void UpdateFilterTiles()
-        {
-            this.AsyncOperationCompleted += this.AsyncOperationCompletedAsync;
         }
 
         private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)

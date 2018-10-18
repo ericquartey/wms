@@ -130,6 +130,13 @@ namespace Ferretto.Common.Controls
             }).ConfigureAwait(true);
         }
 
+        protected override void OnAppear()
+        {
+            base.OnAppear();
+
+            this.UpdateFilterTilesCountsAsync();
+        }
+
         #endregion Methods
     }
 }
