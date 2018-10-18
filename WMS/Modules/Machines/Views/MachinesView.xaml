@@ -27,8 +27,8 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:WmsImage Grid.Column="0"
-                                      Width="64"
-                                      Height="70"
+                                  Width="70"
+                                  Height="70"
                                       Path="{Binding Path=Row.Image}" />
                         <StackPanel Grid.Column="1"
                                     Margin="12,0,12,0"
