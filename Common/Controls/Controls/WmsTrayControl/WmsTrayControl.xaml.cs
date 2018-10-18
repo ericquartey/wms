@@ -72,10 +72,10 @@ namespace Ferretto.Common.Controls
 
         private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                //viewModel.UpdateInputForm((CompartmentDetails)e.NewValue);
-            }
+            //if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            //{
+            //    //viewModel.UpdateInputForm((CompartmentDetails)e.NewValue);
+            //}
         }
 
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

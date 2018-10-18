@@ -20,7 +20,6 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public ICommand IsSelect;
         private WmsTrayCanvas canvas;
 
         private LoadingUnitDetails loadingUnitDetails;
@@ -31,7 +30,6 @@ namespace Ferretto.Common.Controls
 
         public WmsCanvasItemsControl()
         {
-            //this.DataSource =
         }
 
         #endregion Constructors
@@ -49,6 +47,7 @@ namespace Ferretto.Common.Controls
             base.OnApplyTemplate();
             this.SizeChanged += this.WmsCanvasItemsControl_SizeChanged;
             this.Loaded += this.WmsCanvasItemsControl_Loaded;
+            //this.UnselectAll();
         }
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
@@ -56,39 +55,44 @@ namespace Ferretto.Common.Controls
             base.OnSelectionChanged(e);
 
             //var selectedCompartment = e.AddedItems[0];
-            if (e.AddedItems.Count > 0)
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
             {
-                if (e.AddedItems[0] is WmsCompartmentViewModel compartment)
-                {
-                    this.TrayControl.SelectedItem = compartment.CompartmentDetails;
+                newCompartment.IsSelected = true;
+                this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
+                newCompartment.ColorFill = Colors.Red.ToString();
+                newCompartment.ColorBorder = Colors.Gray.ToString();
 
-                    //TODO:: pass to COmpartmentViewModel
+                //TODO:: pass to COmpartmentViewModel
 
-                    //Command = "{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.CreateNewCompartmentCommand}"
+                //Command = "{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.CreateNewCompartmentCommand}"
 
-                    //Binding binding = new Binding("CompartmentSelectedProperty", compartment, null);
-                    //BindingOperations.SetBinding()
+                //Binding binding = new Binding("CompartmentSelectedProperty", compartment, null);
+                //BindingOperations.SetBinding()
 
-                    //if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
-                    //{
-                    //    //wmsTrayControlViewModel.CompartmentDetailsProperty = new CompartmentDetails()
-                    //    //{
-                    //    //    Width = (int)compartment.OriginWidth,
-                    //    //    Height = (int)compartment.OriginHeight,
-                    //    //    XPosition = (int)compartment.OriginLeft,
-                    //    //    YPosition = (int)compartment.OriginTop
-                    //    //};
-                    //    //wmsTrayControlViewModel.CompartmentDetailsProperty.OnUpdateCompartmentEvent(null);
+                //if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
+                //{
+                //    //wmsTrayControlViewModel.CompartmentDetailsProperty = new CompartmentDetails()
+                //    //{
+                //    //    Width = (int)compartment.OriginWidth,
+                //    //    Height = (int)compartment.OriginHeight,
+                //    //    XPosition = (int)compartment.OriginLeft,
+                //    //    YPosition = (int)compartment.OriginTop
+                //    //};
+                //    //wmsTrayControlViewModel.CompartmentDetailsProperty.OnUpdateCompartmentEvent(null);
 
-                    //    wmsTrayControlViewModel.UpdateInputForm(new CompartmentDetails()
-                    //    {
-                    //        Width = (int)compartment.CompartmentDetails.Width,
-                    //        Height = (int)compartment.CompartmentDetails.Height,
-                    //        XPosition = (int)compartment.CompartmentDetails.XPosition,
-                    //        YPosition = (int)compartment.CompartmentDetails.YPosition
-                    //    });
-                    //}
-                }
+                //    wmsTrayControlViewModel.UpdateInputForm(new CompartmentDetails()
+                //    {
+                //        Width = (int)compartment.CompartmentDetails.Width,
+                //        Height = (int)compartment.CompartmentDetails.Height,
+                //        XPosition = (int)compartment.CompartmentDetails.XPosition,
+                //        YPosition = (int)compartment.CompartmentDetails.YPosition
+                //    });
+                //}
+            }
+            if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
+            {
+                oldCompartment.ColorFill = Colors.Aquamarine.ToString();
+                oldCompartment.ColorBorder = Colors.RoyalBlue.ToString();
             }
         }
 
