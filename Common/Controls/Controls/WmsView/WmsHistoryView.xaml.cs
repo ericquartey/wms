@@ -108,9 +108,14 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            this.registeredViews.Pop();
+            var poppedView = this.registeredViews.Pop();
             this.Content = this.registeredViews.Peek();
             this.CheckBackVisibility();
+
+            if (poppedView is INavigableView view)
+            {
+                view.Disappear();
+            }
         }
 
         private void BackViewClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
