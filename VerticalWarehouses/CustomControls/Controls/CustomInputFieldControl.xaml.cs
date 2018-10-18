@@ -37,7 +37,7 @@ namespace Ferretto.VW.CustomControls.Controls
         public string InputText
         {
             get => (string)this.GetValue(InputProperty);
-            set { this.RaisePropertyChanged("InputText"); this.SetValue(InputProperty, value); }
+            set { this.SetValue(InputProperty, value); this.RaisePropertyChanged("InputText"); }
         }
 
         public string LabelText

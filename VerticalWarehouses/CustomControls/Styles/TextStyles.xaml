@@ -9,6 +9,12 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
+    <Style x:Key="ErrorBodyTextStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoRed}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="14" />
+    </Style>
     <Style x:Key="StandardTitleTextStyle"
            TargetType="{x:Type Control}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />

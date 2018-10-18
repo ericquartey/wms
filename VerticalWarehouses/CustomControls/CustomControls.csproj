@@ -135,9 +135,7 @@
     <Content Include="Assets\VertimagFronte.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\VertimagTreQuartiDX.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Assets\VertimagTreQuartiDX.png" />
     <Content Include="Assets\VertimagTreQuartiStretta.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
