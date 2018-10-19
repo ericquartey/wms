@@ -53,7 +53,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Close()
+        public void Disappear()
         {
             if (this.IsClosed == false)
             {
@@ -61,7 +61,7 @@ namespace Ferretto.Common.Controls
                 var childViews = LayoutTreeHelper.GetVisualChildren(this).OfType<WmsView>();
                 foreach (var childView in childViews)
                 {
-                    childView.Close();
+                    childView.Disappear();
                 }
                 ((INavigableViewModel)this.DataContext).Disappear();
                 this.navigationService.Disappear(this.DataContext as INavigableViewModel);
@@ -121,6 +121,12 @@ namespace Ferretto.Common.Controls
             if (this.DataContext == null)
             {
                 return true;
+            }
+
+            if (this.MapId != null && this.DataContext is INavigableViewModel navViewModel &&
+                this.MapId.Equals(navViewModel.MapId, System.StringComparison.InvariantCulture))
+            {
+                return false;
             }
 
             var dataContextName = this.DataContext.GetType().ToString();

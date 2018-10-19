@@ -184,7 +184,7 @@ namespace Ferretto.VW.UI
 
                 this.TextBoxAS.Text = StartLitener;
 
-                this.TextBoxArea.AppendText("Server Avviato ... in attesa di un Client");
+                this.TextBoxArea.AppendText("Server Avviato ... attesa di un nuovo Client");
                 this.TextBoxArea.AppendText(Environment.NewLine);
 
                 this.Btn_Start.IsEnabled = false;

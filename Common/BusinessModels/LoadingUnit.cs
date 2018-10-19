@@ -3,7 +3,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class LoadingUnit : BusinessObject<int>
+    public sealed class LoadingUnit : BusinessObject
     {
         #region Fields
 
@@ -12,13 +12,6 @@ namespace Ferretto.Common.BusinessModels
         private int? cellNumber;
 
         #endregion Fields
-
-        #region Constructors
-
-        public LoadingUnit(int id) : base(id)
-        { }
-
-        #endregion Constructors
 
         #region Properties
 

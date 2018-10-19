@@ -17,7 +17,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         public const int PORT_ADDR_INVERTER_DEFAULT = 8000;
 
-        private CInverterDriver driver;
+        private InverterDriver.InverterDriver driver;
 
         #endregion Fields
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         {
             this.InitializeComponent();
 
-            this.driver = new CInverterDriver();
+            this.driver = new InverterDriver.InverterDriver();
             this.driver.Connected += this.Driver_Connected;
             this.driver.GetMessageFromServer += this.Driver_GetMessageFromServer;
             this.TxtBoxIP.Text = IP_ADDR_INVERTER_DEFAULT.ToString();
@@ -56,7 +56,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                 case 0:
                     {
                         this.driver.SetVerticalAxisOrigin(Convert.ToByte(this.TxtBoxP1.Text), Convert.ToSingle(this.TxtBoxP2.Text), Convert.ToSingle(this.TxtBoxP3.Text),
-                                                          Convert.ToSingle(this.TxtBoxP4.Text), Convert.ToSingle(this.TxtBoxP5.Text), Convert.ToSingle(this.TxtBoxP6.Text));
+                                                          Convert.ToSingle(this.TxtBoxP4.Text));
                         break;
                     }
                 case 1:
@@ -168,6 +168,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             var regex = new Regex("^[.][0-9]+$|^[0-9]*[.]{0,1}[0-9]*$");
             e.Handled = !regex.IsMatch((sender as TextBox).Text.Insert((sender as TextBox).SelectionStart, e.Text));
         }
+
         private void updateUI(bool State)
         {
             this.TxtBoxStatus.Text = (State) ? "Connected" : "Not connected";
@@ -179,6 +180,5 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
         }
 
         #endregion Methods
-
     }
 }

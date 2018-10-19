@@ -8,7 +8,14 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     public enum HardwareInverterStatus
     {
+        /// <summary>
+        /// Not operative (OFF status)
+        /// </summary>
         NotOperative = 0x0,
+
+        /// <summary>
+        /// Operative (ON status)
+        /// </summary>
         Operative = 0x1
     }
 

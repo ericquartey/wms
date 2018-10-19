@@ -515,7 +515,8 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate>
-                                                <Grid Width="{DynamicResource MenuTileWidth}"
+                                                <Grid x:Name="SecondaryButtonGrid"
+                                                      Width="{DynamicResource MenuTileWidth}"
                                                       Height="{DynamicResource MenuTileHeight}"
                                                       Background="{DynamicResource OnCommonSecondaryMedium}">
                                                     <Grid Margin="6">
@@ -523,7 +524,8 @@
                                                             <RowDefinition Height="*" />
                                                             <RowDefinition Height="Auto" />
                                                         </Grid.RowDefinitions>
-                                                        <ctrls:WmsIcon Height="24"
+                                                        <ctrls:WmsIcon Width="24"
+                                                                       Height="24"
                                                                        HorizontalAlignment="Left"
                                                                        VerticalAlignment="Top"
                                                                        ColorizeBrush="{DynamicResource CommonSecondaryMedium}"
@@ -535,6 +537,21 @@
                                                                    Foreground="{DynamicResource CommonSecondaryMedium}"
                                                                    Text="{Binding DisplayName}" />
                                                     </Grid>
+
+                                                    <VisualStateManager.VisualStateGroups>
+                                                        <VisualStateGroup x:Name="CommonStates">
+                                                            <VisualState x:Name="MouseOver">
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="SecondaryButtonGrid"
+                                                                                     Storyboard.TargetProperty="Opacity"
+                                                                                     To="0.50"
+                                                                                     Duration="0" />
+                                                                </Storyboard>
+                                                            </VisualState>
+                                                            <VisualState x:Name="Pressed" />
+                                                            <VisualState x:Name="Normal" />
+                                                        </VisualStateGroup>
+                                                    </VisualStateManager.VisualStateGroups>
                                                 </Grid>
                                             </ControlTemplate>
                                         </Setter.Value>

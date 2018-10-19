@@ -231,4 +231,22 @@
   <data name="MachinesViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
   </data>
+  <data name="MachinesViewTraslo" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/traslo_icon4_gray_alpha.png</value>
+  </data>
+  <data name="MachinesViewVertimagXS" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/vertimag_xs_icon_gray_alpha.png</value>
+  </data>
+  <data name="MachinesViewVertimagM" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/vertimag_m_icon_gray_alpha.png</value>
+  </data>
+  <data name="MachineTraslo" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Machines/traslo_icon4.png</value>
+  </data>
+  <data name="MachineVertimagM" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Machines/vertimag_m_icon.png</value>
+  </data>
+  <data name="MachineVertimagXS" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Machines/vertimag_xs_icon.png</value>
+  </data>
 </root>

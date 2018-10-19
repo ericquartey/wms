@@ -99,6 +99,12 @@ namespace Ferretto.Common.Controls
                 var lastActivePosition = layoutGroup.Items.IndexOf(activePanel);
                 layoutGroup.Items.Insert(lastActivePosition, newLayoutPanel);
                 this.DockController.RemovePanel(activePanel);
+
+                var vmsView = activePanel.Content;
+                if (vmsView is INavigableView view)
+                {
+                    view.Disappear();
+                }
             }
             else
             {
@@ -131,7 +137,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            ((INavigableView)vmsView).Close();           
+            ((INavigableView)vmsView).Disappear();
         }
 
         private void WmsMainDockLayoutManager_DockOperationCompleted(System.Object sender, DevExpress.Xpf.Docking.Base.DockOperationCompletedEventArgs e)

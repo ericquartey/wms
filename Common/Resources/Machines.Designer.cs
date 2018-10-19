@@ -68,5 +68,32 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("MachineAll", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Traslo.
+        /// </summary>
+        public static string MachineTraslo {
+            get {
+                return ResourceManager.GetString("MachineTraslo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag M.
+        /// </summary>
+        public static string MachineVertimagM {
+            get {
+                return ResourceManager.GetString("MachineVertimagM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag XS.
+        /// </summary>
+        public static string MachineVertimagXS {
+            get {
+                return ResourceManager.GetString("MachineVertimagXS", resourceCulture);
+            }
+        }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Item : BusinessObject<int>
+    public sealed class Item : BusinessObject
     {
         #region Fields
 
@@ -24,13 +24,6 @@ namespace Ferretto.Common.BusinessModels
         private int? width;
 
         #endregion Fields
-
-        #region Constructors
-
-        public Item(int id) : base(id)
-        { }
-
-        #endregion Constructors
 
         #region Properties
 

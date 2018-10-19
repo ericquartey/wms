@@ -1,16 +1,17 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using System.Windows.Input;
+using DevExpress.Data.Async.Helpers;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject<TId>
+    public class WmsGridViewModel<TModel> : BaseServiceNavigationViewModel, IWmsGridViewModel where TModel : class, IBusinessObject
     {
         #region Fields
 
-        private readonly object refreshModelsEventSubscription;
-        private IDataSource<TEntity, TId> currentDataSource;
+        private object modelChangedEventSubscription;
+        private object refreshModelsEventSubscription;
         private object selectedItem;
 
         #endregion Fields
@@ -19,24 +20,13 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => this.RefreshGrid(), true);
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public IDataSource<TEntity, TId> CurrentDataSource
-        {
-            get => this.currentDataSource;
-            set
-            {
-                if (this.SetProperty(ref this.currentDataSource, value))
-                {
-                    this.NotifyDataSourceChanged();
-                }
-            }
-        }
+        public ICommand CmdRefresh { get; set; }
 
         public object SelectedItem
         {
@@ -54,43 +44,37 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void RefreshGrid()
-        {
-            // do nothing
-        }
-
-        public void SetDataSource(object dataSource)
-        {
-            if (dataSource == null || dataSource is IDataSource<TEntity, TId> dataSourceEntity)
-            {
-                this.CurrentDataSource = dataSource as IDataSource<TEntity, TId>;
-            }
-            else
-            {
-                throw new System.ArgumentException("Data source is not of the right type", nameof(dataSource));
-            }
-        }
-
-        protected void NotifyDataSourceChanged()
-        {
-            this.RefreshGrid();
-        }
-
         protected void NotifySelectionChanged()
         {
-            var selectedModelId = default(TId);
+            var selectedModelId = 0;
             if (this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
             {
-                var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
-                selectedModelId = model.Id;
+                var model = this.selectedItem as TModel;
+                if (this.selectedItem is ReadonlyThreadSafeProxyForObjectFromAnotherThread proxyForObjectFromAnotherThread)
+                {
+                    model = proxyForObjectFromAnotherThread.OriginalRow as TModel;
+                }
+
+                if (model != null)
+                {
+                    selectedModelId = model.Id;
+                }
             }
 
-            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, TId>(selectedModelId, this.Token));
+            this.EventService.Invoke(new ModelSelectionChangedEvent<TModel>(selectedModelId, this.Token));
+        }
+
+        protected override void OnAppear()
+        {
+            base.OnAppear();
+            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TModel>>(eventArgs => { this.CmdRefresh?.Execute(null); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<TModel>>(eventArgs => { this.CmdRefresh?.Execute(null); });
         }
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsEvent<TEntity>>(this.refreshModelsEventSubscription);
+            this.EventService.Unsubscribe<RefreshModelsEvent<TModel>>(this.refreshModelsEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedEvent<TModel>>(this.modelChangedEventSubscription);
             base.OnDispose();
         }
 

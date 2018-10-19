@@ -1,6 +1,11 @@
 ﻿namespace Ferretto.Common.BusinessModels
 {
-    public sealed class MachineDetails : BusinessObject<int>
+    public sealed class MachineDetails : BusinessObject
     {
+        #region Properties
+
+
+
+        #endregion Properties
     }
 }

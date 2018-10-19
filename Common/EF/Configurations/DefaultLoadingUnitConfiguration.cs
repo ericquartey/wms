@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.DataModels;
+﻿using System;
+using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -14,6 +15,13 @@ namespace Ferretto.Common.EF.Configurations
             }
 
             builder.HasKey(d => d.Id);
+
+            builder.Property(c => c.CellPairing)
+                .HasColumnType("NVARCHAR(MAX)")
+                .HasConversion(
+                    x => x.ToString()
+                    , x => (Pairing) Enum.Parse(typeof(Pairing), x)
+                );
 
             builder.HasOne(d => d.LoadingUnitType)
                 .WithMany(l => l.DefaultLoadingUnits)

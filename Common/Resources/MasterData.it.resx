@@ -192,4 +192,7 @@
   <data name="LoadingUnitWithNoCompartment" xml:space="preserve">
     <value>Questa Unità di carico non ha scomparti.</value>
   </data>
+  <data name="CompartmentHasNoAllowedItems" xml:space="preserve">
+    <value>Questo scomparto non ha articoli possibili.</value>
+  </data>
 </root>

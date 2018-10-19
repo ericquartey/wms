@@ -7,6 +7,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              d:DesignHeight="450"
              d:DesignWidth="800"
@@ -36,8 +37,8 @@
 
         <ScrollViewer Grid.Row="1"
                       DataContext="{Binding LoadingUnit}"
-                      IsTabStop="True"
                       Focusable="False"
+                      IsTabStop="True"
                       VerticalScrollBarVisibility="Auto">
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
@@ -60,8 +61,8 @@
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
-                          Grid.ColumnSpan="2"
                           Grid.Column="0"
+                          Grid.ColumnSpan="2"
                           Margin="0"
                           Header="{x:Static res:MasterData.LoadingUnitInformation}">
                     <Grid>
@@ -163,8 +164,8 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="2"
-                          Grid.ColumnSpan="2"
                           Grid.Column="0"
+                          Grid.ColumnSpan="2"
                           Margin="0"
                           Header="{x:Static res:MasterData.Compartments}">
                     <Grid>
@@ -172,9 +173,9 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Image HorizontalAlignment="Left"
+                        <Image Height="216"
+                               HorizontalAlignment="Left"
                                VerticalAlignment="Top"
-                               Height="216"
                                Source="pack://application:,,,/Ferretto.WMS.Themes;component/images/udc_compartment.png" />
                         <StackPanel Grid.Row="1">
                             <TextBlock Text="{x:Static res:MasterData.LoadingUnitWithNoCompartment}"
@@ -182,9 +183,9 @@
                             <wms:WmsGridControl MinHeight="300"
                                                 MaxWidth="2000"
                                                 MaxHeight="5000"
-                                                CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
                                                 CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                                 ItemType="{x:Type businessModels:CompartmentDetails}"
+                                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
                                                 SelectionMode="Row"
                                                 Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
                                 <wms:WmsGridControl.View>
@@ -197,8 +198,9 @@
                                                    ShowSearchPanelMode="Never">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="RowDoubleClick">
-                                                <i:InvokeCommandAction
-                                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.ViewCompartmentDetailsCommand}" />
+                                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                                          StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                          StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </dxg:TableView>

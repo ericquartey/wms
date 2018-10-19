@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -75,6 +75,15 @@ namespace Ferretto.Common.Resources {
         public static string Aisle {
             get {
                 return ResourceManager.GetString("Aisle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Max Capacity.
+        /// </summary>
+        public static string AllowedItemInCompartmentMaxCapacity {
+            get {
+                return ResourceManager.GetString("AllowedItemInCompartmentMaxCapacity", resourceCulture);
             }
         }
         
@@ -529,15 +538,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Capacity.
-        /// </summary>
-        public static string ItemInCompartmentCapacity {
-            get {
-                return ResourceManager.GetString("ItemInCompartmentCapacity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Inventory Tolerance.
         /// </summary>
         public static string ItemInventoryTolerance {
@@ -907,6 +907,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string MachineArea {
+            get {
+                return ResourceManager.GetString("MachineArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Automatic Time.
         /// </summary>
         public static string MachineAutomaticTime {
@@ -1074,6 +1083,15 @@ namespace Ferretto.Common.Resources {
         public static string MachineMissionTime {
             get {
                 return ResourceManager.GetString("MachineMissionTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Model.
+        /// </summary>
+        public static string MachineModel {
+            get {
+                return ResourceManager.GetString("MachineModel", resourceCulture);
             }
         }
         

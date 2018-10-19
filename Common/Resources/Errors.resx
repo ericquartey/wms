@@ -147,4 +147,7 @@
   <data name="SpecifiedPathNotInConfiguredImageFolder" xml:space="preserve">
     <value>The specified path is not contained in the image directory.</value>
   </data>
+  <data name="WmsHistoryViewAppearSyntax" xml:space="preserve">
+    <value>Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} .</value>
+  </data>
 </root>
