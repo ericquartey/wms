@@ -19,8 +19,6 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #endregion Fields
 
-        //private WmsCompartmentViewModel compartmentViewModel;
-
         #region Constructors
 
         public InputCompartmentView()
@@ -40,17 +38,10 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #endregion Properties
 
-        //public CompartmentDetails CompartmentSelected { get; set; }
-
         #region Methods
 
         private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //if(d is InputCompartmentView inputCompartmentView)
-            //{
-            //    inputCompartmentView.DisenableAllInput();
-            //}
-            //throw new NotImplementedException();
         }
 
         private void DisenableAllInput()

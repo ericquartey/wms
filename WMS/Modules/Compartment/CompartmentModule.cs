@@ -37,6 +37,7 @@ namespace Ferretto.WMS.Modules.Compartment
             this.Container.RegisterType<INavigationService, NavigationService>(
                                         new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
 
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Compartment)}.{Common.Utils.Modules.Compartment.REGION_MAINCONTENT}",
@@ -45,7 +46,7 @@ namespace Ferretto.WMS.Modules.Compartment
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<CompartmentView, CompartmentViewModel>();
-
+            navigationService.Register<ListCompartmentsView, ListCompartmentViewModel>();
         }
 
         #endregion Methods

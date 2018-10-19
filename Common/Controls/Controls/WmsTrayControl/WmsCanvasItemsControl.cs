@@ -72,6 +72,8 @@ namespace Ferretto.Common.Controls
             if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
             {
                 this.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+                this.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+
 
                 this.loadingUnitDetails = wmsTrayControlViewModel.LoadingUnitProperty;
 
