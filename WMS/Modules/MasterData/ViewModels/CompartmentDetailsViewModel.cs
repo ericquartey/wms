@@ -114,7 +114,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<Compartment, int>>(this.modelSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<Compartment>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -126,7 +126,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Compartment = this.compartmentProvider.GetById(this.Compartment.Id);
 
-                this.EventService.Invoke(new ModelChangedEvent<CompartmentDetails, int>(this.Compartment.Id));
+                this.EventService.Invoke(new ModelChangedEvent<Compartment>(this.Compartment.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
@@ -134,18 +134,20 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Compartment, int>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Compartment>>(
                 eventArgs =>
                 {
-                    if (eventArgs.ModelIdHasValue)
+                    if (eventArgs.ModelId.HasValue)
                     {
-                        this.LoadData(eventArgs.ModelId);
+                        this.LoadData(eventArgs.ModelId.Value);
                     }
                     else
                     {
                         this.Compartment = null;
                     }
                 },
+                this.Token,
+                true,
                 true);
         }
 

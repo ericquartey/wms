@@ -12,6 +12,8 @@ namespace Ferretto.Common.Controls.Interfaces
 
         #region Methods
 
+        void RefreshData();
+
         Task UpdateFilterTilesCountsAsync();
 
         #endregion Methods
