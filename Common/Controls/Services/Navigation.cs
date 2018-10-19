@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Controls.Services
 {
-    public class ModelChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
+    public class ModelChangedEvent<TModel> : Prism.Events.PubSubEvent, IEventArgs where TModel : IBusinessObject
     {
         #region Fields
 
@@ -12,7 +12,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Constructors
 
-        public ModelChangedEvent(TId modelId)
+        public ModelChangedEvent(object modelId)
         {
             this.modelId = modelId;
         }
@@ -22,24 +22,23 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public object ModelId => this.modelId;
-
-        public string Token => null;
+        public string Token { get; }
 
         #endregion Properties
     }
 
-    public class ModelSelectionChangedEvent<TModel, TId> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
+    public class ModelSelectionChangedEvent<TModel> : Prism.Events.PubSubEvent<TModel>, IEventArgs where TModel : IBusinessObject
     {
         #region Fields
 
-        private readonly TId modelId;
+        private readonly int? modelId;
         private readonly string token;
 
         #endregion Fields
 
         #region Constructors
 
-        public ModelSelectionChangedEvent(TId modelId, string token)
+        public ModelSelectionChangedEvent(int? modelId, string token)
         {
             this.modelId = modelId;
             this.token = token;
@@ -49,8 +48,7 @@ namespace Ferretto.Common.Controls.Services
 
         #region Properties
 
-        public TId ModelId => this.modelId;
-        public bool ModelIdHasValue => default(TId).Equals(this.modelId) == false;
+        public int? ModelId => this.modelId;
         public string Token => this.token;
 
         #endregion Properties
@@ -76,8 +74,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public object ModelId => this.modelId;
-
-        public string Token => null;
+        public string Token { get; }
 
         #endregion Properties
     }
@@ -96,8 +93,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public string Info { get; set; }
-
-        public string Token => null;
+        public string Token { get; }
 
         #endregion Properties
     }

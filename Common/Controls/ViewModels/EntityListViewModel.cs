@@ -21,7 +21,6 @@ namespace Ferretto.Common.Controls
         private EntityInstantFeedbackSource selectedDataSource;
         private Tile selectedFilterTile;
         private object selectedItem;
-        private ICommand viewDetailsCommand;
 
         #endregion Fields
 
@@ -96,17 +95,15 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
-                        (this.viewDetailsCommand = new DelegateCommand(this.ExecuteViewDetailsCommand));
-
         #endregion Properties
 
         #region Methods
 
-        public virtual void ExecuteViewDetailsCommand()
+        public void RefreshData()
         {
-            // Nothing to do here.
-            // The derived classes can override this method to impelement the ViewDetails command behaviour.
+            var oldDataSource = this.selectedDataSource;
+            this.SelectedDataSource = null;
+            this.SelectedDataSource = oldDataSource;
         }
 
         public async Task UpdateFilterTilesCountsAsync()

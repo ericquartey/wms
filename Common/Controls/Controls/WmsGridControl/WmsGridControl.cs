@@ -3,9 +3,11 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
+using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
@@ -14,7 +16,14 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty RefreshCommandProperty = DependencyProperty.Register(
+            nameof(RefreshCommandProperty),
+            typeof(ICommand),
+            typeof(WmsGridControl),
+            new FrameworkPropertyMetadata(null));
+
         private Type itemType;
+        private IEntityListViewModel wmsViewModel;
 
         #endregion Fields
 
@@ -38,6 +47,12 @@ namespace Ferretto.Common.Controls
                     }
                 }
             }
+        }
+
+        public ICommand RefreshCommand
+        {
+            get => (ICommand)this.GetValue(RefreshCommandProperty);
+            set => this.SetValue(RefreshCommandProperty, value);
         }
 
         #endregion Properties
@@ -67,6 +82,7 @@ namespace Ferretto.Common.Controls
 
             if (wmsView?.DataContext is IEntityListViewModel viewModel)
             {
+                this.wmsViewModel = viewModel;
                 await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
                 this.AsyncOperationCompleted -= this.AsyncOperationCompletedAsync;
             }
@@ -84,10 +100,26 @@ namespace Ferretto.Common.Controls
                 throw new InvalidOperationException("WmsGridControl ItemType is missing.");
             }
 
-            var viewModelClass = typeof(WmsGridViewModel<,>);
-            var idType = ((TypeInfo)this.itemType.GetInterface(typeof(IBusinessObject).FullName)).DeclaredProperties.First();
-            var constructedClass = viewModelClass.MakeGenericType(this.ItemType, idType.PropertyType);
+            var viewModelClass = typeof(WmsGridViewModel<>);
+            var constructedClass = viewModelClass.MakeGenericType(this.ItemType);
             return Activator.CreateInstance(constructedClass);
+        }
+
+        private void SetCmdRefreshBinding()
+        {
+            Binding myBinding = new Binding()
+            {
+                Source = this.DataContext,
+                Path = new PropertyPath(nameof(Ferretto.Common.Controls.WmsGridViewModel<IBusinessObject>.CmdRefresh)),
+                Mode = BindingMode.OneWayToSource,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(this, WmsGridControl.RefreshCommandProperty, myBinding);
+
+            if (this.RefreshCommand == null)
+            {
+                this.RefreshCommand = new DelegateCommand(() => this.wmsViewModel.RefreshData());
+            }
         }
 
         private void SetToken()
@@ -116,9 +148,12 @@ namespace Ferretto.Common.Controls
             if (wmsViews != null && wmsViews.Any())
             {
                 var wmsView = wmsViews.First();
-                var wmsViewViewModel = ((INavigableView)wmsView).DataContext;
-                var token = ((INavigableViewModel)wmsViewViewModel).Token;
-                ((INavigableViewModel)this.DataContext).Token = token;
+                var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
+                var token = wmsViewViewModel.Token;
+                var gridControlViewModel = (INavigableViewModel)this.DataContext;
+                gridControlViewModel.Token = token;
+                gridControlViewModel.Appear();
+                this.SetCmdRefreshBinding();
             }
         }
 

@@ -111,7 +111,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<CompartmentDetails, int>>(this.modelSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<CompartmentDetails>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (modifiedRowCount > 0)
             {
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnitDetails, int>(this.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedEvent<CompartmentDetails>(this.LoadingUnit.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }
@@ -129,18 +129,20 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnitDetails, int>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnitDetails>>(
                 eventArgs =>
                 {
-                    if (eventArgs.ModelIdHasValue)
+                    if (eventArgs.ModelId.HasValue)
                     {
-                        this.LoadData(eventArgs.ModelId);
+                        this.LoadData(eventArgs.ModelId.Value);
                     }
                     else
                     {
                         this.LoadingUnit = null;
                     }
                 },
+                 this.Token,
+                true,
                 true);
         }
 
