@@ -16,11 +16,6 @@
     <Style TargetType="dxg:GridColumn">
         <Setter Property="IsSmart" Value="True" />
         <Setter Property="HorizontalHeaderContentAlignment" Value="Center" />
-        <!--<Setter Property="EditSettings">
-            <Setter.Value>
-                <dxe:TextEditSettings HorizontalContentAlignment="Center"/>
-            </Setter.Value>
-        </Setter>-->
     </Style>
 
     <!--  sort arrows control templates  -->
