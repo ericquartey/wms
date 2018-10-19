@@ -1,21 +1,22 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Ferretto.VW.CustomControls.Controls
 {
-    public partial class CustomInputFieldControl : UserControl, INotifyPropertyChanged
+    public partial class CustomSensorControl : UserControl, INotifyPropertyChanged
     {
         #region Fields
 
-        public static readonly DependencyProperty InputProperty = DependencyProperty.Register("InputText", typeof(string), typeof(CustomInputFieldControl), new PropertyMetadata(""));
-        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomInputFieldControl), new PropertyMetadata(""));
+        public static readonly DependencyProperty BulletColorProperty = DependencyProperty.Register("BulletColor", typeof(SolidColorBrush), typeof(CustomSensorControl));
+        public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomSensorControl), new PropertyMetadata(""));
 
         #endregion Fields
 
         #region Constructors
 
-        public CustomInputFieldControl()
+        public CustomSensorControl()
         {
             this.InitializeComponent();
             this.LayoutRoot.DataContext = this;
@@ -31,10 +32,10 @@ namespace Ferretto.VW.CustomControls.Controls
 
         #region Properties
 
-        public string InputText
+        public SolidColorBrush BulletColor
         {
-            get => (string)this.GetValue(InputProperty);
-            set { this.SetValue(InputProperty, value); this.RaisePropertyChanged("InputText"); }
+            get => (SolidColorBrush)this.GetValue(BulletColorProperty);
+            set { this.SetValue(BulletColorProperty, value); this.RaisePropertyChanged("BulletColor"); }
         }
 
         public string LabelText

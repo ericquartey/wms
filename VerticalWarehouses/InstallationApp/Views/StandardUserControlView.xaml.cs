@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for LSMTGateEngineView.xaml
+    /// Interaction logic for StandardUserControlView.xaml
     /// </summary>
-    public partial class LSMTGateEngineView : Page
+    public partial class StandardUserControlView : UserControl
     {
-        public LSMTGateEngineView()
+        public StandardUserControlView()
         {
             InitializeComponent();
         }

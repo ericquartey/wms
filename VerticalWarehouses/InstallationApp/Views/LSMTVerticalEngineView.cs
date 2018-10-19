@@ -18,11 +18,15 @@ namespace Ferretto.VW.InstallationApp.Views
     /// <summary>
     /// Interaction logic for LSMTVerticalEngineView.xaml
     /// </summary>
-    public partial class LSMTVerticalEngineView : Page
+    public partial class LSMTVerticalEngineView : UserControl
     {
+        #region Constructors
+
         public LSMTVerticalEngineView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion Constructors
     }
 }

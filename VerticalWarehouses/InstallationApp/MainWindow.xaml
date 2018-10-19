@@ -68,98 +68,83 @@
                 <Image Height="30"
                        Margin="0,0,50,0"
                        Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
-                <ComboBox Name="machineOnMarchComboBox"
-                          Width="130"
-                          Margin="5"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"
-                          FontSize="25"
-                          Foreground="{StaticResource FerrettoPureWhite}"
-                          Style="{StaticResource StandardComboBoxTemplate}">
-                    <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
-                                  Content="{x:Static res:InstallationApp.On}"
-                                  Style="{StaticResource StandardComboBoxItemStyle}"
-                                  Template="{DynamicResource StandardComboBoxItemTemplate}" />
-                    <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
-                                  Content="{x:Static res:InstallationApp.Off}"
-                                  IsSelected="True"
-                                  Style="{StaticResource StandardComboBoxItemStyle}"
-                                  Template="{DynamicResource StandardComboBoxItemTemplate}" />
-                </ComboBox>
-                <ComboBox Name="machineModeComboBox"
-                          Width="130"
-                          Margin="5"
-                          HorizontalContentAlignment="Center"
-                          VerticalContentAlignment="Center"
-                          FontSize="25"
-                          Foreground="{StaticResource FerrettoPureWhite}"
-                          Style="{StaticResource StandardComboBoxTemplate}">
-                    <ComboBoxItem Height="{Binding ElementName=machineModeComboBox, Path=ActualHeight}"
-                                  Content="{x:Static res:InstallationApp.Manual}"
-                                  IsSelected="True"
-                                  Style="{StaticResource StandardComboBoxItemStyle}"
-                                  Template="{DynamicResource StandardComboBoxItemTemplate}" />
-                    <ComboBoxItem Height="{Binding ElementName=machineModeComboBox, Path=ActualHeight}"
-                                  Content="{x:Static res:InstallationApp.Auto}"
-                                  Style="{StaticResource StandardComboBoxItemStyle}"
-                                  Template="{DynamicResource StandardComboBoxItemTemplate}" />
-                </ComboBox>
+                <Grid Margin="2"
+                      Background="{StaticResource FerrettoDarkGray}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Name="machineOnMarchComboBox"
+                              Grid.Column="1"
+                              Width="130"
+                              Margin="5"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              FontSize="25"
+                              Foreground="{StaticResource FerrettoPureWhite}"
+                              SelectedIndex="{Binding MachineOnMarchSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource StandardComboBoxTemplate}">
+                        <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.Off}"
+                                      IsSelected="True"
+                                      Style="{StaticResource StandardComboBoxItemStyle}"
+                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                        <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.On}"
+                                      Style="{StaticResource StandardComboBoxItemStyle}"
+                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                    </ComboBox>
+                    <Ellipse Grid.Column="0"
+                             Width="30"
+                             Height="30"
+                             Margin="5"
+                             Fill="{Binding MachineOnMarchCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
+                <Grid Margin="2"
+                      Background="{StaticResource FerrettoDarkGray}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Name="machineModeComboBox"
+                              Grid.Column="1"
+                              Width="130"
+                              Margin="5"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              FontSize="25"
+                              Foreground="{StaticResource FerrettoPureWhite}"
+                              SelectedIndex="{Binding MachineModeSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource StandardComboBoxTemplate}">
+                        <ComboBoxItem Height="{Binding ElementName=machineModeComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.Manual}"
+                                      IsSelected="True"
+                                      Style="{StaticResource StandardComboBoxItemStyle}"
+                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                        <ComboBoxItem Height="{Binding ElementName=machineModeComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.Auto}"
+                                      Style="{StaticResource StandardComboBoxItemStyle}"
+                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                    </ComboBox>
+                    <Ellipse Grid.Column="0"
+                             Width="30"
+                             Height="30"
+                             Margin="5"
+                             Fill="{Binding MachineModeCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
             </StackPanel>
         </Border>
-        <Border Grid.Row="1"
-                Grid.Column="0"
-                Background="{StaticResource FerrettoPureWhite}"
-                BorderThickness="0">
-            <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                <StackPanel>
-                    <Rectangle Height="20" />
-                    <Button Height="60"
-                            Margin="15,0,0,5"
-                            Command="{Binding VerifyCircuitIntegrityButtonCommand}"
-                            Content="{x:Static res:InstallationApp.SensorsState}"
-                            Style="{StaticResource StandardMainWindowButtonStyle}" />
-                    <Button Height="60"
-                            Margin="15,0,0,5"
-                            Command="{Binding LowSpeedMovementsTestButtonCommand}"
-                            Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
-                            Style="{StaticResource StandardMainWindowButtonStyle}" />
-                    <Button Height="60"
-                            Margin="15,0,0,5"
-                            Command="{Binding VerticalAxisCalibrationButtonCommand}"
-                            Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
-                            Style="{StaticResource StandardMainWindowButtonStyle}" />
-                    <Button x:Name="OpenVerifyPanelPositionPageButton"
-                            Height="60"
-                            Margin="15,0,0,5"
-                            Content="{x:Static res:InstallationApp.ResolutionCalibration}"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardMainWindowButtonStyle}" />
-                    <Button x:Name="OpenBelBurnishingPageButton"
-                            Height="60"
-                            Margin="15,0,0,5"
-                            Content="{x:Static res:InstallationApp.BeltBurnishing}"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardMainWindowButtonStyle}" />
-                    <Button x:Name="OpenGateSetUpPageButton"
-                            Height="60"
-                            Margin="15,0,0,5"
-                            Content="{x:Static res:InstallationApp.GateSetUp}"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardMainWindowButtonStyle}" />
-                    <Button x:Name="OpenVerifyWeightControllerPageButton"
-                            Height="60"
-                            Margin="15,0,0,5"
-                            Content="{x:Static res:InstallationApp.VerifyWeightController}"
-                            IsEnabled="False"
-                            Style="{StaticResource StandardMainWindowButtonStyle}" />
-                </StackPanel>
-            </ScrollViewer>
-        </Border>
-        <ContentControl x:Name="InstallationPageRegionContentControl"
+        <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="730"
                         Height="610"
                         Content="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <ContentControl x:Name="InstallationPageRegionContentControl"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Width="280"
+                        Height="700"
+                        Content="{Binding CurrentNavigationButtonsView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

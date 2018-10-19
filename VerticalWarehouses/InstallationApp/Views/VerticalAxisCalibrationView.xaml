@@ -76,18 +76,6 @@
                                             Grid.Column="4"
                                             InputText="{x:Static res:InstallationApp.AxisNotCalibratedYet}"
                                             LabelText="{x:Static res:InstallationApp.Output}" />
-            <TextBlock Grid.Row="1"
-                       Grid.Column="5"
-                       Text="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Grid.Row="2"
-                       Grid.Column="5"
-                       Text="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Grid.Row="3"
-                       Grid.Column="5"
-                       Text="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Grid.Row="4"
-                       Grid.Column="5"
-                       Text="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </DockPanel>
 </UserControl>

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for VerifyCircuitIntegrityView.xaml
+    /// Interaction logic for MainWindowNavigationButtonsView.xaml
     /// </summary>
-    public partial class VerifyCircuitIntegrityView : UserControl
+    public partial class MainWindowNavigationButtonsView : UserControl
     {
-        public VerifyCircuitIntegrityView()
+        public MainWindowNavigationButtonsView()
         {
             InitializeComponent();
         }
