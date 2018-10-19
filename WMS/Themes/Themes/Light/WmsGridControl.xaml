@@ -6,13 +6,21 @@
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     mc:Ignorable="cs">
 
     <dx:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <dx:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
 
+    <!-- GridColumn style -->
     <Style TargetType="dxg:GridColumn">
         <Setter Property="IsSmart" Value="True" />
+        <Setter Property="HorizontalHeaderContentAlignment" Value="Center" />
+        <!--<Setter Property="EditSettings">
+            <Setter.Value>
+                <dxe:TextEditSettings HorizontalContentAlignment="Center"/>
+            </Setter.Value>
+        </Setter>-->
     </Style>
 
     <!--  sort arrows control templates  -->
