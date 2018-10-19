@@ -26,11 +26,11 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <wms:WmsImage Grid.Column="0"
-                                  Width="70"
-                                  Height="70"
-                                  VerticalAlignment="Top"
-                                  Path="{Binding Path=Image}" />
+                    <wms:WmsIcon Grid.Column="0"
+                                 Width="70"
+                                 Height="70"
+                                 VerticalAlignment="Top"
+                                 SymbolName="{Binding Image}" />
                     <StackPanel Grid.Column="1"
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
