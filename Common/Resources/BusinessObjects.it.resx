@@ -501,4 +501,7 @@
   <data name="CellLoadingUnitsDescription" xml:space="preserve">
     <value>Descrizione Unità di Carico</value>
   </data>
+  <data name="MachineArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
 </root>
