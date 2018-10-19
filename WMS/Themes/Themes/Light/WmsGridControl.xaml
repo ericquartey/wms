@@ -67,6 +67,7 @@
               Height="13"
               Margin="0,-2,0,0"
               cs:Name="Grid_0001"
+              Visibility="Hidden"
               Background="#00000000">
             <Path Width="7"
                   Height="9"
