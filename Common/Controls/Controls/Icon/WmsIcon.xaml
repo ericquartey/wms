@@ -9,5 +9,5 @@
              mc:Ignorable="d">
     <Image x:Name="InnerImage"
            Source="{Binding Source}"
-           Stretch="None" />
+           Stretch="Fill" />
 </UserControl>

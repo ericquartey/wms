@@ -226,6 +226,10 @@
     <Compile Include="Migrations\20181016140443_Initial.designer.cs">
       <DependentUpon>20181016140443_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20181018131331_Add_Field_Model_To_Table_Machines.cs" />
+    <Compile Include="Migrations\20181018131331_Add_Field_Model_To_Table_Machines.designer.cs">
+      <DependentUpon>20181018131331_Add_Field_Model_To_Table_Machines.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DatabaseContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

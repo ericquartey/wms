@@ -1,17 +1,17 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
+    public class WmsGridControl : GridControl
 
     {
         #region Fields
@@ -65,27 +65,11 @@ namespace Ferretto.Common.Controls
 
             this.DisableColumnFiltering();
 
-            this.UpdateFilterTiles();
-
             this.DataContext = this.InstantiateViewModel();
 
             this.SetToken();
 
             this.SetupBindings();
-        }
-
-        private async void AsyncOperationCompletedAsync(Object sender, RoutedEventArgs e)
-        {
-            var wmsView = (LayoutTreeHelper.GetVisualParents(this)
-                    .OfType<INavigableView>()
-                    .FirstOrDefault());
-
-            if (wmsView?.DataContext is IEntityListViewModel viewModel)
-            {
-                this.wmsViewModel = viewModel;
-                await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
-                this.AsyncOperationCompleted -= this.AsyncOperationCompletedAsync;
-            }
         }
 
         private void DisableColumnFiltering()
@@ -100,14 +84,13 @@ namespace Ferretto.Common.Controls
                 throw new InvalidOperationException("WmsGridControl ItemType is missing.");
             }
 
-            var viewModelClass = typeof(WmsGridViewModel<>);
-            var constructedClass = viewModelClass.MakeGenericType(this.ItemType);
+            var constructedClass = typeof(WmsGridViewModel<>).MakeGenericType(this.ItemType);
             return Activator.CreateInstance(constructedClass);
         }
 
         private void SetCmdRefreshBinding()
         {
-            Binding myBinding = new Binding()
+            var myBinding = new Binding()
             {
                 Source = this.DataContext,
                 Path = new PropertyPath(nameof(Ferretto.Common.Controls.WmsGridViewModel<IBusinessObject>.CmdRefresh)),
@@ -137,11 +120,6 @@ namespace Ferretto.Common.Controls
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
         }
 
-        private void UpdateFilterTiles()
-        {
-            this.AsyncOperationCompleted += this.AsyncOperationCompletedAsync;
-        }
-
         private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)
         {
             var wmsViews = LayoutTreeHelper.GetVisualParents(this.Parent).OfType<WmsView>();
@@ -149,6 +127,7 @@ namespace Ferretto.Common.Controls
             {
                 var wmsView = wmsViews.First();
                 var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
+                this.wmsViewModel = wmsViewViewModel as IEntityListViewModel;
                 var token = wmsViewViewModel.Token;
                 var gridControlViewModel = (INavigableViewModel)this.DataContext;
                 gridControlViewModel.Token = token;
