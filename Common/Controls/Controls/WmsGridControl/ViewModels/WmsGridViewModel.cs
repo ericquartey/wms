@@ -61,20 +61,20 @@ namespace Ferretto.Common.Controls
                 }
             }
 
-            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity>(selectedModelId, this.Token));
+            this.EventService.Invoke(new ModelSelectionChangedEvent<TModel>(selectedModelId, this.Token));
         }
 
         protected override void OnAppear()
         {
             base.OnAppear();
-            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => { this.CmdRefresh?.Execute(null); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<TEntity>>(eventArgs => { this.CmdRefresh?.Execute(null); });
+            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TModel>>(eventArgs => { this.CmdRefresh?.Execute(null); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<TModel>>(eventArgs => { this.CmdRefresh?.Execute(null); });
         }
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsEvent<TEntity>>(this.refreshModelsEventSubscription);
-            this.EventService.Unsubscribe<ModelChangedEvent<TEntity>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<RefreshModelsEvent<TModel>>(this.refreshModelsEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedEvent<TModel>>(this.modelChangedEventSubscription);
             base.OnDispose();
         }
 
