@@ -37,7 +37,7 @@ namespace Ferretto.WMS.Modules.Compartment
             set
             {
                 this.compartmentInput = value;
-                this.RaisePropertyChanged(nameof(this.compartmentInput));
+                this.RaisePropertyChanged(nameof(this.CompartmentInput));
             }
         }
 
@@ -47,7 +47,7 @@ namespace Ferretto.WMS.Modules.Compartment
             set
             {
                 this.compartments = value;
-                this.RaisePropertyChanged(nameof(this.compartments));
+                this.RaisePropertyChanged(nameof(this.Compartments));
             }
         }
 
@@ -73,6 +73,8 @@ namespace Ferretto.WMS.Modules.Compartment
         protected override void OnAppear()
         {
             this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0 });
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
 
             this.TestInitializeInput();
@@ -89,8 +91,6 @@ namespace Ferretto.WMS.Modules.Compartment
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
         {
             this.CompartmentInput = (CompartmentDetails)sender;
-            //this.CompartmentInput;
-            //throw new NotImplementedException();
         }
 
         //public LoadingUnitDetails CompartmentSelected { get => this.compa; set => this.SetProperty(ref this.loadingUnitDetails, value); }

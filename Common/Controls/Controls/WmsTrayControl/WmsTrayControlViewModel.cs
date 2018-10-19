@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -14,7 +15,9 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        //private IList<CompartmentDetails> compartments;
         private ObservableCollection<WmsBaseCompartment> items;
+
         private int left;
         private SolidColorBrush penBrush;
         private int penThickness;
@@ -41,6 +44,13 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
+
+        //public IList<CompartmentDetails> Compartments
+        //{
+        //    get { return this.compartments; }
+        //    set { this.compartments = value; this.NotifyPropertyChanged(nameof(this.Compartments)); }
+        //}
+
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -161,8 +171,6 @@ namespace Ferretto.Common.Controls
 
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
         {
-            //
-            //throw new NotImplementedException();
         }
 
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)

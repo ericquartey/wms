@@ -20,13 +20,13 @@
         <wms:WmsTrayControl x:Name="Canvas"
                             Grid.Row="1"
                             Margin="0,0,0,0"
-                            Compartments="{Binding Compartments, Mode=TwoWay}"
-                            LoadingUnit="{Binding LoadingUnit, Mode=TwoWay}"
+                            Compartments="{Binding LoadingUnit.Compartments, Mode=OneWay}"
+                            LoadingUnit="{Binding LoadingUnit, Mode=OneWay}"
                             SelectedItem="{Binding CompartmentInput, Mode=TwoWay}"
                             ShowBackground="False" />
 
         <compartment:ListCompartmentsView Grid.Row="2"
-                                          Compartments="{Binding Compartments, Mode=TwoWay}" />
+                                          Compartments="{Binding Compartments, Mode=OneWay}" />
 
     </Grid>
 </wms:WmsView>

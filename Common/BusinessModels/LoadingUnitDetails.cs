@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
@@ -9,7 +10,7 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private readonly List<CompartmentDetails> compartments = new List<CompartmentDetails>();
+        private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
         private int length;
         private int width;
 
@@ -47,7 +48,9 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public IEnumerable<CompartmentDetails> Compartments => this.compartments.AsReadOnly();
+        //public IEnumerable<CompartmentDetails> Compartments => this.compartments.AsReadOnly();
+
+        public BindingList<CompartmentDetails> Compartments => this.compartments;//.AsReadOnly();
 
         public CompartmentDetails CompartmentSelected { get; set; }
 

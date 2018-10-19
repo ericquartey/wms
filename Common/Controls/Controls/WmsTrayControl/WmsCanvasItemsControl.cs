@@ -53,18 +53,18 @@ namespace Ferretto.Common.Controls
         {
             base.OnSelectionChanged(e);
 
-            //if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
-            //{
-            //    newCompartment.IsSelected = true;
-            //    this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
-            //    newCompartment.ColorFill = Colors.Red.ToString();
-            //    newCompartment.ColorBorder = Colors.Gray.ToString();
-            //}
-            //if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
-            //{
-            //    oldCompartment.ColorFill = Colors.Aquamarine.ToString();
-            //    oldCompartment.ColorBorder = Colors.RoyalBlue.ToString();
-            //}
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
+            {
+                //newCompartment.IsSelected = true;
+                this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
+                //newCompartment.ColorFill = Colors.Red.ToString();
+                //newCompartment.ColorBorder = Colors.Gray.ToString();
+            }
+            if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
+            {
+                //oldCompartment.ColorFill = Colors.Aquamarine.ToString();
+                //oldCompartment.ColorBorder = Colors.RoyalBlue.ToString();
+            }
         }
 
         private void WmsCanvasItemsControl_Loaded(Object sender, System.Windows.RoutedEventArgs e)
@@ -73,7 +73,6 @@ namespace Ferretto.Common.Controls
             {
                 this.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
                 this.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
-
 
                 this.loadingUnitDetails = wmsTrayControlViewModel.LoadingUnitProperty;
 

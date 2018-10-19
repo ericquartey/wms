@@ -94,9 +94,10 @@ namespace Ferretto.Common.Controls
 
         private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            //DO NOTHING -> ONLY UPDATE PROPERTY
             //if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
             //{
-            //    //viewModel.UpdateInputForm((CompartmentDetails)e.NewValue);
+                //viewModel.UpdateInputForm((CompartmentDetails)e.NewValue);
             //}
         }
 

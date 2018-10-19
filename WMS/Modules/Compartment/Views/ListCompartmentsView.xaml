@@ -11,9 +11,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <RowDefinition Height="auto" />
+            <!--<RowDefinition Height="auto" />-->
         </Grid.RowDefinitions>
-        <Grid x:Name="GridCompartment"
+        <!--<Grid x:Name="GridCompartment"
               Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -36,15 +36,16 @@
             <Label Grid.Row="0"
                    Grid.Column="3"
                    Content="Height" />
-        </Grid>
+        </Grid>-->
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="0">
             <wms:WmsGridControl x:Name="MainGridControl"
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"
-                                CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsProperty, Mode=TwoWay}"
+                                CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentSelected, Mode=TwoWay}"
                                 ItemType="{x:Type models:CompartmentDetails}"
+                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsProperty.Compa, Mode=TwoWay}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
                 <!--
