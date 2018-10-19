@@ -72,20 +72,6 @@ namespace Ferretto.Common.Controls
             this.SetupBindings();
         }
 
-        private async void AsyncOperationCompletedAsync(Object sender, RoutedEventArgs e)
-        {
-            var wmsView = (LayoutTreeHelper.GetVisualParents(this)
-                    .OfType<INavigableView>()
-                    .FirstOrDefault());
-
-            if (wmsView?.DataContext is IEntityListViewModel viewModel)
-            {
-                this.wmsViewModel = viewModel;
-                await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
-                this.AsyncOperationCompleted -= this.AsyncOperationCompletedAsync;
-            }
-        }
-
         private void DisableColumnFiltering()
         {
             this.View.AllowColumnFiltering = false;
@@ -104,7 +90,7 @@ namespace Ferretto.Common.Controls
 
         private void SetCmdRefreshBinding()
         {
-            Binding myBinding = new Binding()
+            var myBinding = new Binding()
             {
                 Source = this.DataContext,
                 Path = new PropertyPath(nameof(Ferretto.Common.Controls.WmsGridViewModel<IBusinessObject>.CmdRefresh)),
@@ -141,6 +127,7 @@ namespace Ferretto.Common.Controls
             {
                 var wmsView = wmsViews.First();
                 var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
+                this.wmsViewModel = wmsViewViewModel as IEntityListViewModel;
                 var token = wmsViewViewModel.Token;
                 var gridControlViewModel = (INavigableViewModel)this.DataContext;
                 gridControlViewModel.Token = token;
