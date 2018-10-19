@@ -102,6 +102,10 @@
                                     FieldName="TotalAvailable" />
                 </wms:WmsGridControl.Columns>
 
+                <wms:WmsGridControl.SortInfo>
+                    <dxg:GridSortInfo FieldName="Code" SortOrder="Ascending" />
+                </wms:WmsGridControl.SortInfo>
+
             </wms:WmsGridControl>
         </Grid>
 
