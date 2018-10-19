@@ -188,44 +188,6 @@
         </Setter>
     </Style>
 
-    <!--  card view search panel content template  -->
-    <Style x:Key="{dxgt:CardTemplatesThemeKey ResourceKey=SearchPanelContentTemplate,
-                                              ThemeName=Office2016White}"
-           TargetType="{x:Type ContentControl}">
-        <Setter Property="dx:FocusHelper2.Focusable" Value="False" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Grid Background="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground}}">
-                        <!--
-                        <dxg:GridSearchControl x:Name="PART_SearchControl"
-                                               HorizontalAlignment="{Binding Path=(dxg:GridControl.CurrentView).SearchPanelHorizontalAlignment, RelativeSource={RelativeSource TemplatedParent}}"
-                                               IsEditorTabStop="False"
-                                               IsTabStop="False"
-                                               Margin="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelWithoutGroupedPanelMargin}}"
-                                               NullText="{x:Static res:General.Search}"
-                                               SearchTextBoxMinWidth="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelTextBoxMinWidth}}"
-                                               View="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}">
-                            <dxg:GridSearchControl.Visibility>
-                                <Binding Path="View.ActualShowSearchPanel" RelativeSource="{RelativeSource Self}">
-                                    <Binding.Converter>
-                                        <dx:BooleanToVisibilityConverter />
-                                    </Binding.Converter>
-                                </Binding>
-                            </dxg:GridSearchControl.Visibility>
-                        </dxg:GridSearchControl>
-                    -->
-                    </Grid>
-                    <!--<ControlTemplate.Triggers>
-                        <Trigger Property="GroupPanelShown" SourceName="PART_SearchControl" Value="True">
-                            <Setter Property="Margin" Value="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelWithGroupedPanelMargin}}" TargetName="PART_SearchControl" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>-->
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
     <!--  header style  -->
     <Style TargetType="dxg:GridColumnHeader">
         <Setter Property="Background" Value="{DynamicResource CommonSecondaryMedium}" />
