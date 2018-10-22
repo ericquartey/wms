@@ -48,9 +48,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public BindingList<CompartmentDetails> Compartments => this.compartments;//.AsReadOnly();
-
-        public CompartmentDetails CompartmentSelected { get; set; }
+        public BindingList<CompartmentDetails> Compartments => this.compartments;
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }

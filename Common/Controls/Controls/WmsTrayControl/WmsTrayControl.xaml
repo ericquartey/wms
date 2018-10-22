@@ -8,9 +8,9 @@
     <Border x:Name="CanvasBorder"
             BorderBrush="Black"
             BorderThickness="2">
-        <ctrls:WmsCanvasListBoxControl x:Name="CanvasItemsControl"
-                                      Background="SkyBlue"
-                                      ItemsSource="{Binding Items, Mode=TwoWay}">
+        <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
+                                       Background="SkyBlue"
+                                       ItemsSource="{Binding Items, Mode=TwoWay}">
 
             <ctrls:WmsCanvasListBoxControl.ItemsPanel>
                 <ItemsPanelTemplate>

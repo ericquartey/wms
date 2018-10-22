@@ -41,8 +41,8 @@ namespace Ferretto.Common.Controls
         public WmsTrayControl()
         {
             this.InitializeComponent();
-            this.CanvasItemsControl.DataContext = new WmsTrayControlViewModel();
-            this.CanvasItemsControl.TrayControl = this;
+            this.CanvasListBoxControl.DataContext = new WmsTrayControlViewModel();
+            this.CanvasListBoxControl.TrayControl = this;
             this.SetBackground(this.ShowBackground);
         }
 
@@ -86,7 +86,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 viewModel.UpdateCompartments((IEnumerable<CompartmentDetails>)e.NewValue);
             }
@@ -95,21 +95,21 @@ namespace Ferretto.Common.Controls
         private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //DO NOTHING -> ONLY UPDATE PROPERTY
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 var newCompartment = (CompartmentDetails)e.NewValue;
                 var foundCompartment = viewModel.Items.FirstOrDefault(c => c.CompartmentDetails.Id == newCompartment.Id);
 
                 if (foundCompartment != null)
                 {
-                    wmsTrayControl.CanvasItemsControl.SelectedItem = foundCompartment;
+                    wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
                 }
             }
         }
 
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
             }
@@ -117,7 +117,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 wmsTrayControl.SetBackground((bool)e.NewValue);
             }

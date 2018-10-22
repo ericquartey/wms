@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
         {
             base.MeasureOverride(constraint);
 
-            if (constraint.Width == double.PositiveInfinity && constraint.Height == double.PositiveInfinity)
+            if (constraint.Width == double.PositiveInfinity || constraint.Height == double.PositiveInfinity)
             {
                 constraint.Width = 0;
                 constraint.Height = 0;
