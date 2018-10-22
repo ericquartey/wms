@@ -134,6 +134,7 @@
   </data>
   <data name="MarkupNameOfSyntax" xml:space="preserve">
     <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ParameterCannotBeNullOrWhitespace" xml:space="preserve">
     <value>The parameter cannot be null or whitespace.</value>
@@ -149,5 +150,6 @@
   </data>
   <data name="WmsHistoryViewAppearSyntax" xml:space="preserve">
     <value>Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} .</value>
+    <comment>@Invariant</comment>
   </data>
 </root>
