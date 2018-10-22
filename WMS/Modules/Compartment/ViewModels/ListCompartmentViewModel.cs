@@ -42,60 +42,16 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #endregion Properties
 
-        //public void TestInitializeGrid()
-        //{
-        //    this.CompartmentsProperty = new ObservableCollection<WmsBaseCompartment>()
-        //    {
-        //        new CompartmentDetails()
-        //        {
-        //            Code = "1",
-        //            XPosition = 0,
-        //            YPosition = 0,
-        //            Width = 150,
-        //            Height = 150
-        //        },
-        //        new CompartmentDetails()
-        //        {
-        //            Code = "2",
-        //            XPosition = 150,
-        //            YPosition = 150,
-        //            Width = 150,
-        //            Height = 150
-        //        },
-        //        new CompartmentDetails()
-        //        {
-        //            Code = "3",
-        //            XPosition = 150,
-        //            YPosition = 150,
-        //            Width = 150,
-        //            Height = 150
-        //        },
-        //        new CompartmentDetails()
-        //        {
-        //            Code = "4",
-        //            XPosition = 150,
-        //            YPosition = 150,
-        //            Width = 150,
-        //            Height = 150
-        //        }
-        //    };
-        //    this.RaisePropertyChanged(nameof(this.CompartmentsProperty));
-        //    //this.CompartmentsProperty = compartmentsProperty;
-        //}
-
         #region Methods
 
         public void UpdateGridList(ObservableCollection<WmsBaseCompartment> compartments)
         {
             this.CompartmentsProperty = compartments;
-
-            //this.RaisePropertyChanged(nameof(this.CompartmentsProperty));
         }
 
         protected override void OnAppear()
         {
             base.OnAppear();
-            //this.TestInitializeGrid();
         }
 
         #endregion Methods

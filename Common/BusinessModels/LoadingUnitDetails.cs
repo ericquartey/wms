@@ -48,8 +48,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        //public IEnumerable<CompartmentDetails> Compartments => this.compartments.AsReadOnly();
-
         public BindingList<CompartmentDetails> Compartments => this.compartments;//.AsReadOnly();
 
         public CompartmentDetails CompartmentSelected { get; set; }

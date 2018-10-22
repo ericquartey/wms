@@ -51,33 +51,19 @@ namespace Ferretto.WMS.Modules.Compartment
         protected override void OnAppear()
         {
             this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id=1 });
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id=2 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
             this.RaisePropertyChanged(nameof(this.LoadingUnit.Compartments));
 
             this.TestInitializeInput();
-            //this.TestInitializeGrid();
-
-            //this.CompartmentSelected = new CompartmentDetails();
-            //this.CompartmentSelected.UpdateCompartmentEvent += this.CompatmentSelected_UpdateCompartmentEvent;
         }
 
-        //public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
-        //{
-        //    this.LoadingUnit = loadingUnitDetails;
-        //}
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
         {
             this.CompartmentSelected = (CompartmentDetails)sender;
         }
 
-        //public LoadingUnitDetails CompartmentSelected { get => this.compa; set => this.SetProperty(ref this.loadingUnitDetails, value); }
-        //public void UpdateInput(CompartmentDetails compartmentDetails)
-        //{
-        //    //TODO
-        //    this.CompartmentSelected = compartmentDetails;
-        //}
         private void ExecuteNewCreateCompartmentCommand()
         {
             var compartmentDetails = new CompartmentDetails
@@ -89,22 +75,6 @@ namespace Ferretto.WMS.Modules.Compartment
             };
             this.LoadingUnit.AddCompartment(compartmentDetails);
         }
-
-        //private void TestInitializeGrid()
-        //{
-        //    this.compartments = new List<CompartmentDetails>()
-        //    {
-        //        new CompartmentDetails()
-        //        {
-        //            Code = "1",
-        //            XPosition = 0,
-        //            YPosition = 0,
-        //            Width = 150,
-        //            Height = 150
-        //        }
-        //    };
-        //    this.Compartments = this.compartments;
-        //}
 
         private void TestInitializeInput()
         {

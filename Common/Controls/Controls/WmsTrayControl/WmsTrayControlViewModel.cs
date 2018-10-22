@@ -15,7 +15,6 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        //private IList<CompartmentDetails> compartments;
         private ObservableCollection<WmsBaseCompartment> items;
 
         private int left;
@@ -44,12 +43,6 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
-
-        //public IList<CompartmentDetails> Compartments
-        //{
-        //    get { return this.compartments; }
-        //    set { this.compartments = value; this.NotifyPropertyChanged(nameof(this.Compartments)); }
-        //}
 
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
@@ -158,14 +151,8 @@ namespace Ferretto.Common.Controls
 
         public void UpdateInputForm(CompartmentDetails compartment)
         {
-            //var view = LayoutTreeHelper.GetVisualParents(this).OfType<WmsView>().FirstOrDefault();
             this.CompartmentDetailsProperty = compartment;
             this.NotifyPropertyChanged(nameof(this.CompartmentDetailsProperty));
-
-            //compartment.UpdateCompartmentEvent -= this.CompatmentSelected_UpdateCompartmentEvent;
-
-            //compartment.UpdateCompartmentEvent += this.CompatmentSelected_UpdateCompartmentEvent;
-            //this.CompartmentDetailsProperty.OnUpdateCompartmentEvent(null);
         }
 
         public void UpdateTray(LoadingUnitDetails loadingUnitDetails)

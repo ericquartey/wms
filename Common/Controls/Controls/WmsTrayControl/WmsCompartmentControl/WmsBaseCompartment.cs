@@ -35,8 +35,6 @@ namespace Ferretto.Common.Controls
 
         private double height;
 
-        private bool isSelect;
-
         private bool isSelected;
 
         private double left;
@@ -138,7 +136,6 @@ namespace Ferretto.Common.Controls
             set { this.quantity = value; }
         }
 
-        //public double OriginWidth { get; set; }
         public float RectangleBorderThickness
         {
             get { return this.rectangleBorderThickness; }
@@ -149,7 +146,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        //public double OriginTop { get; set; }
         public string Selected
         {
             get { return this.selected; }
@@ -160,7 +156,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        //public double OriginLeft { get; set; }
         public double Top
         {
             get
@@ -174,7 +169,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        //public double OriginHeight { get; set; }
         public Tray Tray
         {
             get;

@@ -11,32 +11,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
-            <!--<RowDefinition Height="auto" />-->
         </Grid.RowDefinitions>
-        <!--<Grid x:Name="GridCompartment"
-              Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Label Grid.Row="0"
-                   Grid.Column="0"
-                   Content="Code" />
-            <Label Grid.Row="0"
-                   Grid.Column="1"
-                   Content="UnitLoading" />
-            <Label Grid.Row="0"
-                   Grid.Column="2"
-                   Content="Width" />
-            <Label Grid.Row="0"
-                   Grid.Column="3"
-                   Content="Height" />
-        </Grid>-->
 
         <Grid Grid.Row="0">
             <wms:WmsGridControl x:Name="MainGridControl"
@@ -48,14 +23,7 @@
                                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnit.Compartments, Mode=OneWay}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
-                <!--
-                    CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsProperty, Mode=TwoWay}"
-                    
-                    CurrentItem="{Binding Compartments, Mode=TwoWay}"
-                    CurrentDataSource=&quot;{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}&quot;
-                    CurrentItem=&quot;{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItem, Mode=TwoWay}&quot;
-                    ItemType=&quot;{x:Type models:Item}&quot;
-                -->
+
                 <wms:WmsGridControl.View>
                     <dxg:TableView AllowEditing="False"
                                    AllowGrouping="False"
@@ -65,17 +33,7 @@
                                    ShowFilterPanelMode="ShowAlways"
                                    ShowGroupPanel="False"
                                    ShowIndicator="False"
-                                   ShowSearchPanelMode="Always">
-
-
-                        <!--<i:Interaction.Triggers>
-                            <i:EventTrigger EventName="RowDoubleClick">
-                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.ViewDetailsCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>-->
-
-
-                    </dxg:TableView>
+                                   ShowSearchPanelMode="Always" />
 
                 </wms:WmsGridControl.View>
 

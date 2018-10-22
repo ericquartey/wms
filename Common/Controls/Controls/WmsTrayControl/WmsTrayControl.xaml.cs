@@ -89,8 +89,6 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 viewModel.UpdateCompartments((IEnumerable<CompartmentDetails>)e.NewValue);
-                //var compartment = ((BindingList<CompartmentDetails>)e.NewValue)[0];
-                //wmsTrayControl.LoadingUnit.AddCompartment(compartment);
             }
         }
 
@@ -106,7 +104,6 @@ namespace Ferretto.Common.Controls
                 {
                     wmsTrayControl.CanvasItemsControl.SelectedItem = foundCompartment;
                 }
-                //viewModel.UpdateInputForm((CompartmentDetails)e.NewValue);
             }
         }
 
@@ -117,11 +114,6 @@ namespace Ferretto.Common.Controls
                 viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
             }
         }
-
-        //private static void OnSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
