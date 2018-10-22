@@ -129,4 +129,181 @@
   <data name="Resolution" xml:space="preserve">
     <value>Risoluzione:</value>
   </data>
+  <data name="ActualPosition" xml:space="preserve">
+    <value>Posizione Attuale:</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Backward" xml:space="preserve">
+    <value>Indietro</value>
+  </data>
+  <data name="BeltBurnishing" xml:space="preserve">
+    <value>Rodaggio Cinghia</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Giù</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Errore</value>
+  </data>
+  <data name="Forward" xml:space="preserve">
+    <value>Avanti</value>
+  </data>
+  <data name="GateSetUp" xml:space="preserve">
+    <value>Set Up Barriera</value>
+  </data>
+  <data name="Installer" xml:space="preserve">
+    <value>Installatore</value>
+  </data>
+  <data name="LogOff" xml:space="preserve">
+    <value>Disconnetti</value>
+  </data>
+  <data name="LowSpeedMovementsTest" xml:space="preserve">
+    <value>Movimenti Bassa Velocità</value>
+  </data>
+  <data name="LSMTGateEngineButton" xml:space="preserve">
+    <value>Motore Barriera</value>
+  </data>
+  <data name="LSMTGateEngineTitle" xml:space="preserve">
+    <value>Movimenti Motore Barriera</value>
+  </data>
+  <data name="LSMTHorizontalEngineButton" xml:space="preserve">
+    <value>Motore Orizzontale</value>
+  </data>
+  <data name="LSMTHorizontalEngineTitle" xml:space="preserve">
+    <value>Movimenti Motore Orizzontale</value>
+  </data>
+  <data name="LSMTVerticalEngineButton" xml:space="preserve">
+    <value>Motore Verticale</value>
+  </data>
+  <data name="LSMTVerticalEngineTitle" xml:space="preserve">
+    <value>Movimenti Motore Verticale</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manu</value>
+  </data>
+  <data name="NextButton" xml:space="preserve">
+    <value>Prossimo &gt;</value>
+  </data>
+  <data name="Off" xml:space="preserve">
+    <value>Off</value>
+  </data>
+  <data name="OffsetCalibration" xml:space="preserve">
+    <value>Calibrazione Offset</value>
+  </data>
+  <data name="On" xml:space="preserve">
+    <value>On</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="VerifyCircuitIntegrity" xml:space="preserve">
+    <value>Verifica Integrità Circuito</value>
+  </data>
+  <data name="VerifyPanelPosition" xml:space="preserve">
+    <value>Verifica Posizione Pannello</value>
+  </data>
+  <data name="VerifyWeightController" xml:space="preserve">
+    <value>Verifica Controllo Peso</value>
+  </data>
+  <data name="VerticalAxisCalibration" xml:space="preserve">
+    <value>Calibrazione Asse Verticale</value>
+  </data>
+  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
+    <value>Calibrazione asse completata</value>
+  </data>
+  <data name="AxisNotCalibratedYet" xml:space="preserve">
+    <value>Calibrazione asse non effettuata</value>
+  </data>
+  <data name="LowerBound" xml:space="preserve">
+    <value>Limite Inferiore:</value>
+  </data>
+  <data name="Offset" xml:space="preserve">
+    <value>Offset:</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Risultato:</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Inizia</value>
+  </data>
+  <data name="ResolutionCalibration" xml:space="preserve">
+    <value>Calibrazione Risoluzione</value>
+  </data>
+  <data name="SensorsState" xml:space="preserve">
+    <value>Stato Sensori</value>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Baie</value>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Culla</value>
+  </data>
+  <data name="Gate" xml:space="preserve">
+    <value>Barriera</value>
+  </data>
+  <data name="VariousInputs" xml:space="preserve">
+    <value>Input Vari</value>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Asse Verticale</value>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Barriera Anti-Intrusione</value>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Motore Culla Selezionato</value>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Motore Elevatore Selezionato</value>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Fine Corsa d'Emergenza</value>
+  </data>
+  <data name="GateSensorA" xml:space="preserve">
+    <value>Sensore Barriera A</value>
+  </data>
+  <data name="GateSensorB" xml:space="preserve">
+    <value>Sensore Barriera B</value>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>Presenza UDC in Culla Lato Macchina</value>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>Presenza UDC in Culla Lato Operatore</value>
+  </data>
+  <data name="LuPresentInBay" xml:space="preserve">
+    <value>Presenza UDC in Baia</value>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Micro Carter Lato Sinistro</value>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Micro Carter Lato Destro</value>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Bottone a Fungo</value>
+  </data>
+  <data name="PawlEncoder" xml:space="preserve">
+    <value>Encoder Nottolino</value>
+  </data>
+  <data name="ResetSecurityFunction" xml:space="preserve">
+    <value>Reset Funzioni di Sicurezza</value>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Funzione di Sicurezza Attiva</value>
+  </data>
+  <data name="ShapeControl" xml:space="preserve">
+    <value>Controllo Sagoma</value>
+  </data>
+  <data name="VerticalAxisBrake" xml:space="preserve">
+    <value>Freno Asse Verticale</value>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Sensore Zero Nottolino</value>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Sensore Zero Verticale</value>
+  </data>
 </root>

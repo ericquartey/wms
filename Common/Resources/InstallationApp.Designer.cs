@@ -522,6 +522,15 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
+        public static string Sta {
+            get {
+                return ResourceManager.GetString("Sta", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
         public static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
