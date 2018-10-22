@@ -195,6 +195,7 @@
         <Setter Property="Height" Value="30" />
         <Setter Property="FontSize" Value="{DynamicResource GridFontSize}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommonBackground}" />
+        <Setter Property="ShowFilterButtonOnHover" Value="False" />
     </Style>
 
     <!--  row style  -->
