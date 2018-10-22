@@ -59,18 +59,22 @@
                     Style="{StaticResource StandardButtonStyle}" />
             <custom:CustomInputFieldControl Grid.Row="1"
                                             Grid.Column="4"
+                                            InputScope="Number"
                                             InputText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.Resolution}" />
             <custom:CustomInputFieldControl Grid.Row="2"
                                             Grid.Column="4"
+                                            InputScope="Number"
                                             InputText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.Offset}" />
             <custom:CustomInputFieldControl Grid.Row="3"
                                             Grid.Column="4"
+                                            InputScope="Number"
                                             InputText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.UpperBound}" />
             <custom:CustomInputFieldControl Grid.Row="4"
                                             Grid.Column="4"
+                                            InputScope="Number"
                                             InputText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.LowerBound}" />
             <custom:CustomInputFieldControl Grid.Row="5"

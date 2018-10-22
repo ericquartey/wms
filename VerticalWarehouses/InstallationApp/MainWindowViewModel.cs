@@ -25,14 +25,11 @@ namespace Ferretto.VW.InstallationApp
         private ICommand backToMainWindowNavigationButtonsViewCommand;
         private UserControl currentNavigationButtonsView;
         private UserControl currentPage;
-        private bool enableLowSpeedMovementsTestButton;
-        private bool enableVerifyCircuitIntegrityButton;
-        private bool enableVerticalAxisCalibrationButton;
         private ICommand lowSpeedMovementsTestButtonCommand;
         private ICommand lsmtGateEngineButtonCommand;
         private ICommand lsmtHorizontalEngineButtonCommand;
         private ICommand lsmtVerticalEngineButtonCommand;
-        private SolidColorBrush machineModeCircleFill = new SolidColorBrush(Colors.Blue);
+        private SolidColorBrush machineModeCircleFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639");
         private int machineModeSelectionItem = 0;
         private SolidColorBrush machineOnMarchCircleFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#c5c7c4");
         private int machineOnMarchSelectionItem = 0;
@@ -60,9 +57,6 @@ namespace Ferretto.VW.InstallationApp
         public ICommand BackToMainWindowNavigationButtonsViewCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.CurrentNavigationButtonsView = this.mainWindowNavigationButtonsViewInstance; this.CurrentPage = null; }));
         public UserControl CurrentNavigationButtonsView { get => this.currentNavigationButtonsView; set => this.SetProperty(ref this.currentNavigationButtonsView, value); }
         public UserControl CurrentPage { get => this.currentPage; set => this.SetProperty(ref this.currentPage, value); }
-        public Boolean EnableLowSpeedMovementsTestButton { get => this.enableLowSpeedMovementsTestButton; set => this.enableLowSpeedMovementsTestButton = value; }
-        public Boolean EnableVerifyCircuitIntegrityButton { get => this.enableVerifyCircuitIntegrityButton; set => this.enableVerifyCircuitIntegrityButton = value; }
-        public Boolean EnableVerticalAxisCalibrationButton { get => this.enableVerticalAxisCalibrationButton; set => this.enableVerticalAxisCalibrationButton = value; }
         public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() => { this.CurrentNavigationButtonsView = this.lsmtNavigationButtonsViewInstance; this.CurrentPage = null; }));
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() => { this.CurrentPage = this.lsmtGateEngineViewInstance; }));
         public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() => { this.CurrentPage = this.lsmtHorizontalEngineViewInstance; }));

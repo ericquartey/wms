@@ -44,30 +44,16 @@ namespace Ferretto.VW.VWApp
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).MainWindow.Hide();
                         ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
                         ((App)Application.Current).InstallationMainWindowInstance.Show();
+                        ((App)Application.Current).MainWindow.Hide();
                         break;
 
                     case "Operator":
 
-                        ((App)Application.Current).MainWindow.Hide();
                         ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
                         ((App)Application.Current).OperatorMainWindowInstance.Show();
-                        break;
-
-                    case "Installer1": //PRESENTATION ONLY: REMOVE THOSE 2 BLOCKS BEFORE PRODUCTION
-
                         ((App)Application.Current).MainWindow.Hide();
-                        ((App)Application.Current).InstallationWindow1Instance = new InstallationApp.Window1();
-                        ((App)Application.Current).InstallationWindow1Instance.Show();
-                        break;
-
-                    case "Installer2":
-
-                        ((App)Application.Current).MainWindow.Hide();
-                        ((App)Application.Current).InstallationWindow2Instance = new InstallationApp.Window2();
-                        ((App)Application.Current).InstallationWindow2Instance.Show();
                         break;
 
                     default: //TODO SUGGESTION: remove this once CheckLoginInput is implemented.

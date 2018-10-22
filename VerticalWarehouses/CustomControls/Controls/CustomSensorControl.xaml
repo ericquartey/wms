@@ -7,8 +7,8 @@
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
                 Orientation="Horizontal">
-        <Ellipse Width="20"
-                 Height="20"
+        <Ellipse Width="30"
+                 Height="30"
                  Fill="{Binding BulletColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock Margin="10,0,0,0"
                    Style="{StaticResource SensorControlBodyTextBlockStyle}"
