@@ -18,6 +18,7 @@ namespace Ferretto.VW.InstallationApp
         private readonly LSMTVerticalEngineView lsmtVerticalEngineViewInstance = new LSMTVerticalEngineView();
         private readonly MainWindowNavigationButtonsView mainWindowNavigationButtonsViewInstance = new MainWindowNavigationButtonsView();
         private readonly SensorsStateNavigationButtonsView sensorsStateNavigationButtonsViewInstance = new SensorsStateNavigationButtonsView();
+        private readonly SSProvaView ssProvaViewInstance = new SSProvaView();
         private readonly SSVerticalAxisView ssVerticalAxisViewInstance = new SSVerticalAxisView();
         private readonly VerticalAxisCalibrationView verticalAxisCalibrationViewInstance = new VerticalAxisCalibrationView();
 
@@ -34,11 +35,9 @@ namespace Ferretto.VW.InstallationApp
         private SolidColorBrush machineModeCircleFill = new SolidColorBrush(Colors.Blue);
         private int machineModeSelectionItem = 0;
         private SolidColorBrush machineOnMarchCircleFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#c5c7c4");
-
-        //FerrettoLightGray
         private int machineOnMarchSelectionItem = 0;
-
         private ICommand sensorsStateNavigationButtonsButtonCommand;
+        private ICommand ssProvaViewButtonCommand;
         private ICommand ssVerticalAxisButtonCommand;
         private ICommand verticalAxisCalibrationButtonCommand;
 
@@ -69,12 +68,13 @@ namespace Ferretto.VW.InstallationApp
         public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() => { this.CurrentPage = this.lsmtHorizontalEngineViewInstance; }));
         public ICommand LSMTVerticalEngineButtonCommand => this.lsmtVerticalEngineButtonCommand ?? (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(() => { this.CurrentPage = this.lsmtVerticalEngineViewInstance; }));
         public SolidColorBrush MachineModeCircleFill { get => this.machineModeCircleFill; set => this.SetProperty(ref this.machineModeCircleFill, value); }
-        public SolidColorBrush[] MachineModeCircleFillArray { get; set; } = new SolidColorBrush[] { new SolidColorBrush(Colors.Blue), (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639") /*FerrettoGreen*/};
+        public SolidColorBrush[] MachineModeCircleFillArray { get; set; } = new SolidColorBrush[] { (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639"), new SolidColorBrush(Colors.Blue) };
         public Int32 MachineModeSelectionItem { get => this.machineModeSelectionItem; set { this.SetProperty(ref this.machineModeSelectionItem, value); this.MachineModeCircleFill = this.MachineModeCircleFillArray[value]; } }
         public SolidColorBrush MachineOnMarchCircleFill { get => this.machineOnMarchCircleFill; set => this.SetProperty(ref this.machineOnMarchCircleFill, value); }
         public SolidColorBrush[] MachineOnMarchCircleFillArray { get; set; } = new SolidColorBrush[] { (SolidColorBrush)new BrushConverter().ConvertFrom("#c5c7c4")/*FerrettoLightGray*/, (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639")/*FerrettoGreen*/ };
         public Int32 MachineOnMarchSelectionItem { get => this.machineOnMarchSelectionItem; set { this.SetProperty(ref this.machineOnMarchSelectionItem, value); this.MachineOnMarchCircleFill = this.MachineOnMarchCircleFillArray[value]; } }
         public ICommand SensorsStateNavigationButtonsButtonCommand => this.sensorsStateNavigationButtonsButtonCommand ?? (this.sensorsStateNavigationButtonsButtonCommand = new DelegateCommand(() => { this.CurrentNavigationButtonsView = this.sensorsStateNavigationButtonsViewInstance; this.CurrentPage = null; }));
+        public ICommand SsProvaViewButtonCommand => this.ssProvaViewButtonCommand ?? (this.ssProvaViewButtonCommand = new DelegateCommand(() => { this.CurrentPage = this.ssProvaViewInstance; }));
         public ICommand SsVerticalAxisButtonCommand => this.ssVerticalAxisButtonCommand ?? (this.ssVerticalAxisButtonCommand = new DelegateCommand(() => { this.CurrentPage = this.ssVerticalAxisViewInstance; }));
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() => { this.CurrentPage = this.verticalAxisCalibrationViewInstance; }));
 

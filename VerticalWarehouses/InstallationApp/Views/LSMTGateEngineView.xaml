@@ -9,19 +9,11 @@
              Height="auto"
              mc:Ignorable="d">
     <DockPanel>
-        <Label Content="{x:Static res:InstallationApp.LSMTGateEngineTitle}"
+        <Label HorizontalAlignment="Left"
+               Content="{x:Static res:InstallationApp.LSMTGateEngineTitle}"
                DockPanel.Dock="Top"
+               Margin="20,0,0,0"
                Style="{StaticResource StandardTitleTextStyle}" />
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="1"
-                    Height="60"
-                    Content="{x:Static res:InstallationApp.NextButton}"
-                    Style="{StaticResource StandardButtonStyle}" />
-        </Grid>
         <Grid Width="730"
               Height="530">
             <Grid.RowDefinitions>

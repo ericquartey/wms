@@ -14,7 +14,8 @@ namespace Ferretto.VW.VWApp
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string passwordLogin;
-        private string userLogin;
+        private ICommand switchOffCommand;
+        private string userLogin = "Installer";
 
         #endregion Fields
 
@@ -23,6 +24,7 @@ namespace Ferretto.VW.VWApp
         public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(this.ExecuteLoginButtonCommand));
         public String LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
         public String PasswordLogin { get => this.passwordLogin; set => this.SetProperty(ref this.passwordLogin, value); }
+        public ICommand SwitchOffCommand => this.switchOffCommand ?? (this.switchOffCommand = new DelegateCommand(() => { Application.Current.Shutdown(); }));
         public String UserLogin { get => this.userLogin; set => this.SetProperty(ref this.userLogin, value); }
 
         #endregion Properties
@@ -79,11 +81,6 @@ namespace Ferretto.VW.VWApp
                 this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
                 //TODO: open a popup to communicate to the user that the login info are not correct
             }
-        }
-
-        private void ExecuteSwitchOffButtonCommand()
-        {
-            Application.Current.Shutdown();
         }
 
         #endregion Methods

@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ViewModels\SSProvaViewModel.cs" />
     <Compile Include="ViewModels\SSVerticalAxisViewModel.cs" />
     <Compile Include="ViewModels\VerticalAxisCalibrationViewModel.cs" />
     <Compile Include="Views\LSMTGateEngineView.cs" />
@@ -76,6 +77,9 @@
     </Compile>
     <Compile Include="Views\SensorsStateNavigationButtonsView.xaml.cs">
       <DependentUpon>SensorsStateNavigationButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SSProvaView.xaml.cs">
+      <DependentUpon>SSProvaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SSVerticalAxisView.xaml.cs">
       <DependentUpon>SSVerticalAxisView.xaml</DependentUpon>
@@ -124,6 +128,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SensorsStateNavigationButtonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SSProvaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -17,16 +17,16 @@ using Ferretto.VW.InstallationApp.ViewModels;
 namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for SSVerticalAxisView.xaml
+    /// Interaction logic for SSProvaView.xaml
     /// </summary>
-    public partial class SSVerticalAxisView : UserControl
+    public partial class SSProvaView : UserControl
     {
         #region Constructors
 
-        public SSVerticalAxisView()
+        public SSProvaView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSVerticalAxisViewModel();
+            this.DataContext = new SSProvaViewModel();
         }
 
         #endregion Constructors

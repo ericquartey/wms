@@ -9,7 +9,8 @@
              xmlns:vm="clr-namespace:Ferretto.VW.InstallationApp.ViewModels"
              mc:Ignorable="d">
     <DockPanel>
-        <Label HorizontalAlignment="Center"
+        <Label Margin="20,0,0,0"
+               HorizontalAlignment="Left"
                Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
                DockPanel.Dock="Top"
                Style="{StaticResource StandardTitleTextStyle}" />

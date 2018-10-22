@@ -7,11 +7,11 @@
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
                 Orientation="Horizontal">
-        <Ellipse Width="15"
-                 Height="15"
+        <Ellipse Width="20"
+                 Height="20"
                  Fill="{Binding BulletColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock Margin="10,0,0,0"
-                   Style="{StaticResource StandardBodyTextBlockStyle}"
+                   Style="{StaticResource SensorControlBodyTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

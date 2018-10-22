@@ -6,8 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              mc:Ignorable="d">
-    <Border Background="{StaticResource FerrettoPureWhite}"
-            BorderThickness="0">
+    <Border Height="630"
+            Background="{StaticResource FerrettoPureWhite}">
         <StackPanel>
             <Rectangle Height="20" />
             <Button Height="60"
@@ -25,7 +25,7 @@
                     Command="{Binding LSMTGateEngineButtonCommand}"
                     Content="{x:Static res:InstallationApp.LSMTGateEngineButton}"
                     Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Rectangle Height="425" />
+            <Rectangle Height="320" />
             <Button Height="60"
                     Margin="15,0,0,5"
                     Command="{Binding BackToMainWindowNavigationButtonsViewCommand}"

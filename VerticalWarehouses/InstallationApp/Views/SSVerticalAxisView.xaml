@@ -8,40 +8,33 @@
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              mc:Ignorable="d">
     <DockPanel>
-        <Label HorizontalAlignment="Center"
+        <Label Margin="20,0,0,0"
+               HorizontalAlignment="Left"
                Content="{x:Static res:InstallationApp.VerticalAxis}"
                DockPanel.Dock="Top"
                Style="{StaticResource StandardTitleTextStyle}" />
-        <Grid DockPanel.Dock="Bottom">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
-            <Button Name="NextProcedureButton"
-                    Grid.Column="1"
-                    Height="60"
-                    Content="{x:Static res:InstallationApp.NextButton}"
-                    IsEnabled="{Binding}"
-                    Style="{StaticResource StandardButtonStyle}" />
-        </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
+                <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackPanel>
-                <custom:CustomSensorControl BulletColor="{Binding VerticalZeroSensorFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <StackPanel Grid.Row="1"
+                        Grid.Column="1">
+                <custom:CustomSensorControl Margin="10"
+                                            BulletColor="{Binding VerticalZeroSensorFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
-                <custom:CustomSensorControl BulletColor="{Binding EmergencyEndRunFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <custom:CustomSensorControl Margin="10"
+                                            BulletColor="{Binding EmergencyEndRunFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.EmergencyEndRun}" />
-                <custom:CustomSensorControl BulletColor="{Binding BrakeResistanceOverTemperatureFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                <custom:CustomSensorControl Margin="10"
+                                            BulletColor="{Binding BrakeResistanceOverTemperatureFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}" />
-                <custom:CustomSensorControl BulletColor="Blue"
-                                            LabelText="ccc" />
             </StackPanel>
         </Grid>
     </DockPanel>

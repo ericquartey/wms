@@ -6,8 +6,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              mc:Ignorable="d">
-    <Border Background="{StaticResource FerrettoPureWhite}"
-            BorderThickness="0">
+    <Border Height="630"
+            Background="{StaticResource FerrettoPureWhite}">
         <StackPanel>
             <Rectangle Height="20" />
             <Button Height="60"
@@ -34,10 +34,10 @@
             <Button x:Name="OpenBeltBurnishingPageButton"
                     Height="60"
                     Margin="15,0,0,5"
-                    Command="{Binding}"
+                    Command="{Binding SsProvaViewButtonCommand}"
                     Content="{x:Static res:InstallationApp.VariousInputs}"
                     Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Rectangle Height="295" />
+            <Rectangle Height="190" />
             <Button x:Name="OpenVerifyWeightControllerPageButton"
                     Height="60"
                     Margin="15,0,0,5"

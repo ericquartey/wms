@@ -162,7 +162,7 @@
     <comment>Button text</comment>
   </data>
   <data name="LowSpeedMovementsTest" xml:space="preserve">
-    <value>Low Speed Movements Test </value>
+    <value>Low Speed Movements</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="LSMTGateEngineButton" xml:space="preserve">

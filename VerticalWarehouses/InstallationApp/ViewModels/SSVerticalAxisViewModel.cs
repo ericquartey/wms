@@ -7,9 +7,8 @@ namespace Ferretto.VW.InstallationApp.ViewModels
     {
         #region Fields
 
+        private readonly SolidColorBrush FERRETTOGRAY = (SolidColorBrush)new BrushConverter().ConvertFrom("#707173");
         private readonly SolidColorBrush FERRETTOGREEN = (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639");
-        private readonly SolidColorBrush FERRETTORED = (SolidColorBrush)new BrushConverter().ConvertFrom("#e2001a");
-
         private SolidColorBrush brakeResistanceOverTemperatureFillColor;
         private SolidColorBrush emergencyEndRunFillColor;
         private SolidColorBrush verticalZeroSensorFillColor;
@@ -20,9 +19,9 @@ namespace Ferretto.VW.InstallationApp.ViewModels
 
         public SSVerticalAxisViewModel()
         {
-            this.VerticalZeroSensorFillColor = this.FERRETTORED;
-            this.BrakeResistanceOverTemperatureFillColor = this.FERRETTORED;
-            this.EmergencyEndRunFillColor = this.FERRETTORED;
+            this.VerticalZeroSensorFillColor = this.FERRETTOGRAY;
+            this.BrakeResistanceOverTemperatureFillColor = this.FERRETTOGRAY;
+            this.EmergencyEndRunFillColor = this.FERRETTOGRAY;
         }
 
         #endregion Constructors

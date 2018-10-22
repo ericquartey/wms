@@ -16,7 +16,7 @@
     </Style>
     <Style x:Key="StandardMainWindowButtonStyle"
            TargetType="{x:Type Button}">
-        <Setter Property="Background" Value="{StaticResource FerrettoLightGray}" />
+        <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
         <Setter Property="FontSize" Value="20" />

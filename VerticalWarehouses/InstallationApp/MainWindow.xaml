@@ -10,6 +10,7 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -20,14 +21,14 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Name="upperRow"
-                           Height="60" />
+                           Height="80" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0"
                 Grid.Column="0"
                 Background="{StaticResource FerrettoPureWhite}"
                 BorderThickness="0">
-            <Image Margin="5"
+            <Image Margin="25,15,0,0"
                    Source="/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
                    Stretch="Uniform" />
         </Border>
@@ -39,7 +40,7 @@
                         Orientation="Horizontal">
                 <ComboBox Name="userComboBox"
                           Width="150"
-                          Margin="10,0,0,0"
+                          Margin="10,10,2,2"
                           HorizontalContentAlignment="Right"
                           VerticalContentAlignment="Center"
                           FontSize="25"
@@ -66,41 +67,9 @@
                     </ComboBoxItem>
                 </ComboBox>
                 <Image Height="30"
-                       Margin="0,0,50,0"
+                       Margin="0,10,52,2"
                        Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
-                <Grid Margin="2"
-                      Background="{StaticResource FerrettoDarkGray}">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <ComboBox Name="machineOnMarchComboBox"
-                              Grid.Column="1"
-                              Width="130"
-                              Margin="5"
-                              HorizontalContentAlignment="Center"
-                              VerticalContentAlignment="Center"
-                              FontSize="25"
-                              Foreground="{StaticResource FerrettoPureWhite}"
-                              SelectedIndex="{Binding MachineOnMarchSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Style="{StaticResource StandardComboBoxTemplate}">
-                        <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
-                                      Content="{x:Static res:InstallationApp.Off}"
-                                      IsSelected="True"
-                                      Style="{StaticResource StandardComboBoxItemStyle}"
-                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
-                        <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
-                                      Content="{x:Static res:InstallationApp.On}"
-                                      Style="{StaticResource StandardComboBoxItemStyle}"
-                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
-                    </ComboBox>
-                    <Ellipse Grid.Column="0"
-                             Width="30"
-                             Height="30"
-                             Margin="5"
-                             Fill="{Binding MachineOnMarchCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                </Grid>
-                <Grid Margin="2"
+                <Grid Margin="2,10,2,2"
                       Background="{StaticResource FerrettoDarkGray}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
@@ -132,19 +101,53 @@
                              Margin="5"
                              Fill="{Binding MachineModeCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
+                <Grid Margin="2,10,2,2"
+                      Background="{StaticResource FerrettoDarkGray}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Name="machineOnMarchComboBox"
+                              Grid.Column="1"
+                              Width="130"
+                              Margin="5"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              FontSize="25"
+                              Foreground="{StaticResource FerrettoPureWhite}"
+                              SelectedIndex="{Binding MachineOnMarchSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              Style="{StaticResource StandardComboBoxTemplate}">
+                        <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.Off}"
+                                      IsSelected="True"
+                                      Style="{StaticResource StandardComboBoxItemStyle}"
+                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                        <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.On}"
+                                      Style="{StaticResource StandardComboBoxItemStyle}"
+                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                    </ComboBox>
+                    <Ellipse Grid.Column="0"
+                             Width="30"
+                             Height="30"
+                             Margin="5"
+                             Fill="{Binding MachineOnMarchCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
             </StackPanel>
         </Border>
-        <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
+        <ContentControl x:Name="InstallationPageRegionContentControl"
                         Grid.Row="1"
                         Grid.Column="1"
                         Width="730"
                         Height="610"
                         Content="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <ContentControl x:Name="InstallationPageRegionContentControl"
+        <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
                         Grid.Row="1"
                         Grid.Column="0"
-                        Width="280"
-                        Height="700"
+                        Width="260"
+                        Height="610"
+                        Margin="20,20,0,0"
+                        VerticalAlignment="Center"
                         Content="{Binding CurrentNavigationButtonsView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>
