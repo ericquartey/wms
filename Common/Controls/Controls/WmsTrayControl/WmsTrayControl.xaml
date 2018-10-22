@@ -8,19 +8,19 @@
     <Border x:Name="CanvasBorder"
             BorderBrush="Black"
             BorderThickness="2">
-        <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
-                                     Background="SkyBlue"
-                                     ItemsSource="{Binding Items, Mode=TwoWay}">
+        <ctrls:WmsCanvasListBoxControl x:Name="CanvasItemsControl"
+                                      Background="SkyBlue"
+                                      ItemsSource="{Binding Items, Mode=TwoWay}">
 
-            <ctrls:WmsCanvasItemsControl.ItemsPanel>
+            <ctrls:WmsCanvasListBoxControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          Background="Orange" />
                 </ItemsPanelTemplate>
-            </ctrls:WmsCanvasItemsControl.ItemsPanel>
-            <ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+            </ctrls:WmsCanvasListBoxControl.ItemsPanel>
+            <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="Padding" Value="0" />
                     <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
@@ -28,9 +28,9 @@
                     <Setter Property="Margin" Value="0" />
                 </Style>
 
-            </ctrls:WmsCanvasItemsControl.ItemContainerStyle>
+            </ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
 
-        </ctrls:WmsCanvasItemsControl>
+        </ctrls:WmsCanvasListBoxControl>
     </Border>
 
 </UserControl>

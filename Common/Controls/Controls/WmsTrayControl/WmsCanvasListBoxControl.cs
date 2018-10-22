@@ -16,7 +16,7 @@ using Ferretto.Common.Modules.BLL.Models;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsCanvasItemsControl : System.Windows.Controls.ListBox
+    public class WmsCanvasListBoxControl : System.Windows.Controls.ListBox
     {
         #region Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.Common.Controls
 
         #region Constructors
 
-        public WmsCanvasItemsControl()
+        public WmsCanvasListBoxControl()
         {
         }
 
