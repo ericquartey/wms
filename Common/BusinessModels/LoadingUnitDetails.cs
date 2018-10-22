@@ -129,7 +129,6 @@ namespace Ferretto.Common.BusinessModels
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
-                //this.OnAddedCompartmentEvent(null);
             }
             else
             {
@@ -169,15 +168,6 @@ namespace Ferretto.Common.BusinessModels
             }
             return true;
         }
-
-        //public void OnAddedCompartmentEvent(EventArgs e)
-        //{
-        //    var handler = this.AddedCompartmentEvent;
-        //    if (handler != null)
-        //    {
-        //        handler(this, e);
-        //    }
-        //}
 
         /// <summary>
         /// Checks if the specified compartments are physically overlapping.

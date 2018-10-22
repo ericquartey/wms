@@ -31,8 +31,4 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Properties
     }
-
-    //internal class GraphicObject
-    //{
-    //}
 }
