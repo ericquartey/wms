@@ -13,10 +13,8 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
-        private CompartmentDetails compartmentInput;
-        private IList<CompartmentDetails> compartments;
+        private CompartmentDetails compartmentSelected;
         private ICommand createNewCompartmentCommand;
-        private ObservableCollection<WmsBaseCompartment> items;
         private LoadingUnitDetails loadingUnitDetails;
 
         #endregion Fields
@@ -31,38 +29,18 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Properties
 
-        public CompartmentDetails CompartmentInput
+        public CompartmentDetails CompartmentSelected
         {
-            get => this.compartmentInput;
+            get => this.compartmentSelected;
             set
             {
-                this.compartmentInput = value;
-                this.RaisePropertyChanged(nameof(this.CompartmentInput));
-            }
-        }
-
-        public IList<CompartmentDetails> Compartments
-        {
-            get { return this.compartments; }
-            set
-            {
-                this.compartments = value;
-                this.RaisePropertyChanged(nameof(this.Compartments));
+                this.compartmentSelected = value;
+                this.RaisePropertyChanged(nameof(this.CompartmentSelected));
             }
         }
 
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                  (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
-
-        public ObservableCollection<WmsBaseCompartment> Items
-        {
-            get => this.items;
-            set
-            {
-                this.items = value;
-                this.RaisePropertyChanged(nameof(this.Items));
-            }
-        }
 
         public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set => this.SetProperty(ref this.loadingUnitDetails, value); }
 
@@ -73,9 +51,10 @@ namespace Ferretto.WMS.Modules.Compartment
         protected override void OnAppear()
         {
             this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0 });
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id=1 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id=2 });
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
+            this.RaisePropertyChanged(nameof(this.LoadingUnit.Compartments));
 
             this.TestInitializeInput();
             //this.TestInitializeGrid();
@@ -90,7 +69,7 @@ namespace Ferretto.WMS.Modules.Compartment
         //}
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
         {
-            this.CompartmentInput = (CompartmentDetails)sender;
+            this.CompartmentSelected = (CompartmentDetails)sender;
         }
 
         //public LoadingUnitDetails CompartmentSelected { get => this.compa; set => this.SetProperty(ref this.loadingUnitDetails, value); }
@@ -103,43 +82,43 @@ namespace Ferretto.WMS.Modules.Compartment
         {
             var compartmentDetails = new CompartmentDetails
             {
-                Width = this.CompartmentInput.Width,
-                Height = this.CompartmentInput.Height,
-                XPosition = this.CompartmentInput.XPosition,
-                YPosition = this.CompartmentInput.YPosition
+                Width = this.CompartmentSelected.Width,
+                Height = this.CompartmentSelected.Height,
+                XPosition = this.CompartmentSelected.XPosition,
+                YPosition = this.CompartmentSelected.YPosition
             };
             this.LoadingUnit.AddCompartment(compartmentDetails);
         }
 
-        private void TestInitializeGrid()
-        {
-            this.compartments = new List<CompartmentDetails>()
-            {
-                new CompartmentDetails()
-                {
-                    Code = "1",
-                    XPosition = 0,
-                    YPosition = 0,
-                    Width = 150,
-                    Height = 150
-                }
-            };
-            this.Compartments = this.compartments;
-        }
+        //private void TestInitializeGrid()
+        //{
+        //    this.compartments = new List<CompartmentDetails>()
+        //    {
+        //        new CompartmentDetails()
+        //        {
+        //            Code = "1",
+        //            XPosition = 0,
+        //            YPosition = 0,
+        //            Width = 150,
+        //            Height = 150
+        //        }
+        //    };
+        //    this.Compartments = this.compartments;
+        //}
 
         private void TestInitializeInput()
         {
-            this.compartmentInput = new CompartmentDetails();
-            this.compartmentInput.Width = 150;
-            this.compartmentInput.Height = 150;
-            this.compartmentInput.XPosition = 0;
-            this.compartmentInput.YPosition = 0;
-            this.compartmentInput.Stock = 0;
-            this.compartmentInput.ItemCode = "Item";
+            this.compartmentSelected = new CompartmentDetails();
+            this.compartmentSelected.Width = 150;
+            this.compartmentSelected.Height = 150;
+            this.compartmentSelected.XPosition = 0;
+            this.compartmentSelected.YPosition = 0;
+            this.compartmentSelected.Stock = 0;
+            this.compartmentSelected.ItemCode = "Item";
 
-            this.CompartmentInput = this.compartmentInput;
+            this.CompartmentSelected = this.compartmentSelected;
 
-            this.CompartmentInput.UpdateCompartmentEvent += this.CompatmentSelected_UpdateCompartmentEvent;
+            this.CompartmentSelected.UpdateCompartmentEvent += this.CompatmentSelected_UpdateCompartmentEvent;
         }
 
         #endregion Methods

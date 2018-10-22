@@ -1,14 +1,30 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+                    xmlns:dxnavi="clr-namespace:DevExpress.Xpf.Navigation.Internal;assembly=DevExpress.Xpf.Controls.v18.1"
+                    xmlns:dxwuit="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys">
+
+    <!--<Style x:Key="CanvasListBoxStyle"
+           BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.ListBoxItem,
+                                                                ThemeName=Office2016White}}"
+           TargetType="{x:Type ListBoxItem}">-->
+
     <DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
+
+
         <!--<Border Width="{Binding Width, Mode=TwoWay}"
-                Height="{Binding Height, Mode=TwoWay}">-->
+                    Height="{Binding Height, Mode=TwoWay}">-->
+
+
         <Rectangle x:Name="Rectangle"
                    Width="{Binding Width, Mode=TwoWay}"
                    Height="{Binding Height, Mode=TwoWay}"
                    Fill="{Binding ColorFill, Mode=TwoWay}"
-                   Stroke="{Binding Selected, Mode=TwoWay}">
+                   Stroke="{Binding Selected, Mode=TwoWay}"
+                   StrokeThickness="{Binding RectangleBorderThickness, Mode=TwoWay}">
             <Rectangle.InputBindings>
                 <MouseBinding Command="{Binding IsSelected}"
                               Gesture="LeftClick" />
@@ -16,15 +32,15 @@
         </Rectangle>
         <!--</Border>-->
         <!--<DataTemplate.Resources>
-            <Style>
-                <Setter Property="Margin" Value="0,0,0,0" />
-            </Style>
-        </DataTemplate.Resources>-->
+                <Style>
+                    <Setter Property="Margin" Value="0,0,0,0" />
+                </Style>
+            </DataTemplate.Resources>-->
         <DataTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rectangle" Property="Fill" Value="Blue" />
-                <Setter TargetName="Rectangle" Property="Stroke" Value="Black" />
-                <Setter TargetName="Rectangle" Property="StrokeThickness" Value="3" />
+                <Setter TargetName="Rectangle" Property="Fill" Value="#FF08A5FF" />
+                <Setter TargetName="Rectangle" Property="Stroke" Value="#FF0288F7" />
+                <Setter TargetName="Rectangle" Property="StrokeThickness" Value="2" />
             </Trigger>
             <Trigger Property="IsFocused" Value="True">
                 <Setter TargetName="Rectangle" Property="Fill" Value="Green" />
@@ -32,7 +48,54 @@
                 <Setter TargetName="Rectangle" Property="StrokeThickness" Value="3" />
             </Trigger>
             <!--<Trigger Property="IsSelected" Value="True" />-->
-
         </DataTemplate.Triggers>
     </DataTemplate>
+
+    <!--<Setter Property="Template">
+            <Setter.Value>
+    -->
+    <!--<DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
+                    <Rectangle x:Name="Rectangle"
+                               Width="{Binding Width, Mode=TwoWay}"
+                               Height="{Binding Height, Mode=TwoWay}"
+                               Fill="{Binding ColorFill, Mode=TwoWay}"
+                               Stroke="{Binding Selected, Mode=TwoWay}">
+                        <Rectangle.InputBindings>
+                            <MouseBinding Command="{Binding IsSelected}"
+                                          Gesture="LeftClick" />
+                        </Rectangle.InputBindings>
+                    </Rectangle>
+                </DataTemplate>-->
+    <!--
+                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                    <ctrls:WmsCompartmentViewModel>
+                        <Rectangle x:Name="Rectangle"
+                                   Width="{Binding Width, Mode=TwoWay}"
+                                   Height="{Binding Height, Mode=TwoWay}"
+                                   Fill="{Binding ColorFill, Mode=TwoWay}"
+                                   Stroke="{Binding Selected, Mode=TwoWay}">
+                            <Rectangle.InputBindings>
+                                <MouseBinding Command="{Binding IsSelected}"
+                                              Gesture="LeftClick" />
+                            </Rectangle.InputBindings>
+                        </Rectangle>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+    -->
+    <!--<Setter TargetName="Rectangle" Property="Stroke" Value="{DynamicResource CommonSecondaryLight}" />-->
+    <!--
+                                <Setter TargetName="Rectangle" Property="Fill" Value="#FF0EDDF1" />
+                                <Setter TargetName="Rectangle" Property="Stroke" Value="Blue" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="Rectangle" Property="Fill" Value="Red" />
+                                <Setter TargetName="Rectangle" Property="Stroke" Value="Black" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ctrls:WmsCompartmentViewModel>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>-->
+    <!--</Style>-->
 </ResourceDictionary>

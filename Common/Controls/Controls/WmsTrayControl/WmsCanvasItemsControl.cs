@@ -57,13 +57,18 @@ namespace Ferretto.Common.Controls
             {
                 //newCompartment.IsSelected = true;
                 this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
-                //newCompartment.ColorFill = Colors.Red.ToString();
-                //newCompartment.ColorBorder = Colors.Gray.ToString();
+
+                newCompartment.ColorFill = Colors.Blue.ToString();
+                newCompartment.ColorBorder = Colors.DarkBlue.ToString();
+                newCompartment.RectangleBorderThickness = 3;
+
+                //this.TrayControl.CanvasItemsControl.Template = (ControlTemplate)
             }
             if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
             {
-                //oldCompartment.ColorFill = Colors.Aquamarine.ToString();
-                //oldCompartment.ColorBorder = Colors.RoyalBlue.ToString();
+                oldCompartment.ColorFill = Colors.Aquamarine.ToString();
+                oldCompartment.ColorBorder = Colors.GreenYellow.ToString();
+                oldCompartment.RectangleBorderThickness = 1;
             }
         }
 

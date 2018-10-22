@@ -133,6 +133,29 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments, float ratio = 1)
+        {
+            if (this.LoadingUnitProperty != null)
+            {
+                foreach (var compartment in compartments)
+                {
+                    this.items.Add(new WmsCompartmentViewModel
+                    {
+                        Tray = new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
+                        CompartmentDetails = compartment,
+
+                        Width = (int)(compartment.Width * ratio),
+                        Height = (int)(compartment.Height * ratio),
+                        Left = (int)(compartment.XPosition * ratio),
+                        Top = (int)(compartment.YPosition * ratio),
+                        ColorFill = Colors.Aquamarine.ToString(),
+                        Selected = Colors.RoyalBlue.ToString(),
+                        IsSelected = true
+                    });
+                }
+            }
+        }
+
         public void UpdateInputForm(CompartmentDetails compartment)
         {
             //var view = LayoutTreeHelper.GetVisualParents(this).OfType<WmsView>().FirstOrDefault();
@@ -195,6 +218,7 @@ namespace Ferretto.Common.Controls
                     Top = (int)(compartment.YPosition * ratio),
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
+                    RectangleBorderThickness = 1,
                     IsSelected = true
                 });
             }

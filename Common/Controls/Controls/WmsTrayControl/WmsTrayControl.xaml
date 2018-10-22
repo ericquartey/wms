@@ -62,7 +62,7 @@
                             <Setter Property="BorderThickness" Value="3" />
                         </Trigger>-->
                         <Trigger Property="Control.IsMouseOver" Value="True">
-                            <Setter Property="Control.ToolTip" Value="CIao" />
+                            <Setter Property="Control.ToolTip" Value="Compartment" />
                             <Setter Property="BorderBrush" Value="Red" />
                             <Setter Property="BorderThickness" Value="3" />
                             <Setter Property="Background" Value="Yellow" />

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
+using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -16,7 +18,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
-                    nameof(Compartments), typeof(IList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
+                    nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
         public static readonly DependencyProperty LoadingUnitProperty = DependencyProperty.Register(
                                     nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
@@ -30,7 +32,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
                             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
 
-        private IList<CompartmentDetails> compartments;
+        private BindingList<CompartmentDetails> compartments;
 
         #endregion Fields
 
@@ -48,7 +50,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public IList<CompartmentDetails> Compartments
+        public BindingList<CompartmentDetails> Compartments
         {
             get { return this.compartments; }
             set { this.SetValue(CompartmentsProperty, value); }
@@ -84,21 +86,28 @@ namespace Ferretto.Common.Controls
 
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //throw new NotImplementedException();
-            if (d is WmsTrayControl wmsTrayControl)// && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                var compartment = ((IList<CompartmentDetails>)e.NewValue)[0];
-                wmsTrayControl.LoadingUnit.AddCompartment(compartment);
+                viewModel.UpdateCompartments((IEnumerable<CompartmentDetails>)e.NewValue);
+                //var compartment = ((BindingList<CompartmentDetails>)e.NewValue)[0];
+                //wmsTrayControl.LoadingUnit.AddCompartment(compartment);
             }
         }
 
         private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             //DO NOTHING -> ONLY UPDATE PROPERTY
-            //if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
-            //{
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                var newCompartment = (CompartmentDetails)e.NewValue;
+                var foundCompartment = viewModel.Items.FirstOrDefault(c => c.CompartmentDetails.Id == newCompartment.Id);
+
+                if (foundCompartment != null)
+                {
+                    wmsTrayControl.CanvasItemsControl.SelectedItem = foundCompartment;
+                }
                 //viewModel.UpdateInputForm((CompartmentDetails)e.NewValue);
-            //}
+            }
         }
 
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
