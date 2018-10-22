@@ -133,6 +133,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Units Count.
+        /// </summary>
+        public static string CellLoadingUnitsCount {
+            get {
+                return ResourceManager.GetString("CellLoadingUnitsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Units Description.
+        /// </summary>
+        public static string CellLoadingUnitsDescription {
+            get {
+                return ResourceManager.GetString("CellLoadingUnitsDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Number.
         /// </summary>
         public static string CellNumber {
