@@ -1,10 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:control="clr-namespace:Ferretto.Common.Controls">
-    <Style TargetType="{x:Type control:WmsRulerControl}">
+                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+    <Style TargetType="{x:Type ctrls:WmsRulerControl}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type control:WmsRulerControl}">
+                <ControlTemplate TargetType="{x:Type ctrls:WmsRulerControl}">
                     <Grid>
                         <Grid.Children>
                             <Line x:Name="verticalTrackLine"

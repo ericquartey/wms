@@ -8,9 +8,24 @@
     <Border x:Name="CanvasBorder"
             BorderBrush="Black"
             BorderThickness="2">
+
+
+
         <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
                                      Background="SkyBlue"
                                      ItemsSource="{Binding Items, Mode=TwoWay}">
+
+            <!--<ctrls:WmsRulerControl x:Name="horizontalRuler"
+                               Width="1000"
+                               Height="20"
+                               Background="Yellow"
+                               Orientation="Horizontal" />
+            <ctrls:WmsRulerControl x:Name="verticalRuler"
+                               Width="20"
+                               Height="900"
+                               Background="Yellow"
+                               Orientation="Vertical" />-->
+
             <ctrls:WmsCanvasItemsControl.Resources />
             <ctrls:WmsCanvasItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

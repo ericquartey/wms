@@ -5,20 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Ferretto.Common.Controls
 {
-    /// <summary>
-    /// Interaction logic for WmsRulerControl.xaml
-    /// </summary>
-    public partial class WmsRulerControl : UserControl
+    public class WmsRulerControl : UserControl
     {
         #region Fields
 
@@ -38,6 +29,10 @@ namespace Ferretto.Common.Controls
             DependencyProperty.Register("MiddleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
             new UIPropertyMetadata(14));
 
+        public static readonly DependencyProperty OrientationProperty =
+                                            DependencyProperty.Register("DisplayMode", typeof(enumOrientation), typeof(WmsRulerControl),
+            new UIPropertyMetadata(enumOrientation.Horizontal));
+
         #endregion Fields
 
         #region Constructors
@@ -48,6 +43,12 @@ namespace Ferretto.Common.Controls
         }
 
         #endregion Constructors
+
+        #region Enums
+
+        public enum enumOrientation { Horizontal, Vertical }
+
+        #endregion Enums
 
         #region Properties
 
@@ -75,6 +76,12 @@ namespace Ferretto.Common.Controls
             set { this.SetValue(MiddleMarkLengthProperty, value); }
         }
 
+        public enumOrientation Orientation
+        {
+            get { return (enumOrientation)base.GetValue(OrientationProperty); }
+            set { this.SetValue(OrientationProperty, value); }
+        }
+
         #endregion Properties
 
         #region Methods
@@ -85,29 +92,29 @@ namespace Ferretto.Common.Controls
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
             double psuedoStartValue = 0;// StartValue;
 
-            //if (this.Orientation == enumOrientation.Horizontal)
-            //{
-            for (int i = 0; i < this.ActualWidth / this.MajorInterval; i++)
+            if (this.Orientation == enumOrientation.Horizontal)
             {
-                var ft = new FormattedText((psuedoStartValue * this.MajorInterval).ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
-                drawingContext.DrawText(ft, new Point(i * this.MajorInterval, 0));
-                drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 2), new Point(i * this.MajorInterval, this.MarkLength), new Point(i * this.MajorInterval, 0));
-                drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
-                    new Point(i * this.MajorInterval + (this.MajorInterval / 2), this.MiddleMarkLength),
-                    new Point(i * this.MajorInterval + (this.MajorInterval / 2), 0));
-                for (int j = 1; j < 10; j++)
+                for (int i = 0; i < this.ActualWidth / this.MajorInterval; i++)
                 {
-                    if (j == 5)
-                    {
-                        continue;
-                    }
+                    var ft = new FormattedText((psuedoStartValue * this.MajorInterval).ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+                    drawingContext.DrawText(ft, new Point(i * this.MajorInterval, 0));
+                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 2), new Point(i * this.MajorInterval, this.MarkLength), new Point(i * this.MajorInterval, 0));
                     drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
-                    new Point(i * this.MajorInterval + (((this.MajorInterval * j) / 10)), this.LittleMarkLength),
-                    new Point(i * this.MajorInterval + (((this.MajorInterval * j) / 10)), 0));
+                        new Point(i * this.MajorInterval + (this.MajorInterval / 2), this.MiddleMarkLength),
+                        new Point(i * this.MajorInterval + (this.MajorInterval / 2), 0));
+                    for (int j = 1; j < 10; j++)
+                    {
+                        if (j == 5)
+                        {
+                            continue;
+                        }
+                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
+                        new Point(i * this.MajorInterval + (((this.MajorInterval * j) / 10)), this.LittleMarkLength),
+                        new Point(i * this.MajorInterval + (((this.MajorInterval * j) / 10)), 0));
+                    }
+                    psuedoStartValue++;
                 }
-                psuedoStartValue++;
             }
-            //}
 
             //else
             //{

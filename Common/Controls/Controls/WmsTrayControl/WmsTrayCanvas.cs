@@ -18,7 +18,7 @@ namespace Ferretto.Common.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            base.MeasureOverride(constraint);
+            //base.MeasureOverride(constraint);
 
             var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
 
