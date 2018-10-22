@@ -177,6 +177,9 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xaml" />
@@ -8068,7 +8071,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Light\WmsCanvasItemsControl.xaml">
+    <Page Include="Themes\Light\WmsCanvasListBoxControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Light\WmsDialogView.xaml">
@@ -8124,6 +8127,23 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\UDC_Compartment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Tiles\vertimag_m_icon_gray_alpha.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Tiles\traslo_icon4_gray_alpha.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Tiles\vertimag_xs_icon_gray_alpha.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ferretto\Machines\traslo_icon1.png" />
+    <Resource Include="Icons\Ferretto\Machines\traslo_icon2.png" />
+    <Resource Include="Icons\Ferretto\Machines\traslo_icon3.png" />
+    <Resource Include="Icons\Ferretto\Machines\traslo_icon4.png" />
+    <Resource Include="Icons\Ferretto\Machines\vertimag_m_icon.png" />
+    <Resource Include="Icons\Ferretto\Machines\vertimag_xs_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\..\cleanup.targets" />

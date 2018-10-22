@@ -113,6 +113,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Machines.it.resx" />
     <EmbeddedResource Include="Machines.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Machines.Designer.cs</LastGenOutput>

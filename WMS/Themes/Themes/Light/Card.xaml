@@ -17,13 +17,13 @@
             <Border x:Name="Focus"
                     Margin="-2"
                     cs:Name="Border_0008"
-                    Background="{DynamicResource CommonSecondaryDark}"
+                    Background="{DynamicResource CommonSecondaryMedium}"
                     Opacity="0" />
             <Border x:Name="Border"
                     Grid.RowSpan="1"
                     cs:Name="Border_0010"
                     Background="{DynamicResource CommonBackground}"
-                    BorderBrush="{DynamicResource CommonSecondaryMedium}"
+                    BorderBrush="{DynamicResource CommonSecondaryUltralight}"
                     BorderThickness="1">
                 <ContentPresenter />
             </Border>
@@ -39,13 +39,11 @@
                          Value="Focused">
                 <Setter cs:Name="Setter_0025" TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
                 <Setter cs:Name="Setter_0026" TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
-                <Setter TargetName="Focus" Property="Opacity" Value="0.25" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
                          Value="Selected">
-                <Setter cs:Name="Setter_0027" TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryDark}" />
+                <Setter cs:Name="Setter_0027" TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
                 <Setter cs:Name="Setter_0028" TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
-                <Setter TargetName="Focus" Property="Opacity" Value="0.25" />
             </DataTrigger>
             <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True" />
         </ControlTemplate.Triggers>

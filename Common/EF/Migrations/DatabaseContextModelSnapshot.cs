@@ -1111,6 +1111,8 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<long?>("MissionTime");
 
+                    b.Property<string>("Model");
+
                     b.Property<long?>("MovedLoadingUnitsCount");
 
                     b.Property<DateTime?>("NextServiceDate");

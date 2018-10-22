@@ -1,15 +1,17 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using System.Windows.Input;
+using DevExpress.Data.Async.Helpers;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridViewModel<TEntity, TId> : BaseServiceNavigationViewModel, IWmsGridViewModel where TEntity : IBusinessObject
+    public class WmsGridViewModel<TModel> : BaseServiceNavigationViewModel, IWmsGridViewModel where TModel : class, IBusinessObject
     {
         #region Fields
 
-        private readonly object refreshModelsEventSubscription;
-
+        private object modelChangedEventSubscription;
+        private object refreshModelsEventSubscription;
         private object selectedItem;
 
         #endregion Fields
@@ -18,12 +20,13 @@ namespace Ferretto.Common.Controls
 
         public WmsGridViewModel()
         {
-            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TEntity>>(eventArgs => { }, true);
         }
 
         #endregion Constructors
 
         #region Properties
+
+        public ICommand CmdRefresh { get; set; }
 
         public object SelectedItem
         {
@@ -46,19 +49,32 @@ namespace Ferretto.Common.Controls
             var selectedModelId = 0;
             if (this.selectedItem != null && this.selectedItem is DevExpress.Data.NotLoadedObject == false)
             {
-                var model = (TEntity)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
+                var model = this.selectedItem as TModel;
+                if (this.selectedItem is ReadonlyThreadSafeProxyForObjectFromAnotherThread proxyForObjectFromAnotherThread)
+                {
+                    model = proxyForObjectFromAnotherThread.OriginalRow as TModel;
+                }
+
                 if (model != null)
                 {
                     selectedModelId = model.Id;
                 }
             }
 
-            this.EventService.Invoke(new ModelSelectionChangedEvent<TEntity, int>(selectedModelId, this.Token));
+            this.EventService.Invoke(new ModelSelectionChangedEvent<TModel>(selectedModelId, this.Token));
+        }
+
+        protected override void OnAppear()
+        {
+            base.OnAppear();
+            this.refreshModelsEventSubscription = this.EventService.Subscribe<RefreshModelsEvent<TModel>>(eventArgs => { this.CmdRefresh?.Execute(null); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<TModel>>(eventArgs => { this.CmdRefresh?.Execute(null); });
         }
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<RefreshModelsEvent<TEntity>>(this.refreshModelsEventSubscription);
+            this.EventService.Unsubscribe<RefreshModelsEvent<TModel>>(this.refreshModelsEventSubscription);
+            this.EventService.Unsubscribe<ModelChangedEvent<TModel>>(this.modelChangedEventSubscription);
             base.OnDispose();
         }
 
