@@ -77,6 +77,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler", "WMS\Scheduler\Ferretto.WMS.Scheduler.csproj", "{FAF74787-129A-4EBD-BC08-972E2E1A777C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.Scheduler.Client", "Ferretto.WMS.Scheduler.Client\Ferretto.WMS.Scheduler.Client.csproj", "{A766E101-FE9C-47CF-A1F4-5C58DDC6C64F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -171,6 +173,10 @@ Global
 		{FAF74787-129A-4EBD-BC08-972E2E1A777C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAF74787-129A-4EBD-BC08-972E2E1A777C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAF74787-129A-4EBD-BC08-972E2E1A777C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A766E101-FE9C-47CF-A1F4-5C58DDC6C64F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A766E101-FE9C-47CF-A1F4-5C58DDC6C64F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A766E101-FE9C-47CF-A1F4-5C58DDC6C64F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A766E101-FE9C-47CF-A1F4-5C58DDC6C64F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,6 +206,7 @@ Global
 		{57633D89-955F-4D65-A2FD-6920563D9F54} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 		{39183276-855C-4EEC-AA35-CA3F7A0E6E78} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 		{FAF74787-129A-4EBD-BC08-972E2E1A777C} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
+		{A766E101-FE9C-47CF-A1F4-5C58DDC6C64F} = {C6AB2AE0-C101-4638-AC86-6B6BCB7ACCB2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B998A0C5-DD2C-4088-9C42-300A146A4118}
