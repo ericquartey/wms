@@ -23,7 +23,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/TileBar.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Label.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Card.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/WmsCanvasItemsControl.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/WmsCanvasListBoxControl.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

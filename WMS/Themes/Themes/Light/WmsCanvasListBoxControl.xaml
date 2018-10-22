@@ -11,16 +11,16 @@
                    Fill="{Binding ColorFill, Mode=TwoWay}"
                    Stroke="{Binding Selected, Mode=TwoWay}"
                    StrokeThickness="{Binding RectangleBorderThickness, Mode=TwoWay}">
-            <Rectangle.InputBindings>
+            <!--<Rectangle.InputBindings>
                 <MouseBinding Command="{Binding IsSelected}"
                               Gesture="LeftClick" />
-            </Rectangle.InputBindings>
+            </Rectangle.InputBindings>-->
         </Rectangle>
 
         <DataTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter TargetName="Rectangle" Property="Fill" Value="#FF08A5FF" />
-                <Setter TargetName="Rectangle" Property="Stroke" Value="#FF0288F7" />
+                <Setter TargetName="Rectangle" Property="Fill" Value="{DynamicResource FillMouseOver}" />
+                <Setter TargetName="Rectangle" Property="Stroke" Value="{DynamicResource StrokeMouseOver}" />
                 <Setter TargetName="Rectangle" Property="StrokeThickness" Value="2" />
             </Trigger>
 
