@@ -3,7 +3,9 @@
   "defaultVariables": null,
   "swaggerGenerator": {
     "aspNetCoreToSwagger": {
+      "configuration": "$(Configuration)",
       "project": "../Scheduler.WebAPI/Ferretto.WMS.Scheduler.WebAPI.csproj"
+
       //...
     }
   },
@@ -20,7 +22,7 @@
       "generateContractsOutput": true, //generate contacts in a separte file
       "contractsNamespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts", //contracts namespace
       "contractsOutputFilePath": "Contracts.g.cs",
-      "namespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts",
+      "namespace": "Ferretto.WMS.Scheduler.WebAPI",
       "output": "Client.g.cs"
     }
   }

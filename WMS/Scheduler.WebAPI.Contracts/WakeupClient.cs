@@ -1,14 +1,9 @@
 ﻿namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 {
+    /*
     public class WakeupClient
     {
-        #region Fields
-
         private readonly HubConnection connection;
-
-        #endregion Fields
-
-        #region Constructors
 
         public WakeupClient(string hubUrl)
         {
@@ -23,10 +18,6 @@
             };
         }
 
-        #endregion Constructors
-
-        #region Methods
-
         public async Task ConnectAsync()
         {
             this.connection.On<string, string>("ReceiveMessage", (user, message) =>
@@ -38,29 +29,13 @@
                 });
             });
 
-            try
-            {
-                await this.connection.StartAsync();
-            }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
+            await this.connection.StartAsync();
         }
 
         public async Task SendAsync()
         {
-            try
-            {
-                await this.connection.InvokeAsync("SendMessage",
-                    "salomone", "Hello World!");
-            }
-            catch (Exception ex)
-            {
-                messagesList.Items.Add(ex.Message);
-            }
+            await this.connection.InvokeAsync("SendMessage",
+                "salomone", "Hello World!");
         }
-
-        #endregion Methods
-    }
+    }*/
 }
