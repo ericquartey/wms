@@ -5,7 +5,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class LoadingUnitDetails : BusinessObject<int>
+    public sealed class LoadingUnitDetails : BusinessObject
     {
         #region Fields
 
@@ -15,16 +15,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Constructors
-
-        public LoadingUnitDetails()
-        { }
-
-        public LoadingUnitDetails(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Events
 
         public event EventHandler AddedCompartmentEvent;
@@ -33,14 +23,14 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public IEnumerable<Enumeration<string>> AbcClassChoices { get; set; }
+        public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
         public string AbcClassId { get; set; }
 
         public int AisleId { get; set; }
         public int AreaId { get; set; }
-        public IEnumerable<Enumeration<int>> CellChoices { get; set; }
+        public IEnumerable<Enumeration> CellChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
         public int CellId { get; set; }
@@ -48,8 +38,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCellPairing), ResourceType = typeof(BusinessObjects))]
         public string CellPairing { get; set; }
 
-        public IEnumerable<Enumeration<string>> CellPairingChoices { get; set; }
-        public IEnumerable<Enumeration<int>> CellPositionChoices { get; set; }
+        public IEnumerable<EnumerationString> CellPairingChoices { get; set; }
+        public IEnumerable<Enumeration> CellPositionChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
         public int CellPositionId { get; set; }
@@ -90,12 +80,12 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
-        public IEnumerable<Enumeration<string>> LoadingUnitStatusChoices { get; set; }
+        public IEnumerable<EnumerationString> LoadingUnitStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitStatusId { get; set; }
 
-        public IEnumerable<Enumeration<int>> LoadingUnitTypeChoices { get; set; }
+        public IEnumerable<Enumeration> LoadingUnitTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitTypeId { get; set; }
@@ -112,7 +102,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
         public string ReferenceType { get; set; }
 
-        public IEnumerable<Enumeration<string>> ReferenceTypeChoices { get; set; }
+        public IEnumerable<EnumerationString> ReferenceTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWeight), ResourceType = typeof(BusinessObjects))]
         public int Weight { get; set; }
@@ -133,6 +123,11 @@ namespace Ferretto.Common.BusinessModels
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
+                this.OnAddedCompartmentEvent(null);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
             }
         }
 
@@ -150,8 +145,22 @@ namespace Ferretto.Common.BusinessModels
 
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
-            //TODO: add logic if possible add new compartment
-            //      return FALSE if exit from tray or overlaps other compartment
+            //CHECK: exit from window
+            var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
+            var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
+            if (xPositionFinal > this.Width || yPositionFinal > this.Length)
+            {
+                return false;
+            }
+
+            foreach (var compartment in this.compartments)
+            {
+                bool areCollisions = this.HasCollision(compartmentDetails, compartment);
+                if (areCollisions)
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
@@ -162,6 +171,46 @@ namespace Ferretto.Common.BusinessModels
             {
                 handler(this, e);
             }
+        }
+
+        /// <summary>
+        /// Checks if the specified compartments are physically overlapping.
+        /// </summary>
+        /// <returns>
+        /// True if the specified compartments are overlapping, False otherwise.
+        /// <returns>
+        private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
+        {
+            var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
+            var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
+
+            var xBPositionFinal = compartmentB.XPosition + compartmentB.Width;
+            var yBPositionFinal = compartmentB.YPosition + compartmentB.Height;
+            //A: Top-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //B: Top-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            {
+                return true;
+            }
+            //C: Bottom-Left
+            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            //D: Bottom-Right
+            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
+                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            {
+                return true;
+            }
+            return false;
         }
 
         #endregion Methods

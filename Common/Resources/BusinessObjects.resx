@@ -301,9 +301,9 @@
     <value>Height</value>
     <comment>Item - Height</comment>
   </data>
-  <data name="ItemInCompartmentCapacity" xml:space="preserve">
-    <value>Capacity</value>
-    <comment>Item In Compartment - Capacity</comment>
+  <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+    <comment>Allowed Item In Compartment - Max Capacity</comment>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
     <value>Inventory Tolerance</value>
@@ -616,5 +616,21 @@
   <data name="MachineTotalMaxWeight" xml:space="preserve">
     <value>Total Max Weight</value>
     <comment>Machine - Total Max Weight</comment>
+  </data>
+  <data name="MachineModel" xml:space="preserve">
+    <value>Model</value>
+    <comment>Machine - Model</comment>
+  </data>
+  <data name="MachineArea" xml:space="preserve">
+    <value>Area</value>
+    <comment>Machine - Area</comment>
+  </data>
+  <data name="CellLoadingUnitsCount" xml:space="preserve">
+    <value>Loading Units Count</value>
+    <comment>Cell - Loading Units Count (calculated)</comment>
+  </data>
+  <data name="CellLoadingUnitsDescription" xml:space="preserve">
+    <value>Loading Units Description</value>
+    <comment>Cell - Loading Units Description (calculated)</comment>
   </data>
 </root>

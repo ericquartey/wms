@@ -10,17 +10,17 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class EntityListViewModel<TModel, TId> : BaseServiceNavigationViewModel, IEntityListViewModel
-        where TModel : IBusinessObject<TId>
+    public class EntityListViewModel<TModel> : BaseServiceNavigationViewModel, IEntityListViewModel
+        where TModel : IBusinessObject
     {
         #region Fields
 
-        private readonly IEnumerable<IDataSource<TModel, TId>> dataSources;
+        private readonly IEnumerable<IDataSource<TModel>> dataSources;
         private IEnumerable<Tile> filterTiles;
-        private IDataSource<TModel, TId> selectedDataSource;
+        private bool flattenDataSource;
+        private object selectedDataSource;
         private Tile selectedFilterTile;
         private object selectedItem;
-        private ICommand viewDetailsCommand;
 
         #endregion Fields
 
@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls
         protected EntityListViewModel()
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.dataSources = dataSourceService.GetAll<TModel, TId>(this.GetType().Name);
+            this.dataSources = dataSourceService.GetAll<TModel>(this.GetType().Name);
 
             this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
             {
@@ -50,6 +50,11 @@ namespace Ferretto.Common.Controls
                 {
                     return default(TModel);
                 }
+                if ((this.selectedItem is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                {
+                    return default(TModel);
+                }
+
                 return (TModel)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedItem).OriginalRow);
             }
         }
@@ -60,7 +65,16 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.filterTiles, value);
         }
 
-        public IDataSource<TModel, TId> SelectedDataSource
+        /// <summary>
+        /// When set to True, skips the usage of the DevExpress InstantFeedbackSource.
+        /// </summary>
+        public bool FlattenDataSource
+        {
+            get => this.flattenDataSource;
+            protected set => this.SetProperty(ref this.flattenDataSource, value);
+        }
+
+        public object SelectedDataSource
         {
             get => this.selectedDataSource;
             protected set => this.SetProperty(ref this.selectedDataSource, value);
@@ -73,7 +87,8 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    this.SelectedDataSource = this.dataSources.Single(dataSource => dataSource.Key == value.Key);
+                    var dataSource = this.dataSources.Single(d => d.Key == value.Key);
+                    this.SelectedDataSource = this.flattenDataSource ? dataSource.GetData() : (object)dataSource;
                 }
             }
         }
@@ -81,20 +96,24 @@ namespace Ferretto.Common.Controls
         public object SelectedItem
         {
             get => this.selectedItem;
-            set => this.SetProperty(ref this.selectedItem, value);
+            set
+            {
+                if (this.SetProperty(ref this.selectedItem, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.CurrentItem));
+                }
+            }
         }
-
-        public ICommand ViewDetailsCommand => this.viewDetailsCommand ??
-                        (this.viewDetailsCommand = new DelegateCommand(this.ExecuteViewDetailsCommand));
 
         #endregion Properties
 
         #region Methods
 
-        public virtual void ExecuteViewDetailsCommand()
+        public void RefreshData()
         {
-            // Nothing to do here.
-            // The derived classes can override this method to impelement the ViewDetails command behaviour.
+            var oldDataSource = this.selectedDataSource;
+            this.SelectedDataSource = null;
+            this.SelectedDataSource = oldDataSource;
         }
 
         public async Task UpdateFilterTilesCountsAsync()
@@ -106,6 +125,13 @@ namespace Ferretto.Common.Controls
                     filterTile.Count = this.dataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
                 }
             }).ConfigureAwait(true);
+        }
+
+        protected override void OnAppear()
+        {
+            base.OnAppear();
+
+            this.UpdateFilterTilesCountsAsync();
         }
 
         #endregion Methods

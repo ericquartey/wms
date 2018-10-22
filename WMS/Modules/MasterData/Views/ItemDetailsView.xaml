@@ -6,6 +6,7 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
+             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
@@ -44,15 +45,14 @@
 
         <ScrollViewer Grid.Row="1"
                       DataContext="{Binding Item}"
-                      IsTabStop="True"
                       Focusable="False"
+                      IsTabStop="True"
                       VerticalScrollBarVisibility="Auto">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"
@@ -184,12 +184,12 @@
                     <StackPanel Margin="0,10,0,0">
                         <TextBlock Text="{x:Static res:MasterData.ItemIsAllocatedInNoCompartment}"
                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVIC}}" />
-                        <wms:WmsGridControl MinHeight="300"
+                        <wms:WmsGridControl MinHeight="280"
                                             MaxWidth="2000"
-                                            MaxHeight="5000"
-                                            CurrentDataSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
+                                            MaxHeight="280"
                                             CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                             ItemType="{x:Type models:Compartment}"
+                                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
                                             SelectionMode="Row"
                                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
@@ -202,7 +202,9 @@
                                                ShowSearchPanelMode="Never">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.ViewCompartmentDetailsCommand}" />
+                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                                      StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
@@ -228,7 +230,7 @@
                 </GroupBox>
 
                 <StackPanel Grid.Row="0"
-                            Grid.RowSpan="4"
+                            Grid.RowSpan="3"
                             Grid.Column="2"
                             MinWidth="200"
                             MaxWidth="400"

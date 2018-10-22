@@ -184,7 +184,6 @@
     <Compile Include="Configurations\CellConfigurationConfiguration.cs" />
     <Compile Include="Configurations\CellHeightClassConfiguration.cs" />
     <Compile Include="Configurations\CellPositionConfiguration.cs" />
-    <Compile Include="Configurations\CellsGroupConfiguration.cs" />
     <Compile Include="Configurations\CellSizeClassConfiguration.cs" />
     <Compile Include="Configurations\CellStatusConfiguration.cs" />
     <Compile Include="Configurations\CellTotalConfiguration.cs" />
@@ -223,6 +222,15 @@
     <Compile Include="Configurations\MissionTypeConfiguration.cs" />
     <Compile Include="Configurations\PackageTypeConfiguration.cs" />
     <Compile Include="DatabaseContext.cs" />
+    <Compile Include="Migrations\20181016140443_Initial.cs" />
+    <Compile Include="Migrations\20181016140443_Initial.designer.cs">
+      <DependentUpon>20181016140443_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20181018131331_Add_Field_Model_To_Table_Machines.cs" />
+    <Compile Include="Migrations\20181018131331_Add_Field_Model_To_Table_Machines.designer.cs">
+      <DependentUpon>20181018131331_Add_Field_Model_To_Table_Machines.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\DatabaseContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

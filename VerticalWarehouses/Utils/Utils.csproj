@@ -51,7 +51,6 @@
     <Compile Include="Source\CellsManagement.cs" />
     <Compile Include="Source\ConverterPixelToCm.cs" />
     <Compile Include="Source\IViewViewModel.cs" />
-    <Compile Include="Source\PlanarGeometryMethods.cs" />
     <Compile Include="Source\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

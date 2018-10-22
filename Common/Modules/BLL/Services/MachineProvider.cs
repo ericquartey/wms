@@ -12,6 +12,18 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
+        private static readonly Expression<Func<DataModels.Machine, bool>> TrasloFilter =
+           m => m.MachineType.Description.ToUpperInvariant().Contains("TRASLO");
+
+        private static readonly Expression<Func<DataModels.Machine, bool>> VertimagFilter =
+            m => m.MachineType.Description.ToUpperInvariant().Contains("VERTIMAG");
+
+        private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelMFilter =
+            m => m.Model.Contains("VARIANT-M");
+
+        private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelXSFilter =
+            m => m.Model.Contains("VARIANT-XS");
+
         private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
@@ -46,6 +58,54 @@ namespace Ferretto.Common.Modules.BLL.Services
             }
         }
 
+        public IQueryable<Machine> GetAllTraslo()
+        {
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return GetAllMachinesWithFilter(context, TrasloFilter);
+        }
+
+        public int GetAllTrasloCount()
+        {
+            return this.dataContext.Machines.AsNoTracking().Where(TrasloFilter).Count();
+        }
+
+        public IQueryable<Machine> GetAllVertimag()
+        {
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return GetAllMachinesWithFilter(context, VertimagFilter);
+        }
+
+        public Int32 GetAllVertimagCount()
+        {
+            return this.dataContext.Machines.AsNoTracking().Where(VertimagFilter).Count();
+        }
+
+        public IQueryable<Machine> GetAllVertimagModelM()
+        {
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return GetAllMachinesWithFilter(context, VertimagModelMFilter);
+        }
+
+        public Int32 GetAllVertimagModelMCount()
+        {
+            return this.dataContext.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
+        }
+
+        public IQueryable<Machine> GetAllVertimagModelXS()
+        {
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return GetAllMachinesWithFilter(context, VertimagModelXSFilter);
+        }
+
+        public Int32 GetAllVertimagModelXSCount()
+        {
+            return this.dataContext.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
+        }
+
         public MachineDetails GetById(int id)
         {
             throw new NotImplementedException();
@@ -72,15 +132,18 @@ namespace Ferretto.Common.Modules.BLL.Services
             return context.Machines
                .AsNoTracking()
                .Include(m => m.Aisle)
+                    .ThenInclude(a => a.Area)
                .Include(m => m.MachineType)
                .Where(actualWhereFunc)
-               .Select(m => new Machine(m.Id)
+               .Select(m => new Machine
                {
+                   Id = m.Id,
                    ActualWeight = m.ActualWeight,
                    AisleName = m.Aisle.Name,
+                   AreaName = m.Aisle.Area.Name,
                    AutomaticTime = m.AutomaticTime,
                    BuildDate = m.BuildDate,
-                   CradlesCount = m.Cradles, // TODO: update DataModel to use CradlesCount
+                   CradlesCount = m.CradlesCount,
                    CustomerAddress = m.CustomerAddress,
                    CustomerCity = m.CustomerCity,
                    CustomerCountry = m.CustomerCountry,
@@ -90,7 +153,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    Image = m.Image,
                    InputLoadingUnitsCount = m.InputLoadingUnitsCount,
                    InstallationDate = m.InstallationDate,
-                   LastPowerOn = m.LastPoweOn,  // TODO: update LastPoweOn
+                   LastPowerOn = m.LastPowerOn,
                    LastServiceDate = m.LastServiceDate,
                    Latitude = m.Latitude,
                    Longitude = m.Longitude,

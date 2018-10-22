@@ -16,13 +16,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private IDataSource<CompartmentDetails, int> compartmentsDataSource;
+        private IDataSource<CompartmentDetails> compartmentsDataSource;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private object modelSelectionChangedSubscription;
         private ICommand saveCommand;
         private object selectedCompartment;
-        private ICommand viewCompartmentDetailsCommand;
 
         #endregion Fields
 
@@ -37,7 +36,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<CompartmentDetails, int> CompartmentsDataSource
+        public IDataSource<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -51,6 +50,10 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return default(CompartmentDetails);
                 }
+                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
+                {
+                    return default(CompartmentDetails);
+                }
                 return (CompartmentDetails)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
             }
         }
@@ -60,17 +63,16 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.loadingUnit;
             set
             {
-                if (this.SetProperty(ref this.loadingUnit, value))
+                if (!this.SetProperty(ref this.loadingUnit, value))
                 {
-                    if (this.loadingUnit != null)
-                    {
-                        this.CompartmentsDataSource = this.dataSourceService.GetAll<CompartmentDetails, int>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id).Single();
-                    }
-                    else
-                    {
-                        this.CompartmentsDataSource = null;
-                    }
+                    return;
                 }
+
+                this.CompartmentsDataSource = this.loadingUnit != null
+                    ? this.dataSourceService
+                        .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
+                        .Single()
+                    : null;
             }
         }
 
@@ -86,20 +88,16 @@ namespace Ferretto.WMS.Modules.MasterData
         public object SelectedCompartment
         {
             get => this.selectedCompartment;
-            set => this.SetProperty(ref this.selectedCompartment, value);
+            set
+            {
+                this.SetProperty(ref this.selectedCompartment, value);
+                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
+            }
         }
-
-        public ICommand ViewCompartmentDetailsCommand => this.viewCompartmentDetailsCommand ??
-                                                         (this.viewCompartmentDetailsCommand = new DelegateCommand(this.ExecuteViewCompartmentDetailsCommand));
 
         #endregion Properties
 
         #region Methods
-
-        public void ExecuteViewCompartmentDetailsCommand()
-        {
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.COMPARTMENTDETAILS, this.CurrentCompartment?.Id);
-        }
 
         protected override void OnAppear()
         {
@@ -113,7 +111,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<CompartmentDetails, int>>(this.modelSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<CompartmentDetails>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -123,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (modifiedRowCount > 0)
             {
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnitDetails, int>(this.LoadingUnit.Id));
+                this.EventService.Invoke(new ModelChangedEvent<CompartmentDetails>(this.LoadingUnit.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }
@@ -131,18 +129,20 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnitDetails, int>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnitDetails>>(
                 eventArgs =>
                 {
-                    if (eventArgs.ModelIdHasValue)
+                    if (eventArgs.ModelId.HasValue)
                     {
-                        this.LoadData(eventArgs.ModelId);
+                        this.LoadData(eventArgs.ModelId.Value);
                     }
                     else
                     {
                         this.LoadingUnit = null;
                     }
                 },
+                 this.Token,
+                true,
                 true);
         }
 

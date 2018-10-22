@@ -1,13 +1,13 @@
+using System.Windows.Input;
+
 namespace Ferretto.Common.Controls.Interfaces
 {
     public interface IWmsGridViewModel
     {
-        #region Methods
+        #region Properties
 
-        void RefreshGrid();
+        ICommand CmdRefresh { get; set; }
 
-        void SetDataSource(object dataSource);
-
-        #endregion Methods
+        #endregion Properties
     }
 }

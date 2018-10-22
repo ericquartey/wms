@@ -70,24 +70,48 @@ namespace Ferretto.Common.Modules.BLL.Services
                .AsNoTracking()
                .Include(c => c.AbcClass)
                .Include(c => c.Aisle)
+               .ThenInclude(a => a.Area)
                .Include(c => c.CellStatus)
                .Include(c => c.CellType)
                .Where(actualWhereFunc)
-               .Select(c => new Cell(c.Id)
-               {
-                   AbcClass = c.AbcClass.Description,
-                   Column = c.Column,
-                   Floor = c.Floor,
-                   Number = c.CellNumber,
-                   Priority = c.Priority,
-                   Side = c.Side.ToString(),
-                   Status = c.CellStatus.Description,
-                   Type = c.CellType.Description,
-                   XCoordinate = c.XCoordinate,
-                   YCoordinate = c.YCoordinate,
-                   ZCoordinate = c.ZCoordinate
-               }
-               );
+               .GroupJoin(
+                    context.LoadingUnits
+                        .AsNoTracking()
+                        .GroupBy(l => l.CellId)
+                        .Select(j => new
+                        {
+                            CellId = j.Key,
+                            LoadingUnitsCount = j.Count(),
+                            LoadingUnitsDescription = string.Join(",", j.Select(x => x.Code)),
+                        }),
+                    c => c.Id,
+                    l => l.CellId,
+                    (c, l) => new
+                    {
+                        Cell = c,
+                        LoadingUnitsAggregation = l.DefaultIfEmpty(),
+                    })
+               .SelectMany(
+                    x => x.LoadingUnitsAggregation.DefaultIfEmpty(),
+                    (a, b) => new Cell
+                    {
+                       Id = a.Cell.Id,
+                       AbcClassDescription = a.Cell.AbcClass.Description,
+                       AisleName = a.Cell.Aisle.Name,
+                       AreaName = a.Cell.Aisle.Area.Name,
+                       Column = a.Cell.Column,
+                       Floor = a.Cell.Floor,
+                       Number = a.Cell.CellNumber,
+                       Priority = a.Cell.Priority,
+                       Side = a.Cell.Side.ToString(),
+                       Status = a.Cell.CellStatus.Description,
+                       Type = a.Cell.CellType.Description,
+                       XCoordinate = a.Cell.XCoordinate,
+                       YCoordinate = a.Cell.YCoordinate,
+                       ZCoordinate = a.Cell.ZCoordinate,
+                       LoadingUnitsCount = b != null ? b.LoadingUnitsCount : 0,
+                       LoadingUnitsDescription = b != null ? b.LoadingUnitsDescription : "",
+                   });
         }
 
         #endregion Methods

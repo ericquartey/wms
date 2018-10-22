@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="Source\Actions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\ActionsBasic\MoveOnVertical.cs" />
+    <Compile Include="Source\CalibrateVerticalAxis.cs" />
     <Compile Include="Source\ActionsBasic\EmbarkDrawer.cs" />
     <Compile Include="Source\Command.cs" />
   </ItemGroup>

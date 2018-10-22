@@ -3,15 +3,7 @@ using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemsViewModel : EntityListViewModel<Item, int>
+    public class ItemsViewModel : EntityListViewModel<Item>
     {
-        #region Methods
-
-        public override void ExecuteViewDetailsCommand()
-        {
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.MasterData), Common.Utils.Modules.MasterData.ITEMDETAILS, this.CurrentItem?.Id);
-        }
-
-        #endregion Methods
     }
 }

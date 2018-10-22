@@ -25,8 +25,6 @@ namespace Ferretto.Common.DataModels
         public CellType CellType { get; set; }
 
         public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
-        public IEnumerable<CellsGroup> FirstCellsGroups { get; set; }
-        public IEnumerable<CellsGroup> LastCellsGroups { get; set; }
         public IEnumerable<Mission> SourceMissions { get; set; }
         public IEnumerable<Mission> DestinationMissions { get; set; }
     }

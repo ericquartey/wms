@@ -3,15 +3,15 @@ using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.Machines
 {
-    public class MachinesViewModel : EntityListViewModel<Machine, int>
+    public class MachinesViewModel : EntityListViewModel<Machine>
     {
-        #region Methods
+        #region Constructors
 
-        public override void ExecuteViewDetailsCommand()
+        public MachinesViewModel()
         {
-            this.HistoryViewService.Appear(nameof(Common.Utils.Modules.Machines), Common.Utils.Modules.Machines.MACHINEDETAILS, this.CurrentItem?.Id);
+            this.FlattenDataSource = true;
         }
 
-        #endregion Methods
+        #endregion Constructors
     }
 }

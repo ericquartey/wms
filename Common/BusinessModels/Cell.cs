@@ -3,19 +3,18 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Cell : BusinessObject<int>
+    public sealed class Cell : BusinessObject
     {
-        #region Constructors
-
-        public Cell(int id) : base(id)
-        { }
-
-        #endregion Constructors
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
-        public string AbcClass { get; set; }
+        public string AbcClassDescription { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
+        public string AisleName { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.Area), ResourceType = typeof(BusinessObjects))]
+        public string AreaName { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellColumn), ResourceType = typeof(BusinessObjects))]
         public int? Column { get; set; }
@@ -37,6 +36,12 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
         public string Type { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
+        public int LoadingUnitsCount { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellLoadingUnitsDescription), ResourceType = typeof(BusinessObjects))]
+        public string LoadingUnitsDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? XCoordinate { get; set; }

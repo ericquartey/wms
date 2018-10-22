@@ -40,8 +40,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                .Include(c => c.CompartmentType)
                .Include(c => c.CompartmentStatus)
                .Include(c => c.PackageType)
-               .Select(c => new Compartment(c.Id)
+               .Select(c => new Compartment
                {
+                   Id = c.Id,
                    Code = c.Code,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
                    CompartmentTypeDescription = c.CompartmentType.Description,
@@ -97,6 +98,17 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .AsNoTracking();
         }
 
+        public bool HasAnyAllowedItem(int modelId)
+        {
+            return this.dataContext.Compartments
+                .Where(c => c.Id == modelId)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
+                .AsNoTracking()
+                .Any();
+        }
+
         public int Save(CompartmentDetails model)
         {
             if (model == null)
@@ -112,8 +124,9 @@ namespace Ferretto.Common.Modules.BLL.Services
         }
 
         private static Compartment ProjectCompartment(DataModels.Compartment c) =>
-           new Compartment(c.Id)
+           new Compartment
            {
+               Id = c.Id,
                Code = c.Code,
                CompartmentStatusDescription = c.CompartmentStatus?.Description,
                CompartmentTypeDescription = c.CompartmentType?.Description,
@@ -128,8 +141,9 @@ namespace Ferretto.Common.Modules.BLL.Services
            };
 
         private static CompartmentDetails ProjectCompartmentDetails(DataModels.Compartment c) =>
-            new CompartmentDetails(c.Id)
+            new CompartmentDetails
             {
+                Id = c.Id,
                 Code = c.Code,
                 LoadingUnitCode = c.LoadingUnit?.Code,
                 CompartmentTypeId = c.CompartmentTypeId,

@@ -98,6 +98,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>General.resx</DependentUpon>
     </Compile>
+    <Compile Include="VWApp.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VWApp.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="BusinessObjects.it.resx" />
@@ -107,6 +112,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Machines.it.resx" />
     <EmbeddedResource Include="Machines.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Machines.Designer.cs</LastGenOutput>
@@ -149,6 +155,10 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Navigation.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VWApp.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>VWApp.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

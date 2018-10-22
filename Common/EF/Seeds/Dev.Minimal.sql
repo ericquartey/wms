@@ -1,14 +1,52 @@
+-- clean all tables
+EXEC sp_MSforeachtable 'ALTER TABLE ? DISABLE TRIGGER ALL'
+EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+
+DECLARE @tablename nvarchar(max)
+
+DECLARE cur CURSOR FOR
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT IN ('__EFMigrationsHistory')
+OPEN cur
+
+FETCH cur into @tablename
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	EXEC('DELETE FROM ' + @tablename)
+
+	IF EXISTS (Select * from sys.identity_columns where object_name(object_id) = @tablename)
+	BEGIN
+		EXEC('DBCC CHECKIDENT (''' + @tablename + ''', RESEED, 0) WITH NO_INFOMSGS')
+	END
+
+    FETCH cur into @tablename
+END
+
+CLOSE cur
+DEALLOCATE cur
+
+EXEC sp_MSforeachtable 'ALTER TABLE ? ENABLE TRIGGER ALL'
+EXEC sp_MSforeachtable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
+
+
 BEGIN TRANSACTION;
+
+DECLARE @vertimag_area int;
+SET @vertimag_area = 2;
 
 -- Areas / Aisles
 SET IDENTITY_INSERT Areas ON;
 INSERT INTO Areas (Id, Name) VALUES (1, 'Traslo Area');
+INSERT INTO Areas (Id, Name) VALUES (@vertimag_area, 'Vertimag Area');
 SET IDENTITY_INSERT Areas OFF;
 
 SET IDENTITY_INSERT Aisles ON;
 INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (1, 'Aisle 1', 1, 5, 10);
 INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (2, 'Aisle 2', 1, 5, 10);
 INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (3, 'Aisle 3', 1, 5, 10);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (4, 'Vertimag 1', @vertimag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (5, 'Vertimag 2', @vertimag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (6, 'Vertimag 3', @vertimag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (7, 'Vertimag 4', @vertimag_area);
 SET IDENTITY_INSERT Aisles OFF;
 
 
@@ -35,11 +73,8 @@ INSERT INTO MeasureUnits (Id, Description) VALUES ('KG', 'Kilograms');
 INSERT INTO MeasureUnits (Id, Description) VALUES ('L', 'Liters');
 
 SET IDENTITY_INSERT Items ON;
-INSERT INTO FerrettoWmsDb.dbo.Items (AbcClassId, AverageWeight, Code, Description, FifoTimePick, FifoTimeStore, Height, Id, Image, InventoryDate, InventoryTolerance, ItemCategoryId, ItemManagementTypeId, LastModificationDate, LastPickDate, LastStoreDate, Length, MeasureUnitId, Note, PickTolerance, ReorderPoint, ReorderQuantity, StoreTolerance, Width)
-  VALUES ('A', 1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 2, 3, 4, 1, 'Articolo1.jpg', '2001-01-01', 5, 1, 2, '2002-02-02', '2003-03-03', '2004-04-04', 6, 'PZ', 'aaaaaaaaaa', 7, 8, 9, 10, 11);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image)
-  VALUES (1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2, 1, 'Articolo2.jpg');
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (2, 'U000499', '000499        FRESA SMUSSO PUNTA KESO', 'A', 'PZ', 2, 2);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image) VALUES (1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2, 1, 'Articolo1.jpg');
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image) VALUES (2, 'U000499', '000499        FRESA SMUSSO PUNTA KESO', 'A', 'PZ', 2, 2, 'Articolo2.jpg');
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (3, 'U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', 2, 3);
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (4, 'U000578', '000578        FRESA DORSI VAC91', 'B', 'PZ', 2, 4);
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (5, 'U000585', '000585        FR.PROF.COSTANTE FR.LAT.', 'C', 'PZ', 2, 5);
@@ -52,6 +87,12 @@ INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, 1);
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, 1);
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, 1);
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, 1);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (2, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, @vertimag_area);
 
 
 -- Cells
@@ -62,28 +103,48 @@ INSERT INTO CellStatuses (Id, Description) VALUES (3, 'Full');
 INSERT INTO CellStatuses (Id, Description) VALUES (4, 'Full over Full');
 INSERT INTO CellStatuses (Id, Description) VALUES (5, 'Empty over Empty');
 INSERT INTO CellStatuses (Id, Description) VALUES (6, 'Halved');
-INSERT INTO CellStatuses (Id, Description) VALUES (7, 'Disabled');
+INSERT INTO CellStatuses (Id, Description) VALUES (7, 'Unusable');
+INSERT INTO CellStatuses (Id, Description) VALUES (99, 'Disabled');
 SET IDENTITY_INSERT CellStatuses OFF;
 
 SET IDENTITY_INSERT CellHeightClasses ON;
 INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (1, 'Cell 1300mm height max', 0, 1300);
 INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (2, 'Cell 1700mm height max', 1300, 1700);
+INSERT INTO CellHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (3, 'Cell 900mm height max - Vertimag', 0, 900);
 SET IDENTITY_INSERT CellHeightClasses OFF;
 
 SET IDENTITY_INSERT CellSizeClasses ON;
 INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (1, 'Europallet', 800, 1200);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (2, 'Vertimag tray 65XS', 1950, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (3, 'Vertimag tray 84XS', 1950, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (4, 'Vertimag tray 103XS', 1950, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (5, 'Vertimag tray 65S', 2450, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (6, 'Vertimag tray 84S', 2450, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (7, 'Vertimag tray 103S', 2450, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (8, 'Vertimag tray 65M', 3050, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (9, 'Vertimag tray 84M', 3050, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (10, 'Vertimag tray 103M', 3050, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (11, 'Vertimag tray 65L', 3650, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (12, 'Vertimag tray 84L', 3650, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (13, 'Vertimag tray 103L', 3650, 1030);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (14, 'Vertimag tray 65XL', 4250, 650);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (15, 'Vertimag tray 84XL', 4250, 840);
+INSERT INTO CellSizeClasses (Id, Description, Width, Length) VALUES (16, 'Vertimag tray 103XL', 4250, 1030);
 SET IDENTITY_INSERT CellSizeClasses OFF;
 
 SET IDENTITY_INSERT CellWeightClasses ON;
 INSERT INTO CellWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Cell 1000kg weight max', 0, 1000);
+INSERT INTO CellWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (2, 'Cell 500kg weight max - Vertimag', 0, 500);
 SET IDENTITY_INSERT CellWeightClasses OFF;
 
 SET IDENTITY_INSERT CellTypes ON;
 INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (1, 2, 1, 1, 'Cell Europallet, 1700mm height max, 1000kg weight max');
 INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (2, 1, 1, 1, 'Cell Europallet, 1300mm height max, 1000kg weight max');
+INSERT INTO CellTypes (Id, CellHeightClassId, CellWeightClassId, CellSizeClassId, Description) VALUES (3, 3, 2, 2, 'Vertimag tray 65XS, 900mm height max, 1000kg weight max');
 SET IDENTITY_INSERT CellTypes OFF;
 
 SET IDENTITY_INSERT Cells ON;
+-- automatic warehouse
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (1, 1, 1, 1, 'L', 1, 1, 1, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (2, 1, 1, 1, 'R', 2, 2, 1, 'A', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (3, 1, 1, 2, 'L', 3, 3, 1, 'A', 1);
@@ -384,19 +445,43 @@ INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, Cel
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (298, 3, 5, 9, 'R', 98, 98, 2, 'B', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (299, 3, 5, 10, 'L', 99, 99, 2, 'C', 1);
 INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (300, 3, 5, 10, 'R', 100, 100, 2, 'C', 1);
+-- vertimag warehouse
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (301, 4, 1, 1, 'F', 1, 1, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (302, 4, 2, 1, 'F', 3, 3, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (303, 4, 3, 1, 'F', 5, 5, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (304, 4, 4, 1, 'F', 7, 7, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (305, 4, 5, 1, 'F', 9, 9, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (306, 4, 6, 1, 'F', 11, 11, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (307, 4, 7, 1, 'F', 13, 13, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (308, 4, 8, 1, 'F', 15, 15, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (309, 4, 9, 1, 'F', 17, 17, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (310, 4, 10, 1, 'F', 19, 19, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (311, 4, 1, 1, 'B', 2, 2, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (312, 4, 2, 1, 'B', 4, 4, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (313, 4, 3, 1, 'B', 6, 6, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (314, 4, 4, 1, 'B', 8, 8, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (315, 4, 5, 1, 'B', 10, 10, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (316, 4, 6, 1, 'B', 12, 12, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (317, 4, 7, 1, 'B', 14, 14, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (318, 4, 8, 1, 'B', 16, 16, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (319, 4, 9, 1, 'B', 18, 18, 3, 'A', 1);
+INSERT INTO Cells (Id, AisleId, Floor, [Column], Side, CellNumber, Priority, CellTypeId, AbcClassId, CellStatusId) VALUES (320, 4, 10, 1, 'B', 20, 20, 3, 'A', 1);
 SET IDENTITY_INSERT Cells OFF;
 
 SET IDENTITY_INSERT CellConfigurations ON;
 INSERT INTO CellConfigurations (Id, Description) VALUES (1, '1 tall pallet present');
 INSERT INTO CellConfigurations (Id, Description) VALUES (2, '1 short pallet present');
+INSERT INTO CellConfigurations (Id, Description) VALUES (3, 'Cell for Vertimag tray');
 SET IDENTITY_INSERT CellConfigurations OFF;
 
 INSERT INTO CellConfigurationCellTypes (CellConfigurationId, CellTypeId, Priority) VALUES (1, 1, 1);
 INSERT INTO CellConfigurationCellTypes (CellConfigurationId, CellTypeId, Priority) VALUES (2, 1, 2);
 INSERT INTO CellConfigurationCellTypes (CellConfigurationId, CellTypeId, Priority) VALUES (2, 2, 1);
+INSERT INTO CellConfigurationCellTypes (CellConfigurationId, CellTypeId, Priority) VALUES (3, 3, 1);
 
 SET IDENTITY_INSERT CellPositions ON;
 INSERT INTO CellPositions (Id, XOffset, YOffset, ZOffset, Description) VALUES (1, null, null, null, 'Pallet centered over cell');
+INSERT INTO CellPositions (Id, XOffset, YOffset, ZOffset, Description) VALUES (2, null, null, null, 'Vertimag tray into cell');
 SET IDENTITY_INSERT CellPositions OFF;
 
 
@@ -407,20 +492,38 @@ INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('A', 'Available');
 
 SET IDENTITY_INSERT LoadingUnitWeightClasses ON;
 INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Pallet 1000kg weight max', 0, 1000);
+INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (2, 'Pallet 500kg weight max - Vertimag', 0, 500);
 SET IDENTITY_INSERT LoadingUnitWeightClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitSizeClasses ON;
 INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (1, 'Europallet', 800, 1200, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (2, 'Vertimag tray 65XS', 1950, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (3, 'Vertimag tray 84XS', 1950, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (4, 'Vertimag tray 103XS', 1950, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (5, 'Vertimag tray 65S', 2450, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (6, 'Vertimag tray 84S', 2450, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (7, 'Vertimag tray 103S', 2450, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (8, 'Vertimag tray 65M', 3050, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (9, 'Vertimag tray 84M', 3050, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (10, 'Vertimag tray 103M', 3050, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (11, 'Vertimag tray 65L', 3650, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (12, 'Vertimag tray 84L', 3650, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (13, 'Vertimag tray 103L', 3650, 1030, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (14, 'Vertimag tray 65XL', 4250, 650, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (15, 'Vertimag tray 84XL', 4250, 840, 0, 0, 0, 0);
+INSERT INTO LoadingUnitSizeClasses (Id, Description, Width, Length, BayOffset, Lift, BayForksUnthread, CellForksUnthread) VALUES (16, 'Vertimag tray 103XL', 4250, 1030, 0, 0, 0, 0);
 SET IDENTITY_INSERT LoadingUnitSizeClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitHeightClasses ON;
 INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (1, 'Pallet 1300mm height max', 0, 1300);
 INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (2, 'Pallet 1700mm height max', 1300, 1700);
+INSERT INTO LoadingUnitHeightClasses (Id, Description, MinHeight, MaxHeight) VALUES (3, 'Cell 900mm height max - Vertimag', 0, 900);
 SET IDENTITY_INSERT LoadingUnitHeightClasses OFF;
 
 SET IDENTITY_INSERT LoadingUnitTypes ON;
 INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (1, 2, 1, 1, 'Europallet, 1700mm height max, 1000kg weight max');
 INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (2, 1, 1, 1, 'Europallet, 1300mm height max, 1000kg weight max');
+INSERT INTO LoadingUnitTypes (Id, LoadingUnitHeightClassId, LoadingUnitWeightClassId, LoadingUnitSizeClassId, Description) VALUES (3, 3, 2, 2, 'Vertimag tray 65XS, 900mm height max, 1000kg weight max');
 SET IDENTITY_INSERT LoadingUnitTypes OFF;
 
 INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (1, 1);
@@ -429,15 +532,21 @@ INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (3, 1);
 INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (1, 2);
 INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (2, 2);
 INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (3, 2);
+INSERT INTO LoadingUnitTypesAisles (AisleId, LoadingUnitTypeId) VALUES (4, 3);
 
 INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellConfigurationId, LoadingUnitTypeId, Priority) VALUES (1, 1, 1, 1);
 INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellConfigurationId, LoadingUnitTypeId, Priority) VALUES (1, 2, 2, 1);
+INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellConfigurationId, LoadingUnitTypeId, Priority) VALUES (2, 3, 3, 1);
 
 SET IDENTITY_INSERT LoadingUnits ON;
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (1, 'UDC1', 1, 1, 1, 1, 1600, 900, 'U', 'M', 'A');
+VALUES (1, 'UDC1', 1, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A');
 INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (2, 'UDC2', 2, 1, 1, 1, 1600, 900, 'U', 'M', 'A');
+VALUES (2, 'UDC2', 2, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A');
+INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
+VALUES (3, 'VERTIMAG1.1', 301, 'Free', 2, 3, 800, 400, 'U', 'M', 'A');
+INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
+VALUES (4, 'VERTIMAG1.2', 302, 'Free', 2, 3, 700, 300, 'U', 'M', 'A');
 SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments
@@ -465,16 +574,25 @@ INSERT INTO CompartmentStatuses (Id, Description) VALUES (6, 'Disabled');
 SET IDENTITY_INSERT CompartmentStatuses OFF;
 
 SET IDENTITY_INSERT CompartmentTypes ON;
-INSERT INTO CompartmentTypes (Id, Description, Width, Height) VALUES (1, 'Full-pallet compartment', 800, 1200);
+INSERT INTO CompartmentTypes (Id, Description, Width, Height) VALUES (1, 'Full-pallet compartment type', 800, 1200);
+INSERT INTO CompartmentTypes (Id, Description) VALUES (2, 'Vertimag general purpose compartment type');
 SET IDENTITY_INSERT CompartmentTypes OFF;
 
 INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (1, 1, 100);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 2, 200);
+INSERT INTO ItemsCompartmentTypes (CompartmentTypeId, ItemId, MaxCapacity) VALUES (2, 3, 300);
 
 SET IDENTITY_INSERT Compartments ON;
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot)
-  VALUES (1, 'UDC1_COMP1', 1, 1, 1, 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll');
+  VALUES (1, 'UDC1_COMP1', 1, 1, 'Free', 1, 1, 1, 2, 5, 's1s1s1', 's2s2s2', 'llllll');
 INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot)
-  VALUES (2, 'UDC1_COMP2', 1, 1, 1, 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm');
+  VALUES (2, 'UDC1_COMP2', 1, 1, 'Free', 1, 1, 1, 2, 10, 's3s3s3', 's4s4s4', 'mmmmmm');
+INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height)
+  VALUES (3, 'VERTIMAG1.1_COMP1', 3, 2, 'Free', 3, 1, 1, 2, 20, 's5s5s5', 's6s6s6', 'nnnnnn', 0, 0, 100, 100);
+INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height)
+  VALUES (4, 'VERTIMAG1.1_COMP2', 3, 2, 'Free', 3, 1, 1, 2, 30, 's7s7s7', 's8s8s8', 'pppppp', 0, 100, 100, 100);
+INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairing, ItemId, MaterialStatusId, PackageTypeId, CompartmentStatusId, Stock, Sub1, Sub2, Lot, XPosition, YPosition, Width, Height)
+  VALUES (5, 'VERTIMAG1.2_COMP1', 4, 2, 'Free', 3, 1, 1, 2, 40, 'sss111', 'sss222', 'qqqqqq', 0, 0, 200, 200);
 SET IDENTITY_INSERT Compartments OFF;
 
 
@@ -508,9 +626,11 @@ INSERT INTO BayTypes (Id, Description) VALUES ('O', 'Output Bay');
 INSERT INTO BayTypes (Id, Description) VALUES ('P', 'Picking Bay');
 INSERT INTO BayTypes (Id, Description) VALUES ('L', 'Traslo load Bay');
 INSERT INTO BayTypes (Id, Description) VALUES ('U', 'Traslo unload Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('V', 'Vertimag Bay');
 
 SET IDENTITY_INSERT Bays ON;
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description) VALUES (1, 'P', 1, 'Singola baia di Pick');
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description) VALUES (1, 'P', 1, 'Single Pick Bay');
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description) VALUES (2, 'V', 1, 'Vertimag Bay');
 SET IDENTITY_INSERT Bays OFF;
 
 
@@ -535,7 +655,10 @@ INSERT INTO MachineTypes (Id, Description) VALUES ('L', 'LGV');
 INSERT INTO MachineTypes (Id, Description) VALUES ('V', 'Vertimag');
 
 SET IDENTITY_INSERT Machines ON;
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber) VALUES (1, 1, 'T', 'Traslo 1', '1234567890');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (1, 4, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'MachineVertimagM', 'VMAG/ver-2019/variant-M');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (2, 5, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'MachineVertimagXS', 'VMAG/ver-2018/variant-XS');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (3, 6, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'MachineVertimagM', 'VMAG/ver-2018/variant-M');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (4, 7, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-XS');
 SET IDENTITY_INSERT Machines OFF;
 
 

@@ -4,101 +4,112 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:vm="clr-namespace:Ferretto.VW.InstallationApp.ViewModels"
              mc:Ignorable="d">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Label Grid.Row="0"
-               HorizontalAlignment="Center"
-               Style="{StaticResource StandardTitleTextStyle}">
-            Vertical Axis Calibration
-        </Label>
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
+    <DockPanel>
+        <Label HorizontalAlignment="Center"
+               Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
+               DockPanel.Dock="Top"
+               Style="{StaticResource StandardTitleTextStyle}" />
+        <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0"
-                    Grid.Column="0"
-                    Style="{StaticResource StandardButtonStyle}">
-                START
-            </Button>
-            <Button Grid.Row="3"
-                    Grid.Column="0"
-                    Style="{StaticResource StandardButtonStyle}">
-                STOP
-            </Button>
-            <Label Grid.Row="0"
-                   Grid.Column="2"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Resolution
-            </Label>
+            <Button Name="NextProcedureButton"
+                    Grid.Column="4"
+                    Height="60"
+                    Content="{x:Static res:InstallationApp.NextButton}"
+                    IsEnabled="{Binding EnableNextButton, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource StandardButtonStyle}" />
+        </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Name="StartButton"
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Command="{Binding StartButtonCommand}"
+                    Content="{x:Static res:InstallationApp.Start}"
+                    IsEnabled="{Binding EnableStartButton, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource StandardButtonStyle}" />
+            <Button Name="StopButton"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Content="{x:Static res:InstallationApp.Stop}"
+                    IsEnabled="{Binding EnableStopButton, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{StaticResource StandardButtonStyle}" />
             <Label Grid.Row="1"
-                   Grid.Column="2"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Offset
-            </Label>
+                   Grid.Column="3"
+                   Content="{x:Static res:InstallationApp.Resolution}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <Label Grid.Row="2"
-                   Grid.Column="2"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Upper Bound
-            </Label>
+                   Grid.Column="3"
+                   Content="{x:Static res:InstallationApp.Offset}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <Label Grid.Row="3"
-                   Grid.Column="2"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Lower Bound
-            </Label>
+                   Grid.Column="3"
+                   Content="{x:Static res:InstallationApp.UpperBound}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <Label Grid.Row="4"
-                   Grid.Column="2"
-                   Style="{StaticResource StandardBodyTextStyle}">
-                Output:
-            </Label>
+                   Grid.Column="3"
+                   Content="{x:Static res:InstallationApp.LowerBound}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
+            <Label Grid.Row="5"
+                   Grid.Column="3"
+                   Content="{x:Static res:InstallationApp.Output}"
+                   Style="{StaticResource StandardBodyTextStyle}" />
             <TextBox Name="VerticalAxisCalibrationResolutionTextBox"
-                     Grid.Row="0"
-                     Grid.Column="3"
-                     Margin="2"
-                     Style="{StaticResource StandardBodyTextStyle}" />
-            <TextBox Name="VerticalAxisCalibrationOffsetTextBox"
                      Grid.Row="1"
-                     Grid.Column="3"
+                     Grid.Column="4"
                      Margin="2"
-                     Style="{StaticResource StandardBodyTextStyle}" />
-            <TextBox Name="VerticalAxisCalibrationUpperBoundTextBox"
+                     InputScope="Number"
+                     Style="{StaticResource StandardBodyTextStyle}"
+                     Text="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Name="VerticalAxisCalibrationOffsetTextBox"
                      Grid.Row="2"
-                     Grid.Column="3"
+                     Grid.Column="4"
                      Margin="2"
-                     Style="{StaticResource StandardBodyTextStyle}" />
-            <TextBox Name="VerticalAxisCalibrationLowerBoundTextBox"
+                     InputScope="Number"
+                     Style="{StaticResource StandardBodyTextStyle}"
+                     Text="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Name="VerticalAxisCalibrationUpperBoundTextBox"
                      Grid.Row="3"
-                     Grid.Column="3"
+                     Grid.Column="4"
                      Margin="2"
-                     Style="{StaticResource StandardBodyTextStyle}" />
+                     InputScope="Number"
+                     Style="{StaticResource StandardBodyTextStyle}"
+                     Text="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Name="VerticalAxisCalibrationLowerBoundTextBox"
+                     Grid.Row="4"
+                     Grid.Column="4"
+                     Margin="2"
+                     InputScope="Number"
+                     Style="{StaticResource StandardBodyTextStyle}"
+                     Text="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <TextBlock Name="VerticalAxisCalibrationOutputTextBlock"
-                       Grid.Row="4"
-                       Grid.Column="3"
+                       Grid.Row="5"
+                       Grid.Column="4"
                        Margin="2"
                        VerticalAlignment="Center"
-                       Style="{StaticResource StandardBodyTextBlockStyle}">
-                Axis not calibrated yet.
-            </TextBlock>
-            <Button Grid.Row="5"
-                    Grid.Column="4"
-                    Style="{StaticResource StandardButtonStyle}">
-                Next &gt;
-            </Button>
+                       Style="{StaticResource StandardBodyTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.AxisNotCalibratedYet}" />
         </Grid>
-    </Grid>
+    </DockPanel>
 </UserControl>

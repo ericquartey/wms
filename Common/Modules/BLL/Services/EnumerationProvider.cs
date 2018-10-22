@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -26,62 +24,62 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public IQueryable<Enumeration<string>> GetAllAbcClasses()
+        public IQueryable<EnumerationString> GetAllAbcClasses()
         {
-            return this.dataContext.AbcClasses.AsNoTracking().Select(x => new Enumeration<string>(x.Id, x.Description));
+            return this.dataContext.AbcClasses.AsNoTracking().Select(x => new EnumerationString(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllCellPositions()
+        public IQueryable<Enumeration> GetAllCellPositions()
         {
-            return this.dataContext.CellPositions.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.CellPositions.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllCompartmentStatuses()
+        public IQueryable<Enumeration> GetAllCompartmentStatuses()
         {
-            return this.dataContext.CompartmentStatuses.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.CompartmentStatuses.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllCompartmentTypes()
+        public IQueryable<Enumeration> GetAllCompartmentTypes()
         {
-            return this.dataContext.CompartmentTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.CompartmentTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllItemCategories()
+        public IQueryable<Enumeration> GetAllItemCategories()
         {
-            return this.dataContext.ItemCategories.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.ItemCategories.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllItemManagementTypes()
+        public IQueryable<Enumeration> GetAllItemManagementTypes()
         {
-            return this.dataContext.ItemManagementTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.ItemManagementTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<string>> GetAllLoadingUnitStatuses()
+        public IQueryable<EnumerationString> GetAllLoadingUnitStatuses()
         {
-            return this.dataContext.LoadingUnitStatuses.AsNoTracking().Select(x => new Enumeration<string>(x.Id, x.Description));
+            return this.dataContext.LoadingUnitStatuses.AsNoTracking().Select(x => new EnumerationString(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllLoadingUnitTypes()
+        public IQueryable<Enumeration> GetAllLoadingUnitTypes()
         {
-            return this.dataContext.LoadingUnitTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.LoadingUnitTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllMaterialStatuses()
+        public IQueryable<Enumeration> GetAllMaterialStatuses()
         {
-            return this.dataContext.MaterialStatuses.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.MaterialStatuses.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<string>> GetAllMeasureUnits()
+        public IQueryable<EnumerationString> GetAllMeasureUnits()
         {
-            return this.dataContext.MeasureUnits.AsNoTracking().Select(x => new Enumeration<string>(x.Id, x.Description));
+            return this.dataContext.MeasureUnits.AsNoTracking().Select(x => new EnumerationString(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetAllPackageTypes()
+        public IQueryable<Enumeration> GetAllPackageTypes()
         {
-            return this.dataContext.PackageTypes.AsNoTracking().Select(x => new Enumeration<int>(x.Id, x.Description));
+            return this.dataContext.PackageTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration<int>> GetCellsByAisleId(int aisleId)
+        public IQueryable<Enumeration> GetCellsByAisleId(int aisleId)
         {
             return this.dataContext.Cells
                 .AsNoTracking()
@@ -89,13 +87,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .ThenInclude(a => a.Area)
                 .Where(c => c.AisleId == aisleId)
                 .OrderBy(c => c.CellNumber)
-                .Select(c => new Enumeration<int>(
+                .Select(c => new Enumeration(
                     c.Id,
                     $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
                 );
         }
 
-        public IQueryable<Enumeration<int>> GetCellsByAreaId(int areaId)
+        public IQueryable<Enumeration> GetCellsByAreaId(int areaId)
         {
             return this.dataContext.Cells
                 .AsNoTracking()
@@ -104,7 +102,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Where(c => c.Aisle.AreaId == areaId)
                 .OrderBy(c => c.Aisle.Name)
                 .ThenBy(c => c.CellNumber)
-                .Select(c => new Enumeration<int>(
+                .Select(c => new Enumeration(
                     c.Id,
                     $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
                 );

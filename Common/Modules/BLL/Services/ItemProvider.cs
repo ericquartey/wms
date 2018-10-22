@@ -49,12 +49,33 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.Items.AsNoTracking().Count();
         }
 
+        public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
+        {
+            return this.dataContext.Compartments
+                .Where(c => c.Id == compartmentId)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .ThenInclude(ict => ict.Item)
+                .SelectMany(
+                    c => c.CompartmentType.ItemsCompartmentTypes,
+                    (c, ict) => new AllowedItemInCompartment
+                    {
+                        Id = ict.Item.Id,
+                        Code = ict.Item.Code,
+                        Description = ict.Item.Description,
+                        MaxCapacity = ict.MaxCapacity,
+                    }
+                )
+                .AsNoTracking();
+        }
+
         public ItemDetails GetById(int id)
         {
             var itemDetails = this.dataContext.Items
                 .Where(i => i.Id == id)
-                .Select(i => new ItemDetails(i.Id)
+                .Select(i => new ItemDetails
                 {
+                    Id = i.Id,
                     Code = i.Code,
                     Description = i.Description,
                     ItemCategoryId = i.ItemCategoryId,
@@ -151,6 +172,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                .AsNoTracking()
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
+               .Include(i => i.ItemCategory)
                .Where(actualWhereFunc)
                .GroupJoin(
                    context.Compartments
@@ -173,8 +195,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                    })
                .SelectMany(
                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                   (a, b) => new Item(a.Item.Id)
+                   (a, b) => new Item
                    {
+                       Id = a.Item.Id,
                        AbcClassDescription = a.Item.AbcClass.Description,
                        AverageWeight = a.Item.AverageWeight,
                        CreationDate = a.Item.CreationDate,
@@ -184,6 +207,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                        InventoryDate = a.Item.InventoryDate,
                        InventoryTolerance = a.Item.InventoryTolerance,
                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                       ItemCategoryDescription = a.Item.ItemCategory.Description,
                        LastModificationDate = a.Item.LastModificationDate,
                        LastPickDate = a.Item.LastPickDate,
                        LastStoreDate = a.Item.LastStoreDate,

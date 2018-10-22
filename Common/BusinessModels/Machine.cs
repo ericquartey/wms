@@ -4,16 +4,8 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public sealed class Machine : BusinessObject<int>
+    public sealed class Machine : BusinessObject
     {
-        #region Constructors
-
-        public Machine(int id) : base(id)
-        {
-        }
-
-        #endregion Constructors
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.MachineActualWeight), ResourceType = typeof(BusinessObjects))]
@@ -21,6 +13,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.MachineAisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineArea), ResourceType = typeof(BusinessObjects))]
+        public string AreaName { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineAutomaticTime), ResourceType = typeof(BusinessObjects))]
         public long? AutomaticTime { get; set; }
@@ -81,6 +76,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.MachineMissionTime), ResourceType = typeof(BusinessObjects))]
         public long? MissionTime { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MachineModel), ResourceType = typeof(BusinessObjects))]
+        public string Model { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineMovedLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
         public long? MovedLoadingUnitsCount { get; set; }
