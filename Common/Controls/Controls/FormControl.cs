@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Controls;
 
 namespace Ferretto.Common.Controls
@@ -30,15 +32,22 @@ namespace Ferretto.Common.Controls
                 return null;
             }
 
+            var property = GetProperty(model.GetType(), fieldName);
+            if (property == null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because property '{fieldName}' is not available on model type '{model.GetType()}'.");
+                return $"[{fieldName}]";
+            }
+
             // locate the Display attribute
-            var displayAttributeData = model.GetType()
-                .GetProperty(fieldName)
-                ?.CustomAttributes
+            var displayAttributeData = property
+                .CustomAttributes
                 .FirstOrDefault(attr => attr.AttributeType == typeof(DisplayAttribute));
 
             if (displayAttributeData == null)
             {
-                return null;
+                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because no DisplayAttribute is available on the property '{fieldName}'.");
+                return $"[{fieldName}]";
             }
 
             // get the Display attribute argument values
@@ -54,11 +63,29 @@ namespace Ferretto.Common.Controls
 
             if (propertyInfo == null)
             {
-                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because no resource with name {name} on type {resourceType.Name} is available.");
-                return null;
+                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because no resource with name '{name}' on type '{resourceType.Name}' is available.");
+                return $"[{name}]";
             }
 
             return (string)propertyInfo.GetValue(null);
+        }
+
+        private static PropertyInfo GetProperty(Type type, string propertyPath)
+        {
+            var indexOfSeparator = propertyPath.IndexOf('.');
+
+            if (indexOfSeparator < 0)
+            {
+                return type.GetProperty(propertyPath);
+            }
+
+            var propertyName = propertyPath.Substring(0, indexOfSeparator);
+
+            var propertyInfo = type.GetProperty(propertyName);
+
+            var childPropertyPath = propertyPath.Substring(indexOfSeparator + 1);
+
+            return GetProperty(propertyInfo.ReflectedType, childPropertyPath);
         }
 
         #endregion Methods

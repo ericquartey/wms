@@ -118,19 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="MachineAll" xml:space="preserve">
-    <value>All</value>
-    <comment>Filter - All Machines</comment>
-  </data>
-  <data name="MachineTraslo" xml:space="preserve">
-    <value>Traslo</value>
-    <comment>Filter - Traslo Machines</comment>
-  </data>
-  <data name="MachineVertimagM" xml:space="preserve">
-    <value>Vertimag M</value>
-    <comment>Filter - Vertimag Machines (M Size Model)</comment>
-  </data>
-  <data name="MachineVertimagXS" xml:space="preserve">
-    <value>Vertimag XS</value>
-    <comment>Filter - Vertimag Machines (XS Size Model)</comment>
+    <value>Tutte</value>
   </data>
 </root>
