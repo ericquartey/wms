@@ -22,13 +22,9 @@ namespace Ferretto.Common.Controls
         private int penThickness;
         private int top;
         private Dimension trayDimension;
-
-        //private double trayHeight;
         private Position trayOrigin;
 
         #endregion Fields
-
-        //private double trayWidth;
 
         #region Constructors
 
@@ -102,16 +98,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        //public double TrayHeight
-        //{
-        //    get => this.trayHeight;
-        //    set
-        //    {
-        //        this.trayHeight = value;
-        //        this.NotifyPropertyChanged(nameof(this.TrayHeight));
-        //    }
-        //}
-
         public Position TrayOrigin
         {
             get => this.trayOrigin;
@@ -123,16 +109,6 @@ namespace Ferretto.Common.Controls
         }
 
         #endregion Properties
-
-        //public double TrayWidth
-        //{
-        //    get => this.trayWidth;
-        //    set
-        //    {
-        //        this.trayWidth = value;
-        //        this.NotifyPropertyChanged(nameof(this.TrayWidth));
-        //    }
-        //}
 
         #region Methods
 
@@ -187,8 +163,6 @@ namespace Ferretto.Common.Controls
             this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
 
-            //this.TrayHeight = this.LoadingUnitProperty.Length;
-            //this.TrayWidth = this.LoadingUnitProperty.Width;
             this.TrayDimension = new Dimension()
             {
                 Width = this.LoadingUnitProperty.Width,
