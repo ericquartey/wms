@@ -11,12 +11,11 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <!--<RowDefinition Height="1*" />
-            <RowDefinition Height="1*" />
-            <RowDefinition Height="2*" />-->
             <RowDefinition Height="auto" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
-        <!--<compartment:InputCompartmentView Grid.Row="0" />-->
         <Grid Grid.Row="0"
               Width="500"
               Height="500">
@@ -41,13 +40,20 @@
         </Grid>
         <!--<wms:WmsTrayControl x:Name="Canvas"
                             Grid.Row="1"
-                            Margin="0,0,0,0"
-                            Compartments="{Binding LoadingUnit.Compartments, Mode=OneWay}"
-                            LoadingUnit="{Binding LoadingUnit, Mode=OneWay}"
-                            SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
-                            ShowBackground="False" />-->
 
-        <!--<compartment:ListCompartmentsView Grid.Row="2" />-->
+        <CheckBox Grid.Row="0"
+                  IsChecked="{Binding ShowBackground}">
+            SHOW TRAY's BACKGROUND
+        </CheckBox>
+        <compartment:InputCompartmentView Grid.Row="1" />
+        <wms:WmsTrayControl x:Name="Canvas"
+                            Grid.Row="2"
+                            Margin="0,0,0,0"
+                            Compartments="{Binding Tray.Compartments, Mode=OneWay}"
+                            SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
+                            ShowBackground="{Binding ShowBackground}"
+                            TrayObject="{Binding Tray, Mode=OneWay}" />
+        <compartment:ListCompartmentsView Grid.Row="3" />
 
     </Grid>
 </wms:WmsView>

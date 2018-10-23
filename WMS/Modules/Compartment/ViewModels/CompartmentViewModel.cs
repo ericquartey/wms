@@ -15,7 +15,9 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private CompartmentDetails compartmentSelected;
         private ICommand createNewCompartmentCommand;
-        private LoadingUnitDetails loadingUnitDetails;
+        private bool showBackground;
+
+        private Tray tray;
 
         #endregion Fields
 
@@ -42,7 +44,13 @@ namespace Ferretto.WMS.Modules.Compartment
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                  (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
-        public LoadingUnitDetails LoadingUnit { get => this.loadingUnitDetails; set => this.SetProperty(ref this.loadingUnitDetails, value); }
+        public bool ShowBackground
+        {
+            get => this.showBackground;
+            set => this.SetProperty(ref this.showBackground, value);
+        }
+
+        public Tray Tray { get => this.tray; set => this.SetProperty(ref this.tray, value); }
 
         #endregion Properties
 
@@ -50,13 +58,17 @@ namespace Ferretto.WMS.Modules.Compartment
 
         protected override void OnAppear()
         {
-            this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500, OriginTray = new Position { XPosition = 0, YPosition = 500 } };
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3 });
-            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 1760, YPosition = 300, Code = "4", Id = 4 });
-            this.RaisePropertyChanged(nameof(this.LoadingUnit));
-            this.RaisePropertyChanged(nameof(this.LoadingUnit.Compartments));
+            //Initialize without Origin, default: BOTTOM-LEFT
+            this.tray = new Tray { Dimension = new Dimension { Height = 500, Width = 1960 } };
+
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3 });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1760, YPosition = 300, Code = "4", Id = 4 });
+            this.RaisePropertyChanged(nameof(this.Tray));
+            this.RaisePropertyChanged(nameof(this.Tray.Compartments));
+
+            this.InitializeInput();
         }
 
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
@@ -73,7 +85,20 @@ namespace Ferretto.WMS.Modules.Compartment
                 XPosition = this.CompartmentSelected.XPosition,
                 YPosition = this.CompartmentSelected.YPosition
             };
-            this.LoadingUnit.AddCompartment(compartmentDetails);
+            this.Tray.AddCompartment(compartmentDetails);
+        }
+
+        private void InitializeInput()
+        {
+            this.CompartmentSelected = new CompartmentDetails
+            {
+                Width = 1,
+                Height = 1,
+                XPosition = 0,
+                YPosition = 0,
+                Stock = 0,
+                ItemCode = ""
+            };
         }
 
         #endregion Methods

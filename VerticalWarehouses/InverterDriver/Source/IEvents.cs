@@ -25,6 +25,38 @@
     }
 
     /// <summary>
+    /// IEnquiryTelegramDone: interface definition for the event [EnquiryTelegramDone]
+    /// </summary>
+    public interface IEnquiryTelegramDone
+    {
+        #region Methods
+
+        void EnquiryTelegramDone(object sender, EnquiryTelegramDoneEventArgs eventArgs);
+
+        #endregion Methods
+    }
+
+    /// <summary>
+    /// IEnquiryTelegramDoneEventArgs: interface definition for [EnquiryTelegramDone] event arguments.
+    /// </summary>
+    public interface IEnquiryTelegramDoneEventArgs
+    {
+        #region Properties
+
+        /// <summary>
+        /// Get the parameter ID code.
+        /// </summary>
+        ParameterID ParamID { get; }
+
+        /// <summary>
+        /// Get the parameter value.
+        /// </summary>
+        object Value { get; }
+
+        #endregion Properties
+    }
+
+    /// <summary>
     /// IErrorEvent: interface definition for the event [Error]
     /// </summary>
     public interface IErrorEvent
@@ -53,73 +85,60 @@
     }
 
     /// <summary>
-    /// IGetMessageFromServerEvent: interface definition for the event [GetMessageFromServer]
+    /// ILastRequestDone: interface definition for the event [LastRequestDone].
     /// </summary>
-    /// NOTE: To be removed.
-    public interface IGetMessageFromServerEvent
+    public interface ILastRequestDone
     {
         #region Methods
 
-        /// <summary>
-        /// GetMessageFromServer Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
-        void GetMessageFromServer(object sender, GetMessageFromServerEventArgs eventArgs);
+        void LastRequestDone(object sender, LastRequestDoneEventArgs eventArgs);
 
         #endregion Methods
     }
 
     /// <summary>
-    /// IGetMessageFromServerEventArgs: interface definition for [GetMessageFromServer] event arguments.
+    /// ILastRequestDoneEventArgs: interface definition for [LastRequestDone] event arguments.
     /// </summary>
-    /// TODO: To be removed.
-    public interface IGetMessageFromServerEventArgs
+    public interface ILastRequestDoneEventArgs
     {
         #region Properties
 
         /// <summary>
-        /// Command Id.
+        /// <c>True </c> if last request has been done.
         /// </summary>
-        CommandId CmdId { get; }
-
-        /// <summary>
-        /// Message.
-        /// </summary>
-        string Message { get; }
+        bool State { get; }
 
         #endregion Properties
     }
 
     /// <summary>
-    /// IOperationDoneEvent: interface definition for the event [OperationDone]
+    /// ISelectTelegramDone: interface definition for the event [SelectTelegramDone]
     /// </summary>
-    public interface IOperationDoneEvent
+    public interface ISelectTelegramDone
     {
         #region Methods
 
-        void OperationDone(object sender, OperationDoneEventArgs eventArgs);
+        void SelectTelegramDone(object sender, SelectTelegramDoneEventArgs eventArgs);
 
         #endregion Methods
     }
 
     /// <summary>
-    /// IOperationDoneEventArgs: interface definition for [OperationDone] event arguments.
+    /// ISelectTelegramDoneEventArgs: interface definition for [SelectTelegramDone] event arguments.
     /// </summary>
-    /// TODO: To be removed.
-    public interface IOperationDoneEventArgs
+    public interface ISelectTelegramDoneEventArgs
     {
         #region Properties
 
         /// <summary>
-        /// Command Id.
+        /// Get the parameter ID code.
         /// </summary>
-        CommandId CmdId { get; }
+        ParameterID ParamID { get; }
 
         /// <summary>
-        /// Operation result.
+        /// Get the parameter value.
         /// </summary>
-        bool Result { get; }
+        object Value { get; }
 
         #endregion Properties
     }

@@ -9,9 +9,8 @@
             BorderBrush="Black"
             BorderThickness="2">
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
-                                       Background="SkyBlue"
                                        ItemsSource="{Binding Items, Mode=TwoWay}">
-<ctrls:WmsRulerControl x:Name="horizontalRuler"
+<!--<ctrls:WmsRulerControl x:Name="horizontalRuler"
                                Width="1000"
                                Height="20"
                                Background="Yellow"
@@ -20,13 +19,12 @@
                                Width="20"
                                Height="900"
                                Background="Yellow"
-                               Orientation="Vertical" />
+                               Orientation="Vertical" />-->
             <ctrls:WmsCanvasListBoxControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
                                          HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
-                                         Background="Orange" />
+                                         VerticalAlignment="Top" />
                 </ItemsPanelTemplate>
             </ctrls:WmsCanvasListBoxControl.ItemsPanel>
             <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
