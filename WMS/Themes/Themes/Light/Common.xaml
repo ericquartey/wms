@@ -17,9 +17,12 @@
     <Color x:Key="PureWhite">#ffffff</Color>
 
     <!--  colors - demo tray - compartment  -->
+    <Color x:Key="Azure">#BBDEFB</Color>
     <Color x:Key="LightBlue">#FF08A5FF</Color>
     <Color x:Key="MediumBlue">#FF0288F7</Color>
     <Color x:Key="LightBlack">#BDBDBD</Color>
+    <SolidColorBrush x:Key="TrayBackground"
+                     Color="{StaticResource Azure}" />
     <SolidColorBrush x:Key="FillMouseOver"
                      Color="{StaticResource LightBlue}" />
     <SolidColorBrush x:Key="StrokeMouseOver"

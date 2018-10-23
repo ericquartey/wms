@@ -157,11 +157,11 @@ namespace Ferretto.Common.Controls
             {
                 if (this.CanvasListBoxControl.Canvas != null)
                 {
-                    this.CanvasListBoxControl.Canvas.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["FillMouseOver"];
+                    this.CanvasListBoxControl.Canvas.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
                 }
                 else
                 {
-                    this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["FillMouseOver"];
+                    this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
                 }
             }
         }
