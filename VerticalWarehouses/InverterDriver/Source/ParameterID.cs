@@ -2,21 +2,21 @@
 {
     /// <summary>
     /// Parameter ID codes. The parameter are used in the Inverter driver.
-    /// Constant enum
+    /// Constants enumerative
     /// </summary>
     public enum ParameterID
     {
-        CONTROL_WORD_PARAM,             // = 410
-        HOMING_CREEP_SPEED_PARAM,       // = 1133
-        HOMING_FAST_SPEED_PARAM,        // = 1132
-        HOMING_MODE_PARAM,              // = 1130
-        HOMING_OFFSET_PARAM,            // = 1131
-        POSITION_ACCELERATION_PARAM,    // = 1457
-        POSITION_DECELERATION_PARAM,    // = 1458
-        POSITION_TARGET_POSITION_PARAM, // = 1455
-        POSITION_TARGET_SPEED_PARAM,    // = 1456
-        SET_OPERATING_MODE_PARAM,       // = 1454
-        STATUS_WORD_PARAM               // = 411
+        CONTROL_WORD_PARAM = 410,
+        HOMING_CREEP_SPEED_PARAM = 1133,
+        HOMING_FAST_SPEED_PARAM = 1132,
+        HOMING_MODE_PARAM = 1130,
+        HOMING_OFFSET_PARAM = 1131,
+        POSITION_ACCELERATION_PARAM = 1457,
+        POSITION_DECELERATION_PARAM = 1458,
+        POSITION_TARGET_POSITION_PARAM = 1455,
+        POSITION_TARGET_SPEED_PARAM = 1456,
+        SET_OPERATING_MODE_PARAM = 1454,
+        STATUS_WORD_PARAM = 411
     }
 
     /// <summary>
@@ -30,13 +30,6 @@
         private static readonly ParameterIDClass instance = new ParameterIDClass();
 
         #endregion Fields
-
-        #region Constructors
-
-        private ParameterIDClass()
-        { }
-
-        #endregion Constructors
 
         #region Properties
 
@@ -72,32 +65,7 @@
         }
 
         /// <summary>
-        /// The (short) value of a given parameter ID.
-        /// </summary>
-        public short ParameterIDCodeToValue(ParameterID p)
-        {
-            short value = 0x0000;
-
-            switch (p)
-            {
-                case ParameterID.CONTROL_WORD_PARAM: value = 410; break;
-                case ParameterID.HOMING_CREEP_SPEED_PARAM: value = 1133; break;
-                case ParameterID.HOMING_FAST_SPEED_PARAM: value = 1132; break;
-                case ParameterID.HOMING_MODE_PARAM: value = 1130; break;
-                case ParameterID.HOMING_OFFSET_PARAM: value = 1131; break;
-                case ParameterID.POSITION_ACCELERATION_PARAM: value = 1457; break;
-                case ParameterID.POSITION_DECELERATION_PARAM: value = 1458; break;
-                case ParameterID.POSITION_TARGET_POSITION_PARAM: value = 1455; break;
-                case ParameterID.POSITION_TARGET_SPEED_PARAM: value = 1456; break;
-                case ParameterID.SET_OPERATING_MODE_PARAM: value = 1454; break;
-                case ParameterID.STATUS_WORD_PARAM: value = 411; break;
-            }
-
-            return value;
-        }
-
-        /// <summary>
-        /// The parameterID code for a given decimal value.
+        /// Retrieve the parameterID code for a given decimal value.
         /// </summary>
         public ParameterID ValueToParameterIDCode(short value)
         {

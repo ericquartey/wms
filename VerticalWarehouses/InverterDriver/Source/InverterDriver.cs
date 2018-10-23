@@ -767,7 +767,7 @@ namespace Ferretto.VW.InverterDriver
                         // Parameter No.
                         var ans = new byte[2];
                         var parameterNo = new byte[sizeof(short)];
-                        parameterNo = BitConverter.GetBytes(ParameterIDClass.Instance.ParameterIDCodeToValue(this.currentRequest.ParameterID));
+                        parameterNo = BitConverter.GetBytes(Convert.ToInt16(this.currentRequest.ParameterID));
 
                         parameterNo.CopyTo(ans, 0);
 
@@ -819,7 +819,7 @@ namespace Ferretto.VW.InverterDriver
                         // Parameter No.
                         var ans = new byte[2];
                         var parameterNo = new byte[sizeof(short)];
-                        parameterNo = BitConverter.GetBytes(ParameterIDClass.Instance.ParameterIDCodeToValue(this.currentRequest.ParameterID));
+                        parameterNo = BitConverter.GetBytes(Convert.ToInt16(this.currentRequest.ParameterID));
                         parameterNo.CopyTo(ans, 0);
 
                         Array.Copy(ans, 0, telegramToSend, 4, 2);
