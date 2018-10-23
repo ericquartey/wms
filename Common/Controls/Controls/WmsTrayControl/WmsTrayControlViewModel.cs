@@ -21,25 +21,12 @@ namespace Ferretto.Common.Controls
         private SolidColorBrush penBrush;
         private int penThickness;
         private int top;
-        private Dimension trayDimension;
-        private Position trayOrigin;
+
+        //private Dimension trayDimension;
+        //private Position trayOrigin;
+        private Tray tray;
 
         #endregion Fields
-
-        //private Position position;
-
-        //public Position position
-        //{
-        //    get { return position; }
-        //    set { position = value; }
-        //}
-        //private Dimension dimension;
-
-        //public Dimension Dimension
-        //{
-        //    get { return dimension; }
-        //    set { dimension = value; }
-        //}
 
         #region Constructors
 
@@ -51,14 +38,26 @@ namespace Ferretto.Common.Controls
 
         #region Events
 
+        //public Dimension Dimension
+        //{
+        //    get { return dimension; }
+        //    set { dimension = value; }
+        //}
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion Events
 
         #region Properties
 
+        //public Position position
+        //{
+        //    get { return position; }
+        //    set { position = value; }
+        //}
+        //private Dimension dimension;
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
 
+        //private Position position;
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -71,8 +70,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public LoadingUnitDetails LoadingUnitProperty { get; set; }
-
         public SolidColorBrush PenBrush
         {
             get => this.penBrush;
@@ -83,6 +80,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        //public LoadingUnitDetails LoadingUnitProperty { get; set; }
         public int PenThickness
         {
             get => this.penThickness;
@@ -103,27 +101,45 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public Dimension TrayDimension
+        public Tray Tray
         {
-            get => this.trayDimension;
+            get { return this.tray; }
             set
             {
-                this.trayDimension = value;
-                this.NotifyPropertyChanged(nameof(this.TrayDimension));
-            }
-        }
-
-        public Position TrayOrigin
-        {
-            get => this.trayOrigin;
-            set
-            {
-                this.trayOrigin = value;
-                this.NotifyPropertyChanged(nameof(this.TrayOrigin));
+                this.tray = value;
+                if (this.tray.Origin == null)
+                {
+                    this.tray.Origin = new Position
+                    {
+                        XPosition = 0,
+                        YPosition = this.tray.Dimension.Height
+                    };
+                }
+                this.NotifyPropertyChanged(nameof(this.Tray));
             }
         }
 
         #endregion Properties
+
+        //public Dimension TrayDimension
+        //{
+        //    get => this.trayDimension;
+        //    set
+        //    {
+        //        this.trayDimension = value;
+        //        this.NotifyPropertyChanged(nameof(this.TrayDimension));
+        //    }
+        //}
+
+        //public Position TrayOrigin
+        //{
+        //    get => this.trayOrigin;
+        //    set
+        //    {
+        //        this.trayOrigin = value;
+        //        this.NotifyPropertyChanged(nameof(this.TrayOrigin));
+        //    }
+        //}
 
         #region Methods
 
@@ -133,26 +149,28 @@ namespace Ferretto.Common.Controls
             {
                 foreach (var i in this.items)
                 {
-                    i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Height = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Height, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.Tray.Dimension.Width);
+                    i.Height = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Height, widthTrayPixel, this.Tray.Dimension.Width);
                     Dimension compartmentDimension = new Dimension() { Width = (int)i.CompartmentDetails.Width, Height = (int)i.CompartmentDetails.Height };
-                    var top = GraphicUtils.ConvertWithStandardOrigin((int)i.CompartmentDetails.YPosition, PositionType.Y, this.TrayOrigin, this.TrayDimension, compartmentDimension);
-                    i.Top = GraphicUtils.ConvertMillimetersToPixel(top, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    var left = GraphicUtils.ConvertWithStandardOrigin((int)i.CompartmentDetails.XPosition, PositionType.X, this.TrayOrigin, this.TrayDimension, compartmentDimension);
-                    i.Left = GraphicUtils.ConvertMillimetersToPixel(left, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    Position compartmentOrigin = new Position { XPosition = (int)i.CompartmentDetails.XPosition, YPosition = (int)i.CompartmentDetails.YPosition };
+
+                    Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOrigin(compartmentOrigin, this.Tray.Origin, this.Tray.Dimension, compartmentDimension);
+                    i.Top = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.YPosition, widthTrayPixel, this.Tray.Dimension.Width);
+                    i.Left = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.XPosition, widthTrayPixel, this.Tray.Dimension.Width);
                 }
             }
         }
 
         public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments, float ratio = 1)
         {
-            if (this.LoadingUnitProperty != null)
+            if (this.Tray != null)
             {
                 foreach (var compartment in compartments)
                 {
                     this.items.Add(new WmsCompartmentViewModel
                     {
-                        Tray = new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
+                        Tray = this.Tray,
+                        //Tray = new Tray { WidthMm = this.Tray.Dimension.Width, HeightMm = this.LoadingUnitProperty.Length },
                         CompartmentDetails = compartment,
 
                         Width = (int)(compartment.Width * ratio),
@@ -173,23 +191,10 @@ namespace Ferretto.Common.Controls
             this.NotifyPropertyChanged(nameof(this.CompartmentDetailsProperty));
         }
 
-        public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
+        public void UpdateTray(Tray tray)
         {
+            this.Tray = tray;
             this.items = new ObservableCollection<WmsBaseCompartment>();
-            this.LoadingUnitProperty = loadingUnitDetails;
-
-            this.TrayDimension = new Dimension()
-            {
-                Width = this.LoadingUnitProperty.Width,
-                Height = this.LoadingUnitProperty.Length
-            };
-            this.TrayOrigin = new Position()
-            {
-                XPosition = this.LoadingUnitProperty.OriginTray.XPosition,
-                YPosition = this.LoadingUnitProperty.OriginTray.YPosition
-            };
-            this.Top = 0;
-            this.Left = 0;
 
             //loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
             //loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
@@ -218,11 +223,11 @@ namespace Ferretto.Common.Controls
 
         private void TransformDataInput(float ratio = 1)
         {
-            foreach (var compartment in this.LoadingUnitProperty.Compartments)
+            foreach (var compartment in this.Tray.Compartments)
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
-                    Tray = new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
+                    Tray = this.Tray,//new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
                     CompartmentDetails = compartment,
 
                     Width = (int)(compartment.Width * ratio),

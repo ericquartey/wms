@@ -23,26 +23,25 @@ namespace Ferretto.Common.Controls
         //public static readonly DependencyProperty LoadingUnitProperty = DependencyProperty.Register(
         //                            nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
 
-        public static readonly DependencyProperty HeightTrayProperty = DependencyProperty.Register(
-                                    nameof(HeightTray), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnHeightTrayChanged)));
-
-        public static readonly DependencyProperty OriginXProperty = DependencyProperty.Register(
-                                    nameof(OriginX), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOriginXChanged)));
-
-        public static readonly DependencyProperty OriginYProperty = DependencyProperty.Register(
-                                    nameof(OriginY), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOriginYChanged)));
+        //public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
+        //                            nameof(Origin), typeof(Position), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOriginChanged)));
 
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
+        //public static readonly DependencyProperty OriginYProperty = DependencyProperty.Register(
+        //                            nameof(OriginY), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOriginYChanged)));
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
                                     nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentSelectedChanged)));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
                             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
 
-        public static readonly DependencyProperty WidthTrayProperty = DependencyProperty.Register(
-                            nameof(WidthTray), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnWidthTrayChanged)));
+        public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
+                            nameof(TrayObject), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayObjectChanged)));
+
+        //public static readonly DependencyProperty WidthTrayProperty = DependencyProperty.Register(
+        //                    nameof(WidthTray), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnWidthTrayChanged)));
 
         private BindingList<CompartmentDetails> compartments;
 
@@ -68,54 +67,52 @@ namespace Ferretto.Common.Controls
             set { this.SetValue(CompartmentsProperty, value); }
         }
 
-        public int HeightTray
-        {
-            get => (int)this.GetValue(HeightTrayProperty);
-            set => this.SetValue(HeightTrayProperty, value);
-        }
-
-        public int OriginX
-        {
-            get => (int)this.GetValue(OriginXProperty);
-            set => this.SetValue(OriginXProperty, value);
-        }
-
-        public int OriginY
-        {
-            get => (int)this.GetValue(OriginYProperty);
-            set => this.SetValue(OriginYProperty, value);
-        }
-
         public bool ReadOnly
         {
             get => (bool)this.GetValue(ReadOnlyProperty);
             set => this.SetValue(ReadOnlyProperty, value);
         }
 
+        //public int OriginY
+        //{
+        //    get => (int)this.GetValue(OriginYProperty);
+        //    set => this.SetValue(OriginYProperty, value);
+        //}
         public CompartmentDetails SelectedItem
         {
             get => (CompartmentDetails)this.GetValue(SelectedItemProperty);
             set => this.SetValue(SelectedItemProperty, value);
         }
 
+        //public int Origin
+        //{
+        //    get => (int)this.GetValue(OriginProperty);
+        //    set => this.SetValue(OriginProperty, value);
+        //}
         public bool ShowBackground
         {
             get => (bool)this.GetValue(ShowBackgroundProperty);
             set => this.SetValue(ShowBackgroundProperty, value);
         }
 
+        public Tray TrayObject
+        {
+            get => (Tray)this.GetValue(TrayProperty);
+            set => this.SetValue(TrayProperty, value);
+        }
+
+        #endregion Properties
+
         //public LoadingUnitDetails LoadingUnit
         //{
         //    get => (LoadingUnitDetails)this.GetValue(LoadingUnitProperty);
         //    set => this.SetValue(LoadingUnitProperty, value);
         //}
-        public int WidthTray
-        {
-            get => (int)this.GetValue(WidthTrayProperty);
-            set => this.SetValue(WidthTrayProperty, value);
-        }
-
-        #endregion Properties
+        //public int WidthTray
+        //{
+        //    get => (int)this.GetValue(WidthTrayProperty);
+        //    set => this.SetValue(WidthTrayProperty, value);
+        //}
 
         #region Methods
 
@@ -142,37 +139,21 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private static void OnHeightTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.TrayHeight = (int)e.NewValue;
-            }
-        }
+        //private static void OnHeightTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+        //    {
+        //        viewModel.TrayDimension.Height = (int)e.NewValue;
+        //    }
+        //}
 
-        private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
-            }
-        }
-
-        private static void OnOriginXChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                //viewModel. = (int)e.NewValue;
-            }
-        }
-
-        private static void OnOriginYChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.TrayWidth = (int)e.NewValue;
-            }
-        }
+        //private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+        //    {
+        //        viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
+        //    }
+        //}
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -182,13 +163,29 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private static void OnWidthTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTrayObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                viewModel.TrayWidth = (int)e.NewValue;
+                //viewModel.Tray = (Tray)e.NewValue;
+                viewModel.UpdateTray((Tray)e.NewValue);
             }
         }
+
+        //private static void OnOriginYChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+        //    {
+        //        viewModel.TrayOrigin.YPosition = (int)e.NewValue;
+        //    }
+        //}
+        //private static void OnWidthTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+        //    {
+        //        viewModel.TrayDimension.Width = (int)e.NewValue;
+        //    }
+        //}
 
         private void SetBackground(bool show)
         {

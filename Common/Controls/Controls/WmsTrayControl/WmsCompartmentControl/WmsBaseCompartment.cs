@@ -11,16 +11,16 @@ using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class Tray
-    {
-        #region Properties
+    //public class Tray
+    //{
+    //    #region Properties
 
-        public double HeightMm { get; set; }
+    //    public double HeightMm { get; set; }
 
-        public double WidthMm { get; set; }
+    //    public double WidthMm { get; set; }
 
-        #endregion Properties
-    }
+    //    #endregion Properties
+    //}
 
     public class WmsBaseCompartment : BindableBase
     {
