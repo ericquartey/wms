@@ -21,9 +21,6 @@ namespace Ferretto.Common.Controls
         private SolidColorBrush penBrush;
         private int penThickness;
         private int top;
-
-        //private Dimension trayDimension;
-        //private Position trayOrigin;
         private Tray tray;
 
         #endregion Fields
@@ -38,26 +35,14 @@ namespace Ferretto.Common.Controls
 
         #region Events
 
-        //public Dimension Dimension
-        //{
-        //    get { return dimension; }
-        //    set { dimension = value; }
-        //}
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion Events
 
         #region Properties
 
-        //public Position position
-        //{
-        //    get { return position; }
-        //    set { position = value; }
-        //}
-        //private Dimension dimension;
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
 
-        //private Position position;
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -80,7 +65,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        //public LoadingUnitDetails LoadingUnitProperty { get; set; }
         public int PenThickness
         {
             get => this.penThickness;
@@ -101,6 +85,10 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        /// <summary>
+        /// Property Tray
+        /// If Origin is not explicit initialized, Set default : Botton - Left
+        /// </summary>
         public Tray Tray
         {
             get { return this.tray; }
@@ -120,26 +108,6 @@ namespace Ferretto.Common.Controls
         }
 
         #endregion Properties
-
-        //public Dimension TrayDimension
-        //{
-        //    get => this.trayDimension;
-        //    set
-        //    {
-        //        this.trayDimension = value;
-        //        this.NotifyPropertyChanged(nameof(this.TrayDimension));
-        //    }
-        //}
-
-        //public Position TrayOrigin
-        //{
-        //    get => this.trayOrigin;
-        //    set
-        //    {
-        //        this.trayOrigin = value;
-        //        this.NotifyPropertyChanged(nameof(this.TrayOrigin));
-        //    }
-        //}
 
         #region Methods
 
@@ -170,7 +138,6 @@ namespace Ferretto.Common.Controls
                     this.items.Add(new WmsCompartmentViewModel
                     {
                         Tray = this.Tray,
-                        //Tray = new Tray { WidthMm = this.Tray.Dimension.Width, HeightMm = this.LoadingUnitProperty.Length },
                         CompartmentDetails = compartment,
 
                         Width = (int)(compartment.Width * ratio),
@@ -196,8 +163,6 @@ namespace Ferretto.Common.Controls
             this.Tray = tray;
             this.items = new ObservableCollection<WmsBaseCompartment>();
 
-            //loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
-            //loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
             this.TransformDataInput();
             this.NotifyPropertyChanged(nameof(this.Items));
         }
@@ -208,10 +173,6 @@ namespace Ferretto.Common.Controls
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-
-        private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
-        {
         }
 
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
@@ -227,7 +188,7 @@ namespace Ferretto.Common.Controls
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
-                    Tray = this.Tray,//new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
+                    Tray = this.Tray,
                     CompartmentDetails = compartment,
 
                     Width = (int)(compartment.Width * ratio),

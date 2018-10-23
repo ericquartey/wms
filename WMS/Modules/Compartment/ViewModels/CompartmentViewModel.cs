@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private CompartmentDetails compartmentSelected;
         private ICommand createNewCompartmentCommand;
+        private bool showBackground;
+
         private Tray tray;
 
         #endregion Fields
@@ -23,6 +25,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public CompartmentViewModel()
         {
+            this.ShowBackground = false;
         }
 
         #endregion Constructors
@@ -41,6 +44,16 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                  (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
+
+        public bool ShowBackground
+        {
+            get { return this.showBackground; }
+            set
+            {
+                this.showBackground = value;
+                this.RaisePropertyChanged(nameof(this.ShowBackground));
+            }
+        }
 
         public Tray Tray { get => this.tray; set => this.SetProperty(ref this.tray, value); }
 

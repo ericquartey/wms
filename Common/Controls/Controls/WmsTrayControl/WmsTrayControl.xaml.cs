@@ -20,17 +20,9 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
                     nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
-        //public static readonly DependencyProperty LoadingUnitProperty = DependencyProperty.Register(
-        //                            nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
-
-        //public static readonly DependencyProperty OriginProperty = DependencyProperty.Register(
-        //                            nameof(Origin), typeof(Position), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOriginChanged)));
-
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
-        //public static readonly DependencyProperty OriginYProperty = DependencyProperty.Register(
-        //                            nameof(OriginY), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOriginYChanged)));
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
                                     nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentSelectedChanged)));
 
@@ -39,9 +31,6 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
                             nameof(TrayObject), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayObjectChanged)));
-
-        //public static readonly DependencyProperty WidthTrayProperty = DependencyProperty.Register(
-        //                    nameof(WidthTray), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnWidthTrayChanged)));
 
         private BindingList<CompartmentDetails> compartments;
 
@@ -73,22 +62,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ReadOnlyProperty, value);
         }
 
-        //public int OriginY
-        //{
-        //    get => (int)this.GetValue(OriginYProperty);
-        //    set => this.SetValue(OriginYProperty, value);
-        //}
         public CompartmentDetails SelectedItem
         {
             get => (CompartmentDetails)this.GetValue(SelectedItemProperty);
             set => this.SetValue(SelectedItemProperty, value);
         }
 
-        //public int Origin
-        //{
-        //    get => (int)this.GetValue(OriginProperty);
-        //    set => this.SetValue(OriginProperty, value);
-        //}
         public bool ShowBackground
         {
             get => (bool)this.GetValue(ShowBackgroundProperty);
@@ -103,17 +82,6 @@ namespace Ferretto.Common.Controls
 
         #endregion Properties
 
-        //public LoadingUnitDetails LoadingUnit
-        //{
-        //    get => (LoadingUnitDetails)this.GetValue(LoadingUnitProperty);
-        //    set => this.SetValue(LoadingUnitProperty, value);
-        //}
-        //public int WidthTray
-        //{
-        //    get => (int)this.GetValue(WidthTrayProperty);
-        //    set => this.SetValue(WidthTrayProperty, value);
-        //}
-
         #region Methods
 
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -124,9 +92,11 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        /// <summary>
+        /// CompartmentsProperty: Property Changed Callback, do nothing, only update the Property
+        /// </summary>
         private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //DO NOTHING -> ONLY UPDATE PROPERTY
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 var newCompartment = (CompartmentDetails)e.NewValue;
@@ -138,22 +108,6 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
-
-        //private static void OnHeightTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-        //    {
-        //        viewModel.TrayDimension.Height = (int)e.NewValue;
-        //    }
-        //}
-
-        //private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-        //    {
-        //        viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
-        //    }
-        //}
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -167,25 +121,9 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                //viewModel.Tray = (Tray)e.NewValue;
                 viewModel.UpdateTray((Tray)e.NewValue);
             }
         }
-
-        //private static void OnOriginYChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-        //    {
-        //        viewModel.TrayOrigin.YPosition = (int)e.NewValue;
-        //    }
-        //}
-        //private static void OnWidthTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-        //    {
-        //        viewModel.TrayDimension.Width = (int)e.NewValue;
-        //    }
-        //}
 
         private void SetBackground(bool show)
         {
@@ -200,16 +138,31 @@ namespace Ferretto.Common.Controls
                 gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
                 var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
                     , 1);
-                var checkers = new GeometryDrawing((SolidColorBrush)new BrushConverter().ConvertFrom("#BDBDBD"), drawingPen, gGroup);
+                var checkers = new GeometryDrawing((SolidColorBrush)System.Windows.Application.Current.Resources["BorderTray"], drawingPen, gGroup);
+
                 var checkersDrawingGroup = new DrawingGroup();
                 checkersDrawingGroup.Children.Add(checkers);
                 DrawingBrush.Drawing = checkersDrawingGroup;
 
-                this.Background = DrawingBrush;
+                if (this.CanvasListBoxControl.Canvas != null)
+                {
+                    this.CanvasListBoxControl.Canvas.Background = DrawingBrush;
+                }
+                else
+                {
+                    this.CanvasListBoxControl.BackgroundCanvas = DrawingBrush;
+                }
             }
             else
             {
-                this.Background = null;
+                if (this.CanvasListBoxControl.Canvas != null)
+                {
+                    this.CanvasListBoxControl.Canvas.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["FillMouseOver"];
+                }
+                else
+                {
+                    this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["FillMouseOver"];
+                }
             }
         }
 

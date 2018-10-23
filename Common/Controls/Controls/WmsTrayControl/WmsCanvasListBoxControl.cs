@@ -21,8 +21,6 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private WmsTrayCanvas canvas;
-
-        //private LoadingUnitDetails loadingUnitDetails;
         private Tray tray;
 
         #endregion Fields
@@ -37,6 +35,8 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public Brush BackgroundCanvas { get; set; }
+        public WmsTrayCanvas Canvas { get { return this.canvas; } private set { } }
         public WmsTrayControl TrayControl { get; set; }
 
         #endregion Properties
@@ -77,7 +77,6 @@ namespace Ferretto.Common.Controls
                 this.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
                 this.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
 
-                //this.loadingUnitDetails = wmsTrayControlViewModel.LoadingUnitProperty;
                 this.tray = wmsTrayControlViewModel.Tray;
 
                 var widthNewCalculated = this.ActualWidth;
@@ -107,6 +106,7 @@ namespace Ferretto.Common.Controls
                 }
                 this.canvas.Height = heightNewCalculated;
                 this.canvas.Width = widthNewCalculated;
+                this.canvas.Background = this.BackgroundCanvas;
             }
         }
 
