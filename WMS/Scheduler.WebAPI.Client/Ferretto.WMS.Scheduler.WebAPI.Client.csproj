@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WMS\Scheduler.WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj" />
+    <ProjectReference Include="..\Scheduler.WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
         public async Task ConnectAsync()
         {
-            this.connection.On<string, string>(nameof(IWakeupHub.WakeUp), (user, message) =>
+            this.connection.On<string, string>("WakeUp", (user, message) =>
             {
                 this.WakeupReceived?.Invoke(this, new WakeUpEventArgs { User = user, Message = message });
             });

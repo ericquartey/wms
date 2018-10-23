@@ -34,15 +34,15 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             },
         };
 
-        private readonly IHubContext<WakeupHub> wakeupHub;
+        private readonly IHubContext<WakeupHub, IWakeupHub> wakeupHubContext;
 
         #endregion Fields
 
         #region Constructors
 
-        public MachinesController(IHubContext<WakeupHub> wakeupHub)
+        public MachinesController(IHubContext<WakeupHub, IWakeupHub> wakeupHubContext)
         {
-            this.wakeupHub = wakeupHub;
+            this.wakeupHubContext = wakeupHubContext;
         }
 
         #endregion Constructors
@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Machine>>> Get()
         {
-            await this.wakeupHub.Clients.All.SendAsync("WakeUp", "asalomone", "someone called the getAll method");
+            await this.wakeupHubContext.Clients.All.WakeUp("asalomone", "someone called the getAll method");
 
             return this.machines;
         }

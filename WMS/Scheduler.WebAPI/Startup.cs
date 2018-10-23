@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             {
                 app.UseHsts();
             }
-
+#if DEBUG
             app.UseSwaggerUi3WithApiExplorer(settings =>
             {
                 settings.PostProcess = document =>
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                 settings.GeneratorSettings.DefaultPropertyNameHandling =
                     PropertyNameHandling.CamelCase;
             });
-
+#endif
             app.UseHttpsRedirection();
 
             app.UseSignalR(routes =>
