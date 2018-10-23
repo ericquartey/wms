@@ -1,4 +1,5 @@
 using System;
+using Ferretto.WMS.Scheduler.WCF.Client.Proxy;
 
 namespace Ferretto.WMS.Scheduler.WCF.Client
 {
@@ -8,12 +9,17 @@ namespace Ferretto.WMS.Scheduler.WCF.Client
 
         private static void Main(string[] args)
         {
-            // The code provided will print ‘Hello World’ to the console.
-            // Press Ctrl+F5 (or go to Debug > Start Without Debugging) to run your app.
-            Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            var machinesClient = new CalculatorClient();
+            var machines = machinesClient.GetAll();
+           
 
-            // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app!
+            Console.WriteLine($"Hello World! The first machine is {machines[0].AisleName}.");
+
+
+            var result = machinesClient.CompleteMission(1, 2);
+
+            Console.WriteLine($"Press <ENTER> to close the application.");
+            Console.ReadKey();
         }
 
         #endregion Methods

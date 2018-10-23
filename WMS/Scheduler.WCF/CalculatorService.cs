@@ -1,13 +1,43 @@
 ﻿using System;
-using Ferretto.WMS.Scheduler.WCF.Contracts;
+using System.Collections.Generic;
+using System.ServiceModel;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.WMS.Scheduler.WCF
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
     public class CalculatorService : ICalculator
     {
+        private readonly Machine[] machines = new Machine[]
+       {
+            new Machine
+            {
+                Id = 1,
+                AisleName = "Vertimag 1",
+                MachineTypeDescription = "Vertimag",
+                LastPowerOn = System.DateTime.Now,
+                Model = "2018/XS"
+            },
+            new Machine
+            {
+                Id = 2,
+                AisleName = "Vertimag 2",
+                MachineTypeDescription = "Vertimag",
+                LastPowerOn = System.DateTime.Now.Subtract(System.TimeSpan.FromMinutes(15)),
+                Model = "2018/XS"
+            },
+       };
+
+        ICalculatorCallback Callback
+        {
+            get
+            {
+                return OperationContext.Current.GetCallbackChannel<ICalculatorCallback>();
+            }
+        }
         #region Methods
 
-        public double Add(double n1, double n2)
+        public double CompleteMission(double n1, double n2)
         {
             var result = n1 + n2;
             Console.WriteLine("Received Add({0},{1})", n1, n2);
@@ -16,29 +46,11 @@ namespace Ferretto.WMS.Scheduler.WCF
             return result;
         }
 
-        public double Divide(double n1, double n2)
+        public IEnumerable<Machine> GetAll()
         {
-            var result = n1 / n2;
-            Console.WriteLine("Received Divide({0},{1})", n1, n2);
-            Console.WriteLine("Return: {0}", result);
-            return result;
+            return this.machines;
         }
-
-        public double Multiply(double n1, double n2)
-        {
-            var result = n1 * n2;
-            Console.WriteLine("Received Multiply({0},{1})", n1, n2);
-            Console.WriteLine("Return: {0}", result);
-            return result;
-        }
-
-        public double Subtract(double n1, double n2)
-        {
-            var result = n1 - n2;
-            Console.WriteLine("Received Subtract({0},{1})", n1, n2);
-            Console.WriteLine("Return: {0}", result);
-            return result;
-        }
+    
 
         #endregion Methods
     }

@@ -1,7 +1,5 @@
 using System;
 using System.ServiceModel;
-using System.ServiceModel.Description;
-using Ferretto.WMS.Scheduler.WCF.Contracts;
 
 namespace Ferretto.WMS.Scheduler.WCF
 {
@@ -11,38 +9,28 @@ namespace Ferretto.WMS.Scheduler.WCF
 
         private static void Main(string[] args)
         {
-            // Step 1 Create a URI to serve as the base address.
-            var baseAddress = new Uri("http://localhost:8001/wms/");
-
-            // Step 2 Create a ServiceHost instance
-            var selfHost = new ServiceHost(typeof(CalculatorService), baseAddress);
-
             try
             {
-                // Step 3 Add a service endpoint.
-                selfHost.AddServiceEndpoint(typeof(ICalculator), new WSHttpBinding(), nameof(CalculatorService));
+                using (var serviceHost = new ServiceHost(typeof(CalculatorService)))
+                {
+                    serviceHost.Open();
 
-                // Step 4 Enable metadata exchange.
-                var smb = new ServiceMetadataBehavior();
-                smb.HttpGetEnabled = true;
-                selfHost.Description.Behaviors.Add(smb);
+                    Console.WriteLine("The service is ready.");
+                    Console.WriteLine("Press <ENTER> to terminate service.");
+                    Console.ReadLine();
 
-                // Step 5 Start the service.
-                selfHost.Open();
-                Console.WriteLine("The service is ready.");
-                Console.WriteLine("Press <ENTER> to terminate service.");
-                Console.WriteLine();
-                Console.ReadLine();
-
-                // Close the ServiceHostBase to shutdown the service.
-                selfHost.Close();
+                    Console.WriteLine("Terminating the service ...");
+                    serviceHost.Close();
+                }
             }
             catch (CommunicationException ce)
             {
-                Console.WriteLine("An exception occurred: {0}", ce.Message);
-                selfHost.Abort();
-                Console.WriteLine("Press <ENTER> to exit.");
+                Console.WriteLine("An exception occurred:");
+                Console.WriteLine(ce.Message);
+                Console.ReadLine();
             }
+
+            Console.WriteLine("Service terminated.");
         }
 
         #endregion Methods
