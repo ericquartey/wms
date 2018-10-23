@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.WMS.Scheduler.WebAPI.Hubs;
@@ -12,6 +13,26 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
     public class MachinesController : ControllerBase
     {
         #region Fields
+
+        private readonly Machine[] machines = new Machine[]
+        {
+            new Machine
+            {
+                Id = 1,
+                AisleName = "Vertimag 1",
+                MachineTypeDescription = "Vertimag",
+                LastPowerOn = System.DateTime.Now,
+                Model = "2018/XS"
+            },
+            new Machine
+            {
+                Id = 2,
+                AisleName = "Vertimag 2",
+                MachineTypeDescription = "Vertimag",
+                LastPowerOn = System.DateTime.Now.Subtract(System.TimeSpan.FromMinutes(15)),
+                Model = "2018/XS"
+            },
+        };
 
         private readonly IHubContext<WakeupHub> wakeupHub;
 
@@ -40,32 +61,21 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         {
             await this.wakeupHub.Clients.All.SendAsync("WakeUp", "asalomone", "someone called the getAll method");
 
-            return new Machine[]
-            {
-                new Machine
-                {
-                    Id = 1,
-                    AisleName = "Vertimag 1",
-                    MachineTypeDescription = "Vertimag",
-                    LastPowerOn = System.DateTime.Now,
-                    Model = "2018/XS"
-                },
-                new Machine
-                {
-                    Id = 2,
-                    AisleName = "Vertimag 2",
-                    MachineTypeDescription = "Vertimag",
-                    LastPowerOn = System.DateTime.Now.Subtract(System.TimeSpan.FromMinutes(15)),
-                    Model = "2018/XS"
-                },
-            };
+            return this.machines;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public ActionResult<Machine> Get(int id)
         {
-            return "value";
+            var machine = this.machines.SingleOrDefault(m => m.Id == id);
+
+            if (machine == null)
+            {
+                return this.NotFound($"No element with id={id} exists.");
+            }
+
+            return machine;
         }
 
         // POST api/values

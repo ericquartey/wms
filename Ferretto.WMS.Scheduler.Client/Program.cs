@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Scheduler.Client
 
         private static async Task Main(string[] args)
         {
-            Console.WriteLine("Presse <Enter> to start execution.");
+            Console.WriteLine("Press <Enter> to start execution.");
             Console.ReadLine();
 
             // Create two clients
@@ -41,10 +41,12 @@ namespace Ferretto.WMS.Scheduler.Client
             await wakeupHubClient2.ConnectAsync();
             Console.WriteLine("Client 2 - Connection to SignalR server established.");
 
+            // Call GetAll again, so that the Wakeup message is sent through SignalR
+            //
             Console.WriteLine("Client 1 - Retrieving mahcines ...");
             var machinesTake2 = await machinesClient1.GetAllAsync();
 
-            Console.WriteLine("Presse <Enter> to exit.");
+            Console.WriteLine("Press <Enter> to exit.");
             Console.ReadLine();
         }
 
