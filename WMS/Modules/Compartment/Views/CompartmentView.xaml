@@ -16,17 +16,19 @@
             <RowDefinition Height="4*" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0"
+        <!--<Grid Grid.Row="0"
               Width="500"
               Height="500">
             <Canvas Name="myCanvas"
                     Width="500"
                     Background="LightGray"
                     ToolTipService.ShowDuration="99999">
-                <!--
-                    MouseLeftButtonDown="myCanvas_MouseLeftButtonDown"
-                    MouseMove="Window_MouseMove_1"
-                -->
+        -->
+        <!--
+            MouseLeftButtonDown="myCanvas_MouseLeftButtonDown"
+            MouseMove="Window_MouseMove_1"
+        -->
+        <!--
                 <wms:WmsRulerControl x:Name="horizontalRuler"
                                      Width="1000"
                                      Height="20"
@@ -37,9 +39,8 @@
                                      Height="900"
                                      Orientation="Vertical" />
             </Canvas>
-        </Grid>
-        <!--<wms:WmsTrayControl x:Name="Canvas"
-                            Grid.Row="1"
+        </Grid>-->
+
 
         <CheckBox Grid.Row="0"
                   IsChecked="{Binding ShowBackground}">
