@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.Common.Resources;
+using System.Diagnostics;
 
 namespace Ferretto.VW.VWApp
 {
@@ -44,10 +45,8 @@ namespace Ferretto.VW.VWApp
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).MainWindow.Hide();
-                        //((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
-                        ((App)Application.Current).InstallationMainWindowInstance.Show();
-                        ((App)Application.Current).MainWindow.Hide();
+                        ((App)Application.Current).MainWindow.Visibility = Visibility.Hidden;
+                        ((App)Application.Current).InstallationAppMainWindowInstance.Visibility = Visibility.Visible;
                         break;
 
                     case "Operator":
@@ -57,16 +56,14 @@ namespace Ferretto.VW.VWApp
                         ((App)Application.Current).MainWindow.Hide();
                         break;
 
-                    default: //TODO SUGGESTION: remove this once CheckLoginInput is implemented.
+                    default:
                         this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
-                        //TODO: create error message for both wrong user/password and installation incomplete
                         break;
                 }
             }
             else
             {
                 this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
-                //TODO: open a popup to communicate to the user that the login info are not correct
             }
         }
 

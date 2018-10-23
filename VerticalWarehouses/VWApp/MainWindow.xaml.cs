@@ -20,7 +20,7 @@ namespace Ferretto.VW.VWApp
 
         private void RestoreVWAppWindow()
         {
-            this.Show();
+            this.Visibility = Visibility.Visible;
         }
 
         #endregion Methods

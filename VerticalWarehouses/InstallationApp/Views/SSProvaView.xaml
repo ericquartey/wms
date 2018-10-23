@@ -29,7 +29,7 @@
             <StackPanel Grid.Row="1"
                         Grid.Column="1">
                 <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            BulletColor="{StaticResource FerrettoGreen}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
                                             BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -41,7 +41,7 @@
                                             BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            BulletColor="{StaticResource FerrettoGreen}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
                                             BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -50,13 +50,16 @@
                                             BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            BulletColor="{StaticResource FerrettoGreen}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
             </StackPanel>
             <StackPanel Grid.Row="1"
                         Grid.Column="3">
                 <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            BulletColor="{StaticResource FerrettoGreen}"
+                                            LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
+                <custom:CustomSensorControl Margin="10"
+                                            BulletColor="{StaticResource FerrettoGreen}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
                                             BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -68,13 +71,10 @@
                                             BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            BulletColor="{StaticResource FerrettoGreen}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
-                <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            BulletColor="{StaticResource FerrettoGreen}"
                                             LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
                 <custom:CustomSensorControl Margin="10"
                                             BulletColor="{Binding Color, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

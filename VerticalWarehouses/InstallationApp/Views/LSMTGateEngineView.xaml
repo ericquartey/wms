@@ -9,10 +9,10 @@
              Height="auto"
              mc:Ignorable="d">
     <DockPanel>
-        <Label HorizontalAlignment="Left"
+        <Label Margin="20,0,0,0"
+               HorizontalAlignment="Left"
                Content="{x:Static res:InstallationApp.LSMTGateEngineTitle}"
                DockPanel.Dock="Top"
-               Margin="20,0,0,0"
                Style="{StaticResource StandardTitleTextStyle}" />
         <Grid Width="730"
               Height="530">

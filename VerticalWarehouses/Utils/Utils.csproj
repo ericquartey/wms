@@ -57,8 +57,6 @@
     <Compile Include="Source\CellsManagement\Enums.cs" />
     <Compile Include="Source\Configuration\General_Info.cs" />
     <Compile Include="Source\Configuration\Installation_Info.cs" />
-    <Compile Include="Source\ConverterPixelToCm.cs" />
-    <Compile Include="Source\IViewViewModel.cs" />
     <Compile Include="Source\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
