@@ -108,6 +108,7 @@
     <EmbeddedResource Include="BusinessObjects.it.resx" />
     <EmbeddedResource Include="DesktopApp.it.resx" />
     <EmbeddedResource Include="Errors.it.resx" />
+    <EmbeddedResource Include="InstallationApp.it.resx" />
     <EmbeddedResource Include="InstallationApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>InstallationApp.Designer.cs</LastGenOutput>

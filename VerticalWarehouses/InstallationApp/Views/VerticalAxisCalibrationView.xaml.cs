@@ -1,8 +1,5 @@
-﻿using System;
-using System.Windows.Controls;
-using Ferretto.VW.Navigation;
+﻿using System.Windows.Controls;
 using Ferretto.VW.InstallationApp.ViewModels;
-using System.Windows;
 
 namespace Ferretto.VW.InstallationApp.Views
 {

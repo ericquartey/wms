@@ -16,13 +16,17 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for LSMTHorizontalEngineView.xaml
+    /// Interaction logic for LSMTVerticalEngineView.xaml
     /// </summary>
-    public partial class LSMTHorizontalEngineView : Page
+    public partial class LSMTVerticalEngineView : UserControl
     {
-        public LSMTHorizontalEngineView()
+        #region Constructors
+
+        public LSMTVerticalEngineView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion Constructors
     }
 }

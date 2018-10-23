@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace Ferretto.VW.Utils.Source.CellsManagement
+namespace Ferretto.VW.Utils.Source.CellManagement
 {
     public static class CellManagementMethods
     {
@@ -38,12 +37,10 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
             {
-                Debug.Print("CellManagementMethods::CreateBay Error: inserted cell not on same side of the machine.\n");
                 return false;
             }
             if (cm.BayCounter > 3)
             {
-                Debug.Print("CellManagementMethods::CreateBay Error: it's not possible to insert more than 3 bays.\n");
                 return false;
             }
             for (int id = firstCellID; id <= lastCellID; id += 2)
@@ -100,12 +97,10 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if (cm.Bays[destinationBayID - 1].Occupied)
             {
-                Debug.Print("CellManagementMethods::ExtractDrawer Error: destination bay is already occupied. Destination Bay ID = " + destinationBayID + ".\n");
                 return false;
             }
             if (cm.Drawers.Find(x => x.Id == drawerID) == null)
             {
-                Debug.Print("CellManagementMethods::ExtractDrawer Error: did not found drawer with this ID: " + drawerID + ".\n");
                 return false;
             }
             cm.Bays[destinationBayID - 1].Occupied = true;
@@ -115,7 +110,6 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             UpdateCellsFile(cm);
             CreateBlocks(cm);
             UpdateBlocksFile(cm);
-            Debug.Print("CellManagementMethods::ExtractDrawer output: Drawer with ID " + drawerID + " successfully extracted.\n");
             return true;
         }
 
@@ -156,7 +150,6 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if (cm.Cells[cellID - 1].Status != Status.Free)
             {
-                Debug.Print("CellManagementMethods::InsertUnusableCell Error: selected Cell ID " + cellID + " is not free.\n");
                 return false;
             }
             ChangeCellStatus(cm, cellID - 1, Status.Unusable);
@@ -170,7 +163,6 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
         {
             if (cm.Bays.Count < bayID || !cm.Bays[bayID - 1].Occupied)
             {
-                Debug.Print("CellManagementMethods::ReInsertDrawer Error: selected bay ID " + bayID + " is not occupied or specified ID is not present.\n");
                 return false;
             }
             InsertNewDrawer(cm, cm.Bays[(int)bayID - 1].DrawerID, cm.Drawers[cm.Bays[bayID - 1].DrawerID - 1].HeightMillimiters);
@@ -229,7 +221,6 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
             }
             else
             {
-                Debug.Print("There are NO block with enough height to host this drawer.\n");
                 return -1;
             }
         }

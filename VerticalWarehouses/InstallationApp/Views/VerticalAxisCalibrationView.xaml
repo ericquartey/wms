@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="Ferretto.VW.InstallationApp.Views.VerticalAxisCalibrationView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,7 +9,8 @@
              xmlns:vm="clr-namespace:Ferretto.VW.InstallationApp.ViewModels"
              mc:Ignorable="d">
     <DockPanel>
-        <Label HorizontalAlignment="Center"
+        <Label Margin="20,0,0,0"
+               HorizontalAlignment="Left"
                Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
                DockPanel.Dock="Top"
                Style="{StaticResource StandardTitleTextStyle}" />
@@ -47,7 +49,7 @@
                     Grid.Column="1"
                     Command="{Binding StartButtonCommand}"
                     Content="{x:Static res:InstallationApp.Start}"
-                    IsEnabled="{Binding EnableStartButton, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    IsEnabled="{Binding EnableStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource StandardButtonStyle}" />
             <Button Name="StopButton"
                     Grid.Row="4"
@@ -55,61 +57,30 @@
                     Content="{x:Static res:InstallationApp.Stop}"
                     IsEnabled="{Binding EnableStopButton, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource StandardButtonStyle}" />
-            <Label Grid.Row="1"
-                   Grid.Column="3"
-                   Content="{x:Static res:InstallationApp.Resolution}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Label Grid.Row="2"
-                   Grid.Column="3"
-                   Content="{x:Static res:InstallationApp.Offset}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Label Grid.Row="3"
-                   Grid.Column="3"
-                   Content="{x:Static res:InstallationApp.UpperBound}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Label Grid.Row="4"
-                   Grid.Column="3"
-                   Content="{x:Static res:InstallationApp.LowerBound}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Label Grid.Row="5"
-                   Grid.Column="3"
-                   Content="{x:Static res:InstallationApp.Output}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <TextBox Name="VerticalAxisCalibrationResolutionTextBox"
-                     Grid.Row="1"
-                     Grid.Column="4"
-                     Margin="2"
-                     InputScope="Number"
-                     Style="{StaticResource StandardBodyTextStyle}"
-                     Text="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Name="VerticalAxisCalibrationOffsetTextBox"
-                     Grid.Row="2"
-                     Grid.Column="4"
-                     Margin="2"
-                     InputScope="Number"
-                     Style="{StaticResource StandardBodyTextStyle}"
-                     Text="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Name="VerticalAxisCalibrationUpperBoundTextBox"
-                     Grid.Row="3"
-                     Grid.Column="4"
-                     Margin="2"
-                     InputScope="Number"
-                     Style="{StaticResource StandardBodyTextStyle}"
-                     Text="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBox Name="VerticalAxisCalibrationLowerBoundTextBox"
-                     Grid.Row="4"
-                     Grid.Column="4"
-                     Margin="2"
-                     InputScope="Number"
-                     Style="{StaticResource StandardBodyTextStyle}"
-                     Text="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <TextBlock Name="VerticalAxisCalibrationOutputTextBlock"
-                       Grid.Row="5"
-                       Grid.Column="4"
-                       Margin="2"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource StandardBodyTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.AxisNotCalibratedYet}" />
+            <custom:CustomInputFieldControl Grid.Row="1"
+                                            Grid.Column="4"
+                                            InputScope="Number"
+                                            InputText="{Binding Resolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.Resolution}" />
+            <custom:CustomInputFieldControl Grid.Row="2"
+                                            Grid.Column="4"
+                                            InputScope="Number"
+                                            InputText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.Offset}" />
+            <custom:CustomInputFieldControl Grid.Row="3"
+                                            Grid.Column="4"
+                                            InputScope="Number"
+                                            InputText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.UpperBound}" />
+            <custom:CustomInputFieldControl Grid.Row="4"
+                                            Grid.Column="4"
+                                            InputScope="Number"
+                                            InputText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.LowerBound}" />
+            <custom:CustomInputFieldControl Grid.Row="5"
+                                            Grid.Column="4"
+                                            InputText="{x:Static res:InstallationApp.AxisNotCalibratedYet}"
+                                            LabelText="{x:Static res:InstallationApp.Output}" />
         </Grid>
     </DockPanel>
 </UserControl>
