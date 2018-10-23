@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Scheduler.WCF
         private static void Main(string[] args)
         {
             // Step 1 Create a URI to serve as the base address.
-            var baseAddress = new Uri("http://localhost:8000/wms/");
+            var baseAddress = new Uri("http://localhost:8001/wms/");
 
             // Step 2 Create a ServiceHost instance
             var selfHost = new ServiceHost(typeof(CalculatorService), baseAddress);
@@ -20,7 +20,7 @@ namespace Ferretto.WMS.Scheduler.WCF
             try
             {
                 // Step 3 Add a service endpoint.
-                selfHost.AddServiceEndpoint(typeof(ICalculator), new WSHttpBinding(), "CalculatorService");
+                selfHost.AddServiceEndpoint(typeof(ICalculator), new WSHttpBinding(), nameof(CalculatorService));
 
                 // Step 4 Enable metadata exchange.
                 var smb = new ServiceMetadataBehavior();
@@ -41,6 +41,7 @@ namespace Ferretto.WMS.Scheduler.WCF
             {
                 Console.WriteLine("An exception occurred: {0}", ce.Message);
                 selfHost.Abort();
+                Console.WriteLine("Press <ENTER> to exit.");
             }
         }
 
