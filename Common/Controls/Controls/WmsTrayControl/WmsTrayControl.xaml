@@ -8,14 +8,10 @@
     <Border x:Name="CanvasBorder"
             BorderBrush="Black"
             BorderThickness="2">
-
-
-
-        <ctrls:WmsCanvasItemsControl x:Name="CanvasItemsControl"
-                                     Background="SkyBlue"
-                                     ItemsSource="{Binding Items, Mode=TwoWay}">
-
-            <!--<ctrls:WmsRulerControl x:Name="horizontalRuler"
+        <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
+                                       Background="SkyBlue"
+                                       ItemsSource="{Binding Items, Mode=TwoWay}">
+<!--<ctrls:WmsRulerControl x:Name="horizontalRuler"
                                Width="1000"
                                Height="20"
                                Background="Yellow"
@@ -25,23 +21,25 @@
                                Height="900"
                                Background="Yellow"
                                Orientation="Vertical" />-->
-
-            <ctrls:WmsCanvasItemsControl.Resources />
-            <ctrls:WmsCanvasItemsControl.ItemsPanel>
+            <ctrls:WmsCanvasListBoxControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"
                                          Background="Orange" />
                 </ItemsPanelTemplate>
-            </ctrls:WmsCanvasItemsControl.ItemsPanel>
-            <ctrls:WmsCanvasItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
+            </ctrls:WmsCanvasListBoxControl.ItemsPanel>
+            <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0" />
                     <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
                     <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
+                    <Setter Property="Margin" Value="0" />
                 </Style>
-            </ctrls:WmsCanvasItemsControl.ItemContainerStyle>
-        </ctrls:WmsCanvasItemsControl>
+
+            </ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
+
+        </ctrls:WmsCanvasListBoxControl>
     </Border>
 
 </UserControl>

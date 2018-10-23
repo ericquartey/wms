@@ -183,4 +183,8 @@
     <value>User Login:</value>
     <comment>Label</comment>
   </data>
+  <data name="VertimagX" xml:space="preserve">
+    <value>Vertimag X</value>
+    <comment>Title</comment>
+  </data>
 </root>

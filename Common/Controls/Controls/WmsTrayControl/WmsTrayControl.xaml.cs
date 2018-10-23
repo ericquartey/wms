@@ -1,7 +1,12 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
+using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -12,14 +17,22 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
+                    nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
+
         public static readonly DependencyProperty LoadingUnitProperty = DependencyProperty.Register(
-                    nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
+                                    nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
 
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
+                                    nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentSelectedChanged)));
+
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
-                    nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
+                            nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
+
+        private BindingList<CompartmentDetails> compartments;
 
         #endregion Fields
 
@@ -28,13 +41,20 @@ namespace Ferretto.Common.Controls
         public WmsTrayControl()
         {
             this.InitializeComponent();
-            this.CanvasItemsControl.DataContext = new WmsTrayControlViewModel();
+            this.CanvasListBoxControl.DataContext = new WmsTrayControlViewModel();
+            this.CanvasListBoxControl.TrayControl = this;
             this.SetBackground(this.ShowBackground);
         }
 
         #endregion Constructors
 
         #region Properties
+
+        public BindingList<CompartmentDetails> Compartments
+        {
+            get { return this.compartments; }
+            set { this.SetValue(CompartmentsProperty, value); }
+        }
 
         public LoadingUnitDetails LoadingUnit
         {
@@ -48,6 +68,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ReadOnlyProperty, value);
         }
 
+        public CompartmentDetails SelectedItem
+        {
+            get => (CompartmentDetails)this.GetValue(SelectedItemProperty);
+            set => this.SetValue(SelectedItemProperty, value);
+        }
+
         public bool ShowBackground
         {
             get => (bool)this.GetValue(ShowBackgroundProperty);
@@ -58,9 +84,32 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                viewModel.UpdateCompartments((IEnumerable<CompartmentDetails>)e.NewValue);
+            }
+        }
+
+        private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            //DO NOTHING -> ONLY UPDATE PROPERTY
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                var newCompartment = (CompartmentDetails)e.NewValue;
+                var foundCompartment = viewModel.Items.FirstOrDefault(c => c.CompartmentDetails.Id == newCompartment.Id);
+
+                if (foundCompartment != null)
+                {
+                    wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
+                }
+            }
+        }
+
         private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
             }
@@ -68,7 +117,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasItemsControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 wmsTrayControl.SetBackground((bool)e.NewValue);
             }

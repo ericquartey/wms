@@ -20,6 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private CompartmentDetails compartment;
         private bool compartmentHasAllowedItems;
         private object modelSelectionChangedSubscription;
+        private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedAllowedItem;
 
@@ -85,6 +86,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        public ICommand RevertCommand => this.revertCommand ??
+          (this.revertCommand = new DelegateCommand(this.LoadData));
+
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
@@ -104,11 +108,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            if (this.Data is int modelId)
-            {
-                this.LoadData(modelId);
-            }
-
+            this.LoadData();
             base.OnAppear();
         }
 
@@ -139,7 +139,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     if (eventArgs.ModelId.HasValue)
                     {
-                        this.LoadData(eventArgs.ModelId.Value);
+                        this.Data = eventArgs.ModelId.Value;
+                        this.LoadData();
                     }
                     else
                     {
@@ -151,11 +152,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
-        private void LoadData(int modelId)
+        private void LoadData()
         {
-            this.Compartment = this.compartmentProvider.GetById(modelId);
-
-            this.CompartmentHasAllowedItems = this.compartmentProvider.HasAnyAllowedItem(modelId);
+            if (this.Data is int modelId)
+            {
+                this.Compartment = this.compartmentProvider.GetById(modelId);
+                this.CompartmentHasAllowedItems = this.compartmentProvider.HasAnyAllowedItem(modelId);
+            }
         }
 
         #endregion Methods

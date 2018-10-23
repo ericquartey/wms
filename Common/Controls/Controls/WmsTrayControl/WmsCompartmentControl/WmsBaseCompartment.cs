@@ -5,6 +5,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Ferretto.Common.BusinessModels;
+using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
@@ -19,138 +22,104 @@ namespace Ferretto.Common.Controls
         #endregion Properties
     }
 
-    public class WmsBaseCompartment : INotifyPropertyChanged
+    public class WmsBaseCompartment : BindableBase
     {
         #region Fields
 
         private string article;
+
         private int capacity;
+
         private string colorBorder;
+
         private string colorFill;
+
         private double height;
+
+        private bool isSelected;
+
         private double left;
+
         private int quantity;
+
         private float rectangleBorderThickness;
+
         private string selected;
+
         private double top;
+
         private double width;
 
         #endregion Fields
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
 
         #region Properties
 
         public string Article
         {
             get { return this.article; }
-            set
-            {
-                this.article = value;
-                this.OnPropertyChanged(nameof(this.Article));
-            }
+            set { this.SetProperty(ref this.article, value); }
         }
 
         public int Capacity
         {
             get { return this.capacity; }
-            set
-            {
-                this.capacity = value;
-                this.OnPropertyChanged(nameof(this.Capacity));
-            }
+            set { this.SetProperty(ref this.capacity, value); }
         }
 
         public string ColorBorder
         {
             get { return this.colorBorder; }
-            set
-            {
-                this.colorBorder = value;
-                this.OnPropertyChanged(nameof(this.ColorBorder));
-            }
+            set { this.SetProperty(ref this.colorBorder, value); }
         }
 
         public string ColorFill
         {
             get { return this.colorFill; }
-            set
-            {
-                this.colorFill = value;
-                this.OnPropertyChanged(nameof(this.ColorFill));
-            }
+            set { this.SetProperty(ref this.colorFill, value); }
         }
+
+        public CompartmentDetails CompartmentDetails { get; set; }
 
         public double Height
         {
-            get
-            {
-                return this.height;
-            }
-            set
-            {
-                this.height = value;
-                this.OnPropertyChanged(nameof(this.Height));
-            }
+            get { return this.height; }
+            set { this.SetProperty(ref this.height, value); }
+        }
+
+        public bool IsSelected
+        {
+            get { return this.isSelected; }
+            set { this.SetProperty(ref this.isSelected, value); }
         }
 
         public double Left
         {
             get { return this.left; }
-            set
-            {
-                this.left = value;
-                this.OnPropertyChanged(nameof(this.Left));
-            }
+            set { this.SetProperty(ref this.left, value); }
         }
-
-        public double OriginHeight { get; set; }
-
-        public double OriginLeft { get; set; }
-        public double OriginTop { get; set; }
-        public double OriginWidth { get; set; }
 
         public int Quantity
         {
             get { return this.quantity; }
-            set { this.quantity = value; }
+            set { this.SetProperty(ref this.quantity, value); }
         }
 
         public float RectangleBorderThickness
         {
             get { return this.rectangleBorderThickness; }
-            set
-            {
-                this.rectangleBorderThickness = value;
-                this.OnPropertyChanged(nameof(this.RectangleBorderThickness));
-            }
+            set { this.SetProperty(ref this.rectangleBorderThickness, value); }
         }
 
         public string Selected
         {
             get { return this.selected; }
-            set
-            {
-                this.selected = value;
-                this.OnPropertyChanged(nameof(this.Selected));
-            }
+            set { this.SetProperty(ref this.selected, value); }
         }
 
         public double Top
         {
-            get
-            {
-                return this.top;
-            }
-            set
-            {
-                this.top = value;
-                this.OnPropertyChanged(nameof(this.Top));
-            }
+            get { return this.top; }
+            set { this.SetProperty(ref this.top, value); }
         }
 
         public Tray Tray
@@ -162,26 +131,9 @@ namespace Ferretto.Common.Controls
         public double Width
         {
             get { return this.width; }
-            set
-            {
-                this.width = value;
-                this.OnPropertyChanged(nameof(this.Width));
-            }
+            set { this.SetProperty(ref this.width, value); }
         }
 
         #endregion Properties
-
-        #region Methods
-
-        protected void OnPropertyChanged(string name)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(name));
-            }
-        }
-
-        #endregion Methods
     }
 }
