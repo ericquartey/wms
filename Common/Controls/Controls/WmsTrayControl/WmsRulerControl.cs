@@ -28,6 +28,8 @@ namespace Ferretto.Common.Controls
                                             DependencyProperty.Register("DisplayMode", typeof(enumOrientation), typeof(WmsRulerControl),
             new UIPropertyMetadata(enumOrientation.Horizontal));
 
+        private readonly int fontSize = 10;
+
         #endregion Fields
 
         #region Constructors
@@ -91,10 +93,16 @@ namespace Ferretto.Common.Controls
             {
                 for (int i = 0; i < this.ActualWidth / this.MajorInterval; i++)
                 {
-                    var ft = new FormattedText((psuedoStartValue * this.MajorInterval).ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+                    var ft = new FormattedText(
+                        (psuedoStartValue * this.MajorInterval).ToString(),
+                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), fontSize, Brushes.Black);
                     drawingContext.DrawText(ft, new Point(i * this.MajorInterval, 0));
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 2), new Point(i * this.MajorInterval, this.MarkLength), new Point(i * this.MajorInterval, 0));
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
+                    drawingContext.DrawLine(
+                        new Pen(new SolidColorBrush(Colors.Black), 2),
+                        new Point(i * this.MajorInterval, this.MarkLength),
+                        new Point(i * this.MajorInterval, 0));
+                    drawingContext.DrawLine(
+                        new Pen(new SolidColorBrush(Colors.Black), 1),
                         new Point(i * this.MajorInterval + (this.MajorInterval / 2), this.MiddleMarkLength),
                         new Point(i * this.MajorInterval + (this.MajorInterval / 2), 0));
                     for (int j = 1; j < 10; j++)
@@ -117,23 +125,16 @@ namespace Ferretto.Common.Controls
                 {
                     var ft = new FormattedText(
                         (psuedoStartValue * this.MajorInterval).ToString(),//.ToString(),
-                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), fontSize, Brushes.Black);
                     drawingContext.DrawText(ft, new Point(0, i * this.MajorInterval));
                     drawingContext.DrawLine(
-                        new Pen(new SolidColorBrush(Colors.Violet), 1),
+                        new Pen(new SolidColorBrush(Colors.Black), 2),
                         new Point(this.MarkLength, i * this.MajorInterval),
-                        new Point(0, i * this.MajorInterval)
-                        );
+                        new Point(0, i * this.MajorInterval));
                     drawingContext.DrawLine(
-                        new Pen(new SolidColorBrush(Colors.Red), 1),
-                        new Point(this.MarkLength, i * (this.MajorInterval)),
-                        new Point(0, i * this.MajorInterval)
-                        );
-                    drawingContext.DrawLine(
-                        new Pen(new SolidColorBrush(Colors.Green), 1),
-                        new Point(this.MiddleMarkLength, i * (this.MajorInterval + (this.MajorInterval / 2))),
-                        new Point(0, i * (this.MajorInterval + (this.MajorInterval / 2)))
-                        );
+                        new Pen(new SolidColorBrush(Colors.Black), 1),
+                        new Point(this.MiddleMarkLength, i * this.MajorInterval + (this.MajorInterval / 2)),
+                        new Point(0, i * this.MajorInterval + (this.MajorInterval / 2)));
                     for (int j = 1; j < 10; j++)
                     {
                         if (j == 5)
@@ -141,11 +142,37 @@ namespace Ferretto.Common.Controls
                             continue;
                         }
                         drawingContext.DrawLine(
-                            new Pen(new SolidColorBrush(Colors.Blue), 1),
-                            new Point(this.LittleMarkLength, i * (this.MajorInterval + (this.MajorInterval * j / 10))),
-                            new Point(0, i * (this.MajorInterval + (this.MajorInterval * j / 10)))
-                            );
+                            new Pen(new SolidColorBrush(Colors.Black), 1),
+                            new Point(this.LittleMarkLength, i * this.MajorInterval + ((this.MajorInterval * j) / 10)),
+                            new Point(0, i * this.MajorInterval + ((this.MajorInterval * j) / 10)));
                     }
+                    //drawingContext.DrawLine(
+                    //    new Pen(new SolidColorBrush(Colors.Black), 2),
+                    //    new Point(this.MarkLength, i * this.MajorInterval),
+                    //    new Point(0, i * this.MajorInterval)
+                    //    );
+                    //drawingContext.DrawLine(
+                    //    new Pen(new SolidColorBrush(Colors.Black), 1),
+                    //    new Point(this.MarkLength, i * (this.MajorInterval)),
+                    //    new Point(0, i * this.MajorInterval)
+                    //    );
+                    //drawingContext.DrawLine(
+                    //    new Pen(new SolidColorBrush(Colors.Black), 1),
+                    //    new Point(this.MiddleMarkLength, i * (this.MajorInterval + (this.MajorInterval / 2))),
+                    //    new Point(0, i * (this.MajorInterval + (this.MajorInterval / 2)))
+                    //    );
+                    //for (int j = 1; j < 10; j++)
+                    //{
+                    //    if (j == 5)
+                    //    {
+                    //        continue;
+                    //    }
+                    //    drawingContext.DrawLine(
+                    //        new Pen(new SolidColorBrush(Colors.Black), 1),
+                    //        new Point(this.LittleMarkLength, i * (this.MajorInterval + (this.MajorInterval * j / 10))),
+                    //        new Point(0, i * (this.MajorInterval + (this.MajorInterval * j / 10)))
+                    //        );
+                    //}
                     psuedoStartValue++;
                 }
             }
