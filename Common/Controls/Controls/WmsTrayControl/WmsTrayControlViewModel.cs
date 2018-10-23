@@ -21,8 +21,8 @@ namespace Ferretto.Common.Controls
         private SolidColorBrush penBrush;
         private int penThickness;
         private int top;
-        private double trayHeight;
-        private double trayWidth;
+        private Dimension trayDimension;
+        private Position trayOrigin;
 
         #endregion Fields
 
@@ -103,23 +103,23 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public double TrayHeight
+        public Dimension TrayDimension
         {
-            get => this.trayHeight;
+            get => this.trayDimension;
             set
             {
-                this.trayHeight = value;
-                this.NotifyPropertyChanged(nameof(this.TrayHeight));
+                this.trayDimension = value;
+                this.NotifyPropertyChanged(nameof(this.TrayDimension));
             }
         }
 
-        public double TrayWidth
+        public Position TrayOrigin
         {
-            get => this.trayWidth;
+            get => this.trayOrigin;
             set
             {
-                this.trayWidth = value;
-                this.NotifyPropertyChanged(nameof(this.TrayWidth));
+                this.trayOrigin = value;
+                this.NotifyPropertyChanged(nameof(this.TrayOrigin));
             }
         }
 
@@ -135,8 +135,11 @@ namespace Ferretto.Common.Controls
                 {
                     i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.LoadingUnitProperty.Width);
                     i.Height = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Height, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Top = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.YPosition, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Left = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.XPosition, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    Dimension compartmentDimension = new Dimension() { Width = (int)i.CompartmentDetails.Width, Height = (int)i.CompartmentDetails.Height };
+                    var top = GraphicUtils.ConvertWithStandardOrigin((int)i.CompartmentDetails.YPosition, PositionType.Y, this.TrayOrigin, this.TrayDimension, compartmentDimension);
+                    i.Top = GraphicUtils.ConvertMillimetersToPixel(top, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    var left = GraphicUtils.ConvertWithStandardOrigin((int)i.CompartmentDetails.XPosition, PositionType.X, this.TrayOrigin, this.TrayDimension, compartmentDimension);
+                    i.Left = GraphicUtils.ConvertMillimetersToPixel(left, widthTrayPixel, this.LoadingUnitProperty.Width);
                 }
             }
         }
@@ -175,8 +178,16 @@ namespace Ferretto.Common.Controls
             this.items = new ObservableCollection<WmsBaseCompartment>();
             this.LoadingUnitProperty = loadingUnitDetails;
 
-            this.TrayHeight = this.LoadingUnitProperty.Length;
-            this.TrayWidth = this.LoadingUnitProperty.Width;
+            this.TrayDimension = new Dimension()
+            {
+                Width = this.LoadingUnitProperty.Width,
+                Height = this.LoadingUnitProperty.Length
+            };
+            this.TrayOrigin = new Position()
+            {
+                XPosition = this.LoadingUnitProperty.OriginTray.XPosition,
+                YPosition = this.LoadingUnitProperty.OriginTray.YPosition
+            };
             this.Top = 0;
             this.Left = 0;
 
