@@ -10,13 +10,11 @@
             BorderThickness="2">
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
                                        ItemsSource="{Binding Items, Mode=TwoWay}">
-            <!--  Background="SkyBlue"  -->
             <ctrls:WmsCanvasListBoxControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top" />
-                    <!--  Background="Orange"  -->
                 </ItemsPanelTemplate>
             </ctrls:WmsCanvasListBoxControl.ItemsPanel>
             <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
