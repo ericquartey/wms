@@ -42,7 +42,9 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            <ctrls:WmsIcon VerticalAlignment="Center"
+            <ctrls:WmsIcon Width="18"
+                           Height="18"
+                           VerticalAlignment="Center"
                            ColorizeBrush="{DynamicResource CommonSecondaryDark}"
                            SymbolName="UserProfile" />
             <TextBlock Grid.Column="1"

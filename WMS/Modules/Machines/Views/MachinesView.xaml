@@ -20,40 +20,34 @@
 
         <Grid.Resources>
             <DataTemplate x:Key="cardTemplate">
-                <StackPanel Orientation="Vertical">
-                    <Grid Margin="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <wms:WmsImage Grid.Column="0"
-                                      Width="64"
-                                      Height="70"
-                                      Path="{Binding Path=Row.Image}" />
-                        <StackPanel Grid.Column="1"
-                                    Margin="12,0,12,0"
-                                    VerticalAlignment="Top"
-                                    Orientation="Vertical">
-                            <wms:InfoText FieldName="RegistrationNumber" />
-                            <StackPanel Margin="0,0,0,4"
-                                        Orientation="Horizontal">
-                                <TextBlock Text="Registration number" />
-                                <TextBlock Text="{Binding Path=Row.RegistrationNumber}"
-                                           TextTrimming="CharacterEllipsis" />
-                            </StackPanel>
 
-                        </StackPanel>
-                    </Grid>
+                <Grid DataContext="{Binding Row}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <wms:WmsIcon Grid.Column="0"
+                                 Width="70"
+                                 Height="70"
+                                 VerticalAlignment="Top"
+                                 SymbolName="{Binding Image}" />
+                    <StackPanel Grid.Column="1"
+                                Margin="12,-10,12,0"
+                                VerticalAlignment="Top"
+                                Orientation="Vertical">
+                        <wms:InfoText FieldName="MovedLoadingUnitsCount" />
+                        <wms:InfoText FieldName="AreaName" />
+                        <wms:InfoText FieldName="RegistrationNumber" />
 
-                </StackPanel>
+                    </StackPanel>
+                </Grid>
+
             </DataTemplate>
 
             <DataTemplate x:Key="cardHeaderTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Margin="4,0,0,0"
-                               VerticalAlignment="Center"
-                               Text="{Binding Path=Row.Nickname}" />
-                </StackPanel>
+                <TextBlock VerticalAlignment="Center"
+                           FontSize="20"
+                           Text="{Binding Path=RowData.Row.Nickname}" />
             </DataTemplate>
         </Grid.Resources>
 
@@ -96,12 +90,12 @@
                                 ShowBorder="False">
 
                 <dxg:GridControl.View>
-                    <dxg:CardView Name="view"
-                                  AllowCardResizing="false"
+                    <dxg:CardView AllowCardResizing="false"
                                   AllowEditing="False"
                                   CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
+                                  CardLayout="Rows"
                                   CardTemplate="{StaticResource cardTemplate}"
-                                  FixedSize="250"
+                                  FixedSize="230"
                                   MinFixedSize="100"
                                   NavigationStyle="Row"
                                   PrintAutoCardWidth="False"
@@ -125,7 +119,7 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn FieldName="MachineTypeDescription" />
-                    <dxg:GridColumn FieldName="AisleName" />
+                    <dxg:GridColumn FieldName="AreaName" />
                     <dxg:GridColumn FieldName="Nickname" />
                     <dxg:GridColumn FieldName="RegistrationNumber" />
                 </wms:WmsGridControl.Columns>

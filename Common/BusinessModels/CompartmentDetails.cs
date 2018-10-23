@@ -21,6 +21,8 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
+        public event EventHandler UpdateCompartmentEvent;
+
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
@@ -152,5 +154,18 @@ namespace Ferretto.Common.BusinessModels
         }
 
         #endregion Properties
+
+        #region Methods
+
+        public void OnUpdateCompartmentEvent(EventArgs e)
+        {
+            var handler = this.UpdateCompartmentEvent;
+            if (handler != null)
+            {
+                handler(this, e);
+            }
+        }
+
+        #endregion Methods
     }
 }

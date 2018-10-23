@@ -9,11 +9,25 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
+    <Style x:Key="ErrorBodyTextStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoRed}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
+    </Style>
     <Style x:Key="StandardTitleTextStyle"
            TargetType="{x:Type Control}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource RobotoCondensed-Regular}" />
         <Setter Property="FontSize" Value="30" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="StandardSplashScreenTitleTextStyle"
+           TargetType="{x:Type Control}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource RobotoCondensed-Regular}" />
+        <Setter Property="FontSize" Value="50" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
@@ -23,10 +37,28 @@
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="20" />
     </Style>
+    <Style x:Key="SensorControlBodyTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="16" />
+    </Style>
     <Style x:Key="UserBodyTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="20" />
+    </Style>
+    <Style x:Key="CustomInputFieldControlTextBoxStyle"
+           TargetType="{x:Type Control}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
+    </Style>
+    <Style x:Key="CustomInputFieldControlTextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="14" />
     </Style>
 </ResourceDictionary>

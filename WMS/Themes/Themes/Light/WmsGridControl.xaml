@@ -6,13 +6,18 @@
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                    xmlns:dxght="http://schemas.devexpress.com/winfx/2008/xaml/grid/internal"
+                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:dxgn="clr-namespace:DevExpress.Xpf.Grid.Native;assembly=DevExpress.Xpf.Grid.v18.1"
                     mc:Ignorable="cs">
 
     <dx:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <dx:BoolToVisibilityInverseConverter x:Key="BoolToVisibilityInverseConverter" />
 
+    <!-- GridColumn style -->
     <Style TargetType="dxg:GridColumn">
         <Setter Property="IsSmart" Value="True" />
+        <Setter Property="HorizontalHeaderContentAlignment" Value="Center" />
     </Style>
 
     <!--  sort arrows control templates  -->
@@ -67,6 +72,7 @@
               Height="13"
               Margin="0,-2,0,0"
               cs:Name="Grid_0001"
+              Visibility="Hidden"
               Background="#00000000">
             <Path Width="7"
                   Height="9"
@@ -132,7 +138,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <!--  search panel content template  -->
+    <!--  table view search panel content template  -->
     <Style x:Key="{dxgt:TableViewThemeKey ResourceKey=SearchPanelContentTemplate,
                                           ThemeName=Office2016White}"
            TargetType="{x:Type ContentControl}">
@@ -143,17 +149,17 @@
                 <ControlTemplate>
                     <Grid Background="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelBackground}}">
                         <dxg:GridSearchControl x:Name="PART_SearchControl"
-                                               Margin="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelWithoutGroupedPanelMargin}}"
                                                HorizontalAlignment="{Binding Path=(dxg:GridControl.CurrentView).SearchPanelHorizontalAlignment, RelativeSource={RelativeSource TemplatedParent}}"
                                                IsEditorTabStop="False"
                                                IsTabStop="False"
+                                               Margin="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelWithoutGroupedPanelMargin}}"
                                                NullText="{x:Static res:General.Search}"
                                                SearchTextBoxMinWidth="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelTextBoxMinWidth}}"
                                                View="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}"
                                                Visibility="{Binding Path=View.ActualShowSearchPanel, RelativeSource={RelativeSource Self}, Converter={dx:BooleanToVisibilityConverter}}" />
                         <Border x:Name="PART_SearchPanelBorderBottom"
                                 BorderBrush="{DynamicResource CommonBackground}"
-                                BorderThickness="0,0,0,1">
+                                BorderThickness="0,0,0,0">
                             <Border.Visibility>
                                 <Binding ElementName="PART_SearchControl"
                                          Path="GroupPanelShown">
@@ -189,6 +195,7 @@
         <Setter Property="Height" Value="30" />
         <Setter Property="FontSize" Value="{DynamicResource GridFontSize}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommonBackground}" />
+        <Setter Property="ShowFilterButtonOnHover" Value="False" />
     </Style>
 
     <!--  row style  -->
@@ -226,6 +233,11 @@
         <Setter Property="ShowFocusedRectangle" Value="True" />
         <Setter Property="ShowHorizontalLines" Value="False" />
         <Setter Property="ShowVerticalLines" Value="False" />
+        <Setter Property="SearchPanelNullText" Value="{x:Static res:General.Search}" />
+    </Style>
+
+    <Style TargetType="dxg:CardView">
+        <Setter Property="SearchPanelNullText" Value="{x:Static res:General.Search}" />
     </Style>
 
     <!--  FitColumnHeader style  -->
@@ -233,5 +245,242 @@
         <Setter Property="Background" Value="{DynamicResource CommonSecondaryMedium}" />
         <Setter Property="BorderBrush" Value="{DynamicResource CommonBackground}" />
     </Style>
+
+    <!-- card view control template -->
+    <ControlTemplate x:Key="{dxgt:CardViewThemeKey ResourceKey=ScrollViewerTemplate, ThemeName=Office2016White}">
+        <Grid dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}">
+			<dx:ScrollBarExtensions.ScrollBehavior>
+				<Binding Path="(dxg:GridControl.CurrentView).UseExtendedMouseScrolling" RelativeSource="{RelativeSource Self}">
+					<Binding.Converter>
+						<dx:BoolToObjectConverter FalseValue="{dx:NativeScrollBehavior}" TrueValue="{dxg:CardDataPresenterScrollBehavior}" />
+					</Binding.Converter>
+				</Binding>
+			</dx:ScrollBarExtensions.ScrollBehavior>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ContentControl Grid.Row="0" Template="{DynamicResource {dxgt:CardViewThemeKey ResourceKey=TopPanel}}" dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}" />
+            <Border x:Name="PART_GroupPanel" Background="#FFFFFFFF" BorderBrush="#FFD6D6D6" BorderThickness="0,0,0,1" Grid.Row="1" dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}" Grid.ColumnSpan="2" cs:Name="Border_0004">
+                <dxg:GridControl.CurrentViewChangedListener>
+                    <dxg:GroupPanelInitializer />
+                </dxg:GridControl.CurrentViewChangedListener>
+                <dxg:GridViewHitInfoBase.HitTestAcceptor>
+                    <dxght:GroupPanelTableViewHitTestAcceptor />
+                </dxg:GridViewHitInfoBase.HitTestAcceptor>
+                <Grid x:Name="Grid1" Margin="8">
+                    <TextBlock x:Name="GroupPanelDragText" Style="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=GroupPanelDragTextStyle}}">
+                        <TextBlock.Text>
+                            <Binding Path="(dxg:GridControl.CurrentView).LocalizationDescriptor" RelativeSource="{RelativeSource TemplatedParent}" ConverterParameter="GridGroupPanelText">
+                                <Binding.Converter>
+                                    <dxg:DynamicLocalizationStringValueConvertor />
+                                </Binding.Converter>
+                            </Binding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                    <dxg:ColumnItemsControl x:Name="groupPanelItemsControl" ItemsSource="{Binding Path=(dxg:GridControl.CurrentView).GroupedColumns, RelativeSource={RelativeSource TemplatedParent}}" Style="{DynamicResource {dxgt:GroupRowThemeKey ResourceKey=GroupItemsControlStyle}}" dxg:GridPopupMenu.GridMenuType="GroupPanel" dxb:BarManager.DXContextMenu="{Binding Path=(dxg:GridControl.ActiveView).GridMenu, RelativeSource={RelativeSource TemplatedParent}}" />
+                </Grid>
+            </Border>
+            <Border x:Name="PART_FooterItemsControlBorder" Background="#FFFFFFFF" BorderBrush="#FFD6D6D6" BorderThickness="0,0,0,1" Grid.Row="2" Grid.ColumnSpan="2" Visibility="{Binding Path=(dxg:DataControlBase.ActiveView).ShowTotalSummary, RelativeSource={RelativeSource Self}, Converter={StaticResource BooleanToVisibilityConverter}}" cs:Name="Border_0006">
+                <dxg:GridViewHitInfoBase.HitTestAcceptor>
+                    <dxght:TotalSummaryPanelTableViewHitTestAcceptor />
+                </dxg:GridViewHitInfoBase.HitTestAcceptor>
+                <dxg:TotalSummaryItemsControl x:Name="footerItemsControl" Style="{DynamicResource {dxgt:CardViewThemeKey IsVisibleInBlend=True, ResourceKey=TotalSummaryItemsControlStyle}}" Margin="1" HorizontalAlignment="Right" Visibility="Collapsed" />
+            </Border>
+            <Grid Grid.Row="3" Grid.ColumnSpan="2">
+                <Border x:Name="borderFrame" BorderBrush="{DynamicResource {dxgt:TableViewThemeKey ResourceKey=SearchPanelBorderBottomBrush}}" BorderThickness="0,0,0,0">
+                    <Grid Margin="{TemplateBinding Padding}" dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollContentPresenter Name="PART_ScrollContentPresenter" CanContentScroll="True" dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}">
+                            <dxg:GridControl.CurrentViewChangedListener>
+                                <dxg:ScrollContentPresenterInitializer />
+                            </dxg:GridControl.CurrentViewChangedListener>
+                            <Grid.RowSpan>
+                                <Binding Path="(dx:ScrollBarExtensions.ScrollBarMode)" RelativeSource="{RelativeSource TemplatedParent}">
+                                    <Binding.Converter>
+                                        <dx:EnumToObjectConverter DefaultValue="1">
+                                            <dx:EnumToObjectConverter.Values>
+                                                <dx:EnumObjectProvider x:Key="TouchOverlap" Value="2" />
+                                            </dx:EnumToObjectConverter.Values>
+                                        </dx:EnumToObjectConverter>
+                                    </Binding.Converter>
+                                </Binding>
+                            </Grid.RowSpan>
+                            <Grid.ColumnSpan>
+                                <Binding Path="(dx:ScrollBarExtensions.ScrollBarMode)" RelativeSource="{RelativeSource TemplatedParent}">
+                                    <Binding.Converter>
+                                        <dx:EnumToObjectConverter DefaultValue="1">
+                                            <dx:EnumToObjectConverter.Values>
+                                                <dx:EnumObjectProvider x:Key="TouchOverlap" Value="2" />
+                                            </dx:EnumToObjectConverter.Values>
+                                        </dx:EnumToObjectConverter>
+                                    </Binding.Converter>
+                                </Binding>
+                            </Grid.ColumnSpan>
+                            <dxg:FocusRectPresenter.IsVerticalScrollHost>True</dxg:FocusRectPresenter.IsVerticalScrollHost>
+                            <ScrollContentPresenter.Content>
+                                <dxg:CardDataPresenter Background="#FFFFFFFF" dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}" cs:Name="CardDataPresenter_0001" />
+                            </ScrollContentPresenter.Content>
+                        </ScrollContentPresenter>
+                        <Grid Grid.Row="1" Visibility="{TemplateBinding ScrollViewer.ComputedHorizontalScrollBarVisibility}">
+                            <Grid.ColumnSpan>
+                                <MultiBinding>
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="(dx:ScrollBarExtensions.ScrollBarMode)" RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="(dx:ScrollBarExtensions.ScrollViewerOrientation)" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    </MultiBinding.Bindings>
+                                    <MultiBinding.Converter>
+                                        <dxg:HorizontalScrollBarColumnSpanConverter />
+                                    </MultiBinding.Converter>
+                                </MultiBinding>
+                            </Grid.ColumnSpan>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ScrollBar Name="PART_HorizontalScrollBar" Cursor="Arrow" Orientation="Horizontal" Grid.Column="0" Value="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" Maximum="{Binding ScrollableWidth, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" ViewportSize="{Binding ViewportWidth, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" Visibility="{Binding ComputedHorizontalScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" dxgn:ScrollBarAttachedBehavior.UpdateThumbOrientation="{Binding Path=(dxg:GridControl.CurrentView).ScrollMode, RelativeSource={RelativeSource TemplatedParent}, Converter={dxgn:ScrollModeToBoolConverter Orientation=Horizontal}}">
+                                <dxg:GridViewHitInfoBase.HitTestAcceptor>
+                                    <dxght:HorizontalScrollBarTableViewHitTestAcceptor />
+                                </dxg:GridViewHitInfoBase.HitTestAcceptor>
+                            </ScrollBar>
+                            <Border x:Name="PART_HorizontalScrollCorner" Width="17" Height="17" Grid.Column="1" Style="{DynamicResource {dxgt:ScrollBarThemeKey ResourceKey=ScrollingCornerStyle}}">
+                                <Border.Visibility>
+                                    <MultiBinding>
+                                        <MultiBinding.Bindings>
+                                            <Binding Path="(dx:ScrollBarExtensions.ScrollBarMode)" RelativeSource="{RelativeSource TemplatedParent}" />
+                                            <Binding Path="(ScrollViewer.ComputedVerticalScrollBarVisibility)" RelativeSource="{RelativeSource TemplatedParent}" />
+                                        </MultiBinding.Bindings>
+                                        <MultiBinding.Converter>
+                                            <dxg:ScrollCornerCardViewConverter />
+                                        </MultiBinding.Converter>
+                                    </MultiBinding>
+                                </Border.Visibility>
+                            </Border>
+                        </Grid>
+                        <ScrollBar Name="PART_VerticalScrollBar" Grid.Column="1" Cursor="Arrow" Value="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" Maximum="{Binding ScrollableHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" ViewportSize="{Binding ViewportHeight, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" Visibility="{Binding ComputedVerticalScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}" dxgn:ScrollBarAttachedBehavior.UpdateThumbOrientation="{Binding Path=(dxg:GridControl.CurrentView).ScrollMode, RelativeSource={RelativeSource TemplatedParent}, Converter={dxgn:ScrollModeToBoolConverter Orientation=Vertical}}">
+                            <dxg:GridViewHitInfoBase.HitTestAcceptor>
+                                <dxght:VerticalScrollBarTableViewHitTestAcceptor />
+                            </dxg:GridViewHitInfoBase.HitTestAcceptor>
+                            <Grid.RowSpan>
+                                <MultiBinding>
+                                    <MultiBinding.Bindings>
+                                        <Binding Path="(dx:ScrollBarExtensions.ScrollBarMode)" RelativeSource="{RelativeSource Self}" />
+                                        <Binding Path="(dx:ScrollBarExtensions.ScrollViewerOrientation)" RelativeSource="{RelativeSource TemplatedParent}" />
+                                    </MultiBinding.Bindings>
+                                    <MultiBinding.Converter>
+                                        <dxg:VerticalScrollBarRowSpanCardViewConverter />
+                                    </MultiBinding.Converter>
+                                </MultiBinding>
+                            </Grid.RowSpan>
+                        </ScrollBar>
+                    </Grid>
+                </Border>
+            </Grid>
+            <dx:DXExpander dx:DragManager.DropTargetFactory="{x:Static dx:EmptyDropTarget.Instance}" Grid.ColumnSpan="2" Grid.RowSpan="7" HorizontalAlignment="Right" VerticalAlignment="Top" Name="headerItemsContainer" AnimationProgress="0" HorizontalExpand="None" VerticalExpand="FromTopToBottom" StretchChild="True" MaxHeight="{Binding Path=(dx:OrderPanelBase.Panel).ActualHeight, ElementName=headerItemsControl, Converter={dx:AddDoubleValueConverter}, ConverterParameter=39}" dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}">
+                <dxg:GridControl.CurrentViewChangedListener>
+                    <dxg:HeadersPanelInitializer />
+                </dxg:GridControl.CurrentViewChangedListener>
+                <dxg:GridViewHitInfoBase.HitTestAcceptor>
+                    <dxght:ColumnHeaderPanelTableViewHitTestAcceptor />
+                </dxg:GridViewHitInfoBase.HitTestAcceptor>
+                <Border>
+                    <Grid x:Name="Grid2" Margin="0,25,0,0">
+                        <Grid x:Name="Window" Margin="0,0,3,3" HorizontalAlignment="Right">
+                            <Border Background="#FFD6D6D6" cs:Name="Border_0007">
+                                <Border x:Name="border" Background="#FFFFFFFF" Margin="1" Padding="3" cs:Name="Border_0008">
+                                    <dx:DXExpander Name="headerItemsContainer1" Margin="1" MinWidth="20" VerticalAlignment="Top" HorizontalAlignment="Center" AnimationProgress="0" HorizontalExpand="FromLeftToRight" VerticalExpand="None">
+                                        <ItemsControl x:Name="headerItemsControl" Style="{DynamicResource {dxgt:CardViewThemeKey ResourceKey=HeaderItemsControlStyle}}" MinWidth="200" />
+                                    </dx:DXExpander>
+                                </Border>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </dx:DXExpander>
+            <ToggleButton Name="ShowHeadersButton" HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Column="1" Margin="0,3,3,0" IsChecked="{Binding RelativeSource={RelativeSource TemplatedParent}, Converter={dxg:IsDesignTimeConverter}, Mode=OneTime}" Template="{DynamicResource {dxgt:CardViewThemeKey ResourceKey=ShowHeadersButtonTemplate}}" Visibility="{Binding Path=(dxg:GridControl.CurrentView).ShowColumnHeaders, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid.RowSpan>
+                    <MultiBinding>
+                        <MultiBinding.Bindings>
+                            <Binding Path="(dxg:GridControl.CurrentView).ShowGroupPanel" RelativeSource="{RelativeSource TemplatedParent}" />
+                            <Binding Path="(dxg:GridControl.CurrentView).ActualShowSearchPanel" RelativeSource="{RelativeSource TemplatedParent}" />
+                        </MultiBinding.Bindings>
+                        <MultiBinding.Converter>
+                            <dxg:CardViewTopContrlsIsVisibileToRowSpanCoverter />
+                        </MultiBinding.Converter>
+                    </MultiBinding>
+                </Grid.RowSpan>
+                <dxg:GridViewHitInfoBase.HitTestAcceptor>
+                    <dxght:ColumnPanelShowButtonCardViewHitTestAcceptor />
+                </dxg:GridViewHitInfoBase.HitTestAcceptor>
+            </ToggleButton>
+            <dxg:FixedTotalSummaryContainerControl Grid.Row="4" Grid.ColumnSpan="2" Visibility="{Binding Path=(dxg:GridControl.CurrentView).ShowFixedTotalSummary, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanToVisibilityConverter}}" DataContext="{Binding Path=(dxg:GridControl.CurrentView).HeadersData, RelativeSource={RelativeSource TemplatedParent}}" dxb:BarManager.DXContextMenu="{Binding Path=(dxg:GridControl.CurrentView).DataControlMenu, RelativeSource={RelativeSource TemplatedParent}}" dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}" dxg:GridPopupMenu.GridMenuType="FixedTotalSummary"></dxg:FixedTotalSummaryContainerControl>
+            <dxg:FilterPanelControl Grid.Row="5" Grid.ColumnSpan="2" x:Name="PART_FilterPanel" DataContext="{Binding Path=(dxg:GridControl.ActiveView), RelativeSource={RelativeSource Self}}" Visibility="{Binding Path=ActualShowFilterPanel, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <dxg:FocusRectPresenter x:Name="PART_FocusRectPresenter" Grid.RowSpan="7" Grid.ColumnSpan="2" View="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Left" VerticalAlignment="Top" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True" SourceName="ShowHeadersButton">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard SpeedRatio="5">
+                            <DoubleAnimation Storyboard.TargetName="headerItemsContainer" Storyboard.TargetProperty="AnimationProgress" Duration="0:0:1" To="1" />
+                            <DoubleAnimation Storyboard.TargetName="headerItemsContainer1" Storyboard.TargetProperty="AnimationProgress" Duration="0:0:1" To="1" BeginTime="0:0:1" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard SpeedRatio="5">
+                            <DoubleAnimation Storyboard.TargetName="headerItemsContainer1" Storyboard.TargetProperty="AnimationProgress" Duration="0:0:1" To="0" />
+                            <DoubleAnimation Storyboard.TargetName="headerItemsContainer" Storyboard.TargetProperty="AnimationProgress" Duration="0:0:1" To="0" BeginTime="0:0:1" />
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
+            </Trigger>
+            <DataTrigger Binding="{Binding Path=ShowGroupPanel, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                <Setter TargetName="PART_GroupPanel" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ShowColumnHeaders, RelativeSource={RelativeSource TemplatedParent}}" Value="False">
+                <Setter TargetName="headerItemsContainer" Property="Visibility" Value="Collapsed" />
+                <Setter TargetName="borderFrame" Property="BorderThickness" Value="0,0,0,0" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ShowGroupPanel, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                <Setter TargetName="borderFrame" Property="BorderThickness" Value="0,0,0,0" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ActualShowSearchPanel, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                <Setter TargetName="borderFrame" Property="BorderThickness" Value="0,1,0,0" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=ShowTotalSummary, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                <Setter TargetName="footerItemsControl" Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Grid.IsGrouped, RelativeSource={RelativeSource TemplatedParent}}" Value="True">
+                <Setter TargetName="GroupPanelDragText" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+            <Trigger SourceName="headerItemsContainer" Property="Opacity" Value="0">
+                <Setter TargetName="headerItemsContainer" Property="Visibility" Value="Collapsed" />
+            </Trigger>
+            <Trigger Property="dx:ThemeManager.IsTouchEnabled" Value="True">
+                <Setter Property="Margin" TargetName="Grid1" Value="12" />
+                <Setter Property="Margin" TargetName="Grid2" Value="0,46,0,0" />
+                <Setter Property="Padding" TargetName="border" Value="12" />
+                <Setter TargetName="headerItemsContainer" Property="MaxHeight" Value="{Binding Path=(dx:OrderPanelBase.Panel).ActualHeight, ElementName=headerItemsControl, Converter={dx:AddDoubleValueConverter}, ConverterParameter=77}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
 </ResourceDictionary>

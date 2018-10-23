@@ -524,7 +524,8 @@
                                                             <RowDefinition Height="*" />
                                                             <RowDefinition Height="Auto" />
                                                         </Grid.RowDefinitions>
-                                                        <ctrls:WmsIcon Height="24"
+                                                        <ctrls:WmsIcon Width="24"
+                                                                       Height="24"
                                                                        HorizontalAlignment="Left"
                                                                        VerticalAlignment="Top"
                                                                        ColorizeBrush="{DynamicResource CommonSecondaryMedium}"

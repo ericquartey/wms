@@ -27,11 +27,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                             Resources.MasterData.ItemAll,
                             () => itemsProvider.GetAll(),
                             () => itemsProvider.GetAllCount()),
+
                         new DataSource<Item>(
                             "ItemsViewClassA",
                             Resources.MasterData.ItemClassA,
                             () => itemsProvider.GetWithAClass(),
                             () => itemsProvider.GetWithAClassCount()),
+
                         new DataSource<Item>(
                             "ItemsViewFIFO",
                             Resources.MasterData.ItemFIFO,
@@ -94,7 +96,19 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "MachinesViewAll",
                             Resources.Machines.MachineAll,
                             () => machineProvider.GetAll(),
-                            () => machineProvider.GetAllCount())
+                            () => machineProvider.GetAllCount()),
+
+                          new DataSource<Machine>(
+                            "MachinesViewVertimagXS",
+                            Resources.Machines.MachineVertimagXS,
+                            () => machineProvider.GetAllVertimagModelXS(),
+                            () => machineProvider.GetAllVertimagModelXSCount()),
+
+                          new DataSource<Machine>(
+                            "MachinesViewVertimagM",
+                            Resources.Machines.MachineVertimagM,
+                            () => machineProvider.GetAllVertimagModelM(),
+                            () => machineProvider.GetAllVertimagModelMCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case MasterData.LOADINGUNITS:

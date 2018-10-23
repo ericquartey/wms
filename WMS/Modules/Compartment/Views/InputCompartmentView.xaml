@@ -7,7 +7,7 @@
              d:DesignHeight="1080"
              d:DesignWidth="1920"
              mc:Ignorable="d">
-    <Grid DataContext="{Binding CompartmentInput}">
+    <Grid DataContext="{Binding CompartmentSelected}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"
                               MinWidth="100" />
@@ -108,7 +108,7 @@
                 Grid.Column="5"
                 Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.CreateNewCompartmentCommand}"
                 Content="Create"
-                Visibility="Visible" />
+                Visibility="Hidden" />
 
     </Grid>
 </UserControl>

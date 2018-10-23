@@ -20,6 +20,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private ItemDetails item;
         private bool itemHasCompartments;
         private object modelSelectionChangedSubscription;
+        private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedCompartment;
 
@@ -82,6 +83,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
 
+        public ICommand RevertCommand => this.revertCommand ??
+                  (this.revertCommand = new DelegateCommand(this.LoadData));
+
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
@@ -101,17 +105,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            if (this.Data is int modelId)
-            {
-                this.LoadData(modelId);
-            }
-
+            this.LoadData();
             base.OnAppear();
         }
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<Item, int>>(this.modelSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<Item>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (modifiedRowCount > 0)
             {
-                this.EventService.Invoke(new ModelChangedEvent<ItemDetails, int>(this.Item.Id));
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
@@ -129,26 +129,31 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Item, int>>(
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Item>>(
                 eventArgs =>
                 {
-                    if (eventArgs.ModelIdHasValue)
+                    if (eventArgs.ModelId.HasValue)
                     {
-                        this.LoadData(eventArgs.ModelId);
+                        this.Data = eventArgs.ModelId.Value;
+                        this.LoadData();
                     }
                     else
                     {
                         this.Item = null;
                     }
                 },
+                this.Token,
+                true,
                 true);
         }
 
-        private void LoadData(int modelId)
+        private void LoadData()
         {
-            this.Item = this.itemProvider.GetById(modelId);
-
-            this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
+            if (this.Data is int modelId)
+            {
+                this.Item = this.itemProvider.GetById(modelId);
+                this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
+            }
         }
 
         #endregion Methods

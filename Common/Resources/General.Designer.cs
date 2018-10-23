@@ -221,5 +221,14 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("UserLogin", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag X.
+        /// </summary>
+        public static string VertimagX {
+            get {
+                return ResourceManager.GetString("VertimagX", resourceCulture);
+            }
+        }
     }
 }

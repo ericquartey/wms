@@ -232,7 +232,7 @@
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\WmsTrayControl\Utils\EventUI.cs" />
     <Compile Include="Controls\WmsTrayControl\Utils\GraphicUtils.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsCanvasItemsControl.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsCanvasListBoxControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
