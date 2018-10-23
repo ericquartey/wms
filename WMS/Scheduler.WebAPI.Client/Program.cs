@@ -41,6 +41,8 @@ namespace Ferretto.WMS.Scheduler.Client
             await wakeupHubClient2.ConnectAsync();
             Console.WriteLine("Client 2 - Connection to SignalR server established.");
 
+            wakeupHubClient2.NotifyServer();
+
             // Call GetAll again, so that the Wakeup message is sent through SignalR
             //
             Console.WriteLine("Client 1 - Retrieving mahcines ...");

@@ -51,6 +51,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             await this.connection.StartAsync();
         }
 
+        public void NotifyServer()
+        {
+            this.connection.InvokeAsync("Notify");
+        }
+
         #endregion Methods
 
         /*   public async Task SendMessageAsync(string userName, string message)

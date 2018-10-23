@@ -14,13 +14,18 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
 
         #region Methods
 
+        public async Task Notify()
+        {
+            await this.Clients.All.WakeUp("server", "notification from client received");
+        }
+
         public override Task OnConnectedAsync()
         {
             this.connectionIdsPerWarehouseArea.Add(this.Context.ConnectionId);
             return base.OnConnectedAsync();
         }
 
-        public async Task WakeUp(string user, string message)
+        public async Task WakeUpAll(string user, string message)
         {
             await this.Clients.All.WakeUp(user, message);
         }
