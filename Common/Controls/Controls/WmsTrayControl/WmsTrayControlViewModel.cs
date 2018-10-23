@@ -26,6 +26,21 @@ namespace Ferretto.Common.Controls
 
         #endregion Fields
 
+        //private Position position;
+
+        //public Position position
+        //{
+        //    get { return position; }
+        //    set { position = value; }
+        //}
+        //private Dimension dimension;
+
+        //public Dimension Dimension
+        //{
+        //    get { return dimension; }
+        //    set { dimension = value; }
+        //}
+
         #region Constructors
 
         public WmsTrayControlViewModel()
@@ -165,8 +180,8 @@ namespace Ferretto.Common.Controls
             this.Top = 0;
             this.Left = 0;
 
-            loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
-            loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
+            //loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
+            //loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
             this.TransformDataInput();
             this.NotifyPropertyChanged(nameof(this.Items));
         }

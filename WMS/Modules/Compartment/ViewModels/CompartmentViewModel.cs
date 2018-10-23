@@ -50,10 +50,10 @@ namespace Ferretto.WMS.Modules.Compartment
 
         protected override void OnAppear()
         {
-            this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
+            this.loadingUnitDetails = new LoadingUnitDetails();// { Width = 1960, Length = 500 };
             this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
             this.loadingUnitDetails.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
-            this.RaisePropertyChanged(nameof(this.LoadingUnit));
+            //this.RaisePropertyChanged(nameof(this.LoadingUnit));
             this.RaisePropertyChanged(nameof(this.LoadingUnit.Compartments));
 
             this.TestInitializeInput();

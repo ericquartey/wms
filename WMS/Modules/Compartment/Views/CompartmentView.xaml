@@ -20,10 +20,13 @@
                             Grid.Row="1"
                             Margin="0,0,0,0"
                             Compartments="{Binding LoadingUnit.Compartments, Mode=OneWay}"
-                            LoadingUnit="{Binding LoadingUnit, Mode=OneWay}"
+                            HeightTray="500"
+                            OriginX="0"
+                            OriginY="500"
                             SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
-                            ShowBackground="False" />
-
+                            ShowBackground="False"
+                            WidthTray="1900" />
+        <!--  LoadingUnit="{Binding LoadingUnit, Mode=OneWay}"  -->
         <compartment:ListCompartmentsView Grid.Row="2" />
 
     </Grid>
