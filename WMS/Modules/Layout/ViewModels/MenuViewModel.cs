@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Modules.Layout
             }
 
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            navigationService.Appear(nameof(MasterData), MasterData.ITEMS);
+            navigationService.Appear(nameof(Machines), Machines.MACHINES);
         }
 
         #endregion Methods

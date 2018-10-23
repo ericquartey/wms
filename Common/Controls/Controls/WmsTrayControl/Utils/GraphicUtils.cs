@@ -20,6 +20,64 @@ namespace Ferretto.Common.Controls
             return value;
         }
 
+        public static Position ConvertWithStandardOrigin(Position compartmentOrigin, Position trayOrigin, Dimension trayDimension, Dimension compartmentDimension)
+        {
+            //case: Origin X=0, Y=0
+            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == 0) { }
+            //case: Origin X=0, Y=Height
+            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == trayDimension.Height)
+            {
+                compartmentOrigin.YPosition = trayOrigin.YPosition - compartmentOrigin.YPosition - compartmentDimension.Height;
+            }
+            //case: Origin X=Width, Y=0
+            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == 0)
+            {
+                compartmentOrigin.XPosition = trayDimension.Width - compartmentOrigin.XPosition - compartmentDimension.Width;
+            }
+            //case: Origin X=Width, Y=Height
+            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == trayDimension.Height)
+            {
+                compartmentOrigin.XPosition = trayDimension.Width - compartmentOrigin.XPosition - compartmentDimension.Width;
+                compartmentOrigin.YPosition = trayOrigin.YPosition - compartmentOrigin.YPosition - compartmentDimension.Height;
+            }
+            return compartmentOrigin;
+        }
+
+        public static double ConvertWithStandardOriginSingleValue(double value, PositionType positionType, Position trayOrigin, Dimension trayDimension, Dimension compartmentDimension)
+        {
+            //case: Origin X=0, Y=0
+            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == 0) { }
+            //case: Origin X=0, Y=Height
+            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == trayDimension.Height)
+            {
+                if (positionType == PositionType.Y)
+                {
+                    value = trayOrigin.YPosition - value - compartmentDimension.Height;
+                }
+            }
+            //case: Origin X=Width, Y=0
+            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == 0)
+            {
+                if (positionType == PositionType.X)
+                {
+                    value = trayDimension.Width - value - compartmentDimension.Width;
+                }
+            }
+            //case: Origin X=Width, Y=Height
+            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == trayDimension.Height)
+            {
+                if (positionType == PositionType.X)
+                {
+                    value = trayDimension.Width - value - compartmentDimension.Width;
+                }
+                if (positionType == PositionType.Y)
+                {
+                    value = trayOrigin.YPosition - value - compartmentDimension.Height;
+                }
+            }
+            return value;
+        }
+
         #endregion Methods
     }
 }

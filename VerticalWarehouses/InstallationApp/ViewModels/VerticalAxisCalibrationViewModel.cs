@@ -69,11 +69,10 @@ namespace Ferretto.VW.InstallationApp.ViewModels
 
         private void CheckInputsCorrectness()
         {
-            int _lowerBound, _offset, _resolution, _upperBound;
-            if (int.TryParse(this.LowerBound, out _lowerBound) &&
-                int.TryParse(this.Offset, out _offset) &&
-                int.TryParse(this.Resolution, out _resolution) &&
-                int.TryParse(this.UpperBound, out _upperBound))
+            if (int.TryParse(this.LowerBound, out var _lowerBound) &&
+                int.TryParse(this.Offset, out var _offset) &&
+                int.TryParse(this.Resolution, out var _resolution) &&
+                int.TryParse(this.UpperBound, out var _upperBound))
             {//TODO: DEFINE AND INSERT VALIDATION LOGIC IN HERE. THESE PROPOSITIONS ARE TEMPORARY
                 if (_lowerBound > 0 && _lowerBound < _upperBound && _upperBound > 0 && _resolution > 0 && _offset > 0)
                 {

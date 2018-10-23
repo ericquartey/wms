@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
@@ -9,7 +10,7 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private readonly List<CompartmentDetails> compartments = new List<CompartmentDetails>();
+        private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
         private int length;
         private int width;
 
@@ -29,7 +30,9 @@ namespace Ferretto.Common.BusinessModels
         public string AbcClassId { get; set; }
 
         public int AisleId { get; set; }
+
         public int AreaId { get; set; }
+
         public IEnumerable<Enumeration> CellChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
@@ -39,6 +42,7 @@ namespace Ferretto.Common.BusinessModels
         public string CellPairing { get; set; }
 
         public IEnumerable<EnumerationString> CellPairingChoices { get; set; }
+
         public IEnumerable<Enumeration> CellPositionChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
@@ -47,7 +51,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public IEnumerable<CompartmentDetails> Compartments => this.compartments.AsReadOnly();
+        public BindingList<CompartmentDetails> Compartments => this.compartments;
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
@@ -93,6 +97,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitNotes), ResourceType = typeof(BusinessObjects))]
         public string Note { get; set; }
 
+        public Position OriginTray { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitOtherCycleCount), ResourceType = typeof(BusinessObjects))]
         public int OtherCycleCount { get; set; }
 
@@ -123,7 +129,6 @@ namespace Ferretto.Common.BusinessModels
             if (this.CanAddCompartment(compartmentDetails))
             {
                 this.compartments.Add(compartmentDetails);
-                this.OnAddedCompartmentEvent(null);
             }
             else
             {
@@ -162,15 +167,6 @@ namespace Ferretto.Common.BusinessModels
                 }
             }
             return true;
-        }
-
-        public void OnAddedCompartmentEvent(EventArgs e)
-        {
-            var handler = this.AddedCompartmentEvent;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
         }
 
         /// <summary>

@@ -20,13 +20,21 @@ namespace Ferretto.Common.Controls
         {
             base.MeasureOverride(constraint);
 
-            var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
-
-            if (parentWmsTrayControl != null)
+            if (constraint.Width == double.PositiveInfinity || constraint.Height == double.PositiveInfinity)
             {
-                if (this.DataContext is WmsTrayControlViewModel viewModel && constraint.Width > 0 && constraint.Height > 0)
+                constraint.Width = 0;
+                constraint.Height = 0;
+            }
+            else
+            {
+                var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
+
+                if (parentWmsTrayControl != null)
                 {
-                    viewModel.Resize(constraint.Width, constraint.Height);
+                    if (this.DataContext is WmsTrayControlViewModel viewModel && constraint.Width > 0 && constraint.Height > 0)
+                    {
+                        viewModel.Resize(constraint.Width, constraint.Height);
+                    }
                 }
             }
 

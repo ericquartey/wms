@@ -141,9 +141,6 @@
   <data name="SpecifiedPathNotInConfiguredImageFolder" xml:space="preserve">
     <value>Il percorso indicato non è contenuto nella directory delle immagini.</value>
   </data>
-  <data name="MarkupNameOfSyntax" xml:space="preserve">
-    <value>La sintassi per NameOf è Type={x:Type &lt;className&gt;}.</value>
-  </data>
   <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
     <value>Errore recuperando il document group dal Main Layout Manager.</value>
   </data>

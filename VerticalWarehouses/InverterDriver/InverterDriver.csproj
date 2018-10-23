@@ -50,12 +50,11 @@
   <ItemGroup>
     <Compile Include="Source\Events.cs" />
     <Compile Include="Source\IEvents.cs" />
-    <Compile Include="Source\Commands.cs" />
     <Compile Include="Source\IDriver.cs" />
     <Compile Include="Source\InverterDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\ParameterID.cs" />
     <Compile Include="Source\Request.cs" />
-    <Compile Include="Source\RequestList.cs" />
     <Compile Include="Source\Support.cs" />
     <Compile Include="Source\Telegram.cs" />
   </ItemGroup>

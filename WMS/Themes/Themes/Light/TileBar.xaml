@@ -42,6 +42,8 @@
                             </Grid.ColumnDefinitions>
 
                             <wms:WmsIcon x:Name="TileImage"
+                                         Width="50"
+                                         Height="50"
                                          Margin="0,5"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top"

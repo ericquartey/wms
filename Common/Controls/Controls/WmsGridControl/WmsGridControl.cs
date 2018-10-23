@@ -1,20 +1,29 @@
 using System;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
+using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsGridControl : DevExpress.Xpf.Grid.GridControl
+    public class WmsGridControl : GridControl
 
     {
         #region Fields
 
+        public static readonly DependencyProperty RefreshCommandProperty = DependencyProperty.Register(
+            nameof(RefreshCommandProperty),
+            typeof(ICommand),
+            typeof(WmsGridControl),
+            new FrameworkPropertyMetadata(null));
+
         private Type itemType;
+        private IEntityListViewModel wmsViewModel;
 
         #endregion Fields
 
@@ -40,6 +49,12 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public ICommand RefreshCommand
+        {
+            get => (ICommand)this.GetValue(RefreshCommandProperty);
+            set => this.SetValue(RefreshCommandProperty, value);
+        }
+
         #endregion Properties
 
         #region Methods
@@ -48,33 +63,11 @@ namespace Ferretto.Common.Controls
         {
             base.OnInitialized(e);
 
-            this.DisableColumnFiltering();
-
-            this.UpdateFilterTiles();
-
             this.DataContext = this.InstantiateViewModel();
 
             this.SetToken();
 
             this.SetupBindings();
-        }
-
-        private async void AsyncOperationCompletedAsync(Object sender, RoutedEventArgs e)
-        {
-            var wmsView = (LayoutTreeHelper.GetVisualParents(this)
-                    .OfType<INavigableView>()
-                    .FirstOrDefault());
-
-            if (wmsView?.DataContext is IEntityListViewModel viewModel)
-            {
-                await viewModel.UpdateFilterTilesCountsAsync().ConfigureAwait(true);
-                this.AsyncOperationCompleted -= this.AsyncOperationCompletedAsync;
-            }
-        }
-
-        private void DisableColumnFiltering()
-        {
-            this.View.AllowColumnFiltering = false;
         }
 
         private object InstantiateViewModel()
@@ -84,10 +77,25 @@ namespace Ferretto.Common.Controls
                 throw new InvalidOperationException("WmsGridControl ItemType is missing.");
             }
 
-            var viewModelClass = typeof(WmsGridViewModel<,>);
-            var idType = ((TypeInfo)this.itemType.GetInterface(typeof(IBusinessObject).FullName)).DeclaredProperties.First();
-            var constructedClass = viewModelClass.MakeGenericType(this.ItemType, idType.PropertyType);
+            var constructedClass = typeof(WmsGridViewModel<>).MakeGenericType(this.ItemType);
             return Activator.CreateInstance(constructedClass);
+        }
+
+        private void SetCmdRefreshBinding()
+        {
+            var myBinding = new Binding()
+            {
+                Source = this.DataContext,
+                Path = new PropertyPath(nameof(Ferretto.Common.Controls.WmsGridViewModel<IBusinessObject>.CmdRefresh)),
+                Mode = BindingMode.OneWayToSource,
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged
+            };
+            BindingOperations.SetBinding(this, WmsGridControl.RefreshCommandProperty, myBinding);
+
+            if (this.RefreshCommand == null)
+            {
+                this.RefreshCommand = new DelegateCommand(() => this.wmsViewModel.RefreshData());
+            }
         }
 
         private void SetToken()
@@ -105,20 +113,19 @@ namespace Ferretto.Common.Controls
             this.SetBinding(SelectedItemProperty, selectedItemBinding);
         }
 
-        private void UpdateFilterTiles()
-        {
-            this.AsyncOperationCompleted += this.AsyncOperationCompletedAsync;
-        }
-
         private void WmsGridControl_Loaded(Object sender, RoutedEventArgs e)
         {
             var wmsViews = LayoutTreeHelper.GetVisualParents(this.Parent).OfType<WmsView>();
             if (wmsViews != null && wmsViews.Any())
             {
                 var wmsView = wmsViews.First();
-                var wmsViewViewModel = ((INavigableView)wmsView).DataContext;
-                var token = ((INavigableViewModel)wmsViewViewModel).Token;
-                ((INavigableViewModel)this.DataContext).Token = token;
+                var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
+                this.wmsViewModel = wmsViewViewModel as IEntityListViewModel;
+                var token = wmsViewViewModel.Token;
+                var gridControlViewModel = (INavigableViewModel)this.DataContext;
+                gridControlViewModel.Token = token;
+                gridControlViewModel.Appear();
+                this.SetCmdRefreshBinding();
             }
         }
 

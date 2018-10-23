@@ -1,16 +1,52 @@
+-- clean all tables
+EXEC sp_MSforeachtable 'ALTER TABLE ? DISABLE TRIGGER ALL'
+EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
+
+DECLARE @tablename nvarchar(max)
+
+DECLARE cur CURSOR FOR
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_NAME NOT IN ('__EFMigrationsHistory')
+OPEN cur
+
+FETCH cur into @tablename
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	EXEC('DELETE FROM ' + @tablename)
+
+	IF EXISTS (Select * from sys.identity_columns where object_name(object_id) = @tablename)
+	BEGIN
+		EXEC('DBCC CHECKIDENT (''' + @tablename + ''', RESEED, 0) WITH NO_INFOMSGS')
+	END
+
+    FETCH cur into @tablename
+END
+
+CLOSE cur
+DEALLOCATE cur
+
+EXEC sp_MSforeachtable 'ALTER TABLE ? ENABLE TRIGGER ALL'
+EXEC sp_MSforeachtable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
+
+
 BEGIN TRANSACTION;
+
+DECLARE @vertimag_area int;
+SET @vertimag_area = 2;
 
 -- Areas / Aisles
 SET IDENTITY_INSERT Areas ON;
 INSERT INTO Areas (Id, Name) VALUES (1, 'Traslo Area');
-INSERT INTO Areas (Id, Name) VALUES (2, 'Vertimag Area');
+INSERT INTO Areas (Id, Name) VALUES (@vertimag_area, 'Vertimag Area');
 SET IDENTITY_INSERT Areas OFF;
 
 SET IDENTITY_INSERT Aisles ON;
 INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (1, 'Aisle 1', 1, 5, 10);
 INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (2, 'Aisle 2', 1, 5, 10);
 INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (3, 'Aisle 3', 1, 5, 10);
-INSERT INTO Aisles (Id, Name, AreaId) VALUES (4, 'Vertimag 1', 2);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (4, 'Vertimag 1', @vertimag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (5, 'Vertimag 2', @vertimag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (6, 'Vertimag 3', @vertimag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (7, 'Vertimag 4', @vertimag_area);
 SET IDENTITY_INSERT Aisles OFF;
 
 
@@ -51,12 +87,12 @@ INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, 1);
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, 1);
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, 1);
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, 1);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, 2);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (2, 2);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, 2);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, 2);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, 2);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, 2);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (2, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, @vertimag_area);
 
 
 -- Cells
@@ -619,8 +655,10 @@ INSERT INTO MachineTypes (Id, Description) VALUES ('L', 'LGV');
 INSERT INTO MachineTypes (Id, Description) VALUES ('V', 'Vertimag');
 
 SET IDENTITY_INSERT Machines ON;
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber) VALUES (1, 1, 'T', 'Traslo 1', '1234567890');
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber) VALUES (2, 4, 'V', 'Vertimag 1', 'ABCDEFGHIJK');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (1, 4, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'MachineVertimagM', 'VMAG/ver-2019/variant-M');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (2, 5, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'MachineVertimagXS', 'VMAG/ver-2018/variant-XS');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (3, 6, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'MachineVertimagM', 'VMAG/ver-2018/variant-M');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (4, 7, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-XS');
 SET IDENTITY_INSERT Machines OFF;
 
 

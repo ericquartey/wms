@@ -9,6 +9,7 @@
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              Title="{x:Static res:Navigation.Cells}"
              MinHeight="300"
              d:DesignHeight="450"
@@ -82,26 +83,36 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
+                                    FieldName="AreaName" />
+                    <dxg:GridColumn Width="100*"
+                                    FieldName="AisleName" />
+                    <dxg:GridColumn Width="50*"
                                     FieldName="Number" />
-                    <dxg:GridColumn Width="400*"
-                                    FieldName="Status" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="50*"
                                     FieldName="Floor" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="50*"
                                     FieldName="Column" />
                     <dxg:GridColumn Width="50*"
                                     FieldName="Side" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="50*"
+                                    FieldName="AbcClassDescription" />
+                    <dxg:GridColumn Width="50*"
+                                    FieldName="Status" />
+                    <dxg:GridColumn Width="300*"
                                     FieldName="Type" />
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="50*"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="XCoordinate" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="YCoordinate" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="ZCoordinate" />
+                                    FieldName="LoadingUnitsCount" />
+                    <dxg:GridColumn Width="100*"
+                                    FieldName="LoadingUnitsDescription" />
                 </wms:WmsGridControl.Columns>
+
+                <wms:WmsGridControl.SortInfo>
+                    <dxg:GridSortInfo FieldName="AreaName" SortOrder="Ascending" />
+                    <dxg:GridSortInfo FieldName="AisleName" SortOrder="Ascending" />
+                    <dxg:GridSortInfo FieldName="Number" SortOrder="Ascending" />
+                </wms:WmsGridControl.SortInfo>
 
             </wms:WmsGridControl>
         </Grid>

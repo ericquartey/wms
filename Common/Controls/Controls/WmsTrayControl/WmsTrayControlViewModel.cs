@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using DevExpress.Mvvm.UI;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
@@ -14,12 +16,12 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private ObservableCollection<WmsBaseCompartment> items;
+
         private int left;
         private SolidColorBrush penBrush;
         private int penThickness;
         private int top;
-        private double trayHeight;
-        private double trayWidth;
+        private Tray tray;
 
         #endregion Fields
 
@@ -39,6 +41,8 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public CompartmentDetails CompartmentDetailsProperty { get; set; }
+
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -50,8 +54,6 @@ namespace Ferretto.Common.Controls
                 this.NotifyPropertyChanged(nameof(this.Left));
             }
         }
-
-        public LoadingUnitDetails LoadingUnitProperty { get; set; }
 
         public SolidColorBrush PenBrush
         {
@@ -83,23 +85,25 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public double TrayHeight
+        /// <summary>
+        /// Property Tray
+        /// If Origin is not explicit initialized, Set default : Botton - Left
+        /// </summary>
+        public Tray Tray
         {
-            get => this.trayHeight;
+            get { return this.tray; }
             set
             {
-                this.trayHeight = value;
-                this.NotifyPropertyChanged(nameof(this.TrayHeight));
-            }
-        }
-
-        public double TrayWidth
-        {
-            get => this.trayWidth;
-            set
-            {
-                this.trayWidth = value;
-                this.NotifyPropertyChanged(nameof(this.TrayWidth));
+                this.tray = value;
+                if (this.tray.Origin == null)
+                {
+                    this.tray.Origin = new Position
+                    {
+                        XPosition = 0,
+                        YPosition = this.tray.Dimension.Height
+                    };
+                }
+                this.NotifyPropertyChanged(nameof(this.Tray));
             }
         }
 
@@ -113,26 +117,52 @@ namespace Ferretto.Common.Controls
             {
                 foreach (var i in this.items)
                 {
-                    i.Width = GraphicUtils.ConvertMillimetersToPixel(i.OriginWidth, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Height = GraphicUtils.ConvertMillimetersToPixel(i.OriginHeight, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Top = GraphicUtils.ConvertMillimetersToPixel(i.OriginTop, widthTrayPixel, this.LoadingUnitProperty.Width);
-                    i.Left = GraphicUtils.ConvertMillimetersToPixel(i.OriginLeft, widthTrayPixel, this.LoadingUnitProperty.Width);
+                    i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.Tray.Dimension.Width);
+                    i.Height = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Height, widthTrayPixel, this.Tray.Dimension.Width);
+                    Dimension compartmentDimension = new Dimension() { Width = (int)i.CompartmentDetails.Width, Height = (int)i.CompartmentDetails.Height };
+                    Position compartmentOrigin = new Position { XPosition = (int)i.CompartmentDetails.XPosition, YPosition = (int)i.CompartmentDetails.YPosition };
+
+                    Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOrigin(compartmentOrigin, this.Tray.Origin, this.Tray.Dimension, compartmentDimension);
+                    i.Top = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.YPosition, widthTrayPixel, this.Tray.Dimension.Width);
+                    i.Left = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.XPosition, widthTrayPixel, this.Tray.Dimension.Width);
                 }
             }
         }
 
-        public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
+        public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments, float ratio = 1)
         {
+            if (this.Tray != null)
+            {
+                foreach (var compartment in compartments)
+                {
+                    this.items.Add(new WmsCompartmentViewModel
+                    {
+                        Tray = this.Tray,
+                        CompartmentDetails = compartment,
+
+                        Width = (int)(compartment.Width * ratio),
+                        Height = (int)(compartment.Height * ratio),
+                        Left = (int)(compartment.XPosition * ratio),
+                        Top = (int)(compartment.YPosition * ratio),
+                        ColorFill = Colors.Aquamarine.ToString(),
+                        Selected = Colors.RoyalBlue.ToString(),
+                        IsSelected = true
+                    });
+                }
+            }
+        }
+
+        public void UpdateInputForm(CompartmentDetails compartment)
+        {
+            this.CompartmentDetailsProperty = compartment;
+            this.NotifyPropertyChanged(nameof(this.CompartmentDetailsProperty));
+        }
+
+        public void UpdateTray(Tray tray)
+        {
+            this.Tray = tray;
             this.items = new ObservableCollection<WmsBaseCompartment>();
-            this.LoadingUnitProperty = loadingUnitDetails;
 
-            this.TrayHeight = this.LoadingUnitProperty.Length;
-            this.TrayWidth = this.LoadingUnitProperty.Width;
-            this.Top = 0;
-            this.Left = 0;
-
-            loadingUnitDetails.AddedCompartmentEvent -= this.LoadingUnitDetails_AddedCompartmentEvent;
-            loadingUnitDetails.AddedCompartmentEvent += this.LoadingUnitDetails_AddedCompartmentEvent;
             this.TransformDataInput();
             this.NotifyPropertyChanged(nameof(this.Items));
         }
@@ -154,21 +184,21 @@ namespace Ferretto.Common.Controls
 
         private void TransformDataInput(float ratio = 1)
         {
-            foreach (var compartment in this.LoadingUnitProperty.Compartments)
+            foreach (var compartment in this.Tray.Compartments)
             {
                 this.items.Add(new WmsCompartmentViewModel
                 {
-                    Tray = new Tray { WidthMm = this.LoadingUnitProperty.Width, HeightMm = this.LoadingUnitProperty.Length },
-                    OriginHeight = (int)compartment.Height,
-                    OriginWidth = (int)compartment.Width,
-                    OriginLeft = (int)compartment.XPosition,
-                    OriginTop = (int)compartment.YPosition,
+                    Tray = this.Tray,
+                    CompartmentDetails = compartment,
+
                     Width = (int)(compartment.Width * ratio),
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
                     ColorFill = Colors.Aquamarine.ToString(),
-                    Selected = Colors.RoyalBlue.ToString()
+                    Selected = Colors.RoyalBlue.ToString(),
+                    RectangleBorderThickness = 1,
+                    IsSelected = true
                 });
             }
         }
