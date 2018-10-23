@@ -60,7 +60,7 @@ namespace Ferretto.VW.ActionBlocks.ActionsBasic
             }
 
             // Call the SelectMovement function of the inverter driver
-            this.driver.SetTypeOfMotorMovement(0xF1);
+            //this.driver.SetTypeOfMotorMovement(0xF1);
         }
 
         public void Terminate()
