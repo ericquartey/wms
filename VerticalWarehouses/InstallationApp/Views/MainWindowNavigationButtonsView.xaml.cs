@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for LowSpeedMovementsTestView.xaml
+    /// Interaction logic for MainWindowNavigationButtonsView.xaml
     /// </summary>
-    public partial class LowSpeedMovementsTestView : UserControl
+    public partial class MainWindowNavigationButtonsView : UserControl
     {
-        public LowSpeedMovementsTestView()
+        public MainWindowNavigationButtonsView()
         {
             InitializeComponent();
         }

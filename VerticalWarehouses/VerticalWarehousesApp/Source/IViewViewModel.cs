@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ferretto.VW.Utils.Source
+namespace Ferretto.VW.VerticalWarehousesApp.Source
 {
     public interface IViewViewModel
     {
-
-
     }
 }
