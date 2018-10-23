@@ -144,25 +144,11 @@ namespace Ferretto.Common.Controls
                 checkersDrawingGroup.Children.Add(checkers);
                 DrawingBrush.Drawing = checkersDrawingGroup;
 
-                if (this.CanvasListBoxControl.Canvas != null)
-                {
-                    this.CanvasListBoxControl.Canvas.Background = DrawingBrush;
-                }
-                else
-                {
-                    this.CanvasListBoxControl.BackgroundCanvas = DrawingBrush;
-                }
+                this.CanvasListBoxControl.BackgroundCanvas = DrawingBrush;
             }
             else
             {
-                if (this.CanvasListBoxControl.Canvas != null)
-                {
-                    this.CanvasListBoxControl.Canvas.Background = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
-                }
-                else
-                {
-                    this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
-                }
+                this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
             }
         }
 

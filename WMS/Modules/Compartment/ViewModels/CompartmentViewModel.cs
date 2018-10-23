@@ -25,7 +25,6 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public CompartmentViewModel()
         {
-            this.ShowBackground = false;
         }
 
         #endregion Constructors
@@ -47,12 +46,8 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public bool ShowBackground
         {
-            get { return this.showBackground; }
-            set
-            {
-                this.showBackground = value;
-                this.RaisePropertyChanged(nameof(this.ShowBackground));
-            }
+            get => this.showBackground;
+            set => this.SetProperty(ref this.showBackground, value);
         }
 
         public Tray Tray { get => this.tray; set => this.SetProperty(ref this.tray, value); }
@@ -65,8 +60,7 @@ namespace Ferretto.WMS.Modules.Compartment
         {
             //Initialize without Origin, default: BOTTOM-LEFT
             this.tray = new Tray { Dimension = new Dimension { Height = 500, Width = 1960 } };
-            //Initialize with Origin
-            //this.tray = new Tray { Dimension = new Dimension { Height = 500, Width = 1960 }, Origin = new Position { XPosition = 0, YPosition = 0 } };
+
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3 });

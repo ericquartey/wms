@@ -20,6 +20,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private Brush backgroundCanvas;
         private WmsTrayCanvas canvas;
         private Tray tray;
 
@@ -35,7 +36,22 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public Brush BackgroundCanvas { get; set; }
+        public Brush BackgroundCanvas
+        {
+            get
+            {
+                return this.backgroundCanvas;
+            }
+            set
+            {
+                this.backgroundCanvas = value;
+                if (this.canvas != null)
+                {
+                    this.canvas.Background = this.backgroundCanvas;
+                }
+            }
+        }
+
         public WmsTrayCanvas Canvas { get { return this.canvas; } private set { } }
         public WmsTrayControl TrayControl { get; set; }
 
