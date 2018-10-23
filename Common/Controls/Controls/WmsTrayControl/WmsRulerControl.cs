@@ -146,33 +146,7 @@ namespace Ferretto.Common.Controls
                             new Point(this.LittleMarkLength, i * this.MajorInterval + ((this.MajorInterval * j) / 10)),
                             new Point(0, i * this.MajorInterval + ((this.MajorInterval * j) / 10)));
                     }
-                    //drawingContext.DrawLine(
-                    //    new Pen(new SolidColorBrush(Colors.Black), 2),
-                    //    new Point(this.MarkLength, i * this.MajorInterval),
-                    //    new Point(0, i * this.MajorInterval)
-                    //    );
-                    //drawingContext.DrawLine(
-                    //    new Pen(new SolidColorBrush(Colors.Black), 1),
-                    //    new Point(this.MarkLength, i * (this.MajorInterval)),
-                    //    new Point(0, i * this.MajorInterval)
-                    //    );
-                    //drawingContext.DrawLine(
-                    //    new Pen(new SolidColorBrush(Colors.Black), 1),
-                    //    new Point(this.MiddleMarkLength, i * (this.MajorInterval + (this.MajorInterval / 2))),
-                    //    new Point(0, i * (this.MajorInterval + (this.MajorInterval / 2)))
-                    //    );
-                    //for (int j = 1; j < 10; j++)
-                    //{
-                    //    if (j == 5)
-                    //    {
-                    //        continue;
-                    //    }
-                    //    drawingContext.DrawLine(
-                    //        new Pen(new SolidColorBrush(Colors.Black), 1),
-                    //        new Point(this.LittleMarkLength, i * (this.MajorInterval + (this.MajorInterval * j / 10))),
-                    //        new Point(0, i * (this.MajorInterval + (this.MajorInterval * j / 10)))
-                    //        );
-                    //}
+
                     psuedoStartValue++;
                 }
             }

@@ -31,7 +31,8 @@
                 <wms:WmsRulerControl x:Name="horizontalRuler"
                                      Width="1000"
                                      Height="20"
-                                     Orientation="Horizontal" />
+                                     Orientation="Horizontal"
+                                     />
                 <wms:WmsRulerControl x:Name="verticalRuler"
                                      Width="20"
                                      Height="900"
