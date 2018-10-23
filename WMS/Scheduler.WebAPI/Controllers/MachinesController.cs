@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 {
@@ -8,6 +11,21 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
     [ApiController]
     public class MachinesController : ControllerBase
     {
+        #region Fields
+
+        private readonly IHubContext<WakeupHub> wakeupHub;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public MachinesController(IHubContext<WakeupHub> wakeupHub)
+        {
+            this.wakeupHub = wakeupHub;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         // DELETE api/values/5
@@ -18,8 +36,10 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<Machine>> Get()
+        public async Task<ActionResult<IEnumerable<Machine>>> Get()
         {
+            await this.wakeupHub.Clients.All.SendAsync("WakeUp", "asalomone", "someone called the getAll method");
+
             return new Machine[]
             {
                 new Machine

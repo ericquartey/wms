@@ -7,9 +7,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
     {
         #region Methods
 
-        public async Task SendMessage(string user, string message)
+        public async Task WakeUp(string user, string message)
         {
-            await this.Clients.All.SendAsync("ReceiveMessage", user, message);
+            await this.Clients.All.SendAsync("WakeUp", user, message);
         }
 
         #endregion Methods
