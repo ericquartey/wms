@@ -112,26 +112,39 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                psuedoStartValue = 0//;StartValue;
-                for (int i = 0; i < this.ActualHeight / (this.MajorInterval; i++)
+                psuedoStartValue = 0;//;StartValue;
+                for (int i = 0; i < this.ActualHeight / this.MajorInterval; i++)
                 {
-                    var ft = new FormattedText((psuedoStartValue *
-                        this.MajorInterval.ToString(), System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
-                    drawingContext.DrawText(ft, new Point(0, i * (this.MajorInterval));
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Violet), 1), new Point((this.MarkLength, i * (this.MajorInterval), new Point(0, i * (this.MajorInterval));
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Red), 1), new Point((this.MarkLength, i * (this.MajorInterval), new Point(0, i * (this.MajorInterval));
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Green), 1),
-                        new Point((this.MiddleMarkLength, i * (this.MajorInterval + ((this.MajorInterval / 2)),
-                        new Point(0, i * (this.MajorInterval + ((this.MajorInterval / 2)));
+                    var ft = new FormattedText(
+                        (psuedoStartValue * this.MajorInterval).ToString(),//.ToString(),
+                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), 10, Brushes.Black);
+                    drawingContext.DrawText(ft, new Point(0, i * this.MajorInterval));
+                    drawingContext.DrawLine(
+                        new Pen(new SolidColorBrush(Colors.Violet), 1),
+                        new Point(this.MarkLength, i * this.MajorInterval),
+                        new Point(0, i * this.MajorInterval)
+                        );
+                    drawingContext.DrawLine(
+                        new Pen(new SolidColorBrush(Colors.Red), 1),
+                        new Point(this.MarkLength, i * (this.MajorInterval)),
+                        new Point(0, i * this.MajorInterval)
+                        );
+                    drawingContext.DrawLine(
+                        new Pen(new SolidColorBrush(Colors.Green), 1),
+                        new Point(this.MiddleMarkLength, i * (this.MajorInterval + (this.MajorInterval / 2))),
+                        new Point(0, i * (this.MajorInterval + (this.MajorInterval / 2)))
+                        );
                     for (int j = 1; j < 10; j++)
                     {
                         if (j == 5)
                         {
                             continue;
                         }
-                        drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Blue), 1),
-                        new Point((this.LittleMarkLength, i * (this.MajorInterval + (this.MajorInterval * j / 10),
-                        new Point(0, i * (this.MajorInterval + (this.MajorInterval * j / 10));
+                        drawingContext.DrawLine(
+                            new Pen(new SolidColorBrush(Colors.Blue), 1),
+                            new Point(this.LittleMarkLength, i * (this.MajorInterval + (this.MajorInterval * j / 10))),
+                            new Point(0, i * (this.MajorInterval + (this.MajorInterval * j / 10)))
+                            );
                     }
                     psuedoStartValue++;
                 }
