@@ -51,7 +51,7 @@ namespace Ferretto.VW.VWApp
                 {
                     case "Installer":
                         ((App)Application.Current).MainWindow.Hide();
-                        ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
+                        //((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
                         ((App)Application.Current).InstallationMainWindowInstance.Show();
                         break;
 

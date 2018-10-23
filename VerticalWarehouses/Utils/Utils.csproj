@@ -48,7 +48,15 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\CellsManagement.cs" />
+    <Compile Include="Source\CellsManagement\Bay.cs" />
+    <Compile Include="Source\CellsManagement\Cell.cs" />
+    <Compile Include="Source\CellsManagement\CellBlock.cs" />
+    <Compile Include="Source\CellsManagement\CellManagementMethods.cs" />
+    <Compile Include="Source\CellsManagement\CellsManager.cs" />
+    <Compile Include="Source\CellsManagement\Drawer.cs" />
+    <Compile Include="Source\CellsManagement\Enums.cs" />
+    <Compile Include="Source\Configuration\General_Info.cs" />
+    <Compile Include="Source\Configuration\Installation_Info.cs" />
     <Compile Include="Source\ConverterPixelToCm.cs" />
     <Compile Include="Source\IViewViewModel.cs" />
     <Compile Include="Source\Utils.cs" />

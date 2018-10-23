@@ -19,7 +19,7 @@ namespace Ferretto.VW.InstallationApp
         {
             NavigationService.BackToVWAppEventHandler += this.CloseThisMainWindow;
             this.InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
+            //this.DataContext = new MainWindowViewModel();
         }
 
         #endregion Constructors

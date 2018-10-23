@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp
 {
-    internal class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase
     {
         #region Fields
 

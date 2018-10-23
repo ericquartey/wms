@@ -4,27 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.Views"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
              mc:Ignorable="d">
-    <DockPanel>
-        <Label HorizontalAlignment="Center"
-               Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
-               DockPanel.Dock="Top"
-               Style="{StaticResource StandardTitleTextStyle}" />
-        <TabControl DockPanel.Dock="Bottom">
-            <TabItem Header="{x:Static res:InstallationApp.LSMTVerticalEngineButton}"
-                     Style="{StaticResource StandardBodyTextStyle}">
-                <Frame IsEnabled="True"
-                       Source="LSMTVerticalEngineView.xaml" />
-            </TabItem>
-            <TabItem Header="{x:Static res:InstallationApp.LSMTHorizontalEngineButton}"
-                     Style="{StaticResource StandardBodyTextStyle}">
-                <Frame Source="LSMTHorizontalEngineView.xaml" />
-            </TabItem>
-            <TabItem Header="{x:Static res:InstallationApp.LSMTGateEngineButton}"
-                     Style="{StaticResource StandardBodyTextStyle}">
-                <Frame Source="LSMTGateEngineView.xaml" />
-            </TabItem>
-        </TabControl>
-    </DockPanel>
+    <Grid />
 </UserControl>
