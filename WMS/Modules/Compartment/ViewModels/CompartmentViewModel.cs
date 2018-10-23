@@ -1,4 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
 using DevExpress.Mvvm;
 using Ferretto.Common.BusinessModels;
@@ -10,7 +13,7 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
-        private CompartmentDetails compartmentInput;
+        private CompartmentDetails compartmentSelected;
         private ICommand createNewCompartmentCommand;
         private LoadingUnitDetails loadingUnitDetails;
 
@@ -20,27 +23,19 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public CompartmentViewModel()
         {
-            this.compartmentInput = new CompartmentDetails();
-            this.compartmentInput.Width = 150;
-            this.compartmentInput.Height = 150;
-            this.compartmentInput.XPosition = 0;
-            this.compartmentInput.YPosition = 0;
-            this.compartmentInput.Stock = 0;
-            this.compartmentInput.ItemCode = "Item";
-            this.CompartmentInput = this.compartmentInput;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public CompartmentDetails CompartmentInput
+        public CompartmentDetails CompartmentSelected
         {
-            get => this.compartmentInput;
+            get => this.compartmentSelected;
             set
             {
-                this.compartmentInput = value;
-                this.RaisePropertyChanged(nameof(this.compartmentInput));
+                this.compartmentSelected = value;
+                this.RaisePropertyChanged(nameof(this.CompartmentSelected));
             }
         }
 
@@ -53,25 +48,30 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Methods
 
-        public void UpdateTray(LoadingUnitDetails loadingUnitDetails)
-        {
-            this.LoadingUnit = loadingUnitDetails;
-        }
-
         protected override void OnAppear()
         {
-            this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500 };
+            this.loadingUnitDetails = new LoadingUnitDetails { Width = 1960, Length = 500, OriginTray = new Position { XPosition = 0, YPosition = 500 } };
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3 });
+            this.loadingUnitDetails.AddCompartment(new CompartmentDetails { Width = 200, Height = 200, XPosition = 1760, YPosition = 300, Code = "4", Id = 4 });
             this.RaisePropertyChanged(nameof(this.LoadingUnit));
+            this.RaisePropertyChanged(nameof(this.LoadingUnit.Compartments));
+        }
+
+        private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
+        {
+            this.CompartmentSelected = (CompartmentDetails)sender;
         }
 
         private void ExecuteNewCreateCompartmentCommand()
         {
             var compartmentDetails = new CompartmentDetails
             {
-                Width = this.CompartmentInput.Width,
-                Height = this.CompartmentInput.Height,
-                XPosition = this.CompartmentInput.XPosition,
-                YPosition = this.CompartmentInput.YPosition
+                Width = this.CompartmentSelected.Width,
+                Height = this.CompartmentSelected.Height,
+                XPosition = this.CompartmentSelected.XPosition,
+                YPosition = this.CompartmentSelected.YPosition
             };
             this.LoadingUnit.AddCompartment(compartmentDetails);
         }

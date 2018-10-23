@@ -127,11 +127,11 @@ namespace Ferretto.Common.Controls
             }).ConfigureAwait(true);
         }
 
-        protected override void OnAppear()
+        protected override async void OnAppear()
         {
             base.OnAppear();
 
-            this.UpdateFilterTilesCountsAsync();
+            await this.UpdateFilterTilesCountsAsync();
         }
 
         #endregion Methods
