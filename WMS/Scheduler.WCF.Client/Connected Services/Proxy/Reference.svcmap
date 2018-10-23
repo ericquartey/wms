@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="7a15d1e4-2185-4295-9336-537e55721924" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d4a1a469-aaa8-4a58-9950-7f621527269c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,16 +19,16 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8000/Design_Time_Addresses/CalculatorService/" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:8000/Design_Time_Addresses/MachineService/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="item.wsdl" MetadataType="Wsdl" ID="3e55284f-9167-432d-b5a6-0730b86cb63c" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/CalculatorService/?wsdl=wsdl0" />
-    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="687c9783-0a67-46c8-ab42-ccb4c1800a77" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/CalculatorService/?xsd=xsd1" />
-    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="5426ec46-0f2a-4bb9-ad7b-f6ac5bd46849" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/CalculatorService/?xsd=xsd2" />
-    <MetadataFile FileName="item21.xsd" MetadataType="Schema" ID="2f995a45-df23-475c-99f1-c8cd3db2da69" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/CalculatorService/?xsd=xsd3" />
-    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="9877499a-57cc-499d-be0d-8ad18890993e" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/CalculatorService/?disco" />
-    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="85d0390e-f5c2-4c9d-8a37-2b2eb0d71b04" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/CalculatorService/?xsd=xsd0" />
-    <MetadataFile FileName="CalculatorService.wsdl" MetadataType="Wsdl" ID="a93f393f-fb32-46ff-863e-88149430215d" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/CalculatorService/?wsdl" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="24a7eb70-442b-4eea-a404-877a9b07b138" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/MachineService/?xsd=xsd2" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="e57e4c0a-5da1-4d7b-8fb5-42a1236ccda2" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/MachineService/?xsd=xsd1" />
+    <MetadataFile FileName="MachineService.wsdl" MetadataType="Wsdl" ID="53126843-4697-45e2-9487-cad0fa11214c" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/MachineService/?wsdl" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="77e35500-3704-4bd3-8ae1-75d812119c72" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/MachineService/?xsd=xsd3" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="243ce39e-9162-4220-a3a4-4b7b3dd7c07c" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/MachineService/?disco" />
+    <MetadataFile FileName="item.wsdl" MetadataType="Wsdl" ID="36954e4a-baf2-4ce5-b5a4-471ea8ad8a28" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/MachineService/?wsdl=wsdl0" />
+    <MetadataFile FileName="item3.xsd" MetadataType="Schema" ID="9c29fa37-e027-42b0-bf1c-948669ac5a94" SourceId="1" SourceUrl="http://localhost:8000/Design_Time_Addresses/MachineService/?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

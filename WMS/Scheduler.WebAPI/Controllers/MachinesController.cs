@@ -31,7 +31,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 MachineTypeDescription = "Vertimag",
                 LastPowerOn = System.DateTime.Now.Subtract(System.TimeSpan.FromMinutes(15)),
                 Model = "2018/XS"
-            },
+            }
         };
 
         private readonly IHubContext<WakeupHub, IWakeupHub> wakeupHubContext;

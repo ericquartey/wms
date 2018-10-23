@@ -7,8 +7,8 @@ namespace Ferretto.WMS.Scheduler.WCF
     [ServiceContract(
         Namespace = "http://www.ferrettogroup.com/wms/",
         SessionMode = SessionMode.Required,
-        CallbackContract = typeof(ICalculatorCallback))]
-    public interface ICalculator
+        CallbackContract = typeof(IMachineCallback))]
+    public interface IMachine
     {
         #region Methods
 
@@ -20,13 +20,5 @@ namespace Ferretto.WMS.Scheduler.WCF
 
 
         #endregion Methods
-    }
-
-    public interface ICalculatorCallback
-    {
-        [OperationContract(IsOneWay = true)]
-        void Equals(double result);
-        [OperationContract(IsOneWay = true)]
-        void Equation(string eqn);
     }
 }

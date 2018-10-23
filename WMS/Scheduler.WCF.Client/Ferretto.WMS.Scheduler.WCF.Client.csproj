@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MachineCallbackHandler.cs" />
     <Compile Include="Connected Services\Proxy\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -55,7 +56,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Connected Services\Proxy\CalculatorService.wsdl" />
     <None Include="Connected Services\Proxy\Ferretto.WMS.Scheduler.WCF.Client.Proxy.Machine.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -69,9 +69,10 @@
     <None Include="Connected Services\Proxy\item2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\Proxy\item21.xsd">
+    <None Include="Connected Services\Proxy\item3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\Proxy\MachineService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

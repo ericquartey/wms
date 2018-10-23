@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Scheduler.WCF
         {
             try
             {
-                using (var serviceHost = new ServiceHost(typeof(CalculatorService)))
+                using (var serviceHost = new ServiceHost(typeof(MachineService)))
                 {
                     serviceHost.Open();
 

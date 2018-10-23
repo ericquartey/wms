@@ -588,47 +588,55 @@ namespace Ferretto.WMS.Scheduler.WCF.Client.Proxy {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://www.ferrettogroup.com/wms/", ConfigurationName="Proxy.ICalculator")]
-    public interface ICalculator {
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://www.ferrettogroup.com/wms/", ConfigurationName="Proxy.IMachine", CallbackContract=typeof(Ferretto.WMS.Scheduler.WCF.Client.Proxy.IMachineCallback), SessionMode=System.ServiceModel.SessionMode.Required)]
+    public interface IMachine {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/ICalculator/CompleteMission", ReplyAction="http://www.ferrettogroup.com/wms/ICalculator/CompleteMissionResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/IMachine/CompleteMission", ReplyAction="http://www.ferrettogroup.com/wms/IMachine/CompleteMissionResponse")]
         double CompleteMission(double n1, double n2);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/ICalculator/CompleteMission", ReplyAction="http://www.ferrettogroup.com/wms/ICalculator/CompleteMissionResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/IMachine/CompleteMission", ReplyAction="http://www.ferrettogroup.com/wms/IMachine/CompleteMissionResponse")]
         System.Threading.Tasks.Task<double> CompleteMissionAsync(double n1, double n2);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/ICalculator/GetAll", ReplyAction="http://www.ferrettogroup.com/wms/ICalculator/GetAllResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/IMachine/GetAll", ReplyAction="http://www.ferrettogroup.com/wms/IMachine/GetAllResponse")]
         Ferretto.WMS.Scheduler.WCF.Client.Proxy.Machine[] GetAll();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/ICalculator/GetAll", ReplyAction="http://www.ferrettogroup.com/wms/ICalculator/GetAllResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://www.ferrettogroup.com/wms/IMachine/GetAll", ReplyAction="http://www.ferrettogroup.com/wms/IMachine/GetAllResponse")]
         System.Threading.Tasks.Task<Ferretto.WMS.Scheduler.WCF.Client.Proxy.Machine[]> GetAllAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface ICalculatorChannel : Ferretto.WMS.Scheduler.WCF.Client.Proxy.ICalculator, System.ServiceModel.IClientChannel {
+    public interface IMachineCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://www.ferrettogroup.com/wms/IMachine/WakeUpClients")]
+        void WakeUpClients(string eqn);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IMachineChannel : Ferretto.WMS.Scheduler.WCF.Client.Proxy.IMachine, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class CalculatorClient : System.ServiceModel.ClientBase<Ferretto.WMS.Scheduler.WCF.Client.Proxy.ICalculator>, Ferretto.WMS.Scheduler.WCF.Client.Proxy.ICalculator {
+    public partial class MachineClient : System.ServiceModel.DuplexClientBase<Ferretto.WMS.Scheduler.WCF.Client.Proxy.IMachine>, Ferretto.WMS.Scheduler.WCF.Client.Proxy.IMachine {
         
-        public CalculatorClient() {
+        public MachineClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public CalculatorClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public MachineClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public CalculatorClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public MachineClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public CalculatorClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public MachineClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public CalculatorClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public MachineClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
         public double CompleteMission(double n1, double n2) {

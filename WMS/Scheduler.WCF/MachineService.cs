@@ -6,7 +6,7 @@ using Ferretto.Common.BusinessModels;
 namespace Ferretto.WMS.Scheduler.WCF
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerSession)]
-    public class CalculatorService : ICalculator
+    public class MachineService : IMachine
     {
         private readonly Machine[] machines = new Machine[]
        {
@@ -28,13 +28,7 @@ namespace Ferretto.WMS.Scheduler.WCF
             },
        };
 
-        ICalculatorCallback Callback
-        {
-            get
-            {
-                return OperationContext.Current.GetCallbackChannel<ICalculatorCallback>();
-            }
-        }
+        private IMachineCallback Callback => OperationContext.Current.GetCallbackChannel<IMachineCallback>();
         #region Methods
 
         public double CompleteMission(double n1, double n2)
@@ -48,9 +42,10 @@ namespace Ferretto.WMS.Scheduler.WCF
 
         public IEnumerable<Machine> GetAll()
         {
+            this.Callback.WakeUpClients("Wake up!!");
             return this.machines;
         }
-    
+
 
         #endregion Methods
     }
