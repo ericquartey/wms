@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ErrorLogin" xml:space="preserve">
-    <value>Error: Failed Login. Check inputs' correctness or complete installation procedure first.</value>
+    <value>Error: Failed Login. Check inputs' correctness.</value>
     <comment>Title - PopUp message</comment>
   </data>
   <data name="Ok" xml:space="preserve">

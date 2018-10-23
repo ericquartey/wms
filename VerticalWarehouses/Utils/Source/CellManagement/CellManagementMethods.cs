@@ -1,31 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Configuration;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 
-// File for cells' management. Data stored in CellsManager instance, methods stored in CellsManagementMethods
-// ATTENTION: MAKE SURE TO CHECK WHEN METHODS REQUIRE CELL ID OR CELL INDEX (WHERE CELL INDEX = CELL ID - 1)
-
-namespace Ferretto.VW.Utils.Source
+namespace Ferretto.VW.Utils.Source.CellManagement
 {
-    public enum Side
-    {
-        FrontEven,
-        BackOdd
-    }
-
-    public enum Status
-    {
-        Free,
-        Disabled,
-        Occupied,
-        Unusable
-    }
-
-    // ATTENTION: MAKE SURE TO CHECK WHEN METHODS REQUIRE CELL ID OR CELL INDEX (WHERE CELL INDEX = CELL ID - 1)
     public static class CellManagementMethods
     {
         #region Fields
@@ -56,12 +37,10 @@ namespace Ferretto.VW.Utils.Source
         {
             if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
             {
-                Debug.Print("CellManagementMethods::CreateBay Error: inserted cell not on same side of the machine.\n");
                 return false;
             }
             if (cm.BayCounter > 3)
             {
-                Debug.Print("CellManagementMethods::CreateBay Error: it's not possible to insert more than 3 bays.\n");
                 return false;
             }
             for (int id = firstCellID; id <= lastCellID; id += 2)
@@ -118,12 +97,10 @@ namespace Ferretto.VW.Utils.Source
         {
             if (cm.Bays[destinationBayID - 1].Occupied)
             {
-                Debug.Print("CellManagementMethods::ExtractDrawer Error: destination bay is already occupied. Destination Bay ID = " + destinationBayID + ".\n");
                 return false;
             }
             if (cm.Drawers.Find(x => x.Id == drawerID) == null)
             {
-                Debug.Print("CellManagementMethods::ExtractDrawer Error: did not found drawer with this ID: " + drawerID + ".\n");
                 return false;
             }
             cm.Bays[destinationBayID - 1].Occupied = true;
@@ -133,7 +110,6 @@ namespace Ferretto.VW.Utils.Source
             UpdateCellsFile(cm);
             CreateBlocks(cm);
             UpdateBlocksFile(cm);
-            Debug.Print("CellManagementMethods::ExtractDrawer output: Drawer with ID " + drawerID + " successfully extracted.\n");
             return true;
         }
 
@@ -174,7 +150,6 @@ namespace Ferretto.VW.Utils.Source
         {
             if (cm.Cells[cellID - 1].Status != Status.Free)
             {
-                Debug.Print("CellManagementMethods::InsertUnusableCell Error: selected Cell ID " + cellID + " is not free.\n");
                 return false;
             }
             ChangeCellStatus(cm, cellID - 1, Status.Unusable);
@@ -188,7 +163,6 @@ namespace Ferretto.VW.Utils.Source
         {
             if (cm.Bays.Count < bayID || !cm.Bays[bayID - 1].Occupied)
             {
-                Debug.Print("CellManagementMethods::ReInsertDrawer Error: selected bay ID " + bayID + " is not occupied or specified ID is not present.\n");
                 return false;
             }
             InsertNewDrawer(cm, cm.Bays[(int)bayID - 1].DrawerID, cm.Drawers[cm.Bays[bayID - 1].DrawerID - 1].HeightMillimiters);
@@ -247,7 +221,6 @@ namespace Ferretto.VW.Utils.Source
             }
             else
             {
-                Debug.Print("There are NO block with enough height to host this drawer.\n");
                 return -1;
             }
         }
@@ -286,216 +259,5 @@ namespace Ferretto.VW.Utils.Source
         }
 
         #endregion Methods
-    }
-
-    public class Bay
-    {
-        #region Fields
-
-        private int heightMillimiters;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public Bay(int newBayID, int newBayHeight, int newBayFirstCellID)
-        {
-            this.FirstCellID = newBayFirstCellID;
-            this.HeightMillimiters = newBayHeight;
-            this.Id = newBayID;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Int32 DrawerID { get; set; }
-        public Int32 FirstCellID { get; set; }
-
-        public Int32 HeightMillimiters
-        {
-            get => this.heightMillimiters;
-            set
-            {
-                if (value >= 0)
-                {
-                    this.heightMillimiters = value;
-                }
-                else
-                {
-                    this.heightMillimiters = 0;
-                    Debug.Print("BayConstructor:: input height is less than 0. Height set to 0.");
-                }
-            }
-        }
-
-        public Int32 Id { get; set; }
-        public Boolean Occupied { get; set; }
-
-        #endregion Properties
-    }
-
-    public class Cell
-    {
-        #region Constructors
-
-        public Cell(int id)
-        {
-            this.IdCell = id;
-            this.Priority = id;
-            if (id % 2 == 0) //if id is even
-            {
-                this.Coord = (id == 2) ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * (id / CellManagementMethods.AISLE_SIDES_COUNT);
-                this.Side = Side.FrontEven;
-            }
-            else //if id is odd
-            {
-                this.Coord = (id == 1) ? CellManagementMethods.CELL_HEIGHT_MILLIMETERS : CellManagementMethods.CELL_HEIGHT_MILLIMETERS * ((id / CellManagementMethods.AISLE_SIDES_COUNT) + 1);
-                this.Side = Side.BackOdd;
-            }
-            this.Status = Status.Free;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Int32 Coord { get; set; }
-        public Int32 IdCell { get; set; }
-        public Int32 Priority { get; set; }
-        public Side Side { get; set; }
-        public Status Status { get; set; }
-
-        #endregion Properties
-
-        // status code: 0 = free; 1 = disabled; 2 = occupied; 3 = unusable
-    }
-
-    public class CellBlock
-    {
-        #region Fields
-
-        private int blockHeightMillimiters;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public CellBlock(int firstCellID, int lastCellID, int blockID)
-        {
-            if ((firstCellID % 2 == 0 && lastCellID % 2 != 0) || (firstCellID % 2 != 0 && lastCellID % 2 == 0))
-            {
-                throw new ArgumentException("Cells' Management Exception: final cell not on the same side of initial cell.", "lastCell");
-            }
-            this.InitialIDCell = firstCellID;
-            this.FinalIDCell = lastCellID;
-            this.Priority = this.InitialIDCell;
-            this.BlockHeightMillimiters = ((lastCellID - firstCellID) / 2) * CellManagementMethods.CELL_HEIGHT_MILLIMETERS;
-            this.Side = (firstCellID % 2 == 0) ? Side.FrontEven : Side.BackOdd;
-            this.IdGroup = blockID;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Int32 Area { get; set; }
-
-        public Int32 BlockHeightMillimiters
-        {
-            get => this.blockHeightMillimiters;
-            set
-            {
-                if (value >= 0)
-                {
-                    this.blockHeightMillimiters = value;
-                }
-                else
-                {
-                    this.blockHeightMillimiters = 0;
-                    Debug.Print("CellBlockConstructor:: input height is less than 0. Height set to 0.");
-                }
-            }
-        }
-
-        public Int32 FinalIDCell { get; set; }
-        public Int32 IdGroup { get; set; }
-        public Int32 InitialIDCell { get; set; }
-        public Int32 Machine { get; set; }
-        public Int32 Priority { get; set; }
-        public Side Side { get; set; }
-
-        #endregion Properties
-    }
-
-    public class CellsManager
-    {
-        #region Constructors
-
-        public CellsManager()
-        {
-            this.Bays = new List<Bay>();
-            this.Blocks = new List<CellBlock>();
-            this.Cells = new List<Cell>();
-            this.Drawers = new List<Drawer>();
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Int32 BayCounter { get; set; }
-
-        public List<Bay> Bays { get; set; }
-        public List<CellBlock> Blocks { get; set; }
-        public List<Cell> Cells { get; set; }
-        public List<Drawer> Drawers { get; set; }
-
-        #endregion Properties
-    }
-
-    public class Drawer
-    {
-        #region Fields
-
-        private int heightMillimiters;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public Drawer(int newID, int newHeight, int newFirstCellID)
-        {
-            this.Id = newID;
-            this.HeightMillimiters = newHeight;
-            this.FirstCellID = newFirstCellID;
-        }
-
-        #endregion Constructors
-
-        #region Properties
-
-        public Int32 FirstCellID { get; set; }
-
-        public Int32 HeightMillimiters
-        {
-            get => this.heightMillimiters;
-            set
-            {
-                if (value >= 0)
-                {
-                    this.heightMillimiters = value;
-                }
-                else
-                {
-                    this.heightMillimiters = 0;
-                    Debug.Print("DrawerConstructor:: input height is less than 0. Height set to 0.");
-                }
-            }
-        }
-
-        public Int32 Id { get; set; }
-
-        #endregion Properties
     }
 }

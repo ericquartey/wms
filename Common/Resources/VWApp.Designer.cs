@@ -61,7 +61,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Failed Login. Check inputs&apos; correctness or complete installation procedure first..
+        ///   Looks up a localized string similar to Error: Failed Login. Check inputs&apos; correctness..
         /// </summary>
         public static string ErrorLogin {
             get {

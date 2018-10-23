@@ -1,8 +1,8 @@
-﻿using Ferretto.VW.Utils.Source;
+﻿using Ferretto.VW.VerticalWarehousesApp.Source;
 
 namespace Ferretto.VW.VerticalWarehousesApp.ViewModels
 {
-    class CompartmentationPageViewModel : IViewViewModel
+    internal class CompartmentationPageViewModel : IViewViewModel
     {
     }
 }
