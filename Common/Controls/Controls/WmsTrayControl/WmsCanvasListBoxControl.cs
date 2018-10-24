@@ -125,10 +125,17 @@ namespace Ferretto.Common.Controls
                 this.canvas.Width = widthNewCalculated;
 
                 var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
+
+                //Ruler Settings
                 if (parentWmsTrayControl != null)
                 {
                     parentWmsTrayControl.horizontalRuler.Width = widthNewCalculated + 2;
                     parentWmsTrayControl.verticalRuler.Height = heightNewCalculated + 2;
+                    var majorIntervalStep = parentWmsTrayControl.horizontalRuler.MAJORINTERVALSTEP;
+                    parentWmsTrayControl.horizontalRuler.MajorIntervalHorizontal =
+                        (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStep, parentWmsTrayControl.horizontalRuler.Width, this.tray.Dimension.Width);
+                    parentWmsTrayControl.verticalRuler.MajorIntervalVertical =
+                        (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStep, parentWmsTrayControl.verticalRuler.Height, this.tray.Dimension.Height);
                 }
 
                 this.canvas.Background = this.BackgroundCanvas;

@@ -7,7 +7,7 @@
              mc:Ignorable="d">
     <Grid>
         <ctrls:WmsRulerControl x:Name="horizontalRuler"
-                               Width="1000"
+                               Width="{Binding Tray.Dimension.Width}"
                                Height="20"
                                Margin="21,0,0,0"
                                HorizontalAlignment="Left"
