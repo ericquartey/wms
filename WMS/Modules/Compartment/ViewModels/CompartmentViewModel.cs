@@ -62,7 +62,8 @@ namespace Ferretto.WMS.Modules.Compartment
             this.tray = new Tray
             {
                 Dimension = new Dimension { Height = 550, Width = 1960 }
-                //,Origin = new Position { XPosition = 0, YPosition = 0 }
+                //,
+                //Origin = new Position { XPosition = 1960, YPosition = 0 }
             };
 
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
