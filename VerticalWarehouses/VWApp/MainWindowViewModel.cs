@@ -45,15 +45,14 @@ namespace Ferretto.VW.VWApp
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).MainWindow.Visibility = Visibility.Hidden;
-                        ((App)Application.Current).InstallationAppMainWindowInstance.Visibility = Visibility.Visible;
+                        ((App)Application.Current).InstallationAppMainWindowInstance = new InstallationApp.MainWindow();
+                        ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         break;
 
                     case "Operator":
 
                         ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
                         ((App)Application.Current).OperatorMainWindowInstance.Show();
-                        ((App)Application.Current).MainWindow.Hide();
                         break;
 
                     default:

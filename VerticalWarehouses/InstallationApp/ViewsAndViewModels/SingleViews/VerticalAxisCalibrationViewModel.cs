@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.InstallationApp.Views;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewModels
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
     internal class VerticalAxisCalibrationViewModel : BindableBase
     {

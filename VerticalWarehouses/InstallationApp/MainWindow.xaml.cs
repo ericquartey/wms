@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
 using Ferretto.VW.Navigation;
 using System.Windows.Input;
 
@@ -8,12 +6,16 @@ namespace Ferretto.VW.InstallationApp
 {
     public partial class MainWindow : Window
     {
-        //public MainWindow()
-        //{
-        //    this.InitializeComponent();
-        //    NavigationService.BackToVWAppEventHandler += this.CloseThisMainWindow;
-        //    this.DataContext = new MainWindowViewModel();
-        //}
+        #region Constructors
+
+        public MainWindow()
+        {
+            this.InitializeComponent();
+            NavigationService.BackToVWAppEventHandler += this.HideThisMainWindow;
+            this.DataContext = new MainWindowViewModel();
+        }
+
+        #endregion Constructors
 
         #region Methods
 
@@ -24,7 +26,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeNavigation()
         {
-            NavigationService.BackToVWAppEventHandler += this.CloseThisMainWindow;
+            NavigationService.BackToVWAppEventHandler += this.HideThisMainWindow;
         }
 
         private void BackToVWApp()
@@ -32,9 +34,9 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.RaiseBackToVWAppEvent();
         }
 
-        private void CloseThisMainWindow()
+        private void HideThisMainWindow()
         {
-            this.Close();
+            this.Hide();
         }
 
         #endregion Methods

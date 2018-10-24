@@ -12,17 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.Views
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
 {
     /// <summary>
-    /// Interaction logic for SensorsStateNavigationButtonsView.xaml
+    /// Interaction logic for MainWindowNavigationButtonsView.xaml
     /// </summary>
-    public partial class SensorsStateNavigationButtonsView : UserControl
+    public partial class MainWindowNavigationButtonsView : BaseView
     {
-        public SensorsStateNavigationButtonsView()
+        #region Constructors
+
+        public MainWindowNavigationButtonsView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion Constructors
     }
 }

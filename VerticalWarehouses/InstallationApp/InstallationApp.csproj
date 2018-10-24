@@ -63,33 +63,36 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
-    <Compile Include="ViewModels\SSProvaViewModel.cs" />
-    <Compile Include="ViewModels\SSVerticalAxisViewModel.cs" />
-    <Compile Include="ViewModels\VerticalAxisCalibrationViewModel.cs" />
-    <Compile Include="Views\LSMTGateEngineView.cs" />
-    <Compile Include="Views\LSMTHorizontalEngineView.cs" />
-    <Compile Include="Views\LSMTNavigationButtonsView.xaml.cs">
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml.cs">
+      <DependentUpon>LSMTGateEngineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTHorizontalEngineView.xaml.cs">
+      <DependentUpon>LSMTHorizontalEngineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTNavigationButtonsView.xaml.cs">
       <DependentUpon>LSMTNavigationButtonsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LSMTVerticalEngineView.cs" />
-    <Compile Include="Views\MainWindowNavigationButtonsView.xaml.cs">
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTVerticalEngineView.xaml.cs">
+      <DependentUpon>LSMTVerticalEngineView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SensorsStateNavigationButtonsView.xaml.cs">
-      <DependentUpon>SensorsStateNavigationButtonsView.xaml</DependentUpon>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml.cs">
+      <DependentUpon>SSNavigationButtonsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SSProvaView.xaml.cs">
+    <Compile Include="ViewsAndViewModels\SensorsState\SSProvaView.xaml.cs">
       <DependentUpon>SSProvaView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SSVerticalAxisView.xaml.cs">
+    <Compile Include="ViewsAndViewModels\SensorsState\SSProvaViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml.cs">
       <DependentUpon>SSVerticalAxisView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StandardUserControlView.xaml.cs">
-      <DependentUpon>StandardUserControlView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\VerticalAxisCalibrationView.xaml.cs">
+    <Compile Include="ViewsAndViewModels\SensorsState\SSVerticalAxisViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationView.xaml.cs">
       <DependentUpon>VerticalAxisCalibrationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -98,43 +101,39 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\LSMTGateEngineView.xaml">
+    <Page Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LSMTHorizontalEngineView.xaml">
+    <Page Include="ViewsAndViewModels\LowSpeedMovements\LSMTHorizontalEngineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LSMTNavigationButtonsView.xaml">
+    <Page Include="ViewsAndViewModels\LowSpeedMovements\LSMTNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LSMTVerticalEngineView.xaml">
+    <Page Include="ViewsAndViewModels\LowSpeedMovements\LSMTVerticalEngineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MainWindowNavigationButtonsView.xaml">
+    <Page Include="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SensorsStateNavigationButtonsView.xaml">
+    <Page Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SSProvaView.xaml">
+    <Page Include="ViewsAndViewModels\SensorsState\SSProvaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SSVerticalAxisView.xaml">
+    <Page Include="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\StandardUserControlView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\VerticalAxisCalibrationView.xaml">
+    <Page Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,5 +180,6 @@
       <Name>Utils</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

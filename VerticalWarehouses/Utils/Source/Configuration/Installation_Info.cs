@@ -1,13 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ferretto.VW.Utils.Source.Configuration
+﻿namespace Ferretto.VW.Utils.Source.Configuration
 {
-    internal class Installation_Info
+    public class Installation_Info
     {
+        #region Constructors
+
+        public Installation_Info()
+        {
+        }
+
+        public Installation_Info(int i = 0)
+        {
+            this.Belt_Burnishing = true;
+            this.Set_Y_Resolution = true;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public bool Belt_Burnishing { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Media;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewModels
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 {
     internal class SSProvaViewModel : BindableBase
     {

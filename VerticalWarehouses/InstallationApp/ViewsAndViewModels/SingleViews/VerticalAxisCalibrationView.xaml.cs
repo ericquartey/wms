@@ -12,21 +12,21 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.VW.InstallationApp.ViewModels;
+using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.Views
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
     /// <summary>
-    /// Interaction logic for SSProvaView.xaml
+    /// Interaction logic for VerticalAxisCalibrationView.xaml
     /// </summary>
-    public partial class SSProvaView : UserControl
+    public partial class VerticalAxisCalibrationView : BaseView
     {
         #region Constructors
 
-        public SSProvaView()
+        public VerticalAxisCalibrationView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSProvaViewModel();
+            this.DataContext = new VerticalAxisCalibrationViewModel();
         }
 
         #endregion Constructors

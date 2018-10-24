@@ -48,6 +48,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Source\BaseView.cs" />
     <Compile Include="Source\CellsManagement\Bay.cs" />
     <Compile Include="Source\CellsManagement\Cell.cs" />
     <Compile Include="Source\CellsManagement\CellBlock.cs" />

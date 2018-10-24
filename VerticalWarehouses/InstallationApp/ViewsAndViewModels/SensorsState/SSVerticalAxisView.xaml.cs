@@ -12,17 +12,23 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.Views
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 {
     /// <summary>
-    /// Interaction logic for StandardUserControlView.xaml
+    /// Interaction logic for SSVerticalAxisView.xaml
     /// </summary>
-    public partial class StandardUserControlView : UserControl
+    public partial class SSVerticalAxisView : BaseView
     {
-        public StandardUserControlView()
+        #region Constructors
+
+        public SSVerticalAxisView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.DataContext = new SSVerticalAxisViewModel();
         }
+
+        #endregion Constructors
     }
 }

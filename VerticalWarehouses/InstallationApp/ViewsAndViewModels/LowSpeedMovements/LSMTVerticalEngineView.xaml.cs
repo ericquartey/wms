@@ -12,17 +12,22 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.Views
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
 {
     /// <summary>
-    /// Interaction logic for LSMTNavigationButtonsView.xaml
+    /// Interaction logic for LSMTVerticalEngineView.xaml
     /// </summary>
-    public partial class LSMTNavigationButtonsView : UserControl
+    public partial class LSMTVerticalEngineView : BaseView
     {
-        public LSMTNavigationButtonsView()
+        #region Constructors
+
+        public LSMTVerticalEngineView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
+
+        #endregion Constructors
     }
 }
