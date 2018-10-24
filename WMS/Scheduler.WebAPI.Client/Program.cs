@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.WMS.Scheduler.WebAPI;
 
@@ -12,8 +11,10 @@ namespace Ferretto.WMS.Scheduler.Client
         private const string serverUrl = "http://localhost:5000/";
         private const string wakeupHubPath = "wakeup-hub";
 
-        #endregion Fields
         private static DateTime checkPointHubStart;
+
+        #endregion Fields
+
         #region Methods
 
         private static async Task Main(string[] args)
@@ -21,13 +22,11 @@ namespace Ferretto.WMS.Scheduler.Client
             Console.WriteLine("Press <Enter> to start execution.");
             Console.ReadLine();
 
-            
             // Create two clients
             //
             var machinesClient1 = new MachinesClient(serverUrl);
             var machinesClient2 = new MachinesClient(serverUrl);
 
-            
             Console.WriteLine("Client 1 - Retrieving mahcines ...");
             var checkpoint1 = DateTime.Now;
             var machines = await machinesClient1.GetAllAsync();

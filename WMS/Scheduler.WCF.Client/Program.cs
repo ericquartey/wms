@@ -10,6 +10,9 @@ namespace Ferretto.WMS.Scheduler.WCF.Client
 
         private static void Main(string[] args)
         {
+            Console.WriteLine($"Press <ENTER> to start the application.");
+            Console.ReadKey();
+
             var instanceContext = new InstanceContext(new MachineCallbackHandler());
             var machineClient = new MachineClient(instanceContext);
             var machines = machineClient.GetAll();
