@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             return this.Ok();
         }
 
-        // POST api/items/withdraw
+        // POST api/items/withdraw/{id}
         [HttpPost]
         public ActionResult Withdraw(int id, int quantity)
         {
