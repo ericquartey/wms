@@ -23,6 +23,7 @@ namespace Ferretto.Common.Controls
 
         private Brush backgroundCanvas;
         private WmsTrayCanvas canvas;
+        private Position originTray;
         private Tray tray;
 
         #endregion Fields
@@ -101,6 +102,8 @@ namespace Ferretto.Common.Controls
 
                 this.canvas.Width = widthNewCalculated;
                 this.canvas.Height = heightNewCalculated;
+
+                this.originTray = this.tray.Origin;
             }
         }
 
@@ -129,6 +132,11 @@ namespace Ferretto.Common.Controls
                 //Ruler Settings
                 if (parentWmsTrayControl != null)
                 {
+                    if (parentWmsTrayControl.horizontalRuler.Origin == null)
+                    {
+                        parentWmsTrayControl.horizontalRuler.Origin = this.originTray;
+                        parentWmsTrayControl.verticalRuler.Origin = this.originTray;
+                    }
                     parentWmsTrayControl.horizontalRuler.Width = widthNewCalculated + 2;
                     parentWmsTrayControl.verticalRuler.Height = heightNewCalculated + 2;
                     var majorIntervalStep = parentWmsTrayControl.horizontalRuler.MAJORINTERVALSTEP;

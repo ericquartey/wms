@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
@@ -36,12 +37,8 @@ namespace Ferretto.Common.Controls
                                             DependencyProperty.Register("DisplayMode", typeof(enumOrientation), typeof(WmsRulerControl),
             new UIPropertyMetadata(enumOrientation.Horizontal));
 
-        //public readonly int LITTLEINTERVALSTEP = 20;
         public readonly int MAJORINTERVALSTEP = 100;
-
-        //public readonly int MEDIUMINTERVALSTEP = 50;
         private readonly int FONTSIZE = 10;
-
         private readonly int OFFSET_TEXT = 1;
 
         #endregion Fields
@@ -58,6 +55,8 @@ namespace Ferretto.Common.Controls
         #region Enums
 
         public enum enumOrientation { Horizontal, Vertical }
+
+        public enum OriginVertical { Top, Bottom }
 
         #endregion Enums
 
@@ -102,6 +101,8 @@ namespace Ferretto.Common.Controls
             set { this.SetValue(OrientationProperty, value); }
         }
 
+        public Position Origin { get; set; }
+
         #endregion Properties
 
         #region Methods
@@ -110,91 +111,153 @@ namespace Ferretto.Common.Controls
         {
             base.OnRender(drawingContext);
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-            double psuedoStartValue = 0;// StartValue;
+            double pseudoStartValue = 0;// StartValue;
 
             if (this.Orientation == enumOrientation.Horizontal)
             {
                 for (int i = 0; i < this.ActualWidth / this.MajorIntervalHorizontal; i++)
                 {
-                    var ft = new FormattedText(
-                        (psuedoStartValue * this.MAJORINTERVALSTEP).ToString(),
-                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
-                    drawingContext.DrawText(ft, new Point(i * this.MajorIntervalHorizontal - ft.Width - this.OFFSET_TEXT, this.ActualHeight - ft.Height));
-                    drawingContext.DrawLine(
-                        new Pen(new SolidColorBrush(Colors.Black), 2),
-                        new Point(i * this.MajorIntervalHorizontal, this.MarkLength),
-                        new Point(i * this.MajorIntervalHorizontal, 0));
-                    drawingContext.DrawLine(
-                        new Pen(new SolidColorBrush(Colors.Black), 1),
-                        new Point(i * this.MajorIntervalHorizontal + (this.MajorIntervalHorizontal / 2), this.MiddleMarkLength),
-                        new Point(i * this.MajorIntervalHorizontal + (this.MajorIntervalHorizontal / 2), 0));
-                    for (int j = 1; j < 10; j++)
-                    {
-                        var newPositionX = i * this.MajorIntervalHorizontal + (((this.MajorIntervalHorizontal * j) / 10));
-                        if (newPositionX < this.ActualWidth)
-                        {
-                            if (j == 5)
-                            {
-                                continue;
-                            }
-                            drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
-                            new Point(newPositionX, this.LittleMarkLength),
-                            new Point(newPositionX, 0));
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    psuedoStartValue++;
+                    this.DrawHorizontalRuler(drawingContext, i, ref pseudoStartValue);
                 }
             }
             else
             {
-                psuedoStartValue = 0;//;StartValue;
-                for (int i = 0; i < this.ActualHeight / this.MajorIntervalVertical; i++)
+                pseudoStartValue = 0;//;StartValue;
+                if (Origin != null)
                 {
-                    var ft = new FormattedText(
+                    OriginVertical originStart = OriginVertical.Top;
+                    if (Origin.XPosition == 0 && Origin.YPosition == 0)
+                    {
+                        originStart = OriginVertical.Top;
+                        for (int i = 0; i < this.ActualHeight / this.MajorIntervalVertical; i++)
+                        {
+                            this.DrawVerticalRuler(drawingContext, i, ref pseudoStartValue, originStart);
+                        }
+                    }
+                    if (Origin.XPosition == 0 && Origin.YPosition != 0)
+                    {
+                        pseudoStartValue = 0;
+
+                        originStart = OriginVertical.Bottom;
+                        //for (int i = (int)this.ActualHeight / this.MajorIntervalVertical; i >= 0; i--)
+                        //{
+                        //    this.DrawVerticalRuler(drawingContext, i, ref pseudoStartValue, originStart);
+                        //}
+                    }
+                    pseudoStartValue = 0;
+                    for (int i = 0; i < this.ActualHeight / this.MajorIntervalVertical; i++)
+                    {
+                        this.DrawVerticalRuler(drawingContext, i, ref pseudoStartValue, originStart);
+                    }
+                }
+            }
+        }
+
+        private void DrawHorizontalRuler(DrawingContext drawingContext, int i, ref double pseudoStartValue)
+        {
+            var ft = new FormattedText(
+                        (pseudoStartValue * this.MAJORINTERVALSTEP).ToString(),
+                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
+            drawingContext.DrawText(ft, new Point(i * this.MajorIntervalHorizontal - ft.Width - this.OFFSET_TEXT, this.ActualHeight - ft.Height));
+            drawingContext.DrawLine(
+                new Pen(new SolidColorBrush(Colors.Black), 2),
+                new Point(i * this.MajorIntervalHorizontal, this.MarkLength),
+                new Point(i * this.MajorIntervalHorizontal, 0));
+            drawingContext.DrawLine(
+                new Pen(new SolidColorBrush(Colors.Black), 1),
+                new Point(i * this.MajorIntervalHorizontal + (this.MajorIntervalHorizontal / 2), this.MiddleMarkLength),
+                new Point(i * this.MajorIntervalHorizontal + (this.MajorIntervalHorizontal / 2), 0));
+            for (int j = 1; j < 10; j++)
+            {
+                var newPositionX = i * this.MajorIntervalHorizontal + (((this.MajorIntervalHorizontal * j) / 10));
+                if (newPositionX < this.ActualWidth)
+                {
+                    if (j == 5)
+                    {
+                        continue;
+                    }
+                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
+                    new Point(newPositionX, this.LittleMarkLength),
+                    new Point(newPositionX, 0));
+                }
+                else
+                {
+                    break;
+                }
+            }
+            pseudoStartValue++;
+        }
+
+        private void DrawVerticalRuler(DrawingContext drawingContext, int i, ref double psuedoStartValue, OriginVertical originVertical)
+        {
+            int startFrom = 0, xFinal = 0, xFinalMiddle = 0, xFinalLittle = 0, xText = 0, yText = 0;
+
+            var ft = new FormattedText(
                         (psuedoStartValue * this.MAJORINTERVALSTEP).ToString(),//.ToString(),
                         System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                         new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
-                    var x = this.ActualWidth - ft.Height - this.OFFSET_TEXT;
-                    var y = i * this.MajorIntervalVertical;
-                    drawingContext.PushTransform(new RotateTransform(-90, x, y));
-                    drawingContext.DrawText(ft, new Point(x, y));
-                    drawingContext.Pop();
-                    drawingContext.DrawLine(
-                        new Pen(new SolidColorBrush(Colors.Black), 2),
-                        new Point(this.MarkLength, i * this.MajorIntervalVertical),
-                        new Point(0, i * this.MajorIntervalVertical));
-                    drawingContext.DrawLine(
-                        new Pen(new SolidColorBrush(Colors.Black), 1),
-                        new Point(this.MiddleMarkLength, i * this.MajorIntervalVertical + (this.MajorIntervalVertical / 2)),
-                        new Point(0, i * this.MajorIntervalVertical + (this.MajorIntervalVertical / 2)));
-                    for (int j = 1; j < 10; j++)
-                    {
-                        var newPositionY = i * this.MajorIntervalVertical + ((this.MajorIntervalVertical * j) / 10);
-                        if (newPositionY < this.ActualHeight)
-                        {
-                            if (j == 5)
-                            {
-                                continue;
-                            }
-                            drawingContext.DrawLine(
-                                new Pen(new SolidColorBrush(Colors.Black), 1),
-                                new Point(this.LittleMarkLength, newPositionY),
-                                new Point(0, newPositionY));
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
 
-                    psuedoStartValue++;
-                }
+            if (originVertical == OriginVertical.Top)
+            {
+                startFrom = 0;
+                xFinal = i * this.MajorIntervalVertical;
+                xFinalMiddle = i * this.MajorIntervalVertical + (this.MajorIntervalVertical / 2);
+                xText = (int)(this.ActualWidth - ft.Height - this.OFFSET_TEXT);
+                yText = i * this.MajorIntervalVertical;
             }
+            if (originVertical == OriginVertical.Bottom)
+            {
+                startFrom = (int)this.ActualHeight;
+                xFinal = startFrom - (i * this.MajorIntervalVertical);
+                xFinalMiddle = startFrom - (i * this.MajorIntervalVertical + (this.MajorIntervalVertical / 2));
+                xText = (int)(this.ActualWidth - ft.Height + this.OFFSET_TEXT);
+                yText = startFrom - (i * this.MajorIntervalVertical);
+            }
+
+            drawingContext.PushTransform(new RotateTransform(-90, xText, yText));
+            drawingContext.DrawText(ft, new Point(xText, yText));
+            drawingContext.Pop();
+            drawingContext.DrawLine(
+                new Pen(new SolidColorBrush(Colors.Black), 2),
+                new Point(this.MarkLength, xFinal),
+                new Point(0, xFinal));
+            drawingContext.DrawLine(
+                new Pen(new SolidColorBrush(Colors.Black), 1),
+                new Point(this.MiddleMarkLength, xFinalMiddle),
+                new Point(0, xFinalMiddle));
+            for (int j = 1; j < 10; j++)
+            {
+                if (originVertical == OriginVertical.Top)
+                {
+                    startFrom = 0;
+                    xFinalLittle = i * this.MajorIntervalVertical + ((this.MajorIntervalVertical * j) / 10);
+                    if (xFinalLittle >= this.ActualHeight)
+                    {
+                        break;
+                    }
+                }
+                if (originVertical == OriginVertical.Bottom)
+                {
+                    startFrom = (int)this.ActualHeight;
+                    xFinalLittle = startFrom - (i * this.MajorIntervalVertical + ((this.MajorIntervalVertical * j) / 10));
+                    if (xFinalLittle <= 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (j == 5)
+                {
+                    continue;
+                }
+                drawingContext.DrawLine(
+                    new Pen(new SolidColorBrush(Colors.Black), 1),
+                    new Point(this.LittleMarkLength, xFinalLittle),
+                    new Point(0, xFinalLittle));
+            }
+
+            psuedoStartValue++;
         }
 
         #endregion Methods
