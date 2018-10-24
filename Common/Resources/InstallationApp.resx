@@ -162,7 +162,7 @@
     <comment>Button text</comment>
   </data>
   <data name="LowSpeedMovementsTest" xml:space="preserve">
-    <value>Low Speed Movements Test </value>
+    <value>Low Speed Movements</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="LSMTGateEngineButton" xml:space="preserve">
@@ -190,7 +190,7 @@
     <comment>Title</comment>
   </data>
   <data name="Manual" xml:space="preserve">
-    <value>Manual</value>
+    <value>Manu</value>
     <comment>Button text</comment>
   </data>
   <data name="NextButton" xml:space="preserve">
@@ -247,6 +247,7 @@
   </data>
   <data name="Output" xml:space="preserve">
     <value>Output:</value>
+    <comment>Label text</comment>
   </data>
   <data name="Resolution" xml:space="preserve">
     <value>Resolution:</value>
@@ -263,5 +264,116 @@
   <data name="UpperBound" xml:space="preserve">
     <value>Upper Bound:</value>
     <comment>Label text</comment>
+  </data>
+  <data name="ResolutionCalibration" xml:space="preserve">
+    <value>Resolution Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SensorsState" xml:space="preserve">
+    <value>Sensors' State</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Bays" xml:space="preserve">
+    <value>Bays</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Cradle" xml:space="preserve">
+    <value>Cradle</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate" xml:space="preserve">
+    <value>Gate</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VariousInputs" xml:space="preserve">
+    <value>Various Inputs</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VerticalAxis" xml:space="preserve">
+    <value>Vertical Axis</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="AntiIntrusionGate" xml:space="preserve">
+    <value>Anti-Intrusion Gate</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="BrakeResistanceOvertemperature" xml:space="preserve">
+    <value>Brake Resistance Overtemperature</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="CradleEngineSelected" xml:space="preserve">
+    <value>Cradle Engine Selected</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ElevatorEngineSelected" xml:space="preserve">
+    <value>Elevator Engine Selected</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="EmergencyEndRun" xml:space="preserve">
+    <value>Emergency End Run</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorA" xml:space="preserve">
+    <value>Gate Sensor A</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="GateSensorB" xml:space="preserve">
+    <value>Gate Sensor B</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresenceOnMachineCradleSide" xml:space="preserve">
+    <value>LU Presence on Machine Cradle Side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresenceOnOperatorCradleSide" xml:space="preserve">
+    <value>LU Presence on Operator Cradle Side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="LuPresentInBay" xml:space="preserve">
+    <value>LU Present in Bay</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterLeftSide" xml:space="preserve">
+    <value>Micro Carter Left Side</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MicroCarterRightSide" xml:space="preserve">
+    <value>Micro Carter Right Side </value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="MushroomHeadButton" xml:space="preserve">
+    <value>Mushroom Head Button</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="PawlEncoder" xml:space="preserve">
+    <value>Pawl Encoder</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ResetSecurityFunction" xml:space="preserve">
+    <value>Reset Security Function</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="SecurityFunctionActive" xml:space="preserve">
+    <value>Security Function Active</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ShapeControl" xml:space="preserve">
+    <value>Shape Control</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="VerticalAxisBrake" xml:space="preserve">
+    <value>Vertical Axis Brake</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ZeroPawlSensor" xml:space="preserve">
+    <value>Zero Pawl Sensor</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="ZeroVerticalSensor" xml:space="preserve">
+    <value>Zero Vertical Sensor</value>
+    <comment>Sensor control text</comment>
+  </data>
+  <data name="Sta" xml:space="preserve">
+    <value>Start</value>
   </data>
 </root>

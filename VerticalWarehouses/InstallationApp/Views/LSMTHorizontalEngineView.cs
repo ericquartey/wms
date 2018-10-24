@@ -10,22 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp
+namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for Window3.xaml
+    /// Interaction logic for LSMTHorizontalEngineView.xaml
     /// </summary>
-    public partial class Window3 : Window
+    public partial class LSMTHorizontalEngineView : UserControl
     {
-        #region Constructors
-
-        public Window3()
+        public LSMTHorizontalEngineView()
         {
             this.InitializeComponent();
         }
-
-        #endregion Constructors
     }
 }

@@ -29,7 +29,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
             this.driver = new InverterDriver.InverterDriver();
             this.driver.Connected += this.Driver_Connected;
-            this.driver.GetMessageFromServer += this.Driver_GetMessageFromServer;
+            //this.driver.GetMessageFromServer += this.Driver_GetMessageFromServer;
             this.TxtBoxIP.Text = IP_ADDR_INVERTER_DEFAULT.ToString();
             this.TxtBoxPort.Text = PORT_ADDR_INVERTER_DEFAULT.ToString();
         }
@@ -50,7 +50,8 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
 
         private void Click_Execute(Object sender, RoutedEventArgs e)
         {
-            var cmdId = CommandId.None;
+            /*
+            var cmdId = OperationID.None;
             switch (this.ComboBox_Commands.SelectedIndex)
             {
                 case 0:
@@ -122,6 +123,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
                         break;
                     }
             }
+            */
         }
 
         /// <summary>
@@ -156,12 +158,14 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             this.Dispatcher.BeginInvoke(new Action(() => this.updateUI(State)));
         }
 
+        /*
         private void Driver_GetMessageFromServer(object sender, GetMessageFromServerEventArgs eventArgs)
         {
             var cmdId = eventArgs.CmdId;
             var Message = eventArgs.Message;
             this.Dispatcher.BeginInvoke(new Action(() => this.updateUI(cmdId, Message)));
         }
+        */
 
         private void PreviewTextInput_TxtBox(Object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
@@ -174,7 +178,7 @@ namespace Ferretto.VW.VerticalWarehousesApp.Views
             this.TxtBoxStatus.Text = (State) ? "Connected" : "Not connected";
         }
 
-        private void updateUI(CommandId cmdId, string Message)
+        private void updateUI(OperationID cmdId, string Message)
         {
             this.TxtBoxReceiveMessageFromServer.Text = String.Format("Command id: {0} Text: {1}", cmdId.ToString(), Message);
         }

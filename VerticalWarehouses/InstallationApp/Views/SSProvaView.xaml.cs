@@ -10,18 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Ferretto.VW.InstallationApp.ViewModels;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for Window3.xaml
+    /// Interaction logic for SSProvaView.xaml
     /// </summary>
-    public partial class Window3 : Window
+    public partial class SSProvaView : UserControl
     {
-        public Window3()
+        #region Constructors
+
+        public SSProvaView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.DataContext = new SSProvaViewModel();
         }
+
+        #endregion Constructors
     }
 }

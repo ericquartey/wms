@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.VWApp
+namespace Ferretto.VW.InstallationApp.Views
 {
     /// <summary>
-    /// Interaction logic for Window2.xaml
+    /// Interaction logic for SensorsStateNavigationButtonsView.xaml
     /// </summary>
-    public partial class Window2 : Window
+    public partial class SensorsStateNavigationButtonsView : UserControl
     {
-        public Window2()
+        public SensorsStateNavigationButtonsView()
         {
             InitializeComponent();
         }

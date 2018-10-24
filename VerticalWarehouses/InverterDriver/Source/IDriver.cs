@@ -1,18 +1,16 @@
 ﻿namespace Ferretto.VW.InverterDriver
 {
+    /*
     /// <summary>
     /// Interface ICommandBase.
     /// </summary>
     public interface ICommandBase
     {
-        #region Properties
-
         /// <summary>
         /// Gets the Command Id.
         CommandId CmdId { get; }
-
-        #endregion Properties
     }
+    */
 
     /// <summary>
     /// Interface IDriver.
@@ -20,6 +18,11 @@
     public interface IDriver
     {
         #region Properties
+
+        /// <summary>
+        /// <c>True</c> if last request has been executed.
+        /// </summary>
+        bool GetLastRequestDone { get; }
 
         /// <summary>
         /// Get main status.
@@ -47,6 +50,11 @@
         #region Methods
 
         /// <summary>
+        /// Get value of given parameter.
+        /// </summary>
+        InverterDriverExitStatus EnquiryTelegram(ParameterID paramID, out object value);
+
+        /// <summary>
         /// Get the drawer weight
         /// </summary>
         /// <param name="ic"></param>
@@ -63,86 +71,23 @@
         /// Get IO sensor state.
         /// </summary>
         /// <returns></returns>
-        InverterDriverExitStatus GetIOState();
+        InverterDriverExitStatus GetIOState(int index, out bool retValue);
 
         /// <summary>
-        /// Move along horizontal axis with given profile.
+        /// Get value of given parameter. It is a echo for SettingRequest.
         /// </summary>
-        /// <param name="v1"></param>
-        /// <param name="a"></param>
-        /// <param name="s1"></param>
-        /// <param name="s2"></param>
-        /// <param name="v2"></param>
-        /// <param name="a1"></param>
-        /// <param name="s3"></param>
-        /// <param name="s4"></param>
-        /// <param name="v3"></param>
-        /// <param name="a2"></param>
-        /// <param name="s5"></param>
-        /// <param name="s6"></param>
-        /// <param name="a3"></param>
-        /// <param name="s7"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus MoveAlongHorizontalAxisWithProfile(float v1, float a, short s1, short s2, float v2, float a1, short s3, short s4, float v3, float a2, short s5, short s6, float a3, short s7);
+        InverterDriverExitStatus SelectTelegram(ParameterID paramID, out object value);
 
         /// <summary>
-        /// Move along vertical axis to given point.
+        /// Send a request to inverter to read parameter value.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="vMax"></param>
-        /// <param name="acc"></param>
-        /// <param name="dec"></param>
-        /// <param name="w"></param>
         /// <returns></returns>
-        InverterDriverExitStatus MoveAlongVerticalAxisToPoint(short x, float vMax, float acc, float dec, float w);
+        InverterDriverExitStatus SendRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex);
 
         /// <summary>
-        /// Run routine for detect the weight of current drawer.
+        /// Send a request to inverter to read a parameter value.
         /// </summary>
-        /// <param name="d"></param>
-        /// <param name="w"></param>
-        /// <param name="a"></param>
-        /// <param name="e"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus RunDrawerWeightRoutine(short d, float w, float a, byte e);
-
-        /// <summary>
-        /// Run shutter on opening movement or closing movement.
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus RunShutter(byte m);
-
-        /// <summary>
-        /// Set ON/OFF value to the given line.
-        /// </summary>
-        /// <param name="i"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus Set(int i, byte value);
-
-        /// <summary>
-        /// Set type of motor movement between vertical or horizontal.
-        /// </summary>
-        /// <param name="m"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus SetTypeOfMotorMovement(byte m);
-
-        /// <summary>
-        /// Set vertical axis origin routine.
-        /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="vSearch"></param>
-        /// <param name="vCam0"></param>
-        /// <param name="offset"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus SetVerticalAxisOrigin(byte mode, float vSearch, float vCam0, float offset);
-
-        /// <summary>
-        /// Stop.
-        /// </summary>
-        /// <returns></returns>
-        InverterDriverExitStatus Stop();
+        InverterDriverExitStatus SettingRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex, object value);
 
         #endregion Methods
     }
