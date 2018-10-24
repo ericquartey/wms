@@ -40,7 +40,9 @@ namespace Ferretto.Common.Controls
         public readonly int MAJORINTERVALSTEP = 100;
 
         //public readonly int MEDIUMINTERVALSTEP = 50;
-        private readonly int fontSize = 10;
+        private readonly int FONTSIZE = 10;
+
+        private readonly int OFFSET_TEXT = 1;
 
         #endregion Fields
 
@@ -117,8 +119,8 @@ namespace Ferretto.Common.Controls
                     var ft = new FormattedText(
                         (psuedoStartValue * this.MAJORINTERVALSTEP).ToString(),
                         System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        new Typeface("Tahoma"), fontSize, Brushes.Black);
-                    drawingContext.DrawText(ft, new Point(i * this.MajorIntervalHorizontal, 0));
+                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
+                    drawingContext.DrawText(ft, new Point(i * this.MajorIntervalHorizontal - ft.Width - this.OFFSET_TEXT, this.ActualHeight - ft.Height));
                     drawingContext.DrawLine(
                         new Pen(new SolidColorBrush(Colors.Black), 2),
                         new Point(i * this.MajorIntervalHorizontal, this.MarkLength),
@@ -155,8 +157,13 @@ namespace Ferretto.Common.Controls
                 {
                     var ft = new FormattedText(
                         (psuedoStartValue * this.MAJORINTERVALSTEP).ToString(),//.ToString(),
-                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight, new Typeface("Tahoma"), fontSize, Brushes.Black);
-                    drawingContext.DrawText(ft, new Point(0, i * this.MajorIntervalVertical));
+                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
+                    var x = this.ActualWidth - ft.Height - this.OFFSET_TEXT;
+                    var y = i * this.MajorIntervalVertical;
+                    drawingContext.PushTransform(new RotateTransform(-90, x, y));
+                    drawingContext.DrawText(ft, new Point(x, y));
+                    drawingContext.Pop();
                     drawingContext.DrawLine(
                         new Pen(new SolidColorBrush(Colors.Black), 2),
                         new Point(this.MarkLength, i * this.MajorIntervalVertical),
