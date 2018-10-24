@@ -10,11 +10,17 @@ namespace Ferretto.WMS.Scheduler.WCF.Client
 
         private static void Main(string[] args)
         {
+            Console.WriteLine($"Press <ENTER> to start the application.");
+            Console.ReadKey();
+
             var instanceContext = new InstanceContext(new MachineCallbackHandler());
             var machineClient = new MachineClient(instanceContext);
-            var machines = machineClient.GetAll();
 
-            Console.WriteLine($"Hello World! The first machine is {machines[0].AisleName}.");
+            var checkpoint1 = DateTime.Now;
+            var machines = machineClient.GetAll();
+            var checkpoint2 = DateTime.Now;
+
+            Console.WriteLine($"[{checkpoint2 - checkpoint1}] Hello World! The first machine is {machines[0].AisleName}.");
 
             var result = machineClient.CompleteMission(1, 2);
 

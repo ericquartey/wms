@@ -6,7 +6,7 @@
 
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 
-namespace Ferretto.WMS.Scheduler.WebAPI
+namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 {
     #pragma warning disable // Disable all warnings
 
