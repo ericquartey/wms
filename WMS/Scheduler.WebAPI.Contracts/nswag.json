@@ -22,7 +22,7 @@
       "generateContractsOutput": true, //generate contacts in a separte file
       "contractsNamespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts", //contracts namespace
       "contractsOutputFilePath": "Contracts.g.cs",
-      "namespace": "Ferretto.WMS.Scheduler.WebAPI",
+      "namespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts",
       "output": "Client.g.cs"
     }
   }

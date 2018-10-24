@@ -24,8 +24,8 @@ namespace Ferretto.WMS.Scheduler.Client
 
             // Create two clients
             //
-            var machinesClient1 = new MachinesClient(serverUrl);
-            var machinesClient2 = new MachinesClient(serverUrl);
+            var machinesClient1 = new WebAPI.Contracts.MachinesClient(serverUrl);
+            var machinesClient2 = new WebAPI.Contracts.MachinesClient(serverUrl);
 
             Console.WriteLine("Client 1 - Retrieving mahcines ...");
             var checkpoint1 = DateTime.Now;
