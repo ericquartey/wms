@@ -5,30 +5,51 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <Border x:Name="CanvasBorder"
-            BorderBrush="Black"
-            BorderThickness="2">
-        <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
-                                       ItemsSource="{Binding Items, Mode=TwoWay}">
-            <ctrls:WmsCanvasListBoxControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top" />
-                </ItemsPanelTemplate>
-            </ctrls:WmsCanvasListBoxControl.ItemsPanel>
-            <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
-                    <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
-                    <Setter Property="Margin" Value="0" />
-                </Style>
+    <Grid>
+        <ctrls:WmsRulerControl x:Name="horizontalRuler"
+                               Width="1000"
+                               Height="20"
+                               Margin="21,0,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               BorderBrush="Black"
+                               BorderThickness="1"
+                               Orientation="Horizontal" />
+        <ctrls:WmsRulerControl x:Name="verticalRuler"
+                               Width="20"
+                               Height="{Binding Tray.Dimension.Height}"
+                               Margin="0,21,0,0"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top"
+                               BorderBrush="Black"
+                               BorderThickness="1"
+                               Orientation="Vertical" />
+        <Border x:Name="CanvasBorder"
+                Margin="20,20,0,0"
+                BorderBrush="Black"
+                BorderThickness="2">
+            <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
+                                           ItemsSource="{Binding Items, Mode=TwoWay}">
+                <ctrls:WmsCanvasListBoxControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
+                                             HorizontalAlignment="Left"
+                                             VerticalAlignment="Top" />
+                    </ItemsPanelTemplate>
+                </ctrls:WmsCanvasListBoxControl.ItemsPanel>
+                <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
+                        <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
+                        <Setter Property="Margin" Value="0" />
+                    </Style>
 
-            </ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
+                </ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
 
-        </ctrls:WmsCanvasListBoxControl>
-    </Border>
+            </ctrls:WmsCanvasListBoxControl>
+        </Border>
+    </Grid>
 
 </UserControl>
 

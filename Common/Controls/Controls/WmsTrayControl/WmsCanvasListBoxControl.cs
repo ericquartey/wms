@@ -13,6 +13,7 @@ using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Modules.BLL.Models;
+using static Ferretto.Common.Controls.WmsRulerControl;
 
 namespace Ferretto.Common.Controls
 {
@@ -122,6 +123,14 @@ namespace Ferretto.Common.Controls
                 }
                 this.canvas.Height = heightNewCalculated;
                 this.canvas.Width = widthNewCalculated;
+
+                var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
+                if (parentWmsTrayControl != null)
+                {
+                    parentWmsTrayControl.horizontalRuler.Width = widthNewCalculated + 2;
+                    parentWmsTrayControl.verticalRuler.Height = heightNewCalculated + 2;
+                }
+
                 this.canvas.Background = this.BackgroundCanvas;
             }
         }

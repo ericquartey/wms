@@ -9,6 +9,7 @@ using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core.Native;
 using Ferretto.Common.Modules.BLL.Models;
+using static Ferretto.Common.Controls.WmsRulerControl;
 
 namespace Ferretto.Common.Controls
 {
@@ -18,7 +19,7 @@ namespace Ferretto.Common.Controls
 
         protected override Size MeasureOverride(Size constraint)
         {
-            //base.MeasureOverride(constraint);
+            base.MeasureOverride(constraint);
 
             if (constraint.Width == double.PositiveInfinity || constraint.Height == double.PositiveInfinity)
             {
@@ -35,6 +36,9 @@ namespace Ferretto.Common.Controls
                     {
                         viewModel.Resize(constraint.Width, constraint.Height);
                     }
+
+                    //parentWmsTrayControl.horizontalRuler.Width = constraint.Width;
+                    //parentWmsTrayControl.verticalRuler.Height = constraint.Height;
                 }
             }
 

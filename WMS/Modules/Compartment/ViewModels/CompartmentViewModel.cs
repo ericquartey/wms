@@ -59,7 +59,7 @@ namespace Ferretto.WMS.Modules.Compartment
         protected override void OnAppear()
         {
             //Initialize without Origin, default: BOTTOM-LEFT
-            this.tray = new Tray { Dimension = new Dimension { Height = 500, Width = 1960 }, Origin = new Position { XPosition = 0, YPosition = 0 } };
+            this.tray = new Tray { Dimension = new Dimension { Height = 500, Width = 1960 } };//, Origin = new Position { XPosition = 0, YPosition = 0 } };
 
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
