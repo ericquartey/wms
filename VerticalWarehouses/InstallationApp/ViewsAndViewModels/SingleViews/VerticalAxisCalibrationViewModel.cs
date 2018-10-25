@@ -2,6 +2,9 @@
 using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
+using Ferretto.VW.Navigation;
+using Ferretto.VW.Utils.Source;
+using Ferretto.VW.Utils.Source.Configuration;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -90,6 +93,12 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private void ExecuteStartButtonCommand()
         {
             //TODO: implement start button functionality
+            //Temporary stuff to check DataManager behaviour
+
+            var ii = new Installation_Info();
+            ii.Belt_Burnishing = true;
+            ii.Set_Y_Resolution = true;
+            DataManager.InstallationInfo = ii;
         }
 
         private void ExecuteStopButtonCommand()

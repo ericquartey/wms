@@ -6,6 +6,7 @@ using Ferretto.VW.Utils.Source.Configuration;
 using Newtonsoft.Json;
 using System.IO;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.VWApp
 {
@@ -16,6 +17,8 @@ namespace Ferretto.VW.VWApp
         private static readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
         private static readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
 
+        private bool machineOk;
+
         #endregion Fields
 
         #region Constructors
@@ -23,6 +26,7 @@ namespace Ferretto.VW.VWApp
         public App()
         {
             this.InitializeComponent();
+            NavigationService.InstallationInfoChangedEventHandler += this.UpdateDataFromDataManager;
             this.ReadDataFromFile();
         }
 
@@ -32,6 +36,7 @@ namespace Ferretto.VW.VWApp
 
         public InstallationApp.MainWindow InstallationAppMainWindowInstance { get; set; }
         public InstallationApp.MainWindowViewModel InstallationAppMainWindowViewModel { get; set; }
+        public Boolean MachineOk { get => this.machineOk; set => this.machineOk = value; }
         public OperatorApp.MainWindow OperatorMainWindowInstance { get; set; }
 
         #endregion Properties
@@ -49,6 +54,10 @@ namespace Ferretto.VW.VWApp
 
             DataManager.GeneralInfo = GeneralInfo;
             DataManager.InstallationInfo = InstallationInfo;
+        }
+
+        private void UpdateDataFromDataManager()
+        {
         }
 
         #endregion Methods

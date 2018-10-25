@@ -7,9 +7,19 @@
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
                 Orientation="Horizontal">
-        <Ellipse Width="30"
-                 Height="30"
-                 Fill="{Binding BulletColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid Width="30"
+              Height="30">
+            <Ellipse Width="30"
+                     Height="30"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Fill="{StaticResource FerrettoBlack}" />
+            <Ellipse Width="28"
+                     Height="28"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center"
+                     Fill="{Binding BulletColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
         <TextBlock Margin="10,0,0,0"
                    VerticalAlignment="Center"
                    Style="{StaticResource SensorControlBodyTextBlockStyle}"

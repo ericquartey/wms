@@ -1,5 +1,7 @@
 ﻿using Prism.Mvvm;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.Navigation;
+using System;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
 {
@@ -16,17 +18,27 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
 
         public MainWindowNavigationButtonsViewModel()
         {
-            this.IsBeltBurnishingButtonActive = DataManager.InstallationInfo.Belt_Burnishing;
-            this.IsSetYResolutionButtonActive = DataManager.InstallationInfo.Set_Y_Resolution;
+            this.UpdateDataFromDataManager();
+            NavigationService.InstallationInfoChangedEventHandler += this.UpdateDataFromDataManager;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public System.Boolean IsBeltBurnishingButtonActive { get => this.isBeltBurnishingButtonActive; set => this.SetProperty(ref this.isBeltBurnishingButtonActive, value); }
-        public System.Boolean IsSetYResolutionButtonActive { get => this.isSetYResolutionButtonActive; set => this.SetProperty(ref this.isSetYResolutionButtonActive, value); }
+        public Boolean IsBeltBurnishingButtonActive { get => this.isBeltBurnishingButtonActive; set => this.SetProperty(ref this.isBeltBurnishingButtonActive, value); }
+        public Boolean IsSetYResolutionButtonActive { get => this.isSetYResolutionButtonActive; set => this.SetProperty(ref this.isSetYResolutionButtonActive, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        private void UpdateDataFromDataManager()
+        {
+            this.IsBeltBurnishingButtonActive = DataManager.InstallationInfo.Belt_Burnishing;
+            this.IsSetYResolutionButtonActive = DataManager.InstallationInfo.Set_Y_Resolution;
+        }
+
+        #endregion Methods
     }
 }

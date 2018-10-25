@@ -376,4 +376,8 @@
   <data name="Sta" xml:space="preserve">
     <value>Start</value>
   </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Gates Control</value>
+    <comment>Title - Button text</comment>
+  </data>
 </root>

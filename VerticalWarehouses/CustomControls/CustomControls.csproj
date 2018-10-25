@@ -57,6 +57,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CustomLabelTextBlockControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CustomSensorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -93,6 +97,9 @@
   <ItemGroup>
     <Compile Include="Controls\CustomInputFieldControl.xaml.cs">
       <DependentUpon>CustomInputFieldControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomLabelTextBlockControl.xaml.cs">
+      <DependentUpon>CustomLabelTextBlockControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomSensorControl.xaml.cs">
       <DependentUpon>CustomSensorControl.xaml</DependentUpon>

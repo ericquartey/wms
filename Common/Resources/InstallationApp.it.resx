@@ -306,4 +306,8 @@
   <data name="ZeroVerticalSensor" xml:space="preserve">
     <value>Sensore Zero Verticale</value>
   </data>
+  <data name="GateControl" xml:space="preserve">
+    <value>Controllo Barriere</value>
+    <comment>Title - Button text</comment>
+  </data>
 </root>

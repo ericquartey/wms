@@ -7,8 +7,8 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 d:DesignHeight="450"
-                 d:DesignWidth="800"
+                 d:DesignHeight="610"
+                 d:DesignWidth="730"
                  mc:Ignorable="d">
     <DockPanel>
         <Label Margin="20,0,0,0"

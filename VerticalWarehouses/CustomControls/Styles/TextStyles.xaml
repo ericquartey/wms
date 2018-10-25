@@ -23,6 +23,14 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
+    <Style x:Key="InstallationViewsTitleTextStyle"
+           TargetType="{x:Type Control}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource RobotoCondensed-Regular}" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
     <Style x:Key="StandardSplashScreenTitleTextStyle"
            TargetType="{x:Type Control}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
@@ -30,6 +38,8 @@
         <Setter Property="FontSize" Value="50" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
     <Style x:Key="StandardBodyTextBlockStyle"
            TargetType="{x:Type TextBlock}">
@@ -60,5 +70,11 @@
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style x:Key="CustomLabelTextBlockControlTextBoxStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
     </Style>
 </ResourceDictionary>

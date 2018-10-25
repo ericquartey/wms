@@ -223,6 +223,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gates Control.
+        /// </summary>
+        public static string GateControl {
+            get {
+                return ResourceManager.GetString("GateControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gate Sensor A.
         /// </summary>
         public static string GateSensorA {
