@@ -184,9 +184,7 @@
       <DependentUpon>ActionBarItem.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Button\Button.cs" />
-    <Compile Include="Controls\ComboBox\ComboBox.xaml.cs">
-      <DependentUpon>ComboBox.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\ComboBox\ComboBox.cs" />
     <Compile Include="Controls\ContentGroup\ContentGroup.xaml.cs">
       <DependentUpon>ContentGroup.xaml</DependentUpon>
     </Compile>
@@ -247,6 +245,7 @@
     </Compile>
     <Compile Include="Controls\WmsView\WmsView.cs" />
     <Compile Include="Controls\WmsView\WmsViewType.cs" />
+    <Compile Include="Converters\PropertyDescriptionConverter.cs" />
     <Compile Include="Converters\IntToThousandsConverter.cs" />
     <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
@@ -277,9 +276,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ActionBar\ActionBarItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ComboBox\ComboBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ContentGroup\ContentGroup.xaml">
