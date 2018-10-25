@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using Ferretto.VW.Navigation;
-using Ferretto.VW.InstallationApp.Views;
 using System.Windows.Input;
 
 namespace Ferretto.VW.InstallationApp
@@ -17,8 +10,8 @@ namespace Ferretto.VW.InstallationApp
 
         public MainWindow()
         {
-            NavigationService.BackToVWAppEventHandler += this.CloseThisMainWindow;
             this.InitializeComponent();
+            NavigationService.BackToVWAppEventHandler += () => this.Hide();
             this.DataContext = new MainWindowViewModel();
         }
 
@@ -28,17 +21,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void BackToVWAppButtonMethod(object sender, MouseButtonEventArgs e)
         {
-            this.BackToVWApp();
-        }
-
-        private void BackToVWApp()
-        {
             NavigationService.RaiseBackToVWAppEvent();
-        }
-
-        private void CloseThisMainWindow()
-        {
-            this.Close();
         }
 
         #endregion Methods
