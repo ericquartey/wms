@@ -1,7 +1,9 @@
-﻿using Ferretto.WMS.Scheduler.WebAPI.Hubs;
+﻿using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NJsonSchema;
@@ -67,6 +69,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            var connection = @"data source=.\SQLEXPRESS; initial catalog=FerrettoWmsDb; integrated security=SSPI;Connection Timeout=30";
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connection));
             services.AddSignalR();
         }
 

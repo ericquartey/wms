@@ -12,10 +12,12 @@
     <PackageReference Include="NSwag.AspNetCore" Version="11.20.1" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="2.1.1" />
     <PackageReference Include="Prism.Core" Version="6.3.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
+    <ProjectReference Include="..\..\Common\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
   </ItemGroup>
 
 </Project>
