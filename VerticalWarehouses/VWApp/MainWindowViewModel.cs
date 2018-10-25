@@ -3,6 +3,7 @@ using Prism.Mvvm;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.VWApp
 {
@@ -10,6 +11,7 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
+        private bool installation_completed;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string passwordLogin;
@@ -17,6 +19,15 @@ namespace Ferretto.VW.VWApp
         private string userLogin = "Installer";
 
         #endregion Fields
+
+        #region Constructors
+
+        public MainWindowViewModel()
+        {
+            this.installation_completed = DataManager.InstallationInfo.Machine_Ok;
+        }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -48,9 +59,15 @@ namespace Ferretto.VW.VWApp
                         break;
 
                     case "Operator":
-
-                        ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
-                        ((App)Application.Current).OperatorMainWindowInstance.Show();
+                        if (this.installation_completed)
+                        {
+                            ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
+                            ((App)Application.Current).OperatorMainWindowInstance.Show();
+                        }
+                        else
+                        {
+                            this.LoginErrorMessage = "Error: Machine's installation not completed yet.";
+                        }
                         break;
 
                     default:

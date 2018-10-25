@@ -5,6 +5,7 @@ using Ferretto.VW.Utils.Source.CellsManagement;
 using Ferretto.VW.Utils.Source.Configuration;
 using Newtonsoft.Json;
 using System.IO;
+using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.VWApp
 {
@@ -17,29 +18,37 @@ namespace Ferretto.VW.VWApp
 
         #endregion Fields
 
+        #region Constructors
+
+        public App()
+        {
+            this.InitializeComponent();
+            this.ReadDataFromFile();
+        }
+
+        #endregion Constructors
+
         #region Properties
 
-        public CellsManager AppCellsManager { get; set; }
-        public General_Info GeneralInfo { get; set; }
         public InstallationApp.MainWindow InstallationAppMainWindowInstance { get; set; }
         public InstallationApp.MainWindowViewModel InstallationAppMainWindowViewModel { get; set; }
-        public Installation_Info InstallationInfo { get; set; }
         public OperatorApp.MainWindow OperatorMainWindowInstance { get; set; }
 
         #endregion Properties
 
         #region Methods
 
-        private void InitializeData()
-        {
-        }
-
         private void ReadDataFromFile()
         {
+            var InstallationInfo = new Installation_Info();
+            var GeneralInfo = new General_Info();
             var json0 = File.ReadAllText(JSON_GENERAL_INFO_PATH);
-            JsonConvert.DeserializeAnonymousType(json0, this.GeneralInfo);
+            JsonConvert.DeserializeAnonymousType(json0, GeneralInfo);
             var json1 = File.ReadAllText(JSON_INSTALLATION_INFO_PATH);
-            JsonConvert.DeserializeAnonymousType(json1, this.InstallationInfo);
+            JsonConvert.DeserializeAnonymousType(json1, InstallationInfo);
+
+            DataManager.GeneralInfo = GeneralInfo;
+            DataManager.InstallationInfo = InstallationInfo;
         }
 
         #endregion Methods
