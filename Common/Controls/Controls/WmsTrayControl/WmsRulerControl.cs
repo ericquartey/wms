@@ -53,7 +53,6 @@ namespace Ferretto.Common.Controls
                     new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOrientationChanged)));
 
         private readonly int FONTSIZE = 10;
-
         private readonly int OFFSET_TEXT = 1;
         private Position origin;
 
@@ -67,16 +66,6 @@ namespace Ferretto.Common.Controls
         }
 
         #endregion Constructors
-
-        //        private new FormattedText(
-        //                        (psuedoStartValue* //100).ToString(),
-        //                        this.MajorIntervalVertical)
-
-        //private new RotateTransform(-90, xText, yText)
-
-        //private ToString()
-
-        //private new Typeface("Tahoma")
 
         #region Properties
 
@@ -92,16 +81,7 @@ namespace Ferretto.Common.Controls
         {
             get
             {
-                int value = (int)base.GetValue(MajorIntervalHorizontalProperty);
-                return value;
-                //if (value <= 0)
-                //{
-                //    return 100;
-                //}
-                //else
-                //{
-                //    return value;
-                //}
+                return (int)base.GetValue(MajorIntervalHorizontalProperty);
             }
             set { this.SetValue(MajorIntervalHorizontalProperty, value); }
         }
@@ -112,17 +92,7 @@ namespace Ferretto.Common.Controls
         {
             get
             {
-                int value = (int)base.GetValue(MajorIntervalVerticalProperty);
-                return value;
-
-                //if (value <= 0)
-                //{
-                //    return 100;
-                //}
-                //else
-                //{
-                //    return value;
-                //}
+                return (int)base.GetValue(MajorIntervalVerticalProperty);
             }
             set { this.SetValue(MajorIntervalVerticalProperty, value); }
         }
@@ -174,46 +144,6 @@ namespace Ferretto.Common.Controls
 
         #endregion Properties
 
-        //private (this.InfoRuler.OriginVertical == OriginVertical.Top)
-        //        {
-        //    startFrom = 0;
-        //    xStart = 0;
-        //    xFinal = this.MarkLength;
-        //    yStart = i * majorInterval;
-        //    yFinal = yStart;
-        //    xStartMiddle = 0;
-        //    xFinalMiddle = this.MiddleMarkLength;
-        //    yStartMiddle = i * majorInterval + (majorInterval / 2);
-        //    yFinalMiddle = yStartMiddle;
-        //    //if (yFinalMiddle > this.ActualHeight)
-        //    //{
-        //    //    return;
-        //    //}
-        //    xText = (int)(this.ActualWidth - ft.Height - this.OFFSET_TEXT);
-        //    yText = i * majorInterval;
-        //}
-        //        if
-
-        //private (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-        //                {
-        //            startFrom = (int)this.ActualHeight;
-        //            xStart = 0;
-        //            xFinal = this.MarkLength;
-        //            yStart = startFrom - (i * majorInterval);
-        //            yFinal = yStart;
-        //            xStartMiddle = 0;
-        //            xFinalMiddle = this.MiddleMarkLength;
-        //            yStartMiddle = startFrom - (i * majorInterval + (majorInterval / 2));
-        //            yFinalMiddle = yStartMiddle;
-        //            //if (yFinalMiddle <= 0)
-        //            //{
-        //            //    return;
-        //            //}
-        //            xText = (int)(this.ActualWidth - ft.Height + this.OFFSET_TEXT);
-        //            yText = startFrom - (i * majorInterval);
-        //        }
-        //        drawingContext.PushTransform
-
         #region Methods
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -221,7 +151,7 @@ namespace Ferretto.Common.Controls
             base.OnRender(drawingContext);
 
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
-            double pseudoStartValue = 0;// StartValue;
+            double pseudoStartValue = 0;
             double ratio = 0;
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
@@ -442,10 +372,10 @@ namespace Ferretto.Common.Controls
                 majorIntervalPixel = this.MajorIntervalVerticalPixel;
             }
 
-            this.DrawText(ref drawingContext, i, majorInterval, majorIntervalPixel, /*actualDimension,*/ pseudoStartValue);
-            this.DrawMark(ref drawingContext, i, majorIntervalPixel/*, actualDimension*/);
-            this.DrawMiddleMark(ref drawingContext, i, majorIntervalPixel/*, actualDimension*/);
-            this.DrawLittleMark(ref drawingContext, i, majorIntervalPixel/*, actualDimension*/);
+            this.DrawText(ref drawingContext, i, majorInterval, majorIntervalPixel, pseudoStartValue);
+            this.DrawMark(ref drawingContext, i, majorIntervalPixel);
+            this.DrawMiddleMark(ref drawingContext, i, majorIntervalPixel);
+            this.DrawLittleMark(ref drawingContext, i, majorIntervalPixel);
 
             pseudoStartValue++;
         }

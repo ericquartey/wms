@@ -36,9 +36,6 @@ namespace Ferretto.Common.Controls
                     {
                         viewModel.Resize(constraint.Width, constraint.Height);
                     }
-
-                    //parentWmsTrayControl.horizontalRuler.Width = constraint.Width;
-                    //parentWmsTrayControl.verticalRuler.Height = constraint.Height;
                 }
             }
 

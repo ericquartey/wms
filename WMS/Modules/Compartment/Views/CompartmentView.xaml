@@ -31,15 +31,6 @@
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />
         <compartment:ListCompartmentsView Grid.Row="3" />
-        <!--<Grid Width="500" Height="500">
-                <wms:WmsRulerControl x:Name="horizontalRuler"
-                                               Width="1000"
-                                               Height="20"
-                                               Orientation="Horizontal" />
-                <wms:WmsRulerControl x:Name="verticalRuler"
-                                               Width="20"
-                                               Height="900"
-                                               Orientation="Vertical" /-->
     </Grid>
 
 </wms:WmsView>

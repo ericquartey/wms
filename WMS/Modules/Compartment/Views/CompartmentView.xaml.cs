@@ -12,9 +12,5 @@ namespace Ferretto.WMS.Modules.Compartment
         }
 
         #endregion Constructors
-
-        //private void myCanvas_MouseLeftButtonDown(System.Object sender, System.Windows.Input.MouseButtonEventArgs e)
-        //{
-        //}
     }
 }

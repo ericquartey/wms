@@ -14,8 +14,8 @@
                                VerticalAlignment="Top"
                                BorderBrush="Black"
                                BorderThickness="1"
+                               MajorIntervalHorizontal="200"
                                Orientation="Horizontal" />
-        <!--  MajorIntervalHorizontal="200"  -->
         <ctrls:WmsRulerControl x:Name="verticalRuler"
                                Width="25"
                                Height="{Binding Tray.Dimension.Height}"
@@ -24,8 +24,8 @@
                                VerticalAlignment="Top"
                                BorderBrush="Black"
                                BorderThickness="1"
+                               MajorIntervalHorizontal="100"
                                Orientation="Vertical" />
-        <!--  MajorIntervalHorizontal="200"  -->
 
         <Border x:Name="CanvasBorder"
                 Margin="25,25,0,0"

@@ -28,14 +28,6 @@ namespace Ferretto.Common.Controls
 
         #endregion Fields
 
-        #region Constructors
-
-        public WmsCanvasListBoxControl()
-        {
-        }
-
-        #endregion Constructors
-
         #region Properties
 
         public Brush BackgroundCanvas
