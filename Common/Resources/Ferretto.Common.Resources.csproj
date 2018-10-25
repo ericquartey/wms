@@ -157,6 +157,7 @@
       <LastGenOutput>Navigation.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="VWApp.it.resx" />
     <EmbeddedResource Include="VWApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>VWApp.Designer.cs</LastGenOutput>
