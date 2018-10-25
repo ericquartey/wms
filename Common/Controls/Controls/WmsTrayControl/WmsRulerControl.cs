@@ -158,7 +158,7 @@ namespace Ferretto.Common.Controls
                 if (this.ActualWidth > 0 && this.MajorIntervalHorizontalPixel > 0)
                 {
                     ratio = this.ActualWidth / this.MajorIntervalHorizontalPixel;
-                    if (double.IsNegativeInfinity(ratio) && double.IsPositiveInfinity(ratio))
+                    if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
                     {
                         ratio = 0;
                     }
@@ -169,7 +169,7 @@ namespace Ferretto.Common.Controls
                 if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
                 {
                     ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
-                    if (double.IsNegativeInfinity(ratio) && double.IsPositiveInfinity(ratio))
+                    if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
                     {
                         ratio = 0;
                     }
