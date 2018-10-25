@@ -142,6 +142,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to In order to work in xaml Multibinding with two parameters Self, and Self.DataContext must be specificed..
+        /// </summary>
+        public static string PropertyDescriptionConverterCheckParameterError {
+            get {
+                return ResourceManager.GetString("PropertyDescriptionConverterCheckParameterError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified path is not contained in the image directory..
         /// </summary>
         public static string SpecifiedPathNotInConfiguredImageFolder {

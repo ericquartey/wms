@@ -20,9 +20,6 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
                     nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
-        public static readonly DependencyProperty LoadingUnitProperty = DependencyProperty.Register(
-                                    nameof(LoadingUnit), typeof(LoadingUnitDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnLoadingUnitChanged)));
-
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
@@ -31,6 +28,9 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
                             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
+
+        public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
+                            nameof(TrayObject), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayObjectChanged)));
 
         private BindingList<CompartmentDetails> compartments;
 
@@ -56,12 +56,6 @@ namespace Ferretto.Common.Controls
             set { this.SetValue(CompartmentsProperty, value); }
         }
 
-        public LoadingUnitDetails LoadingUnit
-        {
-            get => (LoadingUnitDetails)this.GetValue(LoadingUnitProperty);
-            set => this.SetValue(LoadingUnitProperty, value);
-        }
-
         public bool ReadOnly
         {
             get => (bool)this.GetValue(ReadOnlyProperty);
@@ -80,6 +74,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ShowBackgroundProperty, value);
         }
 
+        public Tray TrayObject
+        {
+            get => (Tray)this.GetValue(TrayProperty);
+            set => this.SetValue(TrayProperty, value);
+        }
+
         #endregion Properties
 
         #region Methods
@@ -92,9 +92,11 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        /// <summary>
+        /// CompartmentsProperty: Property Changed Callback, do nothing, only update the Property
+        /// </summary>
         private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            //DO NOTHING -> ONLY UPDATE PROPERTY
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 var newCompartment = (CompartmentDetails)e.NewValue;
@@ -107,19 +109,19 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private static void OnLoadingUnitChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.UpdateTray((LoadingUnitDetails)e.NewValue);
-            }
-        }
-
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 wmsTrayControl.SetBackground((bool)e.NewValue);
+            }
+        }
+
+        private static void OnTrayObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                viewModel.UpdateTray((Tray)e.NewValue);
             }
         }
 
@@ -136,16 +138,17 @@ namespace Ferretto.Common.Controls
                 gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
                 var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
                     , 1);
-                var checkers = new GeometryDrawing((SolidColorBrush)new BrushConverter().ConvertFrom("#BDBDBD"), drawingPen, gGroup);
+                var checkers = new GeometryDrawing((SolidColorBrush)System.Windows.Application.Current.Resources["BorderTray"], drawingPen, gGroup);
+
                 var checkersDrawingGroup = new DrawingGroup();
                 checkersDrawingGroup.Children.Add(checkers);
                 DrawingBrush.Drawing = checkersDrawingGroup;
 
-                this.Background = DrawingBrush;
+                this.CanvasListBoxControl.BackgroundCanvas = DrawingBrush;
             }
             else
             {
-                this.Background = null;
+                this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
             }
         }
 

@@ -8,44 +8,68 @@ namespace Ferretto.VW.InverterDriver
     public delegate void ConnectedEventHandler(object sender, ConnectedEventArgs eventArgs);
 
     /// <summary>
+    /// Delegate for the [EnquiryTelegramDone] event.
+    /// </summary>
+    public delegate void EnquiryTelegramDoneEventHandler(object sender, EnquiryTelegramDoneEventArgs eventArgs);
+
+    /// <summary>
     /// Delegate for the [Error] event.
     /// </summary>
     public delegate void ErrorEventHandler(object sender, ErrorEventArgs eventArgs);
 
     /// <summary>
-    /// Delegate for Getting Messages From the Server.
+    /// Delegate for the [LastRequestDone] event.
     /// </summary>
-    /// NOTE: To be removed
-    public delegate void GetMessageFromServerEventHandler(object sender, GetMessageFromServerEventArgs eventArgs);
+    public delegate void LastRequestDoneEventHandler(object sender, LastRequestDoneEventArgs eventArgs);
 
     /// <summary>
-    /// Delegate for the [OperationDone] event.
+    /// Delegate for the [SelectTelegramDone] event.
     /// </summary>
-    public delegate void OperationDoneEventHandler(object sender, OperationDoneEventArgs eventArgs);
+    public delegate void SelectTelegramDoneEventHandler(object sender, SelectTelegramDoneEventArgs eventArgs);
 
     /// <summary>
     /// [Connected] event arguments.
     /// </summary>
     public class ConnectedEventArgs : EventArgs, IConnectedEventArgs
     {
-        #region Fields
-
-        private readonly bool state;
-
-        #endregion Fields
-
         #region Constructors
 
         public ConnectedEventArgs(bool State)
         {
-            this.state = State;
+            this.State = State;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public bool State => this.state;
+        public bool State { get; }
+
+        #endregion Properties
+    }
+
+    /// <summary>
+    /// [EnquiryTelegramDone] event arguments.
+    /// </summary>
+    public class EnquiryTelegramDoneEventArgs : EventArgs, IEnquiryTelegramDoneEventArgs
+    {
+        #region Constructors
+
+        public EnquiryTelegramDoneEventArgs(ParameterID paramID, object value, ValueDataType type)
+        {
+            this.ParamID = paramID;
+            this.Value = value;
+            this.Type = type;
+        }
+
+        #endregion Constructors
+
+        #region Properties
+
+        public ParameterID ParamID { get; }
+
+        public ValueDataType Type { get; }
+        public object Value { get; }
 
         #endregion Properties
     }
@@ -55,71 +79,65 @@ namespace Ferretto.VW.InverterDriver
     /// </summary>
     public class ErrorEventArgs : EventArgs, IErrorEventArgs
     {
-        #region Fields
-
-        private readonly InverterDriverErrors errorCode;
-
-        #endregion Fields
-
         #region Constructors
 
         public ErrorEventArgs(InverterDriverErrors error)
         {
-            this.errorCode = error;
+            this.ErrorCode = error;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public InverterDriverErrors ErrorCode => this.errorCode;
+        public InverterDriverErrors ErrorCode { get; }
 
         #endregion Properties
     }
 
     /// <summary>
-    /// [GetMessageFromServer] event arguments.
+    /// [LastRequestDone] event arguments.
     /// </summary>
-    /// Note: To be removed
-    public class GetMessageFromServerEventArgs : EventArgs, IGetMessageFromServerEventArgs
+    public class LastRequestDoneEventArgs : EventArgs, ILastRequestDoneEventArgs
     {
         #region Constructors
 
-        public GetMessageFromServerEventArgs(string Msg, CommandId cmdId)
+        public LastRequestDoneEventArgs(bool state)
         {
-            this.Message = Msg;
-            this.CmdId = cmdId;
+            this.State = state;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public CommandId CmdId { get; }
-        public string Message { get; }
+        public bool State { get; }
 
         #endregion Properties
     }
 
     /// <summary>
-    /// [OperationDone] event arguments.
+    /// [SelectTelegramDone] event arguments.
     /// </summary>
-    public class OperationDoneEventArgs : EventArgs, IOperationDoneEventArgs
+    public class SelectTelegramDoneEventArgs : EventArgs, ISelectTelegramDoneEventArgs
     {
         #region Constructors
 
-        public OperationDoneEventArgs(CommandId cmdId, bool result)
+        public SelectTelegramDoneEventArgs(ParameterID paramID, object value, ValueDataType type)
         {
-            this.CmdId = cmdId;
-            this.Result = result;
+            this.ParamID = paramID;
+            this.Value = value;
+            this.Type = type;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public CommandId CmdId { get; }
-        public bool Result { get; }
+        public ParameterID ParamID { get; }
+
+        public ValueDataType Type { get; }
+        public object Value { get; }
 
         #endregion Properties
     }
