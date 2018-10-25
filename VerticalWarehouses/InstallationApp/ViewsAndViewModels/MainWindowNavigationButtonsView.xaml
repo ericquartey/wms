@@ -14,17 +14,17 @@
                 <Rectangle Height="20" />
                 <Button Height="60"
                         Margin="15,0,0,5"
-                        Command="{Binding SensorsStateNavigationButtonsButtonCommand}"
+                        Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
                         Style="{StaticResource StandardMainWindowButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
-                        Command="{Binding LowSpeedMovementsTestButtonCommand}"
+                        Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
                         Style="{StaticResource StandardMainWindowButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
-                        Command="{Binding VerticalAxisCalibrationButtonCommand}"
+                        Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
                         Style="{StaticResource StandardMainWindowButtonStyle}" />
                 <Button x:Name="OpenVerifyPanelPositionPageButton"

@@ -11,7 +11,7 @@ namespace Ferretto.VW.InstallationApp
         public MainWindow()
         {
             this.InitializeComponent();
-            NavigationService.BackToVWAppEventHandler += this.HideThisMainWindow;
+            NavigationService.BackToVWAppEventHandler += () => this.Hide();
             this.DataContext = new MainWindowViewModel();
         }
 
@@ -21,22 +21,7 @@ namespace Ferretto.VW.InstallationApp
 
         public void BackToVWAppButtonMethod(object sender, MouseButtonEventArgs e)
         {
-            this.BackToVWApp();
-        }
-
-        public void InitializeNavigation()
-        {
-            NavigationService.BackToVWAppEventHandler += this.HideThisMainWindow;
-        }
-
-        private void BackToVWApp()
-        {
             NavigationService.RaiseBackToVWAppEvent();
-        }
-
-        private void HideThisMainWindow()
-        {
-            this.Hide();
         }
 
         #endregion Methods

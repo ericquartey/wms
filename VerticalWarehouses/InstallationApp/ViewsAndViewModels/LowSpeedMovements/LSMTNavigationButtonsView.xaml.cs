@@ -26,6 +26,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
         public LSMTNavigationButtonsView()
         {
             this.InitializeComponent();
+            this.DataContext = new LSMTNavigationButtonsViewModel();
         }
 
         #endregion Constructors

@@ -66,21 +66,27 @@
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml.cs">
       <DependentUpon>LSMTGateEngineView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineViewModel.cs" />
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTHorizontalEngineView.xaml.cs">
       <DependentUpon>LSMTHorizontalEngineView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTHorizontalEngineViewModel.cs" />
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTNavigationButtonsView.xaml.cs">
       <DependentUpon>LSMTNavigationButtonsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTNavigationButtonsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTVerticalEngineView.xaml.cs">
       <DependentUpon>LSMTVerticalEngineView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTVerticalEngineViewModel.cs" />
     <Compile Include="ViewsAndViewModels\MainWindowNavigationButtonsView.xaml.cs">
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndViewModels\MainWindowNavigationButtonsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml.cs">
       <DependentUpon>SSNavigationButtonsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SensorsState\SSProvaView.xaml.cs">
       <DependentUpon>SSProvaView.xaml</DependentUpon>
     </Compile>

@@ -12,6 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
         public LSMTHorizontalEngineView()
         {
             this.InitializeComponent();
+            this.DataContext = new LSMTHorizontalEngineViewModel();
         }
 
         #endregion Constructors

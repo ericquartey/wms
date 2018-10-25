@@ -3,8 +3,6 @@ using Prism.Mvvm;
 using System;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.Common.Resources;
-using System.Diagnostics;
 
 namespace Ferretto.VW.VWApp
 {
