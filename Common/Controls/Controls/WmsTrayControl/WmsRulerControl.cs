@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -27,41 +28,33 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        //Lunghezza trattini piccoli
         public static readonly DependencyProperty LittleMarkLengthProperty =
-                            DependencyProperty.Register("LittleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
-            new UIPropertyMetadata(8));
+                    DependencyProperty.Register("LittleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
+                    new UIPropertyMetadata(8));
 
         public static readonly DependencyProperty MajorIntervalHorizontalProperty =
-                            DependencyProperty.Register("MajorIntervalHorizontalProperty", typeof(int), typeof(WmsRulerControl),
+                    DependencyProperty.Register("MajorIntervalHorizontalProperty", typeof(int), typeof(WmsRulerControl),
                     new UIPropertyMetadata(100));
 
-        //Intervallo Grandi (100)
         public static readonly DependencyProperty MajorIntervalVerticalProperty =
-                    DependencyProperty.Register("MajorIntervalVerticalProperty", typeof(int), typeof(WmsRulerControl),
-            new UIPropertyMetadata(100));
+                    DependencyProperty.Register(nameof(MajorIntervalVertical), typeof(int), typeof(WmsRulerControl),
+                    new UIPropertyMetadata(100));
 
-        //Lunghezza trattini Grandi
         public static readonly DependencyProperty MarkLengthProperty =
-            DependencyProperty.Register("MarkLengthProperty", typeof(int), typeof(WmsRulerControl),
-            new UIPropertyMetadata(20));
+                    DependencyProperty.Register("MarkLengthProperty", typeof(int), typeof(WmsRulerControl),
+                    new UIPropertyMetadata(20));
 
-        //Lunghezza trattini Medi
         public static readonly DependencyProperty MiddleMarkLengthProperty =
-            DependencyProperty.Register("MiddleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
-            new UIPropertyMetadata(14));
+                    DependencyProperty.Register("MiddleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
+                    new UIPropertyMetadata(14));
 
         public static readonly DependencyProperty OrientationProperty =
-                                            DependencyProperty.Register("DisplayMode", typeof(Orientation), typeof(WmsRulerControl),
-                                                 //,new UIPropertyMetadata(Orientation.Horizontal)
-                                                 new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOrientationChanged)));
-
-        public readonly int MAJORINTERVALSTEP = 100;
+                    DependencyProperty.Register("DisplayMode", typeof(Orientation), typeof(WmsRulerControl),
+                    new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOrientationChanged)));
 
         private readonly int FONTSIZE = 10;
 
         private readonly int OFFSET_TEXT = 1;
-
         private Position origin;
 
         #endregion Fields
@@ -70,7 +63,6 @@ namespace Ferretto.Common.Controls
 
         public WmsRulerControl()
         {
-            //this.InitializeComponent();
             this.InfoRuler = new InfoRuler();
         }
 
@@ -86,22 +78,46 @@ namespace Ferretto.Common.Controls
             set { this.SetValue(LittleMarkLengthProperty, value); }
         }
 
-        //public enum OriginVertical { Top, Bottom }
         public int MajorIntervalHorizontal
         {
-            get { return (int)base.GetValue(MajorIntervalHorizontalProperty); }
+            get
+            {
+                int value = (int)base.GetValue(MajorIntervalHorizontalProperty);
+                return value;
+                //if (value <= 0)
+                //{
+                //    return 100;
+                //}
+                //else
+                //{
+                //    return value;
+                //}
+            }
             set { this.SetValue(MajorIntervalHorizontalProperty, value); }
         }
 
-        //public enum enumOrientation { Horizontal, Vertical }
+        public int MajorIntervalHorizontalPixel { get; set; }
+
         public int MajorIntervalVertical
         {
-            get { return (int)base.GetValue(MajorIntervalVerticalProperty); }
-            set
+            get
             {
-                this.SetValue(MajorIntervalVerticalProperty, value);
+                int value = (int)base.GetValue(MajorIntervalVerticalProperty);
+                return value;
+
+                //if (value <= 0)
+                //{
+                //    return 100;
+                //}
+                //else
+                //{
+                //    return value;
+                //}
             }
+            set { this.SetValue(MajorIntervalVerticalProperty, value); }
         }
+
+        public int MajorIntervalVerticalPixel { get; set; }
 
         public int MarkLength
         {
@@ -153,52 +169,27 @@ namespace Ferretto.Common.Controls
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
+
             RenderOptions.SetEdgeMode(this, EdgeMode.Aliased);
             double pseudoStartValue = 0;// StartValue;
             double ratio = 0;
-            //if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
-            //{
-            //    for (int i = 0; i < this.ActualWidth / this.MajorIntervalHorizontal; i++)
-            //    {
-            //        this.DrawHorizontalRuler(drawingContext, i, ref pseudoStartValue);
-            //    }
-            //}
-            //else
-            //{
-            //    pseudoStartValue = 0;//;StartValue;
-            //    if (this.Origin != null)
-            //    {
-            //OriginVertical originStart = OriginVertical.Top;
-            //if (this.Origin.XPosition == 0 && this.Origin.YPosition == 0)
-            //{
-            //    originStart = OriginVertical.Top;
-            //    for (int i = 0; i < this.ActualHeight / this.MajorIntervalVertical; i++)
-            //    {
-            //        this.DrawVerticalRuler(drawingContext, i, ref pseudoStartValue, originStart);
-            //    }
-            //}
-            //if (this.Origin.XPosition == 0 && this.Origin.YPosition != 0)
-            //{
-            //    pseudoStartValue = 0;
 
-            //    //originStart = OriginVertical.Bottom;
-            //    //for (int i = (int)this.ActualHeight / this.MajorIntervalVertical; i >= 0; i--)
-            //    //{
-            //    //    this.DrawVerticalRuler(drawingContext, i, ref pseudoStartValue, originStart);
-            //    //}
-            //}
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                ratio = this.ActualWidth / this.MajorIntervalHorizontal;
+                ratio = this.ActualWidth / this.MajorIntervalHorizontalPixel;
             }
             if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
             {
-                ratio = this.ActualHeight / this.MajorIntervalVertical;
+                ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
             }
-
-            for (int i = 0; i < ratio; i++)
+            Debug.WriteLine($"RulerControl: OnRender() orientation: {this.InfoRuler.OrientationRuler}, ratio: {ratio}");
+            Debug.WriteLine($"INFO: ActualWidth= {this.ActualWidth}  MajorIntervalHorizontalPixel= {this.MajorIntervalHorizontalPixel}");
+            if (!double.IsPositiveInfinity(ratio) && !double.IsNegativeInfinity(ratio))
             {
-                this.DrawVerticalRuler(drawingContext, i, ref pseudoStartValue);
+                for (int i = 0; i < ratio; i++)
+                {
+                    this.DrawRuler(drawingContext, i, ref pseudoStartValue);
+                }
             }
         }
 
@@ -210,61 +201,29 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void DrawHorizontalRuler(DrawingContext drawingContext, int i, ref double pseudoStartValue)
-        {
-            var ft = new FormattedText(
-                        (pseudoStartValue * this.MAJORINTERVALSTEP).ToString(),
-                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
-            drawingContext.DrawText(ft, new Point(i * this.MajorIntervalHorizontal - ft.Width - this.OFFSET_TEXT, this.ActualHeight - ft.Height));
-            drawingContext.DrawLine(
-                new Pen(new SolidColorBrush(Colors.Black), 2),
-                new Point(i * this.MajorIntervalHorizontal, this.MarkLength),
-                new Point(i * this.MajorIntervalHorizontal, 0));
-            drawingContext.DrawLine(
-                new Pen(new SolidColorBrush(Colors.Black), 1),
-                new Point(i * this.MajorIntervalHorizontal + (this.MajorIntervalHorizontal / 2), this.MiddleMarkLength),
-                new Point(i * this.MajorIntervalHorizontal + (this.MajorIntervalHorizontal / 2), 0));
-            for (int j = 1; j < 10; j++)
-            {
-                var newPositionX = i * this.MajorIntervalHorizontal + (((this.MajorIntervalHorizontal * j) / 10));
-                if (newPositionX < this.ActualWidth)
-                {
-                    if (j == 5)
-                    {
-                        continue;
-                    }
-                    drawingContext.DrawLine(new Pen(new SolidColorBrush(Colors.Black), 1),
-                    new Point(newPositionX, this.LittleMarkLength),
-                    new Point(newPositionX, 0));
-                }
-                else
-                {
-                    break;
-                }
-            }
-            pseudoStartValue++;
-        }
-
-        private void DrawVerticalRuler(DrawingContext drawingContext, int i, ref double psuedoStartValue)
+        private void DrawRuler(DrawingContext drawingContext, int i, ref double psuedoStartValue)
         {
             int xStart = 0, xStartMiddle = 0, xStartLittle = 0;
-            int startFrom = 0, xFinal = 0, xFinalMiddle = 0, xFinalLittle = 0, xText = 0, yText = 0;
+            int xFinal = 0, xFinalMiddle = 0, xFinalLittle = 0;
             int yStart = 0, yStartMiddle = 0, yStartLittle = 0;
             int yFinal = 0, yFinalMiddle = 0, yFinalLittle = 0;
-            int majorInterval = 0;
+            int xText = 0, yText = 0;
+            int startFrom = 0, majorInterval = 0;
 
-            var ft = new FormattedText(
-                        (psuedoStartValue * this.MAJORINTERVALSTEP).ToString(),//.ToString(),
-                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
+            FormattedText ft = null;
+
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                majorInterval = this.MajorIntervalHorizontal;
+                majorInterval = this.MajorIntervalHorizontalPixel;
+
+                ft = new FormattedText(
+                        (psuedoStartValue * //100).ToString(),
+                        this.MajorIntervalHorizontal).ToString(),
+                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
 
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    ///////////////////////////
                     startFrom = 0;
                     xStart = i * majorInterval;
                     xFinal = xStart;
@@ -272,6 +231,10 @@ namespace Ferretto.Common.Controls
                     yFinal = this.MarkLength;
                     xStartMiddle = i * majorInterval + (majorInterval / 2);
                     xFinalMiddle = xStartMiddle;
+                    //if (xFinalMiddle >= this.ActualWidth)
+                    //{
+                    //    return;
+                    //}
                     yStartMiddle = 0;
                     yFinalMiddle = this.MiddleMarkLength;
                     xText = i * majorInterval;
@@ -286,6 +249,10 @@ namespace Ferretto.Common.Controls
                     yFinal = this.MarkLength;
                     xStartMiddle = startFrom - (i * majorInterval + (majorInterval / 2));
                     xFinalMiddle = xStartMiddle;
+                    //if (xFinalMiddle <= 0)
+                    //{
+                    //    return;
+                    //}
                     yStartMiddle = 0;
                     yFinalMiddle = this.MiddleMarkLength;
                     xText = startFrom - (i * majorInterval);
@@ -295,7 +262,13 @@ namespace Ferretto.Common.Controls
             else
             {
                 //VERTICAL
-                majorInterval = this.MajorIntervalVertical;
+                majorInterval = this.MajorIntervalVerticalPixel;
+
+                ft = new FormattedText(
+                        (psuedoStartValue * //100).ToString(),
+                        this.MajorIntervalVertical).ToString(),
+                        System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                        new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
 
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
@@ -308,6 +281,10 @@ namespace Ferretto.Common.Controls
                     xFinalMiddle = this.MiddleMarkLength;
                     yStartMiddle = i * majorInterval + (majorInterval / 2);
                     yFinalMiddle = yStartMiddle;
+                    //if (yFinalMiddle > this.ActualHeight)
+                    //{
+                    //    return;
+                    //}
                     xText = (int)(this.ActualWidth - ft.Height - this.OFFSET_TEXT);
                     yText = i * majorInterval;
                 }
@@ -322,6 +299,10 @@ namespace Ferretto.Common.Controls
                     xFinalMiddle = this.MiddleMarkLength;
                     yStartMiddle = startFrom - (i * majorInterval + (majorInterval / 2));
                     yFinalMiddle = yStartMiddle;
+                    //if (yFinalMiddle <= 0)
+                    //{
+                    //    return;
+                    //}
                     xText = (int)(this.ActualWidth - ft.Height + this.OFFSET_TEXT);
                     yText = startFrom - (i * majorInterval);
                 }
@@ -334,13 +315,15 @@ namespace Ferretto.Common.Controls
                 drawingContext.Pop();
             }
             drawingContext.DrawLine(
-            new Pen(new SolidColorBrush(Colors.Black), 2),
-            new Point(xStart, yStart),
-            new Point(xFinal, yFinal));
+                new Pen(new SolidColorBrush(Colors.Black), 2),
+                new Point(xStart, yStart),
+                new Point(xFinal, yFinal));
+
             drawingContext.DrawLine(
                 new Pen(new SolidColorBrush(Colors.Black), 1),
                 new Point(xStartMiddle, yStartMiddle),
                 new Point(xFinalMiddle, yFinalMiddle));
+
             for (int j = 1; j < 10; j++)
             {
                 if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
@@ -397,7 +380,8 @@ namespace Ferretto.Common.Controls
                         }
                     }
                 }
-
+Interrupt:
+                break;
                 if (j == 5)
                 {
                     continue;

@@ -139,11 +139,12 @@ namespace Ferretto.Common.Controls
                     }
                     parentWmsTrayControl.horizontalRuler.Width = widthNewCalculated + 2;
                     parentWmsTrayControl.verticalRuler.Height = heightNewCalculated + 2;
-                    var majorIntervalStep = parentWmsTrayControl.horizontalRuler.MAJORINTERVALSTEP;
-                    parentWmsTrayControl.horizontalRuler.MajorIntervalHorizontal =
-                        (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStep, parentWmsTrayControl.horizontalRuler.Width, this.tray.Dimension.Width);
-                    parentWmsTrayControl.verticalRuler.MajorIntervalVertical =
-                        (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStep, parentWmsTrayControl.verticalRuler.Height, this.tray.Dimension.Height);
+                    var majorIntervalStepHorizontal = parentWmsTrayControl.horizontalRuler.MajorIntervalHorizontal;
+                    var majorIntervalStepVertical = parentWmsTrayControl.verticalRuler.MajorIntervalVertical;
+                    parentWmsTrayControl.horizontalRuler.MajorIntervalHorizontalPixel =
+                        (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, parentWmsTrayControl.horizontalRuler.Width, this.tray.Dimension.Width);
+                    parentWmsTrayControl.verticalRuler.MajorIntervalVerticalPixel =
+                        (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, parentWmsTrayControl.verticalRuler.Height, this.tray.Dimension.Height);
                 }
 
                 this.canvas.Background = this.BackgroundCanvas;
