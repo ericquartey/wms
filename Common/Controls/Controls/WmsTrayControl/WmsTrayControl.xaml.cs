@@ -84,6 +84,44 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public void SetBackground(bool? show)
+        {
+            if (!show.HasValue)
+            {
+                show = this.ShowBackground;
+            }
+            if (show.Value)
+            {
+                var DrawingBrush = new DrawingBrush();
+                DrawingBrush.TileMode = TileMode.Tile;
+
+                int border = 2;
+
+                int step = 100 - border;
+                double stepPixel = GraphicUtils.ConvertMillimetersToPixel(step, this.CanvasListBoxControl.Canvas.ActualWidth, this.TrayObject.Dimension.Width);
+                //double stepPixel = this.horizontalRuler.MajorIntervalHorizontalPixel;
+
+                DrawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);//25
+                DrawingBrush.ViewportUnits = BrushMappingMode.Absolute;
+
+                var gGroup = new GeometryGroup();
+                gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, stepPixel, stepPixel)));//50
+                var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
+                    , 1);
+                var checkers = new GeometryDrawing((SolidColorBrush)System.Windows.Application.Current.Resources["BorderTray"], drawingPen, gGroup);
+
+                var checkersDrawingGroup = new DrawingGroup();
+                checkersDrawingGroup.Children.Add(checkers);
+                DrawingBrush.Drawing = checkersDrawingGroup;
+
+                this.CanvasListBoxControl.BackgroundCanvas = DrawingBrush;
+            }
+            else
+            {
+                this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
+            }
+        }
+
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
@@ -122,33 +160,6 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 viewModel.UpdateTray((Tray)e.NewValue);
-            }
-        }
-
-        private void SetBackground(bool show)
-        {
-            if (show)
-            {
-                var DrawingBrush = new DrawingBrush();
-                DrawingBrush.TileMode = TileMode.Tile;
-                DrawingBrush.Viewport = new Rect(0, 0, 25, 25);
-                DrawingBrush.ViewportUnits = BrushMappingMode.Absolute;
-
-                var gGroup = new GeometryGroup();
-                gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
-                var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
-                    , 1);
-                var checkers = new GeometryDrawing((SolidColorBrush)System.Windows.Application.Current.Resources["BorderTray"], drawingPen, gGroup);
-
-                var checkersDrawingGroup = new DrawingGroup();
-                checkersDrawingGroup.Children.Add(checkers);
-                DrawingBrush.Drawing = checkersDrawingGroup;
-
-                this.CanvasListBoxControl.BackgroundCanvas = DrawingBrush;
-            }
-            else
-            {
-                this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
             }
         }
 

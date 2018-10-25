@@ -28,6 +28,14 @@ namespace Ferretto.Common.Controls
 
         #endregion Fields
 
+        #region Constructors
+
+        public WmsCanvasListBoxControl()
+        {
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public Brush BackgroundCanvas
@@ -137,6 +145,8 @@ namespace Ferretto.Common.Controls
                         (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, parentWmsTrayControl.horizontalRuler.Width, this.tray.Dimension.Width);
                     parentWmsTrayControl.verticalRuler.MajorIntervalVerticalPixel =
                         (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, parentWmsTrayControl.verticalRuler.Height, this.tray.Dimension.Height);
+                    //Update Grid
+                    parentWmsTrayControl.SetBackground(null);
                 }
 
                 this.canvas.Background = this.BackgroundCanvas;
