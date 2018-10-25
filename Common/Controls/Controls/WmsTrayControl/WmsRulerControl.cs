@@ -259,13 +259,12 @@ namespace Ferretto.Common.Controls
                 var littleMark = new Line();
                 if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
                 {
+                    littleMark.XStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / 10);
+                    littleMark.XEnd = littleMark.XStart;
+                    littleMark.YStart = 0;
+                    littleMark.YEnd = this.LittleMarkLength;
                     if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                     {
-                        startFrom = 0;
-                        littleMark.XStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / 10);
-                        littleMark.XEnd = littleMark.XStart;
-                        littleMark.YStart = 0;
-                        littleMark.YEnd = this.LittleMarkLength;
                         if (littleMark.XEnd >= this.ActualWidth)
                         {
                             break;
@@ -274,10 +273,8 @@ namespace Ferretto.Common.Controls
                     if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                     {
                         startFrom = (int)this.ActualWidth;
-                        littleMark.XStart = startFrom - (i * majorIntervalPixel + ((majorIntervalPixel * j) / 10));
+                        littleMark.XStart = startFrom - littleMark.XStart;
                         littleMark.XEnd = littleMark.XStart;
-                        littleMark.YStart = 0;
-                        littleMark.YEnd = this.LittleMarkLength;
                         if (littleMark.XEnd <= 0)
                         {
                             break;
@@ -286,13 +283,12 @@ namespace Ferretto.Common.Controls
                 }
                 else
                 {
+                    littleMark.XStart = 0;
+                    littleMark.XEnd = this.LittleMarkLength;
+                    littleMark.YStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / 10);
+                    littleMark.YEnd = littleMark.YStart;
                     if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                     {
-                        startFrom = 0;
-                        littleMark.XStart = 0;
-                        littleMark.XEnd = this.LittleMarkLength;
-                        littleMark.YStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / 10);
-                        littleMark.YEnd = littleMark.YStart;
                         if (littleMark.YEnd >= this.ActualHeight)
                         {
                             break;
@@ -301,9 +297,7 @@ namespace Ferretto.Common.Controls
                     if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                     {
                         startFrom = (int)this.ActualHeight;
-                        littleMark.XStart = 0;
-                        littleMark.XEnd = this.LittleMarkLength;
-                        littleMark.YStart = startFrom - (i * majorIntervalPixel + ((majorIntervalPixel * j) / 10));
+                        littleMark.YStart = startFrom - littleMark.YStart;
                         littleMark.YEnd = littleMark.YStart;
                         if (littleMark.YEnd <= 0)
                         {
@@ -330,39 +324,31 @@ namespace Ferretto.Common.Controls
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
-                {
-                    startFrom = 0;
-                    mark.XStart = i * majorIntervalPixel;
-                    mark.XEnd = mark.XStart;
-                    mark.YStart = 0;
-                    mark.YEnd = this.MarkLength;
-                }
+                //Ruler with origin Left
+                mark.XStart = i * majorIntervalPixel;
+                mark.XEnd = mark.XStart;
+                mark.YStart = 0;
+                mark.YEnd = this.MarkLength;
+
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
                     startFrom = (int)this.ActualWidth;
-                    mark.XStart = startFrom - (i * majorIntervalPixel);
+                    mark.XStart = startFrom - mark.XStart;
                     mark.XEnd = mark.XStart;
-                    mark.YStart = 0;
-                    mark.YEnd = this.MarkLength;
                 }
             }
             else
             {
-                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
-                {
-                    startFrom = 0;
-                    mark.XStart = 0;
-                    mark.XEnd = this.MarkLength;
-                    mark.YStart = i * majorIntervalPixel;
-                    mark.YEnd = mark.YStart;
-                }
+                //Ruler with origin Top
+                mark.YStart = i * majorIntervalPixel;
+                mark.YEnd = mark.YStart;
+                mark.XStart = 0;
+                mark.XEnd = this.MarkLength;
+
                 if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
                     startFrom = (int)this.ActualHeight;
-                    mark.XStart = 0;
-                    mark.XEnd = this.MarkLength;
-                    mark.YStart = startFrom - (i * majorIntervalPixel);
+                    mark.YStart = startFrom - mark.YStart;
                     mark.YEnd = mark.YStart;
                 }
             }
@@ -380,12 +366,13 @@ namespace Ferretto.Common.Controls
             int startFrom = 0;
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
+                middleMark.XStart = i * majorIntervalPixel + (majorIntervalPixel / 2);
+                middleMark.XEnd = middleMark.XStart;
+                middleMark.YStart = 0;
+                middleMark.YEnd = this.MiddleMarkLength;
+
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    middleMark.XStart = i * majorIntervalPixel + (majorIntervalPixel / 2);
-                    middleMark.XEnd = middleMark.XStart;
-                    middleMark.YStart = 0;
-                    middleMark.YEnd = this.MiddleMarkLength;
                     if (middleMark.XEnd >= this.ActualWidth)
                     {
                         toDraw = false;
@@ -393,10 +380,9 @@ namespace Ferretto.Common.Controls
                 }
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    middleMark.XStart = startFrom - (i * majorIntervalPixel + (majorIntervalPixel / 2));
+                    startFrom = (int)this.ActualWidth;
+                    middleMark.XStart = startFrom - middleMark.XStart;
                     middleMark.XEnd = middleMark.XStart;
-                    middleMark.YStart = 0;
-                    middleMark.YEnd = this.MiddleMarkLength;
                     if (middleMark.XEnd <= 0)
                     {
                         toDraw = false;
@@ -405,15 +391,13 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                startFrom = 0;
+                middleMark.XStart = 0;
+                middleMark.XEnd = this.MiddleMarkLength;
+                middleMark.YStart = i * majorIntervalPixel + (majorIntervalPixel / 2);
+                middleMark.YEnd = middleMark.YStart;
 
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
-                    startFrom = 0;
-                    middleMark.XStart = 0;
-                    middleMark.XEnd = this.MiddleMarkLength;
-                    middleMark.YStart = i * majorIntervalPixel + (majorIntervalPixel / 2);
-                    middleMark.YEnd = middleMark.YStart;
                     if (middleMark.YEnd >= this.ActualHeight)
                     {
                         toDraw = false;
@@ -422,9 +406,7 @@ namespace Ferretto.Common.Controls
                 if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
                     startFrom = (int)this.ActualHeight;
-                    middleMark.XStart = 0;
-                    middleMark.XEnd = this.MiddleMarkLength;
-                    middleMark.YStart = startFrom - (i * majorIntervalPixel + (majorIntervalPixel / 2));
+                    middleMark.YStart = startFrom - middleMark.YStart;
                     middleMark.YEnd = middleMark.YStart;
                     if (middleMark.YEnd <= 0)
                     {
@@ -480,11 +462,10 @@ namespace Ferretto.Common.Controls
             var position = new Position();
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
+                position.XPosition = i * majorIntervalPixel;
+                position.YPosition = (int)(this.ActualHeight - ft.Height - this.OFFSET_TEXT);
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    startFrom = 0;
-                    position.XPosition = i * majorIntervalPixel;
-                    position.YPosition = (int)(this.ActualHeight - ft.Height - this.OFFSET_TEXT);
                     if (position.XPosition >= this.ActualWidth)
                     {
                         toDraw = false;
@@ -494,8 +475,7 @@ namespace Ferretto.Common.Controls
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
                     startFrom = (int)this.ActualWidth;
-                    position.XPosition = startFrom - (i * majorIntervalPixel);
-                    position.YPosition = (int)(this.ActualHeight - ft.Height + this.OFFSET_TEXT);
+                    position.XPosition = startFrom - position.XPosition;
                     if (position.XPosition <= 0)
                     {
                         toDraw = false;
@@ -504,11 +484,10 @@ namespace Ferretto.Common.Controls
             }
             else
             {
+                position.XPosition = (int)(this.ActualWidth - ft.Height - this.OFFSET_TEXT);
+                position.YPosition = i * majorIntervalPixel;
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
-                    startFrom = 0;
-                    position.XPosition = (int)(this.ActualWidth - ft.Height - this.OFFSET_TEXT);
-                    position.YPosition = i * majorIntervalPixel;
                     if (position.YPosition >= this.ActualHeight)
                     {
                         toDraw = false;
@@ -517,8 +496,7 @@ namespace Ferretto.Common.Controls
                 if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
                     startFrom = (int)this.ActualHeight;
-                    position.XPosition = (int)(this.ActualWidth - ft.Height + this.OFFSET_TEXT);
-                    position.YPosition = startFrom - (i * majorIntervalPixel);
+                    position.YPosition = startFrom - position.YPosition;
                     if (position.YPosition <= 0)
                     {
                         toDraw = false;
