@@ -29,6 +29,18 @@ namespace Ferretto.Common.BusinessModels
         #endregion Properties
     }
 
+    public class Line
+    {
+        #region Properties
+
+        public int XEnd { get; set; }
+        public int XStart { get; set; }
+        public int YEnd { get; set; }
+        public int YStart { get; set; }
+
+        #endregion Properties
+    }
+
     public class Position
     {
         #region Properties

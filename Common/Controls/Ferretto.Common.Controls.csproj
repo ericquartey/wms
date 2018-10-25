@@ -233,6 +233,7 @@
     <Compile Include="Controls\WmsTrayControl\WmsCanvasListBoxControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsRulerControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
       <DependentUpon>WmsTrayControl.xaml</DependentUpon>
     </Compile>
