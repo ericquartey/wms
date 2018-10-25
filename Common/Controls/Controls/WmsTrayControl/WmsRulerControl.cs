@@ -7,8 +7,6 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
-    public enum Orientation { Horizontal, Vertical }
-
     public enum OriginHorizontal { Left, Right }
 
     public enum OriginVertical { Top, Bottom }
@@ -53,6 +51,7 @@ namespace Ferretto.Common.Controls
                     new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOrientationChanged)));
 
         private readonly int FONTSIZE = 10;
+        private readonly int N_MARKS = 10;
         private readonly int OFFSET_TEXT = 1;
         private Position origin;
 
@@ -156,11 +155,25 @@ namespace Ferretto.Common.Controls
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                ratio = this.ActualWidth / this.MajorIntervalHorizontalPixel;
+                if (this.ActualWidth > 0 && this.MajorIntervalHorizontalPixel > 0)
+                {
+                    ratio = this.ActualWidth / this.MajorIntervalHorizontalPixel;
+                    if (double.IsNegativeInfinity(ratio) && double.IsPositiveInfinity(ratio))
+                    {
+                        ratio = 0;
+                    }
+                }
             }
             if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
             {
-                ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
+                if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
+                {
+                    ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
+                    if (double.IsNegativeInfinity(ratio) && double.IsPositiveInfinity(ratio))
+                    {
+                        ratio = 0;
+                    }
+                }
             }
             Debug.WriteLine($"RulerControl: OnRender() orientation: {this.InfoRuler.OrientationRuler}, ratio: {ratio}");
             Debug.WriteLine($"INFO: ActualWidth= {this.ActualWidth}  MajorIntervalHorizontalPixel= {this.MajorIntervalHorizontalPixel}");
@@ -184,12 +197,12 @@ namespace Ferretto.Common.Controls
         private void DrawLittleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
         {
             int startFrom = 0;
-            for (int j = 1; j < 10; j++)
+            for (int j = 1; j < this.N_MARKS; j++)
             {
                 var littleMark = new Line();
                 if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
                 {
-                    littleMark.XStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / 10);
+                    littleMark.XStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / this.N_MARKS);
                     littleMark.XEnd = littleMark.XStart;
                     littleMark.YStart = 0;
                     littleMark.YEnd = this.LittleMarkLength;
@@ -215,7 +228,7 @@ namespace Ferretto.Common.Controls
                 {
                     littleMark.XStart = 0;
                     littleMark.XEnd = this.LittleMarkLength;
-                    littleMark.YStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / 10);
+                    littleMark.YStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / this.N_MARKS);
                     littleMark.YEnd = littleMark.YStart;
                     if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                     {
@@ -236,7 +249,7 @@ namespace Ferretto.Common.Controls
                     }
                 }
 
-                if (j == 5)
+                if (j == this.N_MARKS / 2)
                 {
                     continue;
                 }
