@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Modules.Compartment
             //Initialize without Origin, default: BOTTOM-LEFT
             this.tray = new Tray
             {
-                Dimension = new Dimension { Height = 500, Width = 1960 }
+                Dimension = new Dimension { Height = 510, Width = 1960 }
                 //,
                 //Origin = new Position { XPosition = 1960, YPosition = 0 }
             };
