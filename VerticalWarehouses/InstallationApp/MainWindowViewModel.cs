@@ -7,7 +7,6 @@ using Prism.Mvvm;
 using System.Windows.Input;
 using Prism.Commands;
 using System.Windows.Media;
-using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.InstallationApp
 {
