@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace Ferretto.VW.Utils.Source.CellsManagement
 {
@@ -38,7 +37,6 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
                 else
                 {
                     this.heightMillimiters = 0;
-                    Debug.Print("DrawerConstructor:: input height is less than 0. Height set to 0.");
                 }
             }
         }

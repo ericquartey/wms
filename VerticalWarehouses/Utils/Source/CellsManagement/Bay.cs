@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +42,6 @@ namespace Ferretto.VW.Utils.Source.CellsManagement
                 else
                 {
                     this.heightMillimiters = 0;
-                    Debug.Print("BayConstructor:: input height is less than 0. Height set to 0.");
                 }
             }
         }
