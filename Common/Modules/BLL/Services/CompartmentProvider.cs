@@ -47,6 +47,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
                    CompartmentTypeDescription = c.CompartmentType.Description,
                    ItemDescription = c.Item.Description,
+                   ItemPairingDescription = c.ItemPairing.ToString(),
                    LoadingUnitCode = c.LoadingUnit.Code,
                    Lot = c.Lot,
                    MaterialStatusDescription = c.MaterialStatus.Description,
@@ -69,13 +70,49 @@ namespace Ferretto.Common.Modules.BLL.Services
                .Where(c => c.Id == id)
                .Include(c => c.LoadingUnit)
                .Include(c => c.Item)
-               .Select(c => ProjectCompartmentDetails(c))
+               .Include(c => c.CompartmentStatus)
+               .Select(c => new CompartmentDetails
+               {
+                   Id = c.Id,
+                   Code = c.Code,
+                   LoadingUnitCode = c.LoadingUnit.Code,
+                   CompartmentTypeId = c.CompartmentTypeId,
+                   ItemPairing = (int)c.ItemPairing,
+                   ItemCode = c.Item.Code,
+                   ItemDescription = c.Item.Description,
+                   Sub1 = c.Sub1,
+                   Sub2 = c.Sub2,
+                   MaterialStatusId = c.MaterialStatusId,
+                   FifoTime = c.FifoTime,
+                   PackageTypeId = c.PackageTypeId,
+                   Lot = c.Lot,
+                   RegistrationNumber = c.RegistrationNumber,
+                   MaxCapacity = c.MaxCapacity,
+                   Stock = c.Stock,
+                   ReservedForPick = c.ReservedForPick,
+                   ReservedToStore = c.ReservedToStore,
+                   CompartmentStatusId = c.CompartmentStatusId,
+                   CompartmentStatusDescription = c.CompartmentStatus.Description,
+                   CreationDate = c.CreationDate,
+                   LastHandlingDate = c.LastHandlingDate,
+                   InventoryDate = c.InventoryDate,
+                   FirstStoreDate = c.FirstStoreDate,
+                   LastStoreDate = c.LastStoreDate,
+                   LastPickDate = c.LastPickDate,
+                   Width = c.Width,
+                   Height = c.Height,
+                   XPosition = c.XPosition,
+                   YPosition = c.YPosition
+               })
                .Single();
 
             compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
             compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
             compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
             compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            compartmentDetails.ItemPairingChoices =
+                ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
             return compartmentDetails;
         }
@@ -86,7 +123,24 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Where(c => c.ItemId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.CompartmentStatus)
-                .Select(c => ProjectCompartment(c))
+                .Include(c => c.CompartmentType)
+                .Include(c => c.Item)
+                .Include(c => c.MaterialStatus)
+                .Select(c => new Compartment
+                {
+                    Id = c.Id,
+                    Code = c.Code,
+                    CompartmentStatusDescription = c.CompartmentStatus.Description,
+                    CompartmentTypeDescription = c.CompartmentType.Description,
+                    ItemDescription = c.Item.Description,
+                    LoadingUnitCode = c.LoadingUnit.Code,
+                    Lot = c.Lot,
+                    MaterialStatusDescription = c.MaterialStatus.Description,
+                    Stock = c.Stock,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
+                    ItemPairingDescription = c.ItemPairing.ToString(),
+                })
                 .AsNoTracking();
         }
 
@@ -94,7 +148,42 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             return this.dataContext.Compartments
                 .Where(c => c.LoadingUnitId == id)
-                .Select(c => ProjectCompartmentDetails(c))
+                .Include(c => c.LoadingUnit)
+                .Include(c => c.Item)
+                .Include(c => c.CompartmentStatus)
+                .Select(c => new CompartmentDetails
+                {
+                    Id = c.Id,
+                    Code = c.Code,
+                    LoadingUnitCode = c.LoadingUnit.Code,
+                    CompartmentTypeId = c.CompartmentTypeId,
+                    ItemPairing = (int)c.ItemPairing,
+                    ItemCode = c.Item.Code,
+                    ItemDescription = c.Item.Description,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
+                    MaterialStatusId = c.MaterialStatusId,
+                    FifoTime = c.FifoTime,
+                    PackageTypeId = c.PackageTypeId,
+                    Lot = c.Lot,
+                    RegistrationNumber = c.RegistrationNumber,
+                    MaxCapacity = c.MaxCapacity,
+                    Stock = c.Stock,
+                    ReservedForPick = c.ReservedForPick,
+                    ReservedToStore = c.ReservedToStore,
+                    CompartmentStatusId = c.CompartmentStatusId,
+                    CompartmentStatusDescription = c.CompartmentStatus.Description,
+                    CreationDate = c.CreationDate,
+                    LastHandlingDate = c.LastHandlingDate,
+                    InventoryDate = c.InventoryDate,
+                    FirstStoreDate = c.FirstStoreDate,
+                    LastStoreDate = c.LastStoreDate,
+                    LastPickDate = c.LastPickDate,
+                    Width = c.Width,
+                    Height = c.Height,
+                    XPosition = c.XPosition,
+                    YPosition = c.YPosition
+                })
                 .AsNoTracking();
         }
 
@@ -122,57 +211,6 @@ namespace Ferretto.Common.Modules.BLL.Services
 
             return this.dataContext.SaveChanges();
         }
-
-        private static Compartment ProjectCompartment(DataModels.Compartment c) =>
-           new Compartment
-           {
-               Id = c.Id,
-               Code = c.Code,
-               CompartmentStatusDescription = c.CompartmentStatus?.Description,
-               CompartmentTypeDescription = c.CompartmentType?.Description,
-               ItemDescription = c.Item?.Description,
-               LoadingUnitCode = c.LoadingUnit?.Code,
-               Lot = c.Lot,
-               MaterialStatusDescription = c.MaterialStatus?.Description,
-               Stock = c.Stock,
-               Sub1 = c.Sub1,
-               Sub2 = c.Sub2,
-               ItemPairing = c.ItemPairing.ToString(),
-           };
-
-        private static CompartmentDetails ProjectCompartmentDetails(DataModels.Compartment c) =>
-            new CompartmentDetails
-            {
-                Id = c.Id,
-                Code = c.Code,
-                LoadingUnitCode = c.LoadingUnit?.Code,
-                CompartmentTypeId = c.CompartmentTypeId,
-                ItemPairing = c.ItemPairing.ToString(),
-                ItemCode = c.Item?.Code,
-                ItemDescription = c.Item?.Description,
-                Sub1 = c.Sub1,
-                Sub2 = c.Sub2,
-                MaterialStatusId = c.MaterialStatusId,
-                FifoTime = c.FifoTime,
-                PackageTypeId = c.PackageTypeId,
-                Lot = c.Lot,
-                RegistrationNumber = c.RegistrationNumber,
-                MaxCapacity = c.MaxCapacity,
-                Stock = c.Stock,
-                ReservedForPick = c.ReservedForPick,
-                ReservedToStore = c.ReservedToStore,
-                CompartmentStatusId = c.CompartmentStatusId,
-                CreationDate = c.CreationDate,
-                LastHandlingDate = c.LastHandlingDate,
-                InventoryDate = c.InventoryDate,
-                FirstStoreDate = c.FirstStoreDate,
-                LastStoreDate = c.LastStoreDate,
-                LastPickDate = c.LastPickDate,
-                Width = c.Width,
-                Height = c.Height,
-                XPosition = c.XPosition,
-                YPosition = c.YPosition
-            };
 
         #endregion Methods
     }

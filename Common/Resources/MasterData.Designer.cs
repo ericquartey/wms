@@ -79,6 +79,42 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell Information.
+        /// </summary>
+        public static string CellInformation {
+            get {
+                return ResourceManager.GetString("CellInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Location Information.
+        /// </summary>
+        public static string CellLocationInformation {
+            get {
+                return ResourceManager.GetString("CellLocationInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell saved successfully.
+        /// </summary>
+        public static string CellSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("CellSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This cell has no loading units..
+        /// </summary>
+        public static string CellWithNoLoadingUnits {
+            get {
+                return ResourceManager.GetString("CellWithNoLoadingUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string CompartmentAll {
@@ -237,6 +273,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitInformation {
             get {
                 return ResourceManager.GetString("LoadingUnitInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Units.
+        /// </summary>
+        public static string LoadingUnits {
+            get {
+                return ResourceManager.GetString("LoadingUnits", resourceCulture);
             }
         }
         

@@ -1,6 +1,8 @@
-﻿namespace Ferretto.Common.BusinessModels
+﻿using Prism.Mvvm;
+
+namespace Ferretto.Common.BusinessModels
 {
-    public class EnumerationString
+    public class EnumerationString : BindableBase
     {
         #region Constructors
 
