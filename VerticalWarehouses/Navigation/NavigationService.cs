@@ -32,6 +32,14 @@
 
         #region Methods
 
+        public static void InitializeEvents()
+        {
+            CellBlocksChangedEventHandler += InitializerMethod;
+            CellsChangedEventHandler += InitializerMethod;
+            DrawersChangedEventHandler += InitializerMethod;
+            InstallationInfoChangedEventHandler += InitializerMethod;
+        }
+
         public static void RaiseBackToVWAppEvent() => BackToVWAppEventHandler();
 
         public static void RaiseCellBlockChangedEvent() => CellBlocksChangedEventHandler();
@@ -41,6 +49,10 @@
         public static void RaiseDrawersChangedEvent() => DrawersChangedEventHandler();
 
         public static void RaiseInstallationInfoChangedEvent() => InstallationInfoChangedEventHandler();
+
+        private static void InitializerMethod()
+        {
+        }
 
         #endregion Methods
     }

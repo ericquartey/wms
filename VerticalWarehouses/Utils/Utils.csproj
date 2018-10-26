@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -59,6 +59,7 @@
     <Compile Include="Source\Configuration\General_Info.cs" />
     <Compile Include="Source\Configuration\Installation_Info.cs" />
     <Compile Include="Source\DataManager.cs" />
+    <Compile Include="Source\DataMngr.cs" />
     <Compile Include="Source\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

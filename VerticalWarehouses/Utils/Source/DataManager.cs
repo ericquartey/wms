@@ -19,7 +19,7 @@ namespace Ferretto.VW.Utils.Source
         private static List<CellBlock> cellBlocks;
         private static List<Cell> cells;
         private static List<Drawer> drawers;
-        private static Installation_Info installationInfo;
+        private static Installation_Info installationInfo = new Installation_Info();
 
         #endregion Fields
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.Utils.Source
         public static List<CellBlock> CellBlocks { get => cellBlocks; set { cellBlocks = value; RaiseCellBlocksChangedEvent(); } }
         public static List<Cell> Cells { get => cells; set { cells = value; RaiseCellsChangedEvent(); } }
         public static List<Drawer> Drawers { get => drawers; set { drawers = value; RaiseDrawersChangedEvent(); } }
-        public static General_Info GeneralInfo { get; set; }
+        public static General_Info GeneralInfo { get; set; } = new General_Info();
         public static Installation_Info InstallationInfo { get => installationInfo; set { installationInfo = value; RaiseInstallationInfoChangedEvent(); } }
 
         #endregion Properties
@@ -37,30 +37,24 @@ namespace Ferretto.VW.Utils.Source
 
         public static void InitializeDataManager()
         {
-            if (File.Exists(JSON_GENERAL_INFO_PATH))
+            if (File.Exists(JSON_GENERAL_INFO_PATH) && File.Exists(JSON_INSTALLATION_INFO_PATH))
             {
-                var json = File.ReadAllText(JSON_GENERAL_INFO_PATH);
-                JsonConvert.DeserializeAnonymousType(json, GeneralInfo);
-            }
-            if (File.Exists(JSON_INSTALLATION_INFO_PATH))
-            {
-                var json = File.ReadAllText(JSON_INSTALLATION_INFO_PATH);
-                JsonConvert.DeserializeAnonymousType(json, InstallationInfo);
+                var _InstallationInfo = new Installation_Info();
+                var _GeneralInfo = new General_Info();
+                var json0 = File.ReadAllText(JSON_GENERAL_INFO_PATH);
+                JsonConvert.DeserializeAnonymousType(json0, _GeneralInfo);
+                var json1 = File.ReadAllText(JSON_INSTALLATION_INFO_PATH);
+                JsonConvert.DeserializeAnonymousType(json1, _InstallationInfo);
+
+                GeneralInfo = _GeneralInfo;
+                InstallationInfo = _InstallationInfo;
             }
         }
 
         public static void UpdateInstallationInfoFile()
         {
             var json = JsonConvert.SerializeObject(InstallationInfo, Formatting.Indented);
-            if (File.Exists(JSON_INSTALLATION_INFO_PATH))
-            {
-                File.Delete(JSON_INSTALLATION_INFO_PATH);
-                File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
-            }
+            File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
         }
 
         private static void RaiseCellBlocksChangedEvent()
@@ -80,7 +74,6 @@ namespace Ferretto.VW.Utils.Source
 
         private static void RaiseInstallationInfoChangedEvent()
         {
-            UpdateInstallationInfoFile();
             NavigationService.RaiseInstallationInfoChangedEvent();
         }
 
