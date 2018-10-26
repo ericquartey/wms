@@ -42,6 +42,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
 
             this.NavigationService.Register<CellsView, CellsViewModel>();
+            this.NavigationService.Register<CellDetailsView, CellDetailsViewModel>();
 
             this.NavigationService.Register<CompartmentsView, CompartmentsViewModel>();
             this.NavigationService.Register<CompartmentDetailsView, CompartmentDetailsViewModel>();

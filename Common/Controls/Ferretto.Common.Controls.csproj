@@ -233,6 +233,7 @@
     <Compile Include="Controls\WmsTrayControl\WmsCanvasListBoxControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
+    <Compile Include="Controls\WmsTrayControl\WmsRulerControl.cs" />
     <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
       <DependentUpon>WmsTrayControl.xaml</DependentUpon>
     </Compile>
@@ -253,6 +254,7 @@
     <Compile Include="Interfaces\IHistoryViewService.cs" />
     <Compile Include="Interfaces\INavigableView.cs" />
     <Compile Include="Interfaces\INavigationService.cs" />
+    <Compile Include="Interfaces\IRefreshDataEntityViewModel.cs" />
     <Compile Include="Interfaces\IWmsGridViewModel.cs" />
     <Compile Include="Interfaces\IWmsHistoryView.cs" />
     <Compile Include="Markup\NameOfExtension.cs" />

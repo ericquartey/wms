@@ -9,6 +9,7 @@ using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core.Native;
 using Ferretto.Common.Modules.BLL.Models;
+using static Ferretto.Common.Controls.WmsRulerControl;
 
 namespace Ferretto.Common.Controls
 {

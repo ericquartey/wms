@@ -19,7 +19,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Label>
+                        <Label Style="{DynamicResource ControlLabelStyle}">
                             <Label.Content>
                                 <MultiBinding Converter="{StaticResource DNC}"
                                               ConverterParameter="EditValue">
@@ -37,13 +37,13 @@
                                           AutoComplete="{TemplateBinding AutoComplete}"
                                           CausesValidation="False"
                                           DisplayMember="{TemplateBinding DisplayMember}"
-                                          EditValue="{TemplateBinding EditValue}"
+                                          EditValue="{Binding Path=EditValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           ImmediatePopup="True"
                                           IncrementalFiltering="True"
                                           IsManipulationEnabled="True"
                                           IsTextEditable="{TemplateBinding IsTextEditable}"
-                                          ItemsSource="{TemplateBinding ItemsSource}"                                          
-                                          ShowCustomItems="False"                                          
+                                          ItemsSource="{TemplateBinding ItemsSource}"
+                                          ShowCustomItems="False"
                                           ValidateOnEnterKeyPressed="False"
                                           ValidateOnTextInput="False"
                                           ValueMember="{TemplateBinding ValueMember}">

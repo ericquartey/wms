@@ -6,35 +6,17 @@
 
         public delegate void BackToVWAppEvent();
 
-        public delegate void CurrentInstallationProcedureCompleteEvent();
-
         #endregion Delegates
 
         #region Events
 
         public static event BackToVWAppEvent BackToVWAppEventHandler;
 
-        public static event CurrentInstallationProcedureCompleteEvent CurrentInstallationProcedureCompleteEventHandler;
-
         #endregion Events
 
         #region Methods
 
-        public static void RaiseAndResetCurrentInstallationProcedureCompleteEvent()
-        {
-            if (CurrentInstallationProcedureCompleteEventHandler != null)
-            {
-                CurrentInstallationProcedureCompleteEventHandler();
-            }
-        }
-
-        public static void RaiseBackToVWAppEvent()
-        {
-            if (BackToVWAppEventHandler != null)
-            {
-                BackToVWAppEventHandler();
-            }
-        }
+        public static void RaiseBackToVWAppEvent() => BackToVWAppEventHandler();
 
         #endregion Methods
     }

@@ -602,111 +602,13 @@ namespace Ferretto.VW.InverterDriver
         {
             // Parsing and check the information of telegram
 
-            // ----------------------------
-            // ----------------------------
-            paramID = ParameterID.STATUS_WORD_PARAM;
-            retValue = null;
+            var t = new Telegram();
+            t.ParseDataBuffer(telegram, telegram.Length, out bool error);
 
-            const byte BIT_MASK_6 = 0x40;
-            const byte N_RESERVED_BYTES = 4;
+            paramID = t.ParameterIDFromParse;
+            retValue = t.RetValueFromParse;
 
-            if (telegram.Length == 0)
-            {
-                return false;
-            }
-
-            // header
-            var header = telegram[0];
-            var typeOfOperation = (header == 0x00) ? TypeOfRequest.SendRequest : TypeOfRequest.SettingRequest;
-
-            // check error condition on header
-            var bError = ((header & BIT_MASK_6) == 0x40);
-            if (bError)
-            {
-                logger.Log(LogLevel.Debug, String.Format(" < Response => Error"));
-                return false;
-            }
-
-            // Number of bytes
-            var nBytes = telegram[1];
-
-            // parameter No
-            var parameterNo = new byte[2];
-            Array.Copy(telegram, 4, parameterNo, 0, 2);
-            parameterNo.Reverse();
-            paramID = ParameterIDClass.Instance.ValueToParameterIDCode(BitConverter.ToInt16(parameterNo, 0));
-
-            var valueType = ParameterIDClass.Instance.GetDataValueType(paramID);
-
-            // parameter value
-            var nBytesForValue = nBytes - (N_RESERVED_BYTES);
-            var parameterValue = new byte[nBytesForValue];
-            Array.Copy(telegram, 6, parameterValue, 0, nBytesForValue);
-            parameterValue.Reverse();
-
-            var checkNumberOfBytes = false;
-            switch (valueType)
-            {
-                case ValueDataType.Byte: checkNumberOfBytes = nBytesForValue == 1; break;
-                case ValueDataType.Float: checkNumberOfBytes = nBytesForValue == 4; break;
-                case ValueDataType.Double: checkNumberOfBytes = nBytesForValue == 8; break;
-                case ValueDataType.Int16: checkNumberOfBytes = nBytesForValue == 2; break;
-                case ValueDataType.Int32: checkNumberOfBytes = nBytesForValue == 4; break;
-                case ValueDataType.String: checkNumberOfBytes = true; break;
-            }
-
-            if (checkNumberOfBytes)
-            {
-                switch (valueType)
-                {
-                    case ValueDataType.Byte:
-                        {
-                            var value = parameterValue[0];
-                            retValue = this.decode_ParameterValue(value, ValueDataType.Byte);
-                            break;
-                        }
-                    case ValueDataType.Float:
-                        {
-                            var value = BitConverter.ToSingle(parameterValue, 0);
-                            retValue = this.decode_ParameterValue(value, ValueDataType.Float);
-                            break;
-                        }
-                    case ValueDataType.Double:
-                        {
-                            var value = BitConverter.ToDouble(parameterValue, 0);
-                            retValue = this.decode_ParameterValue(value, ValueDataType.Double);
-                            break;
-                        }
-                    case ValueDataType.Int16:
-                        {
-                            var value = BitConverter.ToInt16(parameterValue, 0);
-                            retValue = this.decode_ParameterValue(value, ValueDataType.Int16);
-                            break;
-                        }
-                    case ValueDataType.Int32:
-                        {
-                            var value = BitConverter.ToInt32(parameterValue, 0);
-                            retValue = this.decode_ParameterValue(value, ValueDataType.Int32);
-                            break;
-                        }
-                    case ValueDataType.String:
-                        {
-                            var value = BitConverter.ToString(parameterValue);
-                            retValue = this.decode_ParameterValue(value, ValueDataType.String);
-                            break;
-                        }
-                }
-            }
-            else
-            {
-                retValue = null;
-            }
-
-            logger.Log(LogLevel.Debug, String.Format(" < Response => TypeOf:{0}, ParamID:{1}, return Value:{2}    OffsetTime: {3} ms", typeOfOperation, paramID.ToString(), retValue.ToString(), offsetTime_ms));
-            // ----------------------------
-            // ----------------------------
-
-            return true;
+            return error;
         }
 
         private void send_request_to_get_IOEmergency_state()
@@ -741,149 +643,16 @@ namespace Ferretto.VW.InverterDriver
             {
                 case TypeOfRequest.SendRequest:
                     {
-                        // --------
-                        //telegramToSend = Telegram.BuildReadPacket(currentRequest.ParameterID, currentRequest.SysIndex, currentRequest.DsIndex);
-                        // --------
-
-                        // ---------------------------------
-                        // ---------------------------------
-                        var nBytesOfTelegram = 6;
-                        telegramToSend = new byte[nBytesOfTelegram];
-                        Array.Clear(telegramToSend, 0, nBytesOfTelegram);
-
-                        // header : Bit7 ==> 0: Read
-                        telegramToSend[0] = 0x00;
-                        telegramToSend[0] |= 0 << 7;
-
-                        // No. bytes
-                        telegramToSend[1] = 4;
-
-                        // Sys
-                        telegramToSend[2] = this.currentRequest.SystemIndex;
-
-                        // Ds
-                        telegramToSend[3] = this.currentRequest.DataSetIndex;
-
-                        // Parameter No.
-                        var ans = new byte[2];
-                        var parameterNo = new byte[sizeof(short)];
-                        parameterNo = BitConverter.GetBytes(Convert.ToInt16(this.currentRequest.ParameterID));
-
-                        parameterNo.CopyTo(ans, 0);
-
-                        Array.Copy(ans, 0, telegramToSend, 4, 2);
-
-                        logger.Log(LogLevel.Debug, String.Format(" > Request => TypeOf:{0}, ParamID:{1}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString()));
-
-                        // -----------------------------------
-                        // -----------------------------------
-
+                        var telegram = new Telegram(); 
+                        telegramToSend = telegram.BuildReadPacket(Convert.ToByte(currentRequest.SystemIndex), Convert.ToByte(currentRequest.DataSetIndex), Convert.ToInt16(currentRequest.ParameterID));
                         break;
+                        
                     }
 
                 case TypeOfRequest.SettingRequest:
                     {
-                        // --------
-                        //telegramToSend = Telegram.BuildWritePacket(currentRequest.ParameterID, currentRequest.SysIndex, currentRequest.DsIndex, currentRequest.ParameterValueInt32);
-                        // --------
-
-                        // ---------------------------------
-                        // ---------------------------------
-                        var size = 0;
-                        var type = ParameterIDClass.Instance.GetDataValueType(this.currentRequest.ParameterID);
-                        switch (type)
-                        {
-                            case ValueDataType.Byte: size = 1; break;
-                            case ValueDataType.Int16: size = 2; break;
-                            case ValueDataType.Int32: size = 4; break;
-                            case ValueDataType.Float: size = 4; break;
-                        }
-
-                        var nBytesOfTelegram = 6 + size;
-                        telegramToSend = new byte[nBytesOfTelegram];
-                        Array.Clear(telegramToSend, 0, nBytesOfTelegram);
-
-                        // header : Bit7 ==> 1: Write
-                        telegramToSend[0] = 0x00;
-                        telegramToSend[0] |= 1 << 7;
-
-                        // No. bytes
-                        telegramToSend[1] = 6;
-
-                        // Sys
-                        telegramToSend[2] = this.currentRequest.SystemIndex;
-
-                        // Ds
-                        telegramToSend[3] = this.currentRequest.DataSetIndex;
-
-                        // Parameter No.
-                        var ans = new byte[2];
-                        var parameterNo = new byte[sizeof(short)];
-                        parameterNo = BitConverter.GetBytes(Convert.ToInt16(this.currentRequest.ParameterID));
-                        parameterNo.CopyTo(ans, 0);
-
-                        Array.Copy(ans, 0, telegramToSend, 4, 2);
-
-                        // Value parameter No
-                        switch (type)
-                        {
-                            case ValueDataType.Byte:
-                                {
-                                    var value = Convert.ToByte(this.currentRequest.Value);
-
-                                    ans = new byte[size];
-                                    var valueBytes = new byte[size];
-                                    valueBytes = BitConverter.GetBytes(value);
-                                    valueBytes.CopyTo(ans, 0);
-                                    Array.Copy(ans, 0, telegramToSend, 6, size);
-
-                                    logger.Log(LogLevel.Debug, String.Format(" > Request => TypeOf:{0}, ParamID:{1} Value:{2}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString(), value));
-                                    break;
-                                }
-                            case ValueDataType.Float:
-                                {
-                                    float value = this.encode_ParameterValue(this.currentRequest.Value, type);
-
-                                    ans = new byte[size];
-                                    var valueBytes = new byte[size];
-                                    valueBytes = BitConverter.GetBytes(value);
-                                    valueBytes.CopyTo(ans, 0);
-                                    Array.Copy(ans, 0, telegramToSend, 6, size);
-
-                                    logger.Log(LogLevel.Debug, String.Format(" > Request => TypeOf:{0}, ParamID:{1} Value:{2}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString(), value));
-                                    break;
-                                }
-                            case ValueDataType.Int16:
-                                {
-                                    var value = Convert.ToInt16(this.encode_ParameterValue(this.currentRequest.Value, type));
-
-                                    ans = new byte[size];
-                                    var valueBytes = new byte[size];
-                                    valueBytes = BitConverter.GetBytes(value);
-                                    valueBytes.CopyTo(ans, 0);
-                                    Array.Copy(ans, 0, telegramToSend, 6, size);
-
-                                    logger.Log(LogLevel.Debug, String.Format(" > Request => TypeOf:{0}, ParamID:{1} Value:{2}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString(), value));
-                                    break;
-                                }
-                            case ValueDataType.Int32:
-                                {
-                                    var value = this.encode_ParameterValue(this.currentRequest.Value, type);
-
-                                    ans = new byte[size];
-                                    var valueBytes = new byte[size];
-                                    valueBytes = BitConverter.GetBytes(value);
-                                    valueBytes.CopyTo(ans, 0);
-                                    Array.Copy(ans, 0, telegramToSend, 6, size);
-
-                                    logger.Log(LogLevel.Debug, String.Format(" > Request => TypeOf:{0}, ParamID:{1} Value:{2}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString(), value));
-                                    break;
-                                }
-                        }
-
-                        // -----------------------------------
-                        // -----------------------------------
-
+                        var telegram = new Telegram();
+                        telegramToSend = telegram.BuildWritePacket(Convert.ToByte(currentRequest.SystemIndex), Convert.ToByte(currentRequest.DataSetIndex), Convert.ToInt16(currentRequest.ParameterID), currentRequest.DataType, currentRequest.Value);
                         break;
                     }
             }
