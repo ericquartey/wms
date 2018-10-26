@@ -2,10 +2,5 @@
 {
     public sealed class MachineDetails : BusinessObject
     {
-        #region Properties
-
-
-
-        #endregion Properties
     }
 }

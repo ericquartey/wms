@@ -35,10 +35,10 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> CompartmentStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
-        public int? CompartmentStatusId { get; set; }
+        public string CompartmentStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
-        public string CompartmentStatusDescription { get; set; }
+        public int? CompartmentStatusId { get; set; }
 
         public IEnumerable<Enumeration> CompartmentTypeChoices { get; set; }
 
@@ -74,10 +74,10 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemDescription_extended), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 
-        public IEnumerable<Enumeration> ItemPairingChoices { get; set; }
-
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
         public int ItemPairing { get; set; }
+
+        public IEnumerable<Enumeration> ItemPairingChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }

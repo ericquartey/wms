@@ -15,11 +15,11 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ICellProvider cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
-        private IDataSource<LoadingUnitDetails> loadingUnitsDataSource;
+        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private CellDetails cell;
         private bool cellHasLoadingUnits;
+        private IDataSource<LoadingUnitDetails> loadingUnitsDataSource;
         private object modelSelectionChangedSubscription;
         private ICommand revertCommand;
         private ICommand saveCommand;
@@ -38,10 +38,23 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<LoadingUnitDetails> LoadingUnitsDataSource
+        public CellDetails Cell
         {
-            get => this.loadingUnitsDataSource;
-            set => this.SetProperty(ref this.loadingUnitsDataSource, value);
+            get => this.cell;
+            set
+            {
+                if (!this.SetProperty(ref this.cell, value))
+                {
+                    return;
+                }
+                this.RefreshData();
+            }
+        }
+
+        public bool CellHasLoadingUnits
+        {
+            get => this.cellHasLoadingUnits;
+            set => this.SetProperty(ref this.cellHasLoadingUnits, value);
         }
 
         public LoadingUnitDetails CurrentLoadingUnit
@@ -60,23 +73,10 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public CellDetails Cell
+        public IDataSource<LoadingUnitDetails> LoadingUnitsDataSource
         {
-            get => this.cell;
-            set
-            {
-                if (!this.SetProperty(ref this.cell, value))
-                {
-                    return;
-                }
-                this.RefreshData();
-             }
-        }
-
-        public bool CellHasLoadingUnits
-        {
-            get => this.cellHasLoadingUnits;
-            set => this.SetProperty(ref this.cellHasLoadingUnits, value);
+            get => this.loadingUnitsDataSource;
+            set => this.SetProperty(ref this.loadingUnitsDataSource, value);
         }
 
         public ICommand RevertCommand => this.revertCommand ??
@@ -98,6 +98,16 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Properties
 
         #region Methods
+
+        public void RefreshData()
+        {
+            this.LoadingUnitsDataSource = null;
+            this.LoadingUnitsDataSource = this.cell != null
+                ? this.dataSourceService
+                    .GetAll<LoadingUnitDetails>(nameof(CellDetailsViewModel), this.cell.Id)
+                    .Single()
+                : null;
+        }
 
         protected override void OnAppear()
         {
@@ -153,15 +163,5 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         #endregion Methods
-
-        public void RefreshData()
-        {
-            this.LoadingUnitsDataSource = null;
-            this.LoadingUnitsDataSource = this.cell != null
-                ? this.dataSourceService
-                    .GetAll<LoadingUnitDetails>(nameof(CellDetailsViewModel), this.cell.Id)
-                    .Single()
-                : null;
-        }
     }
 }

@@ -7,9 +7,9 @@ namespace Ferretto.Common.Modules.BLL
     {
         #region Methods
 
-        bool HasAnyCompartments(int itemId);
-
         IQueryable<LoadingUnitDetails> GetByCellId(int id);
+
+        bool HasAnyCompartments(int itemId);
 
         #endregion Methods
     }

@@ -27,10 +27,10 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
-        public string AbcClassId { get; set; }
+        public string AbcClassDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
-        public string AbcClassDescription { get; set; }
+        public string AbcClassId { get; set; }
 
         public int AisleId { get; set; }
 
@@ -44,17 +44,15 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCellPairing), ResourceType = typeof(BusinessObjects))]
         public int CellPairing { get; set; }
 
-        public string CellPairingDetails { get; set; }
-
         public IEnumerable<Enumeration> CellPairingChoices { get; set; }
-
+        public string CellPairingDetails { get; set; }
         public IEnumerable<Enumeration> CellPositionChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
-        public int CellPositionId { get; set; }
+        public string CellPositionDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
-        public string CellPositionDescription { get; set; }
+        public int CellPositionId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
@@ -95,18 +93,18 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<EnumerationString> LoadingUnitStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
-        public string LoadingUnitStatusId { get; set; }
+        public string LoadingUnitStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
-        public string LoadingUnitStatusDescription { get; set; }
+        public string LoadingUnitStatusId { get; set; }
 
         public IEnumerable<Enumeration> LoadingUnitTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
-        public int LoadingUnitTypeId { get; set; }
+        public string LoadingUnitTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
-        public string LoadingUnitTypeDescription { get; set; }
+        public int LoadingUnitTypeId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitNotes), ResourceType = typeof(BusinessObjects))]
         public string Note { get; set; }

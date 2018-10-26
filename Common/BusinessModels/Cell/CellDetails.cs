@@ -70,10 +70,10 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.priority, value);
         }
 
-        public IEnumerable<Enumeration> SideChoices { get; set; }
-
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
         public int Side { get; set; }
+
+        public IEnumerable<Enumeration> SideChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? XCoordinate { get; set; }

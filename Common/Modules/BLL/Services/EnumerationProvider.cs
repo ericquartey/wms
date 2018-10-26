@@ -25,6 +25,20 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
+        public IQueryable<Enumeration> GetAislesByAreaId(int areaId)
+        {
+            return this.dataContext.Aisles
+                .AsNoTracking()
+                .Include(a => a.Area)
+                .Where(a => a.AreaId == areaId)
+                .OrderBy(a => a.Area.Name)
+                .ThenBy(a => a.Name)
+                .Select(a => new Enumeration(
+                    a.Id,
+                    $"{a.Area.Name} - {a.Name}")
+                );
+        }
+
         public IQueryable<EnumerationString> GetAllAbcClasses()
         {
             return this.dataContext.AbcClasses
@@ -142,20 +156,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Select(c => new Enumeration(
                     c.Id,
                     $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
-                );
-        }
-
-        public IQueryable<Enumeration> GetAislesByAreaId(int areaId)
-        {
-            return this.dataContext.Aisles
-                .AsNoTracking()
-                .Include(a => a.Area)
-                .Where(a => a.AreaId == areaId)
-                .OrderBy(a => a.Area.Name)
-                .ThenBy(a => a.Name)
-                .Select(a => new Enumeration(
-                    a.Id,
-                    $"{a.Area.Name} - {a.Name}")
                 );
         }
 

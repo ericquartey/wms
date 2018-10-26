@@ -22,6 +22,12 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CellFloor), ResourceType = typeof(BusinessObjects))]
         public int? Floor { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CellLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
+        public int LoadingUnitsCount { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellLoadingUnitsDescription), ResourceType = typeof(BusinessObjects))]
+        public string LoadingUnitsDescription { get; set; }
+
         [Display(Name = nameof(BusinessObjects.CellNumber), ResourceType = typeof(BusinessObjects))]
         public int? Number { get; set; }
 
@@ -36,12 +42,6 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
         public string Type { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.CellLoadingUnitsCount), ResourceType = typeof(BusinessObjects))]
-        public int LoadingUnitsCount { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.CellLoadingUnitsDescription), ResourceType = typeof(BusinessObjects))]
-        public string LoadingUnitsDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? XCoordinate { get; set; }

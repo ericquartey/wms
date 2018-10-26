@@ -60,7 +60,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     Floor = c.Floor,
                     Number = c.CellNumber,
                     Priority = c.Priority,
-                    Side = (int) c.Side,
+                    Side = (int)c.Side,
                     XCoordinate = c.XCoordinate,
                     YCoordinate = c.YCoordinate,
                     ZCoordinate = c.ZCoordinate,

@@ -89,7 +89,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
                     Note = l.Note,
-                    CellPairing = (int) l.CellPairing,
+                    CellPairing = (int)l.CellPairing,
                     CellPairingDetails = l.CellPairing.ToString(),
                     ReferenceType = l.Reference.ToString(),
                     Height = l.Height,
@@ -138,7 +138,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
                     Note = l.Note,
-                    CellPairing = (int) l.CellPairing,
+                    CellPairing = (int)l.CellPairing,
                     CellPairingDetails = l.CellPairing.ToString(),
                     ReferenceType = l.Reference.ToString(),
                     Height = l.Height,
@@ -168,10 +168,10 @@ namespace Ferretto.Common.Modules.BLL.Services
             }
 
             loadingUnitDetails.CellPairingChoices =
-                ( (DataModels.Pairing[]) Enum.GetValues(typeof(DataModels.Pairing)) )
-                .Select(i => new Enumeration((int) i, i.ToString())).ToList();
+                ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
             loadingUnitDetails.ReferenceTypeChoices =
-                ( (DataModels.ReferenceType[]) Enum.GetValues(typeof(DataModels.ReferenceType)) )
+                ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
                 .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
             loadingUnitDetails.CellChoices = this.enumerationProvider.GetCellsByAreaId(loadingUnitDetails.AreaId);
 

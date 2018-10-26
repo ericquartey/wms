@@ -99,6 +99,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        public void RefreshData()
+        {
+            this.CompartmentsDataSource = null;
+            this.CompartmentsDataSource = this.loadingUnit != null
+                ? this.dataSourceService
+                    .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
+                    .Single()
+                : null;
+        }
+
         protected override void OnAppear()
         {
             this.LoadData();
@@ -153,15 +163,5 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         #endregion Methods
-
-        public void RefreshData()
-        {
-            this.CompartmentsDataSource = null;
-            this.CompartmentsDataSource = this.loadingUnit != null
-                ? this.dataSourceService
-                    .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
-                    .Single()
-                : null;
-        }
     }
 }
