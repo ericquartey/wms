@@ -16,41 +16,41 @@
                         Margin="15,0,0,5"
                         Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
                         Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
                         Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.VerticalAxisCalibration}"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
                         Content="{x:Static res:InstallationApp.GateControl}"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
                         Content="{x:Static res:InstallationApp.ResolutionCalibration}"
                         IsEnabled="{Binding IsSetYResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
                         Content="{x:Static res:InstallationApp.BeltBurnishing}"
                         IsEnabled="{Binding IsBeltBurnishingButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
                         Content="{x:Static res:InstallationApp.GateSetUp}"
                         IsEnabled="False"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
                         Content="{x:Static res:InstallationApp.VerifyWeightController}"
                         IsEnabled="False"
-                        Style="{StaticResource StandardMainWindowButtonStyle}" />
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             </StackPanel>
         </ScrollViewer>
     </Border>

@@ -15,33 +15,33 @@
                     Margin="15,0,0,5"
                     Command="{Binding DataContext.SsVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.VerticalAxis}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Button Height="60"
                     Margin="15,0,0,5"
-                    Command="{Binding}"
+                    Command="{Binding DataContext.SsCradleButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Cradle}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Button Height="60"
                     Margin="15,0,0,5"
-                    Command="{Binding}"
+                    Command="{Binding DataContext.SsBaysButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Bays}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Button Height="60"
                     Margin="15,0,0,5"
-                    Command="{Binding}"
+                    Command="{Binding DataContext.SsGateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Gate}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Button Height="60"
                     Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsProvaViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Command="{Binding DataContext.SsVariousInputsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.VariousInputs}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Rectangle Height="190" />
             <Button Height="60"
                     Margin="15,0,0,5"
                     Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:General.Back}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
         </StackPanel>
     </Border>
 </myType:BaseView>

@@ -35,6 +35,34 @@ namespace Ferretto.VW.Utils.Source
 
         #region Methods
 
+        public static void InitializeDataManager()
+        {
+            if (File.Exists(JSON_GENERAL_INFO_PATH))
+            {
+                var json = File.ReadAllText(JSON_GENERAL_INFO_PATH);
+                JsonConvert.DeserializeAnonymousType(json, GeneralInfo);
+            }
+            if (File.Exists(JSON_INSTALLATION_INFO_PATH))
+            {
+                var json = File.ReadAllText(JSON_INSTALLATION_INFO_PATH);
+                JsonConvert.DeserializeAnonymousType(json, InstallationInfo);
+            }
+        }
+
+        public static void UpdateInstallationInfoFile()
+        {
+            var json = JsonConvert.SerializeObject(InstallationInfo, Formatting.Indented);
+            if (File.Exists(JSON_INSTALLATION_INFO_PATH))
+            {
+                File.Delete(JSON_INSTALLATION_INFO_PATH);
+                File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
+            }
+            else
+            {
+                File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
+            }
+        }
+
         private static void RaiseCellBlocksChangedEvent()
         {
             NavigationService.RaiseCellBlockChangedEvent();
@@ -54,20 +82,6 @@ namespace Ferretto.VW.Utils.Source
         {
             UpdateInstallationInfoFile();
             NavigationService.RaiseInstallationInfoChangedEvent();
-        }
-
-        private static void UpdateInstallationInfoFile()
-        {
-            var json = JsonConvert.SerializeObject(InstallationInfo, Formatting.Indented);
-            if (File.Exists(JSON_INSTALLATION_INFO_PATH))
-            {
-                File.Delete(JSON_INSTALLATION_INFO_PATH);
-                File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
-            }
-            else
-            {
-                File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
-            }
         }
 
         #endregion Methods

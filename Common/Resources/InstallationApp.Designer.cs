@@ -88,24 +88,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Axis calibrated successfully.
-        /// </summary>
-        public static string AxisCalibratedSuccessfully {
-            get {
-                return ResourceManager.GetString("AxisCalibratedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Axis not calibrated yet.
-        /// </summary>
-        public static string AxisNotCalibratedYet {
-            get {
-                return ResourceManager.GetString("AxisNotCalibratedYet", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Backward.
         /// </summary>
         public static string Backward {
@@ -457,6 +439,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Origin Vertical Axis.
+        /// </summary>
+        public static string OriginVerticalAxis {
+            get {
+                return ResourceManager.GetString("OriginVerticalAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output:.
         /// </summary>
         public static string Output {
@@ -516,6 +507,24 @@ namespace Ferretto.Common.Resources {
         public static string SensorsState {
             get {
                 return ResourceManager.GetString("SensorsState", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Axis Origin set correctly..
+        /// </summary>
+        public static string SetOriginVerticalAxisCompleted {
+            get {
+                return ResourceManager.GetString("SetOriginVerticalAxisCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Axis Origin not set..
+        /// </summary>
+        public static string SetOriginVerticalAxisNotCompleted {
+            get {
+                return ResourceManager.GetString("SetOriginVerticalAxisNotCompleted", resourceCulture);
             }
         }
         
@@ -624,15 +633,6 @@ namespace Ferretto.Common.Resources {
         public static string VerticalAxisBrake {
             get {
                 return ResourceManager.GetString("VerticalAxisBrake", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vertical Axis Calibration.
-        /// </summary>
-        public static string VerticalAxisCalibration {
-            get {
-                return ResourceManager.GetString("VerticalAxisCalibration", resourceCulture);
             }
         }
         

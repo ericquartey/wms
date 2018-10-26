@@ -83,6 +83,18 @@
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\MainWindowNavigationButtonsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSBaysView.xaml.cs">
+      <DependentUpon>SSBaysView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSBaysViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSCradleView.xaml.cs">
+      <DependentUpon>SSCradleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSCradleViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSGateView.xaml.cs">
+      <DependentUpon>SSGateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSGateViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml.cs">
       <DependentUpon>SSNavigationButtonsView.xaml</DependentUpon>
     </Compile>
@@ -91,6 +103,10 @@
       <DependentUpon>SSProvaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SensorsState\SSProvaViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSVariousInputsView.xaml.cs">
+      <DependentUpon>SSVariousInputsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSVariousInputsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml.cs">
       <DependentUpon>SSVerticalAxisView.xaml</DependentUpon>
     </Compile>
@@ -127,11 +143,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSBaysView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSCradleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSGateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SensorsState\SSProvaView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSVariousInputsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

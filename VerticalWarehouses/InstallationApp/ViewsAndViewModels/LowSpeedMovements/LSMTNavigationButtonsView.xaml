@@ -15,23 +15,23 @@
                     Margin="15,0,0,5"
                     Command="{Binding DataContext.LSMTVerticalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTVerticalEngineButton}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Button Height="60"
                     Margin="15,0,0,5"
                     Command="{Binding DataContext.LSMTHorizontalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTHorizontalEngineButton}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Button Height="60"
                     Margin="15,0,0,5"
                     Command="{Binding DataContext.LSMTGateEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTGateEngineButton}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             <Rectangle Height="320" />
             <Button Height="60"
                     Margin="15,0,0,5"
                     Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:General.Back}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
         </StackPanel>
     </Border>
 </myType:BaseView>

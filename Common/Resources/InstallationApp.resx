@@ -225,16 +225,16 @@
     <value>Verify Weight Controller</value>
     <comment>Title - Button text</comment>
   </data>
-  <data name="VerticalAxisCalibration" xml:space="preserve">
-    <value>Vertical Axis Calibration</value>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Origin Vertical Axis</value>
     <comment>Title - Button text</comment>
   </data>
-  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
-    <value>Axis calibrated successfully</value>
+  <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
+    <value>Vertical Axis Origin set correctly.</value>
     <comment>Label text</comment>
   </data>
-  <data name="AxisNotCalibratedYet" xml:space="preserve">
-    <value>Axis not calibrated yet</value>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Vertical Axis Origin not set.</value>
     <comment>Label text</comment>
   </data>
   <data name="LowerBound" xml:space="preserve">

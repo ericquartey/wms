@@ -1,0 +1,20 @@
+﻿using System.Windows.Controls;
+
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+{
+    /// <summary>
+    /// Interaction logic for SSBaysView.xaml
+    /// </summary>
+    public partial class SSBaysView : UserControl
+    {
+        #region Constructors
+
+        public SSBaysView()
+        {
+            this.InitializeComponent();
+            this.DataContext = new SSBaysViewModel();
+        }
+
+        #endregion Constructors
+    }
+}

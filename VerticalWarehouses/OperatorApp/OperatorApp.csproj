@@ -87,15 +87,5 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
-      <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
-      <Name>CustomControls</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Navigation\Navigation.csproj">
-      <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
-      <Name>Navigation</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

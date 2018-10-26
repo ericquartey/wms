@@ -27,6 +27,18 @@
         <DataTemplate DataType="{x:Type sensorsState:SSVerticalAxisViewModel}">
             <sensorsState:SSVerticalAxisView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSCradleViewModel}">
+            <sensorsState:SSCradleView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSBaysViewModel}">
+            <sensorsState:SSBaysView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSGateViewModel}">
+            <sensorsState:SSGateView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSVariousInputsViewModel}">
+            <sensorsState:SSVariousInputsView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTGateEngineViewModel}">
             <lowSpeedMovements:LSMTGateEngineView />
         </DataTemplate>
@@ -61,7 +73,7 @@
                 Grid.Column="0"
                 Background="{StaticResource FerrettoPureWhite}"
                 BorderThickness="0">
-            <Image Margin="25,15,0,0"
+            <Image Margin="35,15,0,0"
                    Source="/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
                    Stretch="Uniform" />
         </Border>
@@ -179,7 +191,7 @@
                         Grid.Column="0"
                         Width="260"
                         Height="610"
-                        Margin="20,20,0,0"
+                        Margin="20,10,0,0"
                         VerticalAlignment="Center"
                         Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
