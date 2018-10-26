@@ -48,22 +48,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessObject.cs" />
-    <Compile Include="Cell.cs" />
-    <Compile Include="CellDetails.cs" />
-    <Compile Include="Compartment.cs" />
-    <Compile Include="CompartmentDetails.cs" />
-    <Compile Include="CompartmentStockDetails.cs" />
-    <Compile Include="CompartmentType.cs" />
-    <Compile Include="Enumeration.cs" />
-    <Compile Include="EnumerationString.cs" />
-    <Compile Include="GraphicObject.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemDetails.cs" />
-    <Compile Include="AllowedItemInCompartment.cs" />
-    <Compile Include="LoadingUnit.cs" />
-    <Compile Include="LoadingUnitDetails.cs" />
-    <Compile Include="MachineDetails.cs" />
-    <Compile Include="Machine.cs" />
+    <Compile Include="Cell\Cell.cs" />
+    <Compile Include="Cell\CellDetails.cs" />
+    <Compile Include="Compartment\Compartment.cs" />
+    <Compile Include="Compartment\CompartmentDetails.cs" />
+    <Compile Include="Compartment\CompartmentStockDetails.cs" />
+    <Compile Include="Compartment\CompartmentType.cs" />
+    <Compile Include="Enumeration\Enumeration.cs" />
+    <Compile Include="Enumeration\EnumerationString.cs" />
+    <Compile Include="GraphicObject\GraphicObject.cs" />
+    <Compile Include="Item\AllowedItemInCompartment.cs" />
+    <Compile Include="Item\Item.cs" />
+    <Compile Include="Item\ItemDetails.cs" />
+    <Compile Include="LoadingUnit\LoadingUnit.cs" />
+    <Compile Include="LoadingUnit\LoadingUnitDetails.cs" />
+    <Compile Include="Machine\Machine.cs" />
+    <Compile Include="Machine\MachineDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
