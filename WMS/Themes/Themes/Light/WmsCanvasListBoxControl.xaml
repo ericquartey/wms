@@ -26,5 +26,10 @@
 
         </DataTemplate.Triggers>
     </DataTemplate>
+    <ControlTemplate x:Key="ListViewNewTemplate"
+                     TargetType="{x:Type ctrls:WmsCanvasListBoxControl}">
+        <Border BorderBrush="Black"
+                BorderThickness="1" />
+    </ControlTemplate>
 
 </ResourceDictionary>

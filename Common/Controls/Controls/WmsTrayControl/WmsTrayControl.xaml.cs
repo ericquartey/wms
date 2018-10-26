@@ -17,6 +17,10 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty ColoringFuncCompartmentProperty = DependencyProperty.Register(
+                    nameof(ColoringFuncCompartment), typeof(Func<CompartmentDetails, Color>), typeof(WmsTrayControl),
+                    new FrameworkPropertyMetadata(new PropertyChangedCallback(OnColoringFuncCompartmentChanged)));
+
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
                     nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
@@ -33,6 +37,7 @@ namespace Ferretto.Common.Controls
                             nameof(TrayObject), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayObjectChanged)));
 
         private readonly int BORDER = 2;
+
         private BindingList<CompartmentDetails> compartments;
 
         #endregion Fields
@@ -50,6 +55,15 @@ namespace Ferretto.Common.Controls
         #endregion Constructors
 
         #region Properties
+
+        public Func<CompartmentDetails, Color> ColoringFuncCompartment
+        {
+            get { return (Func<CompartmentDetails, Color>)this.GetValue(CompartmentsProperty); }
+            set
+            {
+                this.SetValue(CompartmentsProperty, value);
+            }
+        }
 
         public BindingList<CompartmentDetails> Compartments
         {
@@ -136,6 +150,17 @@ namespace Ferretto.Common.Controls
                 (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, this.verticalRuler.Height, this.TrayObject.Dimension.Height);
             //Update Grid
             this.SetBackground(this.ShowBackground);
+            //Border
+            this.CanvasBorder.Width = widthNewCalculated + 3;
+            this.CanvasBorder.Height = heightNewCalculated + 3;
+        }
+
+        private static void OnColoringFuncCompartmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                viewModel.ColoringFuncCompartment = (Func<CompartmentDetails, Color>)e.NewValue;
+            }
         }
 
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

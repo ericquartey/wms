@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Media;
 using DevExpress.Mvvm;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
@@ -13,8 +14,14 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
+        private Func<CompartmentDetails, Color> coloringFuncCompartment = x => Colors.Green;
+
         private CompartmentDetails compartmentSelected;
+
+        // { R = 100, G = 100, B = 100 };
         private ICommand createNewCompartmentCommand;
+
+        private IEnumerable<Enumeration> filterColoringCompartment;// = new IEnumerable<>
         private bool showBackground;
 
         private Tray tray;
@@ -31,6 +38,18 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Properties
 
+        public Func<CompartmentDetails, Color> ColoringFuncCompartment
+        {
+            get
+            {
+                return this.coloringFuncCompartment;
+            }
+            set
+            {
+                this.coloringFuncCompartment = value;
+            }
+        }
+
         public CompartmentDetails CompartmentSelected
         {
             get => this.compartmentSelected;
@@ -43,6 +62,8 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                  (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
+
+        public IEnumerable<Enumeration> FilterColoringCompartment { get => filterColoringCompartment; }
 
         public bool ShowBackground
         {

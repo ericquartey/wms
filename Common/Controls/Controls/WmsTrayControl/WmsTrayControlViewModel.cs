@@ -15,6 +15,8 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private static readonly Func<CompartmentDetails, Color> DefaultColorCompartment = x => Colors.Red;
+        private Func<CompartmentDetails, Color> coloringFuncCompartment = DefaultColorCompartment;
         private ObservableCollection<WmsBaseCompartment> items;
 
         private int left;
@@ -24,6 +26,8 @@ namespace Ferretto.Common.Controls
         private Tray tray;
 
         #endregion Fields
+
+        // { R = 0, G = 0, B = 100 };
 
         #region Constructors
 
@@ -40,6 +44,23 @@ namespace Ferretto.Common.Controls
         #endregion Events
 
         #region Properties
+
+        public Func<CompartmentDetails, Color> ColoringFuncCompartment
+        {
+            get { return this.coloringFuncCompartment; }
+            set
+            {
+                if (value == null)
+                {
+                    this.coloringFuncCompartment = DefaultColorCompartment;
+                }
+                else
+                {
+                    this.coloringFuncCompartment = value;
+                }
+                this.NotifyPropertyChanged(nameof(this.ColoringFuncCompartment));
+            }
+        }
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
 
@@ -144,7 +165,7 @@ namespace Ferretto.Common.Controls
                         Height = (int)(compartment.Height * ratio),
                         Left = (int)(compartment.XPosition * ratio),
                         Top = (int)(compartment.YPosition * ratio),
-                        ColorFill = Colors.Aquamarine.ToString(),
+                        ColorFill = this.ColoringFuncCompartment(compartment).ToString(),//Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
                         IsSelected = true
                     });
@@ -195,7 +216,7 @@ namespace Ferretto.Common.Controls
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
-                    ColorFill = Colors.Aquamarine.ToString(),
+                    ColorFill = this.ColoringFuncCompartment(compartment).ToString(),//Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
                     RectangleBorderThickness = 1,
                     IsSelected = true

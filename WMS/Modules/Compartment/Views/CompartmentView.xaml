@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="2*" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="4*" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
@@ -23,14 +24,17 @@
             SHOW TRAY's BACKGROUND
         </CheckBox>
         <compartment:InputCompartmentView Grid.Row="1" />
+        <wms:ComboBox Grid.Row="2"
+                      ItemsSource="{Binding FilterColoringCompartment}" />
         <wms:WmsTrayControl x:Name="Canvas"
-                            Grid.Row="2"
+                            Grid.Row="3"
                             Margin="0,0,0,0"
+                            ColoringFuncCompartment="{Binding ColoringFuncCompartment}"
                             Compartments="{Binding Tray.Compartments, Mode=OneWay}"
                             SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />
-        <compartment:ListCompartmentsView Grid.Row="3" />
+        <compartment:ListCompartmentsView Grid.Row="4" />
     </Grid>
 
 </wms:WmsView>
