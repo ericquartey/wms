@@ -81,7 +81,6 @@
                         <wms:TextBox Grid.Row="1"
                                      FieldName="Description" />
                         <wms:ComboBox Grid.Row="2"
-                                      Margin="0,0,20,0"
                                       EditValue="{Binding ItemCategoryId}"
                                       ItemsSource="{Binding Path=ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
