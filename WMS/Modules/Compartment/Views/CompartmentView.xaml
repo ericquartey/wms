@@ -24,7 +24,10 @@
             SHOW TRAY's BACKGROUND
         </CheckBox>
         <compartment:InputCompartmentView Grid.Row="1" />
-        <wms:ComboBox Grid.Row="2"
+        <wms:ComboBox x:Name="FilterColorComboBox"
+                      Grid.Row="2"
+                      Width="auto"
+                      EditValue="{Binding Selected, Mode=TwoWay}"
                       ItemsSource="{Binding FilterColoringCompartment}" />
         <wms:WmsTrayControl x:Name="Canvas"
                             Grid.Row="3"

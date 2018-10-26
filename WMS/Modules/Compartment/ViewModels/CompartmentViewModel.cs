@@ -14,14 +14,55 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
-        private Func<CompartmentDetails, Color> coloringFuncCompartment = x => Colors.Green;
+        private readonly List<Enumeration> filterColoringCompartment = new List<Enumeration>
+        {
+            new Enumeration(1, "% Filling"),
+            new Enumeration(2, "Linked Item (Null/ Any)"),
+            new Enumeration(3, "Type Scompartment"),
+            new Enumeration(4, "Article"),
+        };
+
+        //private Func<CompartmentDetails, Color> coloringFuncCompartment = x => Colors.Green;
+        private Func<CompartmentDetails, Color> coloringFuncCompartment = delegate (CompartmentDetails compartment)
+        {
+            //= x => Colors.Green;
+            Color color = Colors.Gray;
+            if (compartment.FilterColoring != null)
+            {
+                var idFilter = compartment.FilterColoring.Id;
+                switch (idFilter)
+                {
+                    case 1:
+                        color = Colors.Violet;
+                        break;
+
+                    case 2:
+                        color = Colors.Orange;
+                        break;
+
+                    case 3:
+                        color = Colors.Green;
+                        break;
+
+                    case 4:
+                        color = Colors.Blue;
+                        break;
+
+                    default:
+                        color = Colors.Black;
+                        break;
+                }
+            }
+            return color;
+        };
 
         private CompartmentDetails compartmentSelected;
 
         // { R = 100, G = 100, B = 100 };
         private ICommand createNewCompartmentCommand;
 
-        private IEnumerable<Enumeration> filterColoringCompartment;// = new IEnumerable<>
+        private Enumeration selected;
+
         private bool showBackground;
 
         private Tray tray;
@@ -61,9 +102,26 @@ namespace Ferretto.WMS.Modules.Compartment
         }
 
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
-                 (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
+                         (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
-        public IEnumerable<Enumeration> FilterColoringCompartment { get => filterColoringCompartment; }
+        public List<Enumeration> FilterColoringCompartment { get => this.filterColoringCompartment; }
+
+        public Enumeration Selected
+        {
+            get
+            {
+                if (this.selected == null)
+                {
+                    this.selected = this.FilterColoringCompartment[0];
+                }
+                return this.selected;
+            }
+            set
+            {
+                this.selected = value;
+                this.ChangeFilterColoringCompartment(this.selected);
+            }
+        }
 
         public bool ShowBackground
         {
@@ -94,6 +152,15 @@ namespace Ferretto.WMS.Modules.Compartment
             this.RaisePropertyChanged(nameof(this.Tray.Compartments));
 
             this.InitializeInput();
+        }
+
+        private void ChangeFilterColoringCompartment(Enumeration selectedFilterColor)
+        {
+            foreach (var compartment in this.Tray.Compartments)
+            {
+                compartment.FilterColoring = selectedFilterColor;
+            }
+            this.RaisePropertyChanged(nameof(this.Tray.Compartments));
         }
 
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)

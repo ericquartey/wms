@@ -6,6 +6,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <Grid>
+        <Label x:Name="UnitMetric"
+               Width="25"
+               Height="25"
+               Margin="0,0"
+               Content="MM" />
         <ctrls:WmsRulerControl x:Name="horizontalRuler"
                                Width="{Binding Tray.Ruler.Dimension.Width}"
                                Height="25"

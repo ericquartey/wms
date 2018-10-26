@@ -21,7 +21,11 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
+        #region Events
+
         public event EventHandler UpdateCompartmentEvent;
+
+        #endregion Events
 
         #region Properties
 
@@ -47,6 +51,8 @@ namespace Ferretto.Common.BusinessModels
             get => this.fifoTime;
             set => this.SetIfStrictlyPositive(ref this.fifoTime, value);
         }
+
+        public Enumeration FilterColoring { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? FirstStoreDate { get; set; }
