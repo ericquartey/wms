@@ -93,6 +93,7 @@ namespace Ferretto.VW.Utils.Source
 
         private void RaiseInstallationInfoChangedEvent()
         {
+            this.UpdateInstallationInfoFile();
             NavigationService.RaiseInstallationInfoChangedEvent();
         }
 

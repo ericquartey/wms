@@ -33,6 +33,7 @@
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
+                        Command="{Binding DataContext.ResolutionCalibrationVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.ResolutionCalibration}"
                         IsEnabled="{Binding IsSetYResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />

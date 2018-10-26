@@ -111,6 +111,10 @@
       <DependentUpon>SSVerticalAxisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SensorsState\SSVerticalAxisViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml.cs">
+      <DependentUpon>ResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationView.xaml.cs">
       <DependentUpon>VerticalAxisCalibrationView.xaml</DependentUpon>
     </Compile>
@@ -168,6 +172,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

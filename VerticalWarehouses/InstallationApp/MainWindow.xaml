@@ -54,6 +54,9 @@
         <DataTemplate DataType="{x:Type singleViews:VerticalAxisCalibrationViewModel}">
             <singleViews:VerticalAxisCalibrationView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:ResolutionCalibrationVerticalAxisViewModel}">
+            <singleViews:ResolutionCalibrationVerticalAxisView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
             <viewsAndViewModels:MainWindowNavigationButtonsView />
         </DataTemplate>

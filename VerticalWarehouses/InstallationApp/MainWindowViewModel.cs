@@ -19,6 +19,7 @@ namespace Ferretto.VW.InstallationApp
         private readonly LSMTNavigationButtonsViewModel LSMTNavigationButtonsVMInstance = new LSMTNavigationButtonsViewModel();
         private readonly LSMTVerticalEngineViewModel LSMTVerticalEngineVMInstance = new LSMTVerticalEngineViewModel();
         private readonly MainWindowNavigationButtonsViewModel MainWindowNavigationButtonsVMInstance = new MainWindowNavigationButtonsViewModel();
+        private readonly ResolutionCalibrationVerticalAxisViewModel ResolutionCalibrationVerticalAxisVMInstance = new ResolutionCalibrationVerticalAxisViewModel();
         private readonly SSBaysViewModel SSBaysVMInstance = new SSBaysViewModel();
         private readonly SSCradleViewModel SSCradleVMInstance = new SSCradleViewModel();
         private readonly SSGateViewModel SSGateVMInstance = new SSGateViewModel();
@@ -27,7 +28,6 @@ namespace Ferretto.VW.InstallationApp
         private readonly SSVariousInputsViewModel SSVariousInputsVMInstance = new SSVariousInputsViewModel();
         private readonly SSVerticalAxisViewModel SSVerticalAxisVMInstance = new SSVerticalAxisViewModel();
         private readonly VerticalAxisCalibrationViewModel VerticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel();
-
         private ICommand backToMainWindowNavigationButtonsViewCommand;
         private BindableBase contentRegionCurrentViewModel;
         private ICommand lowSpeedMovementsTestButtonCommand;
@@ -39,6 +39,7 @@ namespace Ferretto.VW.InstallationApp
         private SolidColorBrush machineOnMarchCircleFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#c5c7c4");
         private int machineOnMarchSelectionItem = 0;
         private BindableBase navigationRegionCurrentViewModel;
+        private ICommand resolutionCalibrationVerticalAxisButtonCommand;
         private ICommand ssBaysButtonCommand;
         private ICommand ssCradleButtonCommand;
         private ICommand ssGateButtonCommand;
@@ -74,6 +75,7 @@ namespace Ferretto.VW.InstallationApp
         public SolidColorBrush[] MachineOnMarchCircleFillArray { get; set; } = new SolidColorBrush[] { (SolidColorBrush)new BrushConverter().ConvertFrom("#c5c7c4")/*FerrettoLightGray*/, (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639")/*FerrettoGreen*/ };
         public Int32 MachineOnMarchSelectionItem { get => this.machineOnMarchSelectionItem; set { this.SetProperty(ref this.machineOnMarchSelectionItem, value); this.MachineOnMarchCircleFill = this.MachineOnMarchCircleFillArray[value]; } }
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
+        public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.ResolutionCalibrationVerticalAxisVMInstance; }));
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSBaysVMInstance; }));
         public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSCradleVMInstance; }));
         public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSGateVMInstance; }));

@@ -4,7 +4,9 @@ using Prism.Commands;
 using Prism.Mvvm;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
+using System.Threading;
 using Ferretto.VW.Utils.Source.Configuration;
+using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -12,15 +14,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
     {
         #region Fields
 
-        private bool enableNextButton;
-        private bool enableStartButton;
-        private bool enableStopButton;
+        private bool enableStartButton = true;
         private string lowerBound;
-        private ICommand nextButtonCommand;
         private string offset;
         private string resolution;
         private ICommand startButtonCommand;
-        private ICommand stopButtonCommand;
         private string upperBound;
 
         #endregion Fields
@@ -48,15 +46,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         #region Properties
 
-        public Boolean EnableNextButton { get => this.enableNextButton; set => this.SetProperty(ref this.enableNextButton, value); }
         public Boolean EnableStartButton { get => this.enableStartButton; set => this.SetProperty(ref this.enableStartButton, value); }
-        public Boolean EnableStopButton { get => this.enableStopButton; set => this.SetProperty(ref this.enableStopButton, value); }
         public String LowerBound { get => this.lowerBound; set { this.SetProperty(ref this.lowerBound, value); this.InputsCorrectionControlEventHandler(); } }
-        public ICommand NextButtonCommand => this.nextButtonCommand ?? (this.nextButtonCommand = new DelegateCommand(this.ExecuteNextButtonCommand));
         public String Offset { get => this.offset; set { this.SetProperty(ref this.offset, value); this.InputsCorrectionControlEventHandler(); } }
         public String Resolution { get => this.resolution; set { this.SetProperty(ref this.resolution, value); this.InputsCorrectionControlEventHandler(); } }
         public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(this.ExecuteStopButtonCommand));
         public String UpperBound { get => this.upperBound; set { this.SetProperty(ref this.upperBound, value); this.InputsCorrectionControlEventHandler(); } }
 
         #endregion Properties
@@ -85,25 +79,16 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             }
         }
 
-        private void ExecuteNextButtonCommand()
-        {
-            //TODO: implement next button functionality
-        }
-
-        private void ExecuteStartButtonCommand()
+        private async void ExecuteStartButtonCommand()
         {
             //TODO: implement start button functionality
             //Temporary stuff to check DataManager behaviour
-
+            this.EnableStartButton = false;
+            await Task.Delay(2000);
+            this.EnableStartButton = true;
             var ii = new Installation_Info();
-            ii.Belt_Burnishing = true;
             ii.Set_Y_Resolution = true;
-            DataManager.InstallationInfo = ii;
-        }
-
-        private void ExecuteStopButtonCommand()
-        {
-            //TODO: implement stop button functionality
+            DataMngr.CurrentData.InstallationInfo = ii;
         }
 
         #endregion Methods

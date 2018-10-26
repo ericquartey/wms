@@ -380,4 +380,40 @@
     <value>Gates Control</value>
     <comment>Title - Button text</comment>
   </data>
+  <data name="Move" xml:space="preserve">
+    <value>Move</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SetPosition" xml:space="preserve">
+    <value>Set Position</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ActualResolution" xml:space="preserve">
+    <value>Actual Resolution:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Initial Position:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MesuredLenght" xml:space="preserve">
+    <value>Mesured Lenght:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>New Resolution:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="RepositionLenght" xml:space="preserve">
+    <value>Reposition Lenght:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ResolutionModified" xml:space="preserve">
+    <value>Resolution Modified Correctly</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="TheoricResolution" xml:space="preserve">
+    <value>Theoric Resolution</value>
+    <comment>Label text</comment>
+  </data>
 </root>

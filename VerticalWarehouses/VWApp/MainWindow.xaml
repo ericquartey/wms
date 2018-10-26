@@ -41,10 +41,10 @@
                        Height="50" />
             <Label Margin="50,0,0,0"
                    HorizontalAlignment="Center"
-                   Content="{x:Static res:General.VertimagX}"
+                   Content="{Binding MachineModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    Style="{StaticResource StandardSplashScreenTitleTextStyle}" />
             <Label Margin="50,0,0,0"
-                   Content="Sn.125658"
+                   Content="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    Style="{StaticResource StandardBodyTextStyle}" />
             <Rectangle Name="SpaceRectangle2"
                        Height="160" />
