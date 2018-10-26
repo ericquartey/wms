@@ -34,7 +34,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
                             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
 
-        public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
+        public static readonly DependencyProperty TrayObjectProperty = DependencyProperty.Register(
                             nameof(TrayObject), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayObjectChanged)));
 
         private readonly int BORDER = 2;
@@ -57,9 +57,9 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColoringFuncCompartment
+        public Func<CompartmentDetails, Enumeration, Color> ColoringFuncCompartment
         {
-            get { return (Func<CompartmentDetails, Color>)this.GetValue(CompartmentsProperty); }
+            get { return (Func<CompartmentDetails, Enumeration, Color>)this.GetValue(CompartmentsProperty); }
             set
             {
                 this.SetValue(CompartmentsProperty, value);
@@ -92,8 +92,8 @@ namespace Ferretto.Common.Controls
 
         public Tray TrayObject
         {
-            get => (Tray)this.GetValue(TrayProperty);
-            set => this.SetValue(TrayProperty, value);
+            get => (Tray)this.GetValue(TrayObjectProperty);
+            set => this.SetValue(TrayObjectProperty, value);
         }
 
         #endregion Properties
@@ -162,7 +162,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                viewModel.ColoringFuncCompartment = (Func<CompartmentDetails, Color>)e.NewValue;
+                viewModel.ColoringFuncCompartment = (Func<CompartmentDetails, Enumeration, Color>)e.NewValue;
             }
         }
 
@@ -182,11 +182,14 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 var newCompartment = (CompartmentDetails)e.NewValue;
-                var foundCompartment = viewModel.Items.FirstOrDefault(c => c.CompartmentDetails.Id == newCompartment.Id);
-
-                if (foundCompartment != null)
+                if (viewModel.Items != null)
                 {
-                    wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
+                    var foundCompartment = viewModel.Items.FirstOrDefault(c => c.CompartmentDetails.Id == newCompartment.Id);
+
+                    if (foundCompartment != null)
+                    {
+                        wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
+                    }
                 }
             }
         }
@@ -203,8 +206,31 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
+                ////////
+                wmsTrayControl.Initialize();
+                ////////
                 viewModel.UpdateTray((Tray)e.NewValue);
             }
+        }
+
+        private void Initialize()
+        {
+            this.CanvasListBoxControl.Tray = this.TrayObject;
+            //this.tray = wmsTrayControlViewModel.Tray;
+
+            //if (this.tray != null)
+            //{
+            //var widthNewCalculated = this.ActualWidth;
+            //var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.TrayObject.Dimension.Height, widthNewCalculated, this.TrayObject.Dimension.Width);
+
+            //this.canvas.Width = widthNewCalculated;
+            //this.canvas.Height = heightNewCalculated;
+            //this.CanvasListBoxControl.Width = widthNewCalculated;
+            //this.CanvasListBoxControl.Height = heightNewCalculated;
+
+            //this.CanvasListBoxControl.OriginTray = this.TrayObject.Origin;
+            //this.originTray = this.tray.Origin;
+            //}
         }
 
         #endregion Methods

@@ -23,13 +23,13 @@ namespace Ferretto.WMS.Modules.Compartment
         };
 
         //private Func<CompartmentDetails, Color> coloringFuncCompartment = x => Colors.Green;
-        private Func<CompartmentDetails, Color> coloringFuncCompartment = delegate (CompartmentDetails compartment)
+        private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = delegate (CompartmentDetails compartment, Enumeration selectedFilter)
         {
             //= x => Colors.Green;
             Color color = Colors.Gray;
-            if (compartment.FilterColoring != null)
+            if (selectedFilter != null)
             {
-                var idFilter = compartment.FilterColoring.Id;
+                var idFilter = selectedFilter.Id;
                 switch (idFilter)
                 {
                     case 1:
@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Modules.Compartment
         // { R = 100, G = 100, B = 100 };
         private ICommand createNewCompartmentCommand;
 
-        private Enumeration selected;
+        private Enumeration selectedFilter;
 
         private bool showBackground;
 
@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColoringFuncCompartment
+        public Func<CompartmentDetails, Enumeration, Color> ColoringFuncCompartment
         {
             get
             {
@@ -106,20 +106,20 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public List<Enumeration> FilterColoringCompartment { get => this.filterColoringCompartment; }
 
-        public Enumeration Selected
+        public Enumeration SelectedFilter
         {
             get
             {
-                if (this.selected == null)
+                if (this.selectedFilter == null)
                 {
-                    this.selected = this.FilterColoringCompartment[0];
+                    this.selectedFilter = this.FilterColoringCompartment[0];
                 }
-                return this.selected;
+                return this.selectedFilter;
             }
             set
             {
-                this.selected = value;
-                this.ChangeFilterColoringCompartment(this.selected);
+                this.selectedFilter = value;
+                this.ChangeFilterColoringCompartment(this.selectedFilter);
             }
         }
 
@@ -148,17 +148,17 @@ namespace Ferretto.WMS.Modules.Compartment
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3 });
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1760, YPosition = 300, Code = "4", Id = 4 });
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 300, Code = "4", Id = 4 });
-            this.RaisePropertyChanged(nameof(this.Tray));
+            //this.RaisePropertyChanged(nameof(this.Tray));
             this.RaisePropertyChanged(nameof(this.Tray.Compartments));
 
-            this.InitializeInput();
+            //this.InitializeInput();
         }
 
         private void ChangeFilterColoringCompartment(Enumeration selectedFilterColor)
         {
             foreach (var compartment in this.Tray.Compartments)
             {
-                compartment.FilterColoring = selectedFilterColor;
+                this.SelectedFilter = selectedFilterColor;
             }
             this.RaisePropertyChanged(nameof(this.Tray.Compartments));
         }

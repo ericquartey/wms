@@ -27,7 +27,7 @@
         <wms:ComboBox x:Name="FilterColorComboBox"
                       Grid.Row="2"
                       Width="auto"
-                      EditValue="{Binding Selected, Mode=TwoWay}"
+                      EditValue="{Binding SelectedFilter, Mode=TwoWay}"
                       ItemsSource="{Binding FilterColoringCompartment}" />
         <wms:WmsTrayControl x:Name="Canvas"
                             Grid.Row="3"
@@ -36,7 +36,8 @@
                             Compartments="{Binding Tray.Compartments, Mode=OneWay}"
                             SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
-                            TrayObject="{Binding Tray, Mode=OneWay}" />
+                            TrayObject="{Binding Tray, Mode=OneWay}"/>
+        <!--  TrayObject="{Binding Tray, Mode=OneWay}"  -->
         <compartment:ListCompartmentsView Grid.Row="4" />
     </Grid>
 

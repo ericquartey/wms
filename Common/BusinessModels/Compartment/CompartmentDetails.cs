@@ -55,8 +55,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.fifoTime, value);
         }
 
-        public Enumeration FilterColoring { get; set; }
-
         [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? FirstStoreDate { get; set; }
 

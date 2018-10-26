@@ -16,10 +16,9 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private static readonly Func<CompartmentDetails, Color> DefaultColorCompartment = x => Colors.Red;
-        private Func<CompartmentDetails, Color> coloringFuncCompartment = DefaultColorCompartment;
+        private static readonly Func<CompartmentDetails, Enumeration, Color> DefaultColorCompartment = (x, y) => Colors.Red;
+        private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = DefaultColorCompartment;
         private ObservableCollection<WmsBaseCompartment> items;
-
         private int left;
         private SolidColorBrush penBrush;
         private int penThickness;
@@ -27,8 +26,6 @@ namespace Ferretto.Common.Controls
         private Tray tray;
 
         #endregion Fields
-
-        // { R = 0, G = 0, B = 100 };
 
         #region Constructors
 
@@ -40,13 +37,14 @@ namespace Ferretto.Common.Controls
 
         #region Events
 
+        // { R = 0, G = 0, B = 100 };
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion Events
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColoringFuncCompartment
+        public Func<CompartmentDetails, Enumeration, Color> ColoringFuncCompartment
         {
             get { return this.coloringFuncCompartment; }
             set
@@ -64,7 +62,6 @@ namespace Ferretto.Common.Controls
         }
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
-
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -96,6 +93,8 @@ namespace Ferretto.Common.Controls
                 this.NotifyPropertyChanged(nameof(this.PenThickness));
             }
         }
+
+        public Enumeration SelectedFilter { get; set; }
 
         public int Top
         {
@@ -167,7 +166,7 @@ namespace Ferretto.Common.Controls
                         Height = (int)(compartment.Height * ratio),
                         Left = (int)(compartment.XPosition * ratio),
                         Top = (int)(compartment.YPosition * ratio),
-                        ColorFill = this.ColoringFuncCompartment(compartment).ToString(),//Colors.Aquamarine.ToString(),
+                        ColorFill = this.ColoringFuncCompartment(compartment, this.SelectedFilter).ToString(),//Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
                         IsSelected = true
                     });
@@ -218,7 +217,7 @@ namespace Ferretto.Common.Controls
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
-                    ColorFill = this.ColoringFuncCompartment(compartment).ToString(),//Colors.Aquamarine.ToString(),
+                    ColorFill = this.ColoringFuncCompartment(compartment, this.SelectedFilter).ToString(),//Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
                     RectangleBorderThickness = 1,
                     IsSelected = true
