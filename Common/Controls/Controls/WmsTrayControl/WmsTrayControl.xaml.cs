@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Ferretto.Common.Controls
 {
@@ -145,9 +146,11 @@ namespace Ferretto.Common.Controls
             var majorIntervalStepHorizontal = this.horizontalRuler.MajorIntervalHorizontal;
             var majorIntervalStepVertical = this.verticalRuler.MajorIntervalVertical;
             this.horizontalRuler.MajorIntervalHorizontalPixel =
-                (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, this.horizontalRuler.Width, this.TrayObject.Dimension.Width);
+                (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, widthNewCalculated, this.TrayObject.Dimension.Width);
             this.verticalRuler.MajorIntervalVerticalPixel =
-                (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, this.verticalRuler.Height, this.TrayObject.Dimension.Height);
+                (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, widthNewCalculated, this.TrayObject.Dimension.Width);
+            Debug.WriteLine($"DRAW-RULER: TRAY: W_PIXEL={widthNewCalculated} H_PIXEL={heightNewCalculated} W={this.TrayObject.Dimension.Width}");
+
             //Update Grid
             this.SetBackground(this.ShowBackground);
             //Border

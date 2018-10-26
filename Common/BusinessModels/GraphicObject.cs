@@ -33,10 +33,10 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        public int XEnd { get; set; }
-        public int XStart { get; set; }
-        public int YEnd { get; set; }
-        public int YStart { get; set; }
+        public double XEnd { get; set; }
+        public double XStart { get; set; }
+        public double YEnd { get; set; }
+        public double YStart { get; set; }
 
         #endregion Properties
     }
@@ -55,15 +55,32 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
+        public readonly int DimensionRuler = 25;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
+
+        private Dimension dimension;
 
         #endregion Fields
 
         #region Properties
 
         public BindingList<CompartmentDetails> Compartments => this.compartments;
-        public Dimension Dimension { get; set; }
+
+        public Dimension Dimension
+        {
+            get => this.dimension; set
+            {
+                this.dimension = value;
+                this.Ruler = new Dimension
+                {
+                    Width = this.dimension.Width + this.DimensionRuler,
+                    Height = this.dimension.Height + this.DimensionRuler
+                };
+            }
+        }
+
         public Position Origin { get; set; }
+        public Dimension Ruler { get; set; }
 
         #endregion Properties
 

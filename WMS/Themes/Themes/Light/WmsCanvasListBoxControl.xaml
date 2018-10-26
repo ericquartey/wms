@@ -5,17 +5,18 @@
 
     <DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
 
-        <Rectangle x:Name="Rectangle"
-                   Width="{Binding Width, Mode=TwoWay}"
-                   Height="{Binding Height, Mode=TwoWay}"
-                   Fill="{Binding ColorFill, Mode=TwoWay}"
-                   Stroke="{Binding Selected, Mode=TwoWay}"
-                   StrokeThickness="{Binding RectangleBorderThickness, Mode=TwoWay}">
-            <!--<Rectangle.InputBindings>
+        <Border Width="{Binding Width, Mode=TwoWay}"
+                Height="{Binding Height, Mode=TwoWay}"
+                BorderBrush="{Binding Selected, Mode=TwoWay}"
+                BorderThickness="{Binding RectangleBorderThickness, Mode=TwoWay}">
+            <Rectangle x:Name="Rectangle"
+                       Fill="{Binding ColorFill, Mode=TwoWay}">
+                <!--<Rectangle.InputBindings>
                 <MouseBinding Command="{Binding IsSelected}"
                               Gesture="LeftClick" />
             </Rectangle.InputBindings>-->
-        </Rectangle>
+            </Rectangle>
+        </Border>
 
         <DataTemplate.Triggers>
             <Trigger Property="IsMouseOver" Value="True">

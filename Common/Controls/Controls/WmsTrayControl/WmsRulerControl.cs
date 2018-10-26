@@ -50,11 +50,14 @@ namespace Ferretto.Common.Controls
                     DependencyProperty.Register("DisplayMode", typeof(Orientation), typeof(WmsRulerControl),
                     new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOrientationChanged)));
 
+        private readonly int DIMENSION_RULER = 25;
         private readonly int FONTSIZE = 10;
         private readonly int N_MARKS = 10;
-        private readonly int OFFSET_BORDER = 4;
-        private readonly int OFFSET_BORDER_MARK = 2;
+        private readonly int OFFSET_BORDER = 2;//4
+        private readonly int OFFSET_BORDER_MARK = 1;//2
         private readonly int OFFSET_TEXT = 1;
+        private readonly int WIDTH_MARK = 1;
+        private readonly int WIDTH_MARK_MINOR = 1;
         private Position origin;
 
         #endregion Fields
@@ -157,6 +160,8 @@ namespace Ferretto.Common.Controls
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
+                this.MarkLength = (int)this.ActualHeight;
+
                 if (this.ActualWidth > 0 && this.MajorIntervalHorizontalPixel > 0)
                 {
                     ratio = this.ActualWidth / this.MajorIntervalHorizontalPixel;
@@ -168,6 +173,8 @@ namespace Ferretto.Common.Controls
             }
             if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
             {
+                this.MarkLength = (int)this.ActualWidth;
+
                 if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
                 {
                     ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
@@ -198,7 +205,7 @@ namespace Ferretto.Common.Controls
 
         private void DrawLittleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
         {
-            int startFrom = 0;
+            double startFrom = 0;
             for (int j = 1; j < this.N_MARKS; j++)
             {
                 var littleMark = new Line();
@@ -210,8 +217,8 @@ namespace Ferretto.Common.Controls
                     littleMark.YEnd = this.LittleMarkLength;
                     if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                     {
-                        littleMark.XStart += this.OFFSET_BORDER;
-                        littleMark.XEnd += this.OFFSET_BORDER;
+                        //littleMark.XStart += this.OFFSET_BORDER;
+                        //littleMark.XEnd += this.OFFSET_BORDER;
                         if (littleMark.XEnd >= this.ActualWidth)
                         {
                             break;
@@ -219,11 +226,11 @@ namespace Ferretto.Common.Controls
                     }
                     if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                     {
-                        startFrom = (int)this.ActualWidth;
+                        startFrom = this.ActualWidth;
                         littleMark.XStart = startFrom - littleMark.XStart;
                         littleMark.XEnd = littleMark.XStart;
-                        littleMark.XStart -= this.OFFSET_BORDER;
-                        littleMark.XEnd -= this.OFFSET_BORDER;
+                        //littleMark.XStart -= this.OFFSET_BORDER;
+                        //littleMark.XEnd -= this.OFFSET_BORDER;
                         if (littleMark.XEnd <= 0)
                         {
                             break;
@@ -238,8 +245,8 @@ namespace Ferretto.Common.Controls
                     littleMark.YEnd = littleMark.YStart;
                     if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                     {
-                        littleMark.YStart += this.OFFSET_BORDER;
-                        littleMark.YEnd += this.OFFSET_BORDER;
+                        //littleMark.YStart += this.OFFSET_BORDER;
+                        //littleMark.YEnd += this.OFFSET_BORDER;
                         if (littleMark.YEnd >= this.ActualHeight)
                         {
                             break;
@@ -247,11 +254,11 @@ namespace Ferretto.Common.Controls
                     }
                     if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                     {
-                        startFrom = (int)this.ActualHeight;
+                        startFrom = this.ActualHeight;
                         littleMark.YStart = startFrom - littleMark.YStart;
                         littleMark.YEnd = littleMark.YStart;
-                        littleMark.YStart -= this.OFFSET_BORDER;
-                        littleMark.YEnd -= this.OFFSET_BORDER;
+                        //littleMark.YStart -= this.OFFSET_BORDER;
+                        //littleMark.YEnd -= this.OFFSET_BORDER;
                         if (littleMark.YEnd <= 0)
                         {
                             break;
@@ -264,7 +271,7 @@ namespace Ferretto.Common.Controls
                     continue;
                 }
                 drawingContext.DrawLine(
-                                new Pen(new SolidColorBrush(Colors.Black), 1),
+                                new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK_MINOR),
                                 new Point(littleMark.XStart, littleMark.YStart),
                                 new Point(littleMark.XEnd, littleMark.YEnd));
             }
@@ -273,7 +280,7 @@ namespace Ferretto.Common.Controls
         private void DrawMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
         {
             var mark = new Line();
-            int startFrom = 0;
+            double startFrom = 0;
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
@@ -282,16 +289,16 @@ namespace Ferretto.Common.Controls
                 mark.XEnd = mark.XStart;
                 mark.YStart = 0;
                 mark.YEnd = this.MarkLength;
-                mark.XStart += this.OFFSET_BORDER_MARK;
-                mark.XEnd += this.OFFSET_BORDER_MARK;
+                //mark.XStart += this.OFFSET_BORDER_MARK;
+                //mark.XEnd += this.OFFSET_BORDER_MARK;
 
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    startFrom = (int)this.ActualWidth;
+                    startFrom = this.ActualWidth;
                     mark.XStart = startFrom - mark.XStart;
                     mark.XEnd = mark.XStart;
-                    mark.XStart -= this.OFFSET_BORDER_MARK;
-                    mark.XEnd -= this.OFFSET_BORDER_MARK;
+                    //mark.XStart -= this.OFFSET_BORDER_MARK;
+                    //mark.XEnd -= this.OFFSET_BORDER_MARK;
                 }
             }
             else
@@ -301,21 +308,21 @@ namespace Ferretto.Common.Controls
                 mark.YEnd = mark.YStart;
                 mark.XStart = 0;
                 mark.XEnd = this.MarkLength;
-                mark.YStart += this.OFFSET_BORDER_MARK;
-                mark.YEnd += this.OFFSET_BORDER_MARK;
+                //mark.YStart += this.OFFSET_BORDER_MARK;
+                //mark.YEnd += this.OFFSET_BORDER_MARK;
 
                 if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
-                    startFrom = (int)this.ActualHeight;
+                    startFrom = this.ActualHeight;
                     mark.YStart = startFrom - mark.YStart;
                     mark.YEnd = mark.YStart;
-                    mark.YStart -= this.OFFSET_BORDER_MARK;
-                    mark.YEnd -= this.OFFSET_BORDER_MARK;
+                    //mark.YStart -= this.OFFSET_BORDER_MARK;
+                    //mark.YEnd -= this.OFFSET_BORDER_MARK;
                 }
             }
 
             drawingContext.DrawLine(
-                new Pen(new SolidColorBrush(Colors.Black), 2),
+                new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK),
                 new Point(mark.XStart, mark.YStart),
                 new Point(mark.XEnd, mark.YEnd));
         }
@@ -324,7 +331,7 @@ namespace Ferretto.Common.Controls
         {
             var middleMark = new Line();
             bool toDraw = true;
-            int startFrom = 0;
+            double startFrom = 0;
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
                 middleMark.XStart = i * majorIntervalPixel + (majorIntervalPixel / 2);
@@ -334,8 +341,8 @@ namespace Ferretto.Common.Controls
 
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    middleMark.XStart += this.OFFSET_BORDER;
-                    middleMark.XEnd += this.OFFSET_BORDER;
+                    //middleMark.XStart += this.OFFSET_BORDER;
+                    //middleMark.XEnd += this.OFFSET_BORDER;
                     if (middleMark.XEnd >= this.ActualWidth)
                     {
                         toDraw = false;
@@ -343,11 +350,11 @@ namespace Ferretto.Common.Controls
                 }
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    startFrom = (int)this.ActualWidth;
+                    startFrom = this.ActualWidth;
                     middleMark.XStart = startFrom - middleMark.XStart;
                     middleMark.XEnd = middleMark.XStart;
-                    middleMark.XStart -= this.OFFSET_BORDER;
-                    middleMark.XEnd -= this.OFFSET_BORDER;
+                    //middleMark.XStart -= this.OFFSET_BORDER;
+                    //middleMark.XEnd -= this.OFFSET_BORDER;
                     if (middleMark.XEnd <= 0)
                     {
                         toDraw = false;
@@ -363,8 +370,8 @@ namespace Ferretto.Common.Controls
 
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
-                    middleMark.YStart += this.OFFSET_BORDER;
-                    middleMark.YEnd += this.OFFSET_BORDER;
+                    //middleMark.YStart += this.OFFSET_BORDER;
+                    //middleMark.YEnd += this.OFFSET_BORDER;
                     if (middleMark.YEnd >= this.ActualHeight)
                     {
                         toDraw = false;
@@ -372,11 +379,11 @@ namespace Ferretto.Common.Controls
                 }
                 if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
-                    startFrom = (int)this.ActualHeight;
+                    startFrom = this.ActualHeight;
                     middleMark.YStart = startFrom - middleMark.YStart;
                     middleMark.YEnd = middleMark.YStart;
-                    middleMark.YStart -= this.OFFSET_BORDER;
-                    middleMark.YEnd -= this.OFFSET_BORDER;
+                    //middleMark.YStart -= this.OFFSET_BORDER;
+                    //middleMark.YEnd -= this.OFFSET_BORDER;
 
                     if (middleMark.YEnd <= 0)
                     {
@@ -387,7 +394,7 @@ namespace Ferretto.Common.Controls
             if (toDraw)
             {
                 drawingContext.DrawLine(
-                   new Pen(new SolidColorBrush(Colors.Black), 1),
+                   new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK_MINOR),
                    new Point(middleMark.XStart, middleMark.YStart),
                    new Point(middleMark.XEnd, middleMark.YEnd));
             }

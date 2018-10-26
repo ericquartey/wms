@@ -89,6 +89,7 @@ namespace Ferretto.WMS.Modules.Compartment
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3 });
             this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1760, YPosition = 300, Code = "4", Id = 4 });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 300, Code = "4", Id = 4 });
             this.RaisePropertyChanged(nameof(this.Tray));
             this.RaisePropertyChanged(nameof(this.Tray.Compartments));
 

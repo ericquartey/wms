@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
@@ -136,6 +137,7 @@ namespace Ferretto.Common.Controls
         {
             if (this.items != null)
             {
+                Debug.WriteLine($"DRAW-COMPARTMENT: TRAY: W_PIXEL={widthTrayPixel} W={this.Tray.Dimension.Width}");
                 foreach (var i in this.items)
                 {
                     i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.Tray.Dimension.Width);
