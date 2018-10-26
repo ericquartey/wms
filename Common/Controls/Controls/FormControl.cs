@@ -25,7 +25,7 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        protected static string RetrieveLocalizedFieldName(object model, string fieldName)
+        public static string RetrieveLocalizedFieldName(object model, string fieldName)
         {
             if (model == null || fieldName == null)
             {

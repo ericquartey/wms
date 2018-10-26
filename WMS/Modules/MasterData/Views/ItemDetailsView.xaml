@@ -82,7 +82,7 @@
                                      FieldName="Description" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      FieldName="ItemCategoryId"
+                                      EditValue="{Binding ItemCategoryId}"
                                       ItemsSource="{Binding Path=ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
@@ -108,7 +108,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
-                                      FieldName="AbcClassId"
+                                      EditValue="{Binding AbcClassId}"
                                       ItemsSource="{Binding Path=AbcClassChoices}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -117,7 +117,7 @@
                                       FieldName="ReorderPoint" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
-                                      FieldName="MeasureUnitId"
+                                      EditValue="{Binding MeasureUnitId}"
                                       ItemsSource="{Binding Path=MeasureUnitChoices}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
@@ -128,7 +128,7 @@
                                       FieldName="ReorderQuantity" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      FieldName="ItemManagementTypeId"
+                                      EditValue="{Binding ItemManagementTypeId}"
                                       ItemsSource="{Binding Path=ItemManagementTypeChoices}" />
                     </Grid>
                 </GroupBox>

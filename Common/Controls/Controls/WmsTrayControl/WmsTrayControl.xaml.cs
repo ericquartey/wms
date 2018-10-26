@@ -32,6 +32,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
                             nameof(TrayObject), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayObjectChanged)));
 
+        private readonly int BORDER = 2;
         private BindingList<CompartmentDetails> compartments;
 
         #endregion Fields
@@ -84,6 +85,59 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public void SetBackground(bool? show)
+        {
+            if (show.HasValue && show.Value || this.ShowBackground)
+            {
+                var drawingBrush = new DrawingBrush();
+                drawingBrush.TileMode = TileMode.Tile;
+
+                int border = 2;
+
+                int step = 100 - border;
+                double stepPixel = GraphicUtils.ConvertMillimetersToPixel(step, this.CanvasListBoxControl.Canvas.ActualWidth, this.TrayObject.Dimension.Width);
+                //double stepPixel = this.horizontalRuler.MajorIntervalHorizontalPixel;
+
+                drawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);//25
+                drawingBrush.ViewportUnits = BrushMappingMode.Absolute;
+
+                var gGroup = new GeometryGroup();
+                gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, stepPixel, stepPixel)));//50
+                var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
+                    , 1);
+                var checkers = new GeometryDrawing((SolidColorBrush)System.Windows.Application.Current.Resources["BorderTray"], drawingPen, gGroup);
+
+                var checkersDrawingGroup = new DrawingGroup();
+                checkersDrawingGroup.Children.Add(checkers);
+                drawingBrush.Drawing = checkersDrawingGroup;
+
+                this.CanvasListBoxControl.BackgroundCanvas = drawingBrush;
+            }
+            else
+            {
+                this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
+            }
+        }
+
+        public void UpdateChildren(double widthNewCalculated, double heightNewCalculated)
+        {
+            if (this.horizontalRuler.Origin == null)
+            {
+                this.horizontalRuler.Origin = this.TrayObject.Origin;
+                this.verticalRuler.Origin = this.TrayObject.Origin;
+            }
+            this.horizontalRuler.Width = widthNewCalculated + this.BORDER;
+            this.verticalRuler.Height = heightNewCalculated + this.BORDER;
+            var majorIntervalStepHorizontal = this.horizontalRuler.MajorIntervalHorizontal;
+            var majorIntervalStepVertical = this.verticalRuler.MajorIntervalVertical;
+            this.horizontalRuler.MajorIntervalHorizontalPixel =
+                (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, this.horizontalRuler.Width, this.TrayObject.Dimension.Width);
+            this.verticalRuler.MajorIntervalVerticalPixel =
+                (int)GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, this.verticalRuler.Height, this.TrayObject.Dimension.Height);
+            //Update Grid
+            this.SetBackground(this.ShowBackground);
+        }
+
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
@@ -122,33 +176,6 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 viewModel.UpdateTray((Tray)e.NewValue);
-            }
-        }
-
-        private void SetBackground(bool show)
-        {
-            if (show)
-            {
-                var DrawingBrush = new DrawingBrush();
-                DrawingBrush.TileMode = TileMode.Tile;
-                DrawingBrush.Viewport = new Rect(0, 0, 25, 25);
-                DrawingBrush.ViewportUnits = BrushMappingMode.Absolute;
-
-                var gGroup = new GeometryGroup();
-                gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, 50, 50)));
-                var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
-                    , 1);
-                var checkers = new GeometryDrawing((SolidColorBrush)System.Windows.Application.Current.Resources["BorderTray"], drawingPen, gGroup);
-
-                var checkersDrawingGroup = new DrawingGroup();
-                checkersDrawingGroup.Children.Add(checkers);
-                DrawingBrush.Drawing = checkersDrawingGroup;
-
-                this.CanvasListBoxControl.BackgroundCanvas = DrawingBrush;
-            }
-            else
-            {
-                this.CanvasListBoxControl.BackgroundCanvas = (SolidColorBrush)System.Windows.Application.Current.Resources["TrayBackground"];
             }
         }
 
