@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -61,6 +61,55 @@ namespace Ferretto.Common.Modules.BLL.Services
         public int GetAllCount()
         {
             return this.dataContext.LoadingUnits.Count();
+        }
+
+        public IQueryable<LoadingUnitDetails> GetByCellId(int id)
+        {
+            var a = this.dataContext.LoadingUnits
+                .Where(l => l.CellId == id)
+                .Include(l => l.AbcClass)
+                .Include(l => l.CellPosition)
+                .Include(l => l.LoadingUnitStatus)
+                .Include(l => l.LoadingUnitType)
+                .ThenInclude(l => l.LoadingUnitSizeClass)
+                .Include(l => l.Cell)
+                .ThenInclude(c => c.Aisle)
+                .Select(l => new LoadingUnitDetails
+                {
+                    Id = l.Id,
+                    Code = l.Code,
+                    AbcClassId = l.AbcClassId,
+                    AbcClassDescription = l.AbcClass.Description,
+                    CellPositionId = l.CellPositionId,
+                    CellPositionDescription = l.CellPosition.Description,
+                    LoadingUnitStatusId = l.LoadingUnitStatusId,
+                    LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
+                    LoadingUnitTypeId = l.LoadingUnitTypeId,
+                    LoadingUnitTypeDescription = l.LoadingUnitType.Description,
+                    Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
+                    Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
+                    Note = l.Note,
+                    CellPairing = (int) l.CellPairing,
+                    CellPairingDetails = l.CellPairing.ToString(),
+                    ReferenceType = l.Reference.ToString(),
+                    Height = l.Height,
+                    Weight = l.Weight,
+                    HandlingParametersCorrection = l.HandlingParametersCorrection,
+                    CreationDate = l.CreationDate,
+                    LastHandlingDate = l.LastHandlingDate,
+                    InventoryDate = l.InventoryDate,
+                    LastPickDate = l.LastPickDate,
+                    LastStoreDate = l.LastStoreDate,
+                    InCycleCount = l.InCycleCount,
+                    OutCycleCount = l.OutCycleCount,
+                    OtherCycleCount = l.OtherCycleCount,
+                    CellId = l.CellId,
+                    AisleId = l.Cell.AisleId,
+                    AreaId = l.Cell.Aisle.AreaId,
+                })
+                .AsNoTracking();
+
+            return a;
         }
 
         public LoadingUnitDetails GetById(int id)

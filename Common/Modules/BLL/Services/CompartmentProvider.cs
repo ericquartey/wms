@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -47,6 +47,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
                    CompartmentTypeDescription = c.CompartmentType.Description,
                    ItemDescription = c.Item.Description,
+                   ItemPairingDescription = c.ItemPairing.ToString(),
                    LoadingUnitCode = c.LoadingUnit.Code,
                    Lot = c.Lot,
                    MaterialStatusDescription = c.MaterialStatus.Description,
@@ -109,6 +110,9 @@ namespace Ferretto.Common.Modules.BLL.Services
             compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
             compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
             compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            compartmentDetails.ItemPairingChoices =
+                ( (DataModels.Pairing[]) Enum.GetValues(typeof(DataModels.Pairing)) )
+                .Select(i => new Enumeration((int) i, i.ToString())).ToList();
 
             return compartmentDetails;
         }

@@ -21,7 +21,11 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
+        #region Events
+
         public event EventHandler UpdateCompartmentEvent;
+
+        #endregion Events
 
         #region Properties
 
@@ -32,6 +36,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public int? CompartmentStatusId { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
+        public string CompartmentStatusDescription { get; set; }
 
         public IEnumerable<Enumeration> CompartmentTypeChoices { get; set; }
 
@@ -67,8 +74,10 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemDescription_extended), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 
+        public IEnumerable<Enumeration> ItemPairingChoices { get; set; }
+
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public string ItemPairing { get; set; }
+        public int ItemPairing { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }

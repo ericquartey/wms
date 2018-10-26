@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.BusinessModels;
+﻿using System.Linq;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Modules.BLL
 {
@@ -7,6 +8,8 @@ namespace Ferretto.Common.Modules.BLL
         #region Methods
 
         bool HasAnyCompartments(int itemId);
+
+        IQueryable<LoadingUnitDetails> GetByCellId(int id);
 
         #endregion Methods
     }

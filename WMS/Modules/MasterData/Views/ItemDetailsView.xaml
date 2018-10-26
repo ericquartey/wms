@@ -224,7 +224,7 @@
                             <dxg:GridColumn Width="100*"
                                             FieldName="Stock" />
                             <dxg:GridColumn Width="200*"
-                                            FieldName="ItemPairing" />
+                                            FieldName="ItemPairingDescription" />
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>

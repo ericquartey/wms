@@ -26,7 +26,7 @@ namespace Ferretto.Common.BusinessModels
         public string ItemDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public string ItemPairing { get; set; }
+        public string ItemPairingDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }

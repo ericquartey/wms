@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -26,57 +27,93 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<EnumerationString> GetAllAbcClasses()
         {
-            return this.dataContext.AbcClasses.AsNoTracking().Select(x => new EnumerationString(x.Id, x.Description));
+            return this.dataContext.AbcClasses
+                .AsNoTracking()
+                .Select(x => new EnumerationString(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllCellPositions()
         {
-            return this.dataContext.CellPositions.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.CellPositions
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
+        }
+
+        public IEnumerable<Enumeration> GetAllCellStatuses()
+        {
+            return this.dataContext.CellStatuses
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
+        }
+
+        public IEnumerable<Enumeration> GetAllCellTypes()
+        {
+            return this.dataContext.CellTypes
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllCompartmentStatuses()
         {
-            return this.dataContext.CompartmentStatuses.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.CompartmentStatuses
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllCompartmentTypes()
         {
-            return this.dataContext.CompartmentTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.CompartmentTypes
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllItemCategories()
         {
-            return this.dataContext.ItemCategories.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.ItemCategories
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllItemManagementTypes()
         {
-            return this.dataContext.ItemManagementTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.ItemManagementTypes
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<EnumerationString> GetAllLoadingUnitStatuses()
         {
-            return this.dataContext.LoadingUnitStatuses.AsNoTracking().Select(x => new EnumerationString(x.Id, x.Description));
+            return this.dataContext.LoadingUnitStatuses
+                .AsNoTracking()
+                .Select(x => new EnumerationString(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllLoadingUnitTypes()
         {
-            return this.dataContext.LoadingUnitTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.LoadingUnitTypes
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllMaterialStatuses()
         {
-            return this.dataContext.MaterialStatuses.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.MaterialStatuses
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<EnumerationString> GetAllMeasureUnits()
         {
-            return this.dataContext.MeasureUnits.AsNoTracking().Select(x => new EnumerationString(x.Id, x.Description));
+            return this.dataContext.MeasureUnits
+                .AsNoTracking()
+                .Select(x => new EnumerationString(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetAllPackageTypes()
         {
-            return this.dataContext.PackageTypes.AsNoTracking().Select(x => new Enumeration(x.Id, x.Description));
+            return this.dataContext.PackageTypes
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
         }
 
         public IQueryable<Enumeration> GetCellsByAisleId(int aisleId)
@@ -105,6 +142,20 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Select(c => new Enumeration(
                     c.Id,
                     $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
+                );
+        }
+
+        public IQueryable<Enumeration> GetAislesByAreaId(int areaId)
+        {
+            return this.dataContext.Aisles
+                .AsNoTracking()
+                .Include(a => a.Area)
+                .Where(a => a.AreaId == areaId)
+                .OrderBy(a => a.Area.Name)
+                .ThenBy(a => a.Name)
+                .Select(a => new Enumeration(
+                    a.Id,
+                    $"{a.Area.Name} - {a.Name}")
                 );
         }
 

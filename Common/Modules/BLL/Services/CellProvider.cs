@@ -45,7 +45,42 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public CellDetails GetById(int id)
         {
-            throw new NotImplementedException();
+            var cellDetails = this.dataContext.Cells
+                .Where(c => c.Id == id)
+                .Include(c => c.Aisle)
+                .Select(c => new CellDetails
+                {
+                    Id = c.Id,
+                    AbcClassId = c.AbcClassId,
+                    AisleId = c.AisleId,
+                    AreaId = c.Aisle.AreaId,
+                    CellStatusId = c.CellStatusId,
+                    CellTypeId = c.CellTypeId,
+                    Column = c.Column,
+                    Floor = c.Floor,
+                    Number = c.CellNumber,
+                    Priority = c.Priority,
+                    Side = (int) c.Side,
+                    XCoordinate = c.XCoordinate,
+                    YCoordinate = c.YCoordinate,
+                    ZCoordinate = c.ZCoordinate,
+                })
+                .Single();
+
+            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
+            cellDetails.SideChoices =
+                ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
+            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+
+            return cellDetails;
+        }
+
+        public bool HasAnyLoadingUnits(int cellId)
+        {
+            return this.dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
         }
 
         public int Save(CellDetails model)
@@ -95,23 +130,23 @@ namespace Ferretto.Common.Modules.BLL.Services
                     x => x.LoadingUnitsAggregation.DefaultIfEmpty(),
                     (a, b) => new Cell
                     {
-                       Id = a.Cell.Id,
-                       AbcClassDescription = a.Cell.AbcClass.Description,
-                       AisleName = a.Cell.Aisle.Name,
-                       AreaName = a.Cell.Aisle.Area.Name,
-                       Column = a.Cell.Column,
-                       Floor = a.Cell.Floor,
-                       Number = a.Cell.CellNumber,
-                       Priority = a.Cell.Priority,
-                       Side = a.Cell.Side.ToString(),
-                       Status = a.Cell.CellStatus.Description,
-                       Type = a.Cell.CellType.Description,
-                       XCoordinate = a.Cell.XCoordinate,
-                       YCoordinate = a.Cell.YCoordinate,
-                       ZCoordinate = a.Cell.ZCoordinate,
-                       LoadingUnitsCount = b != null ? b.LoadingUnitsCount : 0,
-                       LoadingUnitsDescription = b != null ? b.LoadingUnitsDescription : "",
-                   });
+                        Id = a.Cell.Id,
+                        AbcClassDescription = a.Cell.AbcClass.Description,
+                        AisleName = a.Cell.Aisle.Name,
+                        AreaName = a.Cell.Aisle.Area.Name,
+                        Column = a.Cell.Column,
+                        Floor = a.Cell.Floor,
+                        Number = a.Cell.CellNumber,
+                        Priority = a.Cell.Priority,
+                        SideDescription = a.Cell.Side.ToString(),
+                        Status = a.Cell.CellStatus.Description,
+                        Type = a.Cell.CellType.Description,
+                        XCoordinate = a.Cell.XCoordinate,
+                        YCoordinate = a.Cell.YCoordinate,
+                        ZCoordinate = a.Cell.ZCoordinate,
+                        LoadingUnitsCount = b != null ? b.LoadingUnitsCount : 0,
+                        LoadingUnitsDescription = b != null ? b.LoadingUnitsDescription : "",
+                    });
         }
 
         #endregion Methods

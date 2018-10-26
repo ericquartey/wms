@@ -29,7 +29,7 @@ namespace Ferretto.Common.BusinessModels
         public int Priority { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
-        public string Side { get; set; }
+        public string SideDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellStatus), ResourceType = typeof(BusinessObjects))]
         public string Status { get; set; }
