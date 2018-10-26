@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
@@ -10,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitDetailsViewModel : BaseServiceNavigationViewModel
+    public class LoadingUnitDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
     {
         #region Fields
 
@@ -68,12 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return;
                 }
-
-                this.CompartmentsDataSource = this.loadingUnit != null
-                    ? this.dataSourceService
-                        .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
-                        .Single()
-                    : null;
+                this.RefreshData();
             }
         }
 
@@ -157,5 +153,15 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         #endregion Methods
+
+        public void RefreshData()
+        {
+            this.CompartmentsDataSource = null;
+            this.CompartmentsDataSource = this.loadingUnit != null
+                ? this.dataSourceService
+                    .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
+                    .Single()
+                : null;
+        }
     }
 }
