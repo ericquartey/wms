@@ -95,10 +95,12 @@
                                           EditValue="{Binding CompartmentTypeId}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentTypeChoices}" />
-                            <wms:TextBox Grid.Row="2"
-                                         Grid.Column="1"
-                                         FieldName="ItemPairing"
-                                         IsEnabled="False" />
+                            <wms:ComboBox Grid.Row="2"
+                                          Grid.Column="1"
+                                          Margin="0,0,20,0"
+                                          EditValue="{Binding ItemPairing}"
+                                          IsEnabled="False"
+                                          ItemsSource="{Binding Path=ItemPairingChoices}" />
                             <wms:ComboBox Grid.Row="3"
                                           Margin="0,0,20,0"
                                           EditValue="{Binding CompartmentStatusId}"

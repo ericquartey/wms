@@ -87,6 +87,17 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => cellProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();
 
+                case MasterData.CELLDETAILS:
+                    var loadingUnitsProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
+                    return new List<DataSource<LoadingUnitDetails>>
+                    {
+                        new DataSource<LoadingUnitDetails>(
+                            "CellDetailsView",
+                            Resources.MasterData.LoadingUnitAll,
+                            () => loadingUnitsProvider.GetByCellId((int)parameter))
+                    }.Cast<IDataSource<TModel>>();
+
                 case Machines.MACHINES:
                     var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 

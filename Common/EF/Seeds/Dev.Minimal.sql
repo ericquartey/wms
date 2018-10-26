@@ -73,12 +73,12 @@ INSERT INTO MeasureUnits (Id, Description) VALUES ('KG', 'Kilograms');
 INSERT INTO MeasureUnits (Id, Description) VALUES ('L', 'Liters');
 
 SET IDENTITY_INSERT Items ON;
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image) VALUES (1, 'U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2, 1, 'Articolo1.jpg');
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image) VALUES (2, 'U000499', '000499        FRESA SMUSSO PUNTA KESO', 'A', 'PZ', 2, 2, 'Articolo2.jpg');
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (3, 'U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', 2, 3);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (4, 'U000578', '000578        FRESA DORSI VAC91', 'B', 'PZ', 2, 4);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (5, 'U000585', '000585        FR.PROF.COSTANTE FR.LAT.', 'C', 'PZ', 2, 5);
-INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (6, 'U000640', '000640        FRESA A PLACCHE RIPORTATE', 'C', 'PZ', 2, 1);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image) VALUES (1, '0U000498', '000498        FRESA SMUSSO PUNTA KABA', 'A', 'PZ', 2, 1, 'Articolo1.jpg');
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId, Image) VALUES (2, '0U000499', '000499        FRESA SMUSSO PUNTA KESO', 'A', 'PZ', 2, 2, 'Articolo2.jpg');
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (3, '0U000524', '000524        FRESA DESTRA 50X50X22 Z=12', 'B', 'PZ', 2, 3);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (4, '0U000578', '000578        FRESA DORSI VAC91', 'B', 'PZ', 2, 4);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (5, '0U000585', '000585        FR.PROF.COSTANTE FR.LAT.', 'C', 'PZ', 2, 5);
+INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (6, '0U000640', '000640        FRESA A PLACCHE RIPORTATE', 'C', 'PZ', 2, 1);
 SET IDENTITY_INSERT Items OFF;
 
 INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, 1);

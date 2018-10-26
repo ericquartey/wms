@@ -195,7 +195,7 @@
   </data>
   <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
     <value>This item is not allocated in any compartments.</value>
-    
+
   </data>
   <data name="CurrentCellInformation" xml:space="preserve">
     <value>Current Cell Information</value>
@@ -218,5 +218,24 @@
   </data>
   <data name="CompartmentHasNoAllowedItems" xml:space="preserve">
     <value>This compartment has no allowed items.</value>
+  </data>
+  <data name="CellSavedSuccessfully" xml:space="preserve">
+    <value>Cell saved successfully</value>
+    <comment>Notification - cell saved</comment>
+  </data>
+  <data name="CellInformation" xml:space="preserve">
+    <value>Cell Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CellLocationInformation" xml:space="preserve">
+    <value>Cell Location Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="LoadingUnits" xml:space="preserve">
+    <value>Loading Units</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CellWithNoLoadingUnits" xml:space="preserve">
+    <value>This cell has no loading units.</value>
   </data>
 </root>

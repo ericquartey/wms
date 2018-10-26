@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.Controls.Interfaces
 {
-    public interface IEntityListViewModel
+    public interface IEntityListViewModel : IRefreshDataEntityViewModel
     {
         #region Properties
 
@@ -11,8 +11,6 @@ namespace Ferretto.Common.Controls.Interfaces
         #endregion Properties
 
         #region Methods
-
-        void RefreshData();
 
         Task UpdateFilterTilesCountsAsync();
 
