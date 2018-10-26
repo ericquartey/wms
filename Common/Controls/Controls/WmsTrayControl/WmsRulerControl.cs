@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -48,7 +48,7 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty OrientationProperty =
                     DependencyProperty.Register("DisplayMode", typeof(Orientation), typeof(WmsRulerControl),
-                    new FrameworkPropertyMetadata(new PropertyChangedCallback(OnOrientationChanged)));
+                    new FrameworkPropertyMetadata(OnOrientationChanged));
 
         private readonly int FONTSIZE = 10;
         private readonly int N_MARKS = 10;
@@ -72,7 +72,7 @@ namespace Ferretto.Common.Controls
 
         public int LittleMarkLength
         {
-            get { return (int)base.GetValue(LittleMarkLengthProperty); }
+            get { return (int)this.GetValue(LittleMarkLengthProperty); }
             set { this.SetValue(LittleMarkLengthProperty, value); }
         }
 
@@ -80,7 +80,7 @@ namespace Ferretto.Common.Controls
         {
             get
             {
-                return (int)base.GetValue(MajorIntervalHorizontalProperty);
+                return (int)this.GetValue(MajorIntervalHorizontalProperty);
             }
             set { this.SetValue(MajorIntervalHorizontalProperty, value); }
         }
@@ -91,7 +91,7 @@ namespace Ferretto.Common.Controls
         {
             get
             {
-                return (int)base.GetValue(MajorIntervalVerticalProperty);
+                return (int)this.GetValue(MajorIntervalVerticalProperty);
             }
             set { this.SetValue(MajorIntervalVerticalProperty, value); }
         }
@@ -100,19 +100,19 @@ namespace Ferretto.Common.Controls
 
         public int MarkLength
         {
-            get { return (int)base.GetValue(MarkLengthProperty); }
+            get { return (int)this.GetValue(MarkLengthProperty); }
             set { this.SetValue(MarkLengthProperty, value); }
         }
 
         public int MiddleMarkLength
         {
-            get { return (int)base.GetValue(MiddleMarkLengthProperty); }
+            get { return (int)this.GetValue(MiddleMarkLengthProperty); }
             set { this.SetValue(MiddleMarkLengthProperty, value); }
         }
 
         public Orientation Orientation
         {
-            get { return (Orientation)base.GetValue(OrientationProperty); }
+            get { return (Orientation)this.GetValue(OrientationProperty); }
             set { this.SetValue(OrientationProperty, value); }
         }
 
@@ -397,7 +397,7 @@ namespace Ferretto.Common.Controls
         {
             var ft = new FormattedText(
                     (pseudoStartValue * majorInterval).ToString(),
-                    System.Globalization.CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
+                    CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                     new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
             int startFrom = 0;
             bool toDraw = true;
