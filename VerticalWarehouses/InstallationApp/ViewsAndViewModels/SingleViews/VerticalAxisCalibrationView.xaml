@@ -28,7 +28,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="180" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -37,9 +37,9 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition />
-                        <RowDefinition />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <custom:CustomLabelTextBlockControl Grid.Row="0"
                                                         Grid.Column="0"
@@ -59,7 +59,7 @@
                                                         LabelText="{x:Static res:InstallationApp.LowerBound}" />
                 </Grid>
                 <custom:CustomLabelTextBlockControl Grid.Row="2"
-                                                    ContentText="{x:Static res:InstallationApp.SetOriginVerticalAxisNotCompleted}"
+                                                    ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     LabelText="{x:Static res:InstallationApp.Output}" />
             </Grid>
         </Grid>
@@ -72,12 +72,16 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Button Grid.Column="1"
+                    VerticalAlignment="Bottom"
                     Command="{Binding StartButtonCommand}"
                     Content="{x:Static res:InstallationApp.Start}"
                     IsEnabled="{Binding EnableStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource InstallationAppViewsButtonStyle}" />
             <Button Grid.Column="3"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding StopButtonCommand}"
                     Content="{x:Static res:InstallationApp.Stop}"
+                    IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource InstallationAppViewsButtonStyle}" />
         </Grid>
     </DockPanel>

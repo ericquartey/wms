@@ -24,12 +24,12 @@
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
-                        Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
+                        Content="{x:Static res:InstallationApp.GateControl}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"
-                        Content="{x:Static res:InstallationApp.GateControl}"
+                        Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Height="60"
                         Margin="15,0,0,5"

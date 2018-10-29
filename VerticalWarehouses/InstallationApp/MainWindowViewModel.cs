@@ -28,6 +28,7 @@ namespace Ferretto.VW.InstallationApp
         private readonly SSVariousInputsViewModel SSVariousInputsVMInstance = new SSVariousInputsViewModel();
         private readonly SSVerticalAxisViewModel SSVerticalAxisVMInstance = new SSVerticalAxisViewModel();
         private readonly VerticalAxisCalibrationViewModel VerticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel();
+
         private ICommand backToMainWindowNavigationButtonsViewCommand;
         private BindableBase contentRegionCurrentViewModel;
         private ICommand lowSpeedMovementsTestButtonCommand;

@@ -21,7 +21,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
             <Label Grid.Column="1"
-                   Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
+                   Content="{x:Static res:InstallationApp.VerticalResolutionCalibration}"
                    Style="{StaticResource InstallationViewsTitleTextStyle}" />
             <Grid Grid.Row="1"
                   Grid.Column="1">
@@ -41,51 +41,65 @@
                 </Grid.ColumnDefinitions>
                 <custom:CustomInputFieldControl Grid.Row="0"
                                                 Grid.Column="0"
-                                                InputText=""
-                                                LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+                                                InputScope="Number"
+                                                InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}" />
                 <custom:CustomInputFieldControl Grid.Row="1"
                                                 Grid.Column="0"
-                                                InputText=""
-                                                LabelText="{x:Static res:InstallationApp.RepositionLenght}" />
+                                                InputScope="Number"
+                                                InputText="{Binding RepositionLenght, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                IsEnabled="{Binding IsRepositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.DesiredMovement}" />
                 <custom:CustomInputFieldControl Grid.Row="2"
                                                 Grid.Column="0"
-                                                InputText=""
-                                                LabelText="{x:Static res:InstallationApp.MesuredLenght}" />
-                <custom:CustomInputFieldControl Grid.Row="3"
-                                                Grid.Column="0"
-                                                InputText=""
-                                                LabelText="{x:Static res:InstallationApp.ActualResolution}" />
+                                                InputScope="Number"
+                                                InputText="{Binding MesuredLenght, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                IsEnabled="{Binding IsMesuredLenghtTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.MesuredMovement}" />
+                <custom:CustomLabelTextBlockControl Grid.Row="3"
+                                                    Grid.Column="0"
+                                                    ContentText="{Binding CurrentResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
                 <custom:CustomInputFieldControl Grid.Row="4"
                                                 Grid.Column="0"
-                                                InputText=""
+                                                InputScope="Number"
+                                                InputText="{Binding NewResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.NewResolution}" />
                 <custom:CustomLabelTextBlockControl Grid.Row="3"
                                                     Grid.Column="2"
-                                                    ContentText="{x:Static res:InstallationApp.TheoricResolution}"
+                                                    ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     LabelText="{x:Static res:InstallationApp.Output}" />
                 <Button Grid.Row="0"
                         Grid.Column="2"
                         HorizontalAlignment="Left"
+                        Command="{Binding SetPositionButtonCommand}"
                         Content="{x:Static res:InstallationApp.SetPosition}"
+                        IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppViewsButtonStyle}" />
                 <Button Grid.Row="1"
                         Grid.Column="2"
                         HorizontalAlignment="Left"
+                        Command="{Binding MoveButtonCommand}"
                         Content="{x:Static res:InstallationApp.Move}"
+                        IsEnabled="{Binding IsMoveButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppViewsButtonStyle}" />
                 <Button Grid.Row="5"
                         Grid.Column="0"
                         HorizontalAlignment="Left"
+                        Command="{Binding CancelButtonCommand}"
                         Content="{x:Static res:General.Cancel}"
                         Style="{StaticResource InstallationAppViewsButtonStyle}" />
                 <Button Grid.Row="5"
                         Grid.Column="2"
                         HorizontalAlignment="Left"
+                        Command="{Binding AcceptButtonCommand}"
                         Content="{x:Static res:General.Accept}"
+                        IsEnabled="{Binding IsAcceptButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppViewsButtonStyle}" />
                 <Button Grid.Row="6"
                         Grid.Column="0"
                         HorizontalAlignment="Left"
+                        Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:General.Back}"
                         Style="{StaticResource InstallationAppViewsButtonStyle}" />
             </Grid>

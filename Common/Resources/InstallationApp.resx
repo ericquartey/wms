@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActualPosition" xml:space="preserve">
-    <value>Actual Position:</value>
+    <value>Actual position:</value>
     <comment>Label text</comment>
   </data>
   <data name="Auto" xml:space="preserve">
@@ -230,11 +230,11 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
-    <value>Vertical Axis Origin set correctly.</value>
+    <value>Vertical axis origin set correctly.</value>
     <comment>Label text</comment>
   </data>
   <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
-    <value>Vertical Axis Origin not set.</value>
+    <value>Vertical axis origin not set.</value>
     <comment>Label text</comment>
   </data>
   <data name="LowerBound" xml:space="preserve">
@@ -373,9 +373,6 @@
     <value>Zero Vertical Sensor</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="Sta" xml:space="preserve">
-    <value>Start</value>
-  </data>
   <data name="GateControl" xml:space="preserve">
     <value>Gates Control</value>
     <comment>Title - Button text</comment>
@@ -388,10 +385,6 @@
     <value>Set Position</value>
     <comment>Button text</comment>
   </data>
-  <data name="ActualResolution" xml:space="preserve">
-    <value>Actual Resolution:</value>
-    <comment>Label text</comment>
-  </data>
   <data name="InitialPosition" xml:space="preserve">
     <value>Initial Position:</value>
     <comment>Label text</comment>
@@ -401,7 +394,7 @@
     <comment>Label text</comment>
   </data>
   <data name="NewResolution" xml:space="preserve">
-    <value>New Resolution:</value>
+    <value>New resolution (imp/mm):</value>
     <comment>Label text</comment>
   </data>
   <data name="RepositionLenght" xml:space="preserve">
@@ -409,11 +402,43 @@
     <comment>Label text</comment>
   </data>
   <data name="ResolutionModified" xml:space="preserve">
-    <value>Resolution Modified Correctly</value>
+    <value>Resolution correctly modified.</value>
     <comment>Label text</comment>
   </data>
-  <data name="TheoricResolution" xml:space="preserve">
-    <value>Theoric Resolution</value>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Current resolution (imp/mm):</value>
     <comment>Label text</comment>
+  </data>
+  <data name="DesiredInitialPosition" xml:space="preserve">
+    <value>Desired initial position (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DesiredMovement" xml:space="preserve">
+    <value>Desired movement (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="InsertDesiredMovement" xml:space="preserve">
+    <value>Insert desired movement.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertiDesiredInitialPosition" xml:space="preserve">
+    <value>Insert desired initial position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertMesuredMovement" xml:space="preserve">
+    <value>Insert mesured movement.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MesuredMovement" xml:space="preserve">
+    <value>Mesured movement (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Vertical Resolution Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VerticalAxisCalibrating" xml:space="preserve">
+    <value>Calibrating verical axis...</value>
+    <comment>Note text</comment>
   </data>
 </root>
