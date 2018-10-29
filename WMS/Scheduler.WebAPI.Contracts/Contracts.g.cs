@@ -95,7 +95,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     
     
 
-    /// <summary>Implementation of INotifyPropertyChanged to simplify models.</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public abstract partial class BindableBase : System.ComponentModel.INotifyPropertyChanged
     {
