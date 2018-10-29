@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Modules.Compartment
         // { R = 100, G = 100, B = 100 };
         private ICommand createNewCompartmentCommand;
 
-        private Enumeration selectedFilter;
+        private int selectedFilter;
 
         private bool showBackground;
 
@@ -106,20 +106,21 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public List<Enumeration> FilterColoringCompartment { get => this.filterColoringCompartment; }
 
-        public Enumeration SelectedFilter
+        public int SelectedFilter
         {
             get
             {
                 if (this.selectedFilter == null)
                 {
-                    this.selectedFilter = this.FilterColoringCompartment[0];
+                    //this.selectedFilter = this.FilterColoringCompartment[0];
                 }
                 return this.selectedFilter;
             }
             set
             {
                 this.selectedFilter = value;
-                this.ChangeFilterColoringCompartment(this.selectedFilter);
+                this.ChangeFilterColoringCompartment(this.FilterColoringCompartment[this.selectedFilter]);
+                this.RaisePropertyChanged(nameof(this.Tray.Compartments));
             }
         }
 
@@ -156,11 +157,16 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private void ChangeFilterColoringCompartment(Enumeration selectedFilterColor)
         {
-            foreach (var compartment in this.Tray.Compartments)
-            {
-                this.SelectedFilter = selectedFilterColor;
-            }
-            this.RaisePropertyChanged(nameof(this.Tray.Compartments));
+            //foreach (var compartment in this.Tray.Compartments)
+            //{
+            //this.SelectedFilter = selectedFilterColor;
+            //this.ColoringFuncCompartment();
+            ////}
+            //this.RaisePropertyChanged(nameof(this.Tray.Compartments));
+
+            //this.SelectedFilter = selectedFilterColor;
+
+            foreach (this.Tray.Compartments
         }
 
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
