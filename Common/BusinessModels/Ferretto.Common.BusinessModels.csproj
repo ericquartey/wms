@@ -58,7 +58,7 @@
     <Compile Include="Item\AllowedItemInCompartment.cs" />
     <Compile Include="Item\Item.cs" />
     <Compile Include="Item\ItemDetails.cs" />
-    <Compile Include="Item\ItemWithdraw.cs" />
+    <Compile Include="ItemWithdraw\ItemWithdraw.cs" />
     <Compile Include="LoadingUnit\LoadingUnit.cs" />
     <Compile Include="LoadingUnit\LoadingUnitDetails.cs" />
     <Compile Include="Machine\Machine.cs" />
