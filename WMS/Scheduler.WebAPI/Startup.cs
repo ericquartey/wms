@@ -50,8 +50,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                 settings.PostProcess = document =>
                 {
                     document.Info.Version = "v1";
-                    document.Info.Title = "Example API";
-                    document.Info.Description = "REST API for example.";
+                    document.Info.Title = "WMS Scheduler API";
+                    document.Info.Description = "REST API for the WMS Scheduler";
                 };
                 settings.GeneratorSettings.DefaultPropertyNameHandling =
                     PropertyNameHandling.CamelCase;
