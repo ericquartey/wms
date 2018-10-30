@@ -45,6 +45,7 @@
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
                                        Margin="25,28,0,0"
                                        BorderThickness="0"
+                                       ItemContainerStyle="{DynamicResource CanvasItemStyle}"
                                        ItemsSource="{Binding Items, Mode=TwoWay}">
             <ctrls:WmsCanvasListBoxControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -55,15 +56,7 @@
                     <!--  Margin="1,1,1,1"  -->
                 </ItemsPanelTemplate>
             </ctrls:WmsCanvasListBoxControl.ItemsPanel>
-            <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="0" />
-                    <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
-                    <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
-                    <Setter Property="Margin" Value="0" />
-                </Style>
 
-            </ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
 
         </ctrls:WmsCanvasListBoxControl>
 

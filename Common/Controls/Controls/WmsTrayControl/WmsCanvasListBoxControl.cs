@@ -81,20 +81,20 @@ namespace Ferretto.Common.Controls
         {
             base.OnSelectionChanged(e);
 
-            if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
-            {
-                this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
+            //if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
+            //{
+            //    this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
 
-                newCompartment.ColorFill = Colors.Blue.ToString();
-                newCompartment.ColorBorder = Colors.DarkBlue.ToString();
-                newCompartment.RectangleBorderThickness = new Thickness(3);
-            }
-            if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
-            {
-                oldCompartment.ColorFill = Colors.Aquamarine.ToString();
-                oldCompartment.ColorBorder = Colors.GreenYellow.ToString();
-                oldCompartment.RectangleBorderThickness = new Thickness(1);
-            }
+            //    newCompartment.ColorFill = Colors.Blue.ToString();
+            //    newCompartment.ColorBorder = Colors.DarkBlue.ToString();
+            //    newCompartment.RectangleBorderThickness = new Thickness(3);
+            //}
+            //if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
+            //{
+            //    oldCompartment.ColorFill = Colors.Aquamarine.ToString();
+            //    oldCompartment.ColorBorder = Colors.GreenYellow.ToString();
+            //    oldCompartment.RectangleBorderThickness = new Thickness(1);
+            //}
         }
 
         private void WmsCanvasItemsControl_Loaded(Object sender, System.Windows.RoutedEventArgs e)

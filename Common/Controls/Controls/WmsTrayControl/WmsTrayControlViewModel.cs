@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
@@ -18,46 +19,16 @@ namespace Ferretto.Common.Controls
 
         private static readonly Func<IFilter, Color> DefaultColorCompartment = (x) => Colors.Yellow;
 
-        //private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = DefaultColorCompartment;
-        //private Func<IFilter, Color> coloringFuncCompartment = delegate (IFilter selectedFilter)
-        private Func<Color> coloringFuncCompartment = delegate ()
-        {
-            //= x => Colors.Green;
-            Color color = Colors.Gray;
-            //if (selectedFilter != null)
-            //{
-            var idFilter = 1;//selectedFilter.Id;
-            switch (idFilter)
-            {
-                case 1:
-                    color = Colors.Violet;
-                    break;
-
-                case 2:
-                    color = Colors.Orange;
-                    break;
-
-                case 3:
-                    color = Colors.Green;
-                    break;
-
-                case 4:
-                    color = Colors.Blue;
-                    break;
-
-                default:
-                    color = Colors.Black;
-                    break;
-            }
-            //}
-            return color;
-        };
-
         private ObservableCollection<WmsBaseCompartment> items;
+
         private int left;
+
         private SolidColorBrush penBrush;
+
         private int penThickness;
+
         private int top;
+
         private Tray tray;
 
         #endregion Fields
@@ -79,29 +50,8 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        //public Func<IFilter, Color> ColoringFuncCompartment
-        public Func<Color> ColoringFuncCompartment
-        {
-            get { return this.coloringFuncCompartment; }
-            set
-            {
-                if (value == null)
-                {
-                    //this.coloringFuncCompartment = DefaultColorCompartment;
-                }
-                else
-                {
-                    this.coloringFuncCompartment = value;
-                    var color = this.coloringFuncCompartment();
-                    //Color color = this.coloringFuncCompartment.Invoke();
-                    this.UpdateColorCompartments(color);
-                    //this.ColoringFuncCompartment(this.SelectedFilter);
-                }
-                //this.NotifyPropertyChanged(nameof(this.ColoringFuncCompartment));
-            }
-        }
-
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
+
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -131,6 +81,40 @@ namespace Ferretto.Common.Controls
             {
                 this.penThickness = value;
                 this.NotifyPropertyChanged(nameof(this.PenThickness));
+            }
+        }
+
+        public Func<CompartmentDetails, Color> SelectedColorFilterFunc
+        {
+            get { return this.selectedColorFilterFunc; }
+            set
+            {
+                if (value == null)
+                {
+                    //this.coloringFuncCompartment = DefaultColorCompartment;
+                }
+                else
+                {
+                    this.selectedColorFilterFunc = value;
+
+                    this.UpdateColorCompartments();
+                    //if (params != null && params.Length > 0)
+                    //{
+                    //    var arg0 = params[0];
+                    //    var g = arg0.GetType();
+                    //    var filter = arg0.Member as IFilter;
+                    //    if (filter != null)
+                    //    {
+                    //        this.coloringFuncCompartment.Invoke(filter);
+                    //    }
+                    //}
+
+                    //var color = this.coloringFuncCompartment.Invoke();
+                    //Color color = this.coloringFuncCompartment.Invoke();
+
+                    //this.ColoringFuncCompartment(this.SelectedFilter);
+                }
+                //this.NotifyPropertyChanged(nameof(this.ColoringFuncCompartment));
             }
         }
 
@@ -166,6 +150,13 @@ namespace Ferretto.Common.Controls
                 }
                 this.NotifyPropertyChanged(nameof(this.Tray));
             }
+        }
+
+        //private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = DefaultColorCompartment;
+        private Func<CompartmentDetails, Color> selectedColorFilterFunc
+        //private Func<Color> coloringFuncCompartment = delegate ()
+        {
+            get; set;
         }
 
         #endregion Properties
@@ -268,15 +259,15 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void UpdateColorCompartments(Color color)
+        private void UpdateColorCompartments()
         {
             if (this.items != null)
             {
                 foreach (var item in this.items)
                 {
-                    item.ColorFill = color.ToString();//this.ColoringFuncCompartment(this.SelectedFilter).ToString();
-                    item.RectangleBorderThickness = new Thickness(5);
-                    item.Selected = Colors.Violet.ToString();
+                    item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails).ToString();
+                    //item.RectangleBorderThickness = new Thickness(5);
+                    //item.Selected = Colors.Violet.ToString();
                 }
                 this.NotifyPropertyChanged(nameof(this.Items));
             }

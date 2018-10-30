@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
-        private readonly Func<Color> DefaultColorCompartment = null;
+        private readonly Func<IFilter, Color> DefaultColorCompartment = null;
 
         private readonly List<Enumeration> filterColoringCompartment = new List<Enumeration>
         {
@@ -25,7 +25,6 @@ namespace Ferretto.WMS.Modules.Compartment
             new Enumeration(3, "Article"),
         };
 
-        private Func<Color> coloringFuncCompartment;
         private CompartmentDetails compartmentSelected;
 
         //            default:
@@ -42,6 +41,8 @@ namespace Ferretto.WMS.Modules.Compartment
         //                color = Colors.Blue;
         //                break;
         private bool open = false;
+
+        private Func<CompartmentDetails, Color> selectedColorFilterFunc;
 
         //            case 3:
         //                color = Colors.Green;
@@ -79,33 +80,6 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Properties
 
-        public Func<Color> ColoringFuncCompartment
-        {
-            get
-            {
-                //if (!this.open)
-                //{
-                //    this.TestInitialization();
-                //    this.open = true;
-                //}
-                //this.SetProperty(ref this.coloringFuncCompartment, this.coloringFuncCompartment);
-                return this.coloringFuncCompartment;
-            }
-            set
-            {
-                //if (value == null)
-                //{
-                //    this.coloringFuncCompartment = DefaultColorCompartment;
-                //}
-                //else
-                //{
-                //    this.coloringFuncCompartment = value;
-                //}
-
-                this.SetProperty(ref this.coloringFuncCompartment, value);
-            }
-        }
-
         public CompartmentDetails CompartmentSelected
         {
             get => this.compartmentSelected;
@@ -131,6 +105,33 @@ namespace Ferretto.WMS.Modules.Compartment
                          (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
         public List<Enumeration> FilterColoringCompartment { get => this.filterColoringCompartment; }
+
+        public Func<CompartmentDetails, Color> SelectedColorFilterFunc
+        {
+            get
+            {
+                //if (!this.open)
+                //{
+                //    this.TestInitialization();
+                //    this.open = true;
+                //}
+                //this.SetProperty(ref this.coloringFuncCompartment, this.coloringFuncCompartment);
+                return this.selectedColorFilterFunc;
+            }
+            set
+            {
+                //if (value == null)
+                //{
+                //    this.coloringFuncCompartment = DefaultColorCompartment;
+                //}
+                //else
+                //{
+                //    this.coloringFuncCompartment = value;
+                //}
+
+                this.SetProperty(ref this.selectedColorFilterFunc, value);
+            }
+        }
 
         public int SelectedFilter
         {
@@ -170,14 +171,14 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Methods
 
-        public Func<Color> ChangeBlue()
+        public Color ChangeBlue(CompartmentDetails compartment)
         {
-            return () => Colors.Blue;
+            return Colors.Blue;
         }
 
-        public Func<Color> ChangeYellow()
+        public Color ChangeYellow(CompartmentDetails compartment)
         {
-            return () => Colors.Yellow;
+            return Colors.Yellow;
         }
 
         protected override void OnAppear()
@@ -198,19 +199,19 @@ namespace Ferretto.WMS.Modules.Compartment
             //this.SelectedFilter = selectedFilterColor;
 
             //foreach (this.Tray.Compartments
-            IFilter filterSelected;
+            IFilter filterSelected = null;
             Color color;
-            Func<Color> testfunc = null;
+            Func<CompartmentDetails, Color> testfunc = null;
             switch (selectedFilterColor)
             {
                 case 0:
-                    testfunc = this.ChangeBlue();
                     filterSelected = new ArticleFilter();
+                    testfunc = this.ChangeBlue;
                     break;
 
                 case 1:
-                    testfunc = this.ChangeYellow();
                     filterSelected = new CompartmentFilter();
+                    testfunc = this.ChangeYellow;
                     break;
             }
 
@@ -227,10 +228,10 @@ namespace Ferretto.WMS.Modules.Compartment
 
             //this.coloringFuncCompartment = testfunc;
 
-            this.SetProperty(ref this.coloringFuncCompartment, testfunc);
-            this.RaisePropertyChanged(nameof(this.ColoringFuncCompartment));
+            this.SetProperty(ref this.selectedColorFilterFunc, testfunc);
+            this.RaisePropertyChanged(nameof(this.SelectedColorFilterFunc));
             //this.ColoringFuncCompartment();
-            this.ColoringFuncCompartment.Invoke();
+            //this.ColoringFuncCompartment.Invoke(filterSelected);
 
             //this.SetProperty(ref this.coloringFuncCompartment, testfunc);
         }

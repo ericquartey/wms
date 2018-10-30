@@ -32,8 +32,8 @@
         <wms:WmsTrayControl x:Name="Canvas"
                             Grid.Row="3"
                             Margin="0,0,0,0"
-                            ColoringFuncCompartment="{Binding ColoringFuncCompartment, Mode=OneWay}"
                             Compartments="{Binding Tray.Compartments, Mode=OneWay}"
+                            SelectedColorFilterFunc="{Binding SelectedColorFilterFunc, Mode=OneWay}"
                             SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />

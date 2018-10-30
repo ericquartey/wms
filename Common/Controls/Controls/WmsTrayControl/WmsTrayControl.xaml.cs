@@ -18,15 +18,15 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ColoringFuncCompartmentProperty = DependencyProperty.Register(
-                    nameof(ColoringFuncCompartment), typeof(Func<Color>), typeof(WmsTrayControl),
-                    new FrameworkPropertyMetadata(new PropertyChangedCallback(OnColoringFuncCompartmentChanged)));
-
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
                     nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
+                                    nameof(SelectedColorFilterFunc), typeof(Func<CompartmentDetails, Color>), typeof(WmsTrayControl),
+                    new FrameworkPropertyMetadata(new PropertyChangedCallback(OnSelectedColorFilterFuncChanged)));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
                                     nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentSelectedChanged)));
@@ -57,15 +57,6 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public Func<Color> ColoringFuncCompartment
-        {
-            get { return (Func<Color>)this.GetValue(ColoringFuncCompartmentProperty); }
-            set
-            {
-                this.SetValue(ColoringFuncCompartmentProperty, value);
-            }
-        }
-
         public BindingList<CompartmentDetails> Compartments
         {
             get { return this.compartments; }
@@ -76,6 +67,15 @@ namespace Ferretto.Common.Controls
         {
             get => (bool)this.GetValue(ReadOnlyProperty);
             set => this.SetValue(ReadOnlyProperty, value);
+        }
+
+        public Func<IFilter, Color> SelectedColorFilterFunc
+        {
+            get { return (Func<IFilter, Color>)this.GetValue(SelectedColorFilterFuncProperty); }
+            set
+            {
+                this.SetValue(SelectedColorFilterFuncProperty, value);
+            }
         }
 
         public CompartmentDetails SelectedItem
@@ -158,14 +158,6 @@ namespace Ferretto.Common.Controls
             this.CanvasBorder.Height = heightNewCalculated + 3;
         }
 
-        private static void OnColoringFuncCompartmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.ColoringFuncCompartment = (Func<Color>)e.NewValue;
-            }
-        }
-
         private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
@@ -191,6 +183,14 @@ namespace Ferretto.Common.Controls
                         wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
                     }
                 }
+            }
+        }
+
+        private static void OnSelectedColorFilterFuncChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                viewModel.SelectedColorFilterFunc = (Func<CompartmentDetails, Color>)e.NewValue;
             }
         }
 
