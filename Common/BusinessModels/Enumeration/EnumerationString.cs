@@ -1,6 +1,4 @@
-﻿using Prism.Mvvm;
-
-namespace Ferretto.Common.BusinessModels
+﻿namespace Ferretto.Common.BusinessModels
 {
     public class EnumerationString : BindableBase
     {

@@ -58,12 +58,13 @@
     <Compile Include="Item\AllowedItemInCompartment.cs" />
     <Compile Include="Item\Item.cs" />
     <Compile Include="Item\ItemDetails.cs" />
+    <Compile Include="Item\ItemWithdraw.cs" />
     <Compile Include="LoadingUnit\LoadingUnit.cs" />
     <Compile Include="LoadingUnit\LoadingUnitDetails.cs" />
     <Compile Include="Machine\Machine.cs" />
     <Compile Include="Machine\MachineDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-	<Compile Include="Mission.cs" />
+    <Compile Include="Mission.cs" />
     <Compile Include="PropertySupport.cs" />
   </ItemGroup>
   <ItemGroup>
