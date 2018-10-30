@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.BusinessModels
 {
-    public class CellDetails : BusinessObject
+    public sealed class MachineDetails : BusinessObject
     {
     }
 }

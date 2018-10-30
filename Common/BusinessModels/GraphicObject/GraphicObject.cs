@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -25,6 +20,18 @@ namespace Ferretto.Common.BusinessModels
 
         public int Height { get; set; }
         public int Width { get; set; }
+
+        #endregion Properties
+    }
+
+    public class Line
+    {
+        #region Properties
+
+        public int XEnd { get; set; }
+        public int XStart { get; set; }
+        public int YEnd { get; set; }
+        public int YStart { get; set; }
 
         #endregion Properties
     }

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using Ferretto.Common.BusinessModels;
-using Prism.Mvvm;
+﻿using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsBaseCompartment : BindableBase
+    public class WmsBaseCompartment : Prism.Mvvm.BindableBase
     {
         #region Fields
 
@@ -45,70 +36,70 @@ namespace Ferretto.Common.Controls
 
         public string Article
         {
-            get { return this.article; }
-            set { this.SetProperty(ref this.article, value); }
+            get => this.article;
+            set => this.SetProperty(ref this.article, value);
         }
 
         public int Capacity
         {
-            get { return this.capacity; }
-            set { this.SetProperty(ref this.capacity, value); }
+            get => this.capacity;
+            set => this.SetProperty(ref this.capacity, value);
         }
 
         public string ColorBorder
         {
-            get { return this.colorBorder; }
-            set { this.SetProperty(ref this.colorBorder, value); }
+            get => this.colorBorder;
+            set => this.SetProperty(ref this.colorBorder, value);
         }
 
         public string ColorFill
         {
-            get { return this.colorFill; }
-            set { this.SetProperty(ref this.colorFill, value); }
+            get => this.colorFill;
+            set => this.SetProperty(ref this.colorFill, value);
         }
 
         public CompartmentDetails CompartmentDetails { get; set; }
 
         public double Height
         {
-            get { return this.height; }
-            set { this.SetProperty(ref this.height, value); }
+            get => this.height;
+            set => this.SetProperty(ref this.height, value);
         }
 
         public bool IsSelected
         {
-            get { return this.isSelected; }
-            set { this.SetProperty(ref this.isSelected, value); }
+            get => this.isSelected;
+            set => this.SetProperty(ref this.isSelected, value);
         }
 
         public double Left
         {
-            get { return this.left; }
-            set { this.SetProperty(ref this.left, value); }
+            get => this.left;
+            set => this.SetProperty(ref this.left, value);
         }
 
         public int Quantity
         {
-            get { return this.quantity; }
-            set { this.SetProperty(ref this.quantity, value); }
+            get => this.quantity;
+            set => this.SetProperty(ref this.quantity, value);
         }
 
         public float RectangleBorderThickness
         {
-            get { return this.rectangleBorderThickness; }
-            set { this.SetProperty(ref this.rectangleBorderThickness, value); }
+            get => this.rectangleBorderThickness;
+            set => this.SetProperty(ref this.rectangleBorderThickness, value);
         }
 
         public string Selected
         {
-            get { return this.selected; }
-            set { this.SetProperty(ref this.selected, value); }
+            get => this.selected;
+            set => this.SetProperty(ref this.selected, value);
         }
 
         public double Top
         {
-            get { return this.top; }
-            set { this.SetProperty(ref this.top, value); }
+            get => this.top;
+            set => this.SetProperty(ref this.top, value);
         }
 
         public Tray Tray
@@ -119,8 +110,8 @@ namespace Ferretto.Common.Controls
 
         public double Width
         {
-            get { return this.width; }
-            set { this.SetProperty(ref this.width, value); }
+            get => this.width;
+            set => this.SetProperty(ref this.width, value);
         }
 
         #endregion Properties

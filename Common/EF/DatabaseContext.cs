@@ -11,6 +11,18 @@ namespace Ferretto.Common.EF
         Justification = "Class Designed as part of the Entity Framework")]
     public partial class DatabaseContext : DbContext
     {
+        #region Constructors
+
+        public DatabaseContext()
+        { }
+
+        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+            : base(options)
+        {
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public virtual DbSet<AbcClass> AbcClasses { get; set; }
@@ -41,13 +53,13 @@ namespace Ferretto.Common.EF
         public virtual DbSet<CompartmentType> CompartmentTypes { get; set; }
         public virtual DbSet<DefaultCompartment> DefaultCompartments { get; set; }
         public virtual DbSet<DefaultLoadingUnit> DefaultLoadingUnits { get; set; }
+        public virtual DbSet<ItemCategory> ItemCategories { get; set; }
         public virtual DbSet<ItemListRow> ItemListRows { get; set; }
         public virtual DbSet<ItemListRowStatus> ItemListRowStatuses { get; set; }
         public virtual DbSet<ItemList> ItemLists { get; set; }
         public virtual DbSet<ItemListStatus> ItemListStatuses { get; set; }
         public virtual DbSet<ItemListType> ItemListTypes { get; set; }
         public virtual DbSet<ItemManagementType> ItemManagementTypes { get; set; }
-        public virtual DbSet<ItemCategory> ItemCategories { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemArea> ItemsAreas { get; set; }
         public virtual DbSet<ItemCompartmentType> ItemsCompartmentTypes { get; set; }

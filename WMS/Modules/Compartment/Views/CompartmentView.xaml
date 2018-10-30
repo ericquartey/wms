@@ -17,6 +17,7 @@
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
 
+
         <CheckBox Grid.Row="0"
                   IsChecked="{Binding ShowBackground}">
             SHOW TRAY's BACKGROUND
@@ -30,6 +31,6 @@
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />
         <compartment:ListCompartmentsView Grid.Row="3" />
-
     </Grid>
+
 </wms:WmsView>
