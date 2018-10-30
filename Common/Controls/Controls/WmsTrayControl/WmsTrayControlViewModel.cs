@@ -19,6 +19,7 @@ namespace Ferretto.Common.Controls
 
         private static readonly Func<IFilter, Color> DefaultColorCompartment = (x) => Colors.Yellow;
 
+        private CompartmentDetails compartmentSelected;
         private ObservableCollection<WmsBaseCompartment> items;
 
         private int left;
@@ -52,6 +53,16 @@ namespace Ferretto.Common.Controls
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
 
+        public CompartmentDetails CompartmentSelected
+        {
+            get => this.compartmentSelected;
+            set
+            {
+                this.compartmentSelected = value;
+                this.UpdateColorCompartments();
+            }
+        }
+
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -84,7 +95,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public Func<CompartmentDetails, Color> SelectedColorFilterFunc
+        public Func<CompartmentDetails, CompartmentDetails, Color> SelectedColorFilterFunc
         {
             get { return this.selectedColorFilterFunc; }
             set
@@ -118,7 +129,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public Enumeration SelectedFilter { get; set; }
+        //public Enumeration SelectedFilter { get; set; }
 
         public int Top
         {
@@ -153,7 +164,7 @@ namespace Ferretto.Common.Controls
         }
 
         //private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = DefaultColorCompartment;
-        private Func<CompartmentDetails, Color> selectedColorFilterFunc
+        private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc
         //private Func<Color> coloringFuncCompartment = delegate ()
         {
             get; set;
@@ -261,11 +272,11 @@ namespace Ferretto.Common.Controls
 
         private void UpdateColorCompartments()
         {
-            if (this.items != null)
+            if (this.items != null && this.selectedColorFilterFunc != null)
             {
                 foreach (var item in this.Items)
                 {
-                    item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails).ToString();
+                    item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.CompartmentSelected).ToString();
                     //item.RectangleBorderThickness = new Thickness(5);
                     //item.Selected = Colors.Violet.ToString();
                 }

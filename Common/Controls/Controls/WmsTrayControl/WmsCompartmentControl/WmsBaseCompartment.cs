@@ -16,21 +16,14 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private string article;
-
         private int capacity;
-
         private string colorBorder;
-
         private string colorFill;
-
         private double height;
-
         private bool isSelected;
-
         private double left;
-
+        private string oldColorFill;
         private int quantity;
-
         private Thickness rectangleBorderThickness;
 
         private string selected;
@@ -85,6 +78,12 @@ namespace Ferretto.Common.Controls
         {
             get { return this.left; }
             set { this.SetProperty(ref this.left, value); }
+        }
+
+        public string OldColorFill
+        {
+            get { return this.oldColorFill; }
+            set { this.SetProperty(ref this.oldColorFill, value); }
         }
 
         public int Quantity

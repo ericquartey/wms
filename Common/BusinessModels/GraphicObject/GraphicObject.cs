@@ -22,9 +22,10 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        Func<CompartmentDetails, Color> ColorFunc { get; }
+        Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get; }
         string Description { get; }
         int Id { get; }
+        CompartmentDetails Selected { get; set; }
 
         #endregion Properties
     };
@@ -33,9 +34,20 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        public Func<CompartmentDetails, CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
         {
             Color color = Colors.Orange;
+            if (selected != null)
+            {
+                if ((compartment.MaterialStatusId != 0 || compartment == selected) && compartment.MaterialStatusId == selected.MaterialStatusId)
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#76FF03");
+                }
+                else
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#90A4AE");
+                }
+            }
             return color;
         };
 
@@ -43,9 +55,10 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
         public string Description { get => "Article"; }
         public int Id { get => 1; }
+        public CompartmentDetails Selected { get; set; }
 
         #endregion Properties
     }
@@ -54,9 +67,20 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        public Func<CompartmentDetails, CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
         {
             Color color = Colors.Red;
+            if (selected != null)
+            {
+                if ((compartment.CompartmentTypeId != 0 || compartment == selected) && compartment.CompartmentTypeId == selected.CompartmentTypeId)
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#76FF03");
+                }
+                else
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#90A4AE");
+                }
+            }
             return color;
         };
 
@@ -64,9 +88,10 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
+        public CompartmentDetails Selected { get; set; }
 
         #endregion Properties
     }
@@ -76,6 +101,7 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public int Height { get; set; }
+        public CompartmentDetails Slected { get; set; }
         public int Width { get; set; }
 
         #endregion Properties
@@ -85,7 +111,7 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        public Func<CompartmentDetails, CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
         {
             int stock = compartment.Stock;
             int? max = compartment.MaxCapacity;
@@ -97,26 +123,44 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                double filling = ((double)stock / (int)max) * 100;
-                if (stock == 0 || (filling >= 0 && filling < 40))
+                if (selected == null)
                 {
-                    color = (Color)ColorConverter.ConvertFromString("#76FF03");
+                    double filling = ((double)stock / (int)max) * 100;
+                    if (stock == 0 || (filling >= 0 && filling < 40))
+                    {
+                        color = (Color)ColorConverter.ConvertFromString("#76FF03");
+                    }
+                    if (filling >= 40 && filling < 60)
+                    {
+                        color = (Color)ColorConverter.ConvertFromString("#D4E157");
+                    }
+                    if (filling >= 60 && filling < 80)
+                    {
+                        color = (Color)ColorConverter.ConvertFromString("#FF9800");
+                    }
+                    if (filling >= 80 && filling <= 99)
+                    {
+                        color = (Color)ColorConverter.ConvertFromString("#F44336");
+                    }
+                    if (filling == 100)
+                    {
+                        color = (Color)ColorConverter.ConvertFromString("#D50000");
+                    }
                 }
-                if (filling >= 40 && filling < 60)
+                else
                 {
-                    color = (Color)ColorConverter.ConvertFromString("#D4E157");
-                }
-                if (filling >= 60 && filling < 80)
-                {
-                    color = (Color)ColorConverter.ConvertFromString("#FF9800");
-                }
-                if (filling >= 80 && filling <= 99)
-                {
-                    color = (Color)ColorConverter.ConvertFromString("#F44336");
-                }
-                if (filling == 100)
-                {
-                    color = (Color)ColorConverter.ConvertFromString("#D50000");
+                    int stockSelected = selected.Stock;
+                    int? maxSelected = selected.MaxCapacity;
+                    double fillingSelected = ((double)stockSelected / (int)maxSelected) * 100;
+                    double filling = ((double)stock / (int)max) * 100;
+                    if (filling == fillingSelected)
+                    {
+                        color = (Color)ColorConverter.ConvertFromString("#76FF03");
+                    }
+                    else
+                    {
+                        color = (Color)ColorConverter.ConvertFromString("#90A4AE");
+                    }
                 }
             }
 
@@ -127,9 +171,10 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
+        public CompartmentDetails Selected { get; set; }
 
         #endregion Properties
     }
@@ -150,9 +195,20 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        public Func<CompartmentDetails, CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
         {
             Color color = Colors.Blue;
+            if (selected != null)
+            {
+                if ((compartment.ItemPairing != 0 || compartment == selected) && compartment.ItemPairing == selected.ItemPairing)
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#76FF03");
+                }
+                else
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#90A4AE");
+                }
+            }
             return color;
         };
 
@@ -160,9 +216,10 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
+        public CompartmentDetails Selected { get; set; }
 
         #endregion Properties
     }
@@ -171,19 +228,20 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
-        {
-            Color color = Colors.Gray;
-            return color;
-        };
+        public Func<CompartmentDetails, CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
+         {
+             Color color = Colors.Gray;
+             return color;
+         };
 
         #endregion Fields
 
         #region Properties
 
-        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
+        public CompartmentDetails Selected { get; set; }
 
         #endregion Properties
     }

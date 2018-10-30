@@ -29,7 +29,8 @@ namespace Ferretto.WMS.Modules.Compartment
         private CompartmentDetails compartmentSelected;
         private ICommand createNewCompartmentCommand;
 
-        private Func<CompartmentDetails, Color> selectedColorFilterFunc;
+        private ICommand resetCompartmentSelected;
+        private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc;
         private int selectedFilter;
         private bool showBackground;
 
@@ -52,8 +53,7 @@ namespace Ferretto.WMS.Modules.Compartment
             get => this.compartmentSelected;
             set
             {
-                this.compartmentSelected = value;
-                this.RaisePropertyChanged(nameof(this.CompartmentSelected));
+                this.SetProperty(ref this.compartmentSelected, value);
             }
         }
 
@@ -73,21 +73,19 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public List<Enumeration> FilterColoringCompartment { get => this.filterColoringCompartment; }
 
-        public Func<CompartmentDetails, Color> SelectedColorFilterFunc
+        public ICommand ResetCompartmentSelected => this.resetCompartmentSelected ??
+                         (this.resetCompartmentSelected = new DelegateCommand(this.ExecuteResetCompartmentSelected));
+
+        private void ExecuteResetCompartmentSelected()
         {
-            get
-            {
-                //if (!this.open)
-                //{
-                //    this.TestInitialization();
-                //    this.open = true;
-                //}
-                return this.selectedColorFilterFunc;
-            }
-            set
-            {
-                this.SetProperty(ref this.selectedColorFilterFunc, value);
-            }
+            this.CompartmentSelected = null;
+        }
+
+        public Func<CompartmentDetails, CompartmentDetails, Color> SelectedColorFilterFunc
+        {
+            get => this.selectedColorFilterFunc;
+
+            set => this.SetProperty(ref this.selectedColorFilterFunc, value);
         }
 
         public int SelectedFilter
@@ -143,7 +141,7 @@ namespace Ferretto.WMS.Modules.Compartment
         {
             IFilter filterSelected = null;
             Color color;
-            Func<CompartmentDetails, Color> testfunc = null;
+            Func<CompartmentDetails, CompartmentDetails, Color> testfunc = null;
             switch (selectedFilterColor)
             {
                 case 1:
@@ -168,6 +166,7 @@ namespace Ferretto.WMS.Modules.Compartment
                     filterSelected = new NotImplementdFilter();
                     break;
             }
+            filterSelected.Selected = this.CompartmentSelected;
             testfunc = filterSelected.ColorFunc;
 
             this.SetProperty(ref this.selectedColorFilterFunc, testfunc);
@@ -246,7 +245,8 @@ namespace Ferretto.WMS.Modules.Compartment
                 Id = 3,
                 ItemDescription = "Palle",
                 Stock = 70,
-                MaxCapacity = 100
+                MaxCapacity = 100,
+                MaterialStatusId = 7
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -258,7 +258,9 @@ namespace Ferretto.WMS.Modules.Compartment
                 Id = 4,
                 ItemDescription = "Spugne",
                 Stock = 80,
-                MaxCapacity = 100
+                MaxCapacity = 100,
+                CompartmentTypeId = 4,
+                MaterialStatusId = 7
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -270,7 +272,22 @@ namespace Ferretto.WMS.Modules.Compartment
                 Id = 5,
                 ItemDescription = "Chiodi",
                 Stock = 100,
-                MaxCapacity = 100
+                MaxCapacity = 100,
+                ItemPairing = 2,
+                CompartmentTypeId = 4
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 200,
+                Height = 200,
+                XPosition = 400,
+                YPosition = 300,
+                Code = "6",
+                Id = 6,
+                ItemDescription = "Chiodi",
+                Stock = 100,
+                MaxCapacity = 100,
+                ItemPairing = 2
             });
             this.RaisePropertyChanged(nameof(this.Tray));
             //this.RaisePropertyChanged(nameof(this.Tray.Compartments));

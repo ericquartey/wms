@@ -81,10 +81,10 @@ namespace Ferretto.Common.Controls
         {
             base.OnSelectionChanged(e);
 
-            //if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
-            //{
-            //    this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
-
+            if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
+            {
+                this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
+            }
             //    newCompartment.ColorFill = Colors.Blue.ToString();
             //    newCompartment.ColorBorder = Colors.DarkBlue.ToString();
             //    newCompartment.RectangleBorderThickness = new Thickness(3);

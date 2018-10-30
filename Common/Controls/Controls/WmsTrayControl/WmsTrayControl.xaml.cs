@@ -25,7 +25,7 @@ namespace Ferretto.Common.Controls
                     nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new PropertyMetadata(false));
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
-                                    nameof(SelectedColorFilterFunc), typeof(Func<CompartmentDetails, Color>), typeof(WmsTrayControl),
+                                    nameof(SelectedColorFilterFunc), typeof(Func<CompartmentDetails, CompartmentDetails, Color>), typeof(WmsTrayControl),
                     new FrameworkPropertyMetadata(new PropertyChangedCallback(OnSelectedColorFilterFuncChanged)));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
@@ -69,9 +69,9 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ReadOnlyProperty, value);
         }
 
-        public Func<IFilter, Color> SelectedColorFilterFunc
+        public Func<CompartmentDetails, CompartmentDetails, Color> SelectedColorFilterFunc
         {
-            get { return (Func<IFilter, Color>)this.GetValue(SelectedColorFilterFuncProperty); }
+            get { return (Func<CompartmentDetails, CompartmentDetails, Color>)this.GetValue(SelectedColorFilterFuncProperty); }
             set
             {
                 this.SetValue(SelectedColorFilterFuncProperty, value);
@@ -174,15 +174,23 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 var newCompartment = (CompartmentDetails)e.NewValue;
-                if (viewModel.Items != null)
+                if (viewModel.Items != null && newCompartment != null)
                 {
                     var foundCompartment = viewModel.Items.FirstOrDefault(c => c.CompartmentDetails.Id == newCompartment.Id);
 
                     if (foundCompartment != null)
                     {
                         wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
+                        viewModel.CompartmentSelected = foundCompartment.CompartmentDetails;
                     }
                 }
+                else
+                {
+                    wmsTrayControl.CanvasListBoxControl.SelectedItem = newCompartment;
+                    viewModel.CompartmentSelected = newCompartment;
+                }
+                
+
             }
         }
 
@@ -190,7 +198,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                viewModel.SelectedColorFilterFunc = (Func<CompartmentDetails, Color>)e.NewValue;
+                viewModel.SelectedColorFilterFunc = (Func<CompartmentDetails, CompartmentDetails, Color>)e.NewValue;
             }
         }
 

@@ -13,24 +13,35 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="2*" />
-            <RowDefinition Height="auto" />
+            <!--<RowDefinition Height="auto" />-->
             <RowDefinition Height="4*" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
 
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0"
+                      IsChecked="{Binding ShowBackground}">
+                SHOW TRAY's BACKGROUND
+            </CheckBox>
+            <wms:ComboBox x:Name="FilterColorComboBox"
+                          Grid.Column="1"
+                          EditValue="{Binding SelectedFilter, Mode=TwoWay}"
+                          ItemsSource="{Binding FilterColoringCompartment}" />
+            <Button Grid.Column="2"
+                    Command="{Binding ResetCompartmentSelected}">
+                Remove Selected Compartment
+            </Button>
+        </Grid>
 
-        <CheckBox Grid.Row="0"
-                  IsChecked="{Binding ShowBackground}">
-            SHOW TRAY's BACKGROUND
-        </CheckBox>
         <compartment:InputCompartmentView Grid.Row="1" />
-        <wms:ComboBox x:Name="FilterColorComboBox"
-                      Grid.Row="2"
-                      Width="auto"
-                      EditValue="{Binding SelectedFilter, Mode=TwoWay}"
-                      ItemsSource="{Binding FilterColoringCompartment}" />
+
         <wms:WmsTrayControl x:Name="Canvas"
-                            Grid.Row="3"
+                            Grid.Row="2"
                             Margin="0,0,0,0"
                             Compartments="{Binding Tray.Compartments, Mode=OneWay}"
                             SelectedColorFilterFunc="{Binding SelectedColorFilterFunc, Mode=OneWay}"
@@ -39,7 +50,7 @@
                             TrayObject="{Binding Tray, Mode=OneWay}" />
         <!--  TrayObject="{Binding Tray, Mode=OneWay}"  -->
         <compartment:ListCompartmentsView x:Name="ListCompartments"
-                                          Grid.Row="4" />
+                                          Grid.Row="3" />
     </Grid>
 
 </wms:WmsView>
