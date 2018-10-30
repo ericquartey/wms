@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(this.Configuration["WmsConnectionString"]));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(this.Configuration["WmsConnectionString"], b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
             services.AddSingleton<IEngine>(new Engine());
 

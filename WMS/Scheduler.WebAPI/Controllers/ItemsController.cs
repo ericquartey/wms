@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +15,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Fields
 
         private readonly IServiceProvider serviceProvider;
+        private const string DEFAULT_ORDERBY_FIELD = nameof(Item.Code);
 
         #endregion Fields
 
@@ -30,20 +31,39 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         #region Methods
 
         [HttpGet]
-        public async Task<IEnumerable<Item>> GetAllAsync()
+        public IEnumerable<Item> GetAll(int skip = 0, int take = int.MaxValue, string orderBy = DEFAULT_ORDERBY_FIELD)
         {
             using (var databaseContext = (DatabaseContext)this.serviceProvider.GetService(typeof(DatabaseContext)))
             {
-                return databaseContext.Items.Select(i => new Item
-                {
-                    Id = i.Id
-                }
-                ).ToList();
+                var orderByField = string.IsNullOrWhiteSpace(orderBy) ? DEFAULT_ORDERBY_FIELD : orderBy;
+                var skipValue = skip < 0 ? 0 : skip;
+                var takeValue = take < 0 ? int.MaxValue : take;
+
+                var expression = CreateSelectorExpression<Common.DataModels.Item, string>(orderByField);
+
+                return databaseContext.Items
+                    .Skip(skipValue)
+                    .Take(takeValue)
+                    .OrderBy(expression)
+                    .Select(i => new Item
+                    {
+                        Id = i.Id,
+                        Code = i.Code
+                    }
+                    )
+                    .ToList();
             }
         }
 
+        public static Expression<Func<T, TResult>> CreateSelectorExpression<T, TResult>(string propertyName)
+        {
+            var parameterExpression = Expression.Parameter(typeof(T));
+            return (Expression<Func<T, TResult>>)Expression.Lambda(Expression.PropertyOrField(parameterExpression, propertyName),
+                                                                    parameterExpression);
+        }
+
         [HttpPost]
-        public async Task<List<Mission>> WithdrawAsync(ItemWithdraw itemWithdraw)
+        public List<Mission> Withdraw(ItemWithdraw itemWithdraw)
         {
             var mission1Quantity = itemWithdraw.Quantity / 2;
             return new List<Mission>

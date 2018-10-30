@@ -20,7 +20,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
-    <ProjectReference Include="..\..\Common\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
+    <ProjectReference Include="..\..\Common\DataModels\Ferretto.Common.DataModels.csproj" />
+    <ProjectReference Include="..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\Scheduler\Ferretto.WMS.Scheduler.csproj" />
   </ItemGroup>
 
