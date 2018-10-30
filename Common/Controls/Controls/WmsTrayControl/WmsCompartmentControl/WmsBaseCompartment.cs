@@ -22,7 +22,6 @@ namespace Ferretto.Common.Controls
         private double height;
         private bool isSelected;
         private double left;
-        private string oldColorFill;
         private int quantity;
         private Thickness rectangleBorderThickness;
 
@@ -78,12 +77,6 @@ namespace Ferretto.Common.Controls
         {
             get { return this.left; }
             set { this.SetProperty(ref this.left, value); }
-        }
-
-        public string OldColorFill
-        {
-            get { return this.oldColorFill; }
-            set { this.SetProperty(ref this.oldColorFill, value); }
         }
 
         public int Quantity

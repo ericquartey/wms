@@ -57,7 +57,6 @@
                                          Margin="0,0,0,0"
                                          HorizontalAlignment="Left"
                                          VerticalAlignment="Top" />
-                    <!--  Margin="1,1,1,1"  -->
                 </ItemsPanelTemplate>
             </ctrls:WmsCanvasListBoxControl.ItemsPanel>
 

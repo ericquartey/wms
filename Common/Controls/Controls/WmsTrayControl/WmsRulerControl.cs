@@ -217,8 +217,6 @@ namespace Ferretto.Common.Controls
                     littleMark.YEnd = this.LittleMarkLength;
                     if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                     {
-                        //littleMark.XStart += this.OFFSET_BORDER;
-                        //littleMark.XEnd += this.OFFSET_BORDER;
                         if (littleMark.XEnd >= this.ActualWidth)
                         {
                             break;
@@ -229,8 +227,6 @@ namespace Ferretto.Common.Controls
                         startFrom = this.ActualWidth;
                         littleMark.XStart = startFrom - littleMark.XStart;
                         littleMark.XEnd = littleMark.XStart;
-                        //littleMark.XStart -= this.OFFSET_BORDER;
-                        //littleMark.XEnd -= this.OFFSET_BORDER;
                         if (littleMark.XEnd <= 0)
                         {
                             break;
@@ -245,8 +241,6 @@ namespace Ferretto.Common.Controls
                     littleMark.YEnd = littleMark.YStart;
                     if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                     {
-                        //littleMark.YStart += this.OFFSET_BORDER;
-                        //littleMark.YEnd += this.OFFSET_BORDER;
                         if (littleMark.YEnd >= this.ActualHeight)
                         {
                             break;
@@ -257,8 +251,6 @@ namespace Ferretto.Common.Controls
                         startFrom = this.ActualHeight;
                         littleMark.YStart = startFrom - littleMark.YStart;
                         littleMark.YEnd = littleMark.YStart;
-                        //littleMark.YStart -= this.OFFSET_BORDER;
-                        //littleMark.YEnd -= this.OFFSET_BORDER;
                         if (littleMark.YEnd <= 0)
                         {
                             break;
@@ -289,16 +281,12 @@ namespace Ferretto.Common.Controls
                 mark.XEnd = mark.XStart;
                 mark.YStart = 0;
                 mark.YEnd = this.MarkLength;
-                //mark.XStart += this.OFFSET_BORDER_MARK;
-                //mark.XEnd += this.OFFSET_BORDER_MARK;
 
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
                     startFrom = this.ActualWidth;
                     mark.XStart = startFrom - mark.XStart;
                     mark.XEnd = mark.XStart;
-                    //mark.XStart -= this.OFFSET_BORDER_MARK;
-                    //mark.XEnd -= this.OFFSET_BORDER_MARK;
                 }
             }
             else
@@ -308,16 +296,12 @@ namespace Ferretto.Common.Controls
                 mark.YEnd = mark.YStart;
                 mark.XStart = 0;
                 mark.XEnd = this.MarkLength;
-                //mark.YStart += this.OFFSET_BORDER_MARK;
-                //mark.YEnd += this.OFFSET_BORDER_MARK;
 
                 if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
                     startFrom = this.ActualHeight;
                     mark.YStart = startFrom - mark.YStart;
                     mark.YEnd = mark.YStart;
-                    //mark.YStart -= this.OFFSET_BORDER_MARK;
-                    //mark.YEnd -= this.OFFSET_BORDER_MARK;
                 }
             }
 
@@ -341,8 +325,6 @@ namespace Ferretto.Common.Controls
 
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    //middleMark.XStart += this.OFFSET_BORDER;
-                    //middleMark.XEnd += this.OFFSET_BORDER;
                     if (middleMark.XEnd >= this.ActualWidth)
                     {
                         toDraw = false;
@@ -353,8 +335,6 @@ namespace Ferretto.Common.Controls
                     startFrom = this.ActualWidth;
                     middleMark.XStart = startFrom - middleMark.XStart;
                     middleMark.XEnd = middleMark.XStart;
-                    //middleMark.XStart -= this.OFFSET_BORDER;
-                    //middleMark.XEnd -= this.OFFSET_BORDER;
                     if (middleMark.XEnd <= 0)
                     {
                         toDraw = false;
@@ -370,8 +350,6 @@ namespace Ferretto.Common.Controls
 
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
-                    //middleMark.YStart += this.OFFSET_BORDER;
-                    //middleMark.YEnd += this.OFFSET_BORDER;
                     if (middleMark.YEnd >= this.ActualHeight)
                     {
                         toDraw = false;
@@ -382,8 +360,6 @@ namespace Ferretto.Common.Controls
                     startFrom = this.ActualHeight;
                     middleMark.YStart = startFrom - middleMark.YStart;
                     middleMark.YEnd = middleMark.YStart;
-                    //middleMark.YStart -= this.OFFSET_BORDER;
-                    //middleMark.YEnd -= this.OFFSET_BORDER;
 
                     if (middleMark.YEnd <= 0)
                     {

@@ -13,7 +13,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="2*" />
-            <!--<RowDefinition Height="auto" />-->
             <RowDefinition Height="4*" />
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
@@ -48,7 +47,7 @@
                             SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />
-        <!--  TrayObject="{Binding Tray, Mode=OneWay}"  -->
+
         <compartment:ListCompartmentsView x:Name="ListCompartments"
                                           Grid.Row="3" />
     </Grid>

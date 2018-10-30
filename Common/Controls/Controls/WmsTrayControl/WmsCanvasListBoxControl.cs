@@ -54,7 +54,6 @@ namespace Ferretto.Common.Controls
 
         public WmsTrayCanvas Canvas { get { return this.canvas; } private set { } }
 
-        //private Position originTray;
         public Position OriginTray { get; set; }
 
         public Tray Tray { get; set; }
@@ -85,16 +84,6 @@ namespace Ferretto.Common.Controls
             {
                 this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
             }
-            //    newCompartment.ColorFill = Colors.Blue.ToString();
-            //    newCompartment.ColorBorder = Colors.DarkBlue.ToString();
-            //    newCompartment.RectangleBorderThickness = new Thickness(3);
-            //}
-            //if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
-            //{
-            //    oldCompartment.ColorFill = Colors.Aquamarine.ToString();
-            //    oldCompartment.ColorBorder = Colors.GreenYellow.ToString();
-            //    oldCompartment.RectangleBorderThickness = new Thickness(1);
-            //}
         }
 
         private void WmsCanvasItemsControl_Loaded(Object sender, System.Windows.RoutedEventArgs e)
@@ -103,19 +92,6 @@ namespace Ferretto.Common.Controls
             {
                 this.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
                 this.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
-
-                //this.tray = wmsTrayControlViewModel.Tray;
-
-                //if (this.tray != null)
-                //{
-                //    var widthNewCalculated = this.ActualWidth;
-                //    var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.tray.Dimension.Height, widthNewCalculated, this.tray.Dimension.Width);
-
-                //    this.canvas.Width = widthNewCalculated;
-                //    this.canvas.Height = heightNewCalculated;
-
-                //    this.originTray = this.tray.Origin;
-                //}
             }
         }
 

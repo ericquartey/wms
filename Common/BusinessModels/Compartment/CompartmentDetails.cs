@@ -21,11 +21,7 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Events
-
-        public event EventHandler UpdateCompartmentEvent;
-
-        #endregion Events
+        //public event EventHandler UpdateCompartmentEvent;
 
         #region Properties
 
@@ -164,17 +160,13 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Properties
 
-        #region Methods
-
-        public void OnUpdateCompartmentEvent(EventArgs e)
-        {
-            var handler = this.UpdateCompartmentEvent;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-        #endregion Methods
+        //public void OnUpdateCompartmentEvent(EventArgs e)
+        //{
+        //    var handler = this.UpdateCompartmentEvent;
+        //    if (handler != null)
+        //    {
+        //        handler(this, e);
+        //    }
+        //}
     }
 }

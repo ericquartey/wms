@@ -111,13 +111,12 @@ namespace Ferretto.Common.Controls
 
                 int step = 100 - border;
                 double stepPixel = GraphicUtils.ConvertMillimetersToPixel(step, this.CanvasListBoxControl.Canvas.ActualWidth, this.TrayObject.Dimension.Width);
-                //double stepPixel = this.horizontalRuler.MajorIntervalHorizontalPixel;
 
-                drawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);//25
+                drawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);
                 drawingBrush.ViewportUnits = BrushMappingMode.Absolute;
 
                 var gGroup = new GeometryGroup();
-                gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, stepPixel, stepPixel)));//50
+                gGroup.Children.Add(new RectangleGeometry(new System.Windows.Rect(0, 0, stepPixel, stepPixel)));
                 var drawingPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.White
                     , 1);
                 var checkers = new GeometryDrawing((SolidColorBrush)System.Windows.Application.Current.Resources["BorderTray"], drawingPen, gGroup);
@@ -189,8 +188,6 @@ namespace Ferretto.Common.Controls
                     wmsTrayControl.CanvasListBoxControl.SelectedItem = newCompartment;
                     viewModel.CompartmentSelected = newCompartment;
                 }
-                
-
             }
         }
 
@@ -214,9 +211,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                ////////
                 wmsTrayControl.Initialize();
-                ////////
                 viewModel.UpdateTray((Tray)e.NewValue);
             }
         }
@@ -224,21 +219,6 @@ namespace Ferretto.Common.Controls
         private void Initialize()
         {
             this.CanvasListBoxControl.Tray = this.TrayObject;
-            //this.tray = wmsTrayControlViewModel.Tray;
-
-            //if (this.tray != null)
-            //{
-            //var widthNewCalculated = this.ActualWidth;
-            //var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.TrayObject.Dimension.Height, widthNewCalculated, this.TrayObject.Dimension.Width);
-
-            //this.canvas.Width = widthNewCalculated;
-            //this.canvas.Height = heightNewCalculated;
-            //this.CanvasListBoxControl.Width = widthNewCalculated;
-            //this.CanvasListBoxControl.Height = heightNewCalculated;
-
-            //this.CanvasListBoxControl.OriginTray = this.TrayObject.Origin;
-            //this.originTray = this.tray.Origin;
-            //}
         }
 
         #endregion Methods

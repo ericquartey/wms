@@ -56,6 +56,7 @@
     <Compile Include="Compartment\CompartmentDetails.cs" />
     <Compile Include="Compartment\CompartmentStockDetails.cs" />
     <Compile Include="Compartment\CompartmentType.cs" />
+    <Compile Include="Compartment\Filters.cs" />
     <Compile Include="Enumeration\Enumeration.cs" />
     <Compile Include="Enumeration\EnumerationString.cs" />
     <Compile Include="GraphicObject\GraphicObject.cs" />

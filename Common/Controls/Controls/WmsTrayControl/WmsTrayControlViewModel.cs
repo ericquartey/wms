@@ -44,7 +44,6 @@ namespace Ferretto.Common.Controls
 
         #region Events
 
-        // { R = 0, G = 0, B = 100 };
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion Events
@@ -100,36 +99,10 @@ namespace Ferretto.Common.Controls
             get { return this.selectedColorFilterFunc; }
             set
             {
-                if (value == null)
-                {
-                    //this.coloringFuncCompartment = DefaultColorCompartment;
-                }
-                else
-                {
-                    this.selectedColorFilterFunc = value;
-
-                    this.UpdateColorCompartments();
-                    //if (params != null && params.Length > 0)
-                    //{
-                    //    var arg0 = params[0];
-                    //    var g = arg0.GetType();
-                    //    var filter = arg0.Member as IFilter;
-                    //    if (filter != null)
-                    //    {
-                    //        this.coloringFuncCompartment.Invoke(filter);
-                    //    }
-                    //}
-
-                    //var color = this.coloringFuncCompartment.Invoke();
-                    //Color color = this.coloringFuncCompartment.Invoke();
-
-                    //this.ColoringFuncCompartment(this.SelectedFilter);
-                }
-                //this.NotifyPropertyChanged(nameof(this.ColoringFuncCompartment));
+                this.selectedColorFilterFunc = value;
+                this.UpdateColorCompartments();
             }
         }
-
-        //public Enumeration SelectedFilter { get; set; }
 
         public int Top
         {
@@ -163,9 +136,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        //private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = DefaultColorCompartment;
         private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc
-        //private Func<Color> coloringFuncCompartment = delegate ()
         {
             get; set;
         }
@@ -208,8 +179,7 @@ namespace Ferretto.Common.Controls
                         Height = (int)(compartment.Height * ratio),
                         Left = (int)(compartment.XPosition * ratio),
                         Top = (int)(compartment.YPosition * ratio),
-                        ColorFill = //this.ColoringFuncCompartment(this.SelectedFilter).ToString(),
-                        Colors.Aquamarine.ToString(),
+                        ColorFill = Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
                         IsSelected = true
                     });
@@ -260,9 +230,7 @@ namespace Ferretto.Common.Controls
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
-                    ColorFill =
-                    //this.ColoringFuncCompartment(this.SelectedFilter).ToString(),
-                        Colors.Aquamarine.ToString(),
+                    ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
                     RectangleBorderThickness = new Thickness(1),
                     IsSelected = true
@@ -277,10 +245,7 @@ namespace Ferretto.Common.Controls
                 foreach (var item in this.Items)
                 {
                     item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.CompartmentSelected).ToString();
-                    //item.RectangleBorderThickness = new Thickness(5);
-                    //item.Selected = Colors.Violet.ToString();
                 }
-                //this.NotifyPropertyChanged(nameof(this.Items));
             }
         }
 
