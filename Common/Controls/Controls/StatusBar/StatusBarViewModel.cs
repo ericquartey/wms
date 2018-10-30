@@ -2,11 +2,10 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class StatusBarViewModel : BindableBase
+    public class StatusBarViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 
