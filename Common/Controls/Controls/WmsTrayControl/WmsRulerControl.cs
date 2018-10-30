@@ -481,7 +481,7 @@ namespace Ferretto.Common.Controls
                     position.YPosition = startFrom - position.YPosition;
                     position.YPosition -= this.OFFSET_BORDER;
 
-                    if (position.YPosition <= 0)
+                    if (position.YPosition - ft.Width <= 0)
                     {
                         toDraw = false;
                     }

@@ -1,4 +1,6 @@
+using System;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -16,8 +18,11 @@ namespace Ferretto.Common.BusinessModels
 
     public interface IFilter
     {
+        //Func<CompartmentDetails, Color> colorFunc;
+
         #region Properties
 
+        Func<CompartmentDetails, Color> ColorFunc { get; }
         string Description { get; }
         int Id { get; }
 
@@ -26,8 +31,19 @@ namespace Ferretto.Common.BusinessModels
 
     public class ArticleFilter : IFilter
     {
+        #region Fields
+
+        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        {
+            Color color = Colors.Orange;
+            return color;
+        };
+
+        #endregion Fields
+
         #region Properties
 
+        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
         public string Description { get => "Article"; }
         public int Id { get => 1; }
 
@@ -36,8 +52,19 @@ namespace Ferretto.Common.BusinessModels
 
     public class CompartmentFilter : IFilter
     {
+        #region Fields
+
+        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        {
+            Color color = Colors.Red;
+            return color;
+        };
+
+        #endregion Fields
+
         #region Properties
 
+        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
 
@@ -54,6 +81,59 @@ namespace Ferretto.Common.BusinessModels
         #endregion Properties
     }
 
+    public class FillingFilter : IFilter
+    {
+        #region Fields
+
+        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        {
+            int stock = compartment.Stock;
+            int? max = compartment.MaxCapacity;
+            Color color = Colors.GreenYellow;
+
+            if (max == null)
+            {
+                color = (Color)ColorConverter.ConvertFromString("#BDBDBD");
+            }
+            else
+            {
+                double filling = ((double)stock / (int)max) * 100;
+                if (stock == 0 || (filling >= 0 && filling < 40))
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#76FF03");
+                }
+                if (filling >= 40 && filling < 60)
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#D4E157");
+                }
+                if (filling >= 60 && filling < 80)
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#FF9800");
+                }
+                if (filling >= 80 && filling <= 99)
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#F44336");
+                }
+                if (filling == 100)
+                {
+                    color = (Color)ColorConverter.ConvertFromString("#D50000");
+                }
+            }
+
+            return color;
+        };
+
+        #endregion Fields
+
+        #region Properties
+
+        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public string Description { get => "Compartment"; }
+        public int Id { get => 2; }
+
+        #endregion Properties
+    }
+
     public class Line
     {
         #region Properties
@@ -62,6 +142,48 @@ namespace Ferretto.Common.BusinessModels
         public double XStart { get; set; }
         public double YEnd { get; set; }
         public double YStart { get; set; }
+
+        #endregion Properties
+    }
+
+    public class LinkedItemFilter : IFilter
+    {
+        #region Fields
+
+        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        {
+            Color color = Colors.Blue;
+            return color;
+        };
+
+        #endregion Fields
+
+        #region Properties
+
+        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public string Description { get => "Compartment"; }
+        public int Id { get => 2; }
+
+        #endregion Properties
+    }
+
+    public class NotImplementdFilter : IFilter
+    {
+        #region Fields
+
+        public Func<CompartmentDetails, Color> colorFunc = delegate (CompartmentDetails compartment)
+        {
+            Color color = Colors.Gray;
+            return color;
+        };
+
+        #endregion Fields
+
+        #region Properties
+
+        public Func<CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public string Description { get => "Compartment"; }
+        public int Id { get => 2; }
 
         #endregion Properties
     }

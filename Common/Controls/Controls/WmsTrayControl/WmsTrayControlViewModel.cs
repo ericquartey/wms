@@ -263,13 +263,13 @@ namespace Ferretto.Common.Controls
         {
             if (this.items != null)
             {
-                foreach (var item in this.items)
+                foreach (var item in this.Items)
                 {
                     item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails).ToString();
                     //item.RectangleBorderThickness = new Thickness(5);
                     //item.Selected = Colors.Violet.ToString();
                 }
-                this.NotifyPropertyChanged(nameof(this.Items));
+                //this.NotifyPropertyChanged(nameof(this.Items));
             }
         }
 

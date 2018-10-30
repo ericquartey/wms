@@ -10,7 +10,11 @@
                Width="25"
                Height="25"
                Margin="0,0"
-               Content="MM" />
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
+               Panel.ZIndex="1000"
+               Content="MM"
+               FontWeight="Bold" />
         <ctrls:WmsRulerControl x:Name="horizontalRuler"
                                Width="{Binding Tray.RulerSize.Width}"
                                Height="25"
