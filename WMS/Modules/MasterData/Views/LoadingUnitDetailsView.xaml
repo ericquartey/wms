@@ -84,7 +84,7 @@
                         </Grid.ColumnDefinitions>
                         <wms:TextBox Grid.ColumnSpan="3"
                                      Margin="0,0,20,0"
-                                     FieldName="Code" />
+                                     Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0,0,20,0"
@@ -108,7 +108,7 @@
                                      Grid.Column="3"
                                      VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Stretch"
-                                     FieldName="Note"
+                                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      IsMultiline="True" />
                     </Grid>
                 </GroupBox>
@@ -157,13 +157,13 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
-                                      FieldName="Height" />
+                                      EditValue="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Margin="0,0,20,0"
-                                      FieldName="Weight" />
+                                      EditValue="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="HandlingParametersCorrection" />
+                                      EditValue="{Binding HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -241,28 +241,28 @@
                     <StackPanel>
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="CreationDate" />
+                                      Content="{Binding CreationDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="LastHandlingDate" />
+                                      Content="{Binding LastHandlingDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="InventoryDate" />
+                                      Content="{Binding InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="LastPickDate" />
+                                      Content="{Binding LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="LastStoreDate" />
+                                      Content="{Binding LastStoreDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="InCycleCount" />
+                                      Content="{Binding InCycleCount}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="OutCycleCount" />
+                                      Content="{Binding OutCycleCount}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="OtherCycleCount" />
+                                      Content="{Binding OtherCycleCount}" />
                     </StackPanel>
                 </GroupBox>
 

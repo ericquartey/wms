@@ -188,18 +188,16 @@
     <Compile Include="Controls\ContentGroup\ContentGroup.xaml.cs">
       <DependentUpon>ContentGroup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DateEdit\DateEdit.xaml.cs">
-      <DependentUpon>DateEdit.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\DateEdit\DateEdit.cs" />
     <Compile Include="Controls\Expander\Expander.cs" />
     <Compile Include="Controls\FormControl.cs" />
     <Compile Include="Controls\Icon\WmsIconViewModel.cs" />
     <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
       <DependentUpon>WmsIcon.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SpinEdit\SpinEdit.xaml.cs">
-      <DependentUpon>SpinEdit.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\InfoText\InfoText.cs" />
+    <Compile Include="Controls\SpinEdit\SpinEdit.cs" />
+    <Compile Include="Controls\TextBox\TextBox.cs" />
     <Compile Include="Controls\TileBar\Tile.cs" />
     <Compile Include="Controls\TileBar\TileBar.xaml.cs">
       <DependentUpon>TileBar.xaml</DependentUpon>
@@ -208,9 +206,6 @@
       <DependentUpon>WmsImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Image\ViewModels\WmsImageViewModel.cs" />
-    <Compile Include="Controls\InfoText\InfoText.xaml.cs">
-      <DependentUpon>InfoText.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\NavMenuTouch\CustomMenuTileFlyoutPosition.cs" />
     <Compile Include="Controls\NavMenuTouch\FlyoutContentTemplateSelector.cs" />
     <Compile Include="Controls\NavMenuTouch\Interface\IMenuItemViewModel.cs" />
@@ -223,9 +218,6 @@
     </Compile>
     <Compile Include="Controls\StatusBar\StatusBar.cs" />
     <Compile Include="Controls\StatusBar\StatusBarViewModel.cs" />
-    <Compile Include="Controls\TextBox\TextBox.xaml.cs">
-      <DependentUpon>TextBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
     <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
     <Compile Include="Controls\WmsTrayControl\Utils\EventUI.cs" />
@@ -281,14 +273,8 @@
     <Page Include="Controls\ContentGroup\ContentGroup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\DateEdit\DateEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\Icon\WmsIcon.xaml">
       <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SpinEdit\SpinEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TileBar\TileBar.xaml">
@@ -299,13 +285,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\InfoText\InfoText.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\SplashScreen\SplashScreen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TextBox\TextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">

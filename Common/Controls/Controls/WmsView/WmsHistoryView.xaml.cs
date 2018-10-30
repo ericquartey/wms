@@ -57,6 +57,7 @@ namespace Ferretto.Common.Controls
         public void AddView(INavigableView registeredView)
         {
             this.registeredViews.Push(registeredView);
+            this.DataContext = null;
             this.Content = registeredView;
             this.CheckBackVisibility();
         }
