@@ -3,7 +3,7 @@ using Prism.Mvvm;
 using System;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.Common.Resources;
+using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.VWApp
 {
@@ -11,6 +11,7 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
+        private bool installation_completed;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string passwordLogin;
@@ -18,6 +19,15 @@ namespace Ferretto.VW.VWApp
         private string userLogin = "Installer";
 
         #endregion Fields
+
+        #region Constructors
+
+        public MainWindowViewModel()
+        {
+            this.installation_completed = DataManager.InstallationInfo.Machine_Ok;
+        }
+
+        #endregion Constructors
 
         #region Properties
 
@@ -44,28 +54,30 @@ namespace Ferretto.VW.VWApp
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).InstallationMainWindowInstance = new InstallationApp.MainWindow();
-                        ((App)Application.Current).InstallationMainWindowInstance.Show();
-                        ((App)Application.Current).MainWindow.Hide();
+                        ((App)Application.Current).InstallationAppMainWindowInstance = new InstallationApp.MainWindow();
+                        ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         break;
 
                     case "Operator":
-
-                        ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
-                        ((App)Application.Current).OperatorMainWindowInstance.Show();
-                        ((App)Application.Current).MainWindow.Hide();
+                        if (this.installation_completed)
+                        {
+                            ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
+                            ((App)Application.Current).OperatorMainWindowInstance.Show();
+                        }
+                        else
+                        {
+                            this.LoginErrorMessage = "Error: Machine's installation not completed yet.";
+                        }
                         break;
 
-                    default: //TODO SUGGESTION: remove this once CheckLoginInput is implemented.
+                    default:
                         this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
-                        //TODO: create error message for both wrong user/password and installation incomplete
                         break;
                 }
             }
             else
             {
                 this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
-                //TODO: open a popup to communicate to the user that the login info are not correct
             }
         }
 

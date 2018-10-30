@@ -198,7 +198,7 @@
         <Setter Property="ShowFilterButtonOnHover" Value="False" />
     </Style>
 
-    <!--  row style  -->
+    <!-- focused row style  -->
     <ControlTemplate x:Key="{dxgt:GridControlThemeKey ResourceKey=FocusedRowBorderTemplate, ThemeName=Office2016White}">
         <Rectangle cs:Name="Rectangle_0003"
                    SnapsToDevicePixels="True"
@@ -209,23 +209,31 @@
     <Style TargetType="{x:Type dxg:RowControl}">
         <Setter Property="Height" Value="30" />
         <Setter Property="FontSize" Value="{DynamicResource GridFontSize}" />
-        <Style.Triggers>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsFocused}" Value="True" />
-                    <Condition Binding="{Binding AlternateRow}" Value="True" />
-                </MultiDataTrigger.Conditions>
-                <Setter Property="Background" Value="{Binding Path=View.ActualAlternateRowBackground}" />
-            </MultiDataTrigger>
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding IsFocused}" Value="True" />
-                    <Condition Binding="{Binding AlternateRow}" Value="False" />
-                </MultiDataTrigger.Conditions>
-                <Setter Property="Background" Value="{DynamicResource CommonBackground}" />
-            </MultiDataTrigger>
-        </Style.Triggers>
     </Style>
+
+    <!--  row style  -->
+    <ControlTemplate x:Key="{dxgt:GridRowThemeKey ThemeName=Office2016White, ResourceKey=RowTemplate}" TargetType="dxg:RowControl">
+        <Border BorderBrush="Transparent" x:Name="RowContentBorder" Background="{DynamicResource CommonSecondaryUltralight}">
+            <Grid>
+                <Border x:Name="Background" BorderThickness="0" Background="Transparent" />
+                <Grid x:Name="PART_LayoutPanel"/>
+                <Border x:Name="SelectedBorder" BorderThickness="2" BorderBrush="Transparent"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+
+            <DataTrigger Binding="{Binding AlternateRow}"  Value="True">
+                <Setter TargetName="Background" Property="Background" Value="{Binding Path=View.ActualAlternateRowBackground}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding AlternateRow}"  Value="False">
+                <Setter TargetName="Background" Property="Background" Value="{DynamicResource CommonBackground}" />
+            </DataTrigger>
+
+            <DataTrigger Binding="{Binding IsSelected}"  Value="True">
+                <Setter TargetName="SelectedBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryLight}" />
+            </DataTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
 
     <Style TargetType="dxg:TableView">
         <Setter Property="AlternateRowBackground" Value="{DynamicResource CommonSecondaryUltralight}" />
@@ -249,13 +257,13 @@
     <!-- card view control template -->
     <ControlTemplate x:Key="{dxgt:CardViewThemeKey ResourceKey=ScrollViewerTemplate, ThemeName=Office2016White}">
         <Grid dxg:GridControl.CurrentView="{Binding Path=(dxg:GridControl.CurrentView), RelativeSource={RelativeSource TemplatedParent}}">
-			<dx:ScrollBarExtensions.ScrollBehavior>
-				<Binding Path="(dxg:GridControl.CurrentView).UseExtendedMouseScrolling" RelativeSource="{RelativeSource Self}">
-					<Binding.Converter>
-						<dx:BoolToObjectConverter FalseValue="{dx:NativeScrollBehavior}" TrueValue="{dxg:CardDataPresenterScrollBehavior}" />
-					</Binding.Converter>
-				</Binding>
-			</dx:ScrollBarExtensions.ScrollBehavior>
+            <dx:ScrollBarExtensions.ScrollBehavior>
+                <Binding Path="(dxg:GridControl.CurrentView).UseExtendedMouseScrolling" RelativeSource="{RelativeSource Self}">
+                    <Binding.Converter>
+                        <dx:BoolToObjectConverter FalseValue="{dx:NativeScrollBehavior}" TrueValue="{dxg:CardDataPresenterScrollBehavior}" />
+                    </Binding.Converter>
+                </Binding>
+            </dx:ScrollBarExtensions.ScrollBehavior>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />

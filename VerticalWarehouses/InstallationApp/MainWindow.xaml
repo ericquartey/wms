@@ -4,8 +4,12 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
+        xmlns:lowSpeedMovements="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+        xmlns:sensorsState="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState"
+        xmlns:singleViews="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews"
+        xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels"
         Title="MainWindow"
         Width="1024"
         Height="768"
@@ -13,6 +17,36 @@
         WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
+
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type sensorsState:SSNavigationButtonsViewModel}">
+            <sensorsState:SSNavigationButtonsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSProvaViewModel}">
+            <sensorsState:SSProvaView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSVerticalAxisViewModel}">
+            <sensorsState:SSVerticalAxisView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTGateEngineViewModel}">
+            <lowSpeedMovements:LSMTGateEngineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTHorizontalEngineViewModel}">
+            <lowSpeedMovements:LSMTHorizontalEngineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTVerticalEngineViewModel}">
+            <lowSpeedMovements:LSMTVerticalEngineView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTNavigationButtonsViewModel}">
+            <lowSpeedMovements:LSMTNavigationButtonsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:VerticalAxisCalibrationViewModel}">
+            <singleViews:VerticalAxisCalibrationView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
+            <viewsAndViewModels:MainWindowNavigationButtonsView />
+        </DataTemplate>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -140,7 +174,7 @@
                         Grid.Column="1"
                         Width="730"
                         Height="610"
-                        Content="{Binding CurrentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
                         Grid.Row="1"
                         Grid.Column="0"
@@ -148,6 +182,6 @@
                         Height="610"
                         Margin="20,20,0,0"
                         VerticalAlignment="Center"
-                        Content="{Binding CurrentNavigationButtonsView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>
 </Window>

@@ -74,6 +74,12 @@
         InverterDriverExitStatus GetIOState(int index, out bool retValue);
 
         /// <summary>
+        /// Initialize the driver.
+        /// </summary>
+        /// <returns></returns>
+        bool Initialize();
+
+        /// <summary>
         /// Get value of given parameter. It is a echo for SettingRequest.
         /// </summary>
         InverterDriverExitStatus SelectTelegram(ParameterID paramID, out object value);
@@ -88,6 +94,11 @@
         /// Send a request to inverter to read a parameter value.
         /// </summary>
         InverterDriverExitStatus SettingRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex, object value);
+
+        /// <summary>
+        /// Terminate and release driver' resources.
+        /// </summary>
+        void Terminate();
 
         #endregion Methods
     }

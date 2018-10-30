@@ -26,6 +26,7 @@ namespace Ferretto.Common.Controls
         public WmsMainDockLayoutManager()
         {
             Current = this;
+            this.DataContext = null;
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
             this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;

@@ -195,4 +195,19 @@
   <data name="CompartmentHasNoAllowedItems" xml:space="preserve">
     <value>Questo scomparto non ha articoli possibili.</value>
   </data>
+  <data name="CellSavedSuccessfully" xml:space="preserve">
+    <value>Cella salvata con successo</value>
+  </data>
+  <data name="CellInformation" xml:space="preserve">
+    <value>Informazioni Cella</value>
+  </data>
+  <data name="CellLocationInformation" xml:space="preserve">
+    <value>Informazioni Posizione Cella</value>
+  </data>
+  <data name="LoadingUnits" xml:space="preserve">
+    <value>Unità di Carico</value>
+  </data>
+  <data name="CellWithNoLoadingUnits" xml:space="preserve">
+    <value>Questa cella non contiene Unità di Carico.</value>
+  </data>
 </root>

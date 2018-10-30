@@ -23,7 +23,7 @@ namespace Ferretto.Common.Controls
             new FrameworkPropertyMetadata(null));
 
         private Type itemType;
-        private IEntityListViewModel wmsViewModel;
+        private IRefreshDataEntityViewModel wmsViewModel;
 
         #endregion Fields
 
@@ -120,7 +120,7 @@ namespace Ferretto.Common.Controls
             {
                 var wmsView = wmsViews.First();
                 var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
-                this.wmsViewModel = wmsViewViewModel as IEntityListViewModel;
+                this.wmsViewModel = wmsViewViewModel as IRefreshDataEntityViewModel;
                 var token = wmsViewViewModel.Token;
                 var gridControlViewModel = (INavigableViewModel)this.DataContext;
                 gridControlViewModel.Token = token;

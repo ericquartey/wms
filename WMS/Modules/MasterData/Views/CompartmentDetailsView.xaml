@@ -92,16 +92,18 @@
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
-                                          FieldName="CompartmentTypeId"
+                                          EditValue="{Binding CompartmentTypeId}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentTypeChoices}" />
-                            <wms:TextBox Grid.Row="2"
-                                         Grid.Column="1"
-                                         FieldName="ItemPairing"
-                                         IsEnabled="False" />
+                            <wms:ComboBox Grid.Row="2"
+                                          Grid.Column="1"
+                                          Margin="0,0,20,0"
+                                          EditValue="{Binding ItemPairing}"
+                                          IsEnabled="False"
+                                          ItemsSource="{Binding Path=ItemPairingChoices}" />
                             <wms:ComboBox Grid.Row="3"
                                           Margin="0,0,20,0"
-                                          FieldName="CompartmentStatusId"
+                                          EditValue="{Binding CompartmentStatusId}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentStatusChoices}" />
                         </Grid>
@@ -170,7 +172,7 @@
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
-                                          FieldName="MaterialStatusId"
+                                          EditValue="{Binding MaterialStatusId}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=MaterialStatusChoices}" />
                             <wms:SpinEdit Grid.Row="2"
@@ -184,7 +186,7 @@
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="3"
                                           Grid.Column="1"
-                                          FieldName="PackageTypeId"
+                                          EditValue="{Binding PackageTypeId}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=PackageTypeChoices}" />
                             <wms:TextBox Grid.Row="4"
