@@ -4,11 +4,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              mc:Ignorable="d">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <Button />
         </StackPanel>
-        <Button DockPanel.Dock="Bottom" />
+        <Button Content="{x:Static res:General.Back}"
+                DockPanel.Dock="Bottom"
+                Style="{StaticResource InstallationAppNavigationButtonStyle}" />
     </DockPanel>
 </UserControl>
