@@ -75,7 +75,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                     ItemId = itemWithdraw.ItemId,
                     Quantity = mission1Quantity,
                     BayId = itemWithdraw.BayId,
-                    Type = MissionType.Withdrawal
+                    TypeId = "PK"
                 },
                 new Mission
                 {
@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                     ItemId = itemWithdraw.ItemId,
                     Quantity = itemWithdraw.Quantity  - mission1Quantity,
                     BayId = itemWithdraw.BayId,
-                    Type = MissionType.Withdrawal
+                    TypeId = "PK"
                 }
  #pragma warning restore IDE0009
             };
