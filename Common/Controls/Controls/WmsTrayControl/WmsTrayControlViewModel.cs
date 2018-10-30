@@ -16,8 +16,43 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private static readonly Func<CompartmentDetails, Enumeration, Color> DefaultColorCompartment = (x, y) => Colors.Red;
-        private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = DefaultColorCompartment;
+        private static readonly Func<IFilter, Color> DefaultColorCompartment = (x) => Colors.Yellow;
+
+        //private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = DefaultColorCompartment;
+        //private Func<IFilter, Color> coloringFuncCompartment = delegate (IFilter selectedFilter)
+        private Func<Color> coloringFuncCompartment = delegate ()
+        {
+            //= x => Colors.Green;
+            Color color = Colors.Gray;
+            //if (selectedFilter != null)
+            //{
+            var idFilter = 1;//selectedFilter.Id;
+            switch (idFilter)
+            {
+                case 1:
+                    color = Colors.Violet;
+                    break;
+
+                case 2:
+                    color = Colors.Orange;
+                    break;
+
+                case 3:
+                    color = Colors.Green;
+                    break;
+
+                case 4:
+                    color = Colors.Blue;
+                    break;
+
+                default:
+                    color = Colors.Black;
+                    break;
+            }
+            //}
+            return color;
+        };
+
         private ObservableCollection<WmsBaseCompartment> items;
         private int left;
         private SolidColorBrush penBrush;
@@ -44,20 +79,25 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public Func<CompartmentDetails, Enumeration, Color> ColoringFuncCompartment
+        //public Func<IFilter, Color> ColoringFuncCompartment
+        public Func<Color> ColoringFuncCompartment
         {
             get { return this.coloringFuncCompartment; }
             set
             {
                 if (value == null)
                 {
-                    this.coloringFuncCompartment = DefaultColorCompartment;
+                    //this.coloringFuncCompartment = DefaultColorCompartment;
                 }
                 else
                 {
                     this.coloringFuncCompartment = value;
+                    var color = this.coloringFuncCompartment();
+                    //Color color = this.coloringFuncCompartment.Invoke();
+                    this.UpdateColorCompartments(color);
+                    //this.ColoringFuncCompartment(this.SelectedFilter);
                 }
-                this.NotifyPropertyChanged(nameof(this.ColoringFuncCompartment));
+                //this.NotifyPropertyChanged(nameof(this.ColoringFuncCompartment));
             }
         }
 
@@ -166,7 +206,8 @@ namespace Ferretto.Common.Controls
                         Height = (int)(compartment.Height * ratio),
                         Left = (int)(compartment.XPosition * ratio),
                         Top = (int)(compartment.YPosition * ratio),
-                        ColorFill = this.ColoringFuncCompartment(compartment, this.SelectedFilter).ToString(),//Colors.Aquamarine.ToString(),
+                        ColorFill = //this.ColoringFuncCompartment(this.SelectedFilter).ToString(),
+                        Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
                         IsSelected = true
                     });
@@ -217,11 +258,27 @@ namespace Ferretto.Common.Controls
                     Height = (int)(compartment.Height * ratio),
                     Left = (int)(compartment.XPosition * ratio),
                     Top = (int)(compartment.YPosition * ratio),
-                    ColorFill = this.ColoringFuncCompartment(compartment, this.SelectedFilter).ToString(),//Colors.Aquamarine.ToString(),
+                    ColorFill =
+                    //this.ColoringFuncCompartment(this.SelectedFilter).ToString(),
+                        Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
-                    RectangleBorderThickness = 1,
+                    RectangleBorderThickness = new Thickness(1),
                     IsSelected = true
                 });
+            }
+        }
+
+        private void UpdateColorCompartments(Color color)
+        {
+            if (this.items != null)
+            {
+                foreach (var item in this.items)
+                {
+                    item.ColorFill = color.ToString();//this.ColoringFuncCompartment(this.SelectedFilter).ToString();
+                    item.RectangleBorderThickness = new Thickness(5);
+                    item.Selected = Colors.Violet.ToString();
+                }
+                this.NotifyPropertyChanged(nameof(this.Items));
             }
         }
 

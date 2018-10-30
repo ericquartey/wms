@@ -87,13 +87,13 @@ namespace Ferretto.Common.Controls
 
                 newCompartment.ColorFill = Colors.Blue.ToString();
                 newCompartment.ColorBorder = Colors.DarkBlue.ToString();
-                newCompartment.RectangleBorderThickness = 3;
+                newCompartment.RectangleBorderThickness = new Thickness(3);
             }
             if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
             {
                 oldCompartment.ColorFill = Colors.Aquamarine.ToString();
                 oldCompartment.ColorBorder = Colors.GreenYellow.ToString();
-                oldCompartment.RectangleBorderThickness = 1;
+                oldCompartment.RectangleBorderThickness = new Thickness(1);
             }
         }
 

@@ -12,7 +12,7 @@
                Margin="0,0"
                Content="MM" />
         <ctrls:WmsRulerControl x:Name="horizontalRuler"
-                               Width="{Binding Tray.Ruler.Dimension.Width}"
+                               Width="{Binding Tray.RulerSize.Width}"
                                Height="25"
                                Margin="26,0,0,0"
                                HorizontalAlignment="Left"
@@ -24,7 +24,7 @@
                                Orientation="Horizontal" />
         <ctrls:WmsRulerControl x:Name="verticalRuler"
                                Width="25"
-                               Height="{Binding Tray.Ruler.Dimension.Height}"
+                               Height="{Binding Tray.RulerSize.Height}"
                                Margin="0,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Bottom"

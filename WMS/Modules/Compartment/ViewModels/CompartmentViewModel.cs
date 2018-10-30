@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using DevExpress.Mvvm;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
@@ -14,57 +15,56 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
+        private readonly Func<Color> DefaultColorCompartment = null;
+
         private readonly List<Enumeration> filterColoringCompartment = new List<Enumeration>
         {
-            new Enumeration(1, "% Filling"),
-            new Enumeration(2, "Linked Item (Null/ Any)"),
-            new Enumeration(3, "Type Scompartment"),
-            new Enumeration(4, "Article"),
+            new Enumeration(0, "% Filling"),
+            new Enumeration(1, "Linked Item (Null/ Any)"),
+            new Enumeration(2, "Type Scompartment"),
+            new Enumeration(3, "Article"),
         };
 
-        //private Func<CompartmentDetails, Color> coloringFuncCompartment = x => Colors.Green;
-        private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = delegate (CompartmentDetails compartment, Enumeration selectedFilter)
-        {
-            //= x => Colors.Green;
-            Color color = Colors.Gray;
-            if (selectedFilter != null)
-            {
-                var idFilter = selectedFilter.Id;
-                switch (idFilter)
-                {
-                    case 1:
-                        color = Colors.Violet;
-                        break;
-
-                    case 2:
-                        color = Colors.Orange;
-                        break;
-
-                    case 3:
-                        color = Colors.Green;
-                        break;
-
-                    case 4:
-                        color = Colors.Blue;
-                        break;
-
-                    default:
-                        color = Colors.Black;
-                        break;
-                }
-            }
-            return color;
-        };
-
+        private Func<Color> coloringFuncCompartment;
         private CompartmentDetails compartmentSelected;
 
+        //            default:
+        //                color = Colors.Black;
+        //                break;
+        //        }
+        //    }
+        //    return color;
+        //};
         // { R = 100, G = 100, B = 100 };
         private ICommand createNewCompartmentCommand;
 
+        //            case 4:
+        //                color = Colors.Blue;
+        //                break;
+        private bool open = false;
+
+        //            case 3:
+        //                color = Colors.Green;
+        //                break;
         private int selectedFilter;
 
+        //            case 2:
+        //                color = Colors.Orange;
+        //                break;
         private bool showBackground;
 
+        //private Func<CompartmentDetails, Enumeration, Color> coloringFuncCompartment = delegate (CompartmentDetails compartment, Enumeration selectedFilter)
+        //{
+        //    //= x => Colors.Green;
+        //    Color color = Colors.Gray;
+        //    if (selectedFilter != null)
+        //    {
+        //        var idFilter = selectedFilter.Id;
+        //        switch (idFilter)
+        //        {
+        //            case 1:
+        //                color = Colors.Violet;
+        //                break;
         private Tray tray;
 
         #endregion Fields
@@ -79,15 +79,30 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Properties
 
-        public Func<CompartmentDetails, Enumeration, Color> ColoringFuncCompartment
+        public Func<Color> ColoringFuncCompartment
         {
             get
             {
+                //if (!this.open)
+                //{
+                //    this.TestInitialization();
+                //    this.open = true;
+                //}
+                //this.SetProperty(ref this.coloringFuncCompartment, this.coloringFuncCompartment);
                 return this.coloringFuncCompartment;
             }
             set
             {
-                this.coloringFuncCompartment = value;
+                //if (value == null)
+                //{
+                //    this.coloringFuncCompartment = DefaultColorCompartment;
+                //}
+                //else
+                //{
+                //    this.coloringFuncCompartment = value;
+                //}
+
+                this.SetProperty(ref this.coloringFuncCompartment, value);
             }
         }
 
@@ -101,6 +116,17 @@ namespace Ferretto.WMS.Modules.Compartment
             }
         }
 
+        //public Func<Enumeration, Color> ColoringFuncCompartment
+        //{
+        //    get
+        //    {
+        //        return this.coloringFuncCompartment;
+        //    }
+        //    set
+        //    {
+        //        this.coloringFuncCompartment = value;
+        //    }
+        //}
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                          (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
@@ -112,15 +138,19 @@ namespace Ferretto.WMS.Modules.Compartment
             {
                 if (this.selectedFilter == null)
                 {
-                    //this.selectedFilter = this.FilterColoringCompartment[0];
+                    this.selectedFilter = 0;
                 }
                 return this.selectedFilter;
             }
             set
             {
                 this.selectedFilter = value;
-                this.ChangeFilterColoringCompartment(this.FilterColoringCompartment[this.selectedFilter]);
-                this.RaisePropertyChanged(nameof(this.Tray.Compartments));
+                //this.RaisePropertyChanged(nameof(this.SelectedFilter));
+                //this.ColoringFuncCompartment(this.FilterColoringCompartment[this.SelectedFilter]);
+                //this.RaisePropertyChanged(nameof(this.ColoringFuncCompartment));
+
+                this.ChangeFilterColoringCompartment(this.selectedFilter);
+                //this.RaisePropertyChanged(nameof(this.Tray.Compartments));
             }
         }
 
@@ -130,32 +160,33 @@ namespace Ferretto.WMS.Modules.Compartment
             set => this.SetProperty(ref this.showBackground, value);
         }
 
-        public Tray Tray { get => this.tray; set => this.SetProperty(ref this.tray, value); }
+        public Tray Tray
+        {
+            get => this.tray;
+            set => this.SetProperty(ref this.tray, value);
+        }
 
         #endregion Properties
 
         #region Methods
 
+        public Func<Color> ChangeBlue()
+        {
+            return () => Colors.Blue;
+        }
+
+        public Func<Color> ChangeYellow()
+        {
+            return () => Colors.Yellow;
+        }
+
         protected override void OnAppear()
         {
-            //Initialize without Origin, default: BOTTOM-LEFT
-            this.tray = new Tray
-            {
-                Dimension = new Dimension { Height = 500, Width = 1960 }
-            };
-
-            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1 });
-            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2 });
-            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3 });
-            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1760, YPosition = 300, Code = "4", Id = 4 });
-            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 300, Code = "4", Id = 4 });
-            //this.RaisePropertyChanged(nameof(this.Tray));
-            this.RaisePropertyChanged(nameof(this.Tray.Compartments));
-
+            this.TestInitialization();
             //this.InitializeInput();
         }
 
-        private void ChangeFilterColoringCompartment(Enumeration selectedFilterColor)
+        private void ChangeFilterColoringCompartment(int selectedFilterColor)
         {
             //foreach (var compartment in this.Tray.Compartments)
             //{
@@ -166,7 +197,42 @@ namespace Ferretto.WMS.Modules.Compartment
 
             //this.SelectedFilter = selectedFilterColor;
 
-            foreach (this.Tray.Compartments
+            //foreach (this.Tray.Compartments
+            IFilter filterSelected;
+            Color color;
+            Func<Color> testfunc = null;
+            switch (selectedFilterColor)
+            {
+                case 0:
+                    testfunc = this.ChangeBlue();
+                    filterSelected = new ArticleFilter();
+                    break;
+
+                case 1:
+                    testfunc = this.ChangeYellow();
+                    filterSelected = new CompartmentFilter();
+                    break;
+            }
+
+            //this.coloringFuncCompartment = testfunc;
+            //this.ColoringFuncCompartment = testfunc;
+            //var x = this.ColoringFuncCompartment();
+
+            //foreach(CompartmentDetails compartment in this.Tray.Compartments)
+            //{
+            //    compartment.
+            //}
+
+            //this.RaisePropertyChanged(nameof(this.ColoringFuncCompartment));
+
+            //this.coloringFuncCompartment = testfunc;
+
+            this.SetProperty(ref this.coloringFuncCompartment, testfunc);
+            this.RaisePropertyChanged(nameof(this.ColoringFuncCompartment));
+            //this.ColoringFuncCompartment();
+            this.ColoringFuncCompartment.Invoke();
+
+            //this.SetProperty(ref this.coloringFuncCompartment, testfunc);
         }
 
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
@@ -197,6 +263,23 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 0,
                 ItemCode = ""
             };
+        }
+
+        private void TestInitialization()
+        {
+            //Initialize without Origin, default: BOTTOM-LEFT
+            this.tray = new Tray
+            {
+                Dimension = new Dimension { Height = 500, Width = 1960 }
+            };
+
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 800, YPosition = 0, Code = "1", Id = 1, CompartmentStatusDescription = "Sardine" });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1000, YPosition = 0, Code = "2", Id = 2, ItemDescription = "Cavolfiori" });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 0, Code = "3", Id = 3, ItemDescription = "Palle" });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 1760, YPosition = 300, Code = "4", Id = 4, ItemDescription = "Spugne" });
+            this.tray.AddCompartment(new CompartmentDetails() { Width = 200, Height = 200, XPosition = 0, YPosition = 300, Code = "5", Id = 5, ItemDescription = "Chiodi" });
+            this.RaisePropertyChanged(nameof(this.Tray));
+            //this.RaisePropertyChanged(nameof(this.Tray.Compartments));
         }
 
         #endregion Methods

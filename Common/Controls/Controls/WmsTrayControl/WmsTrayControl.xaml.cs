@@ -19,7 +19,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty ColoringFuncCompartmentProperty = DependencyProperty.Register(
-                    nameof(ColoringFuncCompartment), typeof(Func<CompartmentDetails, Color>), typeof(WmsTrayControl),
+                    nameof(ColoringFuncCompartment), typeof(Func<Color>), typeof(WmsTrayControl),
                     new FrameworkPropertyMetadata(new PropertyChangedCallback(OnColoringFuncCompartmentChanged)));
 
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
@@ -57,12 +57,12 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public Func<CompartmentDetails, Enumeration, Color> ColoringFuncCompartment
+        public Func<Color> ColoringFuncCompartment
         {
-            get { return (Func<CompartmentDetails, Enumeration, Color>)this.GetValue(CompartmentsProperty); }
+            get { return (Func<Color>)this.GetValue(ColoringFuncCompartmentProperty); }
             set
             {
-                this.SetValue(CompartmentsProperty, value);
+                this.SetValue(ColoringFuncCompartmentProperty, value);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                viewModel.ColoringFuncCompartment = (Func<CompartmentDetails, Enumeration, Color>)e.NewValue;
+                viewModel.ColoringFuncCompartment = (Func<Color>)e.NewValue;
             }
         }
 

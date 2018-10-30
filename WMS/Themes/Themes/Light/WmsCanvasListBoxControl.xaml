@@ -5,7 +5,8 @@
 
     <DataTemplate DataType="{x:Type ctrls:WmsCompartmentViewModel}">
 
-        <Border Width="{Binding Width, Mode=TwoWay}"
+        <Border x:Name="BorderOfRectangle"
+                Width="{Binding Width, Mode=TwoWay}"
                 Height="{Binding Height, Mode=TwoWay}"
                 BorderBrush="{Binding Selected, Mode=TwoWay}"
                 BorderThickness="{Binding RectangleBorderThickness, Mode=TwoWay}">

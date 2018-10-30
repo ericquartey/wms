@@ -14,6 +14,36 @@ namespace Ferretto.Common.BusinessModels
         Y
     }
 
+    public interface IFilter
+    {
+        #region Properties
+
+        string Description { get; }
+        int Id { get; }
+
+        #endregion Properties
+    };
+
+    public class ArticleFilter : IFilter
+    {
+        #region Properties
+
+        public string Description { get => "Article"; }
+        public int Id { get => 1; }
+
+        #endregion Properties
+    }
+
+    public class CompartmentFilter : IFilter
+    {
+        #region Properties
+
+        public string Description { get => "Compartment"; }
+        public int Id { get => 2; }
+
+        #endregion Properties
+    }
+
     public class Dimension
     {
         #region Properties
@@ -66,7 +96,7 @@ namespace Ferretto.Common.BusinessModels
             get => this.dimension; set
             {
                 this.dimension = value;
-                this.Ruler = new Dimension
+                this.RulerSize = new Dimension
                 {
                     Width = this.dimension.Width + this.DimensionRuler,
                     Height = this.dimension.Height + this.DimensionRuler
@@ -75,7 +105,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public Position Origin { get; set; }
-        public Dimension Ruler { get; set; }
+        public Dimension RulerSize { get; set; }
 
         #endregion Properties
 

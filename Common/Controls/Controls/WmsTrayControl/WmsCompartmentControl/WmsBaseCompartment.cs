@@ -31,7 +31,7 @@ namespace Ferretto.Common.Controls
 
         private int quantity;
 
-        private float rectangleBorderThickness;
+        private Thickness rectangleBorderThickness;
 
         private string selected;
 
@@ -93,7 +93,7 @@ namespace Ferretto.Common.Controls
             set { this.SetProperty(ref this.quantity, value); }
         }
 
-        public float RectangleBorderThickness
+        public Thickness RectangleBorderThickness
         {
             get { return this.rectangleBorderThickness; }
             set { this.SetProperty(ref this.rectangleBorderThickness, value); }
