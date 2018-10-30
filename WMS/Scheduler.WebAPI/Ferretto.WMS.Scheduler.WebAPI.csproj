@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
     <ProjectReference Include="..\..\Common\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
+    <ProjectReference Include="..\Scheduler\Ferretto.WMS.Scheduler.csproj" />
   </ItemGroup>
 
 </Project>

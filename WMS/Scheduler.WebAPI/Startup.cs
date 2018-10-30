@@ -72,8 +72,10 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            var connection = @"data source=.\SQLEXPRESS; initial catalog=FerrettoWmsDb; integrated security=SSPI;Connection Timeout=30";
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(this.Configuration["WmsConnectionString"]));
+
+            services.AddSingleton<IEngine>(new Engine());
+
             services.AddSignalR();
         }
 
