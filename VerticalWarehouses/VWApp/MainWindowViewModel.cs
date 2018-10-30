@@ -26,9 +26,9 @@ namespace Ferretto.VW.VWApp
 
         public MainWindowViewModel()
         {
-            this.installation_completed = DataManager.InstallationInfo.Machine_Ok;
-            this.machineModel = DataMngr.CurrentData.GeneralInfo.Model;
-            this.serialNumber = DataMngr.CurrentData.GeneralInfo.Serial;
+            this.installation_completed = DataManager.CurrentData.InstallationInfo.Machine_Ok;
+            this.machineModel = DataManager.CurrentData.GeneralInfo.Model;
+            this.serialNumber = DataManager.CurrentData.GeneralInfo.Serial;
         }
 
         #endregion Constructors

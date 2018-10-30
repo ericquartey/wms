@@ -3,10 +3,12 @@ using Ferretto.VW.InstallationApp.ViewsAndViewModels;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews;
+using Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl;
 using Prism.Mvvm;
 using System.Windows.Input;
 using Prism.Commands;
 using System.Windows.Media;
+using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -14,6 +16,11 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        private readonly BeltBurnishingViewModel BeltBurnishingVMInstance = new BeltBurnishingViewModel();
+        private readonly Gate1ControlViewModel Gate1ControlVMInstance = new Gate1ControlViewModel();
+        private readonly Gate2ControlViewModel Gate2ControlVMInstance = new Gate2ControlViewModel();
+        private readonly Gate3ControlViewModel Gate3ControlVMInstance = new Gate3ControlViewModel();
+        private readonly GatesControlNavigationButtonsViewModel GatesControlNavigationButtonsVMInstance = new GatesControlNavigationButtonsViewModel();
         private readonly LSMTGateEngineViewModel LSMTGateEngineVMInstance = new LSMTGateEngineViewModel();
         private readonly LSMTHorizontalEngineViewModel LSMTHorizontalEngineVMInstance = new LSMTHorizontalEngineViewModel();
         private readonly LSMTNavigationButtonsViewModel LSMTNavigationButtonsVMInstance = new LSMTNavigationButtonsViewModel();
@@ -30,7 +37,12 @@ namespace Ferretto.VW.InstallationApp
         private readonly VerticalAxisCalibrationViewModel VerticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel();
 
         private ICommand backToMainWindowNavigationButtonsViewCommand;
+        private ICommand beltBurnishingButtonCommand;
         private BindableBase contentRegionCurrentViewModel;
+        private ICommand gates1ControlNavigationButtonCommand;
+        private ICommand gates2ControlNavigationButtonCommand;
+        private ICommand gates3ControlNavigationButtonCommand;
+        private ICommand gatesControlButtonCommand;
         private ICommand lowSpeedMovementsTestButtonCommand;
         private ICommand lsmtGateEngineButtonCommand;
         private ICommand lsmtHorizontalEngineButtonCommand;
@@ -64,7 +76,12 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
+        public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.BeltBurnishingVMInstance));
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
+        public ICommand Gates1ControlNavigationButtonCommand => this.gates1ControlNavigationButtonCommand ?? (this.gates1ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1ControlVMInstance));
+        public ICommand Gates2ControlNavigationButtonCommand => this.gates2ControlNavigationButtonCommand ?? (this.gates2ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate2ControlVMInstance));
+        public ICommand Gates3ControlNavigationButtonCommand => this.gates3ControlNavigationButtonCommand ?? (this.gates3ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate3ControlVMInstance));
+        public ICommand GatesControlButtonCommand => this.gatesControlButtonCommand ?? (this.gatesControlButtonCommand = new DelegateCommand(() => this.GatesControlButtonMethod()));
         public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.LSMTNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.LSMTGateEngineVMInstance; }));
         public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.LSMTHorizontalEngineVMInstance; }));
@@ -79,7 +96,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.ResolutionCalibrationVerticalAxisVMInstance; }));
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSBaysVMInstance; }));
         public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSCradleVMInstance; }));
-        public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSGateVMInstance; }));
+        public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSGateVMInstance; }));
         public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.SSNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
         public ICommand SsProvaViewButtonCommand => this.ssProvaViewButtonCommand ?? (this.ssProvaViewButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSProvaVMInstance; }));
         public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSVariousInputsVMInstance; }));
@@ -87,5 +104,21 @@ namespace Ferretto.VW.InstallationApp
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.VerticalAxisCalibrationVMInstance; }));
 
         #endregion Properties
+
+        #region Methods
+
+        private void GatesControlButtonMethod()
+        {
+            if (DataManager.CurrentData.GeneralInfo.Bays_Quantity == 1)
+            {
+                this.ContentRegionCurrentViewModel = this.Gate1ControlVMInstance;
+            }
+            else
+            {
+                this.NavigationRegionCurrentViewModel = this.GatesControlNavigationButtonsVMInstance;
+            }
+        }
+
+        #endregion Methods
     }
 }

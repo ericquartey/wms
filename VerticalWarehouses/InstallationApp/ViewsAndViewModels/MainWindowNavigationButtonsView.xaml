@@ -7,52 +7,42 @@
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                  mc:Ignorable="d">
-    <Border Background="{StaticResource FerrettoPureWhite}"
-            BorderThickness="0">
-        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+    <Grid Height="610">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="590" />
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Hidden">
             <StackPanel>
                 <Rectangle Height="20" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
-                        Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                <Button Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
-                        Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                <Button Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
+                <Button Command="{Binding DataContext.GatesControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.GateControl}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
-                        Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                <Button Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
-                        Command="{Binding DataContext.ResolutionCalibrationVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                <Button Command="{Binding DataContext.ResolutionCalibrationVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.ResolutionCalibration}"
                         IsEnabled="{Binding IsSetYResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
+                <Button Command="{Binding DataContext.BeltBurnishingButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.BeltBurnishing}"
                         IsEnabled="{Binding IsBeltBurnishingButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
-                        Content="{x:Static res:InstallationApp.GateSetUp}"
+                <Button Content="{x:Static res:InstallationApp.GateSetUp}"
                         IsEnabled="False"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Height="60"
-                        Margin="15,0,0,5"
-                        Content="{x:Static res:InstallationApp.VerifyWeightController}"
+                <Button Content="{x:Static res:InstallationApp.VerifyWeightController}"
                         IsEnabled="False"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             </StackPanel>
         </ScrollViewer>
-    </Border>
+    </Grid>
 </myType:BaseView>

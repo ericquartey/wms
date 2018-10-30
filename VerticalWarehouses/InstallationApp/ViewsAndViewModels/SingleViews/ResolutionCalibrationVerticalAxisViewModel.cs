@@ -3,7 +3,9 @@ using Prism.Mvvm;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.Common.Resources;
+using Ferretto.VW.Utils.Source;
+using System.Windows.Media;
+using System.Windows;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -15,6 +17,10 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private ICommand cancelButtonCommand;
         private string currentResolution = "165";
         private string desiredInitialPosition;
+        private Thickness input1BorderThickness = new Thickness(2);
+        private Thickness input2BorderThickness;
+        private Thickness input3BorderThickness;
+        private SolidColorBrush inputBorderColor = (SolidColorBrush)(new BrushConverter().ConvertFrom("#e2001a"));
         private bool isAcceptButtonActive;
         private bool isMesuredLenghtTextInputActive;
         private bool isMoveButtonActive;
@@ -35,6 +41,10 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public ICommand CancelButtonCommand => this.cancelButtonCommand ?? (this.cancelButtonCommand = new DelegateCommand(() => this.CancelButtonMethod()));
         public String CurrentResolution { get => this.currentResolution; set => this.SetProperty(ref this.currentResolution, value); }
         public String DesiredInitialPosition { get => this.desiredInitialPosition; set { this.SetProperty(ref this.desiredInitialPosition, value); this.CheckDesiredPositionCorrectness(this.desiredInitialPosition); } }
+        public Thickness Input1BorderThickness { get => this.input1BorderThickness; set => this.SetProperty(ref this.input1BorderThickness, value); }
+        public Thickness Input2BorderThickness { get => this.input2BorderThickness; set => this.SetProperty(ref this.input2BorderThickness, value); }
+        public Thickness Input3BorderThickness { get => this.input3BorderThickness; set => this.SetProperty(ref this.input3BorderThickness, value); }
+        public SolidColorBrush InputBorderColor { get => this.inputBorderColor; set => this.SetProperty(ref this.inputBorderColor, value); }
         public Boolean IsAcceptButtonActive { get => this.isAcceptButtonActive; set => this.SetProperty(ref this.isAcceptButtonActive, value); }
         public Boolean IsMesuredLenghtTextInputActive { get => this.isMesuredLenghtTextInputActive; set => this.SetProperty(ref this.isMesuredLenghtTextInputActive, value); }
         public Boolean IsMoveButtonActive { get => this.isMoveButtonActive; set => this.SetProperty(ref this.isMoveButtonActive, value); }
@@ -55,6 +65,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             this.CurrentResolution = this.NewResolution;
             this.NoteString = Common.Resources.InstallationApp.ResolutionModified;
+            var ii = DataManager.CurrentData.InstallationInfo;
+            ii.Belt_Burnishing = true;
+            DataManager.CurrentData.InstallationInfo = ii;
         }
 
         private void CalculateNewResolutionMethod()
@@ -63,6 +76,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             double.TryParse(this.MesuredLenght, out var ml);
             double.TryParse(this.RepositionLenght, out var tl);
             this.NewResolution = ((cr * ml) / tl).ToString("##.##");
+            this.Input3BorderThickness = new Thickness(0);
             this.IsAcceptButtonActive = true;
         }
 
@@ -74,6 +88,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             this.NewResolution = "";
             this.NoteString = Common.Resources.InstallationApp.InsertiDesiredInitialPosition;
             this.IsAcceptButtonActive = false;
+            this.Input1BorderThickness = new Thickness(2);
             this.IsMesuredLenghtTextInputActive = false;
             this.IsMoveButtonActive = false;
             this.IsRepositionTextInputActive = false;
@@ -89,6 +104,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                     if (i > 0)
                     {
                         this.IsSetPositionButtonActive = true;
+                        this.Input1BorderThickness = new Thickness(0);
                     }
                     else
                     {
@@ -115,6 +131,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                     if (i > 0)
                     {
                         this.IsMoveButtonActive = true;
+                        this.Input2BorderThickness = new Thickness(0);
                     }
                     else
                     {
@@ -138,6 +155,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             this.NoteString = "Moving to desired position...";
             await Task.Delay(2000);
             this.IsMesuredLenghtTextInputActive = true;
+            this.Input3BorderThickness = new Thickness(2);
             this.NoteString = Common.Resources.InstallationApp.InsertMesuredMovement;
         }
 
@@ -145,8 +163,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             this.IsSetPositionButtonActive = false;
             this.NoteString = "Setting initial position...";
-            await Task.Delay(4000);
+            await Task.Delay(2000);
             this.IsRepositionTextInputActive = true;
+            this.Input2BorderThickness = new Thickness(2);
             this.NoteString = Common.Resources.InstallationApp.InsertDesiredMovement;
         }
 

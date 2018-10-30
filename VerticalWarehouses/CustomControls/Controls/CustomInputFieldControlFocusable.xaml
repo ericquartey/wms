@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="Ferretto.VW.CustomControls.Controls.CustomInputFieldControlFocusable"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
+    <Border x:Name="LayoutRoot"
+            BorderBrush="{Binding BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            BorderThickness="{Binding CustomBorderThickness, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Margin="5,1,5,1"
+                       Style="{StaticResource CustomInputFieldControlTextBlockStyle}"
+                       Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBox Name="InputTextBox"
+                     Margin="5,1,5,5"
+                     Background="Transparent"
+                     BorderBrush="{StaticResource FerrettoLightGray}"
+                     BorderThickness="1"
+                     KeyDown="OnKeyDownHandler"
+                     Style="{StaticResource CustomInputFieldControlTextBoxStyle}"
+                     Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+    </Border>
+</UserControl>

@@ -7,41 +7,33 @@
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                  mc:Ignorable="d">
-    <Border Height="630"
-            Background="{StaticResource FerrettoPureWhite}">
-        <StackPanel>
+    <Grid Height="610">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="510" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1">
             <Rectangle Height="20" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding DataContext.SsVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.VerticalAxis}"
                     Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsCradleButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding DataContext.SsCradleButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Cradle}"
                     Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsBaysButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding DataContext.SsBaysButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Bays}"
                     Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsGateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding DataContext.SsGateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Gate}"
                     Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsVariousInputsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding DataContext.SsVariousInputsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.VariousInputs}"
                     Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-            <Rectangle Height="190" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    Content="{x:Static res:General.Back}"
-                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
         </StackPanel>
-    </Border>
+        <Button Grid.Row="2"
+                Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                Content="{x:Static res:General.Back}"
+                Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+    </Grid>
 </myType:BaseView>

@@ -27,7 +27,7 @@ namespace Ferretto.VW.VWApp
         {
             this.InitializeComponent();
             NavigationService.InitializeEvents();
-            DataMngr.CurrentData = new DataMngr();
+            DataManager.CurrentData = new DataManager();
         }
 
         #endregion Constructors

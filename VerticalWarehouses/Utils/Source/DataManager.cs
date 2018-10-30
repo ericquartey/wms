@@ -9,71 +9,90 @@ using System.Configuration;
 
 namespace Ferretto.VW.Utils.Source
 {
-    public static class DataManager
+    public class DataManager
     {
         #region Fields
 
-        private static readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
-        private static readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
+        public static DataManager CurrentData;
 
-        private static List<CellBlock> cellBlocks;
-        private static List<Cell> cells;
-        private static List<Drawer> drawers;
-        private static Installation_Info installationInfo = new Installation_Info();
+        private readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
+        private readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);
+
+        private List<CellBlock> cellBlocks;
+        private List<Cell> cells;
+        private List<Drawer> drawers;
+        private Installation_Info installationInfo;
 
         #endregion Fields
 
+        #region Constructors
+
+        public DataManager()
+        {
+            this.InitializeDataManager();
+        }
+
+        #endregion Constructors
+
         #region Properties
 
-        public static List<CellBlock> CellBlocks { get => cellBlocks; set { cellBlocks = value; RaiseCellBlocksChangedEvent(); } }
-        public static List<Cell> Cells { get => cells; set { cells = value; RaiseCellsChangedEvent(); } }
-        public static List<Drawer> Drawers { get => drawers; set { drawers = value; RaiseDrawersChangedEvent(); } }
-        public static General_Info GeneralInfo { get; set; } = new General_Info();
-        public static Installation_Info InstallationInfo { get => installationInfo; set { installationInfo = value; RaiseInstallationInfoChangedEvent(); } }
+        public List<CellBlock> CellBlocks { get => this.cellBlocks; set { this.cellBlocks = value; this.RaiseCellBlocksChangedEvent(); } }
+        public List<Cell> Cells { get => this.cells; set { this.cells = value; this.RaiseCellsChangedEvent(); } }
+        public List<Drawer> Drawers { get => this.drawers; set { this.drawers = value; this.RaiseDrawersChangedEvent(); } }
+        public General_Info GeneralInfo { get; set; }
+        public Installation_Info InstallationInfo { get => this.installationInfo; set { this.installationInfo = value; this.RaiseInstallationInfoChangedEvent(); } }
 
         #endregion Properties
 
         #region Methods
 
-        public static void InitializeDataManager()
+        public void InitializeDataManager()
         {
-            if (File.Exists(JSON_GENERAL_INFO_PATH) && File.Exists(JSON_INSTALLATION_INFO_PATH))
+            if (File.Exists(this.JSON_GENERAL_INFO_PATH) && File.Exists(this.JSON_INSTALLATION_INFO_PATH))
             {
-                var _InstallationInfo = new Installation_Info();
-                var _GeneralInfo = new General_Info();
-                var json0 = File.ReadAllText(JSON_GENERAL_INFO_PATH);
-                JsonConvert.DeserializeAnonymousType(json0, _GeneralInfo);
-                var json1 = File.ReadAllText(JSON_INSTALLATION_INFO_PATH);
-                JsonConvert.DeserializeAnonymousType(json1, _InstallationInfo);
-
-                GeneralInfo = _GeneralInfo;
-                InstallationInfo = _InstallationInfo;
+                var jsonGI = File.ReadAllText(this.JSON_GENERAL_INFO_PATH);
+                var jsonII = File.ReadAllText(this.JSON_INSTALLATION_INFO_PATH);
+                this.GeneralInfo = JsonConvert.DeserializeObject<General_Info>(jsonGI);
+                this.InstallationInfo = JsonConvert.DeserializeObject<Installation_Info>(jsonII);
             }
         }
 
-        public static void UpdateInstallationInfoFile()
+        public void UpdateInstallationInfoFile()
         {
-            var json = JsonConvert.SerializeObject(InstallationInfo, Formatting.Indented);
-            File.WriteAllText(JSON_INSTALLATION_INFO_PATH, json);
+            var json = JsonConvert.SerializeObject(this.InstallationInfo, Formatting.Indented);
+            File.WriteAllText(this.JSON_INSTALLATION_INFO_PATH, json);
         }
 
-        private static void RaiseCellBlocksChangedEvent()
+        private void CreateDummyFiles()
+        {
+            var gi = new General_Info(0);
+            var ii = new Installation_Info(0);
+
+            var jsonGI = JsonConvert.SerializeObject(gi, Formatting.Indented);
+            var jsonii = JsonConvert.SerializeObject(ii, Formatting.Indented);
+
+            File.WriteAllText(this.JSON_GENERAL_INFO_PATH, jsonGI);
+            File.WriteAllText(this.JSON_INSTALLATION_INFO_PATH, jsonii);
+        }
+
+        private void RaiseCellBlocksChangedEvent()
         {
             NavigationService.RaiseCellBlockChangedEvent();
         }
 
-        private static void RaiseCellsChangedEvent()
+        private void RaiseCellsChangedEvent()
         {
             NavigationService.RaiseCellsChangedEvent();
         }
 
-        private static void RaiseDrawersChangedEvent()
+        private void RaiseDrawersChangedEvent()
         {
             NavigationService.RaiseDrawersChangedEvent();
         }
 
-        private static void RaiseInstallationInfoChangedEvent()
+        private void RaiseInstallationInfoChangedEvent()
         {
+            this.UpdateInstallationInfoFile();
             NavigationService.RaiseInstallationInfoChangedEvent();
         }
 

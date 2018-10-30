@@ -100,9 +100,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 this.IsStopButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
                 this.EnableStartButton = true;
-                var ii = new Installation_Info();
+                var ii = DataManager.CurrentData.InstallationInfo;
                 ii.Set_Y_Resolution = true;
-                DataMngr.CurrentData.InstallationInfo = ii;
+                DataManager.CurrentData.InstallationInfo = ii;
             }
             else
             {

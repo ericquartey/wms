@@ -53,7 +53,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\CustomGateControlSensorsThreePositions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CustomGateControlSensorsTwoPositions.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CustomInputFieldControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\CustomInputFieldControlFocusable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -95,8 +107,17 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomGateControlSensorsThreePositions.xaml.cs">
+      <DependentUpon>CustomGateControlSensorsThreePositions.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomGateControlSensorsTwoPositions.xaml.cs">
+      <DependentUpon>CustomGateControlSensorsTwoPositions.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomInputFieldControl.xaml.cs">
       <DependentUpon>CustomInputFieldControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomInputFieldControlFocusable.xaml.cs">
+      <DependentUpon>CustomInputFieldControlFocusable.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomLabelTextBlockControl.xaml.cs">
       <DependentUpon>CustomLabelTextBlockControl.xaml</DependentUpon>
@@ -156,6 +177,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
+      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
+      <Name>Ferretto.Common.Resources</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

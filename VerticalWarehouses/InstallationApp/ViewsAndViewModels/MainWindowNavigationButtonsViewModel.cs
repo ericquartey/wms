@@ -35,8 +35,8 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
 
         private void UpdateDataFromDataManager()
         {
-            this.IsBeltBurnishingButtonActive = DataMngr.CurrentData.InstallationInfo.Belt_Burnishing;
-            this.IsSetYResolutionButtonActive = DataMngr.CurrentData.InstallationInfo.Set_Y_Resolution;
+            this.IsBeltBurnishingButtonActive = DataManager.CurrentData.InstallationInfo.Belt_Burnishing;
+            this.IsSetYResolutionButtonActive = DataManager.CurrentData.InstallationInfo.Set_Y_Resolution;
         }
 
         #endregion Methods

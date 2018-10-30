@@ -63,6 +63,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate1ControlView.xaml.cs">
+      <DependentUpon>Gate1ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate1ControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate2ControlView.xaml.cs">
+      <DependentUpon>Gate2ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate2ControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate3ControlView.xaml.cs">
+      <DependentUpon>Gate3ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate3ControlViewModel.cs" />
     <Compile Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml.cs">
       <DependentUpon>GatesControlNavigationButtonsView.xaml</DependentUpon>
     </Compile>
@@ -115,6 +127,10 @@
       <DependentUpon>SSVerticalAxisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SensorsState\SSVerticalAxisViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\BeltBurnishingView.xaml.cs">
+      <DependentUpon>BeltBurnishingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\BeltBurnishingViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml.cs">
       <DependentUpon>ResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
     </Compile>
@@ -131,6 +147,18 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ViewsAndViewModels\GatesControl\Gate1ControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesControl\Gate2ControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesControl\Gate3ControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -180,6 +208,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\BeltBurnishingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
