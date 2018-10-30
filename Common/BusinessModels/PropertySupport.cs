@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -7,9 +7,6 @@ namespace Ferretto.Common.BusinessModels
     ///<summary>
     /// Provides support for extracting property information based on a property expression.
     ///</summary>
-    /// <remarks>
-    /// Source copied from https://github.com/PrismLibrary/Prism/blob/Prism.v6.3.0/Source/Prism/Mvvm/PropertySupport.cs
-    /// </remarks>
     public static class PropertySupport
     {
         #region Methods

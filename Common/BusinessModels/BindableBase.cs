@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -8,43 +9,12 @@ namespace Ferretto.Common.BusinessModels
     /// <summary>
     /// Implementation of <see cref="INotifyPropertyChanged"/> to simplify models.
     /// </summary>
-    /// <remarks>
-    /// Source copied from https://github.com/PrismLibrary/Prism/blob/Prism.v6.3.0/Source/Prism/Mvvm/BindableBase.cs
-    /// </remarks>
     public abstract class BindableBase : INotifyPropertyChanged
     {
-        #region Events
-
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Methods
-
-        /// <summary>
-        /// Notifies listeners that a property value has changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property used to notify listeners. This
-        /// value is optional and can be provided automatically when invoked from compilers
-        /// that support <see cref="CallerMemberNameAttribute"/>.</param>
-        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// Raises this object's PropertyChanged event.
-        /// </summary>
-        /// <typeparam name="T">The type of the property that has a new value</typeparam>
-        /// <param name="propertyExpression">A Lambda expression representing the property that has a new value.</param>
-        protected virtual void OnPropertyChanged<T>(Expression<Func<T>> propertyExpression)
-        {
-            var propertyName = PropertySupport.ExtractPropertyName(propertyExpression);
-            this.OnPropertyChanged(propertyName);
-        }
 
         /// <summary>
         /// Checks if a property already matches a desired value. Sets the property and
@@ -60,17 +30,92 @@ namespace Ferretto.Common.BusinessModels
         /// desired value.</returns>
         protected virtual bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
         {
-            if (object.Equals(storage, value))
+            if (EqualityComparer<T>.Default.Equals(storage, value))
             {
                 return false;
             }
 
             storage = value;
-            this.OnPropertyChanged(propertyName);
+            this.RaisePropertyChanged(propertyName);
 
             return true;
         }
 
-        #endregion Methods
+        /// <summary>
+        /// Checks if a property already matches a desired value. Sets the property and
+        /// notifies listeners only when necessary.
+        /// </summary>
+        /// <typeparam name="T">Type of the property.</typeparam>
+        /// <param name="storage">Reference to a property with both getter and setter.</param>
+        /// <param name="value">Desired value for the property.</param>
+        /// <param name="propertyName">Name of the property used to notify listeners. This
+        /// value is optional and can be provided automatically when invoked from compilers that
+        /// support CallerMemberName.</param>
+        /// <param name="onChanged">Action that is called after the property value has been changed.</param>
+        /// <returns>True if the value was changed, false if the existing value matched the
+        /// desired value.</returns>
+        protected virtual bool SetProperty<T>(ref T storage, T value, Action onChanged, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value))
+            {
+                return false;
+            }
+
+            storage = value;
+            onChanged?.Invoke();
+            this.RaisePropertyChanged(propertyName);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Raises this object's PropertyChanged event.
+        /// </summary>
+        /// <param name="propertyName">Name of the property used to notify listeners. This
+        /// value is optional and can be provided automatically when invoked from compilers
+        /// that support <see cref="CallerMemberNameAttribute"/>.</param>
+        protected void RaisePropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            //TODO: when we remove the old OnPropertyChanged method we need to uncomment the below line
+#pragma warning disable CS0618 // Type or member is obsolete
+            this.OnPropertyChanged(propertyName);
+#pragma warning restore CS0618 // Type or member is obsolete
+        }
+
+        /// <summary>
+        /// Notifies listeners that a property value has changed.
+        /// </summary>
+        /// <param name="propertyName">Name of the property used to notify listeners. This
+        /// value is optional and can be provided automatically when invoked from compilers
+        /// that support <see cref="CallerMemberNameAttribute"/>.</param>
+        [Obsolete("Please use the new RaisePropertyChanged method. This method will be removed to comply wth .NET coding standards." +
+            " If you are overriding this method, you should overide the OnPropertyChanged(PropertyChangedEventArgs args) signature instead.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        protected virtual void OnPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            this.OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// Raises this object's PropertyChanged event.
+        /// </summary>
+        /// <param name="args">The PropertyChangedEventArgs</param>
+        protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
+        {
+            PropertyChanged?.Invoke(this, args);
+        }
+
+        /// <summary>
+        /// Raises this object's PropertyChanged event.
+        /// </summary>
+        /// <typeparam name="T">The type of the property that has a new value</typeparam>
+        /// <param name="propertyExpression">A Lambda expression representing the property that has a new value.</param>
+        [Obsolete("Please use RaisePropertyChanged(nameof(PropertyName)) instead. Expressions are slower, and the new nameof feature eliminates the magic strings.")]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
+        protected virtual void OnPropertyChanged<T>(Expression<Func<T>> propertyExpression)
+        {
+            var propertyName = PropertySupport.ExtractPropertyName(propertyExpression);
+            this.OnPropertyChanged(propertyName);
+        }
     }
 }
