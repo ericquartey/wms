@@ -64,7 +64,7 @@
     <Compile Include="Machine\Machine.cs" />
     <Compile Include="Machine\MachineDetails.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Mission.cs" />
+    <Compile Include="Mission\Mission.cs" />
     <Compile Include="PropertySupport.cs" />
   </ItemGroup>
   <ItemGroup>
