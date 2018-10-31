@@ -2,12 +2,11 @@
 using System.Linq;
 using DevExpress.Data.Linq;
 using Ferretto.Common.BLL.Interfaces;
-using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
     public class DataSource<TModel> : EntityInstantFeedbackSource, IDataSource<TModel>
-        where TModel : BusinessObject
+        where TModel : IBusinessObject
     {
         #region Constructors
 
