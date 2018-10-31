@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
@@ -15,7 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-        private bool advancedWithdraw = false;
+        private bool advancedWithdraw;
         private ICommand advancedWithdrawCommand;
         private ItemWithdraw itemWithdraw;
         private ICommand runWithdrawCommand;
@@ -114,6 +115,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteRunWithdraw()
         {
+            throw new NotImplementedException();
         }
 
         private void ExecuteSimpleWithdrawCommand()

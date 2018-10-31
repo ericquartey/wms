@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -49,31 +50,23 @@ namespace Ferretto.Common.BusinessModels
         public ItemDetails Item
         {
             get => this.item;
-            set
-            {
-                this.SetProperty(ref this.item, value);
-                this.ItemCode = value.Code;
-                this.ItemDescription = value.Description;
-                this.MeasureUnitDescription = value.MeasureUnitDescription;
-                this.ItemManagementTypeDescription = value.ItemManagementTypeDescription;
-                this.TotalAvailable = value.TotalAvailable;
-            }
+            set => this.SetProperty(ref this.item, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
-        public string ItemCode { get; private set; }
+        public string ItemCode => this.Item?.Code;
 
         [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
-        public string ItemDescription { get; private set; }
+        public string ItemDescription => this.Item?.Description;
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ItemManagementTypeDescription { get; private set; }
+        public string ItemManagementTypeDescription => this.Item?.ItemManagementTypeDescription;
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MeasureUnitDescription), ResourceType = typeof(BusinessObjects))]
-        public string MeasureUnitDescription { get; private set; }
+        public string MeasureUnitDescription => this.Item?.MeasureUnitDescription;
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
         public int Quantity
@@ -92,7 +85,7 @@ namespace Ferretto.Common.BusinessModels
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public int TotalAvailable { get; private set; }
+        public int? TotalAvailable => this.Item?.TotalAvailable;
 
         #endregion Properties
     }
