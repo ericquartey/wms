@@ -105,7 +105,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         protected override void OnAppear()
         {
-            this.TestInitialization();
+            this.TestInitializationTray();
         }
 
         private void ChangeFilterColoringCompartment(int selectedFilterColor)
@@ -163,20 +163,7 @@ namespace Ferretto.WMS.Modules.Compartment
             this.CompartmentSelected = null;
         }
 
-        private void InitializeInput()
-        {
-            this.CompartmentSelected = new CompartmentDetails
-            {
-                Width = 1,
-                Height = 1,
-                XPosition = 0,
-                YPosition = 0,
-                Stock = 0,
-                ItemCode = ""
-            };
-        }
-
-        private void TestInitialization()
+        private void TestInitializationTray()
         {
             //Initialize without Origin, default: BOTTOM-LEFT
             this.tray = new Tray
@@ -263,6 +250,19 @@ namespace Ferretto.WMS.Modules.Compartment
                 ItemPairing = 2
             });
             this.RaisePropertyChanged(nameof(this.Tray));
+        }
+
+        private void TestInitializeInput()
+        {
+            this.CompartmentSelected = new CompartmentDetails
+            {
+                Width = 1,
+                Height = 1,
+                XPosition = 0,
+                YPosition = 0,
+                Stock = 0,
+                ItemCode = ""
+            };
         }
 
         #endregion Methods

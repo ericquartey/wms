@@ -44,7 +44,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; }
         public string Description { get => "Article"; }
         public int Id { get => 1; }
         public CompartmentDetails Selected { get; set; }
@@ -77,7 +77,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
         public CompartmentDetails Selected { get; set; }
@@ -149,7 +149,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
         public CompartmentDetails Selected { get; set; }
@@ -182,7 +182,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
         public CompartmentDetails Selected { get; set; }
@@ -204,7 +204,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; /*set => this.colorFunc = value;*/ }
+        public Func<CompartmentDetails, CompartmentDetails, Color> ColorFunc { get => this.colorFunc; }
         public string Description { get => "Compartment"; }
         public int Id { get => 2; }
         public CompartmentDetails Selected { get; set; }

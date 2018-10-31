@@ -53,8 +53,7 @@ namespace Ferretto.Common.Controls
         private readonly int DIMENSION_RULER = 25;
         private readonly int FONTSIZE = 10;
         private readonly int N_MARKS = 10;
-        private readonly int OFFSET_BORDER = 2;//4
-        private readonly int OFFSET_BORDER_MARK = 1;//2
+        private readonly int OFFSET_BORDER = 2;
         private readonly int OFFSET_TEXT = 1;
         private readonly int WIDTH_MARK = 1;
         private readonly int WIDTH_MARK_MINOR = 1;
