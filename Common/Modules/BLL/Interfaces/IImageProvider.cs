@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace Ferretto.Common.BLL.Interfaces
+namespace Ferretto.Common.Modules.BLL
 {
     public interface IImageProvider
     {

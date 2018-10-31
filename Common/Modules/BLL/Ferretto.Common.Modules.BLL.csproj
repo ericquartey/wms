@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -156,6 +156,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IImageProvider.cs" />
     <Compile Include="Interfaces\IMachineProvider.cs" />
     <Compile Include="Interfaces\ICellProvider.cs" />
     <Compile Include="Models\DataSource.cs">
@@ -196,6 +197,10 @@
       <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
       <Name>Ferretto.Common.DataModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\EF\Ferretto.Common.EF.csproj">
+      <Project>{c32fd908-0388-4096-af68-43bbedb58725}</Project>
+      <Name>Ferretto.Common.EF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Resources\Ferretto.Common.Resources.csproj">
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
       <Name>Ferretto.Common.Resources</Name>
@@ -203,10 +208,6 @@
     <ProjectReference Include="..\..\Utils\Ferretto.Common.Utils.csproj">
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\EF\Ferretto.Common.EF.csproj">
-      <Project>{C32FD908-0388-4096-AF68-43BBEDB58725}</Project>
-      <Name>Ferretto.Common.EF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

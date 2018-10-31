@@ -92,11 +92,11 @@
       <Name>Ferretto.Common.BLL.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj">
-      <Project>{9B84A46F-1D02-4535-847F-A6872637BF54}</Project>
+      <Project>{9b84a46f-1d02-4535-847f-a6872637bf54}</Project>
       <Name>Ferretto.Common.BusinessModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj">
-      <Project>{1DA46E40-CF35-4458-9B2F-A6F6B3BA1C65}</Project>
+      <Project>{1da46e40-cf35-4458-9b2f-a6f6b3ba1c65}</Project>
       <Name>Ferretto.Common.DataModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj">
