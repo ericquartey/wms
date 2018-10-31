@@ -57,13 +57,6 @@ namespace Ferretto.Common.Controls
             wmsDialog.ShowDialog();
         }
 
-        protected override void OnClose()
-        {
-            base.OnClose();
-
-            this.Disappear();
-        }
-
         public void Disappear()
         {
             if (this.IsClosed == false)
@@ -77,6 +70,32 @@ namespace Ferretto.Common.Controls
                 ((INavigableViewModel)this.DataContext).Disappear();
                 this.navigationService.Disappear(this.DataContext as INavigableViewModel);
                 ((INavigableViewModel)this.DataContext).Dispose();
+            }
+        }
+
+        protected override void OnClose()
+        {
+            base.OnClose();
+
+            this.Disappear();
+        }
+
+        private void CheckDataContext()
+        {
+            if (this.IsWrongDataContext() == false)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.MapId) == false)
+            {
+                // Is Main WMSView registered
+                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId, this.Data);
+            }
+            else
+            {
+                this.DataContext =
+                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
             }
         }
 
@@ -116,22 +135,7 @@ namespace Ferretto.Common.Controls
 
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this.IsWrongDataContext() == false)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(this.MapId) == false)
-            {
-                // Is Main WMSView registered
-                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId, this.Data);
-            }
-            else
-            {
-                this.DataContext =
-                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
-            }
-
+            this.CheckDataContext();
             ((INavigableViewModel)this.DataContext)?.Appear();
         }
 

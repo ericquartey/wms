@@ -25,8 +25,8 @@
         </Grid.RowDefinitions>
 
         <Grid Name="ToolbarGrid">
-            <wms:ActionBar HorizontalAlignment="Right"
-                           Style="{DynamicResource ActionBarNotCustomizable}">
+            <wms:ActionBar HorizontalAlignment="Right" 
+                          Style="{DynamicResource ActionBarNotCustomizable}">
                 <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
@@ -77,18 +77,18 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox FieldName="Code" />
+                        <wms:TextBox Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
-                                     FieldName="Description" />
+                                     Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
-                                      EditValue="{Binding ItemCategoryId}"
+                                      EditValue="{Binding ItemCategoryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
                                      Margin="20,0,0,0"
                                      VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Stretch"
-                                     FieldName="Note"
+                                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      IsMultiline="True" />
                     </Grid>
                 </GroupBox>
@@ -107,27 +107,27 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
-                                      EditValue="{Binding AbcClassId}"
+                                      EditValue="{Binding AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=AbcClassChoices}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="FifoTimeStore" />
+                                      EditValue="{Binding FifoTimeStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
-                                      FieldName="ReorderPoint" />
+                                      EditValue="{Binding ReorderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding MeasureUnitId}"
+                                      EditValue="{Binding MeasureUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=MeasureUnitChoices}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="FifoTimePick" />
+                                      EditValue="{Binding FifoTimePick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="2"
-                                      FieldName="ReorderQuantity" />
+                                      EditValue="{Binding ReorderQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding ItemManagementTypeId}"
+                                      EditValue="{Binding ItemManagementTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=ItemManagementTypeChoices}" />
                     </Grid>
                 </GroupBox>
@@ -150,31 +150,31 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Height" />
+                                      EditValue="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="PickTolerance" />
+                                      EditValue="{Binding PickTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      FieldName="AverageWeight" />
+                                      EditValue="{Binding AverageWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Length" />
+                                      EditValue="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="StoreTolerance" />
+                                      EditValue="{Binding StoreTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Width" />
+                                      EditValue="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="InventoryTolerance" />
+                                      EditValue="{Binding InventoryTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -245,19 +245,19 @@
                                   Path="{Binding Path=Image}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  FieldName="CreationDate" />
+                                  Content="{Binding CreationDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  FieldName="LastModificationDate" />
+                                  Content="{Binding LastModificationDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  FieldName="InventoryDate" />
+                                  Content="{Binding InventoryDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  FieldName="LastPickDate" />
+                                  Content="{Binding LastPickDate}" />
                     <wms:InfoText HorizontalAlignment="Right"
                                   HorizontalContentAlignment="Right"
-                                  FieldName="LastStoreDate" />
+                                  Content="{Binding LastStoreDate}" />
                 </StackPanel>
 
             </Grid>

@@ -85,25 +85,25 @@
                             </Grid.ColumnDefinitions>
                             <wms:TextBox Grid.Row="0"
                                          Grid.ColumnSpan="2"
-                                         FieldName="Code" />
+                                         Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.ColumnSpan="2"
-                                         FieldName="LoadingUnitCode"
+                                         Text="{Binding LoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding CompartmentTypeId}"
+                                          EditValue="{Binding CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                          
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentTypeChoices}" />
                             <wms:ComboBox Grid.Row="2"
                                           Grid.Column="1"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding ItemPairing}"
+                                          EditValue="{Binding ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=ItemPairingChoices}" />
                             <wms:ComboBox Grid.Row="3"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding CompartmentStatusId}"
+                                          EditValue="{Binding CompartmentStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentStatusChoices}" />
                         </Grid>
@@ -125,17 +125,17 @@
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          FieldName="Height" />
+                                          Content="{Binding Height}" />
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="1"
-                                          FieldName="Width" />
+                                          Content="{Binding Width}" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          FieldName="XPosition" />
+                                          Content="{Binding XPosition}" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="1"
-                                          FieldName="YPosition" />
+                                          Content="{Binding YPosition}" />
                         </Grid>
                     </GroupBox>
 
@@ -159,40 +159,40 @@
                             <wms:TextBox Grid.Row="0"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
-                                         FieldName="ItemDescription"
+                                         Text="{Binding ItemDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="False" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
-                                         FieldName="Sub1"
+                                         Text="{Binding Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="False" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.Column="1"
-                                         FieldName="Sub2"
+                                         Text="{Binding Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding MaterialStatusId}"
+                                          EditValue="{Binding MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=MaterialStatusChoices}" />
                             <wms:SpinEdit Grid.Row="2"
                                           Grid.Column="1"
-                                          FieldName="FifoTime"
+                                          EditValue="{Binding FifoTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False" />
                             <wms:TextBox Grid.Row="3"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
-                                         FieldName="Lot"
+                                         Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="False" />
                             <wms:ComboBox Grid.Row="3"
                                           Grid.Column="1"
-                                          EditValue="{Binding PackageTypeId}"
+                                          EditValue="{Binding PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=PackageTypeChoices}" />
                             <wms:TextBox Grid.Row="4"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
-                                         FieldName="RegistrationNumber"
+                                         Text="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          IsEnabled="False" />
                         </Grid>
                     </GroupBox>
@@ -213,18 +213,18 @@
                             <wms:SpinEdit Grid.Row="0"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          FieldName="MaxCapacity"
+                                          EditValue="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False" />
                             <wms:InfoText Grid.Row="0"
                                           Grid.Column="1"
-                                          FieldName="ReservedForPick" />
+                                          Content="{Binding ReservedForPick}" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          FieldName="Stock" />
+                                          Content="{Binding Stock}" />
                             <wms:InfoText Grid.Row="1"
                                           Grid.Column="1"
-                                          FieldName="ReservedToStore" />
+                                          Content="{Binding ReservedToStore}" />
                         </Grid>
                     </GroupBox>
 
@@ -287,22 +287,22 @@
                                 Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="CreationDate" />
+                                      Content="{Binding CreationDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="LastHandlingDate" />
+                                      Content="{Binding LastHandlingDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="InventoryDate" />
+                                      Content="{Binding InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="FirstStoreDate" />
+                                      Content="{Binding FirstStoreDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="LastStoreDate" />
+                                      Content="{Binding LastStoreDate}" />
                         <wms:InfoText HorizontalAlignment="Right"
                                       HorizontalContentAlignment="Right"
-                                      FieldName="LastPickDate" />
+                                      Content="{Binding LastPickDate}" />
                     </StackPanel>
                 </Grid>
             </Grid>

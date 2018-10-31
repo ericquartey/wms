@@ -6,7 +6,7 @@
 
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/Common.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/DXWindow.xaml" />
-
+        <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/InfoText.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/SlideInView.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/ScrollViewer.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.Themes;component/Themes/Light/NavMenuTouch.xaml" />

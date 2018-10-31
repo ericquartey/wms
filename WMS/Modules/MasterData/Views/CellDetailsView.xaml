@@ -79,30 +79,30 @@
                         <wms:ComboBox Grid.Row="0"
                                       Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding AisleId, Mode=TwoWay}"
+                                      EditValue="{Binding AisleId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       ItemsSource="{Binding Path=AisleChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding CellTypeId}"
+                                      EditValue="{Binding CellTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       ItemsSource="{Binding Path=CellTypeChoices}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Number" />
+                                      EditValue="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding AbcClassId, Mode=TwoWay}"
+                                      EditValue="{Binding AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       ItemsSource="{Binding Path=AbcClassChoices}" />
                         <wms:SpinEdit Grid.Row="3"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Priority" />
+                                      EditValue="{Binding Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding CellStatusId}"
+                                      EditValue="{Binding CellStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       ItemsSource="{Binding Path=CellStatusChoices}" />
                     </Grid>
                 </GroupBox>
@@ -124,28 +124,28 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Column" />
+                                      EditValue="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Floor" />
+                                      EditValue="{Binding Floor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Side}"
+                                      EditValue="{Binding Side, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       ItemsSource="{Binding Path=SideChoices}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="XCoordinate" />
+                                      EditValue="{Binding XCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="YCoordinate" />
+                                      EditValue="{Binding YCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="ZCoordinate" />
+                                      EditValue="{Binding ZCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 

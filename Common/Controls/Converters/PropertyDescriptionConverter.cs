@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using DevExpress.Mvvm.UI;
-using DevExpress.Xpf.Editors;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 
@@ -11,6 +10,13 @@ namespace Ferretto.Common.Controls
 {
     public sealed class PropertyDescriptionConverter : IMultiValueConverter
     {
+        #region Properties
+
+        public Type Control { get; set; }
+        public DependencyProperty Property { get; set; }
+
+        #endregion Properties
+
         #region Methods
 
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -25,9 +31,9 @@ namespace Ferretto.Common.Controls
                 return null;
             }
 
-            var editControl = LayoutTreeHelper.GetVisualParents(control).FirstOrDefault(v => v is BaseEdit);
+            var editControl = LayoutTreeHelper.GetVisualParents(control).FirstOrDefault(c => c.GetType() == this.Control);
             var bindingExpression = BindingOperations.GetBindingExpression(editControl,
-                                    BaseEdit.EditValueProperty);
+                                    this.Property);
             if (bindingExpression != null)
             {
                 var propertyName = bindingExpression.ParentBinding.Path.Path;
