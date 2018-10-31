@@ -30,12 +30,12 @@
                 <wms:ActionBarItem Command="{Binding SaveCommand}"
                                    Content="{x:Static res:General.Save}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Command="{Binding RevertCommand}"
                                    Content="{x:Static res:General.Revert}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
         </Grid>
@@ -88,11 +88,11 @@
                                          Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.ColumnSpan="2"
-                                         Text="{Binding LoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="False" />
+                                         IsEnabled="False"
+                                         Text="{Binding LoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                          
+                                          EditValue="{Binding CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentTypeChoices}" />
                             <wms:ComboBox Grid.Row="2"
@@ -103,7 +103,7 @@
                                           ItemsSource="{Binding Path=ItemPairingChoices}" />
                             <wms:ComboBox Grid.Row="3"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding CompartmentStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"    
+                                          EditValue="{Binding CompartmentStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="False"
                                           ItemsSource="{Binding Path=CompartmentStatusChoices}" />
                         </Grid>
@@ -159,17 +159,17 @@
                             <wms:TextBox Grid.Row="0"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
-                                         Text="{Binding ItemDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="False" />
+                                         IsEnabled="False"
+                                         Text="{Binding ItemDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
-                                         Text="{Binding Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="False" />
+                                         IsEnabled="False"
+                                         Text="{Binding Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="1"
                                          Grid.Column="1"
-                                         Text="{Binding Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="False" />
+                                         IsEnabled="False"
+                                         Text="{Binding Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:ComboBox Grid.Row="2"
                                           Margin="0,0,20,0"
                                           EditValue="{Binding MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -182,8 +182,8 @@
                             <wms:TextBox Grid.Row="3"
                                          Grid.Column="0"
                                          Margin="0,0,20,0"
-                                         Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="False" />
+                                         IsEnabled="False"
+                                         Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:ComboBox Grid.Row="3"
                                           Grid.Column="1"
                                           EditValue="{Binding PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -192,8 +192,8 @@
                             <wms:TextBox Grid.Row="4"
                                          Grid.Column="0"
                                          Grid.ColumnSpan="2"
-                                         Text="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="False" />
+                                         IsEnabled="False"
+                                         Text="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </GroupBox>
 
@@ -277,7 +277,7 @@
                               Header="{x:Static res:MasterData.CompartmentPosition}">
                         <Image HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
-                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/images/udc_compartment.png" />
+                               Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/images/udc_compartment.png" />
                     </GroupBox>
 
                     <StackPanel Grid.Row="0"

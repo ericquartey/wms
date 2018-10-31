@@ -22,7 +22,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Label Style="{DynamicResource ControlLabelStyle}" >
+                        <Label Style="{DynamicResource ControlLabelStyle}">
                             <Label.Content>
                                 <MultiBinding Converter="{StaticResource DNC}">
                                     <Binding RelativeSource="{RelativeSource Self}" />
@@ -56,7 +56,7 @@
                     <Border Background="Transparent">
                         <Image x:Name="Glyph"
                                Width="12"
-                               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Controls/baseline_calendar_today_black_18dp.png" />
+                               Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Controls/baseline_calendar_today_black_18dp.png" />
                     </Border>
                 </ControlTemplate>
             </Button.Template>

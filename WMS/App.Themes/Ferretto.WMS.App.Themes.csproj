@@ -9,9 +9,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="**\*.xaml">
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Page Include="**\*.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </None>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   
 </Project>

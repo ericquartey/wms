@@ -46,7 +46,7 @@
                                     <Image Width="18"
                                            Height="18"
                                            VerticalAlignment="Center"
-                                           Source="pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_help_outline_white_18dp.png"
+                                           Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_help_outline_white_18dp.png"
                                            Visibility="{Binding IsVisible}" />
                                 </dxc:HeaderItemControl>
 
