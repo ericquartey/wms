@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -55,7 +55,6 @@
     <Compile Include="Cell\CellDetails.cs" />
     <Compile Include="Compartment\Compartment.cs" />
     <Compile Include="Compartment\CompartmentDetails.cs" />
-    <Compile Include="Compartment\CompartmentStockDetails.cs" />
     <Compile Include="Compartment\CompartmentType.cs" />
     <Compile Include="Compartment\Filters.cs" />
     <Compile Include="Enumeration\Enumeration.cs" />
