@@ -7,5 +7,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="**\*.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
   
 </Project>
