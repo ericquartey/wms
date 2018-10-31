@@ -2,7 +2,7 @@
 using System.Threading;
 using Ferretto.VW.InverterDriver;
 
-namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
+namespace Ferretto.VW.ActionBlocks
 {
     public class MoveOnVertical
     {
@@ -10,18 +10,24 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
 
         private const int TIME_OUT = 1000;  // Time out 1 sec
 
-        private float acc;
-        private float dec;
-        private InverterDriver.InverterDriver InverterDriver;
+        private short x;    // Position
+
+        private float vMax; // Maximum speed
+
+        private float acc;  // Acceleration
+
+        private float dec;  // Deceleration
+
+        private float w;    // Weight
+
+        private bool terminated;
+
+        InverterDriver.InverterDriver inverterDriver;
 
         /// <summary>
         /// Thread to check the Inverter if we don't get an answer
         /// </summary>
         private Thread pollingThread;
-
-        private float vMax;
-        private float w;
-        private short x;
 
         #endregion Fields
 
@@ -37,17 +43,16 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
 
         public MoveOnVertical(short x, float vMax, float acc, float dec, float w)
         {
-            this.x = x;
-            this.vMax = vMax;
-            this.acc = acc;
-            this.dec = dec;
-            this.w = w;
+            x = x;
+            vMax = vMax;
+            acc = acc;
+            dec = dec;
+            w = w;
 
             // Inverter Driver class instantiate
-            this.InverterDriver = new InverterDriver.InverterDriver();
-            this.InverterDriver.Connected += this.DriverConnected;
-            //InverterDriver.OperationDone += DriverOperationDone;
-            this.InverterDriver.Error += this.DriverError;
+            inverterDriver  = new InverterDriver.InverterDriver();
+            // inverterDriver.Connected += DriverConnected;
+            inverterDriver.Error += DriverError;
         }
 
         #endregion Constructors
@@ -90,7 +95,7 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
             try
             {
                 // Call the Inverter Driver Initialize method
-                initialized = this.InverterDriver.Initialize();
+                initialized = inverterDriver.Initialize();
 
                 if (initialized)
                 {
@@ -111,38 +116,14 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
             return result;
         }
 
-        public bool Terminate()
-        {
-            var result = true;
-
-            // Stop the Polling Thread
-            if (this.pollingThread != null)
-            {
-                this.pollingThread.Abort();
-            }
-            else
-                result = false;
-
-            return result;
-        }
-
         /// <summary>
         /// Create working thread.
         /// </summary>
         private void CreateThread()
         {
-            this.pollingThread = new Thread(this.MainThread);
+            this.pollingThread = new Thread(MainThread);
             this.pollingThread.Name = "PollingThread";
             this.pollingThread.Start();
-        }
-
-        // This procedure has to throw an event to the UI
-        private void DriverConnected(Object sender, ConnectedEventArgs eventArgs)
-        {
-            // The UI gets the connection result:
-            // * true: estabilished connetion;
-            // * false: not estabilished connetion.
-            ThrowConnectEvent?.Invoke(eventArgs.State);
         }
 
         // This procedure has to throw an event to the UI
@@ -176,11 +157,9 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
                     break;
             }
 
+            // Send the error description to the UI
             if (errorDescription != "")
-            {
-                // Send the error description to the UI
                 ThrowErrorEvent?.Invoke(errorDescription);
-            }
         }
 
         /*
@@ -192,7 +171,19 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
             // * false: operation not done.
             ThrowOperationDoneEvent?.Invoke(eventArgs.Result);
         }
+        
+        // This procedure has to throw an event to the UI
+        private void DriverConnected(Object sender, ConnectedEventArgs eventArgs)
+        {
+            // The UI gets the connection result:
+            // * true: estabilished connetion;
+            // * false: not estabilished connetion.
+            ThrowConnectEvent?.Invoke(eventArgs.State);
+        }
         */
+        #endregion Constructors
+
+        #region Methods
 
         /// <summary>
         /// Polling thread.
@@ -203,11 +194,11 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
             var ctrLoop = true;
             var errorDescription = "";
 
-            while (ctrLoop)
+            while (ctrLoop && !terminated)
             {
                 Thread.Sleep(TIME_OUT);
 
-                state = this.InverterDriver.GetMainState;
+                state = inverterDriver.GetMainState;
 
                 switch (state)
                 {
@@ -219,21 +210,33 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
 
                     case InverterDriverState.Error:
                         errorDescription = "Inverter Driver Error State";
-                        // Send the error description to the UI
-                        ThrowErrorEvent?.Invoke(errorDescription);
                         ctrLoop = false;
-
                         break;
 
                     default:
                         errorDescription = "Unknown Inverter Driver State";
-                        // Send the error description to the UI
-                        ThrowErrorEvent?.Invoke(errorDescription);
                         ctrLoop = false;
-
                         break;
                 }
             }
+
+            // Send the error description to the UI
+            if (!terminated)
+                ThrowErrorEvent?.Invoke(errorDescription);
+        }
+
+        public bool Terminate()
+        {
+            bool result = false;
+
+            // Stop the Polling Thread
+            if (pollingThread != null)
+            {
+                terminated = true;
+                result = true;
+            }
+
+            return result;
         }
 
         #endregion Methods

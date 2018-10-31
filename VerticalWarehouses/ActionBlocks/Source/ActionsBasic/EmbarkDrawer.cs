@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace Ferretto.VW.ActionBlocks.ActionsBasic
+namespace Ferretto.VW.ActionBlocks
 {
     public class EmbarkDrawer
     {
@@ -10,9 +10,9 @@ namespace Ferretto.VW.ActionBlocks.ActionsBasic
 
         private const int TIME_OUT = 100;                   // Time out
 
-        private InverterDriver.InverterDriver driver;
-        private AutoResetEvent hevAckTerminate;
-        private AutoResetEvent hevTerminate;
+        private InverterDriver.InverterDriver InverterDriver;
+        private AutoResetEvent evAckTerminate;
+        private AutoResetEvent evTerminate;
         private Thread threadMain;
 
         #endregion Fields
@@ -25,14 +25,14 @@ namespace Ferretto.VW.ActionBlocks.ActionsBasic
         public EmbarkDrawer()
         {
             // Classe InverterDriver
-            this.driver = null;
+            InverterDriver = null;
 
             // AutoResetEvent
-            this.hevTerminate = null;
-            this.hevAckTerminate = null;
+            evTerminate = null;
+            evAckTerminate = null;
 
             // Thread
-            this.threadMain = null;
+            threadMain = null;
         }
 
         #endregion Constructors
@@ -42,10 +42,10 @@ namespace Ferretto.VW.ActionBlocks.ActionsBasic
         public bool Initialize(InverterDriver.InverterDriver drv)
         {
             // Assign the driver
-            this.driver = drv;
+            InverterDriver = drv;
 
             // Create the thread
-            this.create_thread();
+            CreateThread();
 
             return true;
         }
@@ -54,45 +54,45 @@ namespace Ferretto.VW.ActionBlocks.ActionsBasic
         public void Start()
         {
             // Start the thread
-            if (this.threadMain != null)
+            if (threadMain != null)
             {
-                this.threadMain.Start();
+                threadMain.Start();
             }
 
             // Call the SelectMovement function of the inverter driver
-            //this.driver.SetTypeOfMotorMovement(0xF1);
+            // InverterDriver.SetTypeOfMotorMovement(0xF1);
         }
 
         public void Terminate()
         {
             // destroy resources fot thread
-            this.destroy_thread();
+            DestroyThread();
 
-            this.driver = null;
+            InverterDriver = null;
         }
 
         //! Create thread
-        private void create_thread()
+        private void CreateThread()
         {
-            this.hevTerminate = new AutoResetEvent(false);
-            this.hevAckTerminate = new AutoResetEvent(false);
+            evTerminate = new AutoResetEvent(false);
+            evAckTerminate = new AutoResetEvent(false);
 
             // create the thread
-            this.threadMain = new Thread(this.embarkDrawerThread);
+            threadMain = new Thread(this.EmbarkDrawerThread);
         }
 
         //! Destroy thread
-        private void destroy_thread()
+        private void DestroyThread()
         {
             // TODO
         }
 
         //! Main thread
-        private void embarkDrawerThread()
+        private void EmbarkDrawerThread()
         {
             const int EV_TERMINATE = 0;
             var handles = new WaitHandle[1];
-            handles[0] = this.hevTerminate;
+            handles[0] = this.evTerminate;
 
             var bExit = false;
             while (!bExit)
