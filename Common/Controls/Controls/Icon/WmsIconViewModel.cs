@@ -2,11 +2,10 @@
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    internal class WmsIconViewModel : BindableBase
+    internal class WmsIconViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 

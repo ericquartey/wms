@@ -1,8 +1,6 @@
-﻿using Prism.Mvvm;
-
-namespace Ferretto.Common.Controls
+﻿namespace Ferretto.Common.Controls
 {
-    public class Tile : BindableBase
+    public class Tile : Prism.Mvvm.BindableBase
     {
         #region Fields
 
