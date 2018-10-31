@@ -232,7 +232,6 @@ namespace Ferretto.Common.Controls
                     Top = (int)(compartment.YPosition * ratio),
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
-                    RectangleBorderThickness = new Thickness(1),
                     IsSelected = true
                 });
             }

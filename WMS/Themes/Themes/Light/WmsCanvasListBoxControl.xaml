@@ -19,7 +19,7 @@
                             Width="{Binding Width, Mode=TwoWay}"
                             Height="{Binding Height, Mode=TwoWay}"
                             BorderBrush="{Binding Selected, Mode=TwoWay}"
-                            BorderThickness="{Binding RectangleBorderThickness, Mode=TwoWay}">
+                            BorderThickness="1">
                         <Rectangle x:Name="Rectangle"
                                    Fill="{Binding ColorFill, Mode=TwoWay}" />
                     </Border>
