@@ -14,12 +14,8 @@ namespace Ferretto.Common.Controls
         private bool isSelected;
         private double left;
         private int quantity;
-        private Thickness rectangleBorderThickness;
-
         private string selected;
-
         private double top;
-
         private double width;
 
         #endregion Fields
@@ -74,12 +70,6 @@ namespace Ferretto.Common.Controls
         {
             get => this.quantity;
             set => this.SetProperty(ref this.quantity, value);
-        }
-
-        public Thickness RectangleBorderThickness
-        {
-            get => this.rectangleBorderThickness;
-            set => this.SetProperty(ref this.rectangleBorderThickness, value);
         }
 
         public string Selected
