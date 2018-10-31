@@ -28,6 +28,7 @@ namespace Ferretto.Common.Controls
 
         private int penThickness;
 
+        private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc;
         private int top;
 
         private Tray tray;
@@ -51,16 +52,6 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
-
-        public CompartmentDetails CompartmentSelected
-        {
-            get => this.compartmentSelected;
-            set
-            {
-                this.compartmentSelected = value;
-                this.UpdateColorCompartments();
-            }
-        }
 
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
@@ -104,6 +95,16 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public CompartmentDetails SelectedCompartment
+        {
+            get => this.compartmentSelected;
+            set
+            {
+                this.compartmentSelected = value;
+                this.UpdateColorCompartments();
+            }
+        }
+
         public int Top
         {
             get { return this.top; }
@@ -136,11 +137,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc
-        {
-            get; set;
-        }
-
         #endregion Properties
 
         #region Methods
@@ -149,7 +145,6 @@ namespace Ferretto.Common.Controls
         {
             if (this.items != null)
             {
-                Debug.WriteLine($"DRAW-COMPARTMENT: TRAY: W_PIXEL={widthTrayPixel} W={this.Tray.Dimension.Width}");
                 foreach (var i in this.items)
                 {
                     i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.Tray.Dimension.Width);
@@ -243,7 +238,7 @@ namespace Ferretto.Common.Controls
             {
                 foreach (var item in this.Items)
                 {
-                    item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.CompartmentSelected).ToString();
+                    item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment).ToString();
                 }
             }
         }

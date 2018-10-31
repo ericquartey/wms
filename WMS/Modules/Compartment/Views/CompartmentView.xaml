@@ -32,7 +32,7 @@
                           EditValue="{Binding SelectedFilter, Mode=TwoWay}"
                           ItemsSource="{Binding FilterColoringCompartment}" />
             <Button Grid.Column="2"
-                    Command="{Binding ResetCompartmentSelected}">
+                    Command="{Binding ResetSelectedCompartment}">
                 Remove Selected Compartment
             </Button>
         </Grid>
@@ -44,7 +44,7 @@
                             Margin="0,0,0,0"
                             Compartments="{Binding Tray.Compartments, Mode=OneWay}"
                             SelectedColorFilterFunc="{Binding SelectedColorFilterFunc, Mode=OneWay}"
-                            SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
+                            SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />
 

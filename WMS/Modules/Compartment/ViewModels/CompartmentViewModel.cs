@@ -24,11 +24,10 @@ namespace Ferretto.WMS.Modules.Compartment
             new Enumeration(5, "X"),
         };
 
-        private CompartmentDetails compartmentSelected;
         private ICommand createNewCompartmentCommand;
-        private ICommand resetCompartmentSelected;
-
+        private ICommand resetSelectedCompartment;
         private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc;
+        private CompartmentDetails selectedCompartment;
         private int selectedFilter;
         private bool showBackground;
 
@@ -46,28 +45,28 @@ namespace Ferretto.WMS.Modules.Compartment
 
         #region Properties
 
-        public CompartmentDetails CompartmentSelected
-        {
-            get => this.compartmentSelected;
-            set
-            {
-                this.SetProperty(ref this.compartmentSelected, value);
-            }
-        }
-
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                          (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
         public List<Enumeration> FilterColoringCompartment { get => this.filterColoringCompartment; }
 
-        public ICommand ResetCompartmentSelected => this.resetCompartmentSelected ??
-                         (this.resetCompartmentSelected = new DelegateCommand(this.ExecuteResetCompartmentSelected));
+        public ICommand ResetSelectedCompartment => this.resetSelectedCompartment ??
+                         (this.resetSelectedCompartment = new DelegateCommand(this.ExecuteResetSelectedCompartment));
 
         public Func<CompartmentDetails, CompartmentDetails, Color> SelectedColorFilterFunc
         {
             get => this.selectedColorFilterFunc;
 
             set => this.SetProperty(ref this.selectedColorFilterFunc, value);
+        }
+
+        public CompartmentDetails SelectedCompartment
+        {
+            get => this.selectedCompartment;
+            set
+            {
+                this.SetProperty(ref this.selectedCompartment, value);
+            }
         }
 
         public int SelectedFilter
@@ -134,7 +133,7 @@ namespace Ferretto.WMS.Modules.Compartment
                     filterSelected = new NotImplementdFilter();
                     break;
             }
-            filterSelected.Selected = this.CompartmentSelected;
+            filterSelected.Selected = this.SelectedCompartment;
             testfunc = filterSelected.ColorFunc;
 
             this.SetProperty(ref this.selectedColorFilterFunc, testfunc);
@@ -143,24 +142,24 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private void CompatmentSelected_UpdateCompartmentEvent(Object sender, EventArgs e)
         {
-            this.CompartmentSelected = (CompartmentDetails)sender;
+            this.SelectedCompartment = (CompartmentDetails)sender;
         }
 
         private void ExecuteNewCreateCompartmentCommand()
         {
             var compartmentDetails = new CompartmentDetails
             {
-                Width = this.CompartmentSelected.Width,
-                Height = this.CompartmentSelected.Height,
-                XPosition = this.CompartmentSelected.XPosition,
-                YPosition = this.CompartmentSelected.YPosition
+                Width = this.SelectedCompartment.Width,
+                Height = this.SelectedCompartment.Height,
+                XPosition = this.SelectedCompartment.XPosition,
+                YPosition = this.SelectedCompartment.YPosition
             };
             this.Tray.AddCompartment(compartmentDetails);
         }
 
-        private void ExecuteResetCompartmentSelected()
+        private void ExecuteResetSelectedCompartment()
         {
-            this.CompartmentSelected = null;
+            this.SelectedCompartment = null;
         }
 
         private void TestInitializationTray()
@@ -254,7 +253,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private void TestInitializeInput()
         {
-            this.CompartmentSelected = new CompartmentDetails
+            this.SelectedCompartment = new CompartmentDetails
             {
                 Width = 1,
                 Height = 1,

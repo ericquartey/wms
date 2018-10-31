@@ -29,7 +29,7 @@ namespace Ferretto.Common.Controls
                     new FrameworkPropertyMetadata(new PropertyChangedCallback(OnSelectedColorFilterFuncChanged)));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-                                    nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentSelectedChanged)));
+                                    nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnSelectedCompartmentChanged)));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
                             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
@@ -165,10 +165,18 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        private static void OnSelectedColorFilterFuncChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                viewModel.SelectedColorFilterFunc = (Func<CompartmentDetails, CompartmentDetails, Color>)e.NewValue;
+            }
+        }
+
         /// <summary>
         /// CompartmentsProperty: Property Changed Callback, do nothing, only update the Property
         /// </summary>
-        private static void OnCompartmentSelectedChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectedCompartmentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
@@ -180,22 +188,14 @@ namespace Ferretto.Common.Controls
                     if (foundCompartment != null)
                     {
                         wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
-                        viewModel.CompartmentSelected = foundCompartment.CompartmentDetails;
+                        viewModel.SelectedCompartment = foundCompartment.CompartmentDetails;
                     }
                 }
                 else
                 {
                     wmsTrayControl.CanvasListBoxControl.SelectedItem = newCompartment;
-                    viewModel.CompartmentSelected = newCompartment;
+                    viewModel.SelectedCompartment = newCompartment;
                 }
-            }
-        }
-
-        private static void OnSelectedColorFilterFuncChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.SelectedColorFilterFunc = (Func<CompartmentDetails, CompartmentDetails, Color>)e.NewValue;
             }
         }
 
