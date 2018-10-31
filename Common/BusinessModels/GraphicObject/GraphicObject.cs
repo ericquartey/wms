@@ -21,7 +21,6 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public int Height { get; set; }
-        public CompartmentDetails Slected { get; set; }
         public int Width { get; set; }
 
         #endregion Properties
