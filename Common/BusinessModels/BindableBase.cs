@@ -102,7 +102,7 @@ namespace Ferretto.Common.BusinessModels
         /// <param name="args">The PropertyChangedEventArgs</param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            PropertyChanged?.Invoke(this, args);
+            this.PropertyChanged?.Invoke(this, args);
         }
 
         /// <summary>

@@ -179,7 +179,7 @@ namespace Ferretto.Common.Controls.Services
             }
             else
             {
-                this.RegisterDialog(moduleViewName, registeredView.Title);
+                WmsDialogView.ShowDialog(registeredView);
             }
         }
 
@@ -266,12 +266,6 @@ namespace Ferretto.Common.Controls.Services
             }
 
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
-        }
-
-        private void RegisterDialog(string moduleViewName, string title)
-        {
-            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
-            WmsDialogView.ShowDialog(registeredView);
         }
 
         #endregion Methods
