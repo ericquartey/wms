@@ -17,7 +17,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="530" />
         </Grid.RowDefinitions>
         <Label Grid.Column="1"
                Content="{x:Static res:InstallationApp.VerticalResolutionCalibration}"
@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="250" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
             <custom:CustomInputFieldControlFocusable Grid.Row="0"

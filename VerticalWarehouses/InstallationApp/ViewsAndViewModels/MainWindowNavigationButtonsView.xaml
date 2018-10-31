@@ -15,7 +15,6 @@
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Hidden">
             <StackPanel>
-                <Rectangle Height="20" />
                 <Button Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />

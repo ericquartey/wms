@@ -10,79 +10,74 @@
                  d:DesignHeight="610"
                  d:DesignWidth="730"
                  mc:Ignorable="d">
-    <DockPanel>
-        <Grid DockPanel.Dock="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="450" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <Label Grid.Row="0"
+               Grid.Column="1"
+               Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
+               Style="{StaticResource InstallationViewsTitleTextStyle}" />
+        <Grid Grid.Row="1"
+              Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="80" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
             </Grid.RowDefinitions>
-            <Label Grid.Column="1"
-                   Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
-                   Style="{StaticResource InstallationViewsTitleTextStyle}" />
-            <Grid Grid.Row="1"
-                  Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="180" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto" />
-                        <ColumnDefinition Width="180" />
-                        <ColumnDefinition Width="auto" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <custom:CustomLabelTextBlockControl Grid.Row="0"
-                                                        Grid.Column="0"
-                                                        ContentText="165,15"
-                                                        LabelText="{x:Static res:InstallationApp.Resolution}" />
-                    <custom:CustomLabelTextBlockControl Grid.Row="1"
-                                                        Grid.Column="0"
-                                                        ContentText="150"
-                                                        LabelText="{x:Static res:InstallationApp.Offset}" />
-                    <custom:CustomLabelTextBlockControl Grid.Row="0"
-                                                        Grid.Column="2"
-                                                        ContentText="10350,5"
-                                                        LabelText="{x:Static res:InstallationApp.UpperBound}" />
-                    <custom:CustomLabelTextBlockControl Grid.Row="1"
-                                                        Grid.Column="2"
-                                                        ContentText="100,0"
-                                                        LabelText="{x:Static res:InstallationApp.LowerBound}" />
-                </Grid>
-                <custom:CustomLabelTextBlockControl Grid.Row="2"
-                                                    ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LabelText="{x:Static res:InstallationApp.Output}" />
-            </Grid>
-        </Grid>
-        <Grid DockPanel.Dock="Bottom">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="40" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <custom:CustomLabelTextBlockControl Grid.Row="1"
+                                                Grid.Column="0"
+                                                Margin="0,0,100,0"
+                                                ContentText="165,15"
+                                                LabelText="{x:Static res:InstallationApp.Resolution}" />
+            <custom:CustomLabelTextBlockControl Grid.Row="2"
+                                                Grid.Column="0"
+                                                Margin="0,0,100,0"
+                                                ContentText="150"
+                                                LabelText="{x:Static res:InstallationApp.Offset}" />
+            <custom:CustomLabelTextBlockControl Grid.Row="1"
+                                                Grid.Column="2"
+                                                ContentText="10350,5"
+                                                LabelText="{x:Static res:InstallationApp.UpperBound}" />
+            <custom:CustomLabelTextBlockControl Grid.Row="2"
+                                                Grid.Column="2"
+                                                ContentText="100,0"
+                                                LabelText="{x:Static res:InstallationApp.LowerBound}" />
+            <custom:CustomLabelTextBlockControl Grid.Row="3"
+                                                ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.Output}" />
+        </Grid>
+        <Grid Grid.Row="2"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="1"
-                    VerticalAlignment="Bottom"
+            <Button Grid.Column="0"
                     Command="{Binding StartButtonCommand}"
                     Content="{x:Static res:InstallationApp.Start}"
                     IsEnabled="{Binding EnableStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource InstallationAppViewsButtonStyle}" />
-            <Button Grid.Column="3"
-                    VerticalAlignment="Bottom"
+            <Button Grid.Column="2"
                     Command="{Binding StopButtonCommand}"
                     Content="{x:Static res:InstallationApp.Stop}"
                     IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Style="{StaticResource InstallationAppViewsButtonStyle}" />
         </Grid>
-    </DockPanel>
+    </Grid>
 </myType:BaseView>
