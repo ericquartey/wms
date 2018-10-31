@@ -13,8 +13,6 @@ namespace Ferretto.Common.Controls
 
         private Brush backgroundCanvas;
         private WmsTrayCanvas canvas;
-        private Position originTray;
-        private Tray tray;
 
         #endregion Fields
 
@@ -41,7 +39,11 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public WmsTrayCanvas Canvas { get => this.canvas; private set { } }
+        public WmsTrayCanvas Canvas { get { return this.canvas; } private set { } }
+
+        public Position OriginTray { get; set; }
+
+        public Tray Tray { get; set; }
         public WmsTrayControl TrayControl { get; set; }
 
         #endregion Properties
@@ -55,6 +57,12 @@ namespace Ferretto.Common.Controls
             this.Loaded += this.WmsCanvasItemsControl_Loaded;
         }
 
+        public void UpdateSizeCanvas(Dimension dimension)
+        {
+            this.canvas.Width = dimension.Width;
+            this.canvas.Height = dimension.Height;
+        }
+
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {
             base.OnSelectionChanged(e);
@@ -62,16 +70,6 @@ namespace Ferretto.Common.Controls
             if (e.AddedItems.Count > 0 && e.AddedItems[0] is WmsCompartmentViewModel newCompartment)
             {
                 this.TrayControl.SelectedItem = newCompartment.CompartmentDetails;
-
-                newCompartment.ColorFill = Colors.Blue.ToString();
-                newCompartment.ColorBorder = Colors.DarkBlue.ToString();
-                newCompartment.RectangleBorderThickness = 3;
-            }
-            if (e.RemovedItems.Count > 0 && e.RemovedItems[0] is WmsCompartmentViewModel oldCompartment)
-            {
-                oldCompartment.ColorFill = Colors.Aquamarine.ToString();
-                oldCompartment.ColorBorder = Colors.GreenYellow.ToString();
-                oldCompartment.RectangleBorderThickness = 1;
             }
         }
 
@@ -81,16 +79,6 @@ namespace Ferretto.Common.Controls
             {
                 this.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
                 this.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
-
-                this.tray = wmsTrayControlViewModel.Tray;
-
-                var widthNewCalculated = this.ActualWidth;
-                var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.tray.Dimension.Height, widthNewCalculated, this.tray.Dimension.Width);
-
-                this.canvas.Width = widthNewCalculated;
-                this.canvas.Height = heightNewCalculated;
-
-                this.originTray = this.tray.Origin;
             }
         }
 
@@ -101,15 +89,15 @@ namespace Ferretto.Common.Controls
                 this.canvas = LayoutTreeHelper.GetVisualChildren(this).OfType<WmsTrayCanvas>().FirstOrDefault();
             }
 
-            if (this.tray != null)
+            if (this.Tray != null)
             {
                 var widthNewCalculated = this.ActualWidth;
-                var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.tray.Dimension.Height, widthNewCalculated, this.tray.Dimension.Width);
+                var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Height, widthNewCalculated, this.Tray.Dimension.Width);
 
                 if (heightNewCalculated > this.ActualHeight)
                 {
                     heightNewCalculated = this.ActualHeight;
-                    widthNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.tray.Dimension.Width, heightNewCalculated, this.tray.Dimension.Height);
+                    widthNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Width, heightNewCalculated, this.Tray.Dimension.Height);
                 }
                 this.canvas.Height = heightNewCalculated;
                 this.canvas.Width = widthNewCalculated;

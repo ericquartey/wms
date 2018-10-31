@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActualPosition" xml:space="preserve">
-    <value>Actual Position:</value>
+    <value>Actual position:</value>
     <comment>Label text</comment>
   </data>
   <data name="Auto" xml:space="preserve">
@@ -142,7 +142,7 @@
     <comment>Button text</comment>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>Feed Rate:</value>
+    <value>Feed rate:</value>
     <comment>Label text</comment>
   </data>
   <data name="Forward" xml:space="preserve">
@@ -225,24 +225,24 @@
     <value>Verify Weight Controller</value>
     <comment>Title - Button text</comment>
   </data>
-  <data name="VerticalAxisCalibration" xml:space="preserve">
-    <value>Vertical Axis Calibration</value>
+  <data name="OriginVerticalAxis" xml:space="preserve">
+    <value>Origin Vertical Axis</value>
     <comment>Title - Button text</comment>
   </data>
-  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
-    <value>Axis calibrated successfully</value>
+  <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
+    <value>Vertical axis origin set correctly.</value>
     <comment>Label text</comment>
   </data>
-  <data name="AxisNotCalibratedYet" xml:space="preserve">
-    <value>Axis not calibrated yet</value>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>Vertical axis origin not set.</value>
     <comment>Label text</comment>
   </data>
   <data name="LowerBound" xml:space="preserve">
-    <value>Lower Bound:</value>
+    <value>Lower bound (mm):</value>
     <comment>Label text</comment>
   </data>
   <data name="Offset" xml:space="preserve">
-    <value>Offset:</value>
+    <value>Offset (mm):</value>
     <comment>Label text</comment>
   </data>
   <data name="Output" xml:space="preserve">
@@ -262,7 +262,7 @@
     <comment>Button text</comment>
   </data>
   <data name="UpperBound" xml:space="preserve">
-    <value>Upper Bound:</value>
+    <value>Upper bound (mm):</value>
     <comment>Label text</comment>
   </data>
   <data name="ResolutionCalibration" xml:space="preserve">
@@ -373,7 +373,112 @@
     <value>Zero Vertical Sensor</value>
     <comment>Sensor control text</comment>
   </data>
-  <data name="Sta" xml:space="preserve">
-    <value>Start</value>
+  <data name="GateControl" xml:space="preserve">
+    <value>Gates Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Move" xml:space="preserve">
+    <value>Move</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="SetPosition" xml:space="preserve">
+    <value>Set Position</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="InitialPosition" xml:space="preserve">
+    <value>Initial position:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MesuredLenght" xml:space="preserve">
+    <value>Mesured lenght (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="NewResolution" xml:space="preserve">
+    <value>New resolution (imp/mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="RepositionLenght" xml:space="preserve">
+    <value>Reposition lenght:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ResolutionModified" xml:space="preserve">
+    <value>Resolution correctly modified.</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentResolution" xml:space="preserve">
+    <value>Current resolution (imp/mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DesiredInitialPosition" xml:space="preserve">
+    <value>Desired initial position (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DesiredMovement" xml:space="preserve">
+    <value>Desired movement (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="InsertDesiredMovement" xml:space="preserve">
+    <value>Insert desired movement.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertiDesiredInitialPosition" xml:space="preserve">
+    <value>Insert desired initial position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertMesuredMovement" xml:space="preserve">
+    <value>Insert mesured movement.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MesuredMovement" xml:space="preserve">
+    <value>Mesured movement (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalResolutionCalibration" xml:space="preserve">
+    <value>Vertical Resolution Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="VerticalAxisCalibrating" xml:space="preserve">
+    <value>Calibrating verical axis...</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="Closed" xml:space="preserve">
+    <value>Closed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CompletedCicles" xml:space="preserve">
+    <value>Completed cicles:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentPosition" xml:space="preserve">
+    <value>Current position:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DelayBetweenCicles" xml:space="preserve">
+    <value>Delay between cicles (s):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Middle" xml:space="preserve">
+    <value>Middle</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Open" xml:space="preserve">
+    <value>Open</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="RequiredCicles" xml:space="preserve">
+    <value>Required cicles:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate1Control" xml:space="preserve">
+    <value>Gate Control 1</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate2Control" xml:space="preserve">
+    <value>Gate Control 2</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate3Control" xml:space="preserve">
+    <value>Gate Control 3</value>
+    <comment>Title - Button text</comment>
   </data>
 </root>

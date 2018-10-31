@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:gatesControl="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl"
         xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
         xmlns:lowSpeedMovements="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,7 +15,6 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -27,6 +27,18 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type sensorsState:SSVerticalAxisViewModel}">
             <sensorsState:SSVerticalAxisView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSCradleViewModel}">
+            <sensorsState:SSCradleView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSBaysViewModel}">
+            <sensorsState:SSBaysView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSGateViewModel}">
+            <sensorsState:SSGateView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type sensorsState:SSVariousInputsViewModel}">
+            <sensorsState:SSVariousInputsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type lowSpeedMovements:LSMTGateEngineViewModel}">
             <lowSpeedMovements:LSMTGateEngineView />
@@ -42,6 +54,24 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type singleViews:VerticalAxisCalibrationViewModel}">
             <singleViews:VerticalAxisCalibrationView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:ResolutionCalibrationVerticalAxisViewModel}">
+            <singleViews:ResolutionCalibrationVerticalAxisView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:BeltBurnishingViewModel}">
+            <singleViews:BeltBurnishingView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesControl:GatesControlNavigationButtonsViewModel}">
+            <gatesControl:GatesControlNavigationButtonsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesControl:Gate1ControlViewModel}">
+            <gatesControl:Gate1ControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesControl:Gate2ControlViewModel}">
+            <gatesControl:Gate2ControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesControl:Gate3ControlViewModel}">
+            <gatesControl:Gate3ControlView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
             <viewsAndViewModels:MainWindowNavigationButtonsView />
@@ -62,7 +92,7 @@
                 Grid.Column="0"
                 Background="{StaticResource FerrettoPureWhite}"
                 BorderThickness="0">
-            <Image Margin="25,15,0,0"
+            <Image Margin="35,15,0,0"
                    Source="/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
                    Stretch="Uniform" />
         </Border>
@@ -101,7 +131,7 @@
                     </ComboBoxItem>
                 </ComboBox>
                 <Image Height="30"
-                       Margin="0,10,52,2"
+                       Margin="0,10,30,2"
                        Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
                 <Grid Margin="2,10,2,2"
                       Background="{StaticResource FerrettoDarkGray}">
@@ -111,7 +141,7 @@
                     </Grid.ColumnDefinitions>
                     <ComboBox Name="machineModeComboBox"
                               Grid.Column="1"
-                              Width="130"
+                              Width="110"
                               Margin="5"
                               HorizontalContentAlignment="Center"
                               VerticalContentAlignment="Center"
@@ -143,7 +173,7 @@
                     </Grid.ColumnDefinitions>
                     <ComboBox Name="machineOnMarchComboBox"
                               Grid.Column="1"
-                              Width="130"
+                              Width="110"
                               Margin="5"
                               HorizontalContentAlignment="Center"
                               VerticalContentAlignment="Center"
@@ -180,7 +210,7 @@
                         Grid.Column="0"
                         Width="260"
                         Height="610"
-                        Margin="20,20,0,0"
+                        Margin="20,10,0,0"
                         VerticalAlignment="Center"
                         Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>

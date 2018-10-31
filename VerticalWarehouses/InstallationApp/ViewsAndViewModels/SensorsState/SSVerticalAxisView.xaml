@@ -7,38 +7,49 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 d:DesignHeight="450"
-                 d:DesignWidth="800"
+                 d:DesignHeight="610"
+                 d:DesignWidth="730"
                  mc:Ignorable="d">
     <DockPanel>
-        <Label Margin="20,0,0,0"
-               HorizontalAlignment="Left"
-               Content="{x:Static res:InstallationApp.VerticalAxis}"
-               DockPanel.Dock="Top"
-               Style="{StaticResource StandardTitleTextStyle}" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="80" />
                 <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
+                <RowDefinition Height="80" />
                 <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="1"
-                        Grid.Column="1">
-                <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding VerticalZeroSensorFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
-                <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding EmergencyEndRunFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.EmergencyEndRun}" />
-                <custom:CustomSensorControl Margin="10"
-                                            BulletColor="{Binding BrakeResistanceOverTemperatureFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}" />
-            </StackPanel>
+            <Label Grid.Row="0"
+                   Grid.Column="1"
+                   Content="{x:Static res:InstallationApp.VerticalAxis}"
+                   Style="{StaticResource InstallationViewsTitleTextStyle}" />
+            <Grid Grid.Row="1"
+                  Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="2"
+                            Grid.Column="0">
+                    <custom:CustomSensorControl Margin="10"
+                                                BulletColor="{Binding VerticalZeroSensorFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
+                    <custom:CustomSensorControl Margin="10"
+                                                BulletColor="{Binding EmergencyEndRunFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.EmergencyEndRun}" />
+                    <custom:CustomSensorControl Margin="10"
+                                                BulletColor="{Binding BrakeResistanceOverTemperatureFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}" />
+                </StackPanel>
+            </Grid>
         </Grid>
     </DockPanel>
 </myType:BaseView>

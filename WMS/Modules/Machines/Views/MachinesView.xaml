@@ -35,10 +35,9 @@
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
-                        <wms:InfoText FieldName="MovedLoadingUnitsCount" />
-                        <wms:InfoText FieldName="AreaName" />
-                        <wms:InfoText FieldName="RegistrationNumber" />
-
+                            <wms:InfoText Content="{Binding MovedLoadingUnitsCount}" />
+                            <wms:InfoText Content="{Binding AreaName}" />
+                            <wms:InfoText Content="{Binding RegistrationNumber}" />
                     </StackPanel>
                 </Grid>
 

@@ -23,6 +23,14 @@
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
     </Style>
+    <Style x:Key="InstallationViewsTitleTextStyle"
+           TargetType="{x:Type Control}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource RobotoCondensed-Regular}" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
     <Style x:Key="StandardSplashScreenTitleTextStyle"
            TargetType="{x:Type Control}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
@@ -30,6 +38,15 @@
         <Setter Property="FontSize" Value="50" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+    <Style x:Key="StandardSplashScreenSubTitleTextStyle"
+           TargetType="{x:Type Control}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="StandardBodyTextBlockStyle"
            TargetType="{x:Type TextBlock}">
@@ -50,15 +67,48 @@
         <Setter Property="FontSize" Value="20" />
     </Style>
     <Style x:Key="CustomInputFieldControlTextBoxStyle"
-           TargetType="{x:Type Control}">
+           TargetType="{x:Type TextBox}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="20" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer x:Name="PART_ContentHost"
+                                      Focusable="false"
+                                      HorizontalScrollBarVisibility="Hidden"
+                                      VerticalScrollBarVisibility="Hidden" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="border" Property="Opacity" Value="0.56" />
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Trigger>
+                        <Trigger Property="IsFocused" Value="true">
+                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
     <Style x:Key="CustomInputFieldControlTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
         <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
         <Setter Property="FontSize" Value="14" />
+    </Style>
+    <Style x:Key="CustomLabelTextBlockControlTextBoxStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
     </Style>
 </ResourceDictionary>

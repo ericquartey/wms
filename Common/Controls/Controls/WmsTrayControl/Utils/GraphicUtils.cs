@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
@@ -18,6 +19,11 @@ namespace Ferretto.Common.Controls
                 return (pixel * value) / mm + offsetMM;
             }
             return value;
+        }
+
+        public static Thickness ConvertToBorderThickness(int value)
+        {
+            return new Thickness(value);
         }
 
         public static Position ConvertWithStandardOrigin(Position compartmentOrigin, Position trayOrigin, Dimension trayDimension, Dimension compartmentDimension)

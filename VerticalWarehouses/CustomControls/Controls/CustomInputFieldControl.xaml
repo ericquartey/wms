@@ -5,14 +5,17 @@
              xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
-    <StackPanel x:Name="LayoutRoot">
+    <StackPanel x:Name="LayoutRoot"
+                VerticalAlignment="Center">
         <TextBlock Margin="5,1,5,1"
                    Style="{StaticResource CustomInputFieldControlTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <TextBox Margin="5,1,5,5"
+        <TextBox Name="InputTextBox"
+                 Margin="5,1,5,5"
                  Background="Transparent"
                  BorderBrush="{StaticResource FerrettoLightGray}"
                  BorderThickness="1"
+                 KeyDown="OnKeyDownHandler"
                  Style="{StaticResource CustomInputFieldControlTextBoxStyle}"
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>

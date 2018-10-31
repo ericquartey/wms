@@ -46,7 +46,9 @@ namespace Ferretto.Common.Controls
         public string MapId { get; set; }
 
         public string Title { get; set; }
+
         public string Token { get; set; }
+
         public WmsViewType ViewType => this.viewType;
 
         #endregion Properties
@@ -66,6 +68,25 @@ namespace Ferretto.Common.Controls
                 ((INavigableViewModel)this.DataContext).Disappear();
                 this.navigationService.Disappear(this.DataContext as INavigableViewModel);
                 ((INavigableViewModel)this.DataContext).Dispose();
+            }
+        }
+
+        private void CheckDataContext()
+        {
+            if (this.IsWrongDataContext() == false)
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(this.MapId) == false)
+            {
+                // Is Main WMSView registered
+                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId, this.Data);
+            }
+            else
+            {
+                this.DataContext =
+                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
             }
         }
 
@@ -135,22 +156,7 @@ namespace Ferretto.Common.Controls
 
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (this.IsWrongDataContext() == false)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(this.MapId) == false)
-            {
-                // Is Main WMSView registered
-                this.DataContext = this.navigationService.GetRegisteredViewModel(this.MapId, this.Data);
-            }
-            else
-            {
-                this.DataContext =
-                    this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
-            }
-
+            this.CheckDataContext();
             this.CheckToAddHistoryView();
             ((INavigableViewModel)this.DataContext)?.Appear();
         }
