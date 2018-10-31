@@ -44,8 +44,8 @@
                                           IncrementalFiltering="True"
                                           IsManipulationEnabled="True"
                                           IsTextEditable="{TemplateBinding IsTextEditable}"
-                                          ItemsSource="{TemplateBinding ItemsSource}"                                          
-                                          ShowCustomItems="False"                                          
+                                          ItemsSource="{TemplateBinding ItemsSource}"
+                                          ShowCustomItems="False"
                                           ValidateOnEnterKeyPressed="False"
                                           ValidateOnTextInput="False"                                         
                                           ValueMember="{TemplateBinding ValueMember}">

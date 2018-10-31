@@ -112,7 +112,7 @@
       <HintPath>..\..\..\packages\DevExpress.Xpo.18.1.5\lib\net40\DevExpress.Xpo.v18.1.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\NLog.4.5.8\lib\net45\NLog.dll</HintPath>
+      <HintPath>..\..\..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -182,6 +182,7 @@
   <ItemGroup>
     <Compile Include="MasterDataModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CellDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentDetailsViewModel.cs" />
     <Compile Include="ViewModels\CompartmentsViewModel.cs" />
     <Compile Include="ViewModels\ItemDetailsViewModel.cs" />
@@ -189,6 +190,9 @@
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitDetailsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitsViewModel.cs" />
+    <Compile Include="Views\CellDetailsView.xaml.cs">
+      <DependentUpon>CellDetailsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CompartmentDetailsView.xaml.cs">
       <DependentUpon>CompartmentDetailsView.xaml</DependentUpon>
     </Compile>
@@ -218,6 +222,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\CellDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CompartmentDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

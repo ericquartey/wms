@@ -93,7 +93,7 @@
                     <dxg:GridColumn Width="50*"
                                     FieldName="Column" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="Side" />
+                                    FieldName="SideDescription" />
                     <dxg:GridColumn Width="50*"
                                     FieldName="AbcClassDescription" />
                     <dxg:GridColumn Width="50*"

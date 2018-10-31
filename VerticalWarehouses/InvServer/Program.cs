@@ -1,41 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.IO;
-
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
+
+using NLog;
 
 namespace Ferretto.VW.InvServer
 {
+    /// <summary>
+    /// Parameter ID codes. The parameter are used in the Inverter driver.
+    /// Constants enumerative
+    /// </summary>
+    public enum ParameterID
+    {
+        CONTROL_WORD_PARAM = 410,
+        HOMING_CREEP_SPEED_PARAM = 1133,
+        HOMING_FAST_SPEED_PARAM = 1132,
+        HOMING_MODE_PARAM = 1130,
+        HOMING_OFFSET_PARAM = 1131,
+        POSITION_ACCELERATION_PARAM = 1457,
+        POSITION_DECELERATION_PARAM = 1458,
+        POSITION_TARGET_POSITION_PARAM = 1455,
+        POSITION_TARGET_SPEED_PARAM = 1456,
+        SET_OPERATING_MODE_PARAM = 1454,
+        STATUS_WORD_PARAM = 411
+    }
+
     public class Program
     {
         #region Fields
 
-        public AsyncCallback pfnWorkerCallback;
-
-        private FileStream f;
-        public StreamWriter s;
-        private const int DEFAULT_PORT = 8000;
+        public const int DEFAULT_PORT = 17221;              // Default port address
+        public const int N_BITS_16 = 16;                    // Number of lines for status word
+        public const int N_BITS_8 = 8;                      // Number of bits for a byte
+        public const int NBYTES_ERROR_ENQUIRY_TELEGRAM = 6; // Size of enquiry telegram for error
+        public const int NMAX_CLIENTS = 1;                  // Number of concurrent clients in the TCP/IP architecture
 
         // Resource synchronization
-        private static readonly object g_lock = new object();
+        private static readonly object lockObj = new object();
 
-        // Rivedere dove salva il Log
-        private readonly string LOG_PATH;
+        // Logger
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private int GetMainStateCounter;
+        private int diffTime = 0;
 
-        private Socket m_sckMain;
-
-        //!< Server socket
-        private Socket m_sckWorker = null;
-
-        private int DiffTime = 0;
+        private bool errorCondition;
+        private bool operativeStatus;
 
         private IPEndPoint remoteIpEndPoint;
 
-        private bool m_state;
+        //!< Server socket
+        private Socket sckMain;
+
+        private Socket sckWorker;
+
+        // Status word (internal)
+        private BitArray statusWord;
 
         #endregion Fields
 
@@ -44,78 +66,84 @@ namespace Ferretto.VW.InvServer
         /// </summary>
         public Program()
         {
-            this.GetMainStateCounter = 0;
-            this.m_sckMain = null;
-
-            // Log path and file creation
-            this.LOG_PATH = Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%") + "\\Logs\\";
-
-            var exists = System.IO.Directory.Exists(this.LOG_PATH);
-
-            if (!exists)
-            {
-                System.IO.Directory.CreateDirectory(this.LOG_PATH);
-            }
+            this.sckMain = null;
+            this.sckWorker = null;
+            this.statusWord = new BitArray(N_BITS_16);
+            this.operativeStatus = false;
         }
 
         #endregion Constructors
 
         #region Delegates
 
-        // Delegate per segnalare la connessione di un client
-        public delegate void ConnClientHandler();
+        // Client connection delegate
+        public delegate void ConnClientEventHandler();
 
-        // Delegate per segnalare la disconnessione del cavo
+        // Hardware cable unplug delegate
         public delegate void DisconnectedClientEventHandler(string StopListen, string StartLitener);
+
+        // Client disconnection delegate
         public delegate void DisconnectedSocketsEventHandler(string StopListen);
 
-        // Delegate per segnalare l'arrivo di un nuovo messaggio
-        public delegate void MessageEventHandler(InverterCmd SingleCmd);
+        // Message To Send to client delegate
+        public delegate void MessageEventHandler(ParameterID param);
 
         #endregion Delegates
 
         #region Events
 
         public event DisconnectedClientEventHandler DiscClient;
+
         public event DisconnectedSocketsEventHandler DiscSockets;
 
-        public event ConnClientHandler SendClientEvent;
+        public event ConnClientEventHandler SendClientEvent;
 
         public event MessageEventHandler ThrowEvent;
 
         #endregion Events
 
-        #region Enums
+        #region Properties
 
         /// <summary>
-        /// Categories for parsed requested operation.
+        /// Get/set an error condition.
         /// </summary>
-        private enum ParsedReqOperation
+        public bool SetErrorCondition
         {
-            /// <summary>
-            /// Get IO sensors status.
-            /// </summary>
-            GetIOState = 0x00,
-
-            /// <summary>
-            /// Other operation.
-            /// </summary>
-            Other
+            get => this.errorCondition;
+            set
+            {
+                this.errorCondition = value;
+                this.sendErrorToInverter();
+            }
         }
 
-        #endregion Enums
+        /// <summary>
+        /// Gets/sets the operative status of SW emulator inverter.
+        /// </summary>
+        public bool StateOperativeInverter
+        {
+            get => this.operativeStatus;
+            set => this.operativeStatus = value;
+        }
+
+        #endregion Properties
 
         #region Methods
 
+        /// <summary>
+        /// Gets the IP address.
+        /// </summary>
         public void ClientConn(out string IPAddressClient, out string PortClient)
         {
-            this.WriteLog("ClientConn");
+            logger.Log(LogLevel.Debug, String.Format("Client connection"));
 
             IPAddressClient = this.remoteIpEndPoint.Address.ToString();
             PortClient = this.remoteIpEndPoint.Port.ToString();
         }
 
-        // Metodo per il recupero dell'ind. IP della macchina
+        /// <summary>
+        /// Function to retrieve the IP address (IPv4 network type) of local host.
+        /// </summary>
         public string GetIPAddress()
         {
             var szHostName = Dns.GetHostName();
@@ -138,69 +166,69 @@ namespace Ferretto.VW.InvServer
             return szIP;
         }
 
-        public bool SetStateInverter
-        {
-            set { this.m_state = value; }
-        }
-
         /// <summary>
-        /// Send a given string data to client.
+        /// Send a given byte array to client.
         /// </summary>
-        /// <param name="index">Index of client</param>
-        /// <param name="szData">The string</param>
         public void sendDataToClient(byte[] Answer)
         {
-            this.WriteLog("sendDataToClient");
+            logger.Log(LogLevel.Debug, String.Format(" > sendDataToClient"));
 
-            if (this.m_sckWorker != null)
+            if (this.sckWorker != null)
             {
                 try
                 {
-                    if (this.m_sckWorker.Connected)
+                    if (this.sckWorker.Connected)
                     {
-                        lock (g_lock)
+                        lock (lockObj)
                         {
-                            this.m_sckWorker.Send(Answer);
+                            this.sckWorker.Send(Answer);
                         }
                     }
                 }
                 catch (SocketException ex)
                 {
-                    this.WriteLog("Socket Exception Message: " + ex.Message);
-                    this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
+                    logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
                 }
                 catch (Exception ex)
                 {
-                    this.WriteLog("Exception Message: " + ex.Message);
-                    this.WriteLog("Exception InnerException: " + ex.InnerException);
+                    logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
                 }
             }
+        }
+
+        /// <summary>
+        /// Set a given bit of status word.
+        /// </summary>
+        public void SetStateLineInverter(int index, bool value)
+        {
+            if (index < 0 || index >= N_BITS_16)
+                return;
+            this.statusWord[index] = value;
         }
 
         public string StartListen()
         {
             var sListening = "ATTIVO";
-
-            this.WriteLog("StartListen");
+            logger.Log(LogLevel.Debug, String.Format("Start listening..."));
 
             try
             {
                 var port = DEFAULT_PORT;
 
                 // Creates one SocketPermission object for access restrictions
-                var permission = new SocketPermission(NetworkAccess.Accept,     // Allowed to accept connections
-                                                                   TransportType.Tcp,        // Defines transport types
-                                                                   "",                       // The IP addresses of local host
-                                                                   SocketPermission.AllPorts // Specifies all ports
-                                                                   );
+                var permission = new SocketPermission(
+                    NetworkAccess.Accept,     // Allowed to accept connections
+                    TransportType.Tcp,        // Defines transport types
+                    "",                       // The IP addresses of local host
+                    SocketPermission.AllPorts // Specifies all ports
+                );
 
                 // Ensures the code to have permission to access a Socket
                 permission.Demand();
 
                 // Resolves a host name to an IPHostEntry instance
                 var ipHost = Dns.GetHostEntry("");
-
-                this.WriteLog("ipHost = " + ipHost);
+                logger.Log(LogLevel.Debug, String.Format("ipHost = {0}", ipHost.ToString()));
 
                 // Gets first IP address associated with a localhost (IPv6)
                 IPAddress ipAddr = null;
@@ -210,48 +238,41 @@ namespace Ferretto.VW.InvServer
                     if (ipaddress.AddressFamily == AddressFamily.InterNetwork)
                     {
                         ipAddr = ipaddress;
-                        this.WriteLog("ipAddr = " + ipAddr);
+                        logger.Log(LogLevel.Debug, String.Format(" ipAddr = {0}", ipaddress.ToString()));
                     }
                 }
 
                 // Creates a network endpoint
                 var ipLocal = new IPEndPoint(ipAddr, port);
 
-                this.WriteLog("ipLocal = " + ipLocal);
+                logger.Log(LogLevel.Debug, String.Format("ipLocal = {0}", ipLocal.ToString()));
 
                 // Create the listening socket (main)
-                this.m_sckMain = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                this.sckMain = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 // Bind to local IP Address
-                // Associa un Socket ad un End-Point locale
-                this.m_sckMain.Bind(ipLocal);
+                this.sckMain.Bind(ipLocal);
                 // Start listening
-                this.m_sckMain.Listen(1);
+                this.sckMain.Listen(NMAX_CLIENTS);
                 // Create the call back for any client connections...
-                this.m_sckMain.BeginAccept(new AsyncCallback(this.onClientConnect), null);
+                this.sckMain.BeginAccept(new AsyncCallback(this.onClientConnect), null);
 
-                this.WriteLog("Socket avviato con successo");
+                logger.Log(LogLevel.Debug, String.Format("Socket started successfully"));
             }
             catch (SocketException ex)
             {
                 sListening = "ERROR";
-
-                this.WriteLog("Socket Exception Message: " + ex.Message);
-                this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
+                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (IOException ex)
             {
                 sListening = "ERROR";
-
-                this.WriteLog("IO Exception Message: " + ex.Message);
-                this.WriteLog("IO Exception InnerException: " + ex.InnerException);
+                logger.Log(LogLevel.Debug, String.Format("IO Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
                 sListening = "ERROR";
-
-                this.WriteLog("Exception Message: " + ex.Message);
-                this.WriteLog("Exception InnerException: " + ex.InnerException);
+                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
             }
 
             return sListening;
@@ -263,66 +284,61 @@ namespace Ferretto.VW.InvServer
         /// </summary>
         public string StopListen()
         {
-            this.WriteLog("StopListen");
+            logger.Log(LogLevel.Debug, String.Format("Stop listening..."));
 
             var cSocket = this.closeSockets();
-
             return cSocket;
         }
 
-        // C'è solo CloseSocket per chiudere il Socket?
+        private static byte[] BitArrayToByteArray(BitArray bits)
+        {
+            var ret = new byte[(bits.Length - 1) / 8 + 1];
+            bits.CopyTo(ret, 0);
+            return ret;
+        }
+
         /// <summary>
         /// Close sockets.
         /// </summary>
         private string closeSockets()
         {
-            this.WriteLog("closeSockets");
-
+            logger.Log(LogLevel.Debug, String.Format("Closing socket..."));
             var cSocket = "STOP";
 
             try
             {
-                // main (server)
-                if (this.m_sckMain != null)
-                {
-                    this.m_sckMain.Close();
-                }
-                if (this.m_sckWorker != null)
-                {
-                    this.m_sckWorker.Close();
-                    this.m_sckWorker = null;
-                }
+                this.sckMain?.Close();
+                this.sckWorker?.Close();
+                this.sckWorker = null;
             }
             catch (SocketException ex)
             {
                 cSocket = "ERRORE";
-
-                this.WriteLog("Socket Exception Message: " + ex.Message);
-                this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
+                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
                 cSocket = "ERRORE";
-
-                this.WriteLog("Exception Message: " + ex.Message);
-                this.WriteLog("Exception InnerException: " + ex.InnerException);
+                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
             }
 
             return cSocket;
         }
 
+        /// <summary>
+        /// On socket client connected callback.
+        /// </summary>
         private void onClientConnect(IAsyncResult asyn)
         {
-            this.WriteLog("onClientConnect");
+            logger.Log(LogLevel.Debug, String.Format(" --> onClientConnect"));
 
             try
             {
                 // Here we complete/end the BeginAccept() asynchronous call by calling EndAccept()
                 // - which returns the reference to a new Socket object
-                this.m_sckWorker = this.m_sckMain.EndAccept(asyn);
+                this.sckWorker = this.sckMain.EndAccept(asyn);
 
                 // -------------------------------------
-
                 var size = sizeof(UInt32);
                 UInt32 on = 1;
                 UInt32 keepAliveInterval = 10000;
@@ -331,28 +347,25 @@ namespace Ferretto.VW.InvServer
                 Array.Copy(BitConverter.GetBytes(on), 0, inArray, 0, size);
                 Array.Copy(BitConverter.GetBytes(keepAliveInterval), 0, inArray, size, size);
                 Array.Copy(BitConverter.GetBytes(retryInterval), 0, inArray, size * 2, size);
-                this.m_sckWorker.IOControl(IOControlCode.KeepAliveValues, inArray, null);
-
+                this.sckWorker.IOControl(IOControlCode.KeepAliveValues, inArray, null);
                 // -------------------------------------
 
-                this.waitForData(this.m_sckWorker);
+                this.waitForData(this.sckWorker);
 
                 // Write the client connection as a status message on the Log
-                this.remoteIpEndPoint = this.m_sckWorker.RemoteEndPoint as IPEndPoint;
-                this.WriteLog("Client Address connected: " + this.remoteIpEndPoint.Address.ToString());
-                this.WriteLog("Client Port connected: " + this.remoteIpEndPoint.Port.ToString());
+                this.remoteIpEndPoint = this.sckWorker.RemoteEndPoint as IPEndPoint;
+                logger.Log(LogLevel.Debug, String.Format("Client connected [{0}, {1}]", this.remoteIpEndPoint.Address.ToString(), this.remoteIpEndPoint.Port.ToString()));
 
+                // Fire event to notify Connection is occurred
                 SendClientEvent();
             }
             catch (SocketException ex)
             {
-                this.WriteLog("Socket Exception Message: " + ex.Message);
-                this.WriteLog("Socket Exception InnerException: " + ex.InnerException);
+                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
-                this.WriteLog("Exception Message: " + ex.Message);
-                this.WriteLog("Exception InnerException: " + ex.InnerException);
+                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
             }
         }
 
@@ -362,257 +375,27 @@ namespace Ferretto.VW.InvServer
         /// <param name="asyn">The status of asynchronous operation.</param>
         private void onDataReceived(IAsyncResult asyn)
         {
-            this.WriteLog("onDataReceived");
-
             try
             {
-                lock (g_lock)
+                lock (lockObj)
                 {
                     var startTime = DateTime.Now.Millisecond;
                     var socketData = (SocketPacket)asyn.AsyncState;
 
-                    // Cache the incoming data in main data buffer stream for message
-                    // Va in errore, array troppo piccolo.
+                    // Retrieve the number of bytes for incoming message
+                    var iRx = socketData.m_currentSocket.EndReceive(asyn);
 
+                    // Cache the incoming data in main data buffer stream for message
                     var msgToParse = new byte[1024];
                     Array.Copy(socketData.dataBuffer, 0, msgToParse, 0, socketData.dataBuffer.Length);
 
-                    this.WriteLog("Operation Code: " + msgToParse[1].ToString());
+                    // Parse the incoming telegram and send a response to Inverter driver
+                    this.parseTelegramAndSendResponse(msgToParse, iRx);
 
-                    // GetMainState immediately sends an answer to the client
-                    if (msgToParse[1] == 0x09)
-                    {
-                        byte OpStatus;
-
-                        if (this.m_state)
-                        {
-                            OpStatus = 0x01;
-                        }
-                        else
-                        {
-                            OpStatus = 0x00;
-                        }
-
-                        byte[] GetMainState = new byte[] {0x03, 0x09, OpStatus };
-                        this.sendDataToClient(GetMainState);
-
-                        this.GetMainStateCounter++;
-                        this.WriteLog("N° richieste di tipo GetMainState: " + this.GetMainStateCounter.ToString());
-                    }
-                    else
-                    {
-                        InverterCmd SingleCmd = new InverterCmd();
-
-                        // Message Length
-                        SingleCmd.Lunghezza = (int)msgToParse[0];
-                        // Operation Code
-                        SingleCmd.CodeOp = msgToParse[1].ToString("X4");
-
-                        switch (msgToParse[1])
-                        {
-                            case 0x00: // SetVerticalAxisOrigin
-                                {
-                                    // byte direction
-                                    byte direction = msgToParse[2];
-                                    // float vSearch
-                                    byte[] vSearchByte = new byte[] { msgToParse[3], msgToParse[4], msgToParse[5], msgToParse[6] };
-                                    float vSearch = BitConverter.ToSingle(vSearchByte, 0);
-                                    // float vCam0
-                                    byte[] vCam0Byte = new byte[] { msgToParse[7], msgToParse[8], msgToParse[9], msgToParse[10] };
-                                    float vCam0 = BitConverter.ToSingle(vCam0Byte, 0);
-                                    // float a
-                                    byte[] aByte = new byte[] { msgToParse[11], msgToParse[12], msgToParse[13], msgToParse[14] };
-                                    float a = BitConverter.ToSingle(aByte, 0);
-                                    // float a1
-                                    byte[] a1Byte = new byte[] { msgToParse[15], msgToParse[16], msgToParse[17], msgToParse[18] };
-                                    float a1 = BitConverter.ToSingle(a1Byte, 0);
-                                    // float a2
-                                    byte[] a2Byte = new byte[] { msgToParse[19], msgToParse[20], msgToParse[21], msgToParse[22] };
-                                    float a2 = BitConverter.ToSingle(a2Byte, 0);
-
-                                    // Eseguo la conversione a string dei parametri
-                                    SingleCmd.Param1 = Convert.ToString(direction, 2).PadLeft(8, '0');
-                                    SingleCmd.Param2 = Convert.ToString(vSearch);
-                                    SingleCmd.Param3 = Convert.ToString(vCam0);
-                                    SingleCmd.Param4 = Convert.ToString(a);
-                                    SingleCmd.Param5 = Convert.ToString(a1);
-                                    SingleCmd.Param6 = Convert.ToString(a2);
-
-                                    break;
-                                }
-                            case 0x01: // MoveAlongVerticalAxisToPoint
-                                {
-                                    // short x - ha dimensione 2 Byte
-                                    short x = BitConverter.ToInt16(new byte[2] { msgToParse[2], msgToParse[3] }, 0);
-                                    // float vMax
-                                    byte[] vMaxByte = new byte[] { msgToParse[4], msgToParse[5], msgToParse[6], msgToParse[7] };
-                                    float vMax = BitConverter.ToSingle(vMaxByte, 0);
-                                    // float a
-                                    byte[] aByte = new byte[] { msgToParse[8], msgToParse[9], msgToParse[10], msgToParse[11] };
-                                    float a = BitConverter.ToSingle(aByte, 0);
-                                    // float a1
-                                    byte[] a1Byte = new byte[] { msgToParse[12], msgToParse[13], msgToParse[14], msgToParse[15] };
-                                    float a1 = BitConverter.ToSingle(a1Byte, 0);
-                                    // float w
-                                    byte[] wByte = new byte[] { msgToParse[16], msgToParse[17], msgToParse[18], msgToParse[19] };
-                                    float w = BitConverter.ToSingle(wByte, 0);
-
-                                    // Eseguo la conversione a string dei parametri
-                                    SingleCmd.Param1 = Convert.ToString(x);
-                                    SingleCmd.Param2 = Convert.ToString(vMax);
-                                    SingleCmd.Param3 = Convert.ToString(a);
-                                    SingleCmd.Param4 = Convert.ToString(a1);
-                                    SingleCmd.Param5 = Convert.ToString(w);
-
-                                    break;
-                                }
-                            case 0x02: // SelectMovement
-                            case 0x05: // RunShutter
-                                {
-                                    // byte m
-                                    byte m = msgToParse[2];
-
-                                    // Eseguo la conversione a string dei parametri
-                                    SingleCmd.Param1 = Convert.ToString(m, 2).PadLeft(8, '0');
-
-                                    break;
-                                }
-                            case 0x03: // MoveAlongHorizontalAxisWithProfile
-                                {
-                                    // float v1
-                                    byte[] v1Byte = new byte[] { msgToParse[2], msgToParse[3], msgToParse[4], msgToParse[5] };
-                                    float v1 = BitConverter.ToSingle(v1Byte, 0);
-                                    // float a
-                                    byte[] aByte = new byte[] { msgToParse[6], msgToParse[7], msgToParse[8], msgToParse[9] };
-                                    float a = BitConverter.ToSingle(aByte, 0);
-                                    // short s1
-                                    short s1 = BitConverter.ToInt16(new byte[2] { msgToParse[10], msgToParse[11] }, 0);
-                                    // short s2
-                                    short s2 = BitConverter.ToInt16(new byte[2] { msgToParse[12], msgToParse[13] }, 0);
-                                    // float v2
-                                    byte[] v2Byte = new byte[] { msgToParse[14], msgToParse[15], msgToParse[16], msgToParse[17] };
-                                    float v2 = BitConverter.ToSingle(v2Byte, 0);
-                                    // float a1
-                                    byte[] a1Byte = new byte[] { msgToParse[18], msgToParse[19], msgToParse[20], msgToParse[21] };
-                                    float a1 = BitConverter.ToSingle(a1Byte, 0);
-                                    // short s3
-                                    short s3 = BitConverter.ToInt16(new byte[2] { msgToParse[22], msgToParse[23] }, 0);
-                                    // short s4
-                                    short s4 = BitConverter.ToInt16(new byte[2] { msgToParse[24], msgToParse[25] }, 0);
-                                    // float v3
-                                    byte[] v3Byte = new byte[] { msgToParse[26], msgToParse[27], msgToParse[28], msgToParse[29] };
-                                    float v3 = BitConverter.ToSingle(v3Byte, 0);
-                                    // float a2
-                                    byte[] a2Byte = new byte[] { msgToParse[30], msgToParse[31], msgToParse[32], msgToParse[33] };
-                                    float a2 = BitConverter.ToSingle(a2Byte, 0);
-                                    // short s5
-                                    short s5 = BitConverter.ToInt16(new byte[2] { msgToParse[34], msgToParse[35] }, 0);
-                                    // short s6
-                                    short s6 = BitConverter.ToInt16(new byte[2] { msgToParse[36], msgToParse[37] }, 0);
-                                    // float a3
-                                    byte[] a3Byte = new byte[] { msgToParse[38], msgToParse[39], msgToParse[40], msgToParse[41] };
-                                    float a3 = BitConverter.ToSingle(a3Byte, 0);
-                                    // short s7
-                                    short s7 = BitConverter.ToInt16(new byte[2] { msgToParse[42], msgToParse[43] }, 0);
-
-                                    // Eseguo la conversione a string dei parametri
-                                    SingleCmd.Param1 = Convert.ToString(v1);
-                                    SingleCmd.Param2 = Convert.ToString(a);
-                                    SingleCmd.Param3 = Convert.ToString(s1);
-                                    SingleCmd.Param4 = Convert.ToString(s2);
-                                    SingleCmd.Param5 = Convert.ToString(v2);
-                                    SingleCmd.Param6 = Convert.ToString(a1);
-                                    SingleCmd.Param7 = Convert.ToString(s3);
-                                    SingleCmd.Param8 = Convert.ToString(s4);
-                                    SingleCmd.Param9 = Convert.ToString(v3);
-                                    SingleCmd.Param10 = Convert.ToString(a2);
-                                    SingleCmd.Param11 = Convert.ToString(s5);
-                                    SingleCmd.Param12 = Convert.ToString(s6);
-                                    SingleCmd.Param13 = Convert.ToString(a3);
-                                    SingleCmd.Param14 = Convert.ToString(s7);
-
-                                    break;
-                                }
-                            // 0x04
-                            // 0x05: // RunShutter
-                            case 0x06: // RunDrawerWeightRoutine
-                                {
-                                    // short d
-                                    short d = BitConverter.ToInt16(new byte[2] { msgToParse[2], msgToParse[3] }, 0);
-                                    // float w
-                                    byte[] wByte = new byte[] { msgToParse[4], msgToParse[5], msgToParse[6], msgToParse[7] };
-                                    float w = BitConverter.ToSingle(wByte, 0);
-                                    // float a
-                                    byte[] aByte = new byte[] { msgToParse[8], msgToParse[9], msgToParse[10], msgToParse[11] };
-                                    float a = BitConverter.ToSingle(aByte, 0);
-                                    // byte e
-                                    byte e = msgToParse[12];
-
-                                    // Eseguo la conversione a string dei parametri
-                                    SingleCmd.Param1 = Convert.ToString(d);
-                                    SingleCmd.Param2 = Convert.ToString(w);
-                                    SingleCmd.Param3 = Convert.ToString(a);
-                                    SingleCmd.Param4 = Convert.ToString(e, 2).PadLeft(8, '0');
-
-                                    break;
-                                }
-                            case 0x07: // GetDrawerWeight
-                                {
-                                    // out float ic
-                                    break;
-                                }
-                            case 0x08: // Stop
-                                {
-                                    // Nessuno
-                                    break;
-                                }
-                            // case 0x09: // GetMainState: spostato in Program
-                            case 0x0A: // GetIOState
-                                {
-                                    // Proprietà con get
-                                    break;
-                                }
-                            case 0x0B: // GetIOEmergencyState
-                                {
-                                    // Proprietà con get
-                                    break;
-                                }
-                            case 0x0C: // Set
-                                {
-                                    // int i
-                                    int i = BitConverter.ToInt32(new byte[4] { msgToParse[2], msgToParse[3], msgToParse[4], msgToParse[5] }, 0);
-                                    // byte value
-                                    byte value = msgToParse[6];
-
-                                    // Eseguo la conversione a string dei parametri
-                                    SingleCmd.Param1 = Convert.ToString(i);
-                                    SingleCmd.Param2 = Convert.ToString(value, 2).PadLeft(8, '0');
-
-                                    break;
-                                }
-                            case 0xFF: // None
-                                {
-                                    // Non presente in IDriver.cs
-                                    break;
-                                }
-                            default:
-                                {
-                                    this.WriteLog("Operation Code NOT recognized");
-
-                                    break;
-                                }
-                        }
-
-                        ThrowEvent.Invoke(SingleCmd); // Event to update the UI
-                    }
-
-                    msgToParse = null;
-
-                    this.DiffTime = startTime - DateTime.Now.Millisecond;
-                    this.WriteLog("Elaboration time: " + this.GetMainStateCounter.ToString());
+                    this.diffTime = startTime - DateTime.Now.Millisecond;
 
                     // Continue the waiting for data on the Socket
-                    this.waitForData(this.m_sckWorker);
+                    this.waitForData(this.sckWorker);
                 }
             }
             catch (SocketException ex)
@@ -620,83 +403,270 @@ namespace Ferretto.VW.InvServer
                 // Il codice di errore 10053 è quello sollevato con la disconnessione del cavo
                 if (ex.ErrorCode == 10053)
                 {
-                    string StopListen = this.StopListen();
-                    this.WriteLog("La connessione tra il Client ed il Server è caduta!");
-                    if (DiscClient != null)
-                    {
-                        DiscSockets.Invoke(StopListen);
-                    }
+                    var StopListen = this.StopListen();
+                    logger.Log(LogLevel.Debug, String.Format("Connection lost"));
+                    DiscSockets?.Invoke(StopListen);
                 }
 
-                this.WriteLog("Socket Exception Message: " + ex.Message);
-                this.WriteLog("Socket Exception Error Code: " + ex.ErrorCode);
+                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
-                this.WriteLog("Exception Message: " + ex.Message);
+                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
             }
         }
 
-        private void waitForData(System.Net.Sockets.Socket sckt)
+        private void parseTelegramAndSendResponse(byte[] telegramReceived, int nBytes)
         {
-            this.WriteLog("waitForData");
+            // extract header
+            var header = telegramReceived[0];
 
-            try
+            // check bit
+            var t = new BitArray(new byte[] { header });
+            var bits = new bool[N_BITS_8];
+            t.CopyTo(bits, 0);
+            var bIsSettingRequest = bits[7];
+
+            // extract number of relevant bytes (see the Bonfiglioli documentation)
+            var noRelevantBytes = telegramReceived[1];
+
+            var systemIndex = telegramReceived[2];
+
+            var dataSetIndex = telegramReceived[3];
+
+            // parameter No
+            var parameterNo = new byte[2];
+            Array.Copy(telegramReceived, 4, parameterNo, 0, 2);
+            parameterNo.Reverse();
+            var paramId = BitConverter.ToInt16(parameterNo, 0);
+
+            byte[] telegramToSend = null;
+            if (bIsSettingRequest)
             {
-                if (this.pfnWorkerCallback == null)
+                // create an echo of received telegram
+                telegramToSend = new byte[nBytes];
+                Array.Copy(telegramReceived, 0, telegramToSend, 0, nBytes);
+            }
+            else
+            {
+                var nBytesPayload = 0;
+                switch ((ParameterID)paramId)
                 {
-                    // Specify the call back function which is to be
-                    // invoked when there is any write activity by the
-                    // connected client
-                    this.pfnWorkerCallback = new AsyncCallback(this.onDataReceived);
+                    case ParameterID.CONTROL_WORD_PARAM: nBytesPayload = 2; break;
+                    case ParameterID.HOMING_CREEP_SPEED_PARAM: nBytesPayload = 4; break;
+                    case ParameterID.HOMING_FAST_SPEED_PARAM: nBytesPayload = 4; break;
+                    case ParameterID.HOMING_MODE_PARAM: nBytesPayload = 2; break;
+                    case ParameterID.HOMING_OFFSET_PARAM: nBytesPayload = 2; break;
+                    case ParameterID.POSITION_ACCELERATION_PARAM: nBytesPayload = 4; break;
+                    case ParameterID.POSITION_DECELERATION_PARAM: nBytesPayload = 4; break;
+                    case ParameterID.POSITION_TARGET_POSITION_PARAM: nBytesPayload = 2; break;
+                    case ParameterID.POSITION_TARGET_SPEED_PARAM: nBytesPayload = 2; break;
+                    case ParameterID.SET_OPERATING_MODE_PARAM: nBytesPayload = 2; break;
+                    case ParameterID.STATUS_WORD_PARAM: nBytesPayload = 2; break;
+                    default: nBytesPayload = 2; break;
                 }
 
+                // create a response for received telegram
+                telegramToSend = new byte[nBytes + nBytesPayload];
+
+                telegramToSend[0] = header;
+                telegramToSend[1] = Convert.ToByte(nBytes + nBytesPayload - 2); // see documentation for telegram's Bonfiglioli
+                telegramToSend[2] = telegramReceived[2];
+                telegramToSend[3] = telegramReceived[3];
+
+                // parameter No
+                Array.Copy(parameterNo, 0, telegramToSend, 4, 2);
+
+                // parameter Value
+                switch ((ParameterID)paramId)
+                {
+                    case ParameterID.CONTROL_WORD_PARAM:
+                        {
+                            var value = 0x8000;
+                            var ans = new byte[2];
+                            var valueBytes = new byte[sizeof(short)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            break;
+                        }
+                    case ParameterID.HOMING_CREEP_SPEED_PARAM:
+                        {
+                            var value = 0x0EE01001;
+                            var ans = new byte[4];
+                            var valueBytes = new byte[sizeof(int)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt32(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 4);
+                            break;
+                        }
+                    case ParameterID.HOMING_FAST_SPEED_PARAM:
+                        {
+                            var value = 0x00001222;
+                            var ans = new byte[4];
+                            var valueBytes = new byte[sizeof(int)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt32(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 4);
+                            break;
+                        }
+                    case ParameterID.HOMING_MODE_PARAM:
+                        {
+                            var value = 0x0006;
+                            var ans = new byte[2];
+                            var valueBytes = new byte[sizeof(short)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            break;
+                        }
+                    case ParameterID.HOMING_OFFSET_PARAM:
+                        {
+                            var value = 0x0011;
+                            var ans = new byte[2];
+                            var valueBytes = new byte[sizeof(short)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            break;
+                        }
+                    case ParameterID.POSITION_ACCELERATION_PARAM:
+                        {
+                            var value = 0x00008500;
+                            var ans = new byte[4];
+                            var valueBytes = new byte[sizeof(int)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt32(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 4);
+                            break;
+                        }
+                    case ParameterID.POSITION_DECELERATION_PARAM:
+                        {
+                            var value = 0x00000033;
+                            var ans = new byte[4];
+                            var valueBytes = new byte[sizeof(int)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt32(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 4);
+                            break;
+                        }
+                    case ParameterID.POSITION_TARGET_POSITION_PARAM:
+                        {
+                            var value = 0x1234;
+                            var ans = new byte[2];
+                            var valueBytes = new byte[sizeof(short)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            break;
+                        }
+                    case ParameterID.POSITION_TARGET_SPEED_PARAM:
+                        {
+                            var value = 0x0345;
+                            var ans = new byte[2];
+                            var valueBytes = new byte[sizeof(short)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            break;
+                        }
+                    case ParameterID.SET_OPERATING_MODE_PARAM:
+                        {
+                            var value = 0x0005;
+                            var ans = new byte[2];
+                            var valueBytes = new byte[sizeof(short)];
+                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            valueBytes.CopyTo(ans, 0);
+                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            break;
+                        }
+                    case ParameterID.STATUS_WORD_PARAM:
+                        {
+                            var ans = BitArrayToByteArray(this.statusWord);
+                            Array.Copy(ans, 0, telegramToSend, 6, 2);
+                            break;
+                        }
+                    default: nBytesPayload = 2; break;
+                }
+            }
+
+            // Fire event to notify the send response
+            ThrowEvent?.Invoke(((ParameterID)paramId));
+
+            // emulate the inverter response timing
+            System.Threading.Thread.Sleep(18);
+
+            // send telegram to client
+            this.sendDataToClient(telegramToSend);
+        }
+
+        private void sendErrorToInverter()
+        {
+            // send an enquiry telegram for the parameter Status_Word
+            var telegramToSend = new byte[NBYTES_ERROR_ENQUIRY_TELEGRAM];
+
+            telegramToSend[0] = 0x00;
+            telegramToSend[1] = Convert.ToByte(NBYTES_ERROR_ENQUIRY_TELEGRAM - 2); // see documentation for telegram's Bonfiglioli
+            telegramToSend[2] = 0x00;
+            telegramToSend[3] = 0x05;
+
+            // parameter No
+            var ans = new byte[2];
+            var parameterNo = new byte[sizeof(short)];
+            parameterNo = BitConverter.GetBytes(Convert.ToInt16(ParameterID.STATUS_WORD_PARAM));
+            parameterNo.CopyTo(ans, 0);
+
+            Array.Copy(ans, 0, telegramToSend, 4, 2);
+
+            // parameter Value
+            var errorBits = new BitArray(N_BITS_16);
+            for (var i = 0; i < N_BITS_16; i++)
+            {
+                errorBits[i] = true;  // 0xFFFF
+            }
+            ans = BitArrayToByteArray(errorBits);
+            Array.Copy(ans, 0, telegramToSend, 6, 2);
+
+            // Send telegram to client
+            this.sendDataToClient(telegramToSend);
+        }
+
+        /// <summary>
+        /// Wait the incoming data from socket.
+        /// </summary>
+        private void waitForData(System.Net.Sockets.Socket sckt)
+        {
+            try
+            {
                 var theSocPkt = new SocketPacket();
                 theSocPkt.m_currentSocket = sckt;
 
                 // Start receiving any data written by the connected client asynchronously
-                sckt.BeginReceive(theSocPkt.dataBuffer,
-                                  0,
-                                  theSocPkt.dataBuffer.Length,
-                                  SocketFlags.None,
-                                  this.pfnWorkerCallback,
-                                  theSocPkt);
+                sckt.BeginReceive(
+                    theSocPkt.dataBuffer,
+                    0,
+                    theSocPkt.dataBuffer.Length,
+                    SocketFlags.None,
+                    new AsyncCallback(this.onDataReceived),
+                    theSocPkt
+                );
             }
             catch (SocketException ex)
             {
-                // Il codice di errore 10054 indica la disconnessione del client
+                // Error code to notify the lost connection (hardware cable unplug) to server
                 if (ex.ErrorCode == 10054)
                 {
-                    string StopListen = this.StopListen();
+                    var StopListen = this.StopListen();
                     var StartLitener = this.StartListen();
-                    this.WriteLog("Il Client si è disconnesso!");
-                    if (DiscClient != null)
-                    {
-                        DiscClient.Invoke(StopListen, StartLitener);
-                    }
+                    logger.Log(LogLevel.Debug, String.Format("Connection to client is lost"));
+                    DiscClient?.Invoke(StopListen, StartLitener);
                 }
 
-                this.WriteLog("Socket Exception Message: " + ex.Message);
-                this.WriteLog("Socket Exception Error Code: " + ex.ErrorCode);
+                logger.Log(LogLevel.Debug, String.Format("Socket Exception Message: {0}", ex.Message));
             }
             catch (Exception ex)
             {
-                this.WriteLog("Exception Message: " + ex.Message);
-                this.WriteLog("Exception InnerException: " + ex.InnerException);
-            }
-        }
-
-        private void WriteLog(string messaggio)
-        {
-            lock (g_lock)
-            {
-                this.f = new FileStream(this.LOG_PATH + "serverLog.log", FileMode.Append);
-                this.s = new StreamWriter(this.f);
-
-                this.s.WriteLine(DateTime.Now.ToString() + " - " + messaggio);
-
-                this.s.Close();
-                this.f.Close();
+                logger.Log(LogLevel.Debug, String.Format("Exception Message: {0}", ex.Message));
             }
         }
 

@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
@@ -10,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentDetailsViewModel : BaseServiceNavigationViewModel
+    public class CompartmentDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
     {
         #region Fields
 
@@ -52,12 +53,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return;
                 }
-
-                this.AllowedItemsDataSource = this.compartment != null
-                    ? this.dataSourceService
-                        .GetAll<AllowedItemInCompartment>(nameof(CompartmentDetailsViewModel), this.compartment.Id)
-                        .Single()
-                    : null;
+                this.RefreshData();
             }
         }
 
@@ -106,6 +102,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        public void RefreshData()
+        {
+            this.AllowedItemsDataSource = null;
+            this.AllowedItemsDataSource = this.compartment != null
+                ? this.dataSourceService
+                    .GetAll<AllowedItemInCompartment>(nameof(CompartmentDetailsViewModel), this.compartment.Id)
+                    .Single()
+                : null;
+        }
+
         protected override void OnAppear()
         {
             this.LoadData();
@@ -124,8 +130,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (modifiedRowCount > 0)
             {
-                this.Compartment = this.compartmentProvider.GetById(this.Compartment.Id);
-
                 this.EventService.Invoke(new ModelChangedEvent<Compartment>(this.Compartment.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));

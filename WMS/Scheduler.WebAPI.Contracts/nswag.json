@@ -1,0 +1,29 @@
+{
+  "runtime": "NetCore21",
+  "defaultVariables": null,
+  "swaggerGenerator": {
+    "aspNetCoreToSwagger": {
+      "configuration": "$(Configuration)",
+      "project": "../Scheduler.WebAPI/Ferretto.WMS.Scheduler.WebAPI.csproj"
+
+      //...
+    }
+  },
+  "codeGenerators": {
+    "swaggerToCSharpClient": {
+      "clientBaseClass": "ClientBase",
+      "configurationClass": null,
+      "generateClientClasses": true,
+      "generateClientInterfaces": true,
+
+      "useHttpRequestMessageCreationMethod": true, //allows you to add headers to each message
+      "clientClassAccessModifier": "public", //TODO: this should be internal if we are using Prism
+      "typeAccessModifier": "public", //make your models and client interfaces public
+      "generateContractsOutput": true, //generate contacts in a separte file
+      "contractsNamespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts", //contracts namespace
+      "contractsOutputFilePath": "Contracts.g.cs",
+      "namespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts",
+      "output": "Client.g.cs"
+    }
+  }
+}

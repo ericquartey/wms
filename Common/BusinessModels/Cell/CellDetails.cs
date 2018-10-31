@@ -1,0 +1,89 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.Resources;
+
+namespace Ferretto.Common.BusinessModels
+{
+    public class CellDetails : BusinessObject
+    {
+        #region Fields
+
+        private int? column;
+        private int? floor;
+        private int? number;
+        private int priority;
+
+        #endregion Fields
+
+        #region Properties
+
+        public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
+        public string AbcClassId { get; set; }
+
+        public IEnumerable<Enumeration> AisleChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
+        public int AisleId { get; set; }
+
+        public int AreaId { get; set; }
+
+        public IEnumerable<Enumeration> CellStatusChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellStatus), ResourceType = typeof(BusinessObjects))]
+        public int CellStatusId { get; set; }
+
+        public IEnumerable<Enumeration> CellTypeChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
+        public int? CellTypeId { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellColumn), ResourceType = typeof(BusinessObjects))]
+        public int? Column
+        {
+            get => this.column;
+            set => this.SetIfStrictlyPositive(ref this.column, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.CellFloor), ResourceType = typeof(BusinessObjects))]
+        public int? Floor
+        {
+            get => this.floor;
+            set => this.SetIfStrictlyPositive(ref this.floor, value);
+        }
+
+        public IEnumerable<LoadingUnitDetails> LoadingUnits { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellNumber), ResourceType = typeof(BusinessObjects))]
+        public int? Number
+        {
+            get => this.number;
+            set => this.SetIfStrictlyPositive(ref this.number, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.CellPriority), ResourceType = typeof(BusinessObjects))]
+        public int Priority
+        {
+            get => this.priority;
+            set => this.SetIfStrictlyPositive(ref this.priority, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
+        public int Side { get; set; }
+
+        public IEnumerable<Enumeration> SideChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
+        public int? XCoordinate { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
+        public int? YCoordinate { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
+        public int? ZCoordinate { get; set; }
+
+        #endregion Properties
+    }
+}
