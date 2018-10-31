@@ -8,9 +8,10 @@
                                       Control="{x:Type wms:InfoText}"
                                       Property="{x:Static wms:InfoText.ContentProperty}" />
 
-    <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.Label,
+    <Style
+        BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.Label,
                                                                 ThemeName=Office2016White}}"
-           TargetType="{x:Type wms:InfoText}">
+        TargetType="{x:Type wms:InfoText}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wms:InfoText}">
@@ -20,7 +21,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="InnerLabel"
-                               Style="{DynamicResource ControlLabelStyle}">
+                               Style="{DynamicResource ControlLabelStyle}"
+                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                               FontFamily="{DynamicResource FontSmall}"
+                               FontSize="{DynamicResource FontSizeSmall}">
 
                             <Label.Content>
                                 <MultiBinding Converter="{StaticResource DNC}">
@@ -33,7 +37,13 @@
 
                         <Label x:Name="InnerText"
                                Grid.Row="1"
-                               Content="{TemplateBinding Content}" />
+                               Margin="0"
+                               Padding="0,1,0,1"
+                               Content="{TemplateBinding Content}"
+                               HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                               FontWeight="Bold"
+                               FontFamily="{DynamicResource FontSmall}"
+                               FontSize="{DynamicResource FontSizeSmall}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
