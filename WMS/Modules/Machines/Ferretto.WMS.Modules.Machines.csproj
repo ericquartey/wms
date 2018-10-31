@@ -188,7 +188,7 @@
       <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
       <Name>Ferretto.Common.Utils</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Themes\Ferretto.WMS.Themes.csproj">
+    <ProjectReference Include="..\..\App.Themes\Ferretto.WMS.App.Themes.csproj">
       <Project>{9377dbc4-ed82-46d9-90b1-9f7df787e5e1}</Project>
       <Name>Ferretto.WMS.Themes</Name>
     </ProjectReference>
