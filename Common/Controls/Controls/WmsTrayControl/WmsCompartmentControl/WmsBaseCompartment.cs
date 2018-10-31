@@ -7,27 +7,15 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private string article;
-
         private int capacity;
-
         private string colorBorder;
-
         private string colorFill;
-
         private double height;
-
         private bool isSelected;
-
         private double left;
-
         private int quantity;
-
-        private float rectangleBorderThickness;
-
         private string selected;
-
         private double top;
-
         private double width;
 
         #endregion Fields
@@ -82,12 +70,6 @@ namespace Ferretto.Common.Controls
         {
             get => this.quantity;
             set => this.SetProperty(ref this.quantity, value);
-        }
-
-        public float RectangleBorderThickness
-        {
-            get => this.rectangleBorderThickness;
-            set => this.SetProperty(ref this.rectangleBorderThickness, value);
         }
 
         public string Selected

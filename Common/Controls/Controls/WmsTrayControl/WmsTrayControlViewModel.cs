@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
@@ -15,12 +17,20 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private static readonly Func<IFilter, Color> DefaultColorCompartment = (x) => Colors.Yellow;
+
+        private CompartmentDetails compartmentSelected;
         private ObservableCollection<WmsBaseCompartment> items;
 
         private int left;
+
         private SolidColorBrush penBrush;
+
         private int penThickness;
+
+        private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc;
         private int top;
+
         private Tray tray;
 
         #endregion Fields
@@ -72,6 +82,26 @@ namespace Ferretto.Common.Controls
             {
                 this.penThickness = value;
                 this.NotifyPropertyChanged(nameof(this.PenThickness));
+            }
+        }
+
+        public Func<CompartmentDetails, CompartmentDetails, Color> SelectedColorFilterFunc
+        {
+            get { return this.selectedColorFilterFunc; }
+            set
+            {
+                this.selectedColorFilterFunc = value;
+                this.UpdateColorCompartments();
+            }
+        }
+
+        public CompartmentDetails SelectedCompartment
+        {
+            get => this.compartmentSelected;
+            set
+            {
+                this.compartmentSelected = value;
+                this.UpdateColorCompartments();
             }
         }
 
@@ -197,9 +227,19 @@ namespace Ferretto.Common.Controls
                     Top = (int)(compartment.YPosition * ratio),
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
-                    RectangleBorderThickness = 1,
                     IsSelected = true
                 });
+            }
+        }
+
+        private void UpdateColorCompartments()
+        {
+            if (this.items != null && this.selectedColorFilterFunc != null)
+            {
+                foreach (var item in this.Items)
+                {
+                    item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment).ToString();
+                }
             }
         }
 

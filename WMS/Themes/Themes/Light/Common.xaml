@@ -30,6 +30,23 @@
     <SolidColorBrush x:Key="BorderTray"
                      Color="{StaticResource LightBlack}" />
 
+    <!--  colors - filter compartment  -->
+    <Color x:Key="DarkRed">#D50000</Color>
+    <Color x:Key="LightRed">#F44336</Color>
+    <Color x:Key="Orange">#FF9800</Color>
+    <Color x:Key="LightGreen">#D4E157</Color>
+    <Color x:Key="DarkGreen">#76FF03</Color>
+    <SolidColorBrush x:Key="Full"
+                     Color="{StaticResource DarkRed}" />
+    <SolidColorBrush x:Key="AlmostFull"
+                     Color="{StaticResource LightRed}" />
+    <SolidColorBrush x:Key="Half"
+                     Color="{StaticResource Orange}" />
+    <SolidColorBrush x:Key="AlmostEmpty"
+                     Color="{StaticResource LightGreen}" />
+    <SolidColorBrush x:Key="Empty"
+                     Color="{StaticResource DarkGreen}" />
+
     <!--  primary color brush  -->
     <SolidColorBrush x:Key="CommonPrimary"
                      Color="{StaticResource Red}" />

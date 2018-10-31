@@ -17,20 +17,39 @@
             <RowDefinition Height="4*" />
         </Grid.RowDefinitions>
 
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0"
+                      IsChecked="{Binding ShowBackground}">
+                SHOW TRAY's BACKGROUND
+            </CheckBox>
+            <wms:ComboBox x:Name="FilterColorComboBox"
+                          Grid.Column="1"
+                          EditValue="{Binding SelectedFilter, Mode=TwoWay}"
+                          ItemsSource="{Binding FilterColoringCompartment}" />
+            <Button Grid.Column="2"
+                    Command="{Binding ResetSelectedCompartment}">
+                Remove Selected Compartment
+            </Button>
+        </Grid>
 
-        <CheckBox Grid.Row="0"
-                  IsChecked="{Binding ShowBackground}">
-            SHOW TRAY's BACKGROUND
-        </CheckBox>
         <compartment:InputCompartmentView Grid.Row="1" />
+
         <wms:WmsTrayControl x:Name="Canvas"
                             Grid.Row="2"
                             Margin="0,0,0,0"
                             Compartments="{Binding Tray.Compartments, Mode=OneWay}"
-                            SelectedItem="{Binding CompartmentSelected, Mode=TwoWay}"
+                            SelectedColorFilterFunc="{Binding SelectedColorFilterFunc, Mode=OneWay}"
+                            SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />
-        <compartment:ListCompartmentsView Grid.Row="3" />
+
+        <compartment:ListCompartmentsView x:Name="ListCompartments"
+                                          Grid.Row="3" />
     </Grid>
 
 </wms:WmsView>
