@@ -25,9 +25,10 @@
         </Grid.RowDefinitions>
 
         <Grid Name="ToolbarGrid">
-            <wms:ActionBar HorizontalAlignment="Right" 
-                          Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
+            <wms:ActionBar HorizontalAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}">
+                <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+                                   Content="{x:Static res:MasterData.Withdraw}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
                                    GlyphSize="Custom" />
@@ -202,9 +203,10 @@
                                                ShowSearchPanelMode="Never">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
-                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                                      StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
+                                            <wms:WmsHistoryViewAppear
+                                                Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                                StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>

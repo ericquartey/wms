@@ -241,6 +241,7 @@
     <Compile Include="Converters\IntToThousandsConverter.cs" />
     <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\ReferenceToVisibilityConverter.cs" />
     <Compile Include="Interfaces\IEntityListViewModel.cs" />
     <Compile Include="Interfaces\IEventUI.cs" />
     <Compile Include="Interfaces\IHistoryViewService.cs" />

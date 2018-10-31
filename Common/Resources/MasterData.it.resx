@@ -210,4 +210,16 @@
   <data name="CellWithNoLoadingUnits" xml:space="preserve">
     <value>Questa cella non contiene Unità di Carico.</value>
   </data>
+  <data name="WithdrawOptions" xml:space="preserve">
+    <value>Opzioni Immediato</value>
+  </data>
+  <data name="RunItemWithdraw" xml:space="preserve">
+    <value>Esegui Immediato Articolo</value>
+  </data>
+  <data name="AdvancedWithdraw" xml:space="preserve">
+    <value>Immediato dettagliato</value>
+  </data>
+  <data name="SimpleWithdraw" xml:space="preserve">
+    <value>Immediato semplice</value>
+  </data>
 </root>

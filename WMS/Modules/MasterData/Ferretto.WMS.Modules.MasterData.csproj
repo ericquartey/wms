@@ -190,8 +190,12 @@
     <Compile Include="ViewModels\ItemsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitDetailsViewModel.cs" />
     <Compile Include="ViewModels\LoadingUnitsViewModel.cs" />
+    <Compile Include="ViewModels\WithdrawDialogViewModel.cs" />
     <Compile Include="Views\CellDetailsView.xaml.cs">
       <DependentUpon>CellDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WithdrawDialogView.xaml.cs">
+      <DependentUpon>WithdrawDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CompartmentDetailsView.xaml.cs">
       <DependentUpon>CompartmentDetailsView.xaml</DependentUpon>
@@ -225,6 +229,10 @@
     <Page Include="Views\CellDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WithdrawDialogView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\CompartmentDetailsView.xaml">
       <SubType>Designer</SubType>

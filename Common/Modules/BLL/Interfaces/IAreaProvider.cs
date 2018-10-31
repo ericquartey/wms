@@ -1,0 +1,14 @@
+﻿using System.Linq;
+using Ferretto.Common.BusinessModels;
+
+namespace Ferretto.Common.Modules.BLL
+{
+    public interface IAreaProvider : IBusinessProvider<Area, Area>
+    {
+        #region Methods
+
+        IQueryable<Area> GetByItemIdAvailability(int id);
+
+        #endregion Methods
+    }
+}

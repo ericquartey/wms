@@ -238,4 +238,20 @@
   <data name="CellWithNoLoadingUnits" xml:space="preserve">
     <value>This cell has no loading units.</value>
   </data>
+  <data name="WithdrawOptions" xml:space="preserve">
+    <value>Withdraw Options</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="RunItemWithdraw" xml:space="preserve">
+    <value>Run Item Withdraw</value>
+    <comment>Button</comment>
+  </data>
+  <data name="AdvancedWithdraw" xml:space="preserve">
+    <value>Advanced Withdraw</value>
+    <comment>Button</comment>
+  </data>
+  <data name="SimpleWithdraw" xml:space="preserve">
+    <value>Simple Withdraw</value>
+    <comment>Button</comment>
+  </data>
 </root>
