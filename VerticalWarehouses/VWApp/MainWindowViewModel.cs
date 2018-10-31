@@ -11,10 +11,12 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
-        private bool installation_completed;
+        private readonly bool installation_completed;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
+        private string machineModel;
         private string passwordLogin;
+        private string serialNumber;
         private ICommand switchOffCommand;
         private string userLogin = "Installer";
 
@@ -24,7 +26,9 @@ namespace Ferretto.VW.VWApp
 
         public MainWindowViewModel()
         {
-            this.installation_completed = DataManager.InstallationInfo.Machine_Ok;
+            this.installation_completed = DataManager.CurrentData.InstallationInfo.Machine_Ok;
+            this.machineModel = DataManager.CurrentData.GeneralInfo.Model;
+            this.serialNumber = DataManager.CurrentData.GeneralInfo.Serial;
         }
 
         #endregion Constructors
@@ -33,7 +37,9 @@ namespace Ferretto.VW.VWApp
 
         public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(this.ExecuteLoginButtonCommand));
         public String LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
+        public String MachineModel { get => this.machineModel; set => this.SetProperty(ref this.machineModel, value); }
         public String PasswordLogin { get => this.passwordLogin; set => this.SetProperty(ref this.passwordLogin, value); }
+        public String SerialNumber { get => this.serialNumber; set => this.SetProperty(ref this.serialNumber, value); }
         public ICommand SwitchOffCommand => this.switchOffCommand ?? (this.switchOffCommand = new DelegateCommand(() => { Application.Current.Shutdown(); }));
         public String UserLogin { get => this.userLogin; set => this.SetProperty(ref this.userLogin, value); }
 

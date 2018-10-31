@@ -6,32 +6,28 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                 Height="610"
                  mc:Ignorable="d">
-    <Border Height="630"
-            Background="{StaticResource FerrettoPureWhite}">
-        <StackPanel>
-            <Rectangle Height="20" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.LSMTVerticalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+    <Grid Height="610">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="510" />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1">
+            <Button Command="{Binding DataContext.LSMTVerticalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTVerticalEngineButton}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.LSMTHorizontalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+            <Button Command="{Binding DataContext.LSMTHorizontalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTHorizontalEngineButton}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.LSMTGateEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+            <Button Command="{Binding DataContext.LSMTGateEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTGateEngineButton}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Rectangle Height="320" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    Content="{x:Static res:General.Back}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
         </StackPanel>
-    </Border>
+        <Button Grid.Row="2"
+                Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                Content="{x:Static res:General.Back}"
+                Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+    </Grid>
 </myType:BaseView>

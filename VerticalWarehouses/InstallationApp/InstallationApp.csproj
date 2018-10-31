@@ -21,7 +21,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -63,6 +63,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainWindowViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate1ControlView.xaml.cs">
+      <DependentUpon>Gate1ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate1ControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate2ControlView.xaml.cs">
+      <DependentUpon>Gate2ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate2ControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate3ControlView.xaml.cs">
+      <DependentUpon>Gate3ControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesControl\Gate3ControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml.cs">
+      <DependentUpon>GatesControlNavigationButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml.cs">
       <DependentUpon>LSMTGateEngineView.xaml</DependentUpon>
     </Compile>
@@ -83,6 +99,18 @@
       <DependentUpon>MainWindowNavigationButtonsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\MainWindowNavigationButtonsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSBaysView.xaml.cs">
+      <DependentUpon>SSBaysView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSBaysViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSCradleView.xaml.cs">
+      <DependentUpon>SSCradleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSCradleViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSGateView.xaml.cs">
+      <DependentUpon>SSGateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSGateViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml.cs">
       <DependentUpon>SSNavigationButtonsView.xaml</DependentUpon>
     </Compile>
@@ -91,10 +119,22 @@
       <DependentUpon>SSProvaView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SensorsState\SSProvaViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SensorsState\SSVariousInputsView.xaml.cs">
+      <DependentUpon>SSVariousInputsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SensorsState\SSVariousInputsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml.cs">
       <DependentUpon>SSVerticalAxisView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SensorsState\SSVerticalAxisViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\BeltBurnishingView.xaml.cs">
+      <DependentUpon>BeltBurnishingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\BeltBurnishingViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml.cs">
+      <DependentUpon>ResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationView.xaml.cs">
       <DependentUpon>VerticalAxisCalibrationView.xaml</DependentUpon>
     </Compile>
@@ -107,6 +147,22 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="ViewsAndViewModels\GatesControl\Gate1ControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesControl\Gate2ControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesControl\Gate3ControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -127,6 +183,18 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSBaysView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSCradleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSGateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -135,7 +203,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\SensorsState\SSVariousInputsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\SensorsState\SSVerticalAxisView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\BeltBurnishingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
