@@ -1,8 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net471</TargetFrameworks>
+    <TargetFramework>net471</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>WinExe</OutputType>
+    <StartupObject />
   </PropertyGroup>
+
   <PropertyGroup>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
@@ -15,12 +19,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+  </ItemGroup>
+  
+  <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
 
-    <Page Include="**\*.xaml">
+    <Page Include="**\*.xaml" Exclude="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
