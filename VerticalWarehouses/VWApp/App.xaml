@@ -15,6 +15,7 @@
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/UserComboBoxTemplates.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ComboBoxItemsTemplates.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/RepeatButtonStyles.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewsComboBoxTemplate.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

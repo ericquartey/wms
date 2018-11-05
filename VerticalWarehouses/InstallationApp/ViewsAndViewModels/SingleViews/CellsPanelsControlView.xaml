@@ -42,7 +42,8 @@
             </Grid.RowDefinitions>
             <ComboBox Grid.Row="1"
                       Margin="0,0,100,0"
-                      Background="Transparent">
+                      Background="Transparent"
+                      Style="{StaticResource InstallationAppViewComboBoxTemplate}">
                 <ComboBoxItem Content="{x:Static res:General.Back}"
                               IsSelected="True" />
                 <ComboBoxItem Content="{x:Static res:General.Front}" />
