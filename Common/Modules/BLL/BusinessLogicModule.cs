@@ -1,4 +1,5 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Services;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -35,6 +36,8 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IItemProvider, ItemProvider>();
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
+
+            this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
         }
 
         #endregion Methods
