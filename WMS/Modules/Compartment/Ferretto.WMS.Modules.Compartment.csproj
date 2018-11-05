@@ -4,6 +4,10 @@
     <TargetFrameworks>net471</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />

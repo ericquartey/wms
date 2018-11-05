@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net471</TargetFrameworks>
@@ -7,6 +7,10 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
+
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+  </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="PresentationCore" />

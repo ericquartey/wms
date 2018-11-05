@@ -4,6 +4,10 @@
     <TargetFramework>net471</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="DevExpress.Data" Version="18.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />

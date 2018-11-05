@@ -1,9 +1,13 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net471</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.1.5" />
     <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.1.5" />
