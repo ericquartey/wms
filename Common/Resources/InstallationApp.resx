@@ -481,4 +481,60 @@
     <value>Gate Control 3</value>
     <comment>Title - Button text</comment>
   </data>
+  <data name="ActiveRaysQuantity" xml:space="preserve">
+    <value>Active rays quantity:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Current height (mm):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="GateCalibrated" xml:space="preserve">
+    <value>Gate succesfully calibrated.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Gate correction (mm):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="GateOutOfTolerance" xml:space="preserve">
+    <value>Gate is out of tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Gate 1 Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="PanelsControl" xml:space="preserve">
+    <value>Panels Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Speed (mm/sec):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>System error (mm):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolerance (mm +/-):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Vertical Offset Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Weight Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate2HeightControl" xml:space="preserve">
+    <value>Gate 2 Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate3HeightControl" xml:space="preserve">
+    <value>Gate 3 Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
 </root>

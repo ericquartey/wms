@@ -79,6 +79,9 @@
       <DependentUpon>GatesControlNavigationButtonsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlView.xaml.cs">
+      <DependentUpon>Gate1HeightControlView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml.cs">
       <DependentUpon>LSMTGateEngineView.xaml</DependentUpon>
     </Compile>
@@ -160,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
