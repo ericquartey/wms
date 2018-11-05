@@ -1,7 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>net471</TargetFrameworks>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +25,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Remove="Icons\**\*.png" />
+    <Content Remove="Images\**\*.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="Icons\**\*.png" />
+    <EmbeddedResource Include="Images\**\*.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="Themes\Light\InfoText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
   
 </Project>
