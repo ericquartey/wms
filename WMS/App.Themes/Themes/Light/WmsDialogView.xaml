@@ -41,15 +41,6 @@
                                 <dxc:ThemedWindowHeaderItemsControl x:Name="PART_HeaderCustomItems"
                                                                     Style="{DynamicResource {dxt:DXTabbedWindowThemeKey ResourceKey=ControlContainerStyle}}" />
 
-                                <dxc:HeaderItemControl x:Name="PART_Help"
-                                                       Foreground="{DynamicResource OnCommonSecondaryMedium}">
-                                    <Image Width="18"
-                                           Height="18"
-                                           VerticalAlignment="Center"
-                                           Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_help_outline_white_18dp.png"
-                                           Visibility="{Binding IsVisible}" />
-                                </dxc:HeaderItemControl>
-
                                 <dxc:HeaderItemControl x:Name="PART_Minimize"
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}" />
