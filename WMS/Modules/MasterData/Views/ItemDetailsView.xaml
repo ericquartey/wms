@@ -14,8 +14,7 @@
              Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 
-    <Grid x:Name="itemDetails"
-          Margin="20"
+    <Grid Margin="20"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
@@ -24,8 +23,8 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Name="ToolbarGrid">
-            <wms:ActionBar HorizontalAlignment="Right" 
+        <Grid>
+            <wms:ActionBar HorizontalAlignment="Right"
                           Style="{DynamicResource ActionBarNotCustomizable}">
                 <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
                                    CustomGlyphSize="24,24"
