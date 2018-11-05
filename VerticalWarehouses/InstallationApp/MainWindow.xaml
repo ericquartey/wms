@@ -66,6 +66,12 @@
         <DataTemplate DataType="{x:Type singleViews:WeightControlViewModel}">
             <singleViews:WeightControlView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:CellsPanelsControlViewModel}">
+            <singleViews:CellsPanelsControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:VerticalOffsetCalibrationViewModel}">
+            <singleViews:VerticalOffsetCalibrationView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type gatesControl:GatesControlNavigationButtonsViewModel}">
             <gatesControl:GatesControlNavigationButtonsView />
         </DataTemplate>

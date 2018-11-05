@@ -565,4 +565,72 @@
     <value>Test run:</value>
     <comment>Label text</comment>
   </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Correct offset (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Current offset (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Correct Offset</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Reference's cell height (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ReferenceCellNumber" xml:space="preserve">
+    <value>Reference's cell number:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StepDown" xml:space="preserve">
+    <value>Step -</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StepUp" xml:space="preserve">
+    <value>Step +</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Step value (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Current cell's height (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsPanelControl" xml:space="preserve">
+    <value>Cells' Panel Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Current cell:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Current panel:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Panel correction (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Total panels:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Front</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Correct</value>
+    <comment>Button text</comment>
+  </data>
 </root>

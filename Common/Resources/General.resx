@@ -140,6 +140,9 @@
   <data name="File" xml:space="preserve">
     <value>File</value>
   </data>
+  <data name="Front" xml:space="preserve">
+    <value>Front</value>
+  </data>
   <data name="LastModificationDate" xml:space="preserve">
     <value>Last Modification Date</value>
   </data>
@@ -150,6 +153,9 @@
   <data name="MillionsSymbol" xml:space="preserve">
     <value>M</value>
     <comment>Symbol for millions</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>

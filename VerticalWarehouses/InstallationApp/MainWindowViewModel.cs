@@ -18,6 +18,7 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private readonly BeltBurnishingViewModel BeltBurnishingVMInstance = new BeltBurnishingViewModel();
+        private readonly CellsPanelsControlViewModel CellsPanelControlVMInsance = new CellsPanelsControlViewModel();
         private readonly Gate1ControlViewModel Gate1ControlVMInstance = new Gate1ControlViewModel();
         private readonly Gate1HeightControlViewModel Gate1HeightControlVMInstance = new Gate1HeightControlViewModel();
         private readonly Gate2ControlViewModel Gate2ControlVMInstance = new Gate2ControlViewModel();
@@ -40,10 +41,12 @@ namespace Ferretto.VW.InstallationApp
         private readonly SSVariousInputsViewModel SSVariousInputsVMInstance = new SSVariousInputsViewModel();
         private readonly SSVerticalAxisViewModel SSVerticalAxisVMInstance = new SSVerticalAxisViewModel();
         private readonly VerticalAxisCalibrationViewModel VerticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel();
+        private readonly VerticalOffsetCalibrationViewModel VerticalOffsetCalibrationVMInstance = new VerticalOffsetCalibrationViewModel();
         private readonly WeightControlViewModel WeightControlVMInstance = new WeightControlViewModel();
 
         private ICommand backToMainWindowNavigationButtonsViewCommand;
         private ICommand beltBurnishingButtonCommand;
+        private ICommand cellsPanelControlButtonCommand;
         private BindableBase contentRegionCurrentViewModel;
         private ICommand gate1HeightControlNavigationButtonCommand;
         private ICommand gate2HeightControlNavigationButtonCommand;
@@ -71,6 +74,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand ssVariousInputsButtonCommand;
         private ICommand ssVerticalAxisButtonCommand;
         private ICommand verticalAxisCalibrationButtonCommand;
+        private ICommand verticalOffsetCalibrationButtonCommand;
         private ICommand weightControlButtonCommand;
 
         #endregion Fields
@@ -88,6 +92,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
         public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.BeltBurnishingVMInstance));
+        public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.CellsPanelControlVMInsance; }));
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance));
         public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate2HeightControlVMInstance));
@@ -117,6 +122,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSVariousInputsVMInstance; }));
         public ICommand SsVerticalAxisButtonCommand => this.ssVerticalAxisButtonCommand ?? (this.ssVerticalAxisButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSVerticalAxisVMInstance; }));
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.VerticalAxisCalibrationVMInstance; }));
+        public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.VerticalOffsetCalibrationVMInstance; }));
         public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.WeightControlVMInstance; }));
 
         #endregion Properties

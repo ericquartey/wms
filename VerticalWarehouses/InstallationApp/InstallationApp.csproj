@@ -147,6 +147,10 @@
       <DependentUpon>BeltBurnishingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\BeltBurnishingViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml.cs">
+      <DependentUpon>CellsPanelsControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml.cs">
       <DependentUpon>ResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
     </Compile>
@@ -155,6 +159,10 @@
       <DependentUpon>VerticalAxisCalibrationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\VerticalOffsetCalibrationView.xaml.cs">
+      <DependentUpon>VerticalOffsetCalibrationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\VerticalOffsetCalibrationViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\WeightControlView.xaml.cs">
       <DependentUpon>WeightControlView.xaml</DependentUpon>
     </Compile>
@@ -251,11 +259,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\VerticalOffsetCalibrationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
