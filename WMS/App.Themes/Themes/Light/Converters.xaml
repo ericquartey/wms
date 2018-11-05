@@ -7,4 +7,6 @@
     <ctrls:BoolToVisibilityConverter x:Key="BTVIC"
                                      Invert="True" />
 
+    <ctrls:ReferenceToVisibilityConverter x:Key="RTVC" />
+
 </ResourceDictionary>

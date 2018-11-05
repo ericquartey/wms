@@ -16,12 +16,12 @@ namespace Ferretto.Common.EF
         public DatabaseContext()
         { }
 
-        public DatabaseContext(DbContextOptions<DatabaseContext> options)
-            : base(options)
-        {
-        }
-
         #endregion Constructors
+
+        //        public DatabaseContext(DbContextOptions<DatabaseContext> options)
+        //            : base(options)
+        //        {
+        //        }
 
         #region Properties
 

@@ -43,7 +43,8 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
                                    GlyphSize="Custom" />
-                <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
+                <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+                                   Content="{x:Static res:MasterData.Withdraw}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
                                    GlyphSize="Custom" />

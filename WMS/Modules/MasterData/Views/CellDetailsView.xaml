@@ -14,8 +14,7 @@
              Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 
-    <Grid x:Name="cellDetails"
-          Margin="20"
+    <Grid Margin="20"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
@@ -24,7 +23,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Name="ToolbarGrid">
+        <Grid>
             <wms:ActionBar HorizontalAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}">
                 <wms:ActionBarItem Command="{Binding SaveCommand}"
