@@ -72,6 +72,9 @@
         <DataTemplate DataType="{x:Type singleViews:VerticalOffsetCalibrationViewModel}">
             <singleViews:VerticalOffsetCalibrationView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:InstallationStateViewModel}">
+            <singleViews:InstallationStateView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type gatesControl:GatesControlNavigationButtonsViewModel}">
             <gatesControl:GatesControlNavigationButtonsView />
         </DataTemplate>

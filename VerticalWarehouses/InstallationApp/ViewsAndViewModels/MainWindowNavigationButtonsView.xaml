@@ -30,6 +30,9 @@
                       Grid.Row="2"
                       VerticalScrollBarVisibility="Hidden">
             <StackPanel>
+                <Button Command="{Binding DataContext.InstallationStateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.InstallationState}"
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />

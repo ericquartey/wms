@@ -633,4 +633,64 @@
     <value>Correct</value>
     <comment>Button text</comment>
   </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Installation State</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Belt burnishing</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate1Done" xml:space="preserve">
+    <value>Gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate2Done" xml:space="preserve">
+    <value>Gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate3Done" xml:space="preserve">
+    <value>Gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="HorizontalAxisHomedDone" xml:space="preserve">
+    <value>Horizontal axis homed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser1Done" xml:space="preserve">
+    <value>Laser gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser2Done" xml:space="preserve">
+    <value>Laser gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser3Done" xml:space="preserve">
+    <value>Laser gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineDone" xml:space="preserve">
+    <value>Machine installed completely</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape1Done" xml:space="preserve">
+    <value>Shape gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape2Done" xml:space="preserve">
+    <value>Shape gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape3Done" xml:space="preserve">
+    <value>Shape gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Vertical axis homed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Vertical resolution</value>
+    <comment>Label text</comment>
+  </data>
 </root>

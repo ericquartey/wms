@@ -151,6 +151,10 @@
       <DependentUpon>CellsPanelsControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml.cs">
+      <DependentUpon>InstallationStateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\InstallationStateViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml.cs">
       <DependentUpon>ResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
     </Compile>
@@ -260,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
