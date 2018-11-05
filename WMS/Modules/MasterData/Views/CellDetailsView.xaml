@@ -14,8 +14,7 @@
              Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 
-    <Grid x:Name="cellDetails"
-          Margin="20"
+    <Grid Margin="20"
           HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
@@ -24,7 +23,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Name="ToolbarGrid">
+        <Grid>
             <wms:ActionBar HorizontalAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}">
                 <wms:ActionBarItem Command="{Binding SaveCommand}"
@@ -79,12 +78,12 @@
                         <wms:ComboBox Grid.Row="0"
                                       Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding AisleId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      EditValue="{Binding AisleId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=AisleChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding CellTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      EditValue="{Binding CellTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=CellTypeChoices}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
@@ -93,7 +92,7 @@
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      EditValue="{Binding AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=AbcClassChoices}" />
                         <wms:SpinEdit Grid.Row="3"
                                       Grid.Column="0"
@@ -102,7 +101,7 @@
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding CellStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      EditValue="{Binding CellStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=CellStatusChoices}" />
                     </Grid>
                 </GroupBox>
@@ -132,7 +131,7 @@
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Side, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                      EditValue="{Binding Side, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=SideChoices}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
