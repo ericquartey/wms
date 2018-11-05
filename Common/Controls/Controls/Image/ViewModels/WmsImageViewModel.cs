@@ -1,5 +1,5 @@
 ﻿using System.Windows.Media;
-using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls

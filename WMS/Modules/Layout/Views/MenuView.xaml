@@ -16,7 +16,7 @@
                HorizontalAlignment="Left"
                Panel.ZIndex="1"
                Focusable="False"
-               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogo.png" />
+               Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo.png" />
         <DockPanel Background="{DynamicResource CommonBackground}">
             <dxnav:TileBar x:Name="WMSTileNav"
                            Padding="125,10,150,0"

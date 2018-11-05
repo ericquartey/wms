@@ -41,16 +41,16 @@
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
                 <wms:ActionBarItem Content="{x:Static res:General.Add}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Command="{Binding WithdrawCommand}"
                                    Content="{x:Static res:MasterData.Withdraw}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
@@ -104,7 +104,8 @@
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
-                    <dxg:GridSortInfo FieldName="Code" SortOrder="Ascending" />
+                    <dxg:GridSortInfo FieldName="Code"
+                                      SortOrder="Ascending" />
                 </wms:WmsGridControl.SortInfo>
 
             </wms:WmsGridControl>

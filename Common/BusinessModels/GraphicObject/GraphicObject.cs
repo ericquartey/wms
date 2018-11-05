@@ -1,6 +1,4 @@
-using System;
 using System.ComponentModel;
-using System.Windows.Media;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -119,7 +117,7 @@ namespace Ferretto.Common.BusinessModels
 
             foreach (var compartment in this.compartments)
             {
-                bool areCollisions = this.HasCollision(compartmentDetails, compartment);
+                var areCollisions = this.HasCollision(compartmentDetails, compartment);
                 if (areCollisions)
                 {
                     return false;

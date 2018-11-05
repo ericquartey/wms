@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Modules.BLL.Models;
-using static Ferretto.Common.Controls.WmsRulerControl;
 
 namespace Ferretto.Common.Controls
 {
@@ -38,10 +28,7 @@ namespace Ferretto.Common.Controls
 
         public Brush BackgroundCanvas
         {
-            get
-            {
-                return this.backgroundCanvas;
-            }
+            get => this.backgroundCanvas;
             set
             {
                 this.backgroundCanvas = value;

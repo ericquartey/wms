@@ -1,5 +1,4 @@
-﻿using System.Configuration;
-using System.Windows;
+﻿using System.Windows;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
 using Ferretto.Common.Controls.Services;
@@ -20,7 +19,7 @@ namespace Ferretto.WMS.App
 
             base.ConfigureModuleCatalog();
 
-            (this.ModuleCatalog as DirectoryModuleCatalog)?.Load();
+            (this.ModuleCatalog as ModuleCatalog)?.Load();
         }
 
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
@@ -40,7 +39,7 @@ namespace Ferretto.WMS.App
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.LoadingPrismModuleCatalog);
 
-            return new DirectoryModuleCatalog { ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"] };
+            return new ConfigurationModuleCatalog();
         }
 
         protected override DependencyObject CreateShell()

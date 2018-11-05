@@ -50,7 +50,6 @@ namespace Ferretto.Common.Controls
                     DependencyProperty.Register("DisplayMode", typeof(Orientation), typeof(WmsRulerControl),
                     new FrameworkPropertyMetadata(OnOrientationChanged));
 
-        private readonly int DIMENSION_RULER = 25;
         private readonly int FONTSIZE = 10;
         private readonly int N_MARKS = 10;
         private readonly int OFFSET_BORDER = 2;
@@ -76,48 +75,42 @@ namespace Ferretto.Common.Controls
 
         public int LittleMarkLength
         {
-            get { return (int)this.GetValue(LittleMarkLengthProperty); }
-            set { this.SetValue(LittleMarkLengthProperty, value); }
+            get => (int)this.GetValue(LittleMarkLengthProperty);
+            set => this.SetValue(LittleMarkLengthProperty, value);
         }
 
         public int MajorIntervalHorizontal
         {
-            get
-            {
-                return (int)this.GetValue(MajorIntervalHorizontalProperty);
-            }
-            set { this.SetValue(MajorIntervalHorizontalProperty, value); }
+            get => (int)this.GetValue(MajorIntervalHorizontalProperty);
+            set => this.SetValue(MajorIntervalHorizontalProperty, value);
         }
 
         public int MajorIntervalHorizontalPixel { get; set; }
 
         public int MajorIntervalVertical
         {
-            get
-            {
-                return (int)this.GetValue(MajorIntervalVerticalProperty);
-            }
-            set { this.SetValue(MajorIntervalVerticalProperty, value); }
+            get => (int)this.GetValue(MajorIntervalVerticalProperty);
+            set => this.SetValue(MajorIntervalVerticalProperty, value);
         }
 
         public int MajorIntervalVerticalPixel { get; set; }
 
         public int MarkLength
         {
-            get { return (int)this.GetValue(MarkLengthProperty); }
-            set { this.SetValue(MarkLengthProperty, value); }
+            get => (int)this.GetValue(MarkLengthProperty);
+            set => this.SetValue(MarkLengthProperty, value);
         }
 
         public int MiddleMarkLength
         {
-            get { return (int)this.GetValue(MiddleMarkLengthProperty); }
-            set { this.SetValue(MiddleMarkLengthProperty, value); }
+            get => (int)this.GetValue(MiddleMarkLengthProperty);
+            set => this.SetValue(MiddleMarkLengthProperty, value);
         }
 
         public Orientation Orientation
         {
-            get { return (Orientation)this.GetValue(OrientationProperty); }
-            set { this.SetValue(OrientationProperty, value); }
+            get => (Orientation)this.GetValue(OrientationProperty);
+            set => this.SetValue(OrientationProperty, value);
         }
 
         public Position Origin
@@ -187,7 +180,7 @@ namespace Ferretto.Common.Controls
             Debug.WriteLine($"INFO: ActualWidth= {this.ActualWidth}  MajorIntervalHorizontalPixel= {this.MajorIntervalHorizontalPixel}");
             if (!double.IsPositiveInfinity(ratio) && !double.IsNegativeInfinity(ratio))
             {
-                for (int i = 0; i < ratio; i++)
+                for (var i = 0; i < ratio; i++)
                 {
                     this.DrawRuler(drawingContext, i, ref pseudoStartValue);
                 }
@@ -205,7 +198,7 @@ namespace Ferretto.Common.Controls
         private void DrawLittleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
         {
             double startFrom = 0;
-            for (int j = 1; j < this.N_MARKS; j++)
+            for (var j = 1; j < this.N_MARKS; j++)
             {
                 var littleMark = new Line();
                 if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
@@ -313,7 +306,7 @@ namespace Ferretto.Common.Controls
         private void DrawMiddleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
         {
             var middleMark = new Line();
-            bool toDraw = true;
+            var toDraw = true;
             double startFrom = 0;
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
@@ -378,8 +371,8 @@ namespace Ferretto.Common.Controls
         private void DrawRuler(DrawingContext drawingContext, int i, ref double pseudoStartValue)
         {
             double actualDimension = 0;
-            int majorInterval = 0;
-            int majorIntervalPixel = 0;
+            var majorInterval = 0;
+            var majorIntervalPixel = 0;
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
@@ -408,8 +401,8 @@ namespace Ferretto.Common.Controls
                     (pseudoStartValue * majorInterval).ToString(),
                     CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
                     new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
-            int startFrom = 0;
-            bool toDraw = true;
+            var startFrom = 0;
+            var toDraw = true;
 
             var position = new Position();
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
