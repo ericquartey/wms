@@ -225,6 +225,10 @@
     <Compile Include="Migrations\20181018131331_Add_Field_Model_To_Table_Machines.designer.cs">
       <DependentUpon>20181018131331_Add_Field_Model_To_Table_Machines.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20181030094318_Add_Fields_Area_Machine_To_Table_Bays.cs" />
+    <Compile Include="Migrations\20181030094318_Add_Fields_Area_Machine_To_Table_Bays.designer.cs">
+      <DependentUpon>20181030094318_Add_Fields_Area_Machine_To_Table_Bays.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\DatabaseContextModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

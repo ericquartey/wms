@@ -196,6 +196,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Withdraw.
+        /// </summary>
+        public static string ItemWithdraw {
+            get {
+                return ResourceManager.GetString("ItemWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Row Statuses.
         /// </summary>
         public static string ListRowStatuses {

@@ -156,11 +156,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAreaProvider.cs" />
+    <Compile Include="Interfaces\IBayProvider.cs" />
     <Compile Include="Interfaces\IMachineProvider.cs" />
     <Compile Include="Interfaces\ICellProvider.cs" />
     <Compile Include="Models\DataSource.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Services\AreaProvider.cs" />
+    <Compile Include="Services\BayProvider.cs" />
     <Compile Include="Services\MachineProvider.cs" />
     <Compile Include="Services\CompartmentProvider.cs" />
     <Compile Include="Services\EnumerationProvider.cs" />

@@ -27,6 +27,8 @@ namespace Ferretto.Common.Modules.BLL
 
         public void Initialize()
         {
+            this.Container.RegisterType<IAreaProvider, AreaProvider>();
+            this.Container.RegisterType<IBayProvider, BayProvider>();
             this.Container.RegisterType<ICellProvider, CellProvider>();
             this.Container.RegisterType<ICompartmentProvider, CompartmentProvider>();
             this.Container.RegisterType<IDataSourceService, DataSourceService>();

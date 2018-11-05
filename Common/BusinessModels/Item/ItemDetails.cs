@@ -78,6 +78,9 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> ItemManagementTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
+        public string ItemManagementTypeDescription { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
         public int? ItemManagementTypeId { get; set; }
 
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
@@ -97,6 +100,9 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public IEnumerable<EnumerationString> MeasureUnitChoices { get; set; }
+
+        [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
+        public string MeasureUnitDescription { get; set; }
 
         [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
         public string MeasureUnitId { get; set; }
@@ -127,6 +133,9 @@ namespace Ferretto.Common.BusinessModels
             get => this.storeTolerance;
             set => this.SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
+
+        [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
+        public int TotalAvailable { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
         public int? Width

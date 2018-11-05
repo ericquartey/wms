@@ -49,13 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Area\Area.cs" />
+    <Compile Include="Bay\Bay.cs" />
     <Compile Include="BindableBase.cs" />
     <Compile Include="BusinessObject.cs" />
     <Compile Include="Cell\Cell.cs" />
     <Compile Include="Cell\CellDetails.cs" />
     <Compile Include="Compartment\Compartment.cs" />
     <Compile Include="Compartment\CompartmentDetails.cs" />
-    <Compile Include="Compartment\CompartmentStockDetails.cs" />
     <Compile Include="Compartment\CompartmentType.cs" />
     <Compile Include="Compartment\Filters.cs" />
     <Compile Include="Enumeration\Enumeration.cs" />
@@ -64,7 +65,6 @@
     <Compile Include="Item\AllowedItemInCompartment.cs" />
     <Compile Include="Item\Item.cs" />
     <Compile Include="Item\ItemDetails.cs" />
-    <Compile Include="ItemWithdraw\ItemWithdraw.cs" />
     <Compile Include="LoadingUnit\LoadingUnit.cs" />
     <Compile Include="LoadingUnit\LoadingUnitDetails.cs" />
     <Compile Include="Machine\Machine.cs" />
@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mission\Mission.cs" />
     <Compile Include="PropertySupport.cs" />
+    <Compile Include="Withdraw\ItemWithdraw.cs" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">

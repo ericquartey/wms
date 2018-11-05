@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 new Mission
                 {
                     Id = 1,
-                    ItemId = itemWithdraw.ItemId,
+                    ItemId = itemWithdraw.Item.Id,
                     Quantity = mission1Quantity,
                     BayId = itemWithdraw.BayId,
                     TypeId = "PK"
@@ -80,7 +80,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 new Mission
                 {
                     Id = 2,
-                    ItemId = itemWithdraw.ItemId,
+                    ItemId = itemWithdraw.Item.Id,
                     Quantity = itemWithdraw.Quantity  - mission1Quantity,
                     BayId = itemWithdraw.BayId,
                     TypeId = "PK"

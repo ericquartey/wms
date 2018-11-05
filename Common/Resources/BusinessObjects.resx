@@ -633,4 +633,56 @@
     <value>Loading Units Description</value>
     <comment>Cell - Loading Units Description (calculated)</comment>
   </data>
+  <data name="ItemWithdrawItem" xml:space="preserve">
+    <value>Selected Item</value>
+    <comment>Item Withdraw - Item</comment>
+  </data>
+  <data name="AreaDescription" xml:space="preserve">
+    <value>Area</value>
+    <comment>Area - Description</comment>
+  </data>
+  <data name="BayType" xml:space="preserve">
+    <value>Bay Type</value>
+    <comment>Bay Type</comment>
+  </data>
+  <data name="BayDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Bay - Description</comment>
+  </data>
+  <data name="BayLoadingUnitsBufferSize" xml:space="preserve">
+    <value>Loading Units Buffer Size</value>
+    <comment>Bay - Loading Units Buffer Size</comment>
+  </data>
+  <data name="ItemWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+    <comment>Item Withdraw - Area</comment>
+  </data>
+  <data name="ItemWithdrawBay" xml:space="preserve">
+    <value>Bay</value>
+    <comment>Item Withdraw - Bay</comment>
+  </data>
+  <data name="ItemWithdrawQuantity" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>Item Withdraw - Quantity</comment>
+  </data>
+  <data name="MeasureUnitDescription" xml:space="preserve">
+    <value>Measure Unit</value>
+    <comment>Measure Unit - Description</comment>
+  </data>
+  <data name="ItemWithdrawLot" xml:space="preserve">
+    <value>Lot</value>
+    <comment>Item Withdraw - Lot</comment>
+  </data>
+  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Item Withdraw - Registration Number</comment>
+  </data>
+  <data name="ItemWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+    <comment>Item Withdraw - Sub1</comment>
+  </data>
+  <data name="ItemWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+    <comment>Item Withdraw - Sub2</comment>
+  </data>
 </root>
