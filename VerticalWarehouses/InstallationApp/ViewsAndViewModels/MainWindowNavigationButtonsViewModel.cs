@@ -10,7 +10,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         #region Fields
 
         private bool isBeltBurnishingButtonActive;
+        private bool isGateHeightControlButtonActive = true;
         private bool isSetYResolutionButtonActive;
+        private bool isWeightControlButtonActive = true;
 
         #endregion Fields
 
@@ -27,7 +29,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         #region Properties
 
         public Boolean IsBeltBurnishingButtonActive { get => this.isBeltBurnishingButtonActive; set => this.SetProperty(ref this.isBeltBurnishingButtonActive, value); }
+        public Boolean IsGateHeightControlButtonActive { get => this.isGateHeightControlButtonActive; set => this.SetProperty(ref this.isGateHeightControlButtonActive, value); }
         public Boolean IsSetYResolutionButtonActive { get => this.isSetYResolutionButtonActive; set => this.SetProperty(ref this.isSetYResolutionButtonActive, value); }
+        public Boolean IsWeightControlButtonActive { get => this.isWeightControlButtonActive; set => this.SetProperty(ref this.isWeightControlButtonActive, value); }
 
         #endregion Properties
 

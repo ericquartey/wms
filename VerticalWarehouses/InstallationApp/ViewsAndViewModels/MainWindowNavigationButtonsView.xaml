@@ -35,11 +35,16 @@
                         Content="{x:Static res:InstallationApp.BeltBurnishing}"
                         IsEnabled="{Binding IsBeltBurnishingButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                <Button Command="{Binding DataContext.GateHeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.GateHeightControl}"
+                        IsEnabled="{Binding IsGateHeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Content="{x:Static res:InstallationApp.GateSetUp}"
                         IsEnabled="False"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Content="{x:Static res:InstallationApp.VerifyWeightController}"
-                        IsEnabled="False"
+                <Button Command="{Binding DataContext.WeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.WeightControl}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             </StackPanel>
         </ScrollViewer>

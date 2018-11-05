@@ -537,4 +537,32 @@
     <value>Gate 3 Height Control</value>
     <comment>Title - Button text</comment>
   </data>
+  <data name="GateHeightControl" xml:space="preserve">
+    <value>Gate Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Acceptable weight tolerance (%):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Inserted weight (kg):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MesuredWeight" xml:space="preserve">
+    <value>Mesured weight (kg):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MesuredWeightInTolerance" xml:space="preserve">
+    <value>Mesured weight is in tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MesuredWeightOutOfTolerance" xml:space="preserve">
+    <value>Mesured weight is out of tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Test run:</value>
+    <comment>Label text</comment>
+  </data>
 </root>

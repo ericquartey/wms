@@ -61,6 +61,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Acceptable weight tolerance (%):.
+        /// </summary>
+        public static string AcceptableWeightTolerance {
+            get {
+                return ResourceManager.GetString("AcceptableWeightTolerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Active rays quantity:.
         /// </summary>
         public static string ActiveRaysQuantity {
@@ -367,6 +376,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Gate Height Control.
+        /// </summary>
+        public static string GateHeightControl {
+            get {
+                return ResourceManager.GetString("GateHeightControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gate is out of tolerance..
         /// </summary>
         public static string GateOutOfTolerance {
@@ -417,6 +435,15 @@ namespace Ferretto.Common.Resources {
         public static string InsertDesiredMovement {
             get {
                 return ResourceManager.GetString("InsertDesiredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inserted weight (kg):.
+        /// </summary>
+        public static string InsertedWeight {
+            get {
+                return ResourceManager.GetString("InsertedWeight", resourceCulture);
             }
         }
         
@@ -579,6 +606,33 @@ namespace Ferretto.Common.Resources {
         public static string MesuredMovement {
             get {
                 return ResourceManager.GetString("MesuredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesured weight (kg):.
+        /// </summary>
+        public static string MesuredWeight {
+            get {
+                return ResourceManager.GetString("MesuredWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesured weight is in tolerance..
+        /// </summary>
+        public static string MesuredWeightInTolerance {
+            get {
+                return ResourceManager.GetString("MesuredWeightInTolerance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesured weight is out of tolerance..
+        /// </summary>
+        public static string MesuredWeightOutOfTolerance {
+            get {
+                return ResourceManager.GetString("MesuredWeightOutOfTolerance", resourceCulture);
             }
         }
         
@@ -867,6 +921,15 @@ namespace Ferretto.Common.Resources {
         public static string SystemErrorMM {
             get {
                 return ResourceManager.GetString("SystemErrorMM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test run:.
+        /// </summary>
+        public static string TestRun {
+            get {
+                return ResourceManager.GetString("TestRun", resourceCulture);
             }
         }
         
