@@ -13,7 +13,8 @@ namespace Feretto.Common.BLL.Tests
     {
         #region Methods
 
-        //For test check on WIDTH = 1002 (2 border's pixel) HEIGHT= 402
+        //For test check on WIDTH = 1027 (2 border's pixel + 25 width ruler) HEIGHT= 427
+        //To help add to CompartmentDetails: CompartmentName, binding on label
         [TestMethod]
         public void TestControlSize100()
         {
@@ -35,7 +36,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
+                //CompartmentName = "1"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -48,7 +49,7 @@ namespace Feretto.Common.BLL.Tests
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
+                //CompartmentName = "2"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -62,7 +63,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
+                //CompartmentName = "1"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -75,7 +76,7 @@ namespace Feretto.Common.BLL.Tests
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
+                //CompartmentName = "2"
             });
         }
 
@@ -99,7 +100,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
+                //CompartmentName = "1"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -112,7 +113,7 @@ namespace Feretto.Common.BLL.Tests
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
+                //CompartmentName = "2"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -125,7 +126,7 @@ namespace Feretto.Common.BLL.Tests
                 CompartmentStatusDescription = "Sardine",
                 Stock = 0,
                 MaxCapacity = 100,
-                CompartmentName = "3"
+                //CompartmentName = "3"
             });
 
             tray.AddCompartment(new CompartmentDetails()
@@ -141,7 +142,7 @@ namespace Feretto.Common.BLL.Tests
                 MaxCapacity = 100,
                 CompartmentTypeId = 4,
                 MaterialStatusId = 7,
-                CompartmentName = "4"
+                //CompartmentName = "4"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -156,7 +157,7 @@ namespace Feretto.Common.BLL.Tests
                 MaxCapacity = 100,
                 ItemPairing = 2,
                 CompartmentTypeId = 4,
-                CompartmentName = "5"
+                //CompartmentName = "5"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -170,7 +171,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "6"
+                //CompartmentName = "6"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -184,7 +185,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "7"
+                //CompartmentName = "7"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -198,7 +199,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "8"
+                //CompartmentName = "8"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -212,7 +213,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "9"
+                //CompartmentName = "9"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -226,7 +227,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "10"
+                //CompartmentName = "10"
             });
             //RaisePropertyChanged(nameof(Tray));
         }
@@ -251,7 +252,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
+                //CompartmentName = "1"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -264,7 +265,7 @@ namespace Feretto.Common.BLL.Tests
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
+                //CompartmentName = "2"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -278,7 +279,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
+                //CompartmentName = "1"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -291,7 +292,7 @@ namespace Feretto.Common.BLL.Tests
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
+                //CompartmentName = "2"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -305,7 +306,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
+                //CompartmentName = "1"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -318,7 +319,7 @@ namespace Feretto.Common.BLL.Tests
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
+                //CompartmentName = "2"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -332,7 +333,7 @@ namespace Feretto.Common.BLL.Tests
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
+                //CompartmentName = "1"
             });
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -345,7 +346,7 @@ namespace Feretto.Common.BLL.Tests
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
+                //CompartmentName = "2"
             });
         }
 

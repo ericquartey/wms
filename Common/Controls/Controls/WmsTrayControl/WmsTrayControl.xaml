@@ -6,10 +6,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d">
     <Grid x:Name="MainGridTray">
-        <!--
-            Width="1027"
-            Height="427"
-        -->
+
         <Label x:Name="UnitMetric"
                Width="25"
                Height="25"
@@ -42,14 +39,6 @@
                                MajorIntervalHorizontal="1000"
                                Orientation="Vertical" />
 
-        <!--<Border x:Name="CanvasBorder"
-                Margin="25,25,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                Panel.ZIndex="1000"
-                BorderBrush="Black"
-                BorderThickness="1" />-->
-
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
                                        Margin="25,25,10,10"
                                        HorizontalAlignment="Stretch"
@@ -58,17 +47,7 @@
                                        BorderThickness="0"
                                        ItemContainerStyle="{DynamicResource CanvasItemStyle}"
                                        ItemsSource="{Binding Items, Mode=TwoWay}"
-                                       Style="{DynamicResource CanvasListBox}">
-            <!--<ctrls:WmsCanvasListBoxControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
-                                         HorizontalAlignment="Left"
-                                         VerticalAlignment="Top" />
-                </ItemsPanelTemplate>
-            </ctrls:WmsCanvasListBoxControl.ItemsPanel>-->
-
-
-        </ctrls:WmsCanvasListBoxControl>
+                                       Style="{DynamicResource CanvasListBox}" />
 
     </Grid>
 

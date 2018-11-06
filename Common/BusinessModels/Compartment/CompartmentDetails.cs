@@ -26,7 +26,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public string CompartmentName { get; set; }
         public IEnumerable<Enumeration> CompartmentStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]

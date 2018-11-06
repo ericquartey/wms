@@ -162,103 +162,12 @@ namespace Ferretto.WMS.Modules.Compartment
             this.SelectedCompartment = null;
         }
 
-        private void TestInitializationTray()
+        private void TestCompartment100()
         {
-            //Initialize without Origin, default: BOTTOM-LEFT
-            this.tray = new Tray
-            {
-                Dimension = new Dimension { Height = 400, Width = 1000 },
-                //Origin = new Position { X = 0, Y = 0 },
-                ReadOnly = true,
-            };
-            //200
-            //this.tray.AddCompartment(new CompartmentDetails()
-            //{
-            //    Width = 200,
-            //    Height = 200,
-            //    XPosition = 0,
-            //    YPosition = 0,
-            //    Code = "3",
-            //    Id = 3,
-            //    ItemDescription = "Palle",
-            //    Stock = 70,
-            //    MaxCapacity = 100,
-            //    MaterialStatusId = 7,
-            //    CompartmentName = "1"
-            //});
-            //this.tray.AddCompartment(new CompartmentDetails()
-            //{
-            //    Width = 200,
-            //    Height = 200,
-            //    XPosition = 0,
-            //    YPosition = 200,
-            //    Code = "2",
-            //    Id = 2,
-            //    ItemDescription = "Cavolfiori",
-            //    Stock = 45,
-            //    MaxCapacity = 100,
-            //    CompartmentName = "2"
-            //});
-            //100
-            //this.tray.AddCompartment(new CompartmentDetails()
-            //{
-            //    Width = 100,
-            //    Height = 100,
-            //    XPosition = 0,
-            //    YPosition = 0,
-            //    Code = "3",
-            //    Id = 3,
-            //    ItemDescription = "Palle",
-            //    Stock = 70,
-            //    MaxCapacity = 100,
-            //    MaterialStatusId = 7,
-            //    CompartmentName = "1"
-            //});
-            //this.tray.AddCompartment(new CompartmentDetails()
-            //{
-            //    Width = 100,
-            //    Height = 100,
-            //    XPosition = 0,
-            //    YPosition = 100,
-            //    Code = "2",
-            //    Id = 2,
-            //    ItemDescription = "Cavolfiori",
-            //    Stock = 45,
-            //    MaxCapacity = 100,
-            //    CompartmentName = "2"
-            //});
-            //this.tray.AddCompartment(new CompartmentDetails()
-            //{
-            //    Width = 100,
-            //    Height = 100,
-            //    XPosition = 0,
-            //    YPosition = 200,
-            //    Code = "3",
-            //    Id = 3,
-            //    ItemDescription = "Palle",
-            //    Stock = 70,
-            //    MaxCapacity = 100,
-            //    MaterialStatusId = 7,
-            //    CompartmentName = "1"
-            //});
-            //this.tray.AddCompartment(new CompartmentDetails()
-            //{
-            //    Width = 100,
-            //    Height = 100,
-            //    XPosition = 0,
-            //    YPosition = 300,
-            //    Code = "2",
-            //    Id = 2,
-            //    ItemDescription = "Cavolfiori",
-            //    Stock = 45,
-            //    MaxCapacity = 100,
-            //    CompartmentName = "2"
-            //});
-            //50
             this.tray.AddCompartment(new CompartmentDetails()
             {
-                Width = 50,
-                Height = 50,
+                Width = 100,
+                Height = 100,
                 XPosition = 0,
                 YPosition = 0,
                 Code = "3",
@@ -267,52 +176,23 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
-                Width = 50,
-                Height = 50,
-                XPosition = 0,
-                YPosition = 50,
-                Code = "2",
-                Id = 2,
-                ItemDescription = "Cavolfiori",
-                Stock = 45,
-                MaxCapacity = 100,
-                CompartmentName = "2"
-            });
-            this.tray.AddCompartment(new CompartmentDetails()
-            {
-                Width = 50,
-                Height = 50,
+                Width = 100,
+                Height = 100,
                 XPosition = 0,
                 YPosition = 100,
-                Code = "3",
-                Id = 3,
-                ItemDescription = "Palle",
-                Stock = 70,
-                MaxCapacity = 100,
-                MaterialStatusId = 7,
-                CompartmentName = "1"
-            });
-            this.tray.AddCompartment(new CompartmentDetails()
-            {
-                Width = 50,
-                Height = 50,
-                XPosition = 0,
-                YPosition = 150,
                 Code = "2",
                 Id = 2,
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
-                Width = 50,
-                Height = 50,
+                Width = 100,
+                Height = 100,
                 XPosition = 0,
                 YPosition = 200,
                 Code = "3",
@@ -321,49 +201,23 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 70,
                 MaxCapacity = 100,
                 MaterialStatusId = 7,
-                CompartmentName = "1"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
-                Width = 50,
-                Height = 50,
-                XPosition = 0,
-                YPosition = 250,
-                Code = "2",
-                Id = 2,
-                ItemDescription = "Cavolfiori",
-                Stock = 45,
-                MaxCapacity = 100,
-                CompartmentName = "2"
-            });
-            this.tray.AddCompartment(new CompartmentDetails()
-            {
-                Width = 50,
-                Height = 50,
+                Width = 100,
+                Height = 100,
                 XPosition = 0,
                 YPosition = 300,
-                Code = "3",
-                Id = 3,
-                ItemDescription = "Palle",
-                Stock = 70,
-                MaxCapacity = 100,
-                MaterialStatusId = 7,
-                CompartmentName = "1"
-            });
-            this.tray.AddCompartment(new CompartmentDetails()
-            {
-                Width = 50,
-                Height = 50,
-                XPosition = 0,
-                YPosition = 350,
                 Code = "2",
                 Id = 2,
                 ItemDescription = "Cavolfiori",
                 Stock = 45,
                 MaxCapacity = 100,
-                CompartmentName = "2"
             });
-            //////////50
+        }
+
+        private void TestCompartment200()
+        {
             this.tray.AddCompartment(new CompartmentDetails()
             {
                 Width = 200,
@@ -375,7 +229,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 CompartmentStatusDescription = "Sardine",
                 Stock = 0,
                 MaxCapacity = 100,
-                CompartmentName = "3"
             });
 
             this.tray.AddCompartment(new CompartmentDetails()
@@ -391,7 +244,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 MaxCapacity = 100,
                 CompartmentTypeId = 4,
                 MaterialStatusId = 7,
-                CompartmentName = "4"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -406,7 +258,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 MaxCapacity = 100,
                 ItemPairing = 2,
                 CompartmentTypeId = 4,
-                CompartmentName = "5"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -420,7 +271,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "6"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -434,7 +284,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "7"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -448,7 +297,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "8"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -462,7 +310,6 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "9"
             });
             this.tray.AddCompartment(new CompartmentDetails()
             {
@@ -476,12 +323,155 @@ namespace Ferretto.WMS.Modules.Compartment
                 Stock = 100,
                 MaxCapacity = 100,
                 ItemPairing = 2,
-                CompartmentName = "10"
             });
-            this.RaisePropertyChanged(nameof(this.Tray));
+        }
 
-            this.selectedCompartment = this.tray.Compartments[3];
-            this.RaisePropertyChanged(nameof(this.SelectedCompartment));
+        private void TestCompartment50()
+        {
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 0,
+                Code = "3",
+                Id = 3,
+                ItemDescription = "Palle",
+                Stock = 70,
+                MaxCapacity = 100,
+                MaterialStatusId = 7,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 50,
+                Code = "2",
+                Id = 2,
+                ItemDescription = "Cavolfiori",
+                Stock = 45,
+                MaxCapacity = 100,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 100,
+                Code = "3",
+                Id = 3,
+                ItemDescription = "Palle",
+                Stock = 70,
+                MaxCapacity = 100,
+                MaterialStatusId = 7,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 150,
+                Code = "2",
+                Id = 2,
+                ItemDescription = "Cavolfiori",
+                Stock = 45,
+                MaxCapacity = 100,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 200,
+                Code = "3",
+                Id = 3,
+                ItemDescription = "Palle",
+                Stock = 70,
+                MaxCapacity = 100,
+                MaterialStatusId = 7,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 250,
+                Code = "2",
+                Id = 2,
+                ItemDescription = "Cavolfiori",
+                Stock = 45,
+                MaxCapacity = 100,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 300,
+                Code = "3",
+                Id = 3,
+                ItemDescription = "Palle",
+                Stock = 70,
+                MaxCapacity = 100,
+                MaterialStatusId = 7,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 50,
+                Height = 50,
+                XPosition = 0,
+                YPosition = 350,
+                Code = "2",
+                Id = 2,
+                ItemDescription = "Cavolfiori",
+                Stock = 45,
+                MaxCapacity = 100,
+            });
+        }
+
+        private void TestCompartmentDefault()
+        {
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 200,
+                Height = 200,
+                XPosition = 0,
+                YPosition = 0,
+                Code = "3",
+                Id = 3,
+                ItemDescription = "Palle",
+                Stock = 70,
+                MaxCapacity = 100,
+                MaterialStatusId = 7,
+            });
+            this.tray.AddCompartment(new CompartmentDetails()
+            {
+                Width = 200,
+                Height = 200,
+                XPosition = 0,
+                YPosition = 200,
+                Code = "2",
+                Id = 2,
+                ItemDescription = "Cavolfiori",
+                Stock = 45,
+                MaxCapacity = 100,
+            });
+        }
+
+        private void TestInitializationTray()
+        {
+            //Initialize without Origin, default: BOTTOM-LEFT
+            this.tray = new Tray
+            {
+                Dimension = new Dimension { Height = 400, Width = 1000 },
+                //Origin = new Position { X = 0, Y = 0 },
+                ReadOnly = true,
+            };
+
+            //this.TestCompartmentDefault();
+            this.TestCompartment100();
+            this.RaisePropertyChanged(nameof(this.Tray));
         }
 
         private void TestInitializeInput()

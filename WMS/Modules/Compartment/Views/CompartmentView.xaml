@@ -48,15 +48,9 @@
                             SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
                             TrayObject="{Binding Tray, Mode=OneWay}" />
-        <!--
-            Width="1027"
-            Height="427"
-        -->
+
         <compartment:ListCompartmentsView x:Name="ListCompartments"
                                           Grid.Row="3" />
-
-        <!--<ListBox />
-        <ListBox />-->
     </Grid>
 
 </wms:WmsView>

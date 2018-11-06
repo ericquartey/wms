@@ -151,8 +151,6 @@ namespace Ferretto.Common.Controls
 
                     Dimension compartmentDimension = new Dimension() { Width = (int)i.CompartmentDetails.Width, Height = (int)i.CompartmentDetails.Height };
                     Position compartmentOrigin = new Position { X = (int)i.CompartmentDetails.XPosition, Y = (int)i.CompartmentDetails.YPosition };
-                    //Position compartmentOriginPixel = new Position { Y= ,
-                    //X = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width));
 
                     double originY = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.Y, widthTrayPixel, this.Tray.Dimension.Width);
                     double originX = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width);
@@ -167,15 +165,9 @@ namespace Ferretto.Common.Controls
                     //i.Left = newPosition.X;
 
                     //PIXEL
-                    Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOriginPixel(compartmentOriginPixel, this.Tray, compartmentDimension, widthTrayPixel, heightTrayPixel, i.Width, i.Height);
+                    Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOriginPixel(compartmentOriginPixel, this.Tray, widthTrayPixel, heightTrayPixel, i.Width, i.Height);
                     i.Top = convertedCompartmentOrigin.Y;
                     i.Left = convertedCompartmentOrigin.X;
-
-                    //DoublePosition newPosition = new DoublePosition();
-                    //newPosition.Y = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.Y, widthTrayPixel, this.Tray.Dimension.Width);
-                    //newPosition.X = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width);
-
-                    //Debug.WriteLine($"Compartment: [[W={i.Width} H={i.Height}, T={i.Top} L={i.Left}]]   reale->[[W={i.CompartmentDetails.Width} H={i.CompartmentDetails.Height}, T={convertedCompartmentOrigin.Y} L={convertedCompartmentOrigin.X}]]");
                 }
             }
         }
@@ -198,7 +190,6 @@ namespace Ferretto.Common.Controls
                         ColorFill = Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
                         IsSelected = true,
-                        CompartmentName = compartment.CompartmentName
                     });
                 }
             }
@@ -250,7 +241,6 @@ namespace Ferretto.Common.Controls
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
                     IsSelected = true,
-                    CompartmentName = compartment.CompartmentName
                 });
             }
         }

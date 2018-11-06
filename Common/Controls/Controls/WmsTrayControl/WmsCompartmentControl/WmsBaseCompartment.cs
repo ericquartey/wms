@@ -10,7 +10,6 @@ namespace Ferretto.Common.Controls
         private int capacity;
         private string colorBorder;
         private string colorFill;
-        private string compartmentName;
         private double height;
         private bool isSelected;
         private double left;
@@ -48,7 +47,6 @@ namespace Ferretto.Common.Controls
         }
 
         public CompartmentDetails CompartmentDetails { get; set; }
-        public string CompartmentName { get => this.compartmentName; set => this.SetProperty(ref this.compartmentName, value); }
 
         public double Height
         {

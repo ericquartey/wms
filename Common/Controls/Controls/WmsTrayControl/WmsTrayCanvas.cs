@@ -38,11 +38,7 @@ namespace Ferretto.Common.Controls
                         double widthNewCalculated = constraint.Width;
                         double heightNewCalculated = constraint.Height;
 
-                        //Debug.WriteLine($"Size: pixel->W={widthNewCalculated} H={heightNewCalculated}");
-
-                        //ToDo
-                        //PROVARE A SPOSTARE NEL SIZE CHANGED
-                        //PROBLEM BORDER UNDER CANVAS
+                        //Move to Canvas Size Changed
                         //viewModel.ResizeCompartments(widthNewCalculated, heightNewCalculated);
                     }
                 }

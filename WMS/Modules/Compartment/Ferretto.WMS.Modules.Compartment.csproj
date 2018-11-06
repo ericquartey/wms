@@ -222,9 +222,6 @@
     <Compile Include="Views\ListCompartmentsView.xaml.cs">
       <DependentUpon>ListCompartmentsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -244,10 +241,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ListCompartmentsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

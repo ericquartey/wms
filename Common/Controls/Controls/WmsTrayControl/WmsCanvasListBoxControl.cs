@@ -92,15 +92,10 @@ namespace Ferretto.Common.Controls
         {
             if (this.Tray != null)
             {
-                //widthNewCalculated = this.ActualWidth;
                 var heightConverted = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Height, widthNewCalculated, this.Tray.Dimension.Width);
-
-                //this.border.Height = heightNewCalculated;// + this.Tray.DOUBLE_BORDER_TRAY;
-                //this.border.Width = widthNewCalculated;// + this.Tray.DOUBLE_BORDER_TRAY;
 
                 if (heightConverted > heightNewCalculated)
                 {
-                    //heightNewCalculated = this.ActualHeight;
                     widthNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Width, heightNewCalculated, this.Tray.Dimension.Height);
                 }
                 else
@@ -128,7 +123,6 @@ namespace Ferretto.Common.Controls
 
         public void SetRulerSize(double heightNewCalculated, double widthNewCalculated)
         {
-            //Ruler Settings
             var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
             if (parentWmsTrayControl != null && this.Tray != null)
             {
