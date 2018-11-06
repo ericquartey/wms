@@ -107,10 +107,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
-      <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
-      <Name>CustomControls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
       <Project>{ecdc6d6c-e5d2-4ec3-9aac-6336c2048fff}</Project>
       <Name>ActionBlocks</Name>

@@ -61,7 +61,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Position:.
+        ///   Looks up a localized string similar to Actual position:.
         /// </summary>
         public static string ActualPosition {
             get {
@@ -84,24 +84,6 @@ namespace Ferretto.Common.Resources {
         public static string Auto {
             get {
                 return ResourceManager.GetString("Auto", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Axis calibrated successfully.
-        /// </summary>
-        public static string AxisCalibratedSuccessfully {
-            get {
-                return ResourceManager.GetString("AxisCalibratedSuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Axis not calibrated yet.
-        /// </summary>
-        public static string AxisNotCalibratedYet {
-            get {
-                return ResourceManager.GetString("AxisNotCalibratedYet", resourceCulture);
             }
         }
         
@@ -142,6 +124,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Closed.
+        /// </summary>
+        public static string Closed {
+            get {
+                return ResourceManager.GetString("Closed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed cicles:.
+        /// </summary>
+        public static string CompletedCicles {
+            get {
+                return ResourceManager.GetString("CompletedCicles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cradle.
         /// </summary>
         public static string Cradle {
@@ -156,6 +156,51 @@ namespace Ferretto.Common.Resources {
         public static string CradleEngineSelected {
             get {
                 return ResourceManager.GetString("CradleEngineSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current position:.
+        /// </summary>
+        public static string CurrentPosition {
+            get {
+                return ResourceManager.GetString("CurrentPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current resolution (imp/mm):.
+        /// </summary>
+        public static string CurrentResolution {
+            get {
+                return ResourceManager.GetString("CurrentResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delay between cicles (s):.
+        /// </summary>
+        public static string DelayBetweenCicles {
+            get {
+                return ResourceManager.GetString("DelayBetweenCicles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Desired initial position (mm):.
+        /// </summary>
+        public static string DesiredInitialPosition {
+            get {
+                return ResourceManager.GetString("DesiredInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Desired movement (mm):.
+        /// </summary>
+        public static string DesiredMovement {
+            get {
+                return ResourceManager.GetString("DesiredMovement", resourceCulture);
             }
         }
         
@@ -196,7 +241,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Feed Rate:.
+        ///   Looks up a localized string similar to Feed rate:.
         /// </summary>
         public static string FeedRate {
             get {
@@ -219,6 +264,42 @@ namespace Ferretto.Common.Resources {
         public static string Gate {
             get {
                 return ResourceManager.GetString("Gate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate Control 1.
+        /// </summary>
+        public static string Gate1Control {
+            get {
+                return ResourceManager.GetString("Gate1Control", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate Control 2.
+        /// </summary>
+        public static string Gate2Control {
+            get {
+                return ResourceManager.GetString("Gate2Control", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gate Control 3.
+        /// </summary>
+        public static string Gate3Control {
+            get {
+                return ResourceManager.GetString("Gate3Control", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Gates Control.
+        /// </summary>
+        public static string GateControl {
+            get {
+                return ResourceManager.GetString("GateControl", resourceCulture);
             }
         }
         
@@ -250,6 +331,42 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initial position:.
+        /// </summary>
+        public static string InitialPosition {
+            get {
+                return ResourceManager.GetString("InitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert desired movement..
+        /// </summary>
+        public static string InsertDesiredMovement {
+            get {
+                return ResourceManager.GetString("InsertDesiredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert desired initial position..
+        /// </summary>
+        public static string InsertiDesiredInitialPosition {
+            get {
+                return ResourceManager.GetString("InsertiDesiredInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert mesured movement..
+        /// </summary>
+        public static string InsertMesuredMovement {
+            get {
+                return ResourceManager.GetString("InsertMesuredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Installer.
         /// </summary>
         public static string Installer {
@@ -268,7 +385,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lower Bound:.
+        ///   Looks up a localized string similar to Lower bound (mm):.
         /// </summary>
         public static string LowerBound {
             get {
@@ -376,6 +493,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mesured lenght (mm):.
+        /// </summary>
+        public static string MesuredLenght {
+            get {
+                return ResourceManager.GetString("MesuredLenght", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mesured movement (mm):.
+        /// </summary>
+        public static string MesuredMovement {
+            get {
+                return ResourceManager.GetString("MesuredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Micro Carter Left Side.
         /// </summary>
         public static string MicroCarterLeftSide {
@@ -394,11 +529,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Middle.
+        /// </summary>
+        public static string Middle {
+            get {
+                return ResourceManager.GetString("Middle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move.
+        /// </summary>
+        public static string Move {
+            get {
+                return ResourceManager.GetString("Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mushroom Head Button.
         /// </summary>
         public static string MushroomHeadButton {
             get {
                 return ResourceManager.GetString("MushroomHeadButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New resolution (imp/mm):.
+        /// </summary>
+        public static string NewResolution {
+            get {
+                return ResourceManager.GetString("NewResolution", resourceCulture);
             }
         }
         
@@ -421,7 +583,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset:.
+        ///   Looks up a localized string similar to Offset (mm):.
         /// </summary>
         public static string Offset {
             get {
@@ -448,6 +610,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open.
+        /// </summary>
+        public static string Open {
+            get {
+                return ResourceManager.GetString("Open", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Origin Vertical Axis.
+        /// </summary>
+        public static string OriginVerticalAxis {
+            get {
+                return ResourceManager.GetString("OriginVerticalAxis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Output:.
         /// </summary>
         public static string Output {
@@ -462,6 +642,24 @@ namespace Ferretto.Common.Resources {
         public static string PawlEncoder {
             get {
                 return ResourceManager.GetString("PawlEncoder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reposition lenght:.
+        /// </summary>
+        public static string RepositionLenght {
+            get {
+                return ResourceManager.GetString("RepositionLenght", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required cicles:.
+        /// </summary>
+        public static string RequiredCicles {
+            get {
+                return ResourceManager.GetString("RequiredCicles", resourceCulture);
             }
         }
         
@@ -493,6 +691,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Resolution correctly modified..
+        /// </summary>
+        public static string ResolutionModified {
+            get {
+                return ResourceManager.GetString("ResolutionModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security Function Active.
         /// </summary>
         public static string SecurityFunctionActive {
@@ -511,20 +718,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vertical axis origin set correctly..
+        /// </summary>
+        public static string SetOriginVerticalAxisCompleted {
+            get {
+                return ResourceManager.GetString("SetOriginVerticalAxisCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical axis origin not set..
+        /// </summary>
+        public static string SetOriginVerticalAxisNotCompleted {
+            get {
+                return ResourceManager.GetString("SetOriginVerticalAxisNotCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set Position.
+        /// </summary>
+        public static string SetPosition {
+            get {
+                return ResourceManager.GetString("SetPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shape Control.
         /// </summary>
         public static string ShapeControl {
             get {
                 return ResourceManager.GetString("ShapeControl", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Start.
-        /// </summary>
-        public static string Sta {
-            get {
-                return ResourceManager.GetString("Sta", resourceCulture);
             }
         }
         
@@ -556,7 +781,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upper Bound:.
+        ///   Looks up a localized string similar to Upper bound (mm):.
         /// </summary>
         public static string UpperBound {
             get {
@@ -619,11 +844,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical Axis Calibration.
+        ///   Looks up a localized string similar to Calibrating verical axis....
         /// </summary>
-        public static string VerticalAxisCalibration {
+        public static string VerticalAxisCalibrating {
             get {
-                return ResourceManager.GetString("VerticalAxisCalibration", resourceCulture);
+                return ResourceManager.GetString("VerticalAxisCalibrating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Resolution Calibration.
+        /// </summary>
+        public static string VerticalResolutionCalibration {
+            get {
+                return ResourceManager.GetString("VerticalResolutionCalibration", resourceCulture);
             }
         }
         

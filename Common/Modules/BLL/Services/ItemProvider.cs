@@ -72,39 +72,68 @@ namespace Ferretto.Common.Modules.BLL.Services
         public ItemDetails GetById(int id)
         {
             var itemDetails = this.dataContext.Items
+                .Include(i => i.MeasureUnit)
+                .Include(i => i.ItemManagementType)
                 .Where(i => i.Id == id)
-                .Select(i => new ItemDetails
-                {
-                    Id = i.Id,
-                    Code = i.Code,
-                    Description = i.Description,
-                    ItemCategoryId = i.ItemCategoryId,
-                    Note = i.Note,
+                .GroupJoin(
+                    this.dataContext.Compartments
+                        .AsNoTracking()
+                        .Where(c => c.ItemId != null)
+                        .GroupBy(c => c.ItemId)
+                        .Select(j => new
+                        {
+                            ItemId = j.Key,
+                            TotalStock = j.Sum(x => x.Stock),
+                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                        }),
+                    i => i.Id,
+                    c => c.ItemId,
+                    (i, c) => new
+                    {
+                        Item = i,
+                        CompartmentsAggregation = c
+                    })
+                .SelectMany(
+                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                    (a, b) => new ItemDetails
+                    {
+                        Id = a.Item.Id,
+                        Code = a.Item.Code,
+                        Description = a.Item.Description,
+                        ItemCategoryId = a.Item.ItemCategoryId,
+                        Note = a.Item.Note,
 
-                    AbcClassId = i.AbcClassId,
-                    MeasureUnitId = i.MeasureUnitId,
-                    ItemManagementTypeId = i.ItemManagementTypeId,
-                    FifoTimePick = i.FifoTimePick,
-                    FifoTimeStore = i.FifoTimeStore,
-                    ReorderPoint = i.ReorderPoint,
-                    ReorderQuantity = i.ReorderQuantity,
+                        AbcClassId = a.Item.AbcClassId,
+                        MeasureUnitId = a.Item.MeasureUnitId,
+                        MeasureUnitDescription = a.Item.MeasureUnit.Description,
+                        ItemManagementTypeId = a.Item.ItemManagementTypeId,
+                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                        FifoTimePick = a.Item.FifoTimePick,
+                        FifoTimeStore = a.Item.FifoTimeStore,
+                        ReorderPoint = a.Item.ReorderPoint,
+                        ReorderQuantity = a.Item.ReorderQuantity,
 
-                    Height = i.Height,
-                    Length = i.Length,
-                    Width = i.Width,
-                    PickTolerance = i.PickTolerance,
-                    StoreTolerance = i.StoreTolerance,
-                    InventoryTolerance = i.InventoryTolerance,
-                    AverageWeight = i.AverageWeight,
+                        Height = a.Item.Height,
+                        Length = a.Item.Length,
+                        Width = a.Item.Width,
+                        PickTolerance = a.Item.PickTolerance,
+                        StoreTolerance = a.Item.StoreTolerance,
+                        InventoryTolerance = a.Item.InventoryTolerance,
+                        AverageWeight = a.Item.AverageWeight,
 
-                    Image = i.Image,
+                        Image = a.Item.Image,
 
-                    CreationDate = i.CreationDate,
-                    InventoryDate = i.InventoryDate,
-                    LastModificationDate = i.LastModificationDate,
-                    LastPickDate = i.LastPickDate,
-                    LastStoreDate = i.LastStoreDate,
-                }
+                        CreationDate = a.Item.CreationDate,
+                        InventoryDate = a.Item.InventoryDate,
+                        LastModificationDate = a.Item.LastModificationDate,
+                        LastPickDate = a.Item.LastPickDate,
+                        LastStoreDate = a.Item.LastStoreDate,
+
+                        TotalAvailable = b != null
+                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
+                            : 0,
+                    }
                 )
                 .AsNoTracking()
                 .Single();

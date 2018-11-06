@@ -15,7 +15,7 @@ namespace Ferretto.Common.EF.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -75,6 +75,8 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AreaId");
+
                     b.Property<string>("BayTypeId");
 
                     b.Property<string>("Description")
@@ -82,9 +84,15 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("LoadingUnitsBufferSize");
 
+                    b.Property<int?>("MachineId");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("AreaId");
+
                     b.HasIndex("BayTypeId");
+
+                    b.HasIndex("MachineId");
 
                     b.ToTable("Bays");
                 });
@@ -1309,9 +1317,17 @@ namespace Ferretto.Common.EF.Migrations
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Bay", b =>
                 {
+                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                        .WithMany("Bays")
+                        .HasForeignKey("AreaId");
+
                     b.HasOne("Ferretto.Common.DataModels.BayType", "BayType")
                         .WithMany("Bays")
                         .HasForeignKey("BayTypeId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Machine", "Machine")
+                        .WithMany("Bays")
+                        .HasForeignKey("MachineId");
                 });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Cell", b =>

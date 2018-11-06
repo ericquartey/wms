@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-using DevExpress.Mvvm;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.Compartment
 {
@@ -26,7 +22,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         private ICommand createNewCompartmentCommand;
         private ICommand resetSelectedCompartment;
-        private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc;
+        private Func<CompartmentDetails, CompartmentDetails, string> selectedColorFilterFunc;
         private CompartmentDetails selectedCompartment;
         private int selectedFilter;
         private bool showBackground;
@@ -48,12 +44,12 @@ namespace Ferretto.WMS.Modules.Compartment
         public ICommand CreateNewCompartmentCommand => this.createNewCompartmentCommand ??
                          (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
-        public List<Enumeration> FilterColoringCompartment { get => this.filterColoringCompartment; }
+        public List<Enumeration> FilterColoringCompartment => this.filterColoringCompartment;
 
         public ICommand ResetSelectedCompartment => this.resetSelectedCompartment ??
                          (this.resetSelectedCompartment = new DelegateCommand(this.ExecuteResetSelectedCompartment));
 
-        public Func<CompartmentDetails, CompartmentDetails, Color> SelectedColorFilterFunc
+        public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
         {
             get => this.selectedColorFilterFunc;
 
@@ -63,10 +59,7 @@ namespace Ferretto.WMS.Modules.Compartment
         public CompartmentDetails SelectedCompartment
         {
             get => this.selectedCompartment;
-            set
-            {
-                this.SetProperty(ref this.selectedCompartment, value);
-            }
+            set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
         public int SelectedFilter
@@ -110,7 +103,7 @@ namespace Ferretto.WMS.Modules.Compartment
         private void ChangeFilterColoringCompartment(int selectedFilterColor)
         {
             IFilter filterSelected = null;
-            Func<CompartmentDetails, CompartmentDetails, Color> testfunc = null;
+            Func<CompartmentDetails, CompartmentDetails, string> testfunc = null;
             switch (selectedFilterColor)
             {
                 case 1:

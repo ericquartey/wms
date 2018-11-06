@@ -1,337 +1,42 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0DDBD6DC-1F23-4F52-849D-94DA9E5F1B12}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ferretto.Common.Controls</RootNamespace>
-    <AssemblyName>Ferretto.Common.Controls</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <TargetFrameworks>net471</TargetFrameworks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>..\..\analysis.ruleset</CodeAnalysisRuleSet>
+
+  <PropertyGroup>
+    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+  
   <ItemGroup>
-    <Reference Include="DevExpress.CodeParser.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.CodeParser.18.1.5\lib\net40\DevExpress.CodeParser.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Data.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Data.18.1.5\lib\net40\DevExpress.Data.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.DataAccess.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.DataAccess.18.1.5\lib\net40\DevExpress.DataAccess.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Images.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Images.18.1.5\lib\net40\DevExpress.Images.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Mvvm.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Mvvm.18.1.5\lib\net40\DevExpress.Mvvm.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Office.v18.1.Core, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Office.Core.18.1.5\lib\net40\DevExpress.Office.v18.1.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Pdf.v18.1.Core, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Pdf.Core.18.1.5\lib\net40\DevExpress.Pdf.v18.1.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Printing.v18.1.Core, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Printing.Core.18.1.5\lib\net40\DevExpress.Printing.v18.1.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v18.1.Core, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.RichEdit.Core.18.1.5\lib\net40\DevExpress.RichEdit.v18.1.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.RichEdit.v18.1.Export, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.RichEdit.Export.18.1.5\lib\net40\DevExpress.RichEdit.v18.1.Export.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Accordion.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Navigation.18.1.5\lib\net40\DevExpress.Xpf.Accordion.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Controls.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Navigation.18.1.5\lib\net40\DevExpress.Xpf.Controls.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Core.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Core.18.1.5\lib\net40\DevExpress.Xpf.Core.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Core.v18.1.Extensions, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Core.18.1.5\lib\net40\DevExpress.Xpf.Core.v18.1.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Docking.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Navigation.18.1.5\lib\net40\DevExpress.Xpf.Docking.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.DocumentViewer.v18.1.Core, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.DocumentViewer.Core.18.1.5\lib\net40\DevExpress.Xpf.DocumentViewer.v18.1.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Grid.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Grid.Core.18.1.5\lib\net40\DevExpress.Xpf.Grid.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Grid.v18.1.Core, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Grid.Core.18.1.5\lib\net40\DevExpress.Xpf.Grid.v18.1.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Grid.v18.1.Extensions, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Grid.Core.18.1.5\lib\net40\DevExpress.Xpf.Grid.v18.1.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Layout.v18.1.Core, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Navigation.18.1.5\lib\net40\DevExpress.Xpf.Layout.v18.1.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.LayoutControl.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Layout.18.1.5\lib\net40\DevExpress.Xpf.LayoutControl.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.NavBar.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Navigation.18.1.5\lib\net40\DevExpress.Xpf.NavBar.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Printing.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Printing.18.1.5\lib\net40\DevExpress.Xpf.Printing.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Ribbon.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Navigation.18.1.5\lib\net40\DevExpress.Xpf.Ribbon.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.Office2016White.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Wpf.Themes.Office2016White.18.1.5\lib\net40\DevExpress.Xpf.Themes.Office2016White.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="DevExpress.Xpo.v18.1, Version=18.1.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DevExpress.Xpo.18.1.5\lib\net40\DevExpress.Xpo.v18.1.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NLog.4.5.10\lib\net45\NLog.dll</HintPath>
-    </Reference>
+    <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.1.5" />
+    <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.1.5" />
+    <PackageReference Include="Prism.Unity" Version="6.3.0" />
+    <PackageReference Include="Prism.Wpf" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
+    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
-    <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Prism.Unity.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Prism.Unity.6.3.0\lib\net45\Prism.Unity.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Prism.Wpf, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Prism.Wpf.6.3.0\lib\net45\Prism.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Design" />
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Transactions" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Controls\ActionBar\ActionBar.xaml.cs">
-      <DependentUpon>ActionBar.xaml</DependentUpon>
+    <Compile Update="**\*.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\ActionBar\ActionBarItem.xaml.cs">
-      <DependentUpon>ActionBarItem.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Button\Button.cs" />
-    <Compile Include="Controls\ComboBox\ComboBox.cs" />
-    <Compile Include="Controls\ContentGroup\ContentGroup.xaml.cs">
-      <DependentUpon>ContentGroup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\DateEdit\DateEdit.cs" />
-    <Compile Include="Controls\Expander\Expander.cs" />
-    <Compile Include="Controls\FormControl.cs" />
-    <Compile Include="Controls\Icon\WmsIconViewModel.cs" />
-    <Compile Include="Controls\Icon\WmsIcon.xaml.cs">
-      <DependentUpon>WmsIcon.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\InfoText\InfoText.cs" />
-    <Compile Include="Controls\SpinEdit\SpinEdit.cs" />
-    <Compile Include="Controls\TextBox\TextBox.cs" />
-    <Compile Include="Controls\TileBar\Tile.cs" />
-    <Compile Include="Controls\TileBar\TileBar.xaml.cs">
-      <DependentUpon>TileBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Image\WmsImage.xaml.cs">
-      <DependentUpon>WmsImage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Image\ViewModels\WmsImageViewModel.cs" />
-    <Compile Include="Controls\NavMenuTouch\CustomMenuTileFlyoutPosition.cs" />
-    <Compile Include="Controls\NavMenuTouch\FlyoutContentTemplateSelector.cs" />
-    <Compile Include="Controls\NavMenuTouch\Interface\IMenuItemViewModel.cs" />
-    <Compile Include="Controls\NavMenuTouch\TileBarContentControl.cs" />
-    <Compile Include="Controls\NavMenuTouch\ViewModels\NavMenuChildItem.cs" />
-    <Compile Include="Controls\NavMenuTouch\ViewModels\NavMenuItem.cs" />
-    <Compile Include="Controls\NavMenuTouch\ViewModels\NavMenuViewModel.cs" />
-    <Compile Include="Controls\SplashScreen\SplashScreen.xaml.cs">
-      <DependentUpon>SplashScreen.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\StatusBar\StatusBar.cs" />
-    <Compile Include="Controls\StatusBar\StatusBarViewModel.cs" />
-    <Compile Include="Controls\WmsGridControl\WmsGridControl.cs" />
-    <Compile Include="Controls\WmsMainDockLayoutManager\WmsDockLayoutManager.cs" />
-    <Compile Include="Controls\WmsTrayControl\Utils\EventUI.cs" />
-    <Compile Include="Controls\WmsTrayControl\Utils\GraphicUtils.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsCanvasListBoxControl.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsBaseCompartment.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsCompartmentControl\WmsCompartmentViewModel.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsRulerControl.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsTrayControl.xaml.cs">
-      <DependentUpon>WmsTrayControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WmsTrayControl\WmsTrayCanvas.cs" />
-    <Compile Include="Controls\WmsTrayControl\WmsTrayControlViewModel.cs" />
-    <Compile Include="Controls\WmsView\WmsDialogView.cs" />
-    <Compile Include="Controls\WmsView\WmsHistoryView.xaml.cs">
-      <DependentUpon>WmsHistoryView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\WmsView\WmsView.cs" />
-    <Compile Include="Controls\WmsView\WmsViewType.cs" />
-    <Compile Include="Converters\PropertyDescriptionConverter.cs" />
-    <Compile Include="Converters\IntToThousandsConverter.cs" />
-    <Compile Include="Converters\BoolToTextWrappingConverter.cs" />
-    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
-    <Compile Include="Interfaces\IEntityListViewModel.cs" />
-    <Compile Include="Interfaces\IEventUI.cs" />
-    <Compile Include="Interfaces\IHistoryViewService.cs" />
-    <Compile Include="Interfaces\INavigableView.cs" />
-    <Compile Include="Interfaces\INavigationService.cs" />
-    <Compile Include="Interfaces\IRefreshDataEntityViewModel.cs" />
-    <Compile Include="Interfaces\IWmsGridViewModel.cs" />
-    <Compile Include="Interfaces\IWmsHistoryView.cs" />
-    <Compile Include="Markup\NameOfExtension.cs" />
-    <Compile Include="Services\SplashScreenService.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Interfaces\IDialogService.cs" />
-    <Compile Include="Services\DialogService.cs" />
-    <Compile Include="Services\HistoryViewService.cs" />
-    <Compile Include="Services\Navigation.cs" />
-    <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="Interfaces\INavigableViewModel.cs" />
-    <Compile Include="Triggers\WmsHistoryViewAppear.cs" />
-    <Compile Include="ViewModels\BaseNavigationViewModel.cs" />
-    <Compile Include="Controls\WmsGridControl\ViewModels\WmsGridViewModel.cs" />
-    <Compile Include="ViewModels\BaseServiceNavigationViewModel.cs" />
-    <Compile Include="ViewModels\EntityListViewModel.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="Controls\ActionBar\ActionBar.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ActionBar\ActionBarItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\ContentGroup\ContentGroup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Icon\WmsIcon.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\TileBar\TileBar.xaml">
+
+    <Page Include="**\*.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\Image\WmsImage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SplashScreen\SplashScreen.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\WmsTrayControl\WmsTrayControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\WmsView\WmsHistoryView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj">
-      <Project>{2586c34c-da26-4143-8359-21d8a42b8462}</Project>
-      <Name>Ferretto.Common.BLL.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj">
-      <Project>{9b84a46f-1d02-4535-847f-a6872637bf54}</Project>
-      <Name>Ferretto.Common.BusinessModels</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Modules\BLL\Ferretto.Common.Modules.BLL.csproj">
-      <Project>{0d3e44fd-b369-4b85-aebe-17a754d71c8d}</Project>
-      <Name>Ferretto.Common.Modules.BLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj">
-      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
-      <Name>Ferretto.Common.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Utils\Ferretto.Common.Utils.csproj">
-      <Project>{c361d00d-e5d7-4fbd-adec-b965c34ffdd7}</Project>
-      <Name>Ferretto.Common.Utils</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <CodeAnalysisDictionary Include="..\..\CustomDictionary.xml">
-      <Link>Properties\CustomDictionary.xml</Link>
-    </CodeAnalysisDictionary>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\..\cleanup.targets" />
+  
 </Project>

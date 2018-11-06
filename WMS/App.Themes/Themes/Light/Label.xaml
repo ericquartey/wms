@@ -1,0 +1,9 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="ControlLabelStyle" TargetType="Label">
+        <Setter Property="Margin" Value="0,12,0,0" />
+        <Setter Property="Padding" Value="0,1,0,1" />
+    </Style>
+
+</ResourceDictionary>

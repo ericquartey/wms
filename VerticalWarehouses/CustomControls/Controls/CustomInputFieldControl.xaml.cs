@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Ferretto.VW.CustomControls.Controls
 {
@@ -46,6 +48,16 @@ namespace Ferretto.VW.CustomControls.Controls
         #endregion Properties
 
         #region Methods
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                this.InputTextBox.Text = this.InputTextBox.Text;
+                var b = this.GetBindingExpression(InputProperty);
+                b.UpdateSource();
+            }
+        }
 
         private void RaisePropertyChanged(string propertyName)
         {

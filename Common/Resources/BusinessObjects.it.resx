@@ -504,4 +504,43 @@
   <data name="MachineArea" xml:space="preserve">
     <value>Area</value>
   </data>
+  <data name="ItemWithdrawItem" xml:space="preserve">
+    <value>Articolo selezionato</value>
+  </data>
+  <data name="AreaDescription" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="BayDescription" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
+  <data name="BayLoadingUnitsBufferSize" xml:space="preserve">
+    <value>Dimensione buffer UDC</value>
+  </data>
+  <data name="BayType" xml:space="preserve">
+    <value>Tipo baia</value>
+  </data>
+  <data name="ItemWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemWithdrawBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ItemWithdrawQuantity" xml:space="preserve">
+    <value>Quantità</value>
+  </data>
+  <data name="MeasureUnitDescription" xml:space="preserve">
+    <value>Unità di misura</value>
+  </data>
+  <data name="ItemWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+  </data>
+  <data name="ItemWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+  </data>
+  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Numero seriale</value>
+  </data>
+  <data name="ItemWithdrawLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
 </root>

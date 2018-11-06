@@ -618,19 +618,6 @@ INSERT INTO ItemListRowStatuses (Id, Description) VALUES (3, 'Completed');
 INSERT INTO ItemListRowStatuses (Id, Description) VALUES (4, 'Incomplete');
 INSERT INTO ItemListRowStatuses (Id, Description) VALUES (5, 'Suspended');
 SET IDENTITY_INSERT ItemListRowStatuses OFF;
-
-
--- Bays
-INSERT INTO BayTypes (Id, Description) VALUES ('I', 'Input Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('O', 'Output Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('P', 'Picking Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('L', 'Traslo load Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('U', 'Traslo unload Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('V', 'Vertimag Bay');
-
-SET IDENTITY_INSERT Bays ON;
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description) VALUES (1, 'P', 1, 'Single Pick Bay');
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description) VALUES (2, 'V', 1, 'Vertimag Bay');
 SET IDENTITY_INSERT Bays OFF;
 
 
@@ -660,6 +647,19 @@ INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, 
 INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (3, 6, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'MachineVertimagM', 'VMAG/ver-2018/variant-M');
 INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (4, 7, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-XS');
 SET IDENTITY_INSERT Machines OFF;
+
+
+-- Bays
+INSERT INTO BayTypes (Id, Description) VALUES ('I', 'Input Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('O', 'Output Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('P', 'Picking Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('L', 'Traslo load Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('U', 'Traslo unload Bay');
+INSERT INTO BayTypes (Id, Description) VALUES ('V', 'Vertimag Bay');
+
+SET IDENTITY_INSERT Bays ON;
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (1, 'P', 1, 'Single Pick Bay', 1, null);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (2, 'V', 1, 'Vertimag Bay', 2, 1);
 
 
 COMMIT;

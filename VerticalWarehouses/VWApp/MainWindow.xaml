@@ -10,7 +10,6 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
     <Grid>
@@ -29,44 +28,41 @@
         <Button Grid.Row="1"
                 Grid.Column="1"
                 Background="Transparent"
-                Command="{Binding}">
+                BorderThickness="0"
+                Command="{Binding SwitchOffCommand}">
             <Image Grid.Row="1"
                    Grid.Column="1"
                    Margin="0,0,0,50"
                    Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/VertimagTreQuartiDX.png" />
         </Button>
         <StackPanel Grid.Row="1"
-                    Grid.Column="0">
+                    Grid.Column="0"
+                    HorizontalAlignment="Center">
             <Rectangle Name="SpaceRectangle1"
                        Height="50" />
-            <Label Margin="50,0,0,0"
-                   HorizontalAlignment="Center"
-                   Content="{x:Static res:General.VertimagX}"
+            <Label HorizontalAlignment="Left"
+                   Content="{Binding MachineModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    Style="{StaticResource StandardSplashScreenTitleTextStyle}" />
-            <Label Margin="50,0,0,0"
-                   Content="Sn.125658"
-                   Style="{StaticResource StandardBodyTextStyle}" />
+            <Label HorizontalAlignment="Left"
+                   Content="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                   Style="{StaticResource StandardSplashScreenSubTitleTextStyle}" />
             <Rectangle Name="SpaceRectangle2"
                        Height="160" />
             <custom:CustomInputFieldControl Width="200"
-                                            Margin="20,0,0,0"
-                                            HorizontalAlignment="Center"
+                                            HorizontalAlignment="Left"
                                             InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:General.UserLogin}" />
             <custom:CustomInputFieldControl Width="200"
-                                            Margin="20,0,0,0"
-                                            HorizontalAlignment="Center"
+                                            HorizontalAlignment="Left"
                                             InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:General.PasswordLogin}" />
             <TextBlock Height="60"
-                       Margin="110,10,0,0"
-                       HorizontalAlignment="Center"
+                       HorizontalAlignment="Left"
                        Style="{StaticResource ErrorBodyTextStyle}"
                        Text="{Binding LoginErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextWrapping="WrapWithOverflow" />
             <Button Width="200"
-                    Margin="25,0,0,0"
-                    HorizontalAlignment="Center"
+                    HorizontalAlignment="Left"
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"
                     Style="{StaticResource StandardButtonStyle}" />
