@@ -28,6 +28,7 @@
     <ProjectReference Include="..\..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
     <ProjectReference Include="..\..\Common\DataModels\Ferretto.Common.DataModels.csproj" />
     <ProjectReference Include="..\..\Common\EF\Ferretto.Common.EF.csproj" />
+    <ProjectReference Include="..\Scheduler.WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj" />
     <ProjectReference Include="..\Scheduler\Ferretto.WMS.Scheduler.csproj" />
   </ItemGroup>
 
