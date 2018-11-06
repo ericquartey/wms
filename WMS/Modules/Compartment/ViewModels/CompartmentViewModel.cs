@@ -169,7 +169,7 @@ namespace Ferretto.WMS.Modules.Compartment
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
                 //Origin = new Position { X = 0, Y = 0 },
-                ReadOnly = false
+                ReadOnly = true,
             };
             //200
             //this.tray.AddCompartment(new CompartmentDetails()
@@ -479,6 +479,9 @@ namespace Ferretto.WMS.Modules.Compartment
                 CompartmentName = "10"
             });
             this.RaisePropertyChanged(nameof(this.Tray));
+
+            this.selectedCompartment = this.tray.Compartments[3];
+            this.RaisePropertyChanged(nameof(this.SelectedCompartment));
         }
 
         private void TestInitializeInput()

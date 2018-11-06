@@ -107,7 +107,7 @@ namespace Ferretto.Common.Controls
 
                 //int border = 2;
 
-                int step = 100 - this.TrayObject.DOUBLE_BORDER_TRAY; ;// border;
+                int step = 100;// border;
                 double stepPixel = GraphicUtils.ConvertMillimetersToPixel(step, this.CanvasListBoxControl.Canvas.ActualWidth, this.TrayObject.Dimension.Width);
 
                 drawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);
