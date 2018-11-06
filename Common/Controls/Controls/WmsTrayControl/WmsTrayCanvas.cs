@@ -27,22 +27,6 @@ namespace Ferretto.Common.Controls
                 constraint.Width = 0;
                 constraint.Height = 0;
             }
-            else
-            {
-                var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
-
-                if (parentWmsTrayControl != null && parentWmsTrayControl.TrayObject != null)
-                {
-                    if (this.DataContext is WmsTrayControlViewModel viewModel && constraint.Width > 0 && constraint.Height > 0)
-                    {
-                        double widthNewCalculated = constraint.Width;
-                        double heightNewCalculated = constraint.Height;
-
-                        //Move to Canvas Size Changed
-                        //viewModel.ResizeCompartments(widthNewCalculated, heightNewCalculated);
-                    }
-                }
-            }
 
             return new Size(constraint.Width, constraint.Height);
         }
