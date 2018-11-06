@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<WakeupHub>("/wakeup-hub");
+                routes.MapHub<WakeupHub>($"/{Contracts.WakeupHubClient.WakeUpEndpoint}");
             });
 
             app.UseMvc();

@@ -13,11 +13,13 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         #region Fields
 
         private const string WakeUpMessageName = "WakeUp";
+        public const string WakeUpEndpoint = "wakeup-hub";
 
         private readonly HubConnection connection;
 #if NET4
         private IHubProxy proxy;
 #endif
+
         #endregion Fields
 
         #region Constructors
@@ -26,14 +28,14 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         {
 #if NET4
             this.connection = new HubConnection(url);
-            this.proxy = connection.CreateHubProxy("ChatHub");
- 
+            this.proxy = connection.CreateHubProxy(WakeUpEndpoint);
+
             this.proxy.On<string, string>(WakeUpMessageName, (a, b) => this.OnMessageReceived(a, b));
 
             connection.StateChanged += this.OnConnectionStateChanged;
 #else
             this.connection = new HubConnectionBuilder()
-              .WithUrl(url)
+              .WithUrl(new Uri(new Uri(url), WakeUpEndpoint).AbsoluteUri)
               .Build();
 
             this.connection.On<string, string>(WakeUpMessageName, this.OnMessageReceived);
@@ -58,6 +60,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         #endregion Events
 
         #region Methods
+
 #if NET4
         private void OnConnectionStateChanged(StateChange state)
         {
@@ -67,7 +70,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
 #endif
-        void OnMessageReceived(string user, string message)
+
+        private void OnMessageReceived(string user, string message)
         {
             this.WakeupReceived?.Invoke(this, new WakeUpEventArgs { User = user, Message = message });
         }
@@ -81,6 +85,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 #endif
         }
 
-#endregion Methods
+        #endregion Methods
     }
 }
