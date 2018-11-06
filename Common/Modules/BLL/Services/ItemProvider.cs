@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -47,7 +47,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.Items.AsNoTracking().Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return this.dataContext.Items.AsNoTracking().Count();
+            }
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
@@ -156,7 +159,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetWithAClassCount()
         {
-            return this.dataContext.Items.AsNoTracking().Count(AClassFilter);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Items.AsNoTracking().Count(AClassFilter);
+            }
         }
 
         public IQueryable<Item> GetWithFifo()
@@ -168,15 +174,21 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetWithFifoCount()
         {
-            return this.dataContext.Items
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Items
                 .AsNoTracking()
                 .Include(i => i.ItemManagementType)
                 .Count(FifoFilter);
+            }
         }
 
         public bool HasAnyCompartments(int itemId)
         {
-            return this.dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return this.dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+            }
         }
 
         public int Save(ItemDetails model)
@@ -186,12 +198,15 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Items.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Items.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-            existingModel.LastModificationDate = DateTime.Now;
+                context.Entry(existingModel).CurrentValues.SetValues(model);
+                existingModel.LastModificationDate = DateTime.Now;
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
         }
 
         public async Task WithdrawAsync(int bayId, int itemId, int quantity)
