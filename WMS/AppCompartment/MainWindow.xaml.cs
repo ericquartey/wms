@@ -8,7 +8,7 @@ namespace Ferretto.WMS.App
 
         public MainWindow()
         {
-            InitializeComponent();
+            this.InitializeComponent();
         }
 
         #endregion Constructors
