@@ -13,6 +13,7 @@ namespace Feretto.Common.BLL.Tests
     {
         #region Methods
 
+        //For test check on WIDTH = 1002 (2 border's pixel) HEIGHT= 402
         [TestMethod]
         public void TestControlSize100()
         {
