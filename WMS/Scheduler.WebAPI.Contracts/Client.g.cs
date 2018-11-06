@@ -11,7 +11,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     #pragma warning disable // Disable all warnings
 
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    internal partial class ItemsClient : ClientBase, IItemsClient
+    public partial class ItemsClient : ClientBase, IItemsClient
     {
         private string _baseUrl = "";
         private System.Lazy<Newtonsoft.Json.JsonSerializerSettings> _settings;
