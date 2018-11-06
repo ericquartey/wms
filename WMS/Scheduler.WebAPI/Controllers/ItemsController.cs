@@ -63,7 +63,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         }
 
         [HttpPost]
-        public List<Mission> Withdraw(int bayId, int itemId, int quantity)
+        public List<Mission> Withdraw([FromQuery]int bayId, [FromQuery]int itemId, [FromQuery]int quantity)
         {
             var mission1Quantity = quantity / 2;
             return new List<Mission>
