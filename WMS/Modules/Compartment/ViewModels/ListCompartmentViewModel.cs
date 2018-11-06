@@ -13,22 +13,12 @@ namespace Ferretto.WMS.Modules.Compartment
     {
         #region Fields
 
-        private CompartmentDetails compartmentSelected;
         private ObservableCollection<WmsBaseCompartment> compartmentsProperty;
+        private CompartmentDetails selectedcompartment;
 
         #endregion Fields
 
         #region Properties
-
-        public CompartmentDetails CompartmentSelected
-        {
-            get { return this.compartmentSelected; }
-            set
-            {
-                this.compartmentSelected = value;
-                this.RaisePropertyChanged(nameof(this.CompartmentSelected));
-            }
-        }
 
         public ObservableCollection<WmsBaseCompartment> CompartmentsProperty
         {
@@ -37,6 +27,16 @@ namespace Ferretto.WMS.Modules.Compartment
             {
                 this.compartmentsProperty = value;
                 this.RaisePropertyChanged(nameof(this.CompartmentsProperty));
+            }
+        }
+
+        public CompartmentDetails SelectedCompartment
+        {
+            get { return this.selectedcompartment; }
+            set
+            {
+                this.selectedcompartment = value;
+                this.RaisePropertyChanged(nameof(this.SelectedCompartment));
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,11 +31,19 @@ namespace Ferretto.Common.Controls
             {
                 var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
 
-                if (parentWmsTrayControl != null)
+                if (parentWmsTrayControl != null && parentWmsTrayControl.TrayObject != null)
                 {
                     if (this.DataContext is WmsTrayControlViewModel viewModel && constraint.Width > 0 && constraint.Height > 0)
                     {
-                        viewModel.Resize(constraint.Width, constraint.Height);
+                        double widthNewCalculated = constraint.Width;
+                        double heightNewCalculated = constraint.Height;
+
+                        //Debug.WriteLine($"Size: pixel->W={widthNewCalculated} H={heightNewCalculated}");
+
+                        //ToDo
+                        //PROVARE A SPOSTARE NEL SIZE CHANGED
+                        //PROBLEM BORDER UNDER CANVAS
+                        //viewModel.ResizeCompartments(widthNewCalculated, heightNewCalculated);
                     }
                 }
             }

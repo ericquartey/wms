@@ -2,7 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
-
+    <Color x:Key="LightGrey">#c5c7c4</Color>
+    <SolidColorBrush x:Key="TrayBackgroundDisenabled"
+                     Color="{StaticResource LightGrey}" />
     <Style x:Key="CanvasItemStyle"
            BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.ListBoxItem,
                                                                 ThemeName=Office2016White}}"
@@ -20,8 +22,15 @@
                             Height="{Binding Height, Mode=TwoWay}"
                             BorderBrush="{Binding Selected, Mode=TwoWay}"
                             BorderThickness="1">
-                        <Rectangle x:Name="Rectangle"
-                                   Fill="{Binding ColorFill, Mode=TwoWay}" />
+                        <Grid>
+                            <Rectangle x:Name="Rectangle"
+                                       Fill="{Binding ColorFill, Mode=TwoWay}" />
+                            <Label HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Panel.ZIndex="1000"
+                                   Content="{Binding CompartmentName, Mode=TwoWay}"
+                                   Foreground="Red" />
+                        </Grid>
                     </Border>
 
                     <ControlTemplate.Triggers>
@@ -31,10 +40,110 @@
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="8" />
                         </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{DynamicResource TrayBackgroundDisenabled}" />
+                            <!--<Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="2" />-->
+                        </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="CanvasListBox"
+           BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.ListBox,
+                                                                ThemeName=Office2016White}}"
+           TargetType="{x:Type ListBox}">
+        <Setter Property="SnapsToDevicePixels" Value="true" />
+        <Setter Property="OverridesDefaultStyle" Value="true" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="true" />
+        <Setter Property="MinWidth" Value="120" />
+        <Setter Property="MinHeight" Value="95" />
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top" />
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+
+            <Setter.Value>
+                <!--<ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border x:Name="Bd"
+                            Padding="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            SnapsToDevicePixels="True">
+                        <ScrollViewer Padding="{TemplateBinding Padding}"
+                                      Focusable="False">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
+                                                     HorizontalAlignment="Left"
+                                                     VerticalAlignment="Top" />
+                            </ItemsPresenter>
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Bd" Property="Background" Value="White" />
+                            <Setter TargetName="Bd" Property="BorderBrush" Value="#FFD9D9D9" />
+                        </Trigger>
+
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>-->
+
+
+
+                <ControlTemplate TargetType="ListBox">
+                    <!--<Border Name="Border"
+                            Background="Transparent"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            SnapsToDevicePixels="True">-->
+
+                    <Border x:Name="ListBoxBorder"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Panel.ZIndex="999"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            SnapsToDevicePixels="True">
+
+                        <!--
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                        -->
+
+
+                        <ItemsPresenter Margin="0" />
+
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <!--<Setter TargetName="Border" Property="Background">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{DynamicResource DisabledControlLightColor}" />
+                                </Setter.Value>
+                            </Setter>-->
+                            <Setter TargetName="ListBoxBorder" Property="BorderBrush">
+                                <Setter.Value>
+                                    <SolidColorBrush Color="{StaticResource LightGrey}" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
 
 </ResourceDictionary>

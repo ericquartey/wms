@@ -23,6 +23,8 @@
     <Color x:Key="LightBlack">#BDBDBD</Color>
     <SolidColorBrush x:Key="TrayBackground"
                      Color="{StaticResource Azure}" />
+    <SolidColorBrush x:Key="TrayBackgroundDisenabled"
+                     Color="{StaticResource LightGrey}" />
     <SolidColorBrush x:Key="FillMouseOver"
                      Color="{StaticResource LightBlue}" />
     <SolidColorBrush x:Key="StrokeMouseOver"
@@ -46,6 +48,13 @@
                      Color="{StaticResource LightGreen}" />
     <SolidColorBrush x:Key="Empty"
                      Color="{StaticResource DarkGreen}" />
+
+    <!--  listbox  -->
+    <Color x:Key="ControlLightColor">White</Color>
+    <Color x:Key="BorderMediumColor">#FF888888</Color>
+    <Color x:Key="DisabledControlLightColor">#FFE8EDF9</Color>
+    <Color x:Key="DisabledBorderLightColor">#FFAAAAAA</Color>
+
 
     <!--  primary color brush  -->
     <SolidColorBrush x:Key="CommonPrimary"

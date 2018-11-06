@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Feretto.Common.BLL.Tests
 {
     [TestClass]
-    public class TrayTest
+    public class TrayGraphicTest
     {
         #region Methods
 

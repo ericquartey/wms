@@ -19,16 +19,13 @@ namespace Ferretto.Common.Controls
 
         private static readonly Func<IFilter, Color> DefaultColorCompartment = (x) => Colors.Yellow;
 
-        private CompartmentDetails compartmentSelected;
+        private readonly int BORDER_TRAY_HEIGHT = 1;
         private ObservableCollection<WmsBaseCompartment> items;
-
         private int left;
-
         private SolidColorBrush penBrush;
-
         private int penThickness;
-
         private Func<CompartmentDetails, CompartmentDetails, Color> selectedColorFilterFunc;
+        private CompartmentDetails selectedCompartment;
         private int top;
 
         private Tray tray;
@@ -97,10 +94,10 @@ namespace Ferretto.Common.Controls
 
         public CompartmentDetails SelectedCompartment
         {
-            get => this.compartmentSelected;
+            get => this.selectedCompartment;
             set
             {
-                this.compartmentSelected = value;
+                this.selectedCompartment = value;
                 this.UpdateColorCompartments();
             }
         }
@@ -129,8 +126,8 @@ namespace Ferretto.Common.Controls
                 {
                     this.tray.Origin = new Position
                     {
-                        XPosition = 0,
-                        YPosition = this.tray.Dimension.Height
+                        X = 0,
+                        Y = this.tray.Dimension.Height
                     };
                 }
                 this.NotifyPropertyChanged(nameof(this.Tray));
@@ -141,20 +138,44 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Resize(double widthTrayPixel, double heightTrayPixel)
+        public void ResizeCompartments(double widthTrayPixel, double heightTrayPixel)
         {
             if (this.items != null)
             {
+                Debug.WriteLine($"CanvasComp: pixel->W={widthTrayPixel} H={heightTrayPixel}  reale->W={this.Tray.Dimension.Width} H={this.Tray.Dimension.Height}");
+                var widthTray = widthTrayPixel - this.Tray.DOUBLE_BORDER_TRAY;
                 foreach (var i in this.items)
                 {
                     i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.Tray.Dimension.Width);
                     i.Height = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Height, widthTrayPixel, this.Tray.Dimension.Width);
-                    Dimension compartmentDimension = new Dimension() { Width = (int)i.CompartmentDetails.Width, Height = (int)i.CompartmentDetails.Height };
-                    Position compartmentOrigin = new Position { XPosition = (int)i.CompartmentDetails.XPosition, YPosition = (int)i.CompartmentDetails.YPosition };
 
-                    Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOrigin(compartmentOrigin, this.Tray.Origin, this.Tray.Dimension, compartmentDimension);
-                    i.Top = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.YPosition, widthTrayPixel, this.Tray.Dimension.Width);
-                    i.Left = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.XPosition, widthTrayPixel, this.Tray.Dimension.Width);
+                    Dimension compartmentDimension = new Dimension() { Width = (int)i.CompartmentDetails.Width, Height = (int)i.CompartmentDetails.Height };
+                    Position compartmentOrigin = new Position { X = (int)i.CompartmentDetails.XPosition, Y = (int)i.CompartmentDetails.YPosition };
+                    //Position compartmentOriginPixel = new Position { Y= ,
+                    //X = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width));
+
+                    double originY = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.Y, widthTrayPixel, this.Tray.Dimension.Width);
+                    double originX = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width);
+                    Position compartmentOriginPixel = new Position { X = (int)Math.Floor(originX), Y = (int)Math.Floor(originY) };
+                    //REALI
+                    //Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOrigin(compartmentOrigin, this.Tray, compartmentDimension);
+                    //i.Top = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.Y, widthTrayPixel, this.Tray.Dimension.Width);
+                    //i.Left = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width);
+                    ////GraphicUtils.AdjustAOriginBasedOnBorder(ref newPosition, this.tray);
+                    ////i.Top = Math.Floor(newPosition.Y);
+                    //i.Top = newPosition.Y;
+                    //i.Left = newPosition.X;
+
+                    //PIXEL
+                    Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOriginPixel(compartmentOriginPixel, this.Tray, compartmentDimension, widthTrayPixel, heightTrayPixel, i.Width, i.Height);
+                    i.Top = convertedCompartmentOrigin.Y;
+                    i.Left = convertedCompartmentOrigin.X;
+
+                    //DoublePosition newPosition = new DoublePosition();
+                    //newPosition.Y = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.Y, widthTrayPixel, this.Tray.Dimension.Width);
+                    //newPosition.X = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width);
+
+                    //Debug.WriteLine($"Compartment: [[W={i.Width} H={i.Height}, T={i.Top} L={i.Left}]]   reale->[[W={i.CompartmentDetails.Width} H={i.CompartmentDetails.Height}, T={convertedCompartmentOrigin.Y} L={convertedCompartmentOrigin.X}]]");
                 }
             }
         }
@@ -176,7 +197,8 @@ namespace Ferretto.Common.Controls
                         Top = (int)(compartment.YPosition * ratio),
                         ColorFill = Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
-                        IsSelected = true
+                        IsSelected = true,
+                        CompartmentName = compartment.CompartmentName
                     });
                 }
             }
@@ -227,7 +249,8 @@ namespace Ferretto.Common.Controls
                     Top = (int)(compartment.YPosition * ratio),
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
-                    IsSelected = true
+                    IsSelected = true,
+                    CompartmentName = compartment.CompartmentName
                 });
             }
         }
