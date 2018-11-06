@@ -465,12 +465,11 @@ namespace Ferretto.WMS.Modules.Compartment
             this.tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
-                //Origin = new Position { X = 0, Y = 0 },
-                ReadOnly = true,
+                ReadOnly = false,
             };
 
             //this.TestCompartmentDefault();
-            this.TestCompartment100();
+            this.TestCompartment200();
             this.RaisePropertyChanged(nameof(this.Tray));
         }
 
