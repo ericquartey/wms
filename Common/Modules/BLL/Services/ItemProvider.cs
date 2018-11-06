@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -191,6 +192,13 @@ namespace Ferretto.Common.Modules.BLL.Services
             existingModel.LastModificationDate = DateTime.Now;
 
             return this.dataContext.SaveChanges();
+        }
+
+        public async Task WithdrawAsync(int bayId, int itemId, int quantity)
+        {
+            var itemsClient = ServiceLocator.Current.GetInstance<WMS.Scheduler.WebAPI.Contracts.IItemsClient>();
+
+            await itemsClient.WithdrawAsync(bayId, itemId, quantity);
         }
 
         private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)

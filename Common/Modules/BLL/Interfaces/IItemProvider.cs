@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Modules.BLL
@@ -18,6 +19,8 @@ namespace Ferretto.Common.Modules.BLL
         int GetWithFifoCount();
 
         bool HasAnyCompartments(int itemId);
+
+        Task WithdrawAsync(int bayId, int itemId, int quantity);
 
         #endregion Methods
     }
