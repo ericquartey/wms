@@ -17,7 +17,7 @@
       "generateClientInterfaces": true,
 
       "useHttpRequestMessageCreationMethod": true, //allows you to add headers to each message
-      "clientClassAccessModifier": "public", //TODO: this should be internal if we are using Prism
+      "clientClassAccessModifier": "internal",
       "typeAccessModifier": "public", //make your models and client interfaces public
       "generateContractsOutput": true, //generate contacts in a separte file
       "contractsNamespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts", //contracts namespace

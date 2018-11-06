@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 {
-    public abstract class ClientBase
+    internal abstract class ClientBase
     {
         #region Properties
 
