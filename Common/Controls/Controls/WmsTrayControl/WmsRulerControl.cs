@@ -167,19 +167,23 @@ namespace Ferretto.Common.Controls
                     }
                 }
             }
-            if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
+            else
             {
-                this.MarkLength = (int)this.ActualWidth;
-
-                if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
+                if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
                 {
-                    ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
-                    if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                    this.MarkLength = (int)this.ActualWidth;
+
+                    if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
                     {
-                        ratio = 0;
+                        ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
+                        if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                        {
+                            ratio = 0;
+                        }
                     }
                 }
             }
+
             Debug.WriteLine($"Ruler: W={this.ActualWidth} H={this.ActualHeight} Orientation: {this.InfoRuler.OrientationRuler} IHP={this.MajorIntervalHorizontalPixel} IHV={this.MajorIntervalVerticalPixel}");
             if (!double.IsPositiveInfinity(ratio) && !double.IsNegativeInfinity(ratio))
             {
@@ -214,10 +218,14 @@ namespace Ferretto.Common.Controls
                 {
                     mark.XStart += this.startFrom;
                 }
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                else
                 {
-                    mark.XStart = this.BORDER;
+                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                    {
+                        mark.XStart = this.BORDER;
+                    }
                 }
+
                 mark.XEnd = mark.XStart;
             }
             else
@@ -231,10 +239,14 @@ namespace Ferretto.Common.Controls
                 {
                     mark.YStart += this.startFrom;
                 }
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                else
                 {
-                    mark.YStart = this.BORDER;
+                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                    {
+                        mark.YStart = this.BORDER;
+                    }
                 }
+
                 mark.YEnd = mark.YStart;
             }
 
@@ -263,14 +275,18 @@ namespace Ferretto.Common.Controls
                             break;
                         }
                     }
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                    else
                     {
-                        littleMark.XStart = (this.ActualWidth - this.startFrom) - littleMark.XStart;
-                        if (littleMark.XStart <= 0)
+                        if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                         {
-                            break;
+                            littleMark.XStart = (this.ActualWidth - this.startFrom) - littleMark.XStart;
+                            if (littleMark.XStart <= 0)
+                            {
+                                break;
+                            }
                         }
                     }
+
                     littleMark.XEnd = littleMark.XStart;
                 }
                 else
@@ -287,14 +303,18 @@ namespace Ferretto.Common.Controls
                             break;
                         }
                     }
-                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                    else
                     {
-                        littleMark.YStart = (this.ActualHeight - this.startFrom) - littleMark.YStart;
-                        if (littleMark.YStart <= 0)
+                        if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                         {
-                            break;
+                            littleMark.YStart = (this.ActualHeight - this.startFrom) - littleMark.YStart;
+                            if (littleMark.YStart <= 0)
+                            {
+                                break;
+                            }
                         }
                     }
+
                     littleMark.YEnd = littleMark.YStart;
                 }
 
@@ -324,10 +344,14 @@ namespace Ferretto.Common.Controls
                 {
                     mark.XStart += this.startFrom;
                 }
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                else
                 {
-                    mark.XStart = (this.ActualWidth - this.startFrom) - mark.XStart;
+                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                    {
+                        mark.XStart = (this.ActualWidth - this.startFrom) - mark.XStart;
+                    }
                 }
+
                 mark.XEnd = mark.XStart;
             }
             else
@@ -341,10 +365,14 @@ namespace Ferretto.Common.Controls
                 {
                     mark.YStart += this.startFrom;
                 }
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                else
                 {
-                    mark.YStart = (this.ActualHeight - this.startFrom) - mark.YStart;
+                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                    {
+                        mark.YStart = (this.ActualHeight - this.startFrom) - mark.YStart;
+                    }
                 }
+
                 mark.YEnd = mark.YStart;
             }
 
@@ -374,14 +402,18 @@ namespace Ferretto.Common.Controls
                         toDraw = false;
                     }
                 }
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                else
                 {
-                    middleMark.XStart = (this.ActualWidth - this.startFrom) - middleMark.XStart;
-                    if (middleMark.XStart <= 0)
+                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                     {
-                        toDraw = false;
+                        middleMark.XStart = (this.ActualWidth - this.startFrom) - middleMark.XStart;
+                        if (middleMark.XStart <= 0)
+                        {
+                            toDraw = false;
+                        }
                     }
                 }
+
                 middleMark.XEnd = middleMark.XStart;
             }
             else
@@ -399,14 +431,18 @@ namespace Ferretto.Common.Controls
                         toDraw = false;
                     }
                 }
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                else
                 {
-                    middleMark.YStart = (this.ActualHeight - this.startFrom) - middleMark.YStart;
-                    if (middleMark.YStart <= 0)
+                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                     {
-                        toDraw = false;
+                        middleMark.YStart = (this.ActualHeight - this.startFrom) - middleMark.YStart;
+                        if (middleMark.YStart <= 0)
+                        {
+                            toDraw = false;
+                        }
                     }
                 }
+
                 middleMark.YEnd = middleMark.YStart;
             }
 
@@ -472,16 +508,18 @@ namespace Ferretto.Common.Controls
                         toDraw = false;
                     }
                 }
-
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                else
                 {
-                    startFrom = (int)this.ActualWidth;
-                    position.X = startFrom - position.X;
-                    position.X -= this.OFFSET_BORDER;
-
-                    if (position.X <= 0)
+                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                     {
-                        toDraw = false;
+                        startFrom = (int)this.ActualWidth;
+                        position.X = startFrom - position.X - (int)ft.Width;
+                        position.X -= this.OFFSET_BORDER;
+
+                        if (position.X <= 0)
+                        {
+                            toDraw = false;
+                        }
                     }
                 }
             }
@@ -491,24 +529,28 @@ namespace Ferretto.Common.Controls
                 position.Y = i * majorIntervalPixel;
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
-                    position.Y += this.OFFSET_BORDER;
+                    position.Y += 5 + (int)ft.Height;
 
                     if (position.Y >= this.ActualHeight)
                     {
                         toDraw = false;
                     }
                 }
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                else
                 {
-                    startFrom = (int)this.ActualHeight;
-                    position.Y = startFrom - position.Y;
-                    position.Y -= this.OFFSET_BORDER;
-
-                    if (position.Y - ft.Width <= 0)
+                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                     {
-                        toDraw = false;
+                        startFrom = (int)this.ActualHeight;
+                        position.Y = startFrom - position.Y;
+                        position.Y -= this.OFFSET_BORDER;
+
+                        if (position.Y - ft.Width <= 0)
+                        {
+                            toDraw = false;
+                        }
                     }
                 }
+
                 if (toDraw)
                 {
                     drawingContext.PushTransform(new RotateTransform(-90, position.X, position.Y));

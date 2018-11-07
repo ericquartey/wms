@@ -37,51 +37,58 @@ namespace Ferretto.Common.Controls
 
         public static Position ConvertWithStandardOrigin(Position compartmentOrigin, Tray tray, Dimension compartmentDimension)
         {
-            //case: Origin X=0, Y=0
-            if (tray.Origin.X == 0 && tray.Origin.Y == 0)
-            {
-            }
+            //case: Origin X=0, Y=0 -> do nothing
             //case: Origin X=0, Y=Height
             if (tray.Origin.X == 0 && tray.Origin.Y == tray.Dimension.Height)
             {
                 compartmentOrigin.Y = tray.Origin.Y - compartmentOrigin.Y - compartmentDimension.Height;
             }
-            //case: Origin X=Width, Y=0
-            if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == 0)
+            else
             {
-                compartmentOrigin.X = tray.Dimension.Width - compartmentOrigin.X - compartmentDimension.Width;
+                //case: Origin X=Width, Y=0
+                if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == 0)
+                {
+                    compartmentOrigin.X = tray.Dimension.Width - compartmentOrigin.X - compartmentDimension.Width;
+                }
+                else
+                {
+                    //case: Origin X=Width, Y=Height
+                    if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == tray.Dimension.Height)
+                    {
+                        compartmentOrigin.X = tray.Dimension.Width - compartmentOrigin.X - compartmentDimension.Width;
+                        compartmentOrigin.Y = tray.Origin.Y - compartmentOrigin.Y - compartmentDimension.Height;
+                    }
+                }
             }
-            //case: Origin X=Width, Y=Height
-            if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == tray.Dimension.Height)
-            {
-                compartmentOrigin.X = tray.Dimension.Width - compartmentOrigin.X - compartmentDimension.Width;
-                compartmentOrigin.Y = tray.Origin.Y - compartmentOrigin.Y - compartmentDimension.Height;
-            }
+
             return compartmentOrigin;
         }
 
         public static Position ConvertWithStandardOriginPixel(Position compartmentOriginPixel, Tray tray,
             double widthTrayPixel, double heightTrayPixel, double widthCompartmentPixel, double heightCompartmentPixel)
         {
-            //case: Origin X=0, Y=0
-            if (tray.Origin.X == 0 && tray.Origin.Y == 0)
-            {
-            }
+            //case: Origin X=0, Y=0 -> do nothing
             //case: Origin X=0, Y=Height
             if (tray.Origin.X == 0 && tray.Origin.Y == tray.Dimension.Height)
             {
                 compartmentOriginPixel.Y = (int)Math.Floor(heightTrayPixel - compartmentOriginPixel.Y - heightCompartmentPixel);
             }
-            //case: Origin X=Width, Y=0
-            if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == 0)
+            else
             {
-                compartmentOriginPixel.X = (int)Math.Floor(widthTrayPixel - compartmentOriginPixel.X - widthCompartmentPixel);
-            }
-            //case: Origin X=Width, Y=Height
-            if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == tray.Dimension.Height)
-            {
-                compartmentOriginPixel.X = (int)Math.Floor(widthTrayPixel - compartmentOriginPixel.X - widthCompartmentPixel);
-                compartmentOriginPixel.Y = (int)Math.Floor(heightTrayPixel - compartmentOriginPixel.Y - heightCompartmentPixel);
+                //case: Origin X=Width, Y=0
+                if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == 0)
+                {
+                    compartmentOriginPixel.X = (int)Math.Floor(widthTrayPixel - compartmentOriginPixel.X - widthCompartmentPixel);
+                }
+                else
+                {
+                    //case: Origin X=Width, Y=Height
+                    if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == tray.Dimension.Height)
+                    {
+                        compartmentOriginPixel.X = (int)Math.Floor(widthTrayPixel - compartmentOriginPixel.X - widthCompartmentPixel);
+                        compartmentOriginPixel.Y = (int)Math.Floor(heightTrayPixel - compartmentOriginPixel.Y - heightCompartmentPixel);
+                    }
+                }
             }
             return compartmentOriginPixel;
         }
@@ -98,24 +105,30 @@ namespace Ferretto.Common.Controls
                     value = trayOrigin.Y - value - compartmentDimension.Height;
                 }
             }
-            //case: Origin X=Width, Y=0
-            if (trayOrigin.X == trayDimension.Width && trayOrigin.Y == 0)
+            else
             {
-                if (positionType == PositionType.X)
+                //case: Origin X=Width, Y=0
+                if (trayOrigin.X == trayDimension.Width && trayOrigin.Y == 0)
                 {
-                    value = trayDimension.Width - value - compartmentDimension.Width;
+                    if (positionType == PositionType.X)
+                    {
+                        value = trayDimension.Width - value - compartmentDimension.Width;
+                    }
                 }
-            }
-            //case: Origin X=Width, Y=Height
-            if (trayOrigin.X == trayDimension.Width && trayOrigin.Y == trayDimension.Height)
-            {
-                if (positionType == PositionType.X)
+                else
                 {
-                    value = trayDimension.Width - value - compartmentDimension.Width;
-                }
-                if (positionType == PositionType.Y)
-                {
-                    value = trayOrigin.Y - value - compartmentDimension.Height;
+                    //case: Origin X=Width, Y=Height
+                    if (trayOrigin.X == trayDimension.Width && trayOrigin.Y == trayDimension.Height)
+                    {
+                        if (positionType == PositionType.X)
+                        {
+                            value = trayDimension.Width - value - compartmentDimension.Width;
+                        }
+                        if (positionType == PositionType.Y)
+                        {
+                            value = trayOrigin.Y - value - compartmentDimension.Height;
+                        }
+                    }
                 }
             }
             return value;
