@@ -167,19 +167,16 @@ namespace Ferretto.Common.Controls
                     }
                 }
             }
-            else
+            else if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
             {
-                if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
-                {
-                    this.MarkLength = (int)this.ActualWidth;
+                this.MarkLength = (int)this.ActualWidth;
 
-                    if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
+                if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
+                {
+                    ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
+                    if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
                     {
-                        ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
-                        if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
-                        {
-                            ratio = 0;
-                        }
+                        ratio = 0;
                     }
                 }
             }
@@ -218,12 +215,9 @@ namespace Ferretto.Common.Controls
                 {
                     mark.XStart += this.startFrom;
                 }
-                else
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
-                    {
-                        mark.XStart = this.BORDER;
-                    }
+                    mark.XStart = this.BORDER;
                 }
 
                 mark.XEnd = mark.XStart;
@@ -239,12 +233,9 @@ namespace Ferretto.Common.Controls
                 {
                     mark.YStart += this.startFrom;
                 }
-                else
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
-                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-                    {
-                        mark.YStart = this.BORDER;
-                    }
+                    mark.YStart = this.BORDER;
                 }
 
                 mark.YEnd = mark.YStart;
@@ -275,15 +266,12 @@ namespace Ferretto.Common.Controls
                             break;
                         }
                     }
-                    else
+                    else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                     {
-                        if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                        littleMark.XStart = (this.ActualWidth - this.startFrom) - littleMark.XStart;
+                        if (littleMark.XStart <= 0)
                         {
-                            littleMark.XStart = (this.ActualWidth - this.startFrom) - littleMark.XStart;
-                            if (littleMark.XStart <= 0)
-                            {
-                                break;
-                            }
+                            break;
                         }
                     }
 
@@ -303,15 +291,12 @@ namespace Ferretto.Common.Controls
                             break;
                         }
                     }
-                    else
+                    else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                     {
-                        if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                        littleMark.YStart = (this.ActualHeight - this.startFrom) - littleMark.YStart;
+                        if (littleMark.YStart <= 0)
                         {
-                            littleMark.YStart = (this.ActualHeight - this.startFrom) - littleMark.YStart;
-                            if (littleMark.YStart <= 0)
-                            {
-                                break;
-                            }
+                            break;
                         }
                     }
 
@@ -344,12 +329,9 @@ namespace Ferretto.Common.Controls
                 {
                     mark.XStart += this.startFrom;
                 }
-                else
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
-                    {
-                        mark.XStart = (this.ActualWidth - this.startFrom) - mark.XStart;
-                    }
+                    mark.XStart = (this.ActualWidth - this.startFrom) - mark.XStart;
                 }
 
                 mark.XEnd = mark.XStart;
@@ -365,12 +347,9 @@ namespace Ferretto.Common.Controls
                 {
                     mark.YStart += this.startFrom;
                 }
-                else
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
-                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-                    {
-                        mark.YStart = (this.ActualHeight - this.startFrom) - mark.YStart;
-                    }
+                    mark.YStart = (this.ActualHeight - this.startFrom) - mark.YStart;
                 }
 
                 mark.YEnd = mark.YStart;
@@ -402,15 +381,12 @@ namespace Ferretto.Common.Controls
                         toDraw = false;
                     }
                 }
-                else
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                    middleMark.XStart = (this.ActualWidth - this.startFrom) - middleMark.XStart;
+                    if (middleMark.XStart <= 0)
                     {
-                        middleMark.XStart = (this.ActualWidth - this.startFrom) - middleMark.XStart;
-                        if (middleMark.XStart <= 0)
-                        {
-                            toDraw = false;
-                        }
+                        toDraw = false;
                     }
                 }
 
@@ -431,15 +407,12 @@ namespace Ferretto.Common.Controls
                         toDraw = false;
                     }
                 }
-                else
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
-                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                    middleMark.YStart = (this.ActualHeight - this.startFrom) - middleMark.YStart;
+                    if (middleMark.YStart <= 0)
                     {
-                        middleMark.YStart = (this.ActualHeight - this.startFrom) - middleMark.YStart;
-                        if (middleMark.YStart <= 0)
-                        {
-                            toDraw = false;
-                        }
+                        toDraw = false;
                     }
                 }
 
@@ -508,18 +481,15 @@ namespace Ferretto.Common.Controls
                         toDraw = false;
                     }
                 }
-                else
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
-                    {
-                        startFrom = (int)this.ActualWidth;
-                        position.X = startFrom - position.X - (int)ft.Width;
-                        position.X -= this.OFFSET_BORDER;
+                    startFrom = (int)this.ActualWidth;
+                    position.X = startFrom - position.X - (int)ft.Width;
+                    position.X -= this.OFFSET_BORDER;
 
-                        if (position.X <= 0)
-                        {
-                            toDraw = false;
-                        }
+                    if (position.X <= 0)
+                    {
+                        toDraw = false;
                     }
                 }
             }
@@ -536,18 +506,15 @@ namespace Ferretto.Common.Controls
                         toDraw = false;
                     }
                 }
-                else
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
-                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-                    {
-                        startFrom = (int)this.ActualHeight;
-                        position.Y = startFrom - position.Y;
-                        position.Y -= this.OFFSET_BORDER;
+                    startFrom = (int)this.ActualHeight;
+                    position.Y = startFrom - position.Y;
+                    position.Y -= this.OFFSET_BORDER;
 
-                        if (position.Y - ft.Width <= 0)
-                        {
-                            toDraw = false;
-                        }
+                    if (position.Y - ft.Width <= 0)
+                    {
+                        toDraw = false;
                     }
                 }
 
