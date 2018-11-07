@@ -10,21 +10,6 @@ namespace Ferretto.Common.Modules.BLL.Services
 {
     public class AreaProvider : IAreaProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public AreaProvider(DatabaseContext dataContext)
-        {
-            this.dataContext = dataContext;
-        }
-
-        #endregion Constructors
-
         #region Methods
 
         public IQueryable<Area> GetAll()
@@ -36,12 +21,17 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.Areas.AsNoTracking().Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Areas.AsNoTracking().Count();
+            }
         }
 
         public Area GetById(int id)
         {
-            var areaDetails = this.dataContext.Areas
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var areaDetails = context.Areas
                 .Where(a => a.Id == id)
                 .Select(a => new Area
                 {
@@ -55,7 +45,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Area> GetByItemIdAvailability(int id)
         {
-            var areaDetails = this.dataContext.Compartments
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var areaDetails = context.Compartments
                 .Include(c => c.LoadingUnit)
                     .ThenInclude(l => l.Cell)
                     .ThenInclude(c => c.Aisle)
@@ -79,11 +71,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Areas.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Areas.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                context.Entry(existingModel).CurrentValues.SetValues(model);
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
         }
 
         private static IQueryable<Area> GetAllAreasWithFilter(DatabaseContext context,

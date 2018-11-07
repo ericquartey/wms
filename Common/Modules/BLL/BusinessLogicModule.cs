@@ -40,6 +40,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
+            this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
         }
 
         #endregion Methods

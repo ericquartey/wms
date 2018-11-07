@@ -24,19 +24,15 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelXSFilter =
             m => m.Model.Contains("VARIANT-XS");
 
-        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public MachineProvider(DatabaseContext dataContext)
+        public MachineProvider(EnumerationProvider enumerationProvider)
         {
-            this.dataContext = dataContext;
-
-            //TODO: use interface for EnumerationProvider
-            this.enumerationProvider = new EnumerationProvider(dataContext);
+            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
@@ -67,7 +63,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllTrasloCount()
         {
-            return this.dataContext.Machines.AsNoTracking().Where(TrasloFilter).Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Machines.AsNoTracking().Where(TrasloFilter).Count();
+            }
         }
 
         public IQueryable<Machine> GetAllVertimag()
@@ -77,9 +76,12 @@ namespace Ferretto.Common.Modules.BLL.Services
             return GetAllMachinesWithFilter(context, VertimagFilter);
         }
 
-        public Int32 GetAllVertimagCount()
+        public int GetAllVertimagCount()
         {
-            return this.dataContext.Machines.AsNoTracking().Where(VertimagFilter).Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Machines.AsNoTracking().Where(VertimagFilter).Count();
+            }
         }
 
         public IQueryable<Machine> GetAllVertimagModelM()
@@ -89,9 +91,12 @@ namespace Ferretto.Common.Modules.BLL.Services
             return GetAllMachinesWithFilter(context, VertimagModelMFilter);
         }
 
-        public Int32 GetAllVertimagModelMCount()
+        public int GetAllVertimagModelMCount()
         {
-            return this.dataContext.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
+            }
         }
 
         public IQueryable<Machine> GetAllVertimagModelXS()
@@ -101,9 +106,12 @@ namespace Ferretto.Common.Modules.BLL.Services
             return GetAllMachinesWithFilter(context, VertimagModelXSFilter);
         }
 
-        public Int32 GetAllVertimagModelXSCount()
+        public int GetAllVertimagModelXSCount()
         {
-            return this.dataContext.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
+            }
         }
 
         public MachineDetails GetById(int id)
@@ -118,11 +126,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Machines.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Machines.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                context.Entry(existingModel).CurrentValues.SetValues(model);
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
         }
 
         private static IQueryable<Machine> GetAllMachinesWithFilter(DatabaseContext context, Expression<Func<DataModels.Machine, bool>> whereFunc = null)

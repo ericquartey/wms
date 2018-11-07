@@ -10,21 +10,6 @@ namespace Ferretto.Common.Modules.BLL.Services
 {
     public class BayProvider : IBayProvider
     {
-        #region Fields
-
-        private readonly DatabaseContext dataContext;
-
-        #endregion Fields
-
-        #region Constructors
-
-        public BayProvider(DatabaseContext dataContext)
-        {
-            this.dataContext = dataContext;
-        }
-
-        #endregion Constructors
-
         #region Methods
 
         public IQueryable<Bay> GetAll()
@@ -36,12 +21,17 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.Bays.AsNoTracking().Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Bays.AsNoTracking().Count();
+            }
         }
 
         public IQueryable<Bay> GetByAreaId(int id)
         {
-            var bayDetails = this.dataContext.Bays
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var bayDetails = context.Bays
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
                 .Include(b => b.Machine)
@@ -64,7 +54,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public Bay GetById(int id)
         {
-            var bayDetails = this.dataContext.Bays
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var bayDetails = context.Bays
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
                 .Include(b => b.Machine)
@@ -93,11 +85,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Bays.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Bays.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                context.Entry(existingModel).CurrentValues.SetValues(model);
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
         }
 
         private static IQueryable<Bay> GetAllBaysWithFilter(DatabaseContext context,
