@@ -209,11 +209,22 @@ namespace Ferretto.Common.Modules.BLL.Services
             }
         }
 
-        public async Task WithdrawAsync(int bayId, int itemId, int quantity)
+        public async Task WithdrawAsync(ItemWithdraw itemWithdraw)
         {
             var itemsClient = ServiceLocator.Current.GetInstance<WMS.Scheduler.WebAPI.Contracts.IItemsClient>();
 
-            await itemsClient.WithdrawAsync(bayId, itemId, quantity);
+            await itemsClient.WithdrawAsync(
+                new WMS.Scheduler.WebAPI.Contracts.WithdrawRequest
+                {
+                    ItemId = itemWithdraw.Item.Id,
+                    BayId = itemWithdraw.BayId,
+                    Lot = itemWithdraw.Lot,
+                    Quantity = itemWithdraw.Quantity,
+                    RegistrationNumber = itemWithdraw.RegistrationNumber,
+                    Sub1 = itemWithdraw.Sub1,
+                    Sub2 = itemWithdraw.Sub2
+                }
+            );
         }
 
         private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)

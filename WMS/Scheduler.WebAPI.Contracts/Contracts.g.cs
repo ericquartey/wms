@@ -19,11 +19,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetAllAsync(int? skip, int? take, string orderBy, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(int? bayId, int? itemId, int? quantity);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(WithdrawRequest withdrawRequest);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(int? bayId, int? itemId, int? quantity, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(WithdrawRequest withdrawRequest, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -597,6 +597,136 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         public static Mission FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Mission>(data);
+        }
+    
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if (handler != null) 
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public partial class WithdrawRequest : System.ComponentModel.INotifyPropertyChanged
+    {
+        private int _bayId;
+        private int _itemId;
+        private string _lot;
+        private int _quantity;
+        private string _registrationNumber;
+        private string _sub1;
+        private string _sub2;
+    
+        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
+        public int BayId
+        {
+            get { return _bayId; }
+            set 
+            {
+                if (_bayId != value)
+                {
+                    _bayId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("itemId", Required = Newtonsoft.Json.Required.Always)]
+        public int ItemId
+        {
+            get { return _itemId; }
+            set 
+            {
+                if (_itemId != value)
+                {
+                    _itemId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("lot", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Lot
+        {
+            get { return _lot; }
+            set 
+            {
+                if (_lot != value)
+                {
+                    _lot = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Always)]
+        public int Quantity
+        {
+            get { return _quantity; }
+            set 
+            {
+                if (_quantity != value)
+                {
+                    _quantity = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("registrationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RegistrationNumber
+        {
+            get { return _registrationNumber; }
+            set 
+            {
+                if (_registrationNumber != value)
+                {
+                    _registrationNumber = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Sub1
+        {
+            get { return _sub1; }
+            set 
+            {
+                if (_sub1 != value)
+                {
+                    _sub1 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("sub2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Sub2
+        {
+            get { return _sub2; }
+            set 
+            {
+                if (_sub2 != value)
+                {
+                    _sub2 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
+        }
+        
+        public static WithdrawRequest FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<WithdrawRequest>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
