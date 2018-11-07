@@ -68,7 +68,7 @@ namespace Ferretto.Common.Controls
                     childView.Disappear();
                 }
                 ((INavigableViewModel)this.DataContext).Disappear();
-                this.navigationService.Disappear(this.DataContext as INavigableViewModel);
+                this.navigationService.Disappear(this);
                 ((INavigableViewModel)this.DataContext).Dispose();
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
@@ -15,6 +16,7 @@ namespace Ferretto.Common.Controls.Services
         #region Fields
 
         private readonly IUnityContainer container;
+        private readonly Dictionary<string, INavigableView> dialogs = new Dictionary<string, INavigableView>();
         private readonly IRegionManager regionManager;
         private readonly Dictionary<string, ViewModelBind> registrations = new Dictionary<string, ViewModelBind>();
 
@@ -53,6 +55,23 @@ namespace Ferretto.Common.Controls.Services
             this.CheckAddRegion(moduleViewName, data);
         }
 
+        public void Disappear(INavigableView view)
+        {
+            if (view == null)
+            {
+                return;
+            }
+
+            if (view.ViewType == WmsViewType.Docking)
+            {
+                this.RemoveRegion(view.MapId);
+            }
+            else
+            {
+                this.dialogs.Remove(view.MapId);
+            }
+        }
+
         public void Disappear(INavigableViewModel viewModel)
         {
             if (viewModel == null)
@@ -60,17 +79,12 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            var moduleRegionName = viewModel.MapId;
-            if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
-            {
-                return;
-            }
+            this.RemoveRegion(viewModel.MapId);
+        }
 
-            var region = this.regionManager.Regions[moduleRegionName];
-            var viewActive = this.regionManager.Regions[moduleRegionName].ActiveViews.First();
-            region.Deactivate(viewActive);
-            this.regionManager.Regions[moduleRegionName].Remove(viewActive);
-            this.regionManager.Regions.Remove(moduleRegionName);
+        public INavigableView GetRegisteredView(string instanceModuleViewName)
+        {
+            return this.regionManager.Regions[instanceModuleViewName].ActiveViews.First() as INavigableView;
         }
 
         public INavigableViewModel GetRegisteredViewModel(string mapId, object data)
@@ -110,6 +124,30 @@ namespace Ferretto.Common.Controls.Services
 
             var names = MvvmNaming.GetViewModelNames(viewModelName);
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(names.viewModelName);
+        }
+
+        public INavigableViewModel GetViewModelFromActiveWindow()
+        {
+            foreach (var viewToCheck in this.dialogs.Values)
+            {
+                var dlg = viewToCheck as WmsDialogView;
+                if (dlg.IsActive)
+                {
+                    return dlg.DataContext as INavigableViewModel;
+                }
+            }
+
+            var activeView = WmsMainDockLayoutManager.GetActiveView();
+            if (((WmsView)activeView).Content is IWmsHistoryView histView)
+            {
+                return histView.GetCurrentViewModel();
+            }
+
+            if (activeView is INavigableView view)
+            {
+                return view.DataContext as INavigableViewModel;
+            }
+            return null;
         }
 
         public void LoadModule(string moduleName)
@@ -271,7 +309,22 @@ namespace Ferretto.Common.Controls.Services
         private void RegisterDialog(string moduleViewName, string title)
         {
             var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
+            this.dialogs.Add(moduleViewName, registeredView);
             WmsDialogView.ShowDialog(registeredView);
+        }
+
+        private void RemoveRegion(string moduleRegionName)
+        {
+            if (this.regionManager.Regions.ContainsRegionWithName(moduleRegionName) == false)
+            {
+                return;
+            }
+
+            var region = this.regionManager.Regions[moduleRegionName];
+            var viewActive = this.regionManager.Regions[moduleRegionName].ActiveViews.First();
+            region.Deactivate(viewActive);
+            this.regionManager.Regions[moduleRegionName].Remove(viewActive);
+            this.regionManager.Regions.Remove(moduleRegionName);
         }
 
         #endregion Methods
