@@ -2,7 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dxcn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
                     xmlns:dxcop="clr-namespace:DevExpress.Xpf.Controls.Primitives;assembly=DevExpress.Xpf.Controls.v18.1"
-                    xmlns:themeKeys="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys">
+                    xmlns:themeKeys="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys"
+                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
+
+    <Style TargetType="ScrollViewer">
+        <Setter Property="dx:ScrollBarExtensions.ScrollBarMode" Value="TouchOverlap" />
+    </Style>
+
     <ControlTemplate x:Key="{themeKeys:WindowsUIElementsThemeKey ResourceKey=ScrollableControlButtonTemplate,
                                                                  ThemeName=Office2016White}"
                      TargetType="dxcop:ScrollableControlButton">
