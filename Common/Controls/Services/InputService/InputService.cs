@@ -256,8 +256,7 @@ namespace Ferretto.Common.Controls.Services
         private string GetSensitiveKey(System.Windows.Input.Key key)
         {
             var keySt = GetStringFromKey(key);
-            var isCapsLockOn = System.Windows.Forms.Control
-                                .IsKeyLocked(System.Windows.Forms.Keys.CapsLock);
+            var isCapsLockOn = ((Keyboard.GetKeyStates(Key.CapsLock) & KeyStates.Toggled) == KeyStates.Toggled);
             var isShiftKeyPressed = (Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Shift) == System.Windows.Input.ModifierKeys.Shift;
             if (!isCapsLockOn && !isShiftKeyPressed)
             {
