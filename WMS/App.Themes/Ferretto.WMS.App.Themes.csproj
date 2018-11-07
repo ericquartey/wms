@@ -5,10 +5,6 @@
     <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
-  </ItemGroup>
-
   <PropertyGroup>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
@@ -35,6 +31,10 @@
   <ItemGroup>
     <Resource Include="Icons\**\*.png" />
     <Resource Include="Images\**\*.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
   
   <ItemGroup>

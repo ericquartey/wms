@@ -1,16 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
-using DevExpress.Mvvm.UI;
-using DevExpress.Xpf.Core.Native;
-using Ferretto.Common.Modules.BLL.Models;
-using static Ferretto.Common.Controls.WmsRulerControl;
 
 namespace Ferretto.Common.Controls
 {
