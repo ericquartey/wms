@@ -212,22 +212,31 @@
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
                             </wms:WmsGridControl.View>
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="Code" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="LoadingUnitCode" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Sub1" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Sub2" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="Lot" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="CompartmentStatusDescription" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Stock" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="ItemPairingDescription" />
+
+                            <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="LoadingUnitCode" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub1" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub2" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Lot" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Stock" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="ItemPairingDescription" />
+                            </wms:WmsGridControl.Columns>
+
+                            <wms:WmsGridControl.SortInfo>
+                                <dxg:GridSortInfo FieldName="Code"
+                                                  SortOrder="Ascending" />
+                            </wms:WmsGridControl.SortInfo>
+
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>

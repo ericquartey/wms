@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.CompartmentDetailsView"
+<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.CompartmentDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -267,12 +267,21 @@
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
                             </wms:WmsGridControl.View>
-                            <dxg:GridColumn Width="70*"
-                                            FieldName="Code" />
-                            <dxg:GridColumn Width="150*"
-                                            FieldName="Description" />
-                            <dxg:GridColumn Width="50*"
-                                            FieldName="MaxCapacity" />
+
+                            <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="70*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="150*"
+                                                FieldName="Description" />
+                                <dxg:GridColumn Width="50*"
+                                                FieldName="MaxCapacity" />
+                            </wms:WmsGridControl.Columns>
+
+                            <wms:WmsGridControl.SortInfo>
+                                <dxg:GridSortInfo FieldName="Code"
+                                                  SortOrder="Ascending" />
+                            </wms:WmsGridControl.SortInfo>
+
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>
