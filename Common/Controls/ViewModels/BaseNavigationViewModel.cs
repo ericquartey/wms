@@ -1,10 +1,11 @@
 ﻿using System;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
 using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class BaseNavigationViewModel : BindableBase, INavigableViewModel, IDisposable
+    public class BaseNavigationViewModel : BindableBase, INavigableViewModel, IShortKey, IDisposable
     {
         #region Constructors
 
@@ -57,6 +58,11 @@ namespace Ferretto.Common.Controls
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public virtual bool KeyPress(ShortKeyInfo shortKeyInfo)
+        {
+            return false;
         }
 
         protected virtual void OnAppear()
