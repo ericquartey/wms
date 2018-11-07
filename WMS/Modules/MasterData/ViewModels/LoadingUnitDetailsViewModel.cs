@@ -25,6 +25,9 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand saveCommand;
         private object selectedCompartment;
 
+        private CompartmentDetails selectedCompartmentTray;
+        private Tray tray;
+
         #endregion Fields
 
         #region Constructors
@@ -92,7 +95,21 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.SetProperty(ref this.selectedCompartment, value);
                 this.RaisePropertyChanged(nameof(this.CurrentCompartment));
+
+                this.SetSelectedCompartment(this.CurrentCompartment);
             }
+        }
+
+        public CompartmentDetails SelectedCompartmentTray
+        {
+            get => this.selectedCompartmentTray;
+            set => this.SetProperty(ref this.selectedCompartment, value);
+        }
+
+        public Tray Tray
+        {
+            get => this.tray;
+            set => this.SetProperty(ref this.tray, value);
         }
 
         #endregion Properties
@@ -119,6 +136,24 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.EventService.Unsubscribe<ModelSelectionChangedEvent<LoadingUnit>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
+        }
+
+        private void CreateTrayObject()
+        {
+            this.tray = new Tray
+            {
+                Dimension = new Dimension
+                {
+                    Height = this.LoadingUnit.Length,
+                    Width = this.LoadingUnit.Width
+                },
+                ReadOnly = true
+            };
+            if (this.LoadingUnit.Compartments != null)
+            {
+                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
+            }
+            this.RaisePropertyChanged(nameof(this.Tray));
         }
 
         private void ExecuteSaveCommand()
@@ -159,6 +194,17 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
                 this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
+
+                this.CreateTrayObject();
+            }
+        }
+
+        private void SetSelectedCompartment(object value)
+        {
+            if (value is CompartmentDetails)
+            {
+                this.selectedCompartmentTray = (CompartmentDetails)value;
+                this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
             }
         }
 
