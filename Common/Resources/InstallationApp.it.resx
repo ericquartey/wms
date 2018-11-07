@@ -310,4 +310,10 @@
     <value>Controllo Barriere</value>
     <comment>Title - Button text</comment>
   </data>
+  <data name="SetOriginVerticalAxisCompleted" xml:space="preserve">
+    <value>L'origine dell'asse verticale non è impostata correttamente.</value>
+  </data>
+  <data name="SetOriginVerticalAxisNotCompleted" xml:space="preserve">
+    <value>L'origine dell'asse verticale non è impostata.</value>
+  </data>
 </root>
