@@ -45,8 +45,7 @@
                       DataContext="{Binding Compartment}"
                       Focusable="False"
                       IsTabStop="True"
-                      Margin="10,0,0,10"
-                      VerticalScrollBarVisibility="Auto">
+                      Margin="10,0,10,10">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -294,42 +293,44 @@
 
         </ScrollViewer>
 
-        <Border Grid.Column="1"
-                Background="{DynamicResource CommonSecondaryUltralight}"
-                BorderBrush="{DynamicResource CommonSecondaryLight}"
-                BorderThickness="1,0,0,0" />
+        <Border Grid.Column="1" Style="{StaticResource InfoBoxBorderStyle}" />
 
-        <Border DataContext="{Binding Compartment}"
-                Grid.Row="1"
-                Grid.Column="1"
-                Background="{DynamicResource CommonSecondaryUltralight}"
-                BorderBrush="{DynamicResource CommonSecondaryLight}"
-                BorderThickness="1,0,0,0">
+        <ScrollViewer Grid.Row="1"
+                      Grid.Column="1"
+                      Focusable="False"
+                      IsTabStop="False">
 
-            <GroupBox Header="{x:Static res:MasterData.OtherInformation}"
-                      Margin="20,0">
-                <StackPanel Orientation="Vertical">
-                    <wms:InfoText HorizontalAlignment="Left"
-                                  HorizontalContentAlignment="Left"
-                                  Content="{Binding CreationDate}" />
-                    <wms:InfoText HorizontalAlignment="Left"
-                                  HorizontalContentAlignment="Left"
-                                  Content="{Binding LastHandlingDate}" />
-                    <wms:InfoText HorizontalAlignment="Left"
-                                  HorizontalContentAlignment="Left"
-                                  Content="{Binding InventoryDate}" />
-                    <wms:InfoText HorizontalAlignment="Left"
-                                  HorizontalContentAlignment="Left"
-                                  Content="{Binding FirstStoreDate}" />
-                    <wms:InfoText HorizontalAlignment="Left"
-                                  HorizontalContentAlignment="Left"
-                                  Content="{Binding LastStoreDate}" />
-                    <wms:InfoText HorizontalAlignment="Left"
-                                  HorizontalContentAlignment="Left"
-                                  Content="{Binding LastPickDate}" />
-                </StackPanel>
-            </GroupBox>
-        </Border>
+            <Border DataContext="{Binding Compartment}"
+                    Style="{StaticResource InfoBoxBorderStyle}">
+
+                <GroupBox Header="{x:Static res:MasterData.OtherInformation}"
+                          Margin="20,0">
+                    <StackPanel Orientation="Vertical">
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding CreationDate}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding LastHandlingDate}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding InventoryDate}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding FirstStoreDate}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding LastStoreDate}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding LastPickDate}" />
+                    </StackPanel>
+
+                </GroupBox>
+
+            </Border>
+
+        </ScrollViewer>
 
     </Grid>
 

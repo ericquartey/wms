@@ -24,6 +24,8 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Label.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Card.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/WmsTrayControl.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/InfoBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Messages.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
