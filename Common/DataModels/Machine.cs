@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.Common.DataModels
 {
@@ -11,6 +12,7 @@ namespace Ferretto.Common.DataModels
         public Aisle Aisle { get; set; }
         public int AisleId { get; set; }
         public long? AutomaticTime { get; set; }
+        public IEnumerable<Bay> Bays { get; set; }
         public DateTime? BuildDate { get; set; }
         public int? CradlesCount { get; set; }
         public string CustomerAddress { get; set; }

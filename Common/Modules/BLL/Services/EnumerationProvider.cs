@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -53,14 +52,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IEnumerable<Enumeration> GetAllCellStatuses()
+        public IQueryable<Enumeration> GetAllCellStatuses()
         {
             return this.dataContext.CellStatuses
                 .AsNoTracking()
                 .Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IEnumerable<Enumeration> GetAllCellTypes()
+        public IQueryable<Enumeration> GetAllCellTypes()
         {
             return this.dataContext.CellTypes
                 .AsNoTracking()
@@ -128,35 +127,6 @@ namespace Ferretto.Common.Modules.BLL.Services
             return this.dataContext.PackageTypes
                 .AsNoTracking()
                 .Select(x => new Enumeration(x.Id, x.Description));
-        }
-
-        public IQueryable<Enumeration> GetCellsByAisleId(int aisleId)
-        {
-            return this.dataContext.Cells
-                .AsNoTracking()
-                .Include(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c => c.AisleId == aisleId)
-                .OrderBy(c => c.CellNumber)
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
-                );
-        }
-
-        public IQueryable<Enumeration> GetCellsByAreaId(int areaId)
-        {
-            return this.dataContext.Cells
-                .AsNoTracking()
-                .Include(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c => c.Aisle.AreaId == areaId)
-                .OrderBy(c => c.Aisle.Name)
-                .ThenBy(c => c.CellNumber)
-                .Select(c => new Enumeration(
-                    c.Id,
-                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})")
-                );
         }
 
         #endregion Methods

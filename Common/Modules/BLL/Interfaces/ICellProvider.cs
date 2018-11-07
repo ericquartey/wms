@@ -7,6 +7,10 @@ namespace Ferretto.Common.Modules.BLL
     {
         #region Methods
 
+        IQueryable<Enumeration> GetByAisleId(int areaId);
+
+        IQueryable<Enumeration> GetByAreaId(int areaId);
+
         bool HasAnyLoadingUnits(int cellId);
 
         #endregion Methods

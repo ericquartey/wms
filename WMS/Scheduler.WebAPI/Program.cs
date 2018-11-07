@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
+using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Host
 {
@@ -18,7 +19,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Host
         #region Methods
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
+            WebHost
+            .CreateDefaultBuilder(args)
+            .UseStartup<Startup>();
 
         public static void Main(string[] args)
         {
@@ -32,9 +35,16 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Host
             }
 
             var webHostArgs = args.Where(arg => arg != ConsoleArgument).ToArray();
-            var host = CreateWebHostBuilder(webHostArgs)
-                .UseContentRoot(pathToContentRoot)
+
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("hostconfig.json", optional: true)
                 .Build();
+
+            var host = CreateWebHostBuilder(webHostArgs)
+                    .UseContentRoot(pathToContentRoot)
+                    .UseConfiguration(config)
+                    .Build();
 
             if (isService)
             {

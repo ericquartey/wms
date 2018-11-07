@@ -1,5 +1,8 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using System.Configuration;
+using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Services;
+using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
@@ -27,6 +30,8 @@ namespace Ferretto.Common.Modules.BLL
 
         public void Initialize()
         {
+            this.Container.RegisterType<IAreaProvider, AreaProvider>();
+            this.Container.RegisterType<IBayProvider, BayProvider>();
             this.Container.RegisterType<ICellProvider, CellProvider>();
             this.Container.RegisterType<ICompartmentProvider, CompartmentProvider>();
             this.Container.RegisterType<IDataSourceService, DataSourceService>();
@@ -35,6 +40,11 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IItemProvider, ItemProvider>();
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
+
+            this.Container.RegisterType<IItemsClient, ItemsClient>(new InjectionConstructor(ConfigurationManager.AppSettings["SchedulerEndpoint"]));
+
+            this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
+            this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
         }
 
         #endregion Methods

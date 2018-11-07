@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Forms;
-using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Modules.BLL.Models;
-using static Ferretto.Common.Controls.WmsRulerControl;
 
 namespace Ferretto.Common.Controls
 {
@@ -22,6 +16,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private Brush backgroundCanvas;
+        private Border border;
         private WmsTrayCanvas canvas;
 
         #endregion Fields
@@ -38,10 +33,7 @@ namespace Ferretto.Common.Controls
 
         public Brush BackgroundCanvas
         {
-            get
-            {
-                return this.backgroundCanvas;
-            }
+            get => this.backgroundCanvas;
             set
             {
                 this.backgroundCanvas = value;
@@ -68,6 +60,64 @@ namespace Ferretto.Common.Controls
             base.OnApplyTemplate();
             this.SizeChanged += this.WmsCanvasItemsControl_SizeChanged;
             this.Loaded += this.WmsCanvasItemsControl_Loaded;
+        }
+
+        public void SetBorderSize(double heightNewCalculated, double widthNewCalculated)
+        {
+            this.border.Height = heightNewCalculated;
+            this.border.Width = widthNewCalculated;
+        }
+
+        public void SetCanvasSize(double heightNewCalculated, double widthNewCalculated)
+        {
+            this.canvas.Height = heightNewCalculated;
+            this.canvas.Width = widthNewCalculated;
+
+            this.canvas.Background = this.BackgroundCanvas;
+
+            Debug.WriteLine($"Canvas: pixel->W={widthNewCalculated} H={heightNewCalculated}");
+        }
+
+        public void SetControlSize(double heightNewCalculated, double widthNewCalculated)
+        {
+            if (this.Tray != null)
+            {
+                var heightConverted = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Height, widthNewCalculated, this.Tray.Dimension.Width);
+
+                if (heightConverted > heightNewCalculated)
+                {
+                    widthNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Width, heightNewCalculated, this.Tray.Dimension.Height);
+                }
+                else
+                {
+                    heightNewCalculated = heightConverted;
+                }
+                heightNewCalculated = Math.Floor(heightNewCalculated);
+                widthNewCalculated = Math.Floor(widthNewCalculated);
+
+                this.SetBorderSize(heightNewCalculated, widthNewCalculated);
+
+                heightNewCalculated -= this.Tray.DOUBLE_BORDER_TRAY;
+                widthNewCalculated -= this.Tray.DOUBLE_BORDER_TRAY;
+
+                this.SetCanvasSize(heightNewCalculated, widthNewCalculated);
+
+                this.SetRulerSize(heightNewCalculated, widthNewCalculated);
+
+                if (this.DataContext is WmsTrayControlViewModel wmsTrayControlViewModel)
+                {
+                    wmsTrayControlViewModel.ResizeCompartments(widthNewCalculated, heightNewCalculated);
+                }
+            }
+        }
+
+        public void SetRulerSize(double heightNewCalculated, double widthNewCalculated)
+        {
+            var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
+            if (parentWmsTrayControl != null && this.Tray != null)
+            {
+                parentWmsTrayControl.UpdateRulers(widthNewCalculated, heightNewCalculated);
+            }
         }
 
         public void UpdateSizeCanvas(Dimension dimension)
@@ -101,30 +151,18 @@ namespace Ferretto.Common.Controls
             {
                 this.canvas = LayoutTreeHelper.GetVisualChildren(this).OfType<WmsTrayCanvas>().FirstOrDefault();
             }
-
-            if (this.Tray != null)
+            if (this.border == null)
             {
-                var widthNewCalculated = this.ActualWidth;
-                var heightNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Height, widthNewCalculated, this.Tray.Dimension.Width);
-
-                if (heightNewCalculated > this.ActualHeight)
-                {
-                    heightNewCalculated = this.ActualHeight;
-                    widthNewCalculated = GraphicUtils.ConvertMillimetersToPixel(this.Tray.Dimension.Width, heightNewCalculated, this.Tray.Dimension.Height);
-                }
-                this.canvas.Height = heightNewCalculated;
-                this.canvas.Width = widthNewCalculated;
-
-                var parentWmsTrayControl = LayoutTreeHelper.GetVisualParents(this).FirstOrDefault(v => v is WmsTrayControl) as WmsTrayControl;
-
-                //Ruler Settings
-                if (parentWmsTrayControl != null)
-                {
-                    parentWmsTrayControl.UpdateChildren(widthNewCalculated, heightNewCalculated);
-                }
-
-                this.canvas.Background = this.BackgroundCanvas;
+                this.border = LayoutTreeHelper.GetVisualChildren(this).OfType<Border>().FirstOrDefault(x => x.Name == "ListBoxBorder");
             }
+
+            double widthNewCalculated = 0;
+            double heightNewCalculated = 0;
+
+            Size size = e.NewSize;
+            widthNewCalculated = size.Width;
+            heightNewCalculated = size.Height;
+            this.SetControlSize(heightNewCalculated, widthNewCalculated);
         }
 
         #endregion Methods

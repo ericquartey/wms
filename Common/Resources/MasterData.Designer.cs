@@ -61,6 +61,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Withdraw.
+        /// </summary>
+        public static string AdvancedWithdraw {
+            get {
+                return ResourceManager.GetString("AdvancedWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Allowed Items.
         /// </summary>
         public static string AllowedItems {
@@ -259,6 +268,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item withdrawal commenced.
+        /// </summary>
+        public static string ItemWithdrawCommenced {
+            get {
+                return ResourceManager.GetString("ItemWithdrawCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
@@ -322,6 +340,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Run Item Withdraw.
+        /// </summary>
+        public static string RunItemWithdraw {
+            get {
+                return ResourceManager.GetString("RunItemWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Simple Withdraw.
+        /// </summary>
+        public static string SimpleWithdraw {
+            get {
+                return ResourceManager.GetString("SimpleWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Warehousing Information.
         /// </summary>
         public static string WarehousingInformation {
@@ -336,6 +372,15 @@ namespace Ferretto.Common.Resources {
         public static string Withdraw {
             get {
                 return ResourceManager.GetString("Withdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Withdraw Options.
+        /// </summary>
+        public static string WithdrawOptions {
+            get {
+                return ResourceManager.GetString("WithdrawOptions", resourceCulture);
             }
         }
     }

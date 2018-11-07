@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -24,6 +25,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedCompartment;
+        private ICommand withdrawCommand;
 
         #endregion Fields
 
@@ -65,10 +67,18 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.item;
             set
             {
+                if (this.Item != null && value != this.Item)
+                {
+                    this.Item.PropertyChanged -= this.OnItemPropertyChanged;
+                }
+
                 if (!this.SetProperty(ref this.item, value))
                 {
                     return;
                 }
+
+                this.Item.PropertyChanged += this.OnItemPropertyChanged;
+
                 this.RefreshData();
             }
         }
@@ -94,6 +104,10 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.RaisePropertyChanged(nameof(this.CurrentCompartment));
             }
         }
+
+        public ICommand WithdrawCommand => this.withdrawCommand ??
+                                          (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdraw,
+                                              this.CanExecuteWithdraw));
 
         #endregion Properties
 
@@ -121,6 +135,11 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
+        private bool CanExecuteWithdraw()
+        {
+            return this.Item?.TotalAvailable > 0;
+        }
+
         private void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.itemProvider.Save(this.Item);
@@ -131,6 +150,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
+        }
+
+        private void ExecuteWithdraw()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
+                new
+                {
+                    Id = this.Item.Id
+                }
+            );
         }
 
         private void Initialize()
@@ -159,6 +190,14 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Item = this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
+            }
+        }
+
+        private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.Item.TotalAvailable))
+            {
+                ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
             }
         }
 

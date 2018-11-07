@@ -19,11 +19,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetAllAsync(int? skip, int? take, string orderBy, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(ItemWithdraw itemWithdraw);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(int? bayId, int? itemId, int? quantity);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(ItemWithdraw itemWithdraw, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(int? bayId, int? itemId, int? quantity, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -515,9 +515,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     {
         private int _bayId;
         private int _id;
-        private int _quantity;
-        private MissionType _type;
         private object _itemId;
+        private int _quantity;
+        private string _typeId;
     
         [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
         public int BayId
@@ -542,34 +542,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_id != value)
                 {
                     _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Always)]
-        public int Quantity
-        {
-            get { return _quantity; }
-            set 
-            {
-                if (_quantity != value)
-                {
-                    _quantity = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
-        public MissionType Type
-        {
-            get { return _type; }
-            set 
-            {
-                if (_type != value)
-                {
-                    _type = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -589,86 +561,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static Mission FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Mission>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public enum MissionType
-    {
-        Withdrawal = 0,
-    
-        Insertion = 1,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class ItemWithdraw : System.ComponentModel.INotifyPropertyChanged
-    {
-        private int _bayId;
-        private int _id;
-        private int _itemId;
-        private int _quantity;
-    
-        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
-        public int BayId
-        {
-            get { return _bayId; }
-            set 
-            {
-                if (_bayId != value)
-                {
-                    _bayId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id
-        {
-            get { return _id; }
-            set 
-            {
-                if (_id != value)
-                {
-                    _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("itemId", Required = Newtonsoft.Json.Required.Always)]
-        public int ItemId
-        {
-            get { return _itemId; }
-            set 
-            {
-                if (_itemId != value)
-                {
-                    _itemId = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
         [Newtonsoft.Json.JsonProperty("quantity", Required = Newtonsoft.Json.Required.Always)]
         public int Quantity
         {
@@ -683,14 +575,28 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
+        [Newtonsoft.Json.JsonProperty("typeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string TypeId
+        {
+            get { return _typeId; }
+            set 
+            {
+                if (_typeId != value)
+                {
+                    _typeId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         public string ToJson() 
         {
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static ItemWithdraw FromJson(string data)
+        public static Mission FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ItemWithdraw>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Mission>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;

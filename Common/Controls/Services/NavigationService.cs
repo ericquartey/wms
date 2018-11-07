@@ -217,7 +217,7 @@ namespace Ferretto.Common.Controls.Services
             }
             else
             {
-                this.RegisterDialog(moduleViewName, registeredView.Title);
+                WmsDialogView.ShowDialog(registeredView);
             }
         }
 
