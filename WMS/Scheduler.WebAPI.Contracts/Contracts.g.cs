@@ -32,6 +32,21 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public abstract partial class BindableBase : System.ComponentModel.INotifyPropertyChanged
     {
+        private string _error;
+    
+        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Error
+        {
+            get { return _error; }
+            set 
+            {
+                if (_error != value)
+                {
+                    _error = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
     
         public string ToJson() 
         {

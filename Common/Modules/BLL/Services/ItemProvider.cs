@@ -216,7 +216,7 @@ namespace Ferretto.Common.Modules.BLL.Services
             await itemsClient.WithdrawAsync(
                 new WMS.Scheduler.WebAPI.Contracts.WithdrawRequest
                 {
-                    ItemId = itemWithdraw.Item.Id,
+                    ItemId = itemWithdraw.ItemDetails.Id,
                     BayId = itemWithdraw.BayId,
                     Lot = itemWithdraw.Lot,
                     Quantity = itemWithdraw.Quantity,
