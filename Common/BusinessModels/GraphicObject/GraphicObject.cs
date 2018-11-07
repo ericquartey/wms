@@ -24,6 +24,16 @@ namespace Ferretto.Common.BusinessModels
         #endregion Properties
     }
 
+    public class DoublePosition
+    {
+        #region Properties
+
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        #endregion Properties
+    }
+
     public class Line
     {
         #region Properties
@@ -40,8 +50,8 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        public int XPosition { get; set; }
-        public int YPosition { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         #endregion Properties
     }
@@ -50,10 +60,12 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
+        public readonly int BORDER_TRAY = 1;
         public readonly int DimensionRuler = 25;
+        public readonly int DOUBLE_BORDER_TRAY = 2;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
-
         private Dimension dimension;
+        private bool readOnly;
 
         #endregion Fields
 
@@ -75,6 +87,13 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public Position Origin { get; set; }
+
+        public bool ReadOnly
+        {
+            get { return this.readOnly; }
+            set { this.readOnly = value; }
+        }
+
         public Dimension RulerSize { get; set; }
 
         #endregion Properties

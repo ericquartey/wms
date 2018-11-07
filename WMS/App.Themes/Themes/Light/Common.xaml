@@ -16,37 +16,6 @@
     <Color x:Key="Green">#57A639</Color>
     <Color x:Key="PureWhite">#ffffff</Color>
 
-    <!--  colors - demo tray - compartment  -->
-    <Color x:Key="Azure">#BBDEFB</Color>
-    <Color x:Key="LightBlue">#FF08A5FF</Color>
-    <Color x:Key="MediumBlue">#FF0288F7</Color>
-    <Color x:Key="LightBlack">#BDBDBD</Color>
-    <SolidColorBrush x:Key="TrayBackground"
-                     Color="{StaticResource Azure}" />
-    <SolidColorBrush x:Key="FillMouseOver"
-                     Color="{StaticResource LightBlue}" />
-    <SolidColorBrush x:Key="StrokeMouseOver"
-                     Color="{StaticResource MediumBlue}" />
-    <SolidColorBrush x:Key="BorderTray"
-                     Color="{StaticResource LightBlack}" />
-
-    <!--  colors - filter compartment  -->
-    <Color x:Key="DarkRed">#D50000</Color>
-    <Color x:Key="LightRed">#F44336</Color>
-    <Color x:Key="Orange">#FF9800</Color>
-    <Color x:Key="LightGreen">#D4E157</Color>
-    <Color x:Key="DarkGreen">#76FF03</Color>
-    <SolidColorBrush x:Key="Full"
-                     Color="{StaticResource DarkRed}" />
-    <SolidColorBrush x:Key="AlmostFull"
-                     Color="{StaticResource LightRed}" />
-    <SolidColorBrush x:Key="Half"
-                     Color="{StaticResource Orange}" />
-    <SolidColorBrush x:Key="AlmostEmpty"
-                     Color="{StaticResource LightGreen}" />
-    <SolidColorBrush x:Key="Empty"
-                     Color="{StaticResource DarkGreen}" />
-
     <!--  primary color brush  -->
     <SolidColorBrush x:Key="CommonPrimary"
                      Color="{StaticResource Red}" />

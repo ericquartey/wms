@@ -41,7 +41,7 @@
                     <dxg:GridColumn Width="100*"
                                     FieldName="Code" />
                     <dxg:GridColumn Width="400*"
-                                    FieldName="Description" />
+                                    FieldName="ItemDescription" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="ItemCategoryDescription" />
                     <dxg:GridColumn Width="100*"
