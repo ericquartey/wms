@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
-    <ApplicationIcon />
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
     <OutputType>WinExe</OutputType>
     <StartupObject />
   </PropertyGroup>
@@ -19,6 +20,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\App.Themes\Ferretto.WMS.App.Themes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -30,21 +42,12 @@
       <DependentUpon>%(Filename)</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-
     <Page Include="**\*.xaml" Exclude="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.1.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
-    <ProjectReference Include="..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
-  </ItemGroup>
-
+ 
+  
 </Project>
