@@ -6,9 +6,9 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:prism="http://www.codeplex.com/prism"
                  xmlns:r="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                 Title="{x:Static r:DesktopApp.Application_Title}"
                  MinWidth="1024"
                  MinHeight="576"
-                 Title="{x:Static r:DesktopApp.Application_Title}"
                  mc:Ignorable="d">
     <Grid>
         <ContentControl x:Name="MainContent"

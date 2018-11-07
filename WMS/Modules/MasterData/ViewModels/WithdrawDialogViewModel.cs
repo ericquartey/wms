@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -72,10 +73,7 @@ namespace Ferretto.WMS.Modules.MasterData
                                                   .ObservesProperty(() => this.ItemWithdraw)
                                                   .ObservesProperty(() => this.ItemWithdraw.Quantity));
 
-        public bool SimpleWithdraw
-        {
-            get => !this.advancedWithdraw;
-        }
+        public bool SimpleWithdraw => !this.advancedWithdraw;
 
         public ICommand SimpleWithdrawCommand => this.simpleWithdrawCommand ??
                                                  (this.simpleWithdrawCommand = new DelegateCommand(
@@ -100,12 +98,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteRunWithdraw()
         {
-            if (this.ItemWithdraw == null)
-            {
-                return false;
-            }
-
-            return this.ItemWithdraw.Quantity > 0 && this.ItemWithdraw.Quantity <= this.ItemWithdraw.TotalAvailable;
+            return this.ItemWithdraw != null
+                && this.ItemWithdraw.Quantity > 0
+                && this.ItemWithdraw.Quantity <= this.ItemWithdraw.TotalAvailable;
         }
 
         private void ExecuteAdvancedWithdrawCommand()
@@ -113,9 +108,23 @@ namespace Ferretto.WMS.Modules.MasterData
             this.AdvancedWithdraw = true;
         }
 
-        private void ExecuteRunWithdraw()
+        private async void ExecuteRunWithdraw()
         {
-            throw new NotImplementedException();
+            if (this.itemWithdraw == null || this.itemWithdraw.Item == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            try
+            {
+                await this.itemProvider.WithdrawAsync(this.itemWithdraw.BayId, this.itemWithdraw.Item.Id, this.itemWithdraw.Quantity);
+
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemWithdrawCommenced));
+            }
+            catch (Exception ex)
+            {
+                this.EventService.Invoke(new StatusEventArgs(ex.Message));
+            }
         }
 
         private void ExecuteSimpleWithdrawCommand()

@@ -268,6 +268,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item withdrawal commenced.
+        /// </summary>
+        public static string ItemWithdrawCommenced {
+            get {
+                return ResourceManager.GetString("ItemWithdrawCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
