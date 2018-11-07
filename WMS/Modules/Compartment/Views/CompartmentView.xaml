@@ -39,7 +39,7 @@
 
         <compartment:InputCompartmentView Grid.Row="1" />
 
-        <wms:WmsTrayControl x:Name="Canvas"
+        <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"
                             Margin="0,0,0,0"
                             Compartments="{Binding Tray.Compartments, Mode=OneWay}"
@@ -47,7 +47,7 @@
                             SelectedColorFilterFunc="{Binding SelectedColorFilterFunc, Mode=OneWay}"
                             SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                             ShowBackground="{Binding ShowBackground}"
-                            TrayObject="{Binding Tray, Mode=OneWay}" />
+                            Tray="{Binding Tray, Mode=OneWay}" />
 
         <compartment:ListCompartmentsView x:Name="ListCompartments"
                                           Grid.Row="3" />

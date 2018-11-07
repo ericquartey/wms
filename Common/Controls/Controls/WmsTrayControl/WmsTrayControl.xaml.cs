@@ -34,8 +34,8 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
                             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
 
-        public static readonly DependencyProperty TrayObjectProperty = DependencyProperty.Register(
-                            nameof(TrayObject), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayObjectChanged)));
+        public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
+                            nameof(Tray), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayChanged)));
 
         private readonly int STEP = 100;
         private BindingList<CompartmentDetails> compartments;
@@ -89,10 +89,10 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(ShowBackgroundProperty, value);
         }
 
-        public Tray TrayObject
+        public Tray Tray
         {
-            get => (Tray)this.GetValue(TrayObjectProperty);
-            set => this.SetValue(TrayObjectProperty, value);
+            get => (Tray)this.GetValue(TrayProperty);
+            set => this.SetValue(TrayProperty, value);
         }
 
         #endregion Properties
@@ -116,7 +116,7 @@ namespace Ferretto.Common.Controls
                     width = widthTrayPixel;
                 }
 
-                double stepPixel = GraphicUtils.ConvertMillimetersToPixel(this.STEP, width, this.TrayObject.Dimension.Width);
+                double stepPixel = GraphicUtils.ConvertMillimetersToPixel(this.STEP, width, this.Tray.Dimension.Width);
 
                 drawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);
                 drawingBrush.ViewportUnits = BrushMappingMode.Absolute;
@@ -143,8 +143,8 @@ namespace Ferretto.Common.Controls
         {
             if (this.horizontalRuler.Origin == null)
             {
-                this.horizontalRuler.Origin = this.TrayObject.Origin;
-                this.verticalRuler.Origin = this.TrayObject.Origin;
+                this.horizontalRuler.Origin = this.Tray.Origin;
+                this.verticalRuler.Origin = this.Tray.Origin;
             }
             this.horizontalRuler.Width = widthNewCalculated;
             this.verticalRuler.Height = heightNewCalculated;
@@ -152,10 +152,10 @@ namespace Ferretto.Common.Controls
             var majorIntervalStepHorizontal = this.horizontalRuler.MajorIntervalHorizontal;
             var majorIntervalStepVertical = this.verticalRuler.MajorIntervalVertical;
             this.horizontalRuler.MajorIntervalHorizontalPixel =
-                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, widthNewCalculated, this.TrayObject.Dimension.Width));
+                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, widthNewCalculated, this.Tray.Dimension.Width));
             this.verticalRuler.MajorIntervalVerticalPixel =
-                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, widthNewCalculated, this.TrayObject.Dimension.Width));
-            Debug.WriteLine($"Ruler: pixel->W={widthNewCalculated} H={heightNewCalculated} IPH={this.horizontalRuler.MajorIntervalHorizontalPixel} IPV={this.horizontalRuler.MajorIntervalVerticalPixel} TRAY: real->W={this.TrayObject.Dimension.Width}");
+                (int)Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, widthNewCalculated, this.Tray.Dimension.Width));
+            Debug.WriteLine($"Ruler: pixel->W={widthNewCalculated} H={heightNewCalculated} IPH={this.horizontalRuler.MajorIntervalHorizontalPixel} IPV={this.horizontalRuler.MajorIntervalVerticalPixel} TRAY: real->W={this.Tray.Dimension.Width}");
 
             this.SetBackground(this.ShowBackground, widthNewCalculated);
         }
@@ -218,7 +218,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private static void OnTrayObjectChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
@@ -231,7 +231,7 @@ namespace Ferretto.Common.Controls
 
         private void Initialize()
         {
-            this.CanvasListBoxControl.Tray = this.TrayObject;
+            this.CanvasListBoxControl.Tray = this.Tray;
         }
 
         #endregion Methods

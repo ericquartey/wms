@@ -357,10 +357,10 @@ namespace Ferretto.Common.Controls
 
             drawingContext.DrawLine(
                 new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK),
-                new Point(Math.Floor(mark.XStart), Math.Floor(mark.YStart)),
-                new Point(Math.Floor(mark.XEnd), Math.Floor(mark.YEnd)));
+                new Point(Math.Round(mark.XStart), Math.Round(mark.YStart)),
+                new Point(Math.Round(mark.XEnd), Math.Round(mark.YEnd)));
 
-            Debug.WriteLine($"Mark: X={Math.Round(mark.XStart)} Y={Math.Round(mark.YStart)} Orientation: {this.InfoRuler.OrientationRuler} I={majorIntervalPixel}");
+            //Debug.WriteLine($"Mark: X={Math.Round(mark.XStart)} Y={Math.Round(mark.YStart)} Orientation: {this.InfoRuler.OrientationRuler} I={majorIntervalPixel}");
         }
 
         private void DrawMiddleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)

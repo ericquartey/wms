@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Ferretto.Common.BusinessModels
@@ -109,6 +110,23 @@ namespace Ferretto.Common.BusinessModels
             else
             {
                 System.Diagnostics.Debug.WriteLine("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
+            }
+        }
+
+        public void AddCompartmentsRange(IList<CompartmentDetails> compartmentDetails)
+        {
+            bool error = false;
+            foreach (var compartment in compartmentDetails)
+            {
+                //TODO: extreme check on compartment:
+                //  1) bigger than tray
+                //  2) over tray position
+                this.compartments.Add(compartment);
+            }
+
+            if (error)
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR ADD NEW RANGE OF COMPARTMENTS: it is overlaps among other compartments or it exits from window.");
             }
         }
 
