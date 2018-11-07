@@ -12,8 +12,8 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
-        private static List<ShortKey> MainKeys = new List<ShortKey>();
-        private static Dictionary<string, List<ShortKey>> ViewShortKeys;
+        private static readonly List<ShortKey> MainKeys = new List<ShortKey>();
+        private static readonly Dictionary<string, List<ShortKey>> ViewShortKeys = new Dictionary<string, List<ShortKey>>();
 
         #endregion Fields
 
@@ -48,8 +48,6 @@ namespace Ferretto.Common.Controls.Services
 
         public static void Initialize()
         {
-            ViewShortKeys = new Dictionary<string, List<ShortKey>>();
-
             // MAIN SHORTKEYS
             // ******* Main Menu *********
             MainKeys.Add(new ShortKey(Key.I, true, ModifierKeys.Control, (v) =>
