@@ -736,6 +736,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Area.
+        /// </summary>
+        public static string ItemWithdrawAreaInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawAreaInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string ItemWithdrawBay {
@@ -745,11 +754,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Bay.
+        /// </summary>
+        public static string ItemWithdrawBayInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawBayInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Selected Item.
         /// </summary>
         public static string ItemWithdrawItem {
             get {
                 return ResourceManager.GetString("ItemWithdrawItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ItemDetails Invalid.
+        /// </summary>
+        public static string ItemWithdrawItemDetailsInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawItemDetailsInvalidError", resourceCulture);
             }
         }
         
@@ -768,6 +795,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemWithdrawQuantity {
             get {
                 return ResourceManager.GetString("ItemWithdrawQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Quantity.
+        /// </summary>
+        public static string ItemWithdrawQuantityInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawQuantityInvalidError", resourceCulture);
             }
         }
         

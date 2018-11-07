@@ -60,7 +60,12 @@
     <SolidColorBrush x:Key="HoverCommonSecondaryDark"
                      Color="{StaticResource WhiteGrey}" />
 
+    <!-- messages -->
+    <SolidColorBrush x:Key="ErrorMessageColorBrush"
+                     Color="{StaticResource Red}" />
+
     <!--  fonts  -->
+    <system:Double x:Key="WindowTitleFontSize">14</system:Double>
     <system:Double x:Key="MenuFontSize">14</system:Double>
     <system:Double x:Key="GridFontSize">14</system:Double>
 

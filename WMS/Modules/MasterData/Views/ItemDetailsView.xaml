@@ -14,53 +14,55 @@
              Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 
-    <Grid Margin="20"
-          HorizontalAlignment="Stretch"
+    <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" MaxWidth="400" />
+        </Grid.ColumnDefinitions>
 
-        <Grid>
-            <wms:ActionBar HorizontalAlignment="Right"
-                           Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding WithdrawCommand}"
-                                   Content="{x:Static res:MasterData.Withdraw}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding SaveCommand}"
-                                   Content="{x:Static res:General.Save}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding RevertCommand}"
-                                   Content="{x:Static res:General.Revert}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
-        </Grid>
+        <wms:ActionBar HorizontalAlignment="Right"
+                       Style="{DynamicResource ActionBarNotCustomizable}"
+                       Margin="10,10,10,0">
+            <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+                               Content="{x:Static res:MasterData.Withdraw}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
+                               GlyphSize="Custom" />
+            <wms:ActionBarItem Command="{Binding SaveCommand}"
+                               Content="{x:Static res:General.Save}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                               GlyphSize="Custom" />
+            <wms:ActionBarItem Command="{Binding RevertCommand}"
+                               Content="{x:Static res:General.Revert}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                               GlyphSize="Custom" />
+        </wms:ActionBar>
 
         <ScrollViewer Grid.Row="1"
                       DataContext="{Binding Item}"
                       Focusable="False"
                       IsTabStop="True"
-                      VerticalScrollBarVisibility="Auto">
+                      Margin="10,0,10,10">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"
                                       MinWidth="400" />
                     <ColumnDefinition Width="*"
                                       MinWidth="400" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -162,7 +164,7 @@
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                      EditValue="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -230,39 +232,55 @@
                     </StackPanel>
                 </GroupBox>
 
-                <StackPanel Grid.Row="0"
-                            Grid.RowSpan="3"
-                            Grid.Column="2"
-                            MinWidth="200"
-                            MaxWidth="400"
-                            Margin="10,0"
-                            HorizontalAlignment="Center"
-                            Orientation="Vertical">
-                    <wms:WmsImage MinWidth="200"
-                                  MinHeight="200"
-                                  MaxWidth="400"
-                                  MaxHeight="500"
-                                  BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                  Path="{Binding Path=Image}" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  Content="{Binding CreationDate}" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  Content="{Binding LastModificationDate}" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  Content="{Binding InventoryDate}" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  Content="{Binding LastPickDate}" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  Content="{Binding LastStoreDate}" />
-                </StackPanel>
-
             </Grid>
 
         </ScrollViewer>
+
+        <ScrollViewer Grid.Column="1"
+                      Grid.RowSpan="2"
+                      Focusable="False"
+                      IsTabStop="False">
+
+            <Border DataContext="{Binding Item}"
+                    Style="{StaticResource InfoBoxBorderStyle}">
+
+                <GroupBox Header="{x:Static res:MasterData.OtherInformation}"
+                          Margin="20,0">
+                    <StackPanel Orientation="Vertical">
+                        <wms:WmsImage MaxWidth="300"
+                                      MaxHeight="400"
+                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                      BorderThickness="1"
+                                      Path="{Binding Path=Image}"
+                                      Visibility="{Binding Path=Image, Converter={StaticResource RTVHC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding CreationDate}"
+                                      Visibility="{Binding Path=CreationDate, Converter={StaticResource RTVHC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding LastModificationDate}"
+                                      Visibility="{Binding Path=LastModificationDate, Converter={StaticResource RTVHC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding InventoryDate}"
+                                      Visibility="{Binding Path=InventoryDate, Converter={StaticResource RTVHC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding LastPickDate}"
+                                      Visibility="{Binding Path=LastPickDate, Converter={StaticResource RTVHC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding LastStoreDate}"
+                                      Visibility="{Binding Path=LastStoreDate, Converter={StaticResource RTVHC}}" />
+                    </StackPanel>
+
+                </GroupBox>
+
+            </Border>
+
+        </ScrollViewer>
+
     </Grid>
+
 </wms:WmsView>

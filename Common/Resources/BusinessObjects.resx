@@ -685,4 +685,20 @@
     <value>Sub2</value>
     <comment>Item Withdraw - Sub2</comment>
   </data>
+  <data name="ItemWithdrawQuantityInvalidError" xml:space="preserve">
+    <value>Invalid Quantity</value>
+    <comment>Item Withdraw - Quantity Invalid Error</comment>
+  </data>
+  <data name="ItemWithdrawAreaInvalidError" xml:space="preserve">
+    <value>Invalid Area</value>
+    <comment>Item Withdraw - Area Invalid Error</comment>
+  </data>
+  <data name="ItemWithdrawBayInvalidError" xml:space="preserve">
+    <value>Invalid Bay</value>
+    <comment>Item Withdraw - Bay Invalid Error</comment>
+  </data>
+  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails Invalid</value>
+    <comment>Item Withdraw - ItemDetails Invalid Error</comment>
+  </data>
 </root>

@@ -543,4 +543,16 @@
   <data name="ItemWithdrawLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
+  <data name="ItemWithdrawQuantityInvalidError" xml:space="preserve">
+    <value>Quantità non valida</value>
+  </data>
+  <data name="ItemWithdrawAreaInvalidError" xml:space="preserve">
+    <value>Area non valida</value>
+  </data>
+  <data name="ItemWithdrawBayInvalidError" xml:space="preserve">
+    <value>Baia non valida</value>
+  </data>
+  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails non valido</value>
+  </data>
 </root>

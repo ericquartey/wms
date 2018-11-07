@@ -28,11 +28,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         {
 #if NET4
             this.connection = new HubConnection(url);
-            this.proxy = connection.CreateHubProxy(WakeUpEndpoint);
+            this.proxy = this.connection.CreateHubProxy(WakeUpEndpoint);
 
             this.proxy.On<string, string>(WakeUpMessageName, (a, b) => this.OnMessageReceived(a, b));
 
-            connection.StateChanged += this.OnConnectionStateChanged;
+            this.connection.StateChanged += this.OnConnectionStateChanged;
 #else
             this.connection = new HubConnectionBuilder()
               .WithUrl(new Uri(new Uri(url), WakeUpEndpoint).AbsoluteUri)

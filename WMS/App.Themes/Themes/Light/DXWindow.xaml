@@ -16,7 +16,7 @@
                 <TextBlock x:Name="PART_Text"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontSize="14"
+                           FontSize="{DynamicResource WindowTitleFontSize}"
                            FontWeight="Normal"
                            Foreground="{DynamicResource OnCommonSecondaryMedium}"
                            IsHitTestVisible="False"

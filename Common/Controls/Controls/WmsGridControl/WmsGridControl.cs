@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
@@ -62,6 +63,8 @@ namespace Ferretto.Common.Controls
         protected override void OnInitialized(System.EventArgs e)
         {
             base.OnInitialized(e);
+
+            this.SetValue(ScrollBarExtensions.ScrollBarModeProperty, ScrollBarMode.TouchOverlap);
 
             this.DataContext = this.InstantiateViewModel();
 
