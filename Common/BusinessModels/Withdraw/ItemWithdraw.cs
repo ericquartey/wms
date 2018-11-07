@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -13,7 +14,7 @@ namespace Ferretto.Common.BusinessModels
         private int areaId;
         private IEnumerable<Bay> bayChoices;
         private int bayId;
-        private ItemDetails item;
+        private ItemDetails itemDetails;
         private int quantity;
 
         #endregion Fields
@@ -46,27 +47,36 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.bayId, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemWithdrawItem), ResourceType = typeof(BusinessObjects))]
-        public ItemDetails Item
-        {
-            get => this.item;
-            set => this.SetProperty(ref this.item, value);
-        }
+        public override string Error => String.Join(Environment.NewLine, new[]
+            {
+                this[nameof(this.ItemDetails)],
+                this[nameof(this.AreaId)],
+                this[nameof(this.BayId)],
+                this[nameof(this.Quantity)],
+            }.Where(s => !String.IsNullOrEmpty(s))
+        );
 
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
-        public string ItemCode => this.Item?.Code;
+        public string ItemCode => this.ItemDetails?.Code;
 
         [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
-        public string ItemDescription => this.Item?.Description;
+        public string ItemDescription => this.ItemDetails?.Description;
+
+        [Display(Name = nameof(BusinessObjects.ItemWithdrawItem), ResourceType = typeof(BusinessObjects))]
+        public ItemDetails ItemDetails
+        {
+            get => this.itemDetails;
+            set => this.SetProperty(ref this.itemDetails, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ItemManagementTypeDescription => this.Item?.ItemManagementTypeDescription;
+        public string ItemManagementTypeDescription => this.ItemDetails?.ItemManagementTypeDescription;
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MeasureUnitDescription), ResourceType = typeof(BusinessObjects))]
-        public string MeasureUnitDescription => this.Item?.MeasureUnitDescription;
+        public string MeasureUnitDescription => this.ItemDetails?.MeasureUnitDescription;
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
         public int Quantity
@@ -85,8 +95,51 @@ namespace Ferretto.Common.BusinessModels
         public string Sub2 { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public int? TotalAvailable => this.Item?.TotalAvailable;
+        public int? TotalAvailable => this.ItemDetails?.TotalAvailable;
 
         #endregion Properties
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.AreaId):
+                        if (this.AreaId == 0)
+                        {
+                            return Resources.BusinessObjects.ItemWithdrawAreaInvalidError;
+                        }
+                        break;
+
+                    case nameof(this.BayId):
+                        if (this.BayId == 0)
+                        {
+                            return Resources.BusinessObjects.ItemWithdrawBayInvalidError;
+                        }
+                        break;
+
+                    case nameof(this.Quantity):
+                        if (this.Quantity <= 0 || this.Quantity > this.TotalAvailable)
+                        {
+                            return Resources.BusinessObjects.ItemWithdrawQuantityInvalidError;
+                        }
+                        break;
+
+                    case nameof(this.ItemDetails):
+                        if (this.ItemDetails  == null)
+                        {
+                            return Resources.BusinessObjects.ItemWithdrawItemDetailsInvalidError;
+                        }
+                        break;
+                }
+
+                return String.Empty;
+            }
+        }
+
+        #endregion Indexers
     }
 }
