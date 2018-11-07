@@ -8,5 +8,6 @@
                                      Invert="True" />
 
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVC" />
+    <ctrls:ReferenceToVisibilityConverter x:Key="RTVHC" Hide="True" />
 
 </ResourceDictionary>
