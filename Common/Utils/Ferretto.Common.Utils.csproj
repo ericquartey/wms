@@ -12,8 +12,4 @@
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-
 </Project>

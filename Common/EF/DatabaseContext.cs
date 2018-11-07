@@ -93,9 +93,14 @@ namespace Ferretto.Common.EF
 
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(
-                    ConfigurationManager.ConnectionStrings["WmsConnectionString"].ConnectionString
-                );
+                var configuration = ConfigurationManager.ConnectionStrings["WmsConnectionString"];
+
+                if (configuration == null)
+                {
+                    throw new ConfigurationErrorsException("Setting 'WmsConnectionString' not found.");
+                }
+
+                optionsBuilder.UseSqlServer(configuration.ConnectionString);
             }
         }
 
