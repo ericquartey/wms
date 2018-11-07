@@ -155,16 +155,7 @@ namespace Ferretto.Common.Controls
                     double originY = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.Y, widthTrayPixel, this.Tray.Dimension.Width);
                     double originX = GraphicUtils.ConvertMillimetersToPixel(compartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width);
                     Position compartmentOriginPixel = new Position { X = (int)Math.Floor(originX), Y = (int)Math.Floor(originY) };
-                    //REALI
-                    //Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOrigin(compartmentOrigin, this.Tray, compartmentDimension);
-                    //i.Top = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.Y, widthTrayPixel, this.Tray.Dimension.Width);
-                    //i.Left = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.X, widthTrayPixel, this.Tray.Dimension.Width);
-                    ////GraphicUtils.AdjustAOriginBasedOnBorder(ref newPosition, this.tray);
-                    ////i.Top = Math.Floor(newPosition.Y);
-                    //i.Top = newPosition.Y;
-                    //i.Left = newPosition.X;
 
-                    //PIXEL
                     Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOriginPixel(compartmentOriginPixel, this.Tray, widthTrayPixel, heightTrayPixel, i.Width, i.Height);
                     i.Top = convertedCompartmentOrigin.Y;
                     i.Left = convertedCompartmentOrigin.X;
