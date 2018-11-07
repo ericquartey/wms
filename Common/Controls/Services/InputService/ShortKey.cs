@@ -15,7 +15,7 @@ namespace Ferretto.Common.Controls.Services
             this.ModifierKeySecond = ModifierKeys.None;
         }
 
-        public ShortKey(Key keySt, bool isHandled, string decription) : this(keySt, isHandled)
+        public ShortKey(Key keySt, bool isHandled, string description) : this(keySt, isHandled)
         {
             this.Description = this.Description;
         }
@@ -27,8 +27,8 @@ namespace Ferretto.Common.Controls.Services
             this.ModifierKeySecond = modifierKeySecond;
         }
 
-        public ShortKey(Key keySt, bool isHandled, string decription, ModifierKeys modifierKeyFirst = ModifierKeys.None, ModifierKeys modifierKeySecond = ModifierKeys.None) :
-               this(keySt, isHandled, decription)
+        public ShortKey(Key keySt, bool isHandled, string description, ModifierKeys modifierKeyFirst = ModifierKeys.None, ModifierKeys modifierKeySecond = ModifierKeys.None) :
+               this(keySt, isHandled, description)
         {
             this.ModifierKeyFirst = modifierKeyFirst;
             this.ModifierKeySecond = modifierKeySecond;
@@ -51,8 +51,8 @@ namespace Ferretto.Common.Controls.Services
             this.DoAction = action;
         }
 
-        public ShortKey(Key keySt, bool isHandled, string decription, ModifierKeys modifierKeyFirst, ModifierKeys modifierKeySecond, Action<ShortKeyAction> action) :
-           this(keySt, isHandled, decription)
+        public ShortKey(Key keySt, bool isHandled, string description, ModifierKeys modifierKeyFirst, ModifierKeys modifierKeySecond, Action<ShortKeyAction> action) :
+           this(keySt, isHandled, description)
         {
             this.ModifierKeyFirst = modifierKeyFirst;
             this.ModifierKeySecond = modifierKeySecond;
@@ -69,8 +69,8 @@ namespace Ferretto.Common.Controls.Services
             this.DoAction = action;
         }
 
-        public ShortKey(Key keySt, bool isHandled, string decription, Action<ShortKeyAction> action, ModifierKeys modifierKeyFirst = ModifierKeys.None, ModifierKeys modifierKeySecond = ModifierKeys.None) :
-               this(keySt, isHandled, decription)
+        public ShortKey(Key keySt, bool isHandled, string description, Action<ShortKeyAction> action, ModifierKeys modifierKeyFirst = ModifierKeys.None, ModifierKeys modifierKeySecond = ModifierKeys.None) :
+               this(keySt, isHandled, description)
         {
             this.ModifierKeyFirst = modifierKeyFirst;
             this.ModifierKeySecond = modifierKeySecond;
