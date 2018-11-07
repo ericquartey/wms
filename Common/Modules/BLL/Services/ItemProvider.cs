@@ -19,19 +19,15 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static readonly Expression<Func<DataModels.Item, bool>> FifoFilter =
             item => item.ItemManagementType != null && item.ItemManagementType.Description.Contains("FIFO");
 
-        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemProvider(DatabaseContext dataContext)
+        public ItemProvider(EnumerationProvider enumerationProvider)
         {
-            this.dataContext = dataContext;
-
-            //TODO: use interface for EnumerationProvider
-            this.enumerationProvider = new EnumerationProvider(dataContext);
+            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
@@ -49,13 +45,15 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
             {
-                return this.dataContext.Items.AsNoTracking().Count();
+                return context.Items.AsNoTracking().Count();
             }
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
-            return this.dataContext.Compartments
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.Compartments
                 .Where(c => c.Id == compartmentId)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -75,12 +73,14 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public ItemDetails GetById(int id)
         {
-            var itemDetails = this.dataContext.Items
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var itemDetails = context.Items
                 .Include(i => i.MeasureUnit)
                 .Include(i => i.ItemManagementType)
                 .Where(i => i.Id == id)
                 .GroupJoin(
-                    this.dataContext.Compartments
+                    context.Compartments
                         .AsNoTracking()
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
@@ -187,7 +187,7 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
             {
-                return this.dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+                return context.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
             }
         }
 

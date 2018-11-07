@@ -120,4 +120,13 @@
   <data name="MachineAll" xml:space="preserve">
     <value>Tutte</value>
   </data>
+  <data name="MachineTraslo" xml:space="preserve">
+    <value>Traslo</value>
+  </data>
+  <data name="MachineVertimagM" xml:space="preserve">
+    <value>Vertimag M</value>
+  </data>
+  <data name="MachineVertimagXS" xml:space="preserve">
+    <value>Vertimag XS</value>
+  </data>
 </root>

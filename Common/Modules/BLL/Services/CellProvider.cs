@@ -12,19 +12,15 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public CellProvider(DatabaseContext dataContext)
+        public CellProvider(EnumerationProvider enumerationProvider)
         {
-            this.dataContext = dataContext;
-
-            //TODO: use interface for EnumerationProvider
-            this.enumerationProvider = new EnumerationProvider(dataContext);
+            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
@@ -40,12 +36,50 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.Cells.AsNoTracking().Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Cells.AsNoTracking().Count();
+            }
+        }
+
+        public IQueryable<Enumeration> GetByAisleId(int aisleId)
+        {
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.Cells
+                .AsNoTracking()
+                .Include(c => c.Aisle)
+                .ThenInclude(a => a.Area)
+                .Where(c => c.AisleId == aisleId)
+                .OrderBy(c => c.CellNumber)
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})") //TODO: localize string
+                );
+        }
+
+        public IQueryable<Enumeration> GetByAreaId(int areaId)
+        {
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.Cells
+                .AsNoTracking()
+                .Include(c => c.Aisle)
+                .ThenInclude(a => a.Area)
+                .Where(c => c.Aisle.AreaId == areaId)
+                .OrderBy(c => c.Aisle.Name)
+                .ThenBy(c => c.CellNumber)
+                .Select(c => new Enumeration(
+                    c.Id,
+                    $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})") //TODO: localize string
+                );
         }
 
         public CellDetails GetById(int id)
         {
-            var cellDetails = this.dataContext.Cells
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var cellDetails = context.Cells
                 .Where(c => c.Id == id)
                 .Include(c => c.Aisle)
                 .Select(c => new CellDetails
@@ -80,7 +114,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public bool HasAnyLoadingUnits(int cellId)
         {
-            return this.dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
+            }
         }
 
         public int Save(CellDetails model)
@@ -90,11 +127,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Cells.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Cells.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                context.Entry(existingModel).CurrentValues.SetValues(model);
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
         }
 
         private static IQueryable<Cell> GetAllCellsWithFilter(DatabaseContext context, Expression<Func<DataModels.Cell, bool>> whereFunc = null)

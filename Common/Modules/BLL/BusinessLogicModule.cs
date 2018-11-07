@@ -44,6 +44,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IItemsClient, ItemsClient>(new InjectionConstructor(ConfigurationManager.AppSettings["SchedulerEndpoint"]));
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
+            this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
         }
 
         #endregion Methods
