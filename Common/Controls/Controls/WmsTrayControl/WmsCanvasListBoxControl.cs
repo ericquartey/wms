@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.BusinessModels;
@@ -125,6 +126,7 @@ namespace Ferretto.Common.Controls
             this.canvas.Width = dimension.Width;
             this.canvas.Height = dimension.Height;
         }
+        
 
         protected override void OnSelectionChanged(SelectionChangedEventArgs e)
         {

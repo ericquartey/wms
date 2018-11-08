@@ -21,8 +21,11 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty CompartmentsProperty = DependencyProperty.Register(
                     nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
+        public static readonly DependencyProperty IsCompartmentSelectableProperty = DependencyProperty.Register(
+                            nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true, new PropertyChangedCallback(OnIsCompartmentSelectableChanged)));
+
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
-                    nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnReadOnlysChanged)));
+                            nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnReadOnlysChanged)));
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
                                     nameof(SelectedColorFilterFunc), typeof(Func<CompartmentDetails, CompartmentDetails, Color>), typeof(WmsTrayControl),
@@ -33,6 +36,9 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
                             nameof(ShowBackground), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowBackgroundChanged)));
+
+        public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(
+                            nameof(ShowRuler), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnShowRulerChanged)));
 
         public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
                             nameof(Tray), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnTrayChanged)));
@@ -50,6 +56,7 @@ namespace Ferretto.Common.Controls
             this.CanvasListBoxControl.DataContext = new WmsTrayControlViewModel();
             this.CanvasListBoxControl.TrayControl = this;
             this.SetBackground(this.ShowBackground);
+            this.SetRuler(this.ShowRuler);
         }
 
         #endregion Constructors
@@ -60,6 +67,12 @@ namespace Ferretto.Common.Controls
         {
             get { return this.compartments; }
             set { this.SetValue(CompartmentsProperty, value); }
+        }
+
+        public bool IsCompartmentSelectable
+        {
+            get => (bool)this.GetValue(IsCompartmentSelectableProperty);
+            set => this.SetValue(IsCompartmentSelectableProperty, value);
         }
 
         public bool ReadOnly
@@ -87,6 +100,12 @@ namespace Ferretto.Common.Controls
         {
             get => (bool)this.GetValue(ShowBackgroundProperty);
             set => this.SetValue(ShowBackgroundProperty, value);
+        }
+
+        public bool ShowRuler
+        {
+            get => (bool)this.GetValue(ShowRulerProperty);
+            set => this.SetValue(ShowRulerProperty, value);
         }
 
         public Tray Tray
@@ -139,6 +158,24 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public void SetRuler(bool? show)
+        {
+            if (show.HasValue && show.Value || this.ShowBackground)
+            {
+                this.horizontalRuler.Visibility = Visibility.Visible;
+                this.verticalRuler.Visibility = Visibility.Visible;
+                this.UnitMetric.Visibility = Visibility.Visible;
+                this.CanvasListBoxControl.Margin = new Thickness { Top = 25, Left = 25, Right = 10, Bottom = 10 };
+            }
+            else
+            {
+                this.horizontalRuler.Visibility = Visibility.Collapsed;
+                this.verticalRuler.Visibility = Visibility.Collapsed;
+                this.UnitMetric.Visibility = Visibility.Collapsed;
+                this.CanvasListBoxControl.Margin = new Thickness { Top = 0, Left = 0, Right = 10, Bottom = 10 };
+            }
+        }
+
         public void UpdateRulers(double widthNewCalculated, double heightNewCalculated)
         {
             if (this.horizontalRuler.Origin == null)
@@ -168,11 +205,22 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        private static void OnIsCompartmentSelectableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                Debug.WriteLine($"IsSelectable Property: {e.NewValue}");
+
+                viewModel.UpdateIsSelectablePropertyToCompartments((bool)e.NewValue);
+            }
+        }
+
         private static void OnReadOnlysChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                wmsTrayControl.CanvasListBoxControl.IsEnabled = !(bool)e.NewValue;
+                Debug.WriteLine($"ReadOnly Property: {e.NewValue}");
+                viewModel.UpdateReadOnlyPropertyToCompartments((bool)e.NewValue);
             }
         }
 
@@ -215,6 +263,14 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 wmsTrayControl.SetBackground((bool)e.NewValue);
+            }
+        }
+
+        private static void OnShowRulerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            {
+                wmsTrayControl.SetRuler((bool)e.NewValue);
             }
         }
 
