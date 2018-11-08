@@ -123,6 +123,13 @@
                     <dxg:GridColumn FieldName="RegistrationNumber" />
                 </wms:WmsGridControl.Columns>
 
+                <wms:WmsGridControl.SortInfo>
+                    <dxg:GridSortInfo FieldName="AreaName"
+                                      SortOrder="Ascending" />
+                    <dxg:GridSortInfo FieldName="Nickname"
+                                      SortOrder="Ascending" />
+                </wms:WmsGridControl.SortInfo>
+
             </wms:WmsGridControl>
         </Grid>
 

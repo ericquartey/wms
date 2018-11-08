@@ -65,7 +65,9 @@
                                       SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                     </Border>
                     <ControlTemplate.Triggers>
-
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" TargetName="bg" Value="0.56"/>
+                        </Trigger>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="bg" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
                             <Setter TargetName="bg" Property="BorderThickness" Value="1" />

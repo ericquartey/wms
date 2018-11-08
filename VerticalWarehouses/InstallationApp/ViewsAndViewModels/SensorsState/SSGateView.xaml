@@ -37,11 +37,13 @@
                 <StackPanel Grid.Row="2"
                             Grid.Column="0">
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.GateSensorA}" />
+                                                LabelText="{x:Static res:InstallationApp.GateSensorA}"
+                                                SensorState="{Binding GateSensorA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.GateSensorB}" />
+                                                LabelText="{x:Static res:InstallationApp.GateSensorB}"
+                                                SensorState="{Binding GateSensorB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

@@ -10,6 +10,10 @@
 
         void Disappear(INavigableViewModel viewModel);
 
+        void Disappear(INavigableView viewModel);
+
+        INavigableView GetRegisteredView(string viewName);
+
         INavigableViewModel GetRegisteredViewModel(string mapId, object data = null);
 
         INavigableView GetView(string moduleViewName, object data = null);
@@ -17,6 +21,8 @@
         string GetViewModelBindFirstId(string fullViewName);
 
         INavigableViewModel GetViewModelByName(string viewModelName);
+
+        INavigableViewModel GetViewModelFromActiveWindow();
 
         void LoadModule(string moduleName);
 

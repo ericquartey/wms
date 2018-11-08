@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
+    <Style x:Key="CustomSensorControlStyle"
+           TargetType="{x:Type custom:CustomSensorControl}">
+        <Style.Triggers>
+            <Trigger Property="SensorState" Value="true">
+                <Setter Property="BulletColor" Value="{StaticResource FerrettoGreen}" />
+            </Trigger>
+            <Trigger Property="SensorState" Value="false">
+                <Setter Property="BulletColor" Value="{StaticResource FerrettoMediumGray}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

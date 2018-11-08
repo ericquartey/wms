@@ -450,7 +450,7 @@
     <comment>Label text</comment>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
-    <value>Current position:</value>
+    <value>Current position (mm):</value>
     <comment>Label text</comment>
   </data>
   <data name="DelayBetweenCicles" xml:space="preserve">
@@ -480,5 +480,226 @@
   <data name="Gate3Control" xml:space="preserve">
     <value>Gate Control 3</value>
     <comment>Title - Button text</comment>
+  </data>
+  <data name="ActiveRaysQuantity" xml:space="preserve">
+    <value>Active rays quantity:</value>
+    <comment>Label</comment>
+  </data>
+  <data name="CurrentHeight" xml:space="preserve">
+    <value>Current height (mm):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="GateCalibrated" xml:space="preserve">
+    <value>Gate succesfully calibrated.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="GateCorrection" xml:space="preserve">
+    <value>Gate correction (mm):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="GateOutOfTolerance" xml:space="preserve">
+    <value>Gate is out of tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="Gate1HeightControl" xml:space="preserve">
+    <value>Gate 1 Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="PanelsControl" xml:space="preserve">
+    <value>Panels Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="SpeedMMSec" xml:space="preserve">
+    <value>Speed (mm/sec):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="SystemErrorMM" xml:space="preserve">
+    <value>System error (mm):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="Tolerance" xml:space="preserve">
+    <value>Tolerance (mm +/-):</value>
+    <comment>Label</comment>
+  </data>
+  <data name="VerticalOffsetCalibration" xml:space="preserve">
+    <value>Vertical Offset Calibration</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="WeightControl" xml:space="preserve">
+    <value>Weight Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate2HeightControl" xml:space="preserve">
+    <value>Gate 2 Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Gate3HeightControl" xml:space="preserve">
+    <value>Gate 3 Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="GateHeightControl" xml:space="preserve">
+    <value>Gate Height Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="AcceptableWeightTolerance" xml:space="preserve">
+    <value>Acceptable weight tolerance (%):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="InsertedWeight" xml:space="preserve">
+    <value>Inserted weight (kg):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MesuredWeight" xml:space="preserve">
+    <value>Mesured weight (kg):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MesuredWeightInTolerance" xml:space="preserve">
+    <value>Mesured weight is in tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MesuredWeightOutOfTolerance" xml:space="preserve">
+    <value>Mesured weight is out of tolerance.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="TestRun" xml:space="preserve">
+    <value>Test run:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CorrectOffset" xml:space="preserve">
+    <value>Correct offset (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentOffset" xml:space="preserve">
+    <value>Current offset (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="DoCorrectOffset" xml:space="preserve">
+    <value>Correct Offset</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="ReferenceCellHeight" xml:space="preserve">
+    <value>Reference's cell height (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="ReferenceCellNumber" xml:space="preserve">
+    <value>Reference's cell number:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="StepDown" xml:space="preserve">
+    <value>Step -</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StepUp" xml:space="preserve">
+    <value>Step +</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="StepValue" xml:space="preserve">
+    <value>Step value (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellHeight" xml:space="preserve">
+    <value>Current cell's height (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CellsPanelControl" xml:space="preserve">
+    <value>Cells' Panel Control</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="CurrentCell" xml:space="preserve">
+    <value>Current cell:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="CurrentPanel" xml:space="preserve">
+    <value>Current panel:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PanelCorrection" xml:space="preserve">
+    <value>Panel correction (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="TotalPanels" xml:space="preserve">
+    <value>Total panels:</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Front</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Correct</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="InstallationState" xml:space="preserve">
+    <value>Installation State</value>
+    <comment>Title - Button text</comment>
+  </data>
+  <data name="BeltBurnishingDone" xml:space="preserve">
+    <value>Belt burnishing</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate1Done" xml:space="preserve">
+    <value>Gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate2Done" xml:space="preserve">
+    <value>Gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Gate3Done" xml:space="preserve">
+    <value>Gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="HorizontalAxisHomedDone" xml:space="preserve">
+    <value>Horizontal axis homed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser1Done" xml:space="preserve">
+    <value>Laser gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser2Done" xml:space="preserve">
+    <value>Laser gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Laser3Done" xml:space="preserve">
+    <value>Laser gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MachineDone" xml:space="preserve">
+    <value>Machine installed completely</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape1Done" xml:space="preserve">
+    <value>Shape gate 1</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape2Done" xml:space="preserve">
+    <value>Shape gate 2</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape3Done" xml:space="preserve">
+    <value>Shape gate 3</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalAxisHomedDone" xml:space="preserve">
+    <value>Vertical axis homed</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalResolutionDone" xml:space="preserve">
+    <value>Vertical resolution</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="VerticalAxisCalibration" xml:space="preserve">
+    <value>Vertical Axis Calibration</value>
+  </data>
+  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
+    <value>Axis Calibrated Successfully</value>
+  </data>
+  <data name="AxisNotCalibratedYet" xml:space="preserve">
+    <value>Axis Not Calibrated Yet</value>
   </data>
 </root>

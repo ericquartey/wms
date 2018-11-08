@@ -10,11 +10,30 @@
     <Grid Height="610">
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
-            <RowDefinition Height="590" />
+            <RowDefinition Height="45" />
+            <RowDefinition Height="500" />
+            <RowDefinition Height="45" />
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="1"
+        <RepeatButton Grid.Row="1"
+                      Margin="15,0,0,0"
+                      Click="ScrollUpButtonClick"
+                      Content="UP"
+                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}" />
+        <RepeatButton Grid.Row="3"
+                      Height="38"
+                      Margin="15,0,0,0"
+                      Click="ScrollDownButtonClick"
+                      Content="DOWN"
+                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}" />
+
+        <ScrollViewer Name="NavigationButtonScrollViewer"
+                      Grid.Row="2"
+                      PanningMode="Both"
                       VerticalScrollBarVisibility="Hidden">
             <StackPanel>
+                <Button Command="{Binding DataContext.InstallationStateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.InstallationState}"
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
@@ -35,11 +54,21 @@
                         Content="{x:Static res:InstallationApp.BeltBurnishing}"
                         IsEnabled="{Binding IsBeltBurnishingButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Content="{x:Static res:InstallationApp.GateSetUp}"
-                        IsEnabled="False"
+                <Button Command="{Binding DataContext.GateHeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.GateHeightControl}"
+                        IsEnabled="{Binding IsGateHeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Content="{x:Static res:InstallationApp.VerifyWeightController}"
-                        IsEnabled="False"
+                <Button Command="{Binding DataContext.WeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.WeightControl}"
+                        IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                <Button Command="{Binding DataContext.VerticalOffsetCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.VerticalOffsetCalibration}"
+                        IsEnabled="{Binding IsVerticalOffsetCalibrationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                <Button Command="{Binding DataContext.CellsPanelControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:InstallationApp.CellsPanelControl}"
+                        IsEnabled="{Binding IsCellsPanelControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
             </StackPanel>
         </ScrollViewer>

@@ -267,12 +267,21 @@
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
                             </wms:WmsGridControl.View>
-                            <dxg:GridColumn Width="70*"
-                                            FieldName="Code" />
-                            <dxg:GridColumn Width="150*"
-                                            FieldName="Description" />
-                            <dxg:GridColumn Width="50*"
-                                            FieldName="MaxCapacity" />
+
+                            <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="70*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="150*"
+                                                FieldName="Description" />
+                                <dxg:GridColumn Width="50*"
+                                                FieldName="MaxCapacity" />
+                            </wms:WmsGridControl.Columns>
+
+                            <wms:WmsGridControl.SortInfo>
+                                <dxg:GridSortInfo FieldName="Code"
+                                                  SortOrder="Ascending" />
+                            </wms:WmsGridControl.SortInfo>
+
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>
@@ -293,10 +302,8 @@
 
         </ScrollViewer>
 
-        <Border Grid.Column="1" Style="{StaticResource InfoBoxBorderStyle}" />
-
-        <ScrollViewer Grid.Row="1"
-                      Grid.Column="1"
+        <ScrollViewer Grid.Column="1"
+                      Grid.RowSpan="2"
                       Focusable="False"
                       IsTabStop="False">
 
@@ -308,22 +315,28 @@
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding CreationDate}" />
+                                      Content="{Binding CreationDate}"
+                                      Visibility="{Binding Path=CreationDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LastHandlingDate}" />
+                                      Content="{Binding LastHandlingDate}"
+                                      Visibility="{Binding Path=LastHandlingDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding InventoryDate}" />
+                                      Content="{Binding InventoryDate}"
+                                      Visibility="{Binding Path=InventoryDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding FirstStoreDate}" />
+                                      Content="{Binding FirstStoreDate}"
+                                      Visibility="{Binding Path=FirstStoreDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LastStoreDate}" />
+                                      Content="{Binding LastStoreDate}"
+                                      Visibility="{Binding Path=LastStoreDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LastPickDate}" />
+                                      Content="{Binding LastPickDate}"
+                                      Visibility="{Binding Path=LastPickDate, Converter={StaticResource RTVC}}" />
                     </StackPanel>
 
                 </GroupBox>

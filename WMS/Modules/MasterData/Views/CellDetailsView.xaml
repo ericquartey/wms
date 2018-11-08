@@ -181,16 +181,26 @@
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
                             </wms:WmsGridControl.View>
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Code" />
-                            <dxg:GridColumn Width="250*"
-                                            FieldName="LoadingUnitTypeDescription" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="LoadingUnitStatusDescription" />
-                            <dxg:GridColumn Width="80*"
-                                            FieldName="AbcClassDescription" />
-                            <dxg:GridColumn Width="150*"
-                                            FieldName="CellPositionDescription" />
+
+                            <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="250*"
+                                                FieldName="LoadingUnitTypeDescription" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="LoadingUnitStatusDescription" />
+                                <dxg:GridColumn Width="80*"
+                                                FieldName="AbcClassDescription" />
+                                <dxg:GridColumn Width="150*"
+                                                FieldName="CellPositionDescription" />
+                            </wms:WmsGridControl.Columns>
+
+                            <wms:WmsGridControl.SortInfo>
+                                <dxg:GridSortInfo FieldName="Code"
+                                                  SortOrder="Ascending" />
+                            </wms:WmsGridControl.SortInfo>
+
+
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>

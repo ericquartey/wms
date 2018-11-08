@@ -29,6 +29,15 @@
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
+    <Style x:Key="InstallationAppViewsComboBoxItemStyle"
+           TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+        <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
     <Style x:Key="UserComboBoxItemStyle"
            TargetType="{x:Type ComboBoxItem}">
         <Setter Property="Background" Value="Transparent" />

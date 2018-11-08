@@ -45,6 +45,15 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public static INavigableView GetActiveView()
+        {
+            if (!(WmsMainDockLayoutManager.Current.DockController.ActiveItem is LayoutPanel activePanel))
+            {
+                return null;
+            }
+            return activePanel.Content as INavigableView;
+        }
+
         public void ActivateView(string mapId)
         {
             if (string.IsNullOrEmpty(mapId))

@@ -4,6 +4,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:gatesControl="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl"
+        xmlns:gatesHeightControl="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl"
         xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
         xmlns:lowSpeedMovements="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,6 +16,7 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -61,6 +63,18 @@
         <DataTemplate DataType="{x:Type singleViews:BeltBurnishingViewModel}">
             <singleViews:BeltBurnishingView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:WeightControlViewModel}">
+            <singleViews:WeightControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:CellsPanelsControlViewModel}">
+            <singleViews:CellsPanelsControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:VerticalOffsetCalibrationViewModel}">
+            <singleViews:VerticalOffsetCalibrationView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:InstallationStateViewModel}">
+            <singleViews:InstallationStateView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type gatesControl:GatesControlNavigationButtonsViewModel}">
             <gatesControl:GatesControlNavigationButtonsView />
         </DataTemplate>
@@ -72,6 +86,18 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type gatesControl:Gate3ControlViewModel}">
             <gatesControl:Gate3ControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesHeightControl:Gate1HeightControlViewModel}">
+            <gatesHeightControl:Gate1HeightControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesHeightControl:Gate2HeightControlViewModel}">
+            <gatesHeightControl:Gate2HeightControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesHeightControl:Gate3HeightControlViewModel}">
+            <gatesHeightControl:Gate3HeightControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type gatesHeightControl:GatesHeightControlNavigationButtonsViewModel}">
+            <gatesHeightControl:GatesHeightControlNavigationButtonsView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
             <viewsAndViewModels:MainWindowNavigationButtonsView />

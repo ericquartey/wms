@@ -138,6 +138,15 @@ namespace Ferretto.Common.Controls
             return parentWmsView?.Data;
         }
 
+        public INavigableViewModel GetCurrentViewModel()
+        {
+            if (this.Content == null)
+            {
+                return null;
+            }
+            return ((FrameworkElement)this.Content).DataContext as INavigableViewModel;
+        }
+
         #endregion Methods
     }
 }
