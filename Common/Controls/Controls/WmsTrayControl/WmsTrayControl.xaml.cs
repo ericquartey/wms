@@ -221,8 +221,6 @@ namespace Ferretto.Common.Controls
             {
                 Debug.WriteLine($"ReadOnly Property: {e.NewValue}");
                 viewModel.UpdateReadOnlyPropertyToCompartments((bool)e.NewValue);
-
-                //wmsTrayControl.CanvasListBoxControl.IsEnabled = !(bool)e.NewValue;
             }
         }
 

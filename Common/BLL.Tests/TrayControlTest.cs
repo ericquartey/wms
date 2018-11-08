@@ -238,7 +238,6 @@ namespace Feretto.Common.BLL.Tests
             Tray tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
-                //ReadOnly = false
             };
             tray.AddCompartment(new CompartmentDetails()
             {

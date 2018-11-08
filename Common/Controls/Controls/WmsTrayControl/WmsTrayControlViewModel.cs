@@ -188,7 +188,6 @@ namespace Ferretto.Common.Controls
                         Top = (int)(compartment.YPosition * ratio),
                         ColorFill = Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
-                        //IsSelected = true,
                         ReadOnly = this.ReadOnly,
                         IsSelectable = this.IsCompartmentSelectable
                     });
@@ -281,7 +280,6 @@ namespace Ferretto.Common.Controls
                     Top = (int)(y * ratio),
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
-                    //IsSelected = true,
                     ReadOnly = this.ReadOnly,
                     IsSelectable = this.IsCompartmentSelectable
                 });

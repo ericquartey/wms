@@ -69,15 +69,6 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <!--<Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="3" />
-                        </Trigger>-->
-                        <!--<Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="8" />
-                        </Trigger>-->
-                        <!--<Trigger Property="IsEnabled" Value="True">
-                            <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{DynamicResource TrayBackgroundDisenabled}" />
-                        </Trigger>-->
                         <DataTrigger Binding="{Binding ReadOnly}"
                                      Value="True">
                             <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{DynamicResource TrayBackgroundDisenabled}" />
@@ -97,10 +88,6 @@
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="3" />
                         </MultiDataTrigger>
-                        <!--<DataTrigger Binding="{Binding IsSelectable}"
-                                     Value="True">
-                            <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="8" />
-                        </DataTrigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
@@ -145,13 +132,14 @@
 
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
+                        <DataTrigger Binding="{Binding ReadOnly}"
+                                     Value="false">
                             <Setter TargetName="ListBoxBorder" Property="BorderBrush">
                                 <Setter.Value>
                                     <SolidColorBrush Color="{StaticResource LightGrey}" />
                                 </Setter.Value>
                             </Setter>
-                        </Trigger>
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

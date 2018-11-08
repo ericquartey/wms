@@ -27,7 +27,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand saveCommand;
         private object selectedCompartment;
         private CompartmentDetails selectedCompartmentTray;
-
         private Tray tray;
 
         #endregion Fields
@@ -192,9 +191,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     Height = this.LoadingUnit.Length,
                     Width = this.LoadingUnit.Width
-                },
-                //ReadOnly = true,
-                //IsCompartmentSelectable = true
+                }
             };
             if (this.LoadingUnit.Compartments != null)
             {

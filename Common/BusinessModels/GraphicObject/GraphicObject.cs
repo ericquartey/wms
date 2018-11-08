@@ -69,11 +69,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        //private bool isCompartmentSelectable;
-        //private bool readOnly;
-        //private bool showBackground;
-        //private bool showRuler;
-
         #region Properties
 
         public BindingList<CompartmentDetails> Compartments => this.compartments;
@@ -91,35 +86,11 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        //public bool IsCompartmentSelectable
-        //{
-        //    get { return this.isCompartmentSelectable; }
-        //    set { this.isCompartmentSelectable = value; }
-        //}
-
         public Position Origin { get; set; }
-
-        //public bool ReadOnly
-        //{
-        //    get { return this.readOnly; }
-        //    set { this.readOnly = value; }
-        //}
 
         public Dimension RulerSize { get; set; }
 
         #endregion Properties
-
-        //public bool ShowBackground
-        //{
-        //    get { return this.showBackground; }
-        //    set { this.showBackground = value; }
-        //}
-
-        //public bool ShowRuler
-        //{
-        //    get { return this.showRuler; }
-        //    set { this.showRuler = value; }
-        //}
 
         #region Methods
 
