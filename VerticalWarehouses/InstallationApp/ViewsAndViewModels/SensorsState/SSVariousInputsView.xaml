@@ -37,26 +37,33 @@
                 <StackPanel Grid.Row="2"
                             Grid.Column="0">
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.SecurityFunctionActive}" />
+                                                LabelText="{x:Static res:InstallationApp.SecurityFunctionActive}"
+                                                SensorState="{Binding SecurityFunctionActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.MushroomHeadButton}" />
+                                                LabelText="{x:Static res:InstallationApp.MushroomHeadButton}"
+                                                SensorState="{Binding MushroomHeadButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide}" />
+                                                LabelText="{x:Static res:InstallationApp.MicroCarterLeftSide}"
+                                                SensorState="{Binding MicroCarterLeftSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.MicroCarterRightSide}" />
+                                                LabelText="{x:Static res:InstallationApp.MicroCarterRightSide}"
+                                                SensorState="{Binding MicroCarterRightSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.AntiIntrusionGate}" />
+                                                LabelText="{x:Static res:InstallationApp.AntiIntrusionGate}"
+                                                SensorState="{Binding AntiIntrusionGate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.ElevatorEngineSelected}" />
+                                                LabelText="{x:Static res:InstallationApp.ElevatorEngineSelected}"
+                                                SensorState="{Binding ElevatorEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.CradleEngineSelected}" />
+                                                LabelText="{x:Static res:InstallationApp.CradleEngineSelected}"
+                                                SensorState="{Binding CradleEngineSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

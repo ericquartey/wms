@@ -28,6 +28,7 @@
 
         <ScrollViewer Name="NavigationButtonScrollViewer"
                       Grid.Row="2"
+                      PanningMode="Both"
                       VerticalScrollBarVisibility="Hidden">
             <StackPanel>
                 <Button Command="{Binding DataContext.InstallationStateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
@@ -56,9 +57,6 @@
                 <Button Command="{Binding DataContext.GateHeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.GateHeightControl}"
                         IsEnabled="{Binding IsGateHeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
-                <Button Content="{x:Static res:InstallationApp.GateSetUp}"
-                        IsEnabled="False"
                         Style="{StaticResource InstallationAppNavigationButtonStyle}" />
                 <Button Command="{Binding DataContext.WeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.WeightControl}"

@@ -7,30 +7,17 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
     {
         #region Fields
 
-        private readonly SolidColorBrush FERRETTOGRAY = (SolidColorBrush)new BrushConverter().ConvertFrom("#707173");
-        private readonly SolidColorBrush FERRETTOGREEN = (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639");
-        private SolidColorBrush brakeResistanceOverTemperatureFillColor;
-        private SolidColorBrush emergencyEndRunFillColor;
-        private SolidColorBrush verticalZeroSensorFillColor;
+        private bool brakeResistanceOvertemperature = true;
+        private bool emergencyEndRun;
+        private bool zeroVerticalSensor = true;
 
         #endregion Fields
 
-        #region Constructors
-
-        public SSVerticalAxisViewModel()
-        {
-            this.VerticalZeroSensorFillColor = this.FERRETTOGRAY;
-            this.BrakeResistanceOverTemperatureFillColor = this.FERRETTOGRAY;
-            this.EmergencyEndRunFillColor = this.FERRETTOGRAY;
-        }
-
-        #endregion Constructors
-
         #region Properties
 
-        public SolidColorBrush BrakeResistanceOverTemperatureFillColor { get => this.brakeResistanceOverTemperatureFillColor; set => this.SetProperty(ref this.brakeResistanceOverTemperatureFillColor, value); }
-        public SolidColorBrush EmergencyEndRunFillColor { get => this.emergencyEndRunFillColor; set => this.SetProperty(ref this.emergencyEndRunFillColor, value); }
-        public SolidColorBrush VerticalZeroSensorFillColor { get => this.verticalZeroSensorFillColor; set => this.SetProperty(ref this.verticalZeroSensorFillColor, value); }
+        public System.Boolean BrakeResistanceOvertemperature { get => this.brakeResistanceOvertemperature; set => this.SetProperty(ref this.brakeResistanceOvertemperature, value); }
+        public System.Boolean EmergencyEndRun { get => this.emergencyEndRun; set => this.SetProperty(ref this.emergencyEndRun, value); }
+        public System.Boolean ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
 
         #endregion Properties
     }

@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="40" />
+                <RowDefinition Height="70" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -40,13 +40,26 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <ComboBox Grid.Row="1"
-                      Margin="0,0,100,0"
+            <ComboBox Name="CBox"
+                      Grid.Row="1"
+                      Width="160"
+                      Margin="5,0,0,15"
+                      HorizontalAlignment="Left"
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
                       Background="Transparent"
+                      FontSize="20"
+                      Foreground="{StaticResource FerrettoPureWhite}"
                       Style="{StaticResource InstallationAppViewComboBoxTemplate}">
-                <ComboBoxItem Content="{x:Static res:General.Back}"
-                              IsSelected="True" />
-                <ComboBoxItem Content="{x:Static res:General.Front}" />
+                <ComboBoxItem Height="{Binding ElementName=CBox, Path=ActualHeight}"
+                              Content="{x:Static res:General.Back}"
+                              IsSelected="True"
+                              Style="{StaticResource InstallationAppViewsComboBoxItemStyle}"
+                              Template="{StaticResource InstallationAppViewsComboBoxItemTemplate}" />
+                <ComboBoxItem Height="{Binding ElementName=CBox, Path=ActualHeight}"
+                              Content="{x:Static res:General.Front}"
+                              Style="{StaticResource InstallationAppViewsComboBoxItemStyle}"
+                              Template="{StaticResource InstallationAppViewsComboBoxItemTemplate}" />
             </ComboBox>
             <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                 Margin="0,0,100,0"

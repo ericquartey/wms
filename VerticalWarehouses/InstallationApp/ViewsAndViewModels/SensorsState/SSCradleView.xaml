@@ -38,14 +38,17 @@
                 <StackPanel Grid.Row="2"
                             Grid.Column="0">
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}" />
+                                                LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
+                                                SensorState="{Binding ZeroPawlSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}" />
+                                                LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
+                                                SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{StaticResource FerrettoGreen}"
-                                                LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}" />
+                                                LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
+                                                SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

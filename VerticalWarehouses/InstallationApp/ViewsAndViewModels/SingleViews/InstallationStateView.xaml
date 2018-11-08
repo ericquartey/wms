@@ -43,47 +43,61 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
             <custom:CustomSensorControl Grid.Row="0"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.VerticalAxisHomedDone}" />
+                                        LabelText="{x:Static res:InstallationApp.VerticalAxisHomedDone}"
+                                        SensorState="{Binding IsVerticalHomingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="1"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.HorizontalAxisHomedDone}" />
+                                        LabelText="{x:Static res:InstallationApp.HorizontalAxisHomedDone}"
+                                        SensorState="{Binding IsHorizontalHomingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="2"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.VerticalResolutionDone}" />
+                                        LabelText="{x:Static res:InstallationApp.VerticalResolutionDone}"
+                                        SensorState="{Binding IsSetResolutionDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="3"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.BeltBurnishingDone}" />
+                                        LabelText="{x:Static res:InstallationApp.BeltBurnishingDone}"
+                                        SensorState="{Binding IsBeltBurnishingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="4"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Gate1Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Gate1Done}"
+                                        SensorState="{Binding IsGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="5"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Gate2Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Gate2Done}"
+                                        SensorState="{Binding IsGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="6"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Gate3Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Gate3Done}"
+                                        SensorState="{Binding IsGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="7"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Shape1Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Shape1Done}"
+                                        SensorState="{Binding IsShapeGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="8"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Shape2Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Shape2Done}"
+                                        SensorState="{Binding IsShapeGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="9"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Shape3Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Shape3Done}"
+                                        SensorState="{Binding IsShapeGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="10"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Laser1Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Laser1Done}"
+                                        SensorState="{Binding IsLaserGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="11"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Laser2Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Laser2Done}"
+                                        SensorState="{Binding IsLaserGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="12"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.Laser3Done}" />
+                                        LabelText="{x:Static res:InstallationApp.Laser3Done}"
+                                        SensorState="{Binding IsLaserGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="13"
-                                        BulletColor="{StaticResource FerrettoGreen}"
-                                        LabelText="{x:Static res:InstallationApp.MachineDone}" />
+                                        LabelText="{x:Static res:InstallationApp.MachineDone}"
+                                        SensorState="{Binding IsMachineDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource CustomSensorControlStyle}" />
         </Grid>
     </Grid>
 </UserControl>
