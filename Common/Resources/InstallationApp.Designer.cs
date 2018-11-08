@@ -106,6 +106,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Axis Calibrated Successfully.
+        /// </summary>
+        public static string AxisCalibratedSuccessfully {
+            get {
+                return ResourceManager.GetString("AxisCalibratedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Axis Not Calibrated Yet.
+        /// </summary>
+        public static string AxisNotCalibratedYet {
+            get {
+                return ResourceManager.GetString("AxisNotCalibratedYet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string Back {
@@ -268,7 +286,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current position:.
+        ///   Looks up a localized string similar to Current position (mm):.
         /// </summary>
         public static string CurrentPosition {
             get {
@@ -1290,6 +1308,15 @@ namespace Ferretto.Common.Resources {
         public static string VerticalAxisCalibrating {
             get {
                 return ResourceManager.GetString("VerticalAxisCalibrating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertical Axis Calibration.
+        /// </summary>
+        public static string VerticalAxisCalibration {
+            get {
+                return ResourceManager.GetString("VerticalAxisCalibration", resourceCulture);
             }
         }
         

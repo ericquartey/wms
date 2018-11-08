@@ -450,7 +450,7 @@
     <comment>Label text</comment>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
-    <value>Current position:</value>
+    <value>Current position (mm):</value>
     <comment>Label text</comment>
   </data>
   <data name="DelayBetweenCicles" xml:space="preserve">
@@ -692,5 +692,14 @@
   <data name="VerticalResolutionDone" xml:space="preserve">
     <value>Vertical resolution</value>
     <comment>Label text</comment>
+  </data>
+  <data name="VerticalAxisCalibration" xml:space="preserve">
+    <value>Vertical Axis Calibration</value>
+  </data>
+  <data name="AxisCalibratedSuccessfully" xml:space="preserve">
+    <value>Axis Calibrated Successfully</value>
+  </data>
+  <data name="AxisNotCalibratedYet" xml:space="preserve">
+    <value>Axis Not Calibrated Yet</value>
   </data>
 </root>

@@ -44,6 +44,7 @@ namespace Ferretto.VW.InstallationApp
         private readonly VerticalAxisCalibrationViewModel VerticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel();
         private readonly VerticalOffsetCalibrationViewModel VerticalOffsetCalibrationVMInstance = new VerticalOffsetCalibrationViewModel();
         private readonly WeightControlViewModel WeightControlVMInstance = new WeightControlViewModel();
+
         private ICommand backToMainWindowNavigationButtonsViewCommand;
         private ICommand beltBurnishingButtonCommand;
         private ICommand cellsPanelControlButtonCommand;
