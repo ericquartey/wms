@@ -81,6 +81,15 @@
                             <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="8" />
                         </MultiDataTrigger>
 
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="8" />
+                        </Trigger>
+
+                        <DataTrigger Binding="{Binding IsSelectable}"
+                                     Value="False">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding ReadOnly}" Value="False" />

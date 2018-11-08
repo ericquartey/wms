@@ -165,14 +165,14 @@ namespace Ferretto.Common.Controls
                 this.horizontalRuler.Visibility = Visibility.Visible;
                 this.verticalRuler.Visibility = Visibility.Visible;
                 this.UnitMetric.Visibility = Visibility.Visible;
-                this.CanvasListBoxControl.Margin = new Thickness { Top = 25, Left = 25, Right = 10, Bottom = 10 };
+                this.CanvasListBoxControl.Margin = new Thickness { Top = 25, Left = 25, Right = 1, Bottom = 1 };
             }
             else
             {
                 this.horizontalRuler.Visibility = Visibility.Collapsed;
                 this.verticalRuler.Visibility = Visibility.Collapsed;
                 this.UnitMetric.Visibility = Visibility.Collapsed;
-                this.CanvasListBoxControl.Margin = new Thickness { Top = 0, Left = 0, Right = 10, Bottom = 10 };
+                this.CanvasListBoxControl.Margin = new Thickness { Top = 0, Left = 0, Right = 1, Bottom = 1 };
             }
         }
 
