@@ -5,7 +5,7 @@
   </PropertyGroup>
   
   <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+    <OutputPath>..\..\bin\Release\</OutputPath>
   </PropertyGroup>
   
   <ItemGroup>

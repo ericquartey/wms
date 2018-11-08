@@ -702,4 +702,8 @@
   <data name="AxisNotCalibratedYet" xml:space="preserve">
     <value>Axis Not Calibrated Yet</value>
   </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Cells Control</value>
+    <comment>Title - Button text</comment>
+  </data>
 </root>

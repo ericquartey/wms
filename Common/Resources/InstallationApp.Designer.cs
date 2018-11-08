@@ -187,6 +187,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cells Control.
+        /// </summary>
+        public static string CellsControl {
+            get {
+                return ResourceManager.GetString("CellsControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cells&apos; Panel Control.
         /// </summary>
         public static string CellsPanelControl {
