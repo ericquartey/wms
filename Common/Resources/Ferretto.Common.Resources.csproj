@@ -1,12 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
-    <Platforms>AnyCPU;x64</Platforms>
+    <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
   
   <PropertyGroup>
-    <OutputPath>..\..\bin\Release\</OutputPath>
+    <OutputPath>..\..\bin\Debug\</OutputPath>
   </PropertyGroup>
   
   <ItemGroup>
