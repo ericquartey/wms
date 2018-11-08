@@ -79,6 +79,22 @@
       <DependentUpon>GatesControlNavigationButtonsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlView.xaml.cs">
+      <DependentUpon>Gate1HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate2HeightControlView.xaml.cs">
+      <DependentUpon>Gate2HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate2HeightControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate3HeightControlView.xaml.cs">
+      <DependentUpon>Gate3HeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate3HeightControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\GatesHeightControlNavigationButtonsView.xaml.cs">
+      <DependentUpon>GatesHeightControlNavigationButtonsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\GatesHeightControl\GatesHeightControlNavigationButtonsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml.cs">
       <DependentUpon>LSMTGateEngineView.xaml</DependentUpon>
     </Compile>
@@ -131,6 +147,14 @@
       <DependentUpon>BeltBurnishingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\BeltBurnishingViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml.cs">
+      <DependentUpon>CellsPanelsControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml.cs">
+      <DependentUpon>InstallationStateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\InstallationStateViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml.cs">
       <DependentUpon>ResolutionCalibrationVerticalAxisView.xaml</DependentUpon>
     </Compile>
@@ -139,6 +163,14 @@
       <DependentUpon>VerticalAxisCalibrationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\VerticalOffsetCalibrationView.xaml.cs">
+      <DependentUpon>VerticalOffsetCalibrationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\VerticalOffsetCalibrationViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\WeightControlView.xaml.cs">
+      <DependentUpon>WeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\WeightControlViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -160,6 +192,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesHeightControl\Gate2HeightControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesHeightControl\Gate3HeightControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\GatesHeightControl\GatesHeightControlNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -215,11 +263,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\SingleViews\ResolutionCalibrationVerticalAxisView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SingleViews\VerticalAxisCalibrationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\VerticalOffsetCalibrationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\WeightControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -40,14 +40,17 @@
                 <StackPanel Grid.Row="2"
                             Grid.Column="0">
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{Binding VerticalZeroSensorFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}" />
+                                                LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
+                                                SensorState="{Binding ZeroVerticalSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{Binding EmergencyEndRunFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.EmergencyEndRun}" />
+                                                LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
+                                                SensorState="{Binding EmergencyEndRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
-                                                BulletColor="{Binding BrakeResistanceOverTemperatureFillColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}" />
+                                                LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}"
+                                                SensorState="{Binding BrakeResistanceOvertemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Style="{StaticResource CustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20" />
             <RowDefinition Height="510" />
-            <RowDefinition Height="80" />
+            <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1">
             <Button Command="{Binding DataContext.LSMTVerticalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
@@ -26,6 +26,7 @@
                     Style="{StaticResource InstallationAppNavigationButtonStyle}" />
         </StackPanel>
         <Button Grid.Row="2"
+                Margin="15,0,0,0"
                 Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 Content="{x:Static res:General.Back}"
                 Style="{StaticResource InstallationAppNavigationButtonStyle}" />
