@@ -18,14 +18,16 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private bool isCompartmentSelectableTray;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private object modelSelectionChangedSubscription;
+        private bool readOnlyTray;
         private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedCompartment;
-
         private CompartmentDetails selectedCompartmentTray;
+
         private Tray tray;
 
         #endregion Fields
@@ -63,6 +65,12 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        public bool IsCompartmentSelectableTray
+        {
+            get => this.isCompartmentSelectableTray;
+            set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
+        }
+
         public LoadingUnitDetails LoadingUnit
         {
             get => this.loadingUnit;
@@ -80,6 +88,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.loadingUnitHasCompartments;
             set => this.SetProperty(ref this.loadingUnitHasCompartments, value);
+        }
+
+        public bool ReadOnlyTray
+        {
+            get => this.readOnlyTray;
+            set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
         public ICommand RevertCommand => this.revertCommand ??
@@ -179,14 +193,19 @@ namespace Ferretto.WMS.Modules.MasterData
                     Height = this.LoadingUnit.Length,
                     Width = this.LoadingUnit.Width
                 },
-                ReadOnly = true,
-                IsCompartmentSelectable = true
+                //ReadOnly = true,
+                //IsCompartmentSelectable = true
             };
             if (this.LoadingUnit.Compartments != null)
             {
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
             this.RaisePropertyChanged(nameof(this.Tray));
+
+            this.readOnlyTray = true;
+            this.isCompartmentSelectableTray = true;
+            this.RaisePropertyChanged(nameof(this.ReadOnlyTray));
+            this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
         }
 
         private void LoadData()

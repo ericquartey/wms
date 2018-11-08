@@ -21,7 +21,7 @@ namespace Feretto.Common.BLL.Tests
             Tray tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
-                ReadOnly = false
+                //ReadOnly = false
             };
             //100
             tray.AddCompartment(new CompartmentDetails()
@@ -86,7 +86,7 @@ namespace Feretto.Common.BLL.Tests
             Tray tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
-                ReadOnly = false
+                //ReadOnly = false
             };
             tray.AddCompartment(new CompartmentDetails()
             {
@@ -238,7 +238,7 @@ namespace Feretto.Common.BLL.Tests
             Tray tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
-                ReadOnly = false
+                //ReadOnly = false
             };
             tray.AddCompartment(new CompartmentDetails()
             {

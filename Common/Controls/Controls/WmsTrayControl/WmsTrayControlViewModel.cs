@@ -49,7 +49,7 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
-
+        public bool IsCompartmentSelectable { get; set; }
         public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
 
         public int Left
@@ -82,6 +82,8 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public bool ReadOnly { get; set; }
+
         public Func<CompartmentDetails, CompartmentDetails, Color> SelectedColorFilterFunc
         {
             get { return this.selectedColorFilterFunc; }
@@ -101,6 +103,9 @@ namespace Ferretto.Common.Controls
                 this.UpdateColorCompartments();
             }
         }
+
+        public bool ShowBackground { get; set; }
+        public bool ShowRuler { get; set; }
 
         public int Top
         {
@@ -184,8 +189,8 @@ namespace Ferretto.Common.Controls
                         ColorFill = Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
                         //IsSelected = true,
-                        ReadOnly = this.Tray.ReadOnly,
-                        IsSelectable = this.Tray.IsCompartmentSelectable
+                        ReadOnly = this.ReadOnly,
+                        IsSelectable = this.IsCompartmentSelectable
                     });
                 }
             }
@@ -277,8 +282,8 @@ namespace Ferretto.Common.Controls
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
                     //IsSelected = true,
-                    ReadOnly = this.Tray.ReadOnly,
-                    IsSelectable = this.Tray.IsCompartmentSelectable
+                    ReadOnly = this.ReadOnly,
+                    IsSelectable = this.IsCompartmentSelectable
                 });
             }
         }
