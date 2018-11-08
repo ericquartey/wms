@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -18,19 +19,15 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static readonly Expression<Func<DataModels.Item, bool>> FifoFilter =
             item => item.ItemManagementType != null && item.ItemManagementType.Description.Contains("FIFO");
 
-        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemProvider(DatabaseContext dataContext)
+        public ItemProvider(EnumerationProvider enumerationProvider)
         {
-            this.dataContext = dataContext;
-
-            //TODO: use interface for EnumerationProvider
-            this.enumerationProvider = new EnumerationProvider(dataContext);
+            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
@@ -46,12 +43,17 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.Items.AsNoTracking().Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Items.AsNoTracking().Count();
+            }
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
-            return this.dataContext.Compartments
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.Compartments
                 .Where(c => c.Id == compartmentId)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -71,40 +73,71 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public ItemDetails GetById(int id)
         {
-            var itemDetails = this.dataContext.Items
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var itemDetails = context.Items
+                .Include(i => i.MeasureUnit)
+                .Include(i => i.ItemManagementType)
                 .Where(i => i.Id == id)
-                .Select(i => new ItemDetails
-                {
-                    Id = i.Id,
-                    Code = i.Code,
-                    Description = i.Description,
-                    ItemCategoryId = i.ItemCategoryId,
-                    Note = i.Note,
+                .GroupJoin(
+                    context.Compartments
+                        .AsNoTracking()
+                        .Where(c => c.ItemId != null)
+                        .GroupBy(c => c.ItemId)
+                        .Select(j => new
+                        {
+                            ItemId = j.Key,
+                            TotalStock = j.Sum(x => x.Stock),
+                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                        }),
+                    i => i.Id,
+                    c => c.ItemId,
+                    (i, c) => new
+                    {
+                        Item = i,
+                        CompartmentsAggregation = c
+                    })
+                .SelectMany(
+                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                    (a, b) => new ItemDetails
+                    {
+                        Id = a.Item.Id,
+                        Code = a.Item.Code,
+                        Description = a.Item.Description,
+                        ItemCategoryId = a.Item.ItemCategoryId,
+                        Note = a.Item.Note,
 
-                    AbcClassId = i.AbcClassId,
-                    MeasureUnitId = i.MeasureUnitId,
-                    ItemManagementTypeId = i.ItemManagementTypeId,
-                    FifoTimePick = i.FifoTimePick,
-                    FifoTimeStore = i.FifoTimeStore,
-                    ReorderPoint = i.ReorderPoint,
-                    ReorderQuantity = i.ReorderQuantity,
+                        AbcClassId = a.Item.AbcClassId,
+                        MeasureUnitId = a.Item.MeasureUnitId,
+                        MeasureUnitDescription = a.Item.MeasureUnit.Description,
+                        ItemManagementTypeId = a.Item.ItemManagementTypeId,
+                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                        FifoTimePick = a.Item.FifoTimePick,
+                        FifoTimeStore = a.Item.FifoTimeStore,
+                        ReorderPoint = a.Item.ReorderPoint,
+                        ReorderQuantity = a.Item.ReorderQuantity,
 
-                    Height = i.Height,
-                    Length = i.Length,
-                    Width = i.Width,
-                    PickTolerance = i.PickTolerance,
-                    StoreTolerance = i.StoreTolerance,
-                    InventoryTolerance = i.InventoryTolerance,
-                    AverageWeight = i.AverageWeight,
+                        Height = a.Item.Height,
+                        Length = a.Item.Length,
+                        Width = a.Item.Width,
+                        PickTolerance = a.Item.PickTolerance,
+                        StoreTolerance = a.Item.StoreTolerance,
+                        InventoryTolerance = a.Item.InventoryTolerance,
+                        AverageWeight = a.Item.AverageWeight,
 
-                    Image = i.Image,
+                        Image = a.Item.Image,
 
-                    CreationDate = i.CreationDate,
-                    InventoryDate = i.InventoryDate,
-                    LastModificationDate = i.LastModificationDate,
-                    LastPickDate = i.LastPickDate,
-                    LastStoreDate = i.LastStoreDate,
-                }
+                        CreationDate = a.Item.CreationDate,
+                        InventoryDate = a.Item.InventoryDate,
+                        LastModificationDate = a.Item.LastModificationDate,
+                        LastPickDate = a.Item.LastPickDate,
+                        LastStoreDate = a.Item.LastStoreDate,
+
+                        TotalAvailable = b != null
+                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
+                            : 0,
+                    }
                 )
                 .AsNoTracking()
                 .Single();
@@ -126,7 +159,10 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetWithAClassCount()
         {
-            return this.dataContext.Items.AsNoTracking().Count(AClassFilter);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Items.AsNoTracking().Count(AClassFilter);
+            }
         }
 
         public IQueryable<Item> GetWithFifo()
@@ -138,15 +174,21 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetWithFifoCount()
         {
-            return this.dataContext.Items
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Items
                 .AsNoTracking()
                 .Include(i => i.ItemManagementType)
                 .Count(FifoFilter);
+            }
         }
 
         public bool HasAnyCompartments(int itemId)
         {
-            return this.dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+            }
         }
 
         public int Save(ItemDetails model)
@@ -156,12 +198,33 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Items.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Items.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-            existingModel.LastModificationDate = DateTime.Now;
+                context.Entry(existingModel).CurrentValues.SetValues(model);
+                existingModel.LastModificationDate = DateTime.Now;
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
+        }
+
+        public async Task WithdrawAsync(ItemWithdraw itemWithdraw)
+        {
+            var itemsClient = ServiceLocator.Current.GetInstance<WMS.Scheduler.WebAPI.Contracts.IItemsClient>();
+
+            await itemsClient.WithdrawAsync(
+                new WMS.Scheduler.WebAPI.Contracts.WithdrawRequest
+                {
+                    ItemId = itemWithdraw.ItemDetails.Id,
+                    BayId = itemWithdraw.BayId,
+                    Lot = itemWithdraw.Lot,
+                    Quantity = itemWithdraw.Quantity,
+                    RegistrationNumber = itemWithdraw.RegistrationNumber,
+                    Sub1 = itemWithdraw.Sub1,
+                    Sub2 = itemWithdraw.Sub2
+                }
+            );
         }
 
         private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)

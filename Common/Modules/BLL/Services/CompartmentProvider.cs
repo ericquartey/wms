@@ -11,18 +11,15 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public CompartmentProvider(DatabaseContext dataContext)
+        public CompartmentProvider(EnumerationProvider enumerationProvider)
         {
-            this.dataContext = dataContext;
-
-            this.enumerationProvider = new EnumerationProvider(dataContext);
+            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
@@ -61,12 +58,17 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.Compartments.Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Compartments.Count();
+            }
         }
 
         public CompartmentDetails GetById(int id)
         {
-            var compartmentDetails = this.dataContext.Compartments
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var compartmentDetails = context.Compartments
                .Where(c => c.Id == id)
                .Include(c => c.LoadingUnit)
                .Include(c => c.Item)
@@ -119,7 +121,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Compartment> GetByItemId(int id)
         {
-            return this.dataContext.Compartments
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.Compartments
                 .Where(c => c.ItemId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.CompartmentStatus)
@@ -146,7 +150,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<CompartmentDetails> GetByLoadingUnitId(int id)
         {
-            return this.dataContext.Compartments
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.Compartments
                 .Where(c => c.LoadingUnitId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.Item)
@@ -189,13 +195,16 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public bool HasAnyAllowedItem(int modelId)
         {
-            return this.dataContext.Compartments
-                .Where(c => c.Id == modelId)
-                .Include(c => c.CompartmentType)
-                .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
-                .AsNoTracking()
-                .Any();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Compartments
+                    .Where(c => c.Id == modelId)
+                    .Include(c => c.CompartmentType)
+                    .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                    .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
+                    .AsNoTracking()
+                    .Any();
+            }
         }
 
         public int Save(CompartmentDetails model)
@@ -205,11 +214,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.Compartments.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Compartments.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                context.Entry(existingModel).CurrentValues.SetValues(model);
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
         }
 
         #endregion Methods

@@ -41,7 +41,7 @@
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
@@ -99,6 +99,11 @@
                     <dxg:GridColumn Width="150*"
                                     FieldName="CellPositionDescription" />
                 </wms:WmsGridControl.Columns>
+
+                <wms:WmsGridControl.SortInfo>
+                    <dxg:GridSortInfo FieldName="Code"
+                                      SortOrder="Ascending" />
+                </wms:WmsGridControl.SortInfo>
 
             </wms:WmsGridControl>
         </Grid>

@@ -8074,7 +8074,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Light\WmsCanvasListBoxControl.xaml">
+    <Page Include="Themes\Light\WmsTrayControl.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Light\WmsDialogView.xaml">

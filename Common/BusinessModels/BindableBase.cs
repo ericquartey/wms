@@ -9,8 +9,12 @@ namespace Ferretto.Common.BusinessModels
     /// <summary>
     /// Implementation of <see cref="INotifyPropertyChanged"/> to simplify models.
     /// </summary>
-    public abstract class BindableBase : INotifyPropertyChanged
+    public abstract class BindableBase : INotifyPropertyChanged, IDataErrorInfo
     {
+        public virtual string Error { get; }
+
+        public virtual string this[string columnName] => String.Empty;
+
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
@@ -102,7 +106,7 @@ namespace Ferretto.Common.BusinessModels
         /// <param name="args">The PropertyChangedEventArgs</param>
         protected virtual void OnPropertyChanged(PropertyChangedEventArgs args)
         {
-            PropertyChanged?.Invoke(this, args);
+            this.PropertyChanged?.Invoke(this, args);
         }
 
         /// <summary>

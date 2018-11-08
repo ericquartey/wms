@@ -174,4 +174,10 @@
   <data name="VertimagX" xml:space="preserve">
     <value>Vertimag X</value>
   </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accetta</value>
+  </data>
 </root>

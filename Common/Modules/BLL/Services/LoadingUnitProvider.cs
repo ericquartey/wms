@@ -11,21 +11,19 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
-        private readonly CompartmentProvider compartmentProvider;
-        private readonly DatabaseContext dataContext;
+        private readonly ICellProvider cellProvider;
+        private readonly ICompartmentProvider compartmentProvider;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public LoadingUnitProvider(DatabaseContext dataContext)
+        public LoadingUnitProvider(EnumerationProvider enumerationProvider, ICompartmentProvider compartmentProvider, ICellProvider cellProvider)
         {
-            this.dataContext = dataContext;
-
-            //TODO: use interface for CompartmentProvider and EnumerationProvider
-            this.enumerationProvider = new EnumerationProvider(dataContext);
-            this.compartmentProvider = new CompartmentProvider(dataContext);
+            this.enumerationProvider = enumerationProvider;
+            this.compartmentProvider = compartmentProvider;
+            this.cellProvider = cellProvider;
         }
 
         #endregion Constructors
@@ -60,12 +58,17 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public int GetAllCount()
         {
-            return this.dataContext.LoadingUnits.Count();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.LoadingUnits.Count();
+            }
         }
 
         public IQueryable<LoadingUnitDetails> GetByCellId(int id)
         {
-            var a = this.dataContext.LoadingUnits
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            return context.LoadingUnits
                 .Where(l => l.CellId == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -108,13 +111,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                     AreaId = l.Cell.Aisle.AreaId,
                 })
                 .AsNoTracking();
-
-            return a;
         }
 
         public LoadingUnitDetails GetById(int id)
         {
-            var loadingUnitDetails = this.dataContext.LoadingUnits
+            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+
+            var loadingUnitDetails = context.LoadingUnits
                 .Where(l => l.Id == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -173,14 +176,17 @@ namespace Ferretto.Common.Modules.BLL.Services
             loadingUnitDetails.ReferenceTypeChoices =
                 ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
                 .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
-            loadingUnitDetails.CellChoices = this.enumerationProvider.GetCellsByAreaId(loadingUnitDetails.AreaId);
+            loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
 
             return loadingUnitDetails;
         }
 
         public bool HasAnyCompartments(int loadingUnitId)
         {
-            return this.dataContext.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                return context.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
+            }
         }
 
         public int Save(LoadingUnitDetails model)
@@ -190,11 +196,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var existingModel = this.dataContext.LoadingUnits.Find(model.Id);
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.LoadingUnits.Find(model.Id);
 
-            this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                context.Entry(existingModel).CurrentValues.SetValues(model);
 
-            return this.dataContext.SaveChanges();
+                return context.SaveChanges();
+            }
         }
 
         #endregion Methods

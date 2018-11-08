@@ -7,7 +7,7 @@
              d:DesignHeight="1080"
              d:DesignWidth="1920"
              mc:Ignorable="d">
-    <Grid DataContext="{Binding CompartmentSelected}">
+    <Grid DataContext="{Binding SelectedCompartment}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="auto"
                               MinWidth="100" />
@@ -36,6 +36,7 @@
         <wms:TextBox x:Name="WidthText"
                      Grid.Row="1"
                      Grid.Column="0"
+                     Width="100"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
                      Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -53,23 +54,23 @@
                      Grid.ColumnSpan="2"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
-                     Text="{Binding ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Foreground="White" />
+                     Foreground="White"
+                     Text="{Binding ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <wms:TextBox x:Name="QuantityText"
                      Grid.Row="1"
                      Grid.Column="4"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
-                     Text="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Foreground="White" />
+                     Foreground="White"
+                     Text="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <wms:TextBox x:Name="RowText"
                      Grid.Row="1"
                      Grid.Column="5"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
-                     Text="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Foreground="White"
+                     Text="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Visibility="Collapsed" />
 
         <wms:TextBox x:Name="PositionXText"
@@ -84,27 +85,32 @@
                      Grid.Column="1"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
-                     Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Foreground="White" />
-
+                     Foreground="White"
+                     Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <wms:ComboBox Grid.Row="2"
                       Grid.Column="2"
-                      ItemsSource="ItemPairing" />
+                      EditValue="{Binding ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      IsEnabled="True"
+                      ItemsSource="{Binding Path=ItemPairingChoices}" />
+        <!--<wms:ComboBox Grid.Row="2"
+                      Grid.Column="2"
+                      EditValue="{Binding SelectedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding ItemPairing, Mode=TwoWay}" />-->
         <wms:TextBox x:Name="CapacityText"
                      Grid.Row="2"
                      Grid.Column="3"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
-                     Text="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Foreground="White" />
+                     Foreground="White"
+                     Text="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <wms:TextBox x:Name="ColumnText"
                      Grid.Row="2"
                      Grid.Column="3"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
-                     Text="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Foreground="White"
+                     Text="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      Visibility="Collapsed" />
 
         <Button x:Name="CreateCompartment"

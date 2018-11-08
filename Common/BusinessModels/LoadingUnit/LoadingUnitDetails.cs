@@ -16,12 +16,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Events
-
-        public event EventHandler AddedCompartmentEvent;
-
-        #endregion Events
-
         #region Properties
 
         public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
@@ -172,7 +166,7 @@ namespace Ferretto.Common.BusinessModels
 
             foreach (var compartment in this.compartments)
             {
-                bool areCollisions = this.HasCollision(compartmentDetails, compartment);
+                var areCollisions = this.HasCollision(compartmentDetails, compartment);
                 if (areCollisions)
                 {
                     return false;

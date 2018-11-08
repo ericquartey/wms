@@ -97,6 +97,42 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string AreaDescription {
+            get {
+                return ResourceManager.GetString("AreaDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string BayDescription {
+            get {
+                return ResourceManager.GetString("BayDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Units Buffer Size.
+        /// </summary>
+        public static string BayLoadingUnitsBufferSize {
+            get {
+                return ResourceManager.GetString("BayLoadingUnitsBufferSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay Type.
+        /// </summary>
+        public static string BayType {
+            get {
+                return ResourceManager.GetString("BayType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Column.
         /// </summary>
         public static string CellColumn {
@@ -691,6 +727,114 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ItemWithdrawArea {
+            get {
+                return ResourceManager.GetString("ItemWithdrawArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Area.
+        /// </summary>
+        public static string ItemWithdrawAreaInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawAreaInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string ItemWithdrawBay {
+            get {
+                return ResourceManager.GetString("ItemWithdrawBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Bay.
+        /// </summary>
+        public static string ItemWithdrawBayInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawBayInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selected Item.
+        /// </summary>
+        public static string ItemWithdrawItem {
+            get {
+                return ResourceManager.GetString("ItemWithdrawItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ItemDetails Invalid.
+        /// </summary>
+        public static string ItemWithdrawItemDetailsInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawItemDetailsInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string ItemWithdrawLot {
+            get {
+                return ResourceManager.GetString("ItemWithdrawLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity.
+        /// </summary>
+        public static string ItemWithdrawQuantity {
+            get {
+                return ResourceManager.GetString("ItemWithdrawQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Quantity.
+        /// </summary>
+        public static string ItemWithdrawQuantityInvalidError {
+            get {
+                return ResourceManager.GetString("ItemWithdrawQuantityInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string ItemWithdrawRegistrationNumber {
+            get {
+                return ResourceManager.GetString("ItemWithdrawRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub1.
+        /// </summary>
+        public static string ItemWithdrawSub1 {
+            get {
+                return ResourceManager.GetString("ItemWithdrawSub1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub2.
+        /// </summary>
+        public static string ItemWithdrawSub2 {
+            get {
+                return ResourceManager.GetString("ItemWithdrawSub2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit.
         /// </summary>
         public static string LoadingUnit {
@@ -1200,6 +1344,15 @@ namespace Ferretto.Common.Resources {
         public static string MaterialStatus {
             get {
                 return ResourceManager.GetString("MaterialStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measure Unit.
+        /// </summary>
+        public static string MeasureUnitDescription {
+            get {
+                return ResourceManager.GetString("MeasureUnitDescription", resourceCulture);
             }
         }
         

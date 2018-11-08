@@ -17,7 +17,7 @@ namespace Ferretto.WMS.App.Compartment
         {
             base.ConfigureModuleCatalog();
 
-            (this.ModuleCatalog as DirectoryModuleCatalog)?.Load();
+            (this.ModuleCatalog as ModuleCatalog)?.Load();
         }
 
         protected override RegionAdapterMappings ConfigureRegionAdapterMappings()
@@ -35,7 +35,7 @@ namespace Ferretto.WMS.App.Compartment
 
         protected override IModuleCatalog CreateModuleCatalog()
         {
-            return new DirectoryModuleCatalog { ModulePath = ConfigurationManager.AppSettings["PrismModulesPath"] };
+            return new ConfigurationModuleCatalog();
         }
 
         protected override DependencyObject CreateShell()

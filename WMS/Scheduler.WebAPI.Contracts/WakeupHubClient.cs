@@ -1,15 +1,24 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
+#if NET4
+using Microsoft.AspNet.SignalR.Client;
+#else
 using Microsoft.AspNetCore.SignalR.Client;
+#endif
 
-namespace Ferretto.WMS.Scheduler.WebAPI
+namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 {
-    public class WakeupHubClient
+    public class WakeupHubClient : IWakeupHubClient
     {
         #region Fields
 
+        private const string WakeUpMessageName = "WakeUp";
+        public const string WakeUpEndpoint = "wakeup-hub";
+
         private readonly HubConnection connection;
+#if NET4
+        private IHubProxy proxy;
+#endif
 
         #endregion Fields
 
@@ -17,9 +26,19 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
         public WakeupHubClient(string url)
         {
+#if NET4
+            this.connection = new HubConnection(url);
+            this.proxy = this.connection.CreateHubProxy(WakeUpEndpoint);
+
+            this.proxy.On<string, string>(WakeUpMessageName, (a, b) => this.OnMessageReceived(a, b));
+
+            this.connection.StateChanged += this.OnConnectionStateChanged;
+#else
             this.connection = new HubConnectionBuilder()
-              .WithUrl(url)
+              .WithUrl(new Uri(new Uri(url), WakeUpEndpoint).AbsoluteUri)
               .Build();
+
+            this.connection.On<string, string>(WakeUpMessageName, this.OnMessageReceived);
 
             this.connection.Closed += async (error) =>
             {
@@ -29,6 +48,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                 System.Diagnostics.Debug.WriteLine("Retrying connection to hub ...");
                 await this.connection.StartAsync();
             };
+#endif
         }
 
         #endregion Constructors
@@ -41,26 +61,30 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
         #region Methods
 
-        public async Task ConnectAsync()
+#if NET4
+        private void OnConnectionStateChanged(StateChange state)
         {
-            this.connection.On<string, string>("WakeUp", (user, message) =>
+            if (state.NewState == ConnectionState.Disconnected)
             {
-                this.WakeupReceived?.Invoke(this, new WakeUpEventArgs { User = user, Message = message });
-            });
+                this.ConnectAsync();
+            }
+        }
+#endif
 
-            await this.connection.StartAsync();
+        private void OnMessageReceived(string user, string message)
+        {
+            this.WakeupReceived?.Invoke(this, new WakeUpEventArgs { User = user, Message = message });
         }
 
-        public void NotifyServer()
+        public async Task ConnectAsync()
         {
-            this.connection.InvokeAsync("Notify");
+#if NET4
+            await this.connection.Start();
+#else
+            await this.connection.StartAsync();
+#endif
         }
 
         #endregion Methods
-
-        /*   public async Task SendMessageAsync(string userName, string message)
-           {
-               await this.connection.InvokeAsync("SendMessage", userName, message);
-           }*/
     }
 }

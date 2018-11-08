@@ -3,7 +3,6 @@ using System.Configuration;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Modules.BLL.Services

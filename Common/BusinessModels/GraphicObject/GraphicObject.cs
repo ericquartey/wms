@@ -1,6 +1,5 @@
-using System;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Media;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -26,6 +25,16 @@ namespace Ferretto.Common.BusinessModels
         #endregion Properties
     }
 
+    public class DoublePosition
+    {
+        #region Properties
+
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        #endregion Properties
+    }
+
     public class Line
     {
         #region Properties
@@ -42,8 +51,8 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        public int XPosition { get; set; }
-        public int YPosition { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
 
         #endregion Properties
     }
@@ -52,10 +61,12 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
+        public readonly int BORDER_TRAY = 1;
         public readonly int DimensionRuler = 25;
+        public readonly int DOUBLE_BORDER_TRAY = 2;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
-
         private Dimension dimension;
+        private bool readOnly;
 
         #endregion Fields
 
@@ -77,6 +88,13 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public Position Origin { get; set; }
+
+        public bool ReadOnly
+        {
+            get { return this.readOnly; }
+            set { this.readOnly = value; }
+        }
+
         public Dimension RulerSize { get; set; }
 
         #endregion Properties
@@ -92,6 +110,23 @@ namespace Ferretto.Common.BusinessModels
             else
             {
                 System.Diagnostics.Debug.WriteLine("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
+            }
+        }
+
+        public void AddCompartmentsRange(IList<CompartmentDetails> compartmentDetails)
+        {
+            bool error = false;
+            foreach (var compartment in compartmentDetails)
+            {
+                //TODO: extreme check on compartment:
+                //  1) bigger than tray
+                //  2) over tray position
+                this.compartments.Add(compartment);
+            }
+
+            if (error)
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR ADD NEW RANGE OF COMPARTMENTS: it is overlaps among other compartments or it exits from window.");
             }
         }
 
@@ -119,7 +154,7 @@ namespace Ferretto.Common.BusinessModels
 
             foreach (var compartment in this.compartments)
             {
-                bool areCollisions = this.HasCollision(compartmentDetails, compartment);
+                var areCollisions = this.HasCollision(compartmentDetails, compartment);
                 if (areCollisions)
                 {
                     return false;

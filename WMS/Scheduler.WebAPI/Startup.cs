@@ -61,7 +61,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 
             app.UseSignalR(routes =>
             {
-                routes.MapHub<WakeupHub>("/wakeup-hub");
+                routes.MapHub<WakeupHub>($"/wakeup-hub");
             });
 
             app.UseMvc();
@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(this.Configuration["WmsConnectionString"], b => b.MigrationsAssembly("Ferretto.Common.EF")));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(this.Configuration.GetConnectionString("WmsConnectionString"), b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
             services.AddSingleton<IEngine>(new Engine());
 
