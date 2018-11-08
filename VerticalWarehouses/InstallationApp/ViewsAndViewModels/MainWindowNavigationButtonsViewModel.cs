@@ -12,6 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         private bool isBeltBurnishingButtonActive;
         private bool isCellsControlButtonActive;
         private bool isCellsPanelControlButtonActive;
+        private bool isDownScrollButtonActive = true;
         private bool isGateControlButtonActive = true;
         private bool isGateHeightControlButtonActive = true;
         private bool isInstallationStateButtonActive = true;
@@ -19,6 +20,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         private bool isOriginVerticalAxisButtonActive = true;
         private bool isSensorsStateButtonActive = true;
         private bool isSetYResolutionButtonActive;
+        private bool isUpScrollButtonActive = true;
         private bool isVerticalOffsetCalibrationButtonActive = true;
         private bool isWeightControlButtonActive = true;
 
@@ -41,6 +43,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         public Boolean IsBeltBurnishingButtonActive { get => this.isBeltBurnishingButtonActive; set => this.SetProperty(ref this.isBeltBurnishingButtonActive, value); }
         public Boolean IsCellsControlButtonActive { get => this.isCellsControlButtonActive; set => this.SetProperty(ref this.isCellsControlButtonActive, value); }
         public Boolean IsCellsPanelControlButtonActive { get => this.isCellsPanelControlButtonActive; set => this.SetProperty(ref this.isCellsPanelControlButtonActive, value); }
+        public Boolean IsDownScrollButtonActive { get => this.isDownScrollButtonActive; set => this.SetProperty(ref this.isDownScrollButtonActive, value); }
         public Boolean IsGateControlButtonActive { get => this.isGateControlButtonActive; set => this.SetProperty(ref this.isGateControlButtonActive, value); }
         public Boolean IsGateHeightControlButtonActive { get => this.isGateHeightControlButtonActive; set => this.SetProperty(ref this.isGateHeightControlButtonActive, value); }
         public Boolean IsInstallationStateButtonActive { get => this.isInstallationStateButtonActive; set => this.SetProperty(ref this.isInstallationStateButtonActive, value); }
@@ -48,6 +51,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         public Boolean IsOriginVerticalAxisButtonActive { get => this.isOriginVerticalAxisButtonActive; set => this.SetProperty(ref this.isOriginVerticalAxisButtonActive, value); }
         public Boolean IsSensorsStateButtonActive { get => this.isSensorsStateButtonActive; set => this.SetProperty(ref this.isSensorsStateButtonActive, value); }
         public Boolean IsSetYResolutionButtonActive { get => this.isSetYResolutionButtonActive; set => this.SetProperty(ref this.isSetYResolutionButtonActive, value); }
+        public Boolean IsUpScrollButtonActive { get => this.isUpScrollButtonActive; set => this.SetProperty(ref this.isUpScrollButtonActive, value); }
         public Boolean IsVerticalOffsetCalibrationButtonActive { get => this.isVerticalOffsetCalibrationButtonActive; set => this.SetProperty(ref this.isVerticalOffsetCalibrationButtonActive, value); }
         public Boolean IsWeightControlButtonActive { get => this.isWeightControlButtonActive; set => this.SetProperty(ref this.isWeightControlButtonActive, value); }
 
@@ -69,11 +73,15 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
             this.IsSetYResolutionButtonActive = false;
             this.IsVerticalOffsetCalibrationButtonActive = false;
             this.IsWeightControlButtonActive = false;
+            this.IsUpScrollButtonActive = false;
+            this.IsDownScrollButtonActive = false;
         }
 
         public void UpdateDataFromDataManager()
         {
             this.IsInstallationStateButtonActive = true;
+            this.IsUpScrollButtonActive = true;
+            this.IsDownScrollButtonActive = true;
             this.IsSensorsStateButtonActive = true;
             this.IsLowSpeedMovementsTestButtonActive = true;
             this.IsGateControlButtonActive = true;

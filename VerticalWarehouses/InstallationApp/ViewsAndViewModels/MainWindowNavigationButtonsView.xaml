@@ -14,17 +14,32 @@
             <RowDefinition Height="500" />
             <RowDefinition Height="45" />
         </Grid.RowDefinitions>
-        <RepeatButton Grid.Row="1"
+        <RepeatButton Name="UpScroll"
+                      Grid.Row="1"
                       Margin="15,0,0,0"
                       Click="ScrollUpButtonClick"
-                      Content="UP"
-                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}" />
-        <RepeatButton Grid.Row="3"
+                      IsEnabled="{Binding IsUpScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}">
+            <RepeatButton.LayoutTransform>
+                <RotateTransform Angle="180" />
+            </RepeatButton.LayoutTransform>
+            <Image Width="{Binding ElementName=UpScroll, Path=ActualWidth}"
+                   Height="36"
+                   Source="/Ferretto.VW.CustomControls;Component/Assets/down_white_arrow_icon.ico"
+                   Stretch="Fill" />
+        </RepeatButton>
+        <RepeatButton Name="DownScroll"
+                      Grid.Row="3"
                       Height="38"
                       Margin="15,0,0,0"
                       Click="ScrollDownButtonClick"
-                      Content="DOWN"
-                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}" />
+                      IsEnabled="{Binding IsDownScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}">
+            <Image Width="{Binding ElementName=UpScroll, Path=ActualWidth}"
+                   Height="36"
+                   Source="/Ferretto.VW.CustomControls;Component/Assets/down_white_arrow_icon.ico"
+                   Stretch="Fill" />
+        </RepeatButton>
 
         <ScrollViewer Name="NavigationButtonScrollViewer"
                       Grid.Row="2"
