@@ -17,13 +17,19 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
         private CompartmentDetails compartment;
         private bool compartmentHasAllowedItems;
+        private bool isCompartmentSelectableTray;
         private object modelSelectionChangedSubscription;
+        private bool readOnlyTray;
         private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedAllowedItem;
+
+        private CompartmentDetails selectedCompartmentTray;
+        private Tray tray;
 
         #endregion Fields
 
@@ -49,11 +55,13 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.compartment;
             set
             {
-                if (!this.SetProperty(ref this.compartment, value))
+                if (this.SetProperty(ref this.compartment, value))
                 {
-                    return;
+                    var loadingUnit = this.loadingUnitProvider.GetById(this.compartment.LoadingUnitId);
+                    this.InitializeTray(loadingUnit);
+                    this.SetSelectedCompartment();
+                    this.RefreshData();
                 }
-                this.RefreshData();
             }
         }
 
@@ -82,8 +90,20 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        public bool IsCompartmentSelectableTray
+        {
+            get => this.isCompartmentSelectableTray;
+            set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
+        }
+
+        public bool ReadOnlyTray
+        {
+            get => this.readOnlyTray;
+            set => this.SetProperty(ref this.readOnlyTray, value);
+        }
+
         public ICommand RevertCommand => this.revertCommand ??
-          (this.revertCommand = new DelegateCommand(this.LoadData));
+                          (this.revertCommand = new DelegateCommand(this.LoadData));
 
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
@@ -96,6 +116,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.SetProperty(ref this.selectedAllowedItem, value);
                 this.RaisePropertyChanged(nameof(this.CurrentAllowedItemInCompartment));
             }
+        }
+
+        public CompartmentDetails SelectedCompartmentTray
+        {
+            get => this.selectedCompartmentTray;
+            set => this.SetProperty(ref this.selectedCompartmentTray, value);
+        }
+
+        public Tray Tray
+        {
+            get => this.tray;
+            set => this.SetProperty(ref this.tray, value);
         }
 
         #endregion Properties
@@ -156,13 +188,43 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
+        private void InitializeTray(LoadingUnitDetails loadingUnit)
+        {
+            this.tray = new Tray
+            {
+                Dimension = new Dimension
+                {
+                    Height = loadingUnit.Length,
+                    Width = loadingUnit.Width
+                }
+            };
+            if (loadingUnit.Compartments != null)
+            {
+                this.tray.AddCompartmentsRange(loadingUnit.Compartments);
+            }
+            this.RaisePropertyChanged(nameof(this.Tray));
+
+            this.readOnlyTray = true;
+            this.isCompartmentSelectableTray = false;
+            this.RaisePropertyChanged(nameof(this.ReadOnlyTray));
+            this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
+        }
+
         private void LoadData()
         {
             if (this.Data is int modelId)
             {
                 this.Compartment = this.compartmentProvider.GetById(modelId);
                 this.CompartmentHasAllowedItems = this.compartmentProvider.HasAnyAllowedItem(modelId);
+
+                //this.InitializeTray();
             }
+        }
+
+        private void SetSelectedCompartment()
+        {
+            this.selectedCompartmentTray = this.Compartment;
+            this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
         }
 
         #endregion Methods

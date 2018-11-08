@@ -23,12 +23,13 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" MaxWidth="400" />
+            <ColumnDefinition Width="Auto"
+                              MaxWidth="400" />
         </Grid.ColumnDefinitions>
 
-        <wms:ActionBar HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}"
-                       Margin="10,10,10,0">
+        <wms:ActionBar Margin="10,10,10,0"
+                       HorizontalAlignment="Right"
+                       Style="{DynamicResource ActionBarNotCustomizable}">
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
@@ -42,10 +43,10 @@
         </wms:ActionBar>
 
         <ScrollViewer Grid.Row="1"
+                      Margin="10,0,10,10"
                       DataContext="{Binding Compartment}"
                       Focusable="False"
-                      IsTabStop="True"
-                      Margin="10,0,10,10">
+                      IsTabStop="True">
 
             <Grid>
                 <Grid.RowDefinitions>
@@ -84,8 +85,8 @@
                                      Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.ColumnSpan="2"
-                                     Text="{Binding LoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="False" />
+                                     IsEnabled="False"
+                                     Text="{Binding LoadingUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -161,17 +162,17 @@
                         <wms:TextBox Grid.Row="0"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
-                                     Text="{Binding ItemDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="False" />
+                                     IsEnabled="False"
+                                     Text="{Binding ItemDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="False" />
+                                     IsEnabled="False"
+                                     Text="{Binding Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
-                                     Text="{Binding Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="False" />
+                                     IsEnabled="False"
+                                     Text="{Binding Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -184,8 +185,8 @@
                         <wms:TextBox Grid.Row="3"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="False" />
+                                     IsEnabled="False"
+                                     Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       EditValue="{Binding PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -194,8 +195,8 @@
                         <wms:TextBox Grid.Row="4"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
-                                     Text="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsEnabled="False" />
+                                     IsEnabled="False"
+                                     Text="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -259,10 +260,9 @@
                                                ShowSearchPanelMode="Never">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <wms:WmsHistoryViewAppear
-                                                Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentAllowedItemInCompartment.Id, Mode=OneWay}"
-                                                StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                StartViewName="{x:Static modules:MasterData.ITEMDETAILS}" />
+                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentAllowedItemInCompartment.Id, Mode=OneWay}"
+                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                                      StartViewName="{x:Static modules:MasterData.ITEMDETAILS}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
@@ -291,27 +291,31 @@
                           Grid.ColumnSpan="2"
                           Margin="20,0,0,0"
                           Header="{x:Static res:MasterData.CompartmentPosition}">
-                    <Image HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Margin="0,10,0,0"
-                           MaxHeight="150"
-                           Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/images/udc_compartment.png" />
+
+                    <wms:WmsTrayControl x:Name="TrayControl"
+                                        Grid.Row="0"
+                                        Margin="0,0,0,0"
+                                        IsCompartmentSelectable="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsCompartmentSelectableTray, Mode=OneWay}"
+                                        ReadOnly="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ReadOnlyTray, Mode=OneWay}"
+                                        SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
+                                        Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
+
                 </GroupBox>
 
             </Grid>
 
         </ScrollViewer>
 
-        <ScrollViewer Grid.Column="1"
-                      Grid.RowSpan="2"
+        <ScrollViewer Grid.RowSpan="2"
+                      Grid.Column="1"
                       Focusable="False"
                       IsTabStop="False">
 
             <Border DataContext="{Binding Compartment}"
                     Style="{StaticResource InfoBoxBorderStyle}">
 
-                <GroupBox Header="{x:Static res:MasterData.OtherInformation}"
-                          Margin="20,0">
+                <GroupBox Margin="20,0"
+                          Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
