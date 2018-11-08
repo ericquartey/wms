@@ -190,6 +190,7 @@
     <Resource Include="Assets\up_arrow_icon.ico" />
     <Resource Include="Assets\down_arrow_icon.ico" />
     <Resource Include="Assets\down_white_arrow_icon.ico" />
+    <Resource Include="Assets\White_arrow_down.svg.png" />
     <Content Include="Fonts\HelveticaNeue-LightCond.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
