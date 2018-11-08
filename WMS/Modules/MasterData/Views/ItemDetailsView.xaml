@@ -21,6 +21,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" MaxWidth="400" />
@@ -212,22 +213,31 @@
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
                             </wms:WmsGridControl.View>
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="Code" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="LoadingUnitCode" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Sub1" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Sub2" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="Lot" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="CompartmentStatusDescription" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Stock" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="ItemPairingDescription" />
+
+                            <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="LoadingUnitCode" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub1" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub2" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Lot" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Stock" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="ItemPairingDescription" />
+                            </wms:WmsGridControl.Columns>
+
+                            <wms:WmsGridControl.SortInfo>
+                                <dxg:GridSortInfo FieldName="Code"
+                                                  SortOrder="Ascending" />
+                            </wms:WmsGridControl.SortInfo>
+
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>
@@ -252,27 +262,27 @@
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                       BorderThickness="1"
                                       Path="{Binding Path=Image}"
-                                      Visibility="{Binding Path=Image, Converter={StaticResource RTVHC}}" />
+                                      Visibility="{Binding Path=Image, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding CreationDate}"
-                                      Visibility="{Binding Path=CreationDate, Converter={StaticResource RTVHC}}" />
+                                      Visibility="{Binding Path=CreationDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding LastModificationDate}"
-                                      Visibility="{Binding Path=LastModificationDate, Converter={StaticResource RTVHC}}" />
+                                      Visibility="{Binding Path=LastModificationDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding InventoryDate}"
-                                      Visibility="{Binding Path=InventoryDate, Converter={StaticResource RTVHC}}" />
+                                      Visibility="{Binding Path=InventoryDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding LastPickDate}"
-                                      Visibility="{Binding Path=LastPickDate, Converter={StaticResource RTVHC}}" />
+                                      Visibility="{Binding Path=LastPickDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding LastStoreDate}"
-                                      Visibility="{Binding Path=LastStoreDate, Converter={StaticResource RTVHC}}" />
+                                      Visibility="{Binding Path=LastStoreDate, Converter={StaticResource RTVC}}" />
                     </StackPanel>
 
                 </GroupBox>

@@ -62,27 +62,28 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                                                                     parameterExpression);
         }
 
-        [HttpPost]
-        public List<Mission> Withdraw([FromQuery]int bayId, [FromQuery]int itemId, [FromQuery]int quantity)
+        [HttpPost("withdraw")]
+        public List<Mission> Withdraw(Contracts.WithdrawRequest withdrawRequest)
         {
-            var mission1Quantity = quantity / 2;
+            var mission1Quantity = withdrawRequest.Quantity / 2;
+
             return new List<Mission>
             {
 #pragma warning disable IDE0009
                 new Mission
                 {
                     Id = 1,
-                    ItemId = itemId,
+                    ItemId = withdrawRequest.ItemId,
                     Quantity = mission1Quantity,
-                    BayId = bayId,
+                    BayId = withdrawRequest.BayId,
                     TypeId = "PK"
                 },
                 new Mission
                 {
                     Id = 2,
-                    ItemId = itemId,
-                    Quantity = quantity  - mission1Quantity,
-                    BayId = bayId,
+                    ItemId = withdrawRequest.ItemId,
+                    Quantity = withdrawRequest.Quantity  - mission1Quantity,
+                    BayId = withdrawRequest.BayId,
                     TypeId = "PK"
                 }
  #pragma warning restore IDE0009
