@@ -126,7 +126,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             try
             {
-                await this.itemProvider.WithdrawAsync(this.itemWithdraw.BayId, this.itemWithdraw.ItemDetails.Id, this.itemWithdraw.Quantity);
+                await this.itemProvider.WithdrawAsync(this.itemWithdraw);
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemWithdrawCommenced));
             }

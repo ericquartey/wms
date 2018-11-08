@@ -20,7 +20,7 @@ namespace Ferretto.Common.Modules.BLL
 
         bool HasAnyCompartments(int itemId);
 
-        Task WithdrawAsync(int bayId, int itemId, int quantity);
+        Task WithdrawAsync(ItemWithdraw itemWithdraw);
 
         #endregion Methods
     }
