@@ -138,24 +138,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private void CreateTrayObject()
-        {
-            this.tray = new Tray
-            {
-                Dimension = new Dimension
-                {
-                    Height = this.LoadingUnit.Length,
-                    Width = this.LoadingUnit.Width
-                },
-                ReadOnly = true
-            };
-            if (this.LoadingUnit.Compartments != null)
-            {
-                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
-            }
-            this.RaisePropertyChanged(nameof(this.Tray));
-        }
-
         private void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
@@ -188,6 +170,25 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
+        private void InitializeTray()
+        {
+            this.tray = new Tray
+            {
+                Dimension = new Dimension
+                {
+                    Height = this.LoadingUnit.Length,
+                    Width = this.LoadingUnit.Width
+                },
+                ReadOnly = true,
+                IsCompartmentSelectable = true
+            };
+            if (this.LoadingUnit.Compartments != null)
+            {
+                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
+            }
+            this.RaisePropertyChanged(nameof(this.Tray));
+        }
+
         private void LoadData()
         {
             if (this.Data is int modelId)
@@ -195,7 +196,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
                 this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
 
-                this.CreateTrayObject();
+                this.InitializeTray();
             }
         }
 

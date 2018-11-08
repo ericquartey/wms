@@ -66,7 +66,10 @@ namespace Ferretto.Common.BusinessModels
         public readonly int DOUBLE_BORDER_TRAY = 2;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
         private Dimension dimension;
+        private bool isCompartmentSelectable;
         private bool readOnly;
+        private bool showBackground;
+        private bool showRuler;
 
         #endregion Fields
 
@@ -87,6 +90,12 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        public bool IsCompartmentSelectable
+        {
+            get { return this.isCompartmentSelectable; }
+            set { this.isCompartmentSelectable = value; }
+        }
+
         public Position Origin { get; set; }
 
         public bool ReadOnly
@@ -96,6 +105,18 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public Dimension RulerSize { get; set; }
+
+        public bool ShowBackground
+        {
+            get { return this.showBackground; }
+            set { this.showBackground = value; }
+        }
+
+        public bool ShowRuler
+        {
+            get { return this.showRuler; }
+            set { this.showRuler = value; }
+        }
 
         #endregion Properties
 

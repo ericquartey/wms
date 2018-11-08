@@ -38,7 +38,13 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Update="Themes\Light\InfoBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
     <None Update="Themes\Light\InfoText.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Themes\Light\Messages.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
     <None Update="Themes\Light\WmsTrayControl.xaml">

@@ -42,7 +42,8 @@
         <ScrollViewer Grid.Row="1"
                       DataContext="{Binding LoadingUnit}"
                       Focusable="False"
-                      IsTabStop="True">
+                      IsTabStop="True"
+                      VerticalScrollBarVisibility="Auto">
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"
@@ -181,6 +182,7 @@
                         <wms:WmsTrayControl x:Name="TrayControl"
                                             Grid.Row="0"
                                             Margin="0,0,0,0"
+                                            IsCompartmentSelectable="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray.IsCompartmentSelectable, Mode=OneWay}"
                                             ReadOnly="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray.ReadOnly, Mode=OneWay}"
                                             SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
                                             Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />

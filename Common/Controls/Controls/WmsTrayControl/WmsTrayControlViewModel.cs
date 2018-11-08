@@ -183,7 +183,9 @@ namespace Ferretto.Common.Controls
                         Top = (int)(compartment.YPosition * ratio),
                         ColorFill = Colors.Aquamarine.ToString(),
                         Selected = Colors.RoyalBlue.ToString(),
-                        IsSelected = true,
+                        //IsSelected = true,
+                        ReadOnly = this.Tray.ReadOnly,
+                        IsSelectable = this.Tray.IsCompartmentSelectable
                     });
                 }
             }
@@ -193,6 +195,28 @@ namespace Ferretto.Common.Controls
         {
             this.CompartmentDetailsProperty = compartment;
             this.NotifyPropertyChanged(nameof(this.CompartmentDetailsProperty));
+        }
+
+        public void UpdateIsSelectablePropertyToCompartments(bool value)
+        {
+            if (this.items != null)
+            {
+                foreach (var item in this.Items)
+                {
+                    item.IsSelectable = value;
+                }
+            }
+        }
+
+        public void UpdateReadOnlyPropertyToCompartments(bool value)
+        {
+            if (this.items != null)
+            {
+                foreach (var item in this.Items)
+                {
+                    item.ReadOnly = value;
+                }
+            }
         }
 
         public void UpdateTray(Tray tray)
@@ -252,7 +276,9 @@ namespace Ferretto.Common.Controls
                     Top = (int)(y * ratio),
                     ColorFill = Colors.Aquamarine.ToString(),
                     Selected = Colors.RoyalBlue.ToString(),
-                    IsSelected = true,
+                    //IsSelected = true,
+                    ReadOnly = this.Tray.ReadOnly,
+                    IsSelectable = this.Tray.IsCompartmentSelectable
                 });
             }
         }
