@@ -102,7 +102,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
  #pragma warning restore IDE0009
             };
 
-            await this.hubContext.Clients.All.WakeUp("scheduler", "mission-1");
+            this.logger.LogInformation($"Notifying new missions.");
+            await this.hubContext.Clients.All.NotifyNewMission(missions[0]);
+            await this.hubContext.Clients.All.NotifyNewMission(missions[1]);
 
             return missions;
         }

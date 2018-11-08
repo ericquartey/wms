@@ -37,6 +37,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.wakeupHubClient = wakeupHubClient;
 
             this.wakeupHubClient.WakeupReceived += this.WakeupReceived;
+            this.wakeupHubClient.NewMissionReceived += this.NewMissionReceived;
         }
 
         #endregion Constructors
@@ -56,9 +57,9 @@ namespace Ferretto.WMS.AutomationServiceMock
             await this.baysClient.MarkAsOperationalAsync(bayId);
         }
 
-        private async Task ExecuteMission(string mission)
+        private async Task ExecuteMission(Mission mission)
         {
-            this.logger.LogInformation($"Executing mission '{mission}'");
+            this.logger.LogInformation($"Executing mission '{mission.TypeId}' on item {mission.ItemId}, quantity {mission.Quantity}");
 
             // simulate mission execution
             await Task.Delay(1000);
@@ -66,21 +67,26 @@ namespace Ferretto.WMS.AutomationServiceMock
             var success = this.random.NextDouble() > 0.5;
             if (success)
             {
-                this.logger.LogInformation($"Mission '{mission}' completed.");
+                this.logger.LogInformation($"Mission completed.");
                 await this.missionsClient.CompleteAsync(new Mission());
             }
             else
             {
-                this.logger.LogWarning($"Mission '{mission}' failed.");
+                this.logger.LogWarning($"Mission failed.");
                 await this.missionsClient.AbortAsync(new Mission());
             }
         }
 
-        private async void WakeupReceived(object sender, WakeUpEventArgs e)
+        private async void NewMissionReceived(Object sender, MissionEventArgs e)
+        {
+            this.logger.LogInformation($"New mission received from Scheduler.");
+
+            await this.ExecuteMission(e.Mission);
+        }
+
+        private void WakeupReceived(object sender, WakeUpEventArgs e)
         {
             this.logger.LogInformation($"Wakeup from Scheduler received.");
-
-            await this.ExecuteMission(e.Message);
         }
 
         #endregion Methods

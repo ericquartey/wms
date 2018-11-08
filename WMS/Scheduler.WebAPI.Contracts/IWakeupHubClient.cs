@@ -7,6 +7,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     {
         #region Events
 
+        event EventHandler<MissionEventArgs> NewMissionReceived;
+
         event EventHandler<WakeUpEventArgs> WakeupReceived;
 
         #endregion Events

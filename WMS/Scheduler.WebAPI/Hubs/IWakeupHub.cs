@@ -1,10 +1,13 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
 {
     public interface IWakeupHub
     {
         #region Methods
+
+        Task NotifyNewMission(Mission mission);
 
         Task WakeUp(string user, string message);
 
