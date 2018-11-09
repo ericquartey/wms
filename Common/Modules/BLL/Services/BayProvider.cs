@@ -4,34 +4,49 @@ using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
     public class BayProvider : IBayProvider
     {
+        #region Fields
+
+        private readonly DatabaseContext dataContext;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public BayProvider(DatabaseContext context)
+        {
+            this.dataContext = context;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         public IQueryable<Bay> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllBaysWithFilter(context);
+            lock (this.dataContext)
+            {
+                return GetAllBaysWithFilter(this.dataContext);
+            }
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Bays.AsNoTracking().Count();
+                return this.dataContext.Bays.AsNoTracking().Count();
             }
         }
 
         public IQueryable<Bay> GetByAreaId(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var bayDetails = context.Bays
+            lock (this.dataContext)
+            {
+                var bayDetails = this.dataContext.Bays
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
                 .Include(b => b.Machine)
@@ -49,14 +64,15 @@ namespace Ferretto.Common.Modules.BLL.Services
                     MachineNickname = b.Machine.Nickname,
                 });
 
-            return bayDetails;
+                return bayDetails;
+            }
         }
 
         public Bay GetById(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var bayDetails = context.Bays
+            lock (this.dataContext)
+            {
+                var bayDetails = this.dataContext.Bays
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
                 .Include(b => b.Machine)
@@ -75,7 +91,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                 })
                 .Single();
 
-            return bayDetails;
+                return bayDetails;
+            }
         }
 
         public int Save(Bay model)
@@ -85,13 +102,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.Bays.Find(model.Id);
+                var existingModel = this.dataContext.Bays.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 
@@ -99,8 +116,9 @@ namespace Ferretto.Common.Modules.BLL.Services
             Expression<Func<DataModels.Bay, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Bays
+            lock (context)
+            {
+                return context.Bays
                 .AsNoTracking()
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
@@ -118,6 +136,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                     MachineId = b.MachineId,
                     MachineNickname = b.Machine.Nickname,
                 });
+            }
         }
 
         #endregion Methods

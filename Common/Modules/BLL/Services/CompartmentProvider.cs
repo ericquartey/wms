@@ -3,7 +3,6 @@ using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -11,14 +10,18 @@ namespace Ferretto.Common.Modules.BLL.Services
     {
         #region Fields
 
+        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public CompartmentProvider(EnumerationProvider enumerationProvider)
+        public CompartmentProvider(
+            DatabaseContext context,
+            EnumerationProvider enumerationProvider)
         {
+            this.dataContext = context;
             this.enumerationProvider = enumerationProvider;
         }
 
@@ -28,9 +31,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Compartment> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.Compartments
+            lock (this.dataContext)
+            {
+                return this.dataContext.Compartments
                .Include(c => c.LoadingUnit)
                .Include(c => c.MaterialStatus)
                .Include(c => c.Item)
@@ -54,21 +57,22 @@ namespace Ferretto.Common.Modules.BLL.Services
                }
                )
                .AsNoTracking();
+            }
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Compartments.Count();
+                return this.dataContext.Compartments.Count();
             }
         }
 
         public CompartmentDetails GetById(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var compartmentDetails = context.Compartments
+            lock (this.dataContext)
+            {
+                var compartmentDetails = this.dataContext.Compartments
                .Where(c => c.Id == id)
                .Include(c => c.LoadingUnit)
                .Include(c => c.Item)
@@ -109,22 +113,23 @@ namespace Ferretto.Common.Modules.BLL.Services
                })
                .Single();
 
-            compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-            compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-            compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-            compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-            compartmentDetails.ItemPairingChoices =
-                ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
+                compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
+                compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+                compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+                compartmentDetails.ItemPairingChoices =
+                    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-            return compartmentDetails;
+                return compartmentDetails;
+            }
         }
 
         public IQueryable<Compartment> GetByItemId(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.Compartments
+            lock (this.dataContext)
+            {
+                return this.dataContext.Compartments
                 .Where(c => c.ItemId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.CompartmentStatus)
@@ -147,13 +152,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                     ItemPairingDescription = c.ItemPairing.ToString(),
                 })
                 .AsNoTracking();
+            }
         }
 
         public IQueryable<CompartmentDetails> GetByLoadingUnitId(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.Compartments
+            lock (this.dataContext)
+            {
+                return this.dataContext.Compartments
                 .Where(c => c.LoadingUnitId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.Item)
@@ -192,13 +198,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                     YPosition = c.YPosition
                 })
                 .AsNoTracking();
+            }
         }
 
         public bool HasAnyAllowedItem(int modelId)
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Compartments
+                return this.dataContext.Compartments
                     .Where(c => c.Id == modelId)
                     .Include(c => c.CompartmentType)
                     .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -215,13 +222,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.Compartments.Find(model.Id);
+                var existingModel = this.dataContext.Compartments.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 

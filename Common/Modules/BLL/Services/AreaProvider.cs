@@ -4,34 +4,49 @@ using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
     public class AreaProvider : IAreaProvider
     {
+        #region Fields
+
+        private readonly DatabaseContext dataContext;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public AreaProvider(DatabaseContext dataContext)
+        {
+            this.dataContext = dataContext;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         public IQueryable<Area> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllAreasWithFilter(context);
+            lock (this.dataContext)
+            {
+                return GetAllAreasWithFilter(this.dataContext);
+            }
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Areas.AsNoTracking().Count();
+                return this.dataContext.Areas.AsNoTracking().Count();
             }
         }
 
         public Area GetById(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var areaDetails = context.Areas
+            lock (this.dataContext)
+            {
+                var areaDetails = this.dataContext.Areas
                 .Where(a => a.Id == id)
                 .Select(a => new Area
                 {
@@ -40,28 +55,30 @@ namespace Ferretto.Common.Modules.BLL.Services
                 })
                 .Single();
 
-            return areaDetails;
+                return areaDetails;
+            }
         }
 
         public IQueryable<Area> GetByItemIdAvailability(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+            lock (this.dataContext)
+            {
+                var areaDetails = this.dataContext.Compartments
+                    .Include(c => c.LoadingUnit)
+                        .ThenInclude(l => l.Cell)
+                        .ThenInclude(c => c.Aisle)
+                        .ThenInclude(a => a.Area)
+                    .Where(c => c.ItemId == id)
+                    .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0)
+                    .Select(c => new Area
+                    {
+                        Id = c.LoadingUnit.Cell.Aisle.AreaId,
+                        Name = c.LoadingUnit.Cell.Aisle.Area.Name,
+                    })
+                    .Distinct();
 
-            var areaDetails = context.Compartments
-                .Include(c => c.LoadingUnit)
-                    .ThenInclude(l => l.Cell)
-                    .ThenInclude(c => c.Aisle)
-                    .ThenInclude(a => a.Area)
-                .Where(c => c.ItemId == id)
-                .Where(c => (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0)
-                .Select(c => new Area
-                {
-                    Id = c.LoadingUnit.Cell.Aisle.AreaId,
-                    Name = c.LoadingUnit.Cell.Aisle.Area.Name,
-                })
-                .Distinct();
-
-            return areaDetails;
+                return areaDetails;
+            }
         }
 
         public int Save(Area model)
@@ -71,13 +88,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.Areas.Find(model.Id);
+                var existingModel = this.dataContext.Areas.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 
@@ -86,14 +103,17 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
 
-            return context.Areas
-                .AsNoTracking()
-                .Where(actualWhereFunc)
-                .Select(a => new Area
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                });
+            lock (context)
+            {
+                return context.Areas
+                    .AsNoTracking()
+                    .Where(actualWhereFunc)
+                    .Select(a => new Area
+                    {
+                        Id = a.Id,
+                        Name = a.Name,
+                    });
+            }
         }
 
         #endregion Methods

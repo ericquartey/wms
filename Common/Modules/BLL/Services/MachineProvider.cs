@@ -4,7 +4,6 @@ using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -24,15 +23,19 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelXSFilter =
             m => m.Model.Contains("VARIANT-XS");
 
+        private readonly DatabaseContext dataContet;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public MachineProvider(EnumerationProvider enumerationProvider)
+        public MachineProvider(
+            DatabaseContext dataContext,
+            EnumerationProvider enumerationProvider)
         {
             this.enumerationProvider = enumerationProvider;
+            this.dataContet = dataContext;
         }
 
         #endregion Constructors
@@ -41,76 +44,81 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Machine> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllMachinesWithFilter(context);
+            lock (this.dataContet)
+            {
+                return GetAllMachinesWithFilter(this.dataContet);
+            }
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContet)
             {
-                return context.Machines.AsNoTracking().Count();
+                return this.dataContet.Machines.AsNoTracking().Count();
             }
         }
 
         public IQueryable<Machine> GetAllTraslo()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllMachinesWithFilter(context, TrasloFilter);
+            lock (this.dataContet)
+            {
+                return GetAllMachinesWithFilter(this.dataContet, TrasloFilter);
+            }
         }
 
         public int GetAllTrasloCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContet)
             {
-                return context.Machines.AsNoTracking().Where(TrasloFilter).Count();
+                return this.dataContet.Machines.AsNoTracking().Where(TrasloFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimag()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllMachinesWithFilter(context, VertimagFilter);
+            lock (this.dataContet)
+            {
+                return GetAllMachinesWithFilter(this.dataContet, VertimagFilter);
+            }
         }
 
         public int GetAllVertimagCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContet)
             {
-                return context.Machines.AsNoTracking().Where(VertimagFilter).Count();
+                return this.dataContet.Machines.AsNoTracking().Where(VertimagFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimagModelM()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllMachinesWithFilter(context, VertimagModelMFilter);
+            lock (this.dataContet)
+            {
+                return GetAllMachinesWithFilter(this.dataContet, VertimagModelMFilter);
+            }
         }
 
         public int GetAllVertimagModelMCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContet)
             {
-                return context.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
+                return this.dataContet.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimagModelXS()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllMachinesWithFilter(context, VertimagModelXSFilter);
+            lock (this.dataContet)
+            {
+                return GetAllMachinesWithFilter(this.dataContet, VertimagModelXSFilter);
+            }
         }
 
         public int GetAllVertimagModelXSCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContet)
             {
-                return context.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
+                return this.dataContet.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
             }
         }
 
@@ -126,13 +134,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContet)
             {
-                var existingModel = context.Machines.Find(model.Id);
+                var existingModel = this.dataContet.Machines.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContet.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return context.SaveChanges();
+                return this.dataContet.SaveChanges();
             }
         }
 
@@ -140,7 +148,9 @@ namespace Ferretto.Common.Modules.BLL.Services
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
 
-            return context.Machines
+            lock (context)
+            {
+                return context.Machines
                .AsNoTracking()
                .Include(m => m.Aisle)
                     .ThenInclude(a => a.Area)
@@ -182,6 +192,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                    TotalMaxWeight = m.TotalMaxWeight
                }
                );
+            }
         }
 
         #endregion Methods

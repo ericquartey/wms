@@ -19,14 +19,18 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static readonly Expression<Func<DataModels.Item, bool>> FifoFilter =
             item => item.ItemManagementType != null && item.ItemManagementType.Description.Contains("FIFO");
 
+        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public ItemProvider(EnumerationProvider enumerationProvider)
+        public ItemProvider(
+            DatabaseContext dataContext,
+            EnumerationProvider enumerationProvider)
         {
+            this.dataContext = dataContext;
             this.enumerationProvider = enumerationProvider;
         }
 
@@ -36,24 +40,25 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllItemsWithAggregations(context);
+            lock (this.dataContext)
+            {
+                return GetAllItemsWithAggregations(this.dataContext);
+            }
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Items.AsNoTracking().Count();
+                return this.dataContext.Items.AsNoTracking().Count();
             }
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.Compartments
+            lock (this.dataContext)
+            {
+                return this.dataContext.Compartments
                 .Where(c => c.Id == compartmentId)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -69,18 +74,19 @@ namespace Ferretto.Common.Modules.BLL.Services
                     }
                 )
                 .AsNoTracking();
+            }
         }
 
         public ItemDetails GetById(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var itemDetails = context.Items
+            lock (this.dataContext)
+            {
+                var itemDetails = this.dataContext.Items
                 .Include(i => i.MeasureUnit)
                 .Include(i => i.ItemManagementType)
                 .Where(i => i.Id == id)
                 .GroupJoin(
-                    context.Compartments
+                    this.dataContext.Compartments
                         .AsNoTracking()
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
@@ -142,52 +148,55 @@ namespace Ferretto.Common.Modules.BLL.Services
                 .AsNoTracking()
                 .Single();
 
-            itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-            itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
-            itemDetails.ItemManagementTypeChoices = this.enumerationProvider.GetAllItemManagementTypes();
-            itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
+                itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+                itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
+                itemDetails.ItemManagementTypeChoices = this.enumerationProvider.GetAllItemManagementTypes();
+                itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
 
-            return itemDetails;
+                return itemDetails;
+            }
         }
 
         public IQueryable<Item> GetWithAClass()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllItemsWithAggregations(context, AClassFilter);
+            lock (this.dataContext)
+            {
+                return GetAllItemsWithAggregations(this.dataContext, AClassFilter);
+            }
         }
 
         public int GetWithAClassCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Items.AsNoTracking().Count(AClassFilter);
+                return this.dataContext.Items.AsNoTracking().Count(AClassFilter);
             }
         }
 
         public IQueryable<Item> GetWithFifo()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllItemsWithAggregations(context, FifoFilter);
+            lock (this.dataContext)
+            {
+                return GetAllItemsWithAggregations(this.dataContext, FifoFilter);
+            }
         }
 
         public int GetWithFifoCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Items
-                .AsNoTracking()
-                .Include(i => i.ItemManagementType)
-                .Count(FifoFilter);
+                return this.dataContext.Items
+                    .AsNoTracking()
+                    .Include(i => i.ItemManagementType)
+                    .Count(FifoFilter);
             }
         }
 
         public bool HasAnyCompartments(int itemId)
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+                return this.dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
             }
         }
 
@@ -198,14 +207,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.Items.Find(model.Id);
+                var existingModel = this.dataContext.Items.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
                 existingModel.LastModificationDate = DateTime.Now;
 
-                return context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 
@@ -230,8 +239,9 @@ namespace Ferretto.Common.Modules.BLL.Services
         private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
-
-            return context.Items
+            lock (context)
+            {
+                return context.Items
                .AsNoTracking()
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
@@ -291,6 +301,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                            : 0,
                    }
                );
+            }
         }
 
         #endregion Methods

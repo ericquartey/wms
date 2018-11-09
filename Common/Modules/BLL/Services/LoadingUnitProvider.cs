@@ -3,7 +3,6 @@ using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
 {
@@ -13,15 +12,21 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         private readonly ICellProvider cellProvider;
         private readonly ICompartmentProvider compartmentProvider;
+        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public LoadingUnitProvider(EnumerationProvider enumerationProvider, ICompartmentProvider compartmentProvider, ICellProvider cellProvider)
+        public LoadingUnitProvider(
+            DatabaseContext dataContext,
+            EnumerationProvider enumerationProvider,
+            ICompartmentProvider compartmentProvider,
+            ICellProvider cellProvider)
         {
             this.enumerationProvider = enumerationProvider;
+            this.dataContext = dataContext;
             this.compartmentProvider = compartmentProvider;
             this.cellProvider = cellProvider;
         }
@@ -32,9 +37,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<LoadingUnit> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.LoadingUnits
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
                 .Include(l => l.LoadingUnitType)
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
@@ -54,21 +59,22 @@ namespace Ferretto.Common.Modules.BLL.Services
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
                 }).AsNoTracking();
+            }
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.LoadingUnits.Count();
+                return this.dataContext.LoadingUnits.Count();
             }
         }
 
         public IQueryable<LoadingUnitDetails> GetByCellId(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.LoadingUnits
+            lock (this.dataContext)
+            {
+                return this.dataContext.LoadingUnits
                 .Where(l => l.CellId == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -111,13 +117,14 @@ namespace Ferretto.Common.Modules.BLL.Services
                     AreaId = l.Cell.Aisle.AreaId,
                 })
                 .AsNoTracking();
+            }
         }
 
         public LoadingUnitDetails GetById(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var loadingUnitDetails = context.LoadingUnits
+            lock (this.dataContext)
+            {
+                var loadingUnitDetails = this.dataContext.LoadingUnits
                 .Where(l => l.Id == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -161,31 +168,32 @@ namespace Ferretto.Common.Modules.BLL.Services
                 })
                 .Single();
 
-            loadingUnitDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-            loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
-            loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
-            loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
-            foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
-            {
-                loadingUnitDetails.AddCompartment(compartment);
+                loadingUnitDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+                loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
+                loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
+                loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
+                foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
+                {
+                    loadingUnitDetails.AddCompartment(compartment);
+                }
+
+                loadingUnitDetails.CellPairingChoices =
+                    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                loadingUnitDetails.ReferenceTypeChoices =
+                    ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
+                    .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
+                loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
+
+                return loadingUnitDetails;
             }
-
-            loadingUnitDetails.CellPairingChoices =
-                ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-            loadingUnitDetails.ReferenceTypeChoices =
-                ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
-                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
-            loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
-
-            return loadingUnitDetails;
         }
 
         public bool HasAnyCompartments(int loadingUnitId)
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
+                return this.dataContext.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
             }
         }
 
@@ -196,13 +204,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.LoadingUnits.Find(model.Id);
+                var existingModel = this.dataContext.LoadingUnits.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 
