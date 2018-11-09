@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 {
@@ -14,6 +18,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
     {
         #region Fields
 
+        private readonly ILogger logger;
+        private readonly IHubContext<WakeupHub, IWakeupHub> hubContext;
         private readonly IServiceProvider serviceProvider;
         private const string DEFAULT_ORDERBY_FIELD = nameof(Item.Code);
 
@@ -21,9 +27,14 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         #region Constructors
 
-        public ItemsController(IServiceProvider serviceProvider)
+        public ItemsController(
+            IServiceProvider serviceProvider,
+            ILogger<ItemsController> logger,
+            IHubContext<WakeupHub, IWakeupHub> hubContext)
         {
             this.serviceProvider = serviceProvider;
+            this.logger = logger;
+            this.hubContext = hubContext;
         }
 
         #endregion Constructors
@@ -63,11 +74,13 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         }
 
         [HttpPost("withdraw")]
-        public List<Mission> Withdraw(Contracts.WithdrawRequest withdrawRequest)
+        public async Task<List<Mission>> Withdraw(Contracts.WithdrawRequest withdrawRequest)
         {
+            this.logger.LogInformation($"Withdrawal request of item {withdrawRequest.ItemId} received.");
+
             var mission1Quantity = withdrawRequest.Quantity / 2;
 
-            return new List<Mission>
+            var missions = new List<Mission>
             {
 #pragma warning disable IDE0009
                 new Mission
@@ -88,6 +101,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 }
  #pragma warning restore IDE0009
             };
+
+            this.logger.LogInformation($"Notifying new missions.");
+            await this.hubContext.Clients.All.NotifyNewMission(missions[0]);
+            await this.hubContext.Clients.All.NotifyNewMission(missions[1]);
+
+            return missions;
         }
 
         #endregion Methods
