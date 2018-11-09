@@ -18,6 +18,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private ICommand editCommand;
         private bool isCompartmentSelectableTray;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
@@ -63,6 +64,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 return (CompartmentDetails)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
             }
         }
+
+        public ICommand EditCommand => this.editCommand ??
+                  (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
 
         public bool IsCompartmentSelectableTray
         {
@@ -149,6 +153,11 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.EventService.Unsubscribe<ModelSelectionChangedEvent<LoadingUnit>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
+        }
+
+        private void ExecuteEditCommand()
+        {
+            this.NavigationService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.LoadingUnit.Id);
         }
 
         private void ExecuteSaveCommand()
