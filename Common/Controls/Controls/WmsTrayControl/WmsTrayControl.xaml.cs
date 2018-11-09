@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls
                     nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
         public static readonly DependencyProperty IsCompartmentSelectableProperty = DependencyProperty.Register(
-                            nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true, new PropertyChangedCallback(OnIsCompartmentSelectableChanged)));
+                            nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnIsCompartmentSelectableChanged)));
 
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                             nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnReadOnlysChanged)));
@@ -211,7 +211,7 @@ namespace Ferretto.Common.Controls
             {
                 Debug.WriteLine($"IsSelectable Property: {e.NewValue}");
 
-                viewModel.UpdateIsSelectablePropertyToCompartments((bool)e.NewValue);
+                viewModel.IsCompartmentSelectable = (bool)e.NewValue;
             }
         }
 
@@ -279,7 +279,7 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 wmsTrayControl.Initialize();
-                viewModel.UpdateTray((Tray)e.NewValue);
+                viewModel.Tray = (Tray)e.NewValue;
 
                 wmsTrayControl.CanvasListBoxControl.SetControlSize(wmsTrayControl.CanvasListBoxControl.ActualHeight, wmsTrayControl.CanvasListBoxControl.ActualWidth);
             }

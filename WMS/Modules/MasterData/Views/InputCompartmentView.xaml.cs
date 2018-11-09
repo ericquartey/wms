@@ -5,7 +5,7 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Modules.BLL.Models;
 
-namespace Ferretto.WMS.Modules.Compartment
+namespace Ferretto.WMS.Modules.MasterData
 {
     /// <summary>
     /// Interaction logic for WmsInputCompartmentView.xaml

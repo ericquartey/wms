@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ferretto.Common.Controls;
 
-namespace Ferretto.WMS.Modules.MasterData.Views
+namespace Ferretto.WMS.Modules.MasterData
 {
     /// <summary>
     /// Interaction logic for LoadingUnitEditView.xaml
