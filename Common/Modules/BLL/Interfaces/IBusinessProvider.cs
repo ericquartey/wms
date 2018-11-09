@@ -9,6 +9,8 @@ namespace Ferretto.Common.Modules.BLL
     {
         #region Methods
 
+        void Delete(int id);
+
         IQueryable<TModel> GetAll();
 
         int GetAllCount();

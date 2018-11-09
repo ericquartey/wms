@@ -33,20 +33,21 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Compartment Details" />
-        <wms:TextBox x:Name="WidthText"
-                     Grid.Row="1"
-                     Grid.Column="0"
-                     Width="100"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Text="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+  
+        <wms:SpinEdit x:Name="WidthText"
+                      Grid.Row="1"
+                      Grid.Column="0"
+                      Width="100"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-        <wms:TextBox x:Name="HeightText"
-                     Grid.Row="1"
-                     Grid.Column="1"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <wms:SpinEdit x:Name="HeightText"
+                      Grid.Row="1"
+                      Grid.Column="1"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
         <wms:TextBox x:Name="ArticleText"
                      Grid.Row="1"
@@ -57,45 +58,41 @@
                      Foreground="White"
                      Text="{Binding ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <wms:TextBox x:Name="QuantityText"
-                     Grid.Row="1"
-                     Grid.Column="4"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Foreground="White"
-                     Text="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <wms:TextBox x:Name="RowText"
-                     Grid.Row="1"
-                     Grid.Column="5"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Foreground="White"
-                     Text="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Visibility="Collapsed" />
+        <wms:SpinEdit x:Name="QuantityText"
+                      Grid.Row="1"
+                      Grid.Column="4"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Foreground="White" />
+        <wms:SpinEdit x:Name="RowText"
+                      Grid.Row="1"
+                      Grid.Column="5"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Foreground="White"
+                      Visibility="Collapsed" />
 
-        <wms:TextBox x:Name="PositionXText"
-                     Grid.Row="2"
-                     Grid.Column="0"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Background="White"
-                     Text="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <wms:TextBox x:Name="PositionYText"
-                     Grid.Row="2"
-                     Grid.Column="1"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Foreground="White"
-                     Text="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <wms:SpinEdit x:Name="PositionXText"
+                      Grid.Row="2"
+                      Grid.Column="0"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      Background="White"
+                      EditValue="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+        <wms:SpinEdit x:Name="PositionYText"
+                      Grid.Row="2"
+                      Grid.Column="1"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                      Foreground="White" />
         <wms:ComboBox Grid.Row="2"
                       Grid.Column="2"
                       EditValue="{Binding ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       IsEnabled="True"
                       ItemsSource="{Binding Path=ItemPairingChoices}" />
-        <!--<wms:ComboBox Grid.Row="2"
-                      Grid.Column="2"
-                      EditValue="{Binding SelectedFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ItemsSource="{Binding ItemPairing, Mode=TwoWay}" />-->
         <wms:TextBox x:Name="CapacityText"
                      Grid.Row="2"
                      Grid.Column="3"

@@ -45,7 +45,8 @@
                                Content="{x:Static res:MasterData.AddBulkCompartment}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_photo_size_select_small_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               IsEnabled="False" />
             <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
@@ -58,9 +59,9 @@
         <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"
                             Margin="0,0,0,0"
+                            IsCompartmentSelectable="True"
                             SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
                             ShowRuler="True"
-                            IsCompartmentSelectable="True"
                             Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
 
         <wms:WmsGridControl Grid.Row="3"

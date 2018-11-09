@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -15,13 +16,14 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private ICommand deleteCommand;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private bool readOnlyTray;
-        private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedCompartment;
         private CompartmentDetails selectedCompartmentTray;
@@ -62,6 +64,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        public ICommand DeleteCommand => this.deleteCommand ??
+          (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray));
+
         public LoadingUnitDetails LoadingUnit
         {
             get => this.loadingUnit;
@@ -86,9 +91,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.readOnlyTray;
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
-
-        public ICommand RevertCommand => this.revertCommand ??
-          (this.revertCommand = new DelegateCommand(this.LoadData));
 
         public ICommand SaveCommand => this.saveCommand ??
                   (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
@@ -137,16 +139,24 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
+        private bool CanExecuteDeleteCommand()
+        {
+            return this.selectedCompartmentTray != null;
+        }
+
+        private void ExecuteDeleteCommand()
+        {
+            this.tray.Compartments.Remove(this.SelectedCompartmentTray);
+
+            //ToDo: implement save/update/delete
+            //this.SaveLoadingUnit();
+
+            this.compartmentProvider.Delete(this.SelectedCompartmentTray.Id);
+        }
+
         private void ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
-
-            if (modifiedRowCount > 0)
-            {
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
-
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
-            }
+            this.SaveLoadingUnit();
         }
 
         private void Initialize()
@@ -168,11 +178,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
             this.RaisePropertyChanged(nameof(this.Tray));
-
-            //this.readOnlyTray = false;
-            //this.isCompartmentSelectableTray = true;
-            //this.RaisePropertyChanged(nameof(this.ReadOnlyTray));
-            //this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
         }
 
         private void LoadData()
@@ -185,11 +190,23 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        private void SaveLoadingUnit()
+        {
+            var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
+
+            if (modifiedRowCount > 0)
+            {
+                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
+
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+            }
+        }
+
         private void SetSelectedCompartment(object value)
         {
-            if (value is CompartmentDetails)
+            if (value is CompartmentDetails compartmentDetails)
             {
-                this.selectedCompartmentTray = (CompartmentDetails)value;
+                this.selectedCompartmentTray = compartmentDetails;
                 this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
             }
         }
