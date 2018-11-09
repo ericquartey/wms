@@ -45,6 +45,7 @@
 
         <ScrollViewer Name="NavigationButtonScrollViewer"
                       Grid.Row="2"
+                      CanContentScroll="False"
                       ManipulationBoundaryFeedback="ScrollViewer_ManipulationBoundaryFeedback"
                       PanningMode="Both"
                       VerticalScrollBarVisibility="Hidden">

@@ -18,10 +18,6 @@
 
         public delegate void InstallationInfoChangedEvent();
 
-        public delegate void LoadScrollViewerOffsetEvent();
-
-        public delegate void SaveScrollViewerOffsetEvent();
-
         #endregion Delegates
 
         #region Events
@@ -40,10 +36,6 @@
 
         public static event InstallationInfoChangedEvent InstallationInfoChangedEventHandler;
 
-        public static event LoadScrollViewerOffsetEvent LoadScrollViewerOffsetEventHandler;
-
-        public static event SaveScrollViewerOffsetEvent SaveScrollViewerOffsetEventHandler;
-
         #endregion Events
 
         #region Methods
@@ -56,7 +48,6 @@
             InstallationInfoChangedEventHandler += InitializerMethod;
             GoToViewEventHandler += InitializerMethod;
             ExitViewEventHandler += InitializerMethod;
-            SaveScrollViewerOffsetEventHandler += InitializerMethod;
         }
 
         public static void RaiseBackToVWAppEvent() => BackToVWAppEventHandler();
@@ -72,10 +63,6 @@
         public static void RaiseGoToViewEvent() => GoToViewEventHandler();
 
         public static void RaiseInstallationInfoChangedEvent() => InstallationInfoChangedEventHandler();
-
-        public static void RaiseLoadScrollViewerOffsetEvent() => LoadScrollViewerOffsetEventHandler();
-
-        public static void RaiseSaveScrollViewerOffsetEvent() => SaveScrollViewerOffsetEventHandler();
 
         private static void InitializerMethod()
         {

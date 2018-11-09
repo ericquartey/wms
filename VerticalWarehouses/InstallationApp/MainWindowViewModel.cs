@@ -93,7 +93,7 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; NavigationService.RaiseExitViewEvent(); NavigationService.RaiseLoadScrollViewerOffsetEvent(); }));
+        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; NavigationService.RaiseExitViewEvent(); }));
         public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.BeltBurnishingVMInstance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.CellsPanelControlVMInsance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
@@ -121,7 +121,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSBaysVMInstance; }));
         public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSCradleVMInstance; }));
         public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSGateVMInstance; }));
-        public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.SSNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; NavigationService.RaiseSaveScrollViewerOffsetEvent(); }));
+        public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.SSNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
         public ICommand SsProvaViewButtonCommand => this.ssProvaViewButtonCommand ?? (this.ssProvaViewButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSProvaVMInstance; }));
         public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSVariousInputsVMInstance; }));
         public ICommand SsVerticalAxisButtonCommand => this.ssVerticalAxisButtonCommand ?? (this.ssVerticalAxisButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSVerticalAxisVMInstance; }));
@@ -135,29 +135,12 @@ namespace Ferretto.VW.InstallationApp
 
         private void GatesControlButtonMethod()
         {
-            if (DataManager.CurrentData.GeneralInfo.Bays_Quantity == 1)
-            {
-                this.ContentRegionCurrentViewModel = this.Gate1ControlVMInstance;
-            }
-            else
-            {
-                this.ContentRegionCurrentViewModel = null;
-                this.NavigationRegionCurrentViewModel = this.GatesControlNavigationButtonsVMInstance;
-            }
+            this.ContentRegionCurrentViewModel = this.Gate1ControlVMInstance;
         }
 
         private void GatesHeightControlButtonMethod()
         {
-            NavigationService.RaiseSaveScrollViewerOffsetEvent();
-            if (DataManager.CurrentData.GeneralInfo.Bays_Quantity == 1)
-            {
-                this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance;
-            }
-            else
-            {
-                this.ContentRegionCurrentViewModel = null;
-                this.NavigationRegionCurrentViewModel = this.GatesHeightControlNavigationButtonsVMInstance;
-            }
+            this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance;
         }
 
         #endregion Methods

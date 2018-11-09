@@ -16,7 +16,7 @@
                  BorderBrush="{Binding BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  BorderThickness="1"
                  KeyDown="OnKeyDownHandler"
-                 Style="{StaticResource CustomInputFieldControlTextBoxStyle}"
+                 Style="{StaticResource CustomInputFieldFocusableControlTextBoxStyle}"
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

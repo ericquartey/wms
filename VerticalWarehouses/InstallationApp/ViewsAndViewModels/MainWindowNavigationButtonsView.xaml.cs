@@ -3,6 +3,7 @@ using System.Windows;
 using System;
 using System.Windows.Input;
 using Ferretto.VW.Navigation;
+using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
 {
@@ -23,23 +24,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         {
             this.InitializeComponent();
             this.DataContext = new MainWindowNavigationButtonsViewModel();
-            NavigationService.SaveScrollViewerOffsetEventHandler += this.SaveScrollViewerOffset;
-            NavigationService.LoadScrollViewerOffsetEventHandler += this.LoadScrollViewerOffset;
         }
 
         #endregion Constructors
 
         #region Methods
-
-        private void LoadScrollViewerOffset()
-        {
-            this.NavigationButtonScrollViewer.ScrollToVerticalOffset(this.scrollViewerOffset);
-        }
-
-        private void SaveScrollViewerOffset()
-        {
-            this.scrollViewerOffset = this.NavigationButtonScrollViewer.VerticalOffset;
-        }
 
         private void ScrollDownButtonClick(Object sender, RoutedEventArgs e)
         {

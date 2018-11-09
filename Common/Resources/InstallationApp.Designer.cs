@@ -223,6 +223,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm new resolution or cancel action..
+        /// </summary>
+        public static string ConfirmResolution {
+            get {
+                return ResourceManager.GetString("ConfirmResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Correct.
         /// </summary>
         public static string Correct {
@@ -619,6 +628,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert mesured initial position..
+        /// </summary>
+        public static string InsertMesuredInitialPosition {
+            get {
+                return ResourceManager.GetString("InsertMesuredInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Insert mesured movement..
         /// </summary>
         public static string InsertMesuredMovement {
@@ -799,6 +817,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mesured initial position (mm):.
+        /// </summary>
+        public static string MesuredInitialPosition {
+            get {
+                return ResourceManager.GetString("MesuredInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mesured lenght (mm):.
         /// </summary>
         public static string MesuredLenght {
@@ -876,6 +903,33 @@ namespace Ferretto.Common.Resources {
         public static string Move {
             get {
                 return ResourceManager.GetString("Move", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to initial position..
+        /// </summary>
+        public static string MoveToInitialPosition {
+            get {
+                return ResourceManager.GetString("MoveToInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move to position..
+        /// </summary>
+        public static string MoveToPosition {
+            get {
+                return ResourceManager.GetString("MoveToPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Moving to desired position....
+        /// </summary>
+        public static string MovingToDesiredPosition {
+            get {
+                return ResourceManager.GetString("MovingToDesiredPosition", resourceCulture);
             }
         }
         
@@ -1110,6 +1164,15 @@ namespace Ferretto.Common.Resources {
         public static string SetPosition {
             get {
                 return ResourceManager.GetString("SetPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting initial position....
+        /// </summary>
+        public static string SettingInitialPosition {
+            get {
+                return ResourceManager.GetString("SettingInitialPosition", resourceCulture);
             }
         }
         

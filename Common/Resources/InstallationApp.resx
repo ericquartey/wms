@@ -706,4 +706,32 @@
     <value>Cells Control</value>
     <comment>Title - Button text</comment>
   </data>
+  <data name="MesuredInitialPosition" xml:space="preserve">
+    <value>Mesured initial position (mm):</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="MoveToInitialPosition" xml:space="preserve">
+    <value>Move to initial position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="InsertMesuredInitialPosition" xml:space="preserve">
+    <value>Insert mesured initial position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Move to position.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ConfirmResolution" xml:space="preserve">
+    <value>Confirm new resolution or cancel action.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="MovingToDesiredPosition" xml:space="preserve">
+    <value>Moving to desired position...</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="SettingInitialPosition" xml:space="preserve">
+    <value>Setting initial position...</value>
+    <comment>Note text</comment>
+  </data>
 </root>

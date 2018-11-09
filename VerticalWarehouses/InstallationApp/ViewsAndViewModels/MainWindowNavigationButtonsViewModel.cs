@@ -31,7 +31,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         public MainWindowNavigationButtonsViewModel()
         {
             this.UpdateDataFromDataManager();
-            NavigationService.InstallationInfoChangedEventHandler += this.UpdateDataFromDataManager;
+            NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
             NavigationService.GoToViewEventHandler += this.SetAllNavigationButtonDisabled;
             NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
         }

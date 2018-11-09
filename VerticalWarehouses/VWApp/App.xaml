@@ -18,6 +18,7 @@
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewsComboBoxTemplate.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewsComboBoxItemTemplate.xaml" />
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomSensorControlStyle.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomInputFieldControlFocusableStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
