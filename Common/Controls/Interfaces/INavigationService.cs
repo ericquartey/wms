@@ -18,7 +18,7 @@
 
         INavigableView GetView(string moduleViewName, object data = null);
 
-        string GetViewModelBindFirstId(string fullViewName);
+        string GetNewViewModelName(string fullViewName);
 
         INavigableViewModel GetViewModelByName(string viewModelName);
 
