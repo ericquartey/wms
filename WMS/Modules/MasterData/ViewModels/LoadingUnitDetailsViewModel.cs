@@ -18,13 +18,14 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private bool isCompartmentSelectableTray;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private object modelSelectionChangedSubscription;
+        private bool readOnlyTray;
         private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedCompartment;
-
         private CompartmentDetails selectedCompartmentTray;
         private Tray tray;
 
@@ -63,6 +64,12 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        public bool IsCompartmentSelectableTray
+        {
+            get => this.isCompartmentSelectableTray;
+            set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
+        }
+
         public LoadingUnitDetails LoadingUnit
         {
             get => this.loadingUnit;
@@ -80,6 +87,12 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.loadingUnitHasCompartments;
             set => this.SetProperty(ref this.loadingUnitHasCompartments, value);
+        }
+
+        public bool ReadOnlyTray
+        {
+            get => this.readOnlyTray;
+            set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
         public ICommand RevertCommand => this.revertCommand ??
@@ -103,7 +116,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentDetails SelectedCompartmentTray
         {
             get => this.selectedCompartmentTray;
-            set => this.SetProperty(ref this.selectedCompartment, value);
+            set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
 
         public Tray Tray
@@ -138,24 +151,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private void CreateTrayObject()
-        {
-            this.tray = new Tray
-            {
-                Dimension = new Dimension
-                {
-                    Height = this.LoadingUnit.Length,
-                    Width = this.LoadingUnit.Width
-                },
-                ReadOnly = true
-            };
-            if (this.LoadingUnit.Compartments != null)
-            {
-                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
-            }
-            this.RaisePropertyChanged(nameof(this.Tray));
-        }
-
         private void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
@@ -188,6 +183,28 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
+        private void InitializeTray()
+        {
+            this.tray = new Tray
+            {
+                Dimension = new Dimension
+                {
+                    Height = this.LoadingUnit.Length,
+                    Width = this.LoadingUnit.Width
+                }
+            };
+            if (this.LoadingUnit.Compartments != null)
+            {
+                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
+            }
+            this.RaisePropertyChanged(nameof(this.Tray));
+
+            this.readOnlyTray = true;
+            this.isCompartmentSelectableTray = true;
+            this.RaisePropertyChanged(nameof(this.ReadOnlyTray));
+            this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
+        }
+
         private void LoadData()
         {
             if (this.Data is int modelId)
@@ -195,7 +212,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
                 this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
 
-                this.CreateTrayObject();
+                this.InitializeTray();
             }
         }
 

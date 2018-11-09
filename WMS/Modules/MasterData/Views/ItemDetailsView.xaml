@@ -9,8 +9,10 @@
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             Title="{x:Static res:Navigation.ItemDetails}"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             EnableHistoryView="True"
              Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 

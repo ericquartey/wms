@@ -514,7 +514,7 @@
                                     <Setter Property="AllowGlyphTheming" Value="False" />
                                     <Setter Property="Template">
                                         <Setter.Value>
-                                            <ControlTemplate>
+                                            <ControlTemplate TargetType="{x:Type dxnav:TileBarItem}">
                                                 <Grid x:Name="SecondaryButtonGrid"
                                                       Width="{DynamicResource MenuTileWidth}"
                                                       Height="{DynamicResource MenuTileHeight}"
@@ -558,7 +558,6 @@
                                     </Setter>
                                     <Setter Property="Padding" Value="8,6,8,6" />
                                     <Setter Property="Command" Value="{Binding Command}" />
-                                    <Setter Property="TileGlyph" Value="{Binding Image}" />
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding HasChildren}"
                                                      Value="true">

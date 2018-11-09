@@ -104,7 +104,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                    Width = c.Width,
                    Height = c.Height,
                    XPosition = c.XPosition,
-                   YPosition = c.YPosition
+                   YPosition = c.YPosition,
+                   LoadingUnitId = c.LoadingUnitId
                })
                .Single();
 

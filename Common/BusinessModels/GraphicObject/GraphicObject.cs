@@ -66,7 +66,6 @@ namespace Ferretto.Common.BusinessModels
         public readonly int DOUBLE_BORDER_TRAY = 2;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
         private Dimension dimension;
-        private bool readOnly;
 
         #endregion Fields
 
@@ -88,12 +87,6 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public Position Origin { get; set; }
-
-        public bool ReadOnly
-        {
-            get { return this.readOnly; }
-            set { this.readOnly = value; }
-        }
 
         public Dimension RulerSize { get; set; }
 

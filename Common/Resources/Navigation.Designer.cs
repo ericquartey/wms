@@ -79,6 +79,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell Details.
+        /// </summary>
+        public static string CellDetails {
+            get {
+                return ResourceManager.GetString("CellDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cells.
         /// </summary>
         public static string Cells {
@@ -93,6 +102,15 @@ namespace Ferretto.Common.Resources {
         public static string CellStatuses {
             get {
                 return ResourceManager.GetString("CellStatuses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment Details.
+        /// </summary>
+        public static string CompartmentDetails {
+            get {
+                return ResourceManager.GetString("CompartmentDetails", resourceCulture);
             }
         }
         
@@ -187,6 +205,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Details.
+        /// </summary>
+        public static string ItemDetails {
+            get {
+                return ResourceManager.GetString("ItemDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
         public static string Items {
@@ -241,6 +268,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Details.
+        /// </summary>
+        public static string LoadingUnitDetails {
+            get {
+                return ResourceManager.GetString("LoadingUnitDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Units.
         /// </summary>
         public static string LoadingUnits {
@@ -264,6 +300,15 @@ namespace Ferretto.Common.Resources {
         public static string Machine_Status {
             get {
                 return ResourceManager.GetString("Machine_Status", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machines.
+        /// </summary>
+        public static string Machines {
+            get {
+                return ResourceManager.GetString("Machines", resourceCulture);
             }
         }
         

@@ -40,7 +40,7 @@
                                Orientation="Vertical" />
 
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
-                                       Margin="25,25,10,10"
+                                       Margin="25,25,1,1"
                                        HorizontalAlignment="Stretch"
                                        VerticalAlignment="Stretch"
                                        Panel.ZIndex="999"
