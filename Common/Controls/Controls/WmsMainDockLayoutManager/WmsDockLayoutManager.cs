@@ -96,7 +96,6 @@ namespace Ferretto.Common.Controls
             newLayoutPanel.AllowFloat = false;
             newLayoutPanel.AllowHide = false;
             newLayoutPanel.IsActive = true;
-
             if (this.isControlPressed == false)
             {
                 var activePanel = this.DockController.ActiveItem as LayoutPanel;
