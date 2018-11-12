@@ -25,12 +25,11 @@
                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                FontFamily="{DynamicResource FontSmall}"
                                FontSize="{DynamicResource FontSizeSmall}">
-
                             <Label.Content>
                                 <MultiBinding Converter="{StaticResource DNC}">
                                     <Binding RelativeSource="{RelativeSource Self}" />
                                     <Binding Path="DataContext"
-                                             RelativeSource="{RelativeSource Self}" />
+                                                 RelativeSource="{RelativeSource Self}" />
                                 </MultiBinding>
                             </Label.Content>
                         </Label>
