@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 
@@ -21,7 +22,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
-        protected bool SetIfPositive(ref int? member, int? value)
+        protected bool SetIfPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
         {
             if (value.HasValue)
             {
@@ -32,24 +33,24 @@ namespace Ferretto.Common.BusinessModels
 
                 if (!member.HasValue || member.Value != value.Value)
                 {
-                    return this.SetProperty(ref member, value);
+                    return this.SetProperty(ref member, value, propertyName);
                 }
             }
 
             return false;
         }
 
-        protected bool SetIfPositive(ref int member, int value)
+        protected bool SetIfPositive(ref int member, int value, [CallerMemberName] string propertyName = null)
         {
             if (value < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
             }
 
-            return this.SetProperty(ref member, value);
+            return this.SetProperty(ref member, value, propertyName);
         }
 
-        protected bool SetIfStrictlyPositive(ref int? member, int? value)
+        protected bool SetIfStrictlyPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
         {
             if (value.HasValue)
             {
@@ -60,21 +61,21 @@ namespace Ferretto.Common.BusinessModels
 
                 if (!member.HasValue || member.Value != value.Value)
                 {
-                    return this.SetProperty(ref member, value);
+                    return this.SetProperty(ref member, value, propertyName);
                 }
             }
 
             return false;
         }
 
-        protected bool SetIfStrictlyPositive(ref int member, int value)
+        protected bool SetIfStrictlyPositive(ref int member, int value, [CallerMemberName] string propertyName = null)
         {
             if (value <= 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
             }
 
-            return this.SetProperty(ref member, value);
+            return this.SetProperty(ref member, value, propertyName);
         }
 
         #endregion Methods

@@ -30,6 +30,11 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
+        public void Delete(Int32 id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<LoadingUnit> GetAll()
         {
             var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
@@ -201,6 +206,32 @@ namespace Ferretto.Common.Modules.BLL.Services
                 var existingModel = context.LoadingUnits.Find(model.Id);
 
                 context.Entry(existingModel).CurrentValues.SetValues(model);
+
+                foreach (var compartment in model.Compartments)
+                {
+                    var existingCompartment = context.Compartments.Find(compartment.Id);
+                    if (existingCompartment != null)
+                    {
+                        context.Entry(existingCompartment).CurrentValues.SetValues(compartment);
+                    }
+                    else
+                    {
+                        context.Compartments.Add(new DataModels.Compartment()
+                        {
+                            Width = compartment.Width,
+                            Height = compartment.Height,
+                            XPosition = compartment.XPosition,
+                            YPosition = compartment.YPosition,
+                            CreationDate = DateTime.Now,
+                            LoadingUnitId = compartment.LoadingUnitId,
+                            CompartmentTypeId = compartment.CompartmentTypeId,
+                            Stock = compartment.Stock,
+                            ItemPairing = (DataModels.Pairing)Enum.ToObject(typeof(DataModels.Pairing), compartment.ItemPairing),
+                            MaxCapacity = compartment.MaxCapacity,
+                            ItemId = compartment.ItemId
+                        });
+                    }
+                }
 
                 return context.SaveChanges();
             }

@@ -186,4 +186,10 @@
   <data name="Next" xml:space="preserve">
     <value>Successivo</value>
   </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Modifica</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Elimina</value>
+  </data>
 </root>
