@@ -8,11 +8,11 @@
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
         <TextBlock Margin="5,1,5,1"
-                   Style="{StaticResource CustomInputFieldControlTextBlockStyle}"
+                   Style="{StaticResource IAPP_ViewCustomControlLabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock Margin="5,1,5,5"
                    Background="Transparent"
-                   Style="{StaticResource CustomLabelTextBlockControlTextBoxStyle}"
+                   Style="{StaticResource IAPP_ViewTextBlockStyle}"
                    Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

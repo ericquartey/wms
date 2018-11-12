@@ -167,10 +167,6 @@
       <DependentUpon>SSNavigationButtonsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsViewModel.cs" />
-    <Compile Include="ViewsAndViewModels\SensorsState\SSProvaView.xaml.cs">
-      <DependentUpon>SSProvaView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsAndViewModels\SensorsState\SSProvaViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SensorsState\SSVariousInputsView.xaml.cs">
       <DependentUpon>SSVariousInputsView.xaml</DependentUpon>
     </Compile>
@@ -284,10 +280,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SensorsState\SSNavigationButtonsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewsAndViewModels\SensorsState\SSProvaView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

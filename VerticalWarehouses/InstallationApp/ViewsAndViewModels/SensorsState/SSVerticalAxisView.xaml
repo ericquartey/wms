@@ -20,10 +20,10 @@
                 <RowDefinition Height="80" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            <Label Grid.Row="0"
-                   Grid.Column="1"
-                   Content="{x:Static res:InstallationApp.VerticalAxis}"
-                   Style="{StaticResource InstallationViewsTitleTextStyle}" />
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.VerticalAxis}" />
             <Grid Grid.Row="1"
                   Grid.Column="1">
                 <Grid.ColumnDefinitions>
@@ -42,15 +42,15 @@
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
                                                 SensorState="{Binding ZeroVerticalSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource CustomSensorControlStyle}" />
+                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
                                                 SensorState="{Binding EmergencyEndRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource CustomSensorControlStyle}" />
+                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}"
                                                 SensorState="{Binding BrakeResistanceOvertemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource CustomSensorControlStyle}" />
+                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

@@ -178,6 +178,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell correction (mm):.
+        /// </summary>
+        public static string CellCorrection {
+            get {
+                return ResourceManager.GetString("CellCorrection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current cell&apos;s height (mm):.
         /// </summary>
         public static string CellHeight {

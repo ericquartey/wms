@@ -8,7 +8,7 @@
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
         <TextBlock Margin="5,1,5,1"
-                   Style="{StaticResource CustomInputFieldControlTextBlockStyle}"
+                   Style="{StaticResource IAPP_ViewCustomControlLabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox Name="InputTextBox"
                  Margin="5,1,5,5"
@@ -16,7 +16,7 @@
                  BorderBrush="{Binding BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  BorderThickness="1"
                  KeyDown="OnKeyDownHandler"
-                 Style="{StaticResource CustomInputFieldFocusableControlTextBoxStyle}"
+                 Style="{StaticResource IAPP_ViewCustomInputFieldFocusableControlTextBoxStyle}"
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

@@ -30,7 +30,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl
             for (var i = 1; i <= DataManager.CurrentData.GeneralInfo.Bays_Quantity; i++)
             {
                 var button = new Button();
-                var style = this.FindResource("InstallationAppNavigationButtonStyle") as Style;
+                var style = this.FindResource("IAPP_NavigationViewButtonStyle") as Style;
                 button.Style = style;
                 button.Content = "Gate " + i + " Height Control";
                 var b = new Binding("DataContext.Gate" + i + "HeightControlNavigationButtonCommand");

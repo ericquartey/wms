@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Templates">
-    <ControlTemplate x:Key="StandardComboBoxItemTemplate"
+    <ControlTemplate x:Key="IAPP_MainWindowMachineStateComboBoxItemTemplate"
                      TargetType="{x:Type ComboBoxItem}">
         <Border x:Name="Bd"
                 Padding="{TemplateBinding Padding}"
@@ -26,8 +26,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoDarkGray}" />
+                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -61,7 +61,7 @@
                     <Condition Property="IsMouseOver" Value="False" />
                     <Condition Property="IsKeyboardFocused" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoDarkGray}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -69,8 +69,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoDarkGray}" />
+                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

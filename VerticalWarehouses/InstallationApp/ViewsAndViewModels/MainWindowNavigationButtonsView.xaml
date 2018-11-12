@@ -19,7 +19,7 @@
                       Margin="15,0,0,0"
                       Click="ScrollUpButtonClick"
                       IsEnabled="{Binding IsUpScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}">
+                      Style="{StaticResource IAPP_NavigationViewRepeatButtonStyle}">
             <RepeatButton.LayoutTransform>
                 <RotateTransform Angle="180" />
             </RepeatButton.LayoutTransform>
@@ -35,7 +35,7 @@
                       Margin="15,0,0,0"
                       Click="ScrollDownButtonClick"
                       IsEnabled="{Binding IsDownScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Style="{StaticResource InstallationAppNavigationRepeatButtonStyle}">
+                      Style="{StaticResource IAPP_NavigationViewRepeatButtonStyle}">
             <Path Width="200"
                   Height="17"
                   Data="M 0, 50 50,100 100,50"
@@ -53,51 +53,51 @@
                 <Button Command="{Binding DataContext.InstallationStateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.InstallationState}"
                         IsEnabled="{Binding IsInstallationStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.SensorsState}"
                         IsEnabled="{Binding IsSensorsStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
                         IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.GatesControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.GateControl}"
                         IsEnabled="{Binding IsGateControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
                         IsEnabled="{Binding IsOriginVerticalAxisButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.ResolutionCalibrationVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.ResolutionCalibration}"
                         IsEnabled="{Binding IsSetYResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.BeltBurnishingButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.BeltBurnishing}"
                         IsEnabled="{Binding IsBeltBurnishingButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.GateHeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.GateHeightControl}"
                         IsEnabled="{Binding IsGateHeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.WeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.WeightControl}"
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.VerticalOffsetCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.VerticalOffsetCalibration}"
                         IsEnabled="{Binding IsVerticalOffsetCalibrationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.CellsPanelControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.CellsPanelControl}"
                         IsEnabled="{Binding IsCellsPanelControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
                 <Button Command="{Binding DataContext.CellsControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                         Content="{x:Static res:InstallationApp.CellsControl}"
                         IsEnabled="{Binding IsCellsControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

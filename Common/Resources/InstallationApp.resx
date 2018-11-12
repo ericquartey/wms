@@ -734,4 +734,8 @@
     <value>Setting initial position...</value>
     <comment>Note text</comment>
   </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Cell correction (mm):</value>
+    <comment>Label text</comment>
+  </data>
 </root>

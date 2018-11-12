@@ -24,9 +24,6 @@
         <DataTemplate DataType="{x:Type sensorsState:SSNavigationButtonsViewModel}">
             <sensorsState:SSNavigationButtonsView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type sensorsState:SSProvaViewModel}">
-            <sensorsState:SSProvaView />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type sensorsState:SSVerticalAxisViewModel}">
             <sensorsState:SSVerticalAxisView />
         </DataTemplate>
@@ -138,11 +135,12 @@
                           VerticalContentAlignment="Center"
                           FontSize="25"
                           Foreground="{StaticResource FerrettoBlack}"
-                          Style="{StaticResource UserComboBoxTemplate}">
+                          Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
                     <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
                                   Content="{x:Static res:InstallationApp.Installer}"
                                   IsSelected="True"
-                                  Style="{StaticResource UserComboBoxItemStyle}" />
+                                  Style="{StaticResource IAPP_MainWindowUserComboBoxItemStyle}"
+                                  Template="{StaticResource IAPP_MainWindowUserComboBoxItemTemplate}" />
                     <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
                                   Content="{x:Static res:InstallationApp.LogOff}">
                         <ComboBoxItem.Style>
@@ -177,16 +175,17 @@
                               FontSize="25"
                               Foreground="{StaticResource FerrettoPureWhite}"
                               SelectedIndex="{Binding MachineModeSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Style="{StaticResource StandardComboBoxTemplate}">
+                              Style="{StaticResource IAPP_MainWindowMachineStateComboBoxStyle}"
+                              Template="{StaticResource IAPP_MainWindowMachineStateComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=machineModeComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.Manual}"
                                       IsSelected="True"
-                                      Style="{StaticResource StandardComboBoxItemStyle}"
-                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                                      Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"
+                                      Template="{DynamicResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
                         <ComboBoxItem Height="{Binding ElementName=machineModeComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.Auto}"
-                                      Style="{StaticResource StandardComboBoxItemStyle}"
-                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                                      Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"
+                                      Template="{DynamicResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
                     </ComboBox>
                     <Ellipse Grid.Column="0"
                              Width="30"
@@ -209,16 +208,16 @@
                               FontSize="25"
                               Foreground="{StaticResource FerrettoPureWhite}"
                               SelectedIndex="{Binding MachineOnMarchSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              Style="{StaticResource StandardComboBoxTemplate}">
+                              Template="{StaticResource IAPP_MainWindowMachineStateComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.Off}"
                                       IsSelected="True"
-                                      Style="{StaticResource StandardComboBoxItemStyle}"
-                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                                      Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"
+                                      Template="{DynamicResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
                         <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.On}"
-                                      Style="{StaticResource StandardComboBoxItemStyle}"
-                                      Template="{DynamicResource StandardComboBoxItemTemplate}" />
+                                      Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"
+                                      Template="{DynamicResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
                     </ComboBox>
                     <Ellipse Grid.Column="0"
                              Width="30"
