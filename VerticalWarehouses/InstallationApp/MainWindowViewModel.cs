@@ -19,6 +19,7 @@ namespace Ferretto.VW.InstallationApp
         #region Fields
 
         private readonly BeltBurnishingViewModel BeltBurnishingVMInstance = new BeltBurnishingViewModel();
+        private readonly CellsControlViewModel CellsControlVMInstance = new CellsControlViewModel();
         private readonly CellsPanelsControlViewModel CellsPanelControlVMInsance = new CellsPanelsControlViewModel();
         private readonly Gate1ControlViewModel Gate1ControlVMInstance = new Gate1ControlViewModel();
         private readonly Gate1HeightControlViewModel Gate1HeightControlVMInstance = new Gate1HeightControlViewModel();
@@ -48,6 +49,7 @@ namespace Ferretto.VW.InstallationApp
 
         private ICommand backToMainWindowNavigationButtonsViewCommand;
         private ICommand beltBurnishingButtonCommand;
+        private ICommand cellsControlButtonCommand;
         private ICommand cellsPanelControlButtonCommand;
         private BindableBase contentRegionCurrentViewModel;
         private ICommand gate1HeightControlNavigationButtonCommand;
@@ -95,6 +97,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; NavigationService.RaiseExitViewEvent(); }));
         public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.BeltBurnishingVMInstance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
+        public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.CellsControlVMInstance));
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.CellsPanelControlVMInsance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance));

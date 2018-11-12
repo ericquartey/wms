@@ -187,7 +187,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cells Control.
+        ///   Looks up a localized string similar to Cells  Control.
         /// </summary>
         public static string CellsControl {
             get {

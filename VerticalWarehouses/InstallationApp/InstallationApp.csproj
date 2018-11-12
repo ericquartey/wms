@@ -183,6 +183,10 @@
       <DependentUpon>BeltBurnishingView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\BeltBurnishingViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\CellsControlView.xaml.cs">
+      <DependentUpon>CellsControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\CellsControlViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlView.xaml.cs">
       <DependentUpon>CellsPanelsControlView.xaml</DependentUpon>
     </Compile>
@@ -296,6 +300,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\SingleViews\BeltBurnishingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\CellsControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
