@@ -173,6 +173,27 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
+        public WmsCompartmentViewModel AddCompartment(CompartmentDetails compartment)
+        {
+            if (this.Tray != null)
+            {
+                return new WmsCompartmentViewModel
+                {
+                    Tray = this.Tray,
+                    CompartmentDetails = compartment,
+                    Width = compartment.Width ?? 0,
+                    Height = compartment.Height ?? 0,
+                    Left = compartment.XPosition ?? 0,
+                    Top = compartment.YPosition ?? 0,
+                    ColorFill = Colors.Aquamarine.ToString(),
+                    Selected = Colors.RoyalBlue.ToString(),
+                    ReadOnly = this.ReadOnly,
+                    IsSelectable = this.IsCompartmentSelectable
+                };
+            }
+            return null;
+        }
+
         public void ResizeCompartments(double widthTrayPixel, double heightTrayPixel)
         {
             if (this.items != null)
@@ -273,6 +294,19 @@ namespace Ferretto.Common.Controls
             if (e.ListChangedType == ListChangedType.ItemDeleted)
             {
                 this.items.RemoveAt(e.NewIndex);
+            }
+            if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                if (sender is IList<CompartmentDetails> compartments)
+                {
+                    Debug.WriteLine($"Compartments: {compartments.Count}");
+                    var addedCompartment = compartments[compartments.Count - 1];
+                    var compartmentGraphic = this.AddCompartment(addedCompartment);
+
+                    this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, compartmentGraphic);
+
+                    this.items.Add(compartmentGraphic);
+                }
             }
         }
 

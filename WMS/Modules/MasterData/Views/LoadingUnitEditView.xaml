@@ -54,7 +54,9 @@
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
-        <masterData:InputCompartmentView Grid.Row="1" />
+        <masterData:InputCompartmentView Grid.Row="1"
+                                         Width="800"
+                                         HorizontalAlignment="Left" />
 
         <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"

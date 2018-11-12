@@ -4,23 +4,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
-             d:DesignHeight="1080"
-             d:DesignWidth="1920"
              mc:Ignorable="d">
     <Grid DataContext="{Binding SelectedCompartmentTray}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"
+            <ColumnDefinition Width="1*"
+                              MinWidth="100" />
+            <ColumnDefinition Width="1*"
+                              MinWidth="100" />
+            <ColumnDefinition Width="2*"
+                              MinWidth="100" />
+            <ColumnDefinition Width="*"
+                              MinWidth="100" />
+            <!--<ColumnDefinition Width="auto"
                               MinWidth="100" />
             <ColumnDefinition Width="auto"
-                              MinWidth="100" />
-            <ColumnDefinition Width="auto"
-                              MinWidth="100" />
-            <ColumnDefinition Width="auto"
-                              MinWidth="100" />
-            <ColumnDefinition Width="auto"
-                              MinWidth="100" />
-            <ColumnDefinition Width="auto"
-                              MinWidth="100" />
+                              MinWidth="100" />-->
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -28,12 +26,13 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
+
         <Label Grid.Row="0"
                Grid.ColumnSpan="4"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Compartment Details" />
-  
+
         <wms:SpinEdit x:Name="WidthText"
                       Grid.Row="1"
                       Grid.Column="0"
@@ -53,6 +52,7 @@
                      Grid.Row="1"
                      Grid.Column="2"
                      Grid.ColumnSpan="2"
+                     Width="250"
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
                      Foreground="White"
@@ -65,6 +65,7 @@
                       VerticalAlignment="Top"
                       EditValue="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Foreground="White" />
+
         <wms:SpinEdit x:Name="RowText"
                       Grid.Row="1"
                       Grid.Column="5"
@@ -88,18 +89,21 @@
                       VerticalAlignment="Top"
                       EditValue="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                       Foreground="White" />
+
         <wms:ComboBox Grid.Row="2"
                       Grid.Column="2"
+                      Width="250"
+                      HorizontalAlignment="Left"
                       EditValue="{Binding ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       IsEnabled="True"
                       ItemsSource="{Binding Path=ItemPairingChoices}" />
-        <wms:TextBox x:Name="CapacityText"
-                     Grid.Row="2"
-                     Grid.Column="3"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Foreground="White"
-                     Text="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <wms:SpinEdit x:Name="CapacityText"
+                      Grid.Row="2"
+                      Grid.Column="3"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Foreground="White" />
 
         <wms:TextBox x:Name="ColumnText"
                      Grid.Row="2"
