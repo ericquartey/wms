@@ -126,7 +126,7 @@ namespace Ferretto.Common.Controls
                 drawingBrush.TileMode = TileMode.Tile;
 
                 double width = 0;
-                if (widthTrayPixel == 0)
+                if (widthTrayPixel == 0 && this.CanvasListBoxControl.Canvas != null)
                 {
                     width = this.CanvasListBoxControl.Canvas.ActualWidth;
                 }
@@ -260,7 +260,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel && wmsTrayControl.Tray != null && wmsTrayControl.CanvasListBoxControl.Canvas != null)
             {
                 wmsTrayControl.SetBackground((bool)e.NewValue);
             }
@@ -281,7 +281,12 @@ namespace Ferretto.Common.Controls
                 wmsTrayControl.Initialize();
                 viewModel.Tray = (Tray)e.NewValue;
 
-                wmsTrayControl.CanvasListBoxControl.SetControlSize(wmsTrayControl.CanvasListBoxControl.ActualHeight, wmsTrayControl.CanvasListBoxControl.ActualWidth);
+                if (wmsTrayControl.CanvasListBoxControl.ActualHeight > 0 && wmsTrayControl.CanvasListBoxControl.ActualWidth > 0)
+                {
+                    wmsTrayControl.CanvasListBoxControl.SetControlSize(wmsTrayControl.CanvasListBoxControl.ActualHeight, wmsTrayControl.CanvasListBoxControl.ActualWidth);
+                }
+
+                wmsTrayControl.SetBackground(null);
             }
         }
 
