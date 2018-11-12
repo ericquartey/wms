@@ -31,8 +31,10 @@ namespace Ferretto.Common.Modules.BLL.Services
             using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
             {
                 var existingModel = context.Compartments.Find(id);
-                context.Remove(existingModel);
-
+                if (existingModel != null)
+                {
+                    context.Remove(existingModel);
+                }
                 context.SaveChanges();
             }
         }
