@@ -65,6 +65,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             });
 
             app.UseMvc();
+
+            Core.ServiceLocator.Instance = app.ApplicationServices;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -76,7 +78,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
-            services.AddSingleton<IEngine>(new Engine());
+            services.AddSingleton<IEngine>();
 
             services.AddSignalR();
         }

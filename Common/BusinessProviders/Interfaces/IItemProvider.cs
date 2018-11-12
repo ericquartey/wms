@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
-namespace Ferretto.Common.Modules.BLL
+namespace Ferretto.Common.BusinessProviders
 {
     public interface IItemProvider : IBusinessProvider<Item, ItemDetails>
     {

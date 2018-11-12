@@ -5,7 +5,7 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class CellProvider : ICellProvider
     {
@@ -32,10 +32,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Cell> GetAll()
         {
-            lock (this.dataContext)
-            {
-                return GetAllCellsWithFilter(this.dataContext);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllCellsWithFilter(tempContext);
         }
 
         public int GetAllCount()
@@ -48,9 +47,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Enumeration> GetByAisleId(int aisleId)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Cells
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -60,14 +59,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                     c.Id,
                     $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})") //TODO: localize string
                 );
-            }
         }
 
         public IQueryable<Enumeration> GetByAreaId(int areaId)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Cells
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -78,14 +76,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                     c.Id,
                     $"{c.Aisle.Area.Name} - {c.Aisle.Name} - Cell {c.CellNumber} (Floor {c.Floor}, Column {c.Column}, {c.Side})") //TODO: localize string
                 );
-            }
         }
 
         public CellDetails GetById(int id)
         {
-            lock (this.dataContext)
-            {
-                var cellDetails = this.dataContext.Cells
+            var tempContext = new DatabaseContext();
+
+            var cellDetails = tempContext.Cells
                 .Where(c => c.Id == id)
                 .Include(c => c.Aisle)
                 .Select(c => new CellDetails
@@ -107,16 +104,15 @@ namespace Ferretto.Common.Modules.BLL.Services
                 })
                 .Single();
 
-                cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-                cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-                cellDetails.SideChoices =
-                    ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-                cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
+            cellDetails.SideChoices =
+                ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
+            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
 
-                return cellDetails;
-            }
+            return cellDetails;
         }
 
         public bool HasAnyLoadingUnits(int cellId)

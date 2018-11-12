@@ -5,7 +5,7 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class BayProvider : IBayProvider
     {
@@ -28,10 +28,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Bay> GetAll()
         {
-            lock (this.dataContext)
-            {
-                return GetAllBaysWithFilter(this.dataContext);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllBaysWithFilter(tempContext);
         }
 
         public int GetAllCount()
@@ -44,9 +43,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Bay> GetByAreaId(int id)
         {
-            lock (this.dataContext)
-            {
-                var bayDetails = this.dataContext.Bays
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Bays
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
                 .Include(b => b.Machine)
@@ -63,16 +62,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                     MachineId = b.MachineId,
                     MachineNickname = b.Machine.Nickname,
                 });
-
-                return bayDetails;
-            }
         }
 
         public Bay GetById(int id)
         {
-            lock (this.dataContext)
-            {
-                var bayDetails = this.dataContext.Bays
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Bays
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
                 .Include(b => b.Machine)
@@ -90,9 +86,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     MachineNickname = b.Machine.Nickname,
                 })
                 .Single();
-
-                return bayDetails;
-            }
         }
 
         public int Save(Bay model)

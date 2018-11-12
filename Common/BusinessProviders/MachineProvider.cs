@@ -5,7 +5,7 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class MachineProvider : IMachineProvider
     {
@@ -44,10 +44,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Machine> GetAll()
         {
-            lock (this.dataContet)
-            {
-                return GetAllMachinesWithFilter(this.dataContet);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllMachinesWithFilter(tempContext);
         }
 
         public int GetAllCount()
@@ -60,10 +59,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Machine> GetAllTraslo()
         {
-            lock (this.dataContet)
-            {
-                return GetAllMachinesWithFilter(this.dataContet, TrasloFilter);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllMachinesWithFilter(this.dataContet, TrasloFilter);
         }
 
         public int GetAllTrasloCount()
@@ -76,10 +74,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Machine> GetAllVertimag()
         {
-            lock (this.dataContet)
-            {
-                return GetAllMachinesWithFilter(this.dataContet, VertimagFilter);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllMachinesWithFilter(this.dataContet, VertimagFilter);
         }
 
         public int GetAllVertimagCount()
@@ -92,10 +89,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Machine> GetAllVertimagModelM()
         {
-            lock (this.dataContet)
-            {
-                return GetAllMachinesWithFilter(this.dataContet, VertimagModelMFilter);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllMachinesWithFilter(this.dataContet, VertimagModelMFilter);
         }
 
         public int GetAllVertimagModelMCount()
@@ -108,10 +104,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Machine> GetAllVertimagModelXS()
         {
-            lock (this.dataContet)
-            {
-                return GetAllMachinesWithFilter(this.dataContet, VertimagModelXSFilter);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllMachinesWithFilter(this.dataContet, VertimagModelXSFilter);
         }
 
         public int GetAllVertimagModelXSCount()

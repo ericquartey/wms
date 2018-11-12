@@ -1,7 +1,7 @@
 using System.Linq;
+using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;

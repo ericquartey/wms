@@ -4,7 +4,7 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class LoadingUnitProvider : ILoadingUnitProvider
     {
@@ -37,9 +37,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<LoadingUnit> GetAll()
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.LoadingUnits
+            var tempContext = new DatabaseContext();
+
+            return tempContext.LoadingUnits
                 .Include(l => l.LoadingUnitType)
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
@@ -59,7 +59,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
                 }).AsNoTracking();
-            }
         }
 
         public int GetAllCount()
@@ -72,9 +71,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<LoadingUnitDetails> GetByCellId(int id)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.LoadingUnits
+            var tempContext = new DatabaseContext();
+
+            return tempContext.LoadingUnits
                 .Where(l => l.CellId == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -117,7 +116,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     AreaId = l.Cell.Aisle.AreaId,
                 })
                 .AsNoTracking();
-            }
         }
 
         public LoadingUnitDetails GetById(int id)

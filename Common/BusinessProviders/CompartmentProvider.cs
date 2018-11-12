@@ -4,7 +4,7 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class CompartmentProvider : ICompartmentProvider
     {
@@ -31,9 +31,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Compartment> GetAll()
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Compartments
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Compartments
                .Include(c => c.LoadingUnit)
                .Include(c => c.MaterialStatus)
                .Include(c => c.Item)
@@ -57,7 +57,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                }
                )
                .AsNoTracking();
-            }
         }
 
         public int GetAllCount()
@@ -70,9 +69,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public CompartmentDetails GetById(int id)
         {
-            lock (this.dataContext)
-            {
-                var compartmentDetails = this.dataContext.Compartments
+            var tempContext = new DatabaseContext();
+
+            var compartmentDetails = tempContext.Compartments
                .Where(c => c.Id == id)
                .Include(c => c.LoadingUnit)
                .Include(c => c.Item)
@@ -113,23 +112,22 @@ namespace Ferretto.Common.Modules.BLL.Services
                })
                .Single();
 
-                compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-                compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-                compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-                compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-                compartmentDetails.ItemPairingChoices =
-                    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
+            compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
+            compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+            compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            compartmentDetails.ItemPairingChoices =
+                ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-                return compartmentDetails;
-            }
+            return compartmentDetails;
         }
 
         public IQueryable<Compartment> GetByItemId(int id)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Compartments
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Compartments
                 .Where(c => c.ItemId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.CompartmentStatus)
@@ -152,14 +150,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                     ItemPairingDescription = c.ItemPairing.ToString(),
                 })
                 .AsNoTracking();
-            }
         }
 
         public IQueryable<CompartmentDetails> GetByLoadingUnitId(int id)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Compartments
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Compartments
                 .Where(c => c.LoadingUnitId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.Item)
@@ -198,7 +195,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     YPosition = c.YPosition
                 })
                 .AsNoTracking();
-            }
         }
 
         public bool HasAnyAllowedItem(int modelId)

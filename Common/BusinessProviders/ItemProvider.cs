@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class ItemProvider : IItemProvider
     {
@@ -21,6 +20,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsClient itemsClient;
 
         #endregion Fields
 
@@ -28,9 +28,11 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public ItemProvider(
             DatabaseContext dataContext,
-            EnumerationProvider enumerationProvider)
+            EnumerationProvider enumerationProvider,
+            WMS.Scheduler.WebAPI.Contracts.IItemsClient itemsClient)
         {
             this.dataContext = dataContext;
+            this.itemsClient = itemsClient;
             this.enumerationProvider = enumerationProvider;
         }
 
@@ -40,10 +42,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetAll()
         {
-            lock (this.dataContext)
-            {
-                return GetAllItemsWithAggregations(this.dataContext);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllItemsWithAggregations(tempContext);
         }
 
         public int GetAllCount()
@@ -56,9 +57,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Compartments
+            var tempContext = new DatabaseContext();
+
+            return tempContext.Compartments
                 .Where(c => c.Id == compartmentId)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -74,7 +75,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     }
                 )
                 .AsNoTracking();
-            }
         }
 
         public ItemDetails GetById(int id)
@@ -159,10 +159,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetWithAClass()
         {
-            lock (this.dataContext)
-            {
-                return GetAllItemsWithAggregations(this.dataContext, AClassFilter);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllItemsWithAggregations(tempContext, AClassFilter);
         }
 
         public int GetWithAClassCount()
@@ -175,10 +174,9 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Item> GetWithFifo()
         {
-            lock (this.dataContext)
-            {
-                return GetAllItemsWithAggregations(this.dataContext, FifoFilter);
-            }
+            var tempContext = new DatabaseContext();
+
+            return GetAllItemsWithAggregations(tempContext, FifoFilter);
         }
 
         public int GetWithFifoCount()
@@ -220,9 +218,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public async Task WithdrawAsync(ItemWithdraw itemWithdraw)
         {
-            var itemsClient = ServiceLocator.Current.GetInstance<WMS.Scheduler.WebAPI.Contracts.IItemsClient>();
-
-            await itemsClient.WithdrawAsync(
+            await this.itemsClient.WithdrawAsync(
                 new WMS.Scheduler.WebAPI.Contracts.WithdrawRequest
                 {
                     ItemId = itemWithdraw.ItemDetails.Id,
