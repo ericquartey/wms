@@ -13,6 +13,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         #region Fields
 
         private const string WakeUpMessageName = "WakeUp";
+        private const string NotifyNewMissionMessageName = "NotifyNewMission";
         public const string WakeUpEndpoint = "wakeup-hub";
 
         private readonly HubConnection connection;
@@ -30,7 +31,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             this.connection = new HubConnection(url);
             this.proxy = this.connection.CreateHubProxy(WakeUpEndpoint);
 
-            this.proxy.On<string, string>(WakeUpMessageName, (a, b) => this.OnMessageReceived(a, b));
+            this.proxy.On<string, string>(WakeUpMessageName, (a, b) => this.OnWakeUp_MessageReceived(a, b));
 
             this.connection.StateChanged += this.OnConnectionStateChanged;
 #else
@@ -38,7 +39,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
               .WithUrl(new Uri(new Uri(url), WakeUpEndpoint).AbsoluteUri)
               .Build();
 
-            this.connection.On<string, string>(WakeUpMessageName, this.OnMessageReceived);
+            this.connection.On<string, string>(WakeUpMessageName, this.OnWakeUp_MessageReceived);
+            this.connection.On<Mission>(NotifyNewMissionMessageName, this.OnNotifyNewMission_MessageReceived);
 
             this.connection.Closed += async (error) =>
             {
@@ -57,6 +59,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         public event EventHandler<WakeUpEventArgs> WakeupReceived;
 
+        public event EventHandler<MissionEventArgs> NewMissionReceived;
+
         #endregion Events
 
         #region Methods
@@ -71,9 +75,14 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         }
 #endif
 
-        private void OnMessageReceived(string user, string message)
+        private void OnWakeUp_MessageReceived(string user, string message)
         {
-            this.WakeupReceived?.Invoke(this, new WakeUpEventArgs { User = user, Message = message });
+            this.WakeupReceived?.Invoke(this, new WakeUpEventArgs(user, message));
+        }
+
+        private void OnNotifyNewMission_MessageReceived(Mission mission)
+        {
+            this.NewMissionReceived?.Invoke(this, new MissionEventArgs(mission));
         }
 
         public async Task ConnectAsync()

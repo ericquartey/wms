@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Linq;
 using System.Windows.Input;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Base;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Regions;
@@ -16,8 +14,9 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private readonly IInputService inputService;
         private readonly INavigationService navigationService;
-        private bool isControlPressed = true;
+        private bool isControlPressed = false;
 
         #endregion Fields
 
@@ -28,18 +27,20 @@ namespace Ferretto.Common.Controls
             Current = this;
             this.DataContext = null;
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+            this.inputService = ServiceLocator.Current.GetInstance<IInputService>();
             this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
             this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;
             this.ClosedPanelsBarVisibility = ClosedPanelsBarVisibility.Never;
-            Application.Current.MainWindow.PreviewKeyDown += this.DockHost_PreviewKeyDown;
-            Application.Current.MainWindow.LostMouseCapture += this.MainWindow_LostMouseCapture;
+            this.inputService.BeginMouseNotify(this, this.OnMouseDown);
+            this.inputService.BeginShortKeyNotify(this, (shortKey) => this.isControlPressed = (shortKey.ShortKey.ModifierKeyFirst == ModifierKeys.Control));
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public static WmsMainDockLayoutManager Current { get; private set; }
+        public static WmsMainDockLayoutManager Current
+        { get; private set; }
 
         #endregion Properties
 
@@ -95,7 +96,6 @@ namespace Ferretto.Common.Controls
             newLayoutPanel.AllowFloat = false;
             newLayoutPanel.AllowHide = false;
             newLayoutPanel.IsActive = true;
-
             if (this.isControlPressed == false)
             {
                 var activePanel = this.DockController.ActiveItem as LayoutPanel;
@@ -118,26 +118,14 @@ namespace Ferretto.Common.Controls
             }
             else
             {
+                this.isControlPressed = false;
                 activeGroup.Add(newLayoutPanel);
             }
         }
 
-        private void DockHost_PreviewKeyDown(Object sender, KeyEventArgs e)
+        private void OnMouseDown(MouseDownInfo mouseDownInfo)
         {
-            if (Keyboard.Modifiers == System.Windows.Input.ModifierKeys.Control)
-            {
-                this.isControlPressed = true;
-            }
-        }
-
-        private void MainWindow_LostMouseCapture(Object sender, MouseEventArgs e)
-        {
-            this.isControlPressed = false;
-        }
-
-        private void MainWindow_MouseUp(Object sender, MouseButtonEventArgs e)
-        {
-            this.isControlPressed = false;
+            this.isControlPressed = ((Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == System.Windows.Input.ModifierKeys.Control);
         }
 
         private void WmsMainDockLayoutManager_DockItemClosing(System.Object sender, DevExpress.Xpf.Docking.Base.ItemCancelEventArgs e)

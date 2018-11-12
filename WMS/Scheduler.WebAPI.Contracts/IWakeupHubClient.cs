@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 
-namespace Ferretto.WMS.Scheduler.WebAPI
+namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 {
     public interface IWakeupHubClient
     {
         #region Events
+
+        event EventHandler<MissionEventArgs> NewMissionReceived;
 
         event EventHandler<WakeUpEventArgs> WakeupReceived;
 

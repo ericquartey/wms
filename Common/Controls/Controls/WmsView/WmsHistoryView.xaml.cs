@@ -71,14 +71,18 @@ namespace Ferretto.Common.Controls
 
             var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
             var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
-            var id = this.navigationService.GetViewModelBindFirstId(moduleViewName);
-            if (id == null)
-            {
-                return;
-            }
-            var instanceModuleViewName = $"{moduleViewName}.{id}";
+            var instanceModuleViewName = this.navigationService.GetNewViewModelName(moduleViewName);
             var registeredView = this.navigationService.GetView(instanceModuleViewName, data);
             this.AddView(registeredView);
+        }
+
+        public INavigableViewModel GetCurrentViewModel()
+        {
+            if (this.Content == null)
+            {
+                return null;
+            }
+            return ((FrameworkElement)this.Content).DataContext as INavigableViewModel;
         }
 
         public override void OnApplyTemplate()
@@ -136,15 +140,6 @@ namespace Ferretto.Common.Controls
                .FirstOrDefault();
 
             return parentWmsView?.Data;
-        }
-
-        public INavigableViewModel GetCurrentViewModel()
-        {
-            if (this.Content == null)
-            {
-                return null;
-            }
-            return ((FrameworkElement)this.Content).DataContext as INavigableViewModel;
         }
 
         #endregion Methods

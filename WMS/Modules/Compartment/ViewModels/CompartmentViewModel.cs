@@ -45,6 +45,7 @@ namespace Ferretto.WMS.Modules.Compartment
                          (this.createNewCompartmentCommand = new DelegateCommand(this.ExecuteNewCreateCompartmentCommand));
 
         public List<Enumeration> FilterColoringCompartment => this.filterColoringCompartment;
+        public bool ReadOnlyTray { get; set; }
 
         public ICommand ResetSelectedCompartment => this.resetSelectedCompartment ??
                          (this.resetSelectedCompartment = new DelegateCommand(this.ExecuteResetSelectedCompartment));
@@ -458,8 +459,8 @@ namespace Ferretto.WMS.Modules.Compartment
             this.tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
-                ReadOnly = false,
             };
+            this.ReadOnlyTray = false;
 
             //this.TestCompartmentDefault();
             this.TestCompartment200();

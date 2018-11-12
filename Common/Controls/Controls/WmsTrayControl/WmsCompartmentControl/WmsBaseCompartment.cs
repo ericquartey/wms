@@ -11,9 +11,11 @@ namespace Ferretto.Common.Controls
         private string colorBorder;
         private string colorFill;
         private double height;
+        private bool isSelectable;
         private bool isSelected;
         private double left;
         private int quantity;
+        private bool readOnly;
         private string selected;
         private double top;
         private double width;
@@ -54,6 +56,8 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.height, value);
         }
 
+        public bool IsSelectable { get => this.isSelectable; set => this.SetProperty(ref this.isSelectable, value); }
+
         public bool IsSelected
         {
             get => this.isSelected;
@@ -71,6 +75,8 @@ namespace Ferretto.Common.Controls
             get => this.quantity;
             set => this.SetProperty(ref this.quantity, value);
         }
+
+        public bool ReadOnly { get => this.readOnly; set => this.SetProperty(ref this.readOnly, value); }
 
         public string Selected
         {

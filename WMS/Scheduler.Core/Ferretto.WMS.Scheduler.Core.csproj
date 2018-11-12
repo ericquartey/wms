@@ -9,4 +9,8 @@
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Scheduler.Drivers.Vertimag\Ferretto.WMS.Scheduler.Drivers.Vertimag.csproj" />
+  </ItemGroup>
+
 </Project>
