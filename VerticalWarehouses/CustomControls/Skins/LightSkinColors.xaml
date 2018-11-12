@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
+
+    <SolidColorBrush x:Key="IAPP_APPBackground"
+                     Color="{StaticResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="IAPP_ViewButtonBackground"
+                     Color="{StaticResource ColorFerrettoMediumGray}" />
+    <SolidColorBrush x:Key="IAPP_ViewButtonForeground"
+                     Color="{StaticResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="IAPP_MainWindowComboBoxBackground"
+                     Color="{StaticResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBoxBackground"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="IAPP_ViewLabelForeground"
+                     Color="{StaticResource ColorFerrettoBlack}" />
+
+</ResourceDictionary>

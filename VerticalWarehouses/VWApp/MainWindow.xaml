@@ -67,6 +67,10 @@
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />
+            <Button Width="200"
+                    Command="{Binding ChangeStyleButtonCommand}"
+                    Content="Change style"
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
         </StackPanel>
     </Grid>
 </Window>

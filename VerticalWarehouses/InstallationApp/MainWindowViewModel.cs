@@ -50,6 +50,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand beltBurnishingButtonCommand;
         private ICommand cellsControlButtonCommand;
         private ICommand cellsPanelControlButtonCommand;
+        private ICommand changeSkinButtonCommand;
         private BindableBase contentRegionCurrentViewModel;
         private ICommand gate1HeightControlNavigationButtonCommand;
         private ICommand gate2HeightControlNavigationButtonCommand;
@@ -97,6 +98,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.BeltBurnishingVMInstance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
         public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.CellsControlVMInstance));
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.CellsPanelControlVMInsance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
+        public ICommand ChangeSkinButtonCommand => this.changeSkinButtonCommand ?? (this.changeSkinButtonCommand = new DelegateCommand(() => NavigationService.RaiseChangeSkinEvent()));
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance));
         public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate2HeightControlVMInstance));

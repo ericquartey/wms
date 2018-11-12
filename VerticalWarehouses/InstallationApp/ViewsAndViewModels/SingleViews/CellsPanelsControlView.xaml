@@ -43,6 +43,7 @@
             <ComboBox Name="CBox"
                       Grid.Row="1"
                       Width="170"
+                      Height="60"
                       HorizontalAlignment="Left"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"

@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.VWApp
 {
@@ -12,6 +13,7 @@ namespace Ferretto.VW.VWApp
         #region Fields
 
         private readonly bool installation_completed;
+        private ICommand changeStyleButtonCommand;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string machineModel;
@@ -35,6 +37,7 @@ namespace Ferretto.VW.VWApp
 
         #region Properties
 
+        public ICommand ChangeStyleButtonCommand => this.changeStyleButtonCommand ?? (this.changeStyleButtonCommand = new DelegateCommand(() => NavigationService.RaiseChangeSkinEvent()));
         public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(this.ExecuteLoginButtonCommand));
         public String LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
         public String MachineModel { get => this.machineModel; set => this.SetProperty(ref this.machineModel, value); }
