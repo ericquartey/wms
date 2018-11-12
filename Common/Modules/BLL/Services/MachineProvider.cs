@@ -39,6 +39,11 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
+        public void Delete(Int32 id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Machine> GetAll()
         {
             var context = ServiceLocator.Current.GetInstance<DatabaseContext>();

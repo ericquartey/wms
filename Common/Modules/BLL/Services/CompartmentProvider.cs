@@ -26,6 +26,19 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
+        public void Delete(Int32 id)
+        {
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Compartments.Find(id);
+                if (existingModel != null)
+                {
+                    context.Remove(existingModel);
+                }
+                context.SaveChanges();
+            }
+        }
+
         public IQueryable<Compartment> GetAll()
         {
             var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
@@ -105,7 +118,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                    Height = c.Height,
                    XPosition = c.XPosition,
                    YPosition = c.YPosition,
-                   LoadingUnitId = c.LoadingUnitId
+                   LoadingUnitId = c.LoadingUnitId,
+                   ItemId = c.ItemId
                })
                .Single();
 
@@ -189,7 +203,9 @@ namespace Ferretto.Common.Modules.BLL.Services
                     Width = c.Width,
                     Height = c.Height,
                     XPosition = c.XPosition,
-                    YPosition = c.YPosition
+                    YPosition = c.YPosition,
+                    LoadingUnitId = c.LoadingUnitId,
+                    ItemId = c.ItemId
                 })
                 .AsNoTracking();
         }
