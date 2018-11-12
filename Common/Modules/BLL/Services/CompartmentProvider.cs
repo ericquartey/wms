@@ -3,6 +3,7 @@ using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Modules.BLL.Services
@@ -28,7 +29,28 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public Int32 Add(CompartmentDetails model)
         {
-            throw new NotImplementedException();
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                if (model != null)
+                {
+                    context.Compartments.Add(new DataModels.Compartment
+                    {
+                        Width = model.Width,
+                        Height = model.Height,
+                        XPosition = model.XPosition,
+                        YPosition = model.YPosition,
+                        LoadingUnitId = model.LoadingUnitId,
+                        CompartmentTypeId = model.CompartmentTypeId,
+                        ItemPairing = DataModels.Pairing.Free,
+                        Stock = model.Stock,
+                        ReservedForPick = model.ReservedForPick,
+                        ReservedToStore = model.ReservedToStore,
+                        CreationDate = DateTime.Now
+                    });
+                }
+                return context.SaveChanges();
+            }
+            return -1;
         }
 
         public void Delete(Int32 id)
