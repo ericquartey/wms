@@ -19,8 +19,8 @@
                               MinWidth="100" />
             <ColumnDefinition Width="auto"
                               MinWidth="100" />
-            <ColumnDefinition Width="auto"
-                              MinWidth="100" />
+            <!--<ColumnDefinition Width="auto"
+                              MinWidth="100" />-->
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -33,7 +33,7 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Compartment Details" />
-  
+
         <wms:SpinEdit x:Name="WidthText"
                       Grid.Row="1"
                       Grid.Column="0"
@@ -67,7 +67,7 @@
                       Foreground="White" />
         <wms:SpinEdit x:Name="RowText"
                       Grid.Row="1"
-                      Grid.Column="5"
+                      Grid.Column="4"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       EditValue="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -101,21 +101,21 @@
                      Foreground="White"
                      Text="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-        <wms:TextBox x:Name="ColumnText"
-                     Grid.Row="2"
-                     Grid.Column="3"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Foreground="White"
-                     Text="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Visibility="Collapsed" />
+        <wms:SpinEdit x:Name="ColumnText"
+                      Grid.Row="2"
+                      Grid.Column="4"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Foreground="White"
+                      Visibility="Collapsed" />
 
-        <Button x:Name="CreateCompartment"
+        <!--<Button x:Name="CreateCompartment"
                 Grid.Row="2"
                 Grid.Column="5"
                 Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.CreateNewCompartmentCommand}"
                 Content="Create"
-                Visibility="Hidden" />
+                Visibility="Hidden" />-->
 
     </Grid>
 </UserControl>

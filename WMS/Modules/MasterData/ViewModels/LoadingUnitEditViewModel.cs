@@ -19,8 +19,10 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private ICommand addBulkCommand;
         private IDataSource<CompartmentDetails> compartmentsDataSource;
         private ICommand deleteCommand;
+        private bool enableBulkAdd;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private bool readOnlyTray;
@@ -41,6 +43,9 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
+
+        public ICommand AddBulkCommand => this.addBulkCommand ??
+          (this.addBulkCommand = new DelegateCommand(this.ExecuteAddBulkCommand, this.CanExecuteAddBulkCommand).ObservesProperty(() => this.SelectedCompartmentTray));
 
         public IDataSource<CompartmentDetails> CompartmentsDataSource
         {
@@ -66,6 +71,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand DeleteCommand => this.deleteCommand ??
           (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray));
+
+        public bool EnableBulkAdd
+        {
+            get => this.enableBulkAdd;
+            set
+            {
+                this.SetProperty(ref this.enableBulkAdd, value);
+            }
+        }
 
         public LoadingUnitDetails LoadingUnit
         {
@@ -139,9 +153,20 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
+        private Boolean CanExecuteAddBulkCommand()
+        {
+            //throw new NotImplementedException();
+            return true;
+        }
+
         private bool CanExecuteDeleteCommand()
         {
             return this.selectedCompartmentTray != null;
+        }
+
+        private void ExecuteAddBulkCommand()
+        {
+            this.EnableBulkAdd = true;
         }
 
         private void ExecuteDeleteCommand()
