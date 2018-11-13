@@ -36,7 +36,7 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding AddCompartmentCommand}"
+            <wms:ActionBarItem Command="{Binding AddCommand}"
                                Content="{x:Static res:MasterData.AddCompartment}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
@@ -52,9 +52,16 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_delete_black_24dp.png"
                                GlyphSize="Custom" />
+            <wms:ActionBarItem Command="{Binding CancelCommand}"
+                               Content="{x:Static res:General.Cancel}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_cancel_black_24dp.png"
+                               GlyphSize="Custom" />
         </wms:ActionBar>
 
-        <masterData:InputCompartmentView Grid.Row="1" />
+        <masterData:InputCompartmentView Grid.Row="1"
+                                         Width="800"
+                                         HorizontalAlignment="Left" />
 
         <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"

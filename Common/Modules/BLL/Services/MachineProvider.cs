@@ -39,6 +39,11 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
+        public Int32 Add(MachineDetails model)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Delete(Int32 id)
         {
             throw new NotImplementedException();
