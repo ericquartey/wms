@@ -29,13 +29,13 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public Int32 Add(CompartmentDetails model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
             using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
             {
-                if (model == null)
-                {
-                    throw new ArgumentNullException(nameof(model));
-                }
-
                 context.Compartments.Add(new DataModels.Compartment
                 {
                     Width = model.Width,
