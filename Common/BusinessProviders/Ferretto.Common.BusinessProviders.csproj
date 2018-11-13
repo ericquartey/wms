@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="ServiceCollectionExtensions.cs" Condition="'$(TargetFramework)' == 'net471'"/>
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
     <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj" />
     <ProjectReference Include="..\EF\Ferretto.Common.EF.csproj" />
