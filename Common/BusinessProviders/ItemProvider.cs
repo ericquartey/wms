@@ -77,6 +77,13 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
+        public Task<int> GetAvailableQuantity(int itemId, string lot, string registrationNumber, string sub1, string sub2)
+        {
+            var task = new Task<int>(() => 100);
+            task.Start();
+            return task;
+        }
+
         public ItemDetails GetById(int id)
         {
             lock (this.dataContext)
