@@ -295,7 +295,7 @@ namespace Ferretto.Common.Controls
             {
                 this.items.RemoveAt(e.NewIndex);
             }
-            if (e.ListChangedType == ListChangedType.ItemAdded)
+            else if (e.ListChangedType == ListChangedType.ItemAdded)
             {
                 if (sender is IList<CompartmentDetails> compartments)
                 {
