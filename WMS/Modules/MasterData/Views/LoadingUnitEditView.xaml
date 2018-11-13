@@ -25,6 +25,15 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <TextBox x:Name="ErrorText"
+                 Width="500"
+                 Height="20"
+                 HorizontalAlignment="Left"
+                 FontStyle="Italic"
+                 FontWeight="Bold"
+                 Foreground="{Binding ErrorColor}"
+                 Text="{Binding Error}" />
+
         <wms:ActionBar Grid.Row="0"
                        Margin="10,10,10,0"
                        HorizontalAlignment="Right"
@@ -65,14 +74,7 @@
                                          Column="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Column, Mode=TwoWay}"
                                          EnableBulkAdd="{Binding EnableBulkAdd}"
                                          Row="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Row, Mode=TwoWay}" />
-        <TextBox x:Name="ErrorText"
-                 Width="500"
-                 Height="20"
-                 HorizontalAlignment="Left"
-                 FontStyle="Italic"
-                 FontWeight="Bold"
-                 Foreground="{Binding ErrorColor}"
-                 Text="{Binding Error}" />
+
         <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"
                             Margin="0,0,0,0"

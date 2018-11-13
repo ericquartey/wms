@@ -98,9 +98,6 @@ namespace Ferretto.Common.BusinessModels
         public List<CompartmentDetails> AddBulkCompartments(CompartmentDetails compartment, int row, int column)
         //Position start, Dimension size, int row, int column, CompartmentDetails detail)
         {
-            //TODO: add logic of dynamic scompartition
-            //      n: is calculated number of compartment to add
-            //      n: based on row/column
             var tempList = new List<CompartmentDetails>();
             int startX = compartment.XPosition ?? 0;
             int startY = compartment.YPosition ?? 0;
@@ -127,7 +124,6 @@ namespace Ferretto.Common.BusinessModels
                     }
                     else
                     {
-                        //throw new Exception("Failed to Add Bulk Compartments.");
                         return null;
                     }
                 }

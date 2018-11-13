@@ -193,7 +193,6 @@ namespace Ferretto.Common.Controls
                 var newItems = new ObservableCollection<WmsBaseCompartment>();
                 foreach (var compartment in compartments)
                 {
-                    //compartment.PropertyChanged += this.Compartment_PropertyChanged;
                     newItems.Add(new WmsCompartmentViewModel
                     {
                         Tray = this.Tray,
@@ -281,7 +280,6 @@ namespace Ferretto.Common.Controls
             {
                 if (sender is IList<CompartmentDetails> compartments)
                 {
-                    Debug.WriteLine($"Compartments: {compartments.Count}");
                     var addedCompartment = compartments[compartments.Count - 1];
                     var compartmentGraphic = this.AddCompartment(addedCompartment);
 
@@ -293,32 +291,6 @@ namespace Ferretto.Common.Controls
 
             this.NotifyPropertyChanged(nameof(this.Items));
         }
-
-        //private void GenerateBulkCompartments(Position start, Dimension size, int row, int column, CompartmentDetails detail)
-        //{
-        //    var tempList = new List<CompartmentDetails>();
-        //    int startX = start.X;
-        //    int startY = start.Y;
-        //    for (int i = 0; i < row; i++)
-        //    {
-        //        for (int j = 0; j < column; j++)
-        //        {
-        //            tempList.Add(new CompartmentDetails()
-        //            {
-        //                Width = size.Width,
-        //                Height = size.Height,
-        //                XPosition = startX * i,
-        //                YPosition = startY * j,
-        //                ItemPairing = detail.ItemPairing,
-        //                ItemCode = detail.ItemCode,
-        //                Stock = detail.Stock,
-        //                MaxCapacity = detail.MaxCapacity
-        //            });
-        //        }
-        //    }
-
-        //    this.tray.AddCompartmentsRange(tempList);
-        //}
 
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
         {

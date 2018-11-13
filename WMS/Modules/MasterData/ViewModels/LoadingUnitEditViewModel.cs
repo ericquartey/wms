@@ -47,7 +47,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public LoadingUnitEditViewModel()
         {
-            this.Initialize();
         }
 
         #endregion Constructors
@@ -201,6 +200,13 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
+        private void AbilitateCreation()
+        {
+            this.SetError(null);
+            this.SetSelectedCompartment(new CompartmentDetails());
+            this.CreateMode = true;
+        }
+
         private Boolean CanExecuteAddBulkCommand()
         {
             return !this.CreateMode;
@@ -228,16 +234,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteAddBulkCommand()
         {
-            this.SetError(null);
             this.EnableBulkAdd = true;
-            this.CreateMode = true;
+            this.Row = 0;
+            this.Column = 0;
+            this.AbilitateCreation();
         }
 
         private void ExecuteAddCompartmentCommand()
         {
-            this.SetError(null);
-            this.SetSelectedCompartment(new CompartmentDetails());
-            this.CreateMode = true;
+            this.AbilitateCreation();
         }
 
         private void ExecuteCancelCommand()
@@ -291,6 +296,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (addAll)
                 {
                     this.Tray = tempTray;
+                    this.CreateMode = false;
+                    this.EnableBulkAdd = false;
                 }
             }
             else
@@ -298,10 +305,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 //ToDO: Dialog error
                 this.SetError("Error: it is no possible to Add Bulk Compartments.");
             }
-        }
-
-        private void Initialize()
-        {
         }
 
         private void InitializeTray()
