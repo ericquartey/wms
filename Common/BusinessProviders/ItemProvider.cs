@@ -79,8 +79,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<int> GetAvailableQuantity(int itemId, string lot, string registrationNumber, string sub1, string sub2)
         {
+            // TODO: access database to retrieve actual quantity
             var task = new Task<int>(() => 100);
             task.Start();
+
             return task;
         }
 
