@@ -49,8 +49,8 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand AdvancedWithdrawCommand => this.advancedWithdrawCommand ??
-                                                   ( this.advancedWithdrawCommand = new DelegateCommand(
-                                                       this.ExecuteAdvancedWithdrawCommand) );
+                                                   (this.advancedWithdrawCommand = new DelegateCommand(
+                                                       this.ExecuteAdvancedWithdrawCommand));
 
         public ItemWithdraw ItemWithdraw
         {
@@ -70,16 +70,16 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RunWithdrawCommand => this.runWithdrawCommand ??
-                                              ( this.runWithdrawCommand = new DelegateCommand(this.ExecuteRunWithdraw,
+                                              (this.runWithdrawCommand = new DelegateCommand(this.ExecuteRunWithdraw,
                                                       this.CanExecuteRunWithdraw)
                                                   .ObservesProperty(() => this.ItemWithdraw)
-                                                  .ObservesProperty(() => this.ItemWithdraw.Quantity) );
+                                                  .ObservesProperty(() => this.ItemWithdraw.Quantity));
 
         public bool SimpleWithdraw => !this.advancedWithdraw;
 
         public ICommand SimpleWithdrawCommand => this.simpleWithdrawCommand ??
-                                                 ( this.simpleWithdrawCommand = new DelegateCommand(
-                                                     this.ExecuteSimpleWithdrawCommand) );
+                                                 (this.simpleWithdrawCommand = new DelegateCommand(
+                                                     this.ExecuteSimpleWithdrawCommand));
 
         public string ValidationError
         {
@@ -93,7 +93,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            var modelId = (int?) this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
+            var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
             {
                 return;
@@ -102,6 +102,13 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ItemWithdraw.ItemDetails = this.itemProvider.GetById(modelId.Value);
             this.ItemWithdraw.AreaChoices = this.areaProvider.GetByItemIdAvailability(modelId.Value);
             this.itemWithdraw.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
+        }
+
+        protected override void OnDispose()
+        {
+            this.ItemWithdraw.PropertyChanged -= this.OnItemWithdrawPropertyChanged;
+            this.itemWithdraw.PropertyChanged -= this.OnAreaIdChanged;
+            base.OnDispose();
         }
 
         private bool CanExecuteRunWithdraw()
@@ -120,7 +127,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (!this.ExecuteValidation())
             {
-                ( (DelegateCommand) this.RunWithdrawCommand )?.RaiseCanExecuteChanged();
+                ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
                 return;
             }
 
@@ -163,7 +170,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            ( (DelegateCommand) this.RunWithdrawCommand )?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
         }
 
         #endregion Methods
