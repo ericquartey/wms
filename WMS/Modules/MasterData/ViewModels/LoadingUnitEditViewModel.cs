@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -19,8 +20,11 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private ICommand addCommand;
+        private ICommand cancelCommand;
         private ICommand addBulkCommand;
         private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private bool createMode;
         private ICommand deleteCommand;
         private bool enableBulkAdd;
         private LoadingUnitDetails loadingUnit;
@@ -44,6 +48,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public ICommand AddCommand => this.addCommand ??
+          (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand, this.CanExecuteAddCommand).ObservesProperty(() => this.CreateMode));
+
+        public ICommand CancelCommand => this.cancelCommand ??
+          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
+
         public ICommand AddBulkCommand => this.addBulkCommand ??
           (this.addBulkCommand = new DelegateCommand(this.ExecuteAddBulkCommand, this.CanExecuteAddBulkCommand).ObservesProperty(() => this.SelectedCompartmentTray));
 
@@ -51,6 +61,15 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
+        }
+
+        public bool CreateMode
+        {
+            get => this.createMode;
+            set
+            {
+                this.SetProperty(ref this.createMode, value);
+            }
         }
 
         public CompartmentDetails CurrentCompartment
@@ -70,7 +89,9 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand DeleteCommand => this.deleteCommand ??
-          (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray));
+          (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray).ObservesProperty(() => this.CreateMode));
+
+        public bool EditMode { get; set; }
 
         public bool EnableBulkAdd
         {
@@ -107,7 +128,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand).ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode));
 
         public object SelectedCompartment
         {
@@ -159,9 +180,35 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
+        private bool CanExecuteAddCommand()
+        {
+            return !this.CreateMode;
+        }
+
+        private bool CanExecuteCancelCommand()
+        {
+            return this.CreateMode;
+        }
+
         private bool CanExecuteDeleteCommand()
         {
-            return this.selectedCompartmentTray != null;
+            return this.selectedCompartmentTray != null && !this.CreateMode;
+        }
+
+        private bool CanExecuteSaveCommand()
+        {
+            return this.EditMode || this.CreateMode;
+        }
+
+        private void ExecuteAddCompartmentCommand()
+        {
+            this.SetSelectedCompartment(new CompartmentDetails());
+            this.CreateMode = true;
+        }
+
+        private void ExecuteCancelCommand()
+        {
+            this.CreateMode = false;
         }
 
         private void ExecuteAddBulkCommand()
@@ -172,10 +219,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteDeleteCommand()
         {
             this.tray.Compartments.Remove(this.SelectedCompartmentTray);
-
-            //ToDo: implement save/update/delete
-            //this.SaveLoadingUnit();
-
             this.compartmentProvider.Delete(this.SelectedCompartmentTray.Id);
         }
 
@@ -217,13 +260,33 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void SaveLoadingUnit()
         {
-            var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
-
-            if (modifiedRowCount > 0)
+            if (this.CreateMode)
             {
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
+                if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
+                {
+                    this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
+                    this.SelectedCompartmentTray.CompartmentTypeId = 2;
 
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                    int add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
+                    if (add == 1)
+                    {
+                        this.tray.Compartments.Add(this.SelectedCompartmentTray);
+                    }
+                    this.CreateMode = false;
+
+                    Debug.WriteLine($"Add NEW Compartment: {add}");
+                }
+            }
+            else
+            {
+                var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
+
+                if (modifiedRowCount > 0)
+                {
+                    this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
+
+                    this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                }
             }
         }
 
