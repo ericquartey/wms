@@ -10,11 +10,11 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBlockStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/RepeatButtonStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxItemTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowMachineStateComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowMachineStateComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxItemTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

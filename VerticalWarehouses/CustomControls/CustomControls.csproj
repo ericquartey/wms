@@ -166,12 +166,12 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Templates\InstallationAppViewComboBoxItemTemplate.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Templates\InstallationAppViewComboBoxTemplate.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Templates\MainWindowMachineStateComboBoxItemTemplate.xaml">
       <SubType>Designer</SubType>

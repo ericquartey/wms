@@ -13,7 +13,7 @@
         WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
-    <Grid>
+    <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="4*" />
@@ -68,6 +68,7 @@
                     Content="{x:Static res:General.Login}"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Width="200"
+                    HorizontalAlignment="Left"
                     Command="{Binding ChangeStyleButtonCommand}"
                     Content="Change style"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />

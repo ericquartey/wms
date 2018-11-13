@@ -4,26 +4,26 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
     <Style x:Key="IAPP_ViewErrorTextBlockStyle"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoRed}" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_ErrorTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
     </Style>
     <Style x:Key="IAPP_ViewTextBlockStyle"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_ViewBodyTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
     </Style>
     <Style x:Key="IAPP_ViewCustomControlLabelTextBlockStyle"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_CCLabelTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
         <Setter Property="FontSize" Value="16" />
     </Style>
     <Style x:Key="VWAPP_SplashScreenTitleTextBlockStyle"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-        <Setter Property="FontFamily" Value="{StaticResource RobotoCondensed-Regular}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_SSTitleViewTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_TitleFont}" />
         <Setter Property="FontSize" Value="50" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -32,15 +32,15 @@
     </Style>
     <Style x:Key="VWAPP_SplashScreenSubTitleTextBlockStyle"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_SSSubtitleTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="VerticalAlignment" Value="Center" />
     </Style>
     <Style x:Key="IAPP_ViewTitleTextBlockStyle"
            TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-        <Setter Property="FontFamily" Value="{StaticResource RobotoCondensed-Regular}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_ViewTitleViewTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_TitleFont}" />
         <Setter Property="FontSize" Value="30" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Left" />

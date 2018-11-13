@@ -104,7 +104,7 @@
         </DataTemplate>
     </Window.Resources>
 
-    <Grid Background="{StaticResource IAPP_APPBackground}">
+    <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280" />
             <ColumnDefinition Width="*" />
@@ -116,7 +116,7 @@
         </Grid.RowDefinitions>
         <Border Grid.Row="0"
                 Grid.Column="0"
-                Background="{StaticResource FerrettoPureWhite}"
+                Background="{DynamicResource VWAPP_BACKGROUND}"
                 BorderThickness="0">
             <Image Margin="35,15,0,0"
                    Source="/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
@@ -124,7 +124,7 @@
         </Border>
         <Border Grid.Row="0"
                 Grid.Column="1"
-                Background="{StaticResource FerrettoPureWhite}"
+                Background="{DynamicResource VWAPP_BACKGROUND}"
                 BorderThickness="0">
             <StackPanel FlowDirection="RightToLeft"
                         Orientation="Horizontal">
@@ -134,7 +134,7 @@
                           HorizontalContentAlignment="Right"
                           VerticalContentAlignment="Center"
                           FontSize="25"
-                          Foreground="{StaticResource FerrettoBlack}"
+                          Foreground="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}"
                           Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
                     <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
                                   Content="{x:Static res:InstallationApp.Installer}"
@@ -145,9 +145,9 @@
                                   Content="{x:Static res:InstallationApp.LogOff}">
                         <ComboBoxItem.Style>
                             <Style TargetType="ComboBoxItem">
-                                <Setter Property="Background" Value="Transparent" />
-                                <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-                                <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
+                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
+                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
                                 <Setter Property="FontSize" Value="20" />
                                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -161,7 +161,7 @@
                        Margin="0,10,30,2"
                        Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
                 <Grid Margin="2,10,2,2"
-                      Background="{StaticResource FerrettoDarkGray}">
+                      Background="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -173,7 +173,7 @@
                               HorizontalContentAlignment="Center"
                               VerticalContentAlignment="Center"
                               FontSize="25"
-                              Foreground="{StaticResource FerrettoPureWhite}"
+                              Foreground="{DynamicResource IAPP_MainWindowMachineStateComboBox_Foreground_Normal}"
                               SelectedIndex="{Binding MachineModeSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Style="{StaticResource IAPP_MainWindowMachineStateComboBoxStyle}"
                               Template="{StaticResource IAPP_MainWindowMachineStateComboBoxTemplate}">
@@ -194,7 +194,7 @@
                              Fill="{Binding MachineModeCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
                 <Grid Margin="2,10,2,2"
-                      Background="{StaticResource FerrettoDarkGray}">
+                      Background="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
@@ -206,14 +206,14 @@
                               HorizontalContentAlignment="Center"
                               VerticalContentAlignment="Center"
                               FontSize="25"
-                              Foreground="{StaticResource FerrettoPureWhite}"
+                              Foreground="{DynamicResource IAPP_MainWindowMachineStateComboBox_Foreground_Normal}"
                               SelectedIndex="{Binding MachineOnMarchSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Template="{StaticResource IAPP_MainWindowMachineStateComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.Off}"
                                       IsSelected="True"
                                       Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"
-                                      Template="{DynamicResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
+                                      Template="{StaticResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
                         <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.On}"
                                       Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"

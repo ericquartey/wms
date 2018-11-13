@@ -4,8 +4,8 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
     <Style x:Key="IAPP_ViewCustomInputFieldFocusableControlTextBoxStyle"
            TargetType="{x:Type TextBox}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_CCInput_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Template">
             <Setter.Value>
@@ -39,10 +39,10 @@
            TargetType="{x:Type custom:CustomInputFieldControlFocusable}">
         <Style.Triggers>
             <Trigger Property="Highlighted" Value="true">
-                <Setter Property="BorderColor" Value="{StaticResource FerrettoRed}" />
+                <Setter Property="BorderColor" Value="{DynamicResource IAPP_CCInput_Highlighted_Normal}" />
             </Trigger>
             <Trigger Property="Highlighted" Value="false">
-                <Setter Property="BorderColor" Value="{StaticResource FerrettoLightGray}" />
+                <Setter Property="BorderColor" Value="{DynamicResource IAPP_CCInput_NotHighlighted_Normal}" />
             </Trigger>
         </Style.Triggers>
     </Style>

@@ -4,31 +4,31 @@
     <Style x:Key="IAPP_NavigationViewButtonStyle"
            TargetType="{x:Type Button}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False" />
-        <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+        <Setter Property="Background" Value="{DynamicResource IAPP_NavigationButton_Background_Normal}" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_NavigationButton_Foreground_Normal}" />
         <Setter Property="FontSize" Value="20" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
         <Setter Property="Margin" Value="15,0,0,5" />
         <Setter Property="Height" Value="60" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Name="border"
-                            Background="{StaticResource FerrettoMediumGray}"
-                            BorderBrush="Transparent"
+                            Background="{DynamicResource IAPP_NavigationButton_Background_Normal}"
+                            BorderBrush="{DynamicResource IAPP_NavigationButton_BorderBrush_Normal}"
                             BorderThickness="0">
                         <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsPressed" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource IAPP_NavigationButton_BorderBrush_Pressed}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource IAPP_NavigationButton_Background_Pressed}" />
                         </Trigger>
                         <Trigger Property="Button.IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource FerrettoMediumGray}" />
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource FerrettoWhiteGray}" />
+                            <Setter Property="Foreground" Value="{DynamicResource IAPP_ViewButtonInactiveForeground}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource IAPP_NavigationButton_Background_Inactive}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -36,41 +36,41 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter Property="Background" Value="{DynamicResource IAPP_NavigationButton_Background_Normal}" />
             </Trigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="IAPP_ViewButtonStyle"
            TargetType="{x:Type Button}">
         <Setter Property="Stylus.IsPressAndHoldEnabled" Value="False" />
-        <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
-        <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+        <Setter Property="Background" Value="{DynamicResource IAPP_ViewButton_Background_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_ViewButton_Foreground_Normal}" />
         <Setter Property="Width" Value="160" />
         <Setter Property="Height" Value="60" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontSize" Value="20" />
-        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{DynamicResource IAPP_ViewButton_BorderBrush_Normal}" />
         <Setter Property="Margin" Value="5" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
                     <Border Name="border"
-                            Background="{StaticResource FerrettoMediumGray}"
-                            BorderBrush="Transparent"
+                            Background="{DynamicResource IAPP_ViewButton_Background_Normal}"
+                            BorderBrush="{DynamicResource IAPP_ViewButton_BorderBrush_Normal}"
                             BorderThickness="0">
                         <ContentPresenter HorizontalAlignment="Center"
                                           VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="Button.IsPressed" Value="True">
-                            <Setter TargetName="border" Property="BorderBrush" Value="Transparent" />
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource FerrettoDarkGray}" />
+                            <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource IAPP_ViewButton_BorderBrush_Pressed}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource IAPP_ViewButton_Background_Pressed}" />
                         </Trigger>
                         <Trigger Property="Button.IsEnabled" Value="false">
-                            <Setter Property="Foreground" Value="{StaticResource FerrettoMediumGray}" />
-                            <Setter TargetName="border" Property="Background" Value="{StaticResource FerrettoWhiteGray}" />
+                            <Setter Property="Foreground" Value="{DynamicResource IAPP_ViewButton_Foreground_Inactive}" />
+                            <Setter TargetName="border" Property="Background" Value="{DynamicResource IAPP_ViewButton_Background_Inactive}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -78,7 +78,7 @@
         </Setter>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter Property="Background" Value="{DynamicResource IAPP_ViewButton_Background_Normal}" />
             </Trigger>
         </Style.Triggers>
     </Style>

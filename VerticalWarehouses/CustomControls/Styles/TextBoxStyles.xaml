@@ -4,8 +4,8 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
     <Style x:Key="IAPP_ViewCustomControlInputTextBoxStyle"
            TargetType="{x:Type TextBox}">
-        <Setter Property="Foreground" Value="{StaticResource FerrettoBlack}" />
-        <Setter Property="FontFamily" Value="{StaticResource HelveticaNeue-LightCond}" />
+        <Setter Property="Foreground" Value="{DynamicResource IAPP_CCLabelTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Template">
             <Setter.Value>

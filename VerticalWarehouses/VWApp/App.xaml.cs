@@ -28,22 +28,18 @@ namespace Ferretto.VW.VWApp
             this.InitializeComponent();
             NavigationService.InitializeEvents();
             DataManager.CurrentData = new DataManager();
-            NavigationService.ChangeSkinEventHandler += this.ChangeSkin;
+            NavigationService.ChangeSkinEventHandler += (Current as App).ChangeSkin;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public static Skin Skin { get; set; } = Skin.Dark;
-
         public InstallationApp.MainWindow InstallationAppMainWindowInstance { get; set; }
-
         public InstallationApp.MainWindowViewModel InstallationAppMainWindowViewModel { get; set; }
-
         public Boolean MachineOk { get => this.machineOk; set => this.machineOk = value; }
-
         public OperatorApp.MainWindow OperatorMainWindowInstance { get; set; }
+        public Skin Skin { get; set; } = Skin.Light;
 
         #endregion Properties
 
@@ -51,43 +47,35 @@ namespace Ferretto.VW.VWApp
 
         public void ChangeSkin()
         {
-            Debug.Print("FLAG\n");
+            (Current as App).Resources.MergedDictionaries.Clear();
 
-            if (Skin == Skin.Light)
+            if ((Current as App).Skin == Skin.Dark)
             {
-                Skin = Skin.Dark;
+                (Current as App).Skin = Skin.Light;
             }
             else
             {
-                Skin = Skin.Light;
+                (Current as App).Skin = Skin.Dark;
             }
-            //this.Resources.Clear();
-            this.Resources.MergedDictionaries[0].MergedDictionaries.Clear();
-            if (Skin == Skin.Dark)
-                this.ApplyResources("Ferretto.VW.CustomControls;Component/Skins/DarkSkin.xaml");
-            else if (Skin == Skin.Light)
-                this.ApplyResources("Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml");
-            this.ApplyResources("Ferretto.VW.CustomControls;Component/Skins/Shared.xaml");
-            Debug.Print("FLAG\n");
-        }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            this.ChangeSkin();
-        }
-
-        private void ApplyResources(string src)
-        {
-            var dict = new ResourceDictionary() { Source = new Uri(src, UriKind.Relative) };
-            foreach (var mergeDict in dict.MergedDictionaries)
+            if ((Current as App).Skin == Skin.Dark)
             {
-                Application.Current.Resources.MergedDictionaries[0].MergedDictionaries.Add(dict);
+                var skinDictionary = new ResourceDictionary();
+                var styleDictionary = new ResourceDictionary();
+                skinDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/DarkSkin.xaml", UriKind.Relative);
+                styleDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml", UriKind.Relative);
+                (Current as App).Resources.MergedDictionaries.Add(skinDictionary);
+                (Current as App).Resources.MergedDictionaries.Add(styleDictionary);
             }
-            //foreach (var key in dict.Keys)
-            //{
-            //    Application.Current.Resources[key] = dict[key];
-            //}
+            else
+            {
+                var skinDictionary = new ResourceDictionary();
+                var styleDictionary = new ResourceDictionary();
+                skinDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml", UriKind.Relative);
+                styleDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml", UriKind.Relative);
+                (Current as App).Resources.MergedDictionaries.Add(skinDictionary);
+                (Current as App).Resources.MergedDictionaries.Add(styleDictionary);
+            }
         }
 
         #endregion Methods

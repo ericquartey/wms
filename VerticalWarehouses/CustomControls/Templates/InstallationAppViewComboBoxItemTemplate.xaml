@@ -28,8 +28,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_ViewMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_ViewMachineStateComboBox_BorderBrush_Normal}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -37,16 +37,16 @@
                     <Condition Property="IsMouseOver" Value="False" />
                     <Condition Property="IsKeyboardFocused" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_ViewMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_ViewMachineStateComboBox_BorderBrush_Normal}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsSelected" Value="True" />
                     <Condition Property="IsMouseOver" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_ViewMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_ViewMachineStateComboBox_BorderBrush_Normal}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -54,8 +54,8 @@
                     <Condition Property="IsMouseOver" Value="False" />
                     <Condition Property="IsKeyboardFocused" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_ViewMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_ViewMachineStateComboBox_BorderBrush_Normal}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -63,7 +63,7 @@
                     <Condition Property="IsMouseOver" Value="False" />
                     <Condition Property="IsKeyboardFocused" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_BorderBrush_Normal}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -71,8 +71,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="True" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{StaticResource FerrettoMediumGray}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{StaticResource FerrettoMediumGray}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_ViewMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_ViewMachineStateComboBox_BorderBrush_Normal}" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
