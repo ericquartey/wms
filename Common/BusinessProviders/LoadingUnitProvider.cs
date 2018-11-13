@@ -35,6 +35,16 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+       public Int32 Add(LoadingUnitDetails model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Int32 id)
+        {
+            throw new NotImplementedException();
+        }
+		
         public IQueryable<LoadingUnit> GetAll()
         {
             var tempContext = new DatabaseContext();

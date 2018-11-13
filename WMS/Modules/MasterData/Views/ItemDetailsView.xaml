@@ -26,12 +26,13 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" MaxWidth="400" />
+            <ColumnDefinition Width="Auto"
+                              MaxWidth="400" />
         </Grid.ColumnDefinitions>
 
-        <wms:ActionBar HorizontalAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}"
-                       Margin="10,10,10,0">
+        <wms:ActionBar Margin="10,10,10,0"
+                       HorizontalAlignment="Right"
+                       Style="{DynamicResource ActionBarNotCustomizable}">
             <wms:ActionBarItem Command="{Binding WithdrawCommand}"
                                Content="{x:Static res:MasterData.Withdraw}"
                                CustomGlyphSize="24,24"
@@ -50,10 +51,10 @@
         </wms:ActionBar>
 
         <ScrollViewer Grid.Row="1"
+                      Margin="10,0,10,10"
                       DataContext="{Binding Item}"
                       Focusable="False"
-                      IsTabStop="True"
-                      Margin="10,0,10,10">
+                      IsTabStop="True">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -93,8 +94,8 @@
                                      Margin="20,0,0,0"
                                      VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Stretch"
-                                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     IsMultiline="True" />
+                                     IsMultiline="True"
+                                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -207,10 +208,9 @@
                                                ShowSearchPanelMode="Never">
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <wms:WmsHistoryViewAppear
-                                                Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
-                                                StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
+                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                                      StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
@@ -248,16 +248,16 @@
 
         </ScrollViewer>
 
-        <ScrollViewer Grid.Column="1"
-                      Grid.RowSpan="2"
+        <ScrollViewer Grid.RowSpan="2"
+                      Grid.Column="1"
                       Focusable="False"
                       IsTabStop="False">
 
             <Border DataContext="{Binding Item}"
                     Style="{StaticResource InfoBoxBorderStyle}">
 
-                <GroupBox Header="{x:Static res:MasterData.OtherInformation}"
-                          Margin="20,0">
+                <GroupBox Margin="20,0"
+                          Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
                         <wms:WmsImage MaxWidth="300"
                                       MaxHeight="400"

@@ -26,6 +26,16 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+        public Int32 Add(Area model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Int32 id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Area> GetAll()
         {
             var tempContext = new DatabaseContext();

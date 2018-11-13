@@ -37,7 +37,7 @@
             </Button>
         </Grid>
 
-        <compartment:InputCompartmentView Grid.Row="1" />
+        <!--<compartment:InputCompartmentView Grid.Row="1" />-->
 
         <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"

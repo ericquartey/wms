@@ -9,6 +9,10 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
+        int Add(TDetailsModel model);
+
+        void Delete(int id);
+
         IQueryable<TModel> GetAll();
 
         int GetAllCount();

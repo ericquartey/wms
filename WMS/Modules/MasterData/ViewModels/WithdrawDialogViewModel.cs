@@ -104,6 +104,13 @@ namespace Ferretto.WMS.Modules.MasterData
             this.itemWithdraw.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
         }
 
+        protected override void OnDispose()
+        {
+            this.ItemWithdraw.PropertyChanged -= this.OnItemWithdrawPropertyChanged;
+            this.itemWithdraw.PropertyChanged -= this.OnAreaIdChanged;
+            base.OnDispose();
+        }
+
         private bool CanExecuteRunWithdraw()
         {
             return !this.validationEnabled || this.ExecuteValidation();

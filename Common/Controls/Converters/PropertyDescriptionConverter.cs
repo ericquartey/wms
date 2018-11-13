@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using DevExpress.Mvvm.UI;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Controls
@@ -32,15 +31,20 @@ namespace Ferretto.Common.Controls
             }
 
             var editControl = LayoutTreeHelper.GetVisualParents(control).FirstOrDefault(c => c.GetType() == this.Control);
+            if (((FrameworkElement)control).DataContext == null)
+            {
+                return null;
+            }
+
             var bindingExpression = BindingOperations.GetBindingExpression(editControl,
                                     this.Property);
+
             if (bindingExpression != null)
             {
                 var propertyName = bindingExpression.ParentBinding.Path.Path;
-                if (((FrameworkElement)control).DataContext is IBusinessObject viewModel)
-                {
-                    return FormControl.RetrieveLocalizedFieldName(viewModel, propertyName);
-                }
+                var type = ((FrameworkElement)control).DataContext.GetType();
+                var path = bindingExpression.ParentBinding.Path.Path;
+                return FormControl.RetrieveLocalizedFieldName(type, path);
             }
 
             return null;

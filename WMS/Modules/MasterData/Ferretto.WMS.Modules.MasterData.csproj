@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFrameworks>net471</TargetFrameworks>
   </PropertyGroup>
 
@@ -16,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Compile Update="**\*.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
       <SubType>Code</SubType>
@@ -27,8 +32,5 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
-  </ItemGroup>
 
 </Project>

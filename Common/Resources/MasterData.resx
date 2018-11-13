@@ -257,4 +257,10 @@
     <value>Item withdrawal commenced</value>
     <comment>Notification - Item withdrawal commenced</comment>
   </data>
+  <data name="AddBulkCompartment" xml:space="preserve">
+    <value>Bulk Add</value>
+  </data>
+  <data name="AddCompartment" xml:space="preserve">
+    <value>Add Compartment</value>
+  </data>
 </root>

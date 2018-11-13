@@ -268,6 +268,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Edit.
+        /// </summary>
+        public static string LoadingUnitEdit {
+            get {
+                return ResourceManager.GetString("LoadingUnitEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit Details.
         /// </summary>
         public static string LoadingUnitDetails {

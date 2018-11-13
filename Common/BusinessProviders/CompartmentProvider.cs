@@ -29,6 +29,46 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
+        public Int32 Add(CompartmentDetails model)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                context.Compartments.Add(new DataModels.Compartment
+                {
+                    Width = model.Width,
+                    Height = model.Height,
+                    XPosition = model.XPosition,
+                    YPosition = model.YPosition,
+                    LoadingUnitId = model.LoadingUnitId,
+                    CompartmentTypeId = model.CompartmentTypeId,
+                    ItemPairing = DataModels.Pairing.Free,
+                    Stock = model.Stock,
+                    ReservedForPick = model.ReservedForPick,
+                    ReservedToStore = model.ReservedToStore,
+                    CreationDate = DateTime.Now
+                });
+
+                return context.SaveChanges();
+            }
+        }
+
+        public void Delete(Int32 id)
+        {
+            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            {
+                var existingModel = context.Compartments.Find(id);
+                if (existingModel != null)
+                {
+                    context.Remove(existingModel);
+                }
+                context.SaveChanges();
+            }
+        }
         public IQueryable<Compartment> GetAll()
         {
             var tempContext = new DatabaseContext();
@@ -108,7 +148,8 @@ namespace Ferretto.Common.BusinessProviders
                    Height = c.Height,
                    XPosition = c.XPosition,
                    YPosition = c.YPosition,
-                   LoadingUnitId = c.LoadingUnitId
+                   LoadingUnitId = c.LoadingUnitId,
+                   ItemId = c.ItemId
                })
                .Single();
 
@@ -192,7 +233,9 @@ namespace Ferretto.Common.BusinessProviders
                     Width = c.Width,
                     Height = c.Height,
                     XPosition = c.XPosition,
-                    YPosition = c.YPosition
+                    YPosition = c.YPosition,
+                    LoadingUnitId = c.LoadingUnitId,
+                    ItemId = c.ItemId
                 })
                 .AsNoTracking();
         }
