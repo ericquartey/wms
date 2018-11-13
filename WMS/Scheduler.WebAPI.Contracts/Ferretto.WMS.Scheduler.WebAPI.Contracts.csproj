@@ -4,11 +4,6 @@
     <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
-
-
   <ItemGroup Condition="'$(TargetFramework)' == 'net471'">
     <PackageReference Include="Microsoft.AspNet.SignalR.Client" Version="2.3.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
