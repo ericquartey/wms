@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.EF;
+using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,10 +59,14 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 #endif
             app.UseHttpsRedirection();
 
-            app.UseSignalR(routes =>
+            var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
+            if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
             {
-                routes.MapHub<WakeupHub>($"/wakeup-hub");
-            });
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
+                });
+            }
 
             app.UseMvc();
 
