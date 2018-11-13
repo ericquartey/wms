@@ -20,7 +20,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private ICommand addCompartmentCommand;
+        private ICommand addCommand;
+        private ICommand cancelCommand;
         private IDataSource<CompartmentDetails> compartmentsDataSource;
         private ICommand deleteCommand;
         private LoadingUnitDetails loadingUnit;
@@ -44,8 +45,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ICommand AddCompartmentCommand => this.addCompartmentCommand ??
-          (this.addCompartmentCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand, this.CanExecuteAddCommand).ObservesProperty(() => this.CreateMode));
+        public ICommand AddCommand => this.addCommand ??
+          (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand, this.CanExecuteAddCommand).ObservesProperty(() => this.CreateMode));
+
+        public ICommand CancelCommand => this.cancelCommand ??
+          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
 
         public IDataSource<CompartmentDetails> CompartmentsDataSource
         {
@@ -153,6 +157,11 @@ namespace Ferretto.WMS.Modules.MasterData
             return !this.CreateMode;
         }
 
+        private bool CanExecuteCancelCommand()
+        {
+            return this.CreateMode;
+        }
+
         private bool CanExecuteDeleteCommand()
         {
             return this.selectedCompartmentTray != null && !this.CreateMode;
@@ -168,6 +177,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.selectedCompartmentTray = new CompartmentDetails();
             this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
             this.CreateMode = true;
+            this.RaisePropertyChanged(nameof(this.CreateMode));
+        }
+
+        private void ExecuteCancelCommand()
+        {
+            this.CreateMode = false;
             this.RaisePropertyChanged(nameof(this.CreateMode));
         }
 
