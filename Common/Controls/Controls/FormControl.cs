@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Reflection;
-using System.Windows.Controls;
 
 namespace Ferretto.Common.Controls
 {
-    public class FormControl : UserControl
+    public static class FormControl
     {
         #region Fields
 
@@ -15,27 +13,24 @@ namespace Ferretto.Common.Controls
 
         #endregion Fields
 
-        #region Constructors
-
-        protected FormControl()
-        {
-        }
-
-        #endregion Constructors
-
         #region Methods
 
-        public static string RetrieveLocalizedFieldName(object model, string fieldName)
+        public static string RetrieveLocalizedFieldName(Type type, string fieldName)
         {
-            if (model == null || fieldName == null)
+            if (type == null || fieldName == null)
             {
                 return null;
             }
 
-            var property = GetProperty(model.GetType(), fieldName);
+            var splits = fieldName.Split('.');
+            for (var i = 0; i < splits.Length - 1; i++)
+            {
+                type = type.GetProperty(splits[i]).PropertyType;
+            }
+            var property = type.GetProperty(splits[splits.Length - 1]);
             if (property == null)
             {
-                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because property '{fieldName}' is not available on model type '{model.GetType()}'.");
+                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because property '{fieldName}' is not available on model type '{type}'.");
                 return $"[{fieldName}]";
             }
 
@@ -68,24 +63,6 @@ namespace Ferretto.Common.Controls
             }
 
             return (string)propertyInfo.GetValue(null);
-        }
-
-        private static PropertyInfo GetProperty(Type type, string propertyPath)
-        {
-            var indexOfSeparator = propertyPath.IndexOf('.');
-
-            if (indexOfSeparator < 0)
-            {
-                return type.GetProperty(propertyPath);
-            }
-
-            var propertyName = propertyPath.Substring(0, indexOfSeparator);
-
-            var propertyInfo = type.GetProperty(propertyName);
-
-            var childPropertyPath = propertyPath.Substring(indexOfSeparator + 1);
-
-            return GetProperty(propertyInfo.ReflectedType, childPropertyPath);
         }
 
         #endregion Methods
