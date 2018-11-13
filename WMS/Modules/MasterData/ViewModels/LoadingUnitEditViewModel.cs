@@ -23,6 +23,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand addCommand;
         private ICommand cancelCommand;
         private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private bool createMode;
         private ICommand deleteCommand;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
@@ -57,7 +58,14 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public bool CreateMode { get; set; }
+        public bool CreateMode
+        {
+            get => this.createMode;
+            set
+            {
+                this.SetProperty(ref this.createMode, value);
+            }
+        }
 
         public CompartmentDetails CurrentCompartment
         {
@@ -174,25 +182,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteAddCompartmentCommand()
         {
-            this.selectedCompartmentTray = new CompartmentDetails();
-            this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
+            this.SetSelectedCompartment();
             this.CreateMode = true;
-            this.RaisePropertyChanged(nameof(this.CreateMode));
         }
 
         private void ExecuteCancelCommand()
         {
             this.CreateMode = false;
-            this.RaisePropertyChanged(nameof(this.CreateMode));
         }
 
         private void ExecuteDeleteCommand()
         {
             this.tray.Compartments.Remove(this.SelectedCompartmentTray);
-
-            //ToDo: implement save/update/delete
-            //this.SaveLoadingUnit();
-
             this.compartmentProvider.Delete(this.SelectedCompartmentTray.Id);
         }
 
@@ -247,7 +248,6 @@ namespace Ferretto.WMS.Modules.MasterData
                         this.tray.Compartments.Add(this.SelectedCompartmentTray);
                     }
                     this.CreateMode = false;
-                    this.RaisePropertyChanged(nameof(this.CreateMode));
 
                     Debug.WriteLine($"Add NEW Compartment: {add}");
                 }
@@ -263,6 +263,12 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
                 }
             }
+        }
+
+        private void SetSelectedCompartment()
+        {
+            this.selectedCompartmentTray = new CompartmentDetails();
+            this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
         }
 
         private void SetSelectedCompartment(object value)

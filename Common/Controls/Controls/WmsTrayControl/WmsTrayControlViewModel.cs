@@ -173,27 +173,6 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public WmsCompartmentViewModel AddCompartment(CompartmentDetails compartment)
-        {
-            if (this.Tray != null)
-            {
-                return new WmsCompartmentViewModel
-                {
-                    Tray = this.Tray,
-                    CompartmentDetails = compartment,
-                    Width = compartment.Width ?? 0,
-                    Height = compartment.Height ?? 0,
-                    Left = compartment.XPosition ?? 0,
-                    Top = compartment.YPosition ?? 0,
-                    ColorFill = Colors.Aquamarine.ToString(),
-                    Selected = Colors.RoyalBlue.ToString(),
-                    ReadOnly = this.ReadOnly,
-                    IsSelectable = this.IsCompartmentSelectable
-                };
-            }
-            return null;
-        }
-
         public void ResizeCompartments(double widthTrayPixel, double heightTrayPixel)
         {
             if (this.items != null)
@@ -214,7 +193,7 @@ namespace Ferretto.Common.Controls
                 var newItems = new ObservableCollection<WmsBaseCompartment>();
                 foreach (var compartment in compartments)
                 {
-                    compartment.PropertyChanged += this.Compartment_PropertyChanged;
+                    //compartment.PropertyChanged += this.Compartment_PropertyChanged;
                     newItems.Add(new WmsCompartmentViewModel
                     {
                         Tray = this.Tray,
@@ -271,22 +250,25 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void Compartment_PropertyChanged(Object sender, PropertyChangedEventArgs e)
+        private WmsCompartmentViewModel AddCompartment(CompartmentDetails compartment)
         {
-            if (sender is CompartmentDetails compartmentDetails &&
-                (
-                e.PropertyName == nameof(CompartmentDetails.Width) ||
-                e.PropertyName == nameof(CompartmentDetails.Height) ||
-                e.PropertyName == nameof(CompartmentDetails.XPosition) ||
-                e.PropertyName == nameof(CompartmentDetails.YPosition)
-                ))
+            if (this.Tray != null)
             {
-                var compartment = this.items.Single(i => i.CompartmentDetails == compartmentDetails);
-
-                this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, compartment);
-
-                this.NotifyPropertyChanged(nameof(this.Items));
+                return new WmsCompartmentViewModel
+                {
+                    Tray = this.Tray,
+                    CompartmentDetails = compartment,
+                    Width = compartment.Width ?? 0,
+                    Height = compartment.Height ?? 0,
+                    Left = compartment.XPosition ?? 0,
+                    Top = compartment.YPosition ?? 0,
+                    ColorFill = Colors.Aquamarine.ToString(),
+                    Selected = Colors.RoyalBlue.ToString(),
+                    ReadOnly = this.ReadOnly,
+                    IsSelectable = this.IsCompartmentSelectable
+                };
             }
+            return null;
         }
 
         private void Compartments_ListChanged(Object sender, ListChangedEventArgs e)
@@ -308,6 +290,8 @@ namespace Ferretto.Common.Controls
                     this.items.Add(compartmentGraphic);
                 }
             }
+
+            this.NotifyPropertyChanged(nameof(this.Items));
         }
 
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)

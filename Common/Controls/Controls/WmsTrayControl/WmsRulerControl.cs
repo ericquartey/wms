@@ -184,7 +184,6 @@ namespace Ferretto.Common.Controls
                     }
                 }
             }
-            //Debug.WriteLine($"Ruler: W={this.ActualWidth} H={this.ActualHeight} Orientation: {this.InfoRuler.OrientationRuler} IHP={this.MajorIntervalHorizontalPixel} IHV={this.MajorIntervalVerticalPixel}");
             if (!double.IsPositiveInfinity(ratio) && !double.IsNegativeInfinity(ratio) && ratio != 0)
             {
                 Debug.WriteLine($"Ruler: W={this.WidthMmForConvert} H={this.HeightMmForRatio} Ratio={ratio} IntervalH={this.MajorIntervalHorizontal} IntervalV={this.MajorIntervalVertical} Orientation: {this.InfoRuler.OrientationRuler}");
@@ -369,8 +368,6 @@ namespace Ferretto.Common.Controls
                 new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK),
                 new Point(Math.Round(mark.XStart), Math.Round(mark.YStart)),
                 new Point(Math.Round(mark.XEnd), Math.Round(mark.YEnd)));
-
-            //Debug.WriteLine($"Mark: X={Math.Round(mark.XStart)} Y={Math.Round(mark.YStart)} Orientation: {this.InfoRuler.OrientationRuler} I={majorIntervalPixel}");
         }
 
         private void DrawMiddleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
