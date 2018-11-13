@@ -14,8 +14,14 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register(
+                    nameof(Column), typeof(int), typeof(InputCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnColumnChanged)));
+
         public static readonly DependencyProperty EnableBulkAddProperty = DependencyProperty.Register(
-                    nameof(EnableBulkAdd), typeof(bool), typeof(InputCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnEnableBulkAddChanged)));
+                            nameof(EnableBulkAdd), typeof(bool), typeof(InputCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnEnableBulkAddChanged)));
+
+        public static readonly DependencyProperty RowProperty = DependencyProperty.Register(
+                    nameof(Row), typeof(int), typeof(InputCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnRowChanged)));
 
         #endregion Fields
 
@@ -30,7 +36,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public int Column { get; set; }
+
         public bool EnableBulkAdd { get; set; }
+
+        public int Row { get; set; }
 
         #endregion Properties
 
@@ -50,11 +60,27 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        private static void OnColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is InputCompartmentView inputCompartment)
+            {
+                inputCompartment.Column = (int)e.NewValue;
+            }
+        }
+
         private static void OnEnableBulkAddChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is InputCompartmentView inputCompartment)
             {
                 inputCompartment.EnableBulkAddVisibility((bool)e.NewValue);
+            }
+        }
+
+        private static void OnRowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is InputCompartmentView inputCompartment)
+            {
+                inputCompartment.Row = (int)e.NewValue;
             }
         }
 

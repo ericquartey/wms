@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -94,6 +95,47 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
+        public List<CompartmentDetails> AddBulkCompartments(CompartmentDetails compartment, int row, int column)
+        //Position start, Dimension size, int row, int column, CompartmentDetails detail)
+        {
+            //TODO: add logic of dynamic scompartition
+            //      n: is calculated number of compartment to add
+            //      n: based on row/column
+            var tempList = new List<CompartmentDetails>();
+            int startX = compartment.XPosition ?? 0;
+            int startY = compartment.YPosition ?? 0;
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < column; j++)
+                {
+                    var newCompartment = new CompartmentDetails()
+                    {
+                        Width = compartment.Width,
+                        Height = compartment.Height,
+                        XPosition = startX + (i * compartment.Width),
+                        YPosition = startY + (j * compartment.Height),
+                        ItemPairing = compartment.ItemPairing,
+                        ItemCode = compartment.ItemCode,
+                        Stock = compartment.Stock,
+                        MaxCapacity = compartment.MaxCapacity,
+                        CompartmentTypeId = compartment.CompartmentTypeId,
+                        LoadingUnitId = compartment.LoadingUnitId
+                    };
+                    if (this.CanAddCompartment(newCompartment))
+                    {
+                        tempList.Add(newCompartment);
+                    }
+                    else
+                    {
+                        //throw new Exception("Failed to Add Bulk Compartments.");
+                        return null;
+                    }
+                }
+            }
+            this.AddCompartmentsRange(tempList);
+            return tempList;
+        }
+
         public void AddCompartment(CompartmentDetails compartmentDetails)
         {
             if (this.CanAddCompartment(compartmentDetails))
@@ -120,18 +162,6 @@ namespace Ferretto.Common.BusinessModels
             if (error)
             {
                 System.Diagnostics.Debug.WriteLine("ERROR ADD NEW RANGE OF COMPARTMENTS: it is overlaps among other compartments or it exits from window.");
-            }
-        }
-
-        public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
-        {
-            //TODO: add logic of dynamic scompartition
-            //      n: is calculated number of compartment to add
-            //      n: based on row/column
-            var n = 0;
-            for (var i = 0; i < n; i++)
-            {
-                this.AddCompartment(null);
             }
         }
 

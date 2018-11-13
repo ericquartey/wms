@@ -10,6 +10,7 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private int? fifoTime;
+
         private int? height;
         private int? maxCapacity;
         private int reservedForPick;
