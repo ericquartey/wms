@@ -17,6 +17,7 @@ namespace Ferretto.Common.DataModels
         public int? LoadingUnitsBufferSize { get; set; }
         public Machine Machine { get; set; }
         public int? MachineId { get; set; }
+        public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
         public List<Mission> SourceMissions { get; set; }
 
         #endregion Properties
