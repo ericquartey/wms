@@ -225,6 +225,13 @@
                              Margin="5"
                              Fill="{Binding MachineOnMarchCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
+                <Button Height="70"
+                        Margin="5,0,0,0"
+                        VerticalAlignment="Bottom"
+                        VerticalContentAlignment="Bottom"
+                        BorderBrush="Transparent"
+                        Command="{Binding ChangeSkinButtonCommand}"
+                        Content="{DynamicResource IAPP_ImageChangeSkin}" />
             </StackPanel>
         </Border>
         <ContentControl x:Name="InstallationPageRegionContentControl"

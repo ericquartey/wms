@@ -4,5 +4,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/FontsAndColors.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinColors.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinImages.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -98,9 +98,6 @@
                         Content="{x:Static res:InstallationApp.CellsControl}"
                         IsEnabled="{Binding IsCellsControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
-                <Button Command="{Binding DataContext.ChangeSkinButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="ChangeSkin"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
             </StackPanel>
         </ScrollViewer>
     </Grid>

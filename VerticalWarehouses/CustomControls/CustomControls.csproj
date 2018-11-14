@@ -121,11 +121,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Skins\DarkSkinImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Skins\LightSkin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skins\LightSkinColors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\LightSkinImages.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,19 +236,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Assets\icona_misuratore_0.jpg" />
-    <Resource Include="Assets\icona_misuratore_1.jpg" />
-    <Resource Include="Assets\calibration_icon.png" />
-    <Resource Include="Assets\circuit_icon.png" />
     <Resource Include="Assets\gear_icon.png" />
-    <Resource Include="Assets\movement_icon.png" />
-    <Resource Include="Assets\user_icon.png" />
     <Resource Include="Assets\ic_account_circle_black_18dp.png" />
     <Resource Include="Assets\ic_account_circle_black_48dp.png" />
-    <Resource Include="Assets\up_arrow_icon.ico" />
-    <Resource Include="Assets\down_arrow_icon.ico" />
-    <Resource Include="Assets\down_white_arrow_icon.ico" />
     <Resource Include="Assets\White_arrow_down.svg.png" />
+    <Resource Include="Assets\brush_dark.png" />
+    <Resource Include="Assets\brush_light.png" />
     <Content Include="Fonts\HelveticaNeue-LightCond.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
