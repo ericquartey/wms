@@ -98,8 +98,8 @@ namespace Ferretto.Common.BusinessModels
         public List<CompartmentDetails> AddBulkCompartments(CompartmentDetails compartment, int row, int column)
         {
             var tempList = new List<CompartmentDetails>();
-            int startX = compartment.XPosition ?? 0;
-            int startY = compartment.YPosition ?? 0;
+            int startX = (int)compartment.XPosition;
+            int startY = (int)compartment.YPosition;
             for (int i = 0; i < row; i++)
             {
                 for (int j = 0; j < column; j++)
@@ -123,7 +123,7 @@ namespace Ferretto.Common.BusinessModels
                     }
                     else
                     {
-                        return null;
+                        throw new ArgumentException();
                     }
                 }
             }
