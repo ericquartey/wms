@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
@@ -23,7 +23,7 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelXSFilter =
             m => m.Model.Contains("VARIANT-XS");
 
-        private readonly DatabaseContext dataContet;
+        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -34,15 +34,15 @@ namespace Ferretto.Common.BusinessProviders
             DatabaseContext dataContext,
             EnumerationProvider enumerationProvider)
         {
+            this.dataContext = dataContext;
             this.enumerationProvider = enumerationProvider;
-            this.dataContet = dataContext;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Int32 Add(MachineDetails model)
+        public int Add(MachineDetails model)
         {
             throw new NotImplementedException();
         }
@@ -54,76 +54,66 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Machine> GetAll()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllMachinesWithFilter(tempContext);
+            return GetAllMachinesWithFilter(this.dataContext);
         }
 
         public int GetAllCount()
         {
-            lock (this.dataContet)
+            lock (this.dataContext)
             {
-                return this.dataContet.Machines.AsNoTracking().Count();
+                return this.dataContext.Machines.AsNoTracking().Count();
             }
         }
 
         public IQueryable<Machine> GetAllTraslo()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllMachinesWithFilter(this.dataContet, TrasloFilter);
+            return GetAllMachinesWithFilter(this.dataContext, TrasloFilter);
         }
 
         public int GetAllTrasloCount()
         {
-            lock (this.dataContet)
+            lock (this.dataContext)
             {
-                return this.dataContet.Machines.AsNoTracking().Where(TrasloFilter).Count();
+                return this.dataContext.Machines.AsNoTracking().Where(TrasloFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimag()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllMachinesWithFilter(this.dataContet, VertimagFilter);
+            return GetAllMachinesWithFilter(this.dataContext, VertimagFilter);
         }
 
         public int GetAllVertimagCount()
         {
-            lock (this.dataContet)
+            lock (this.dataContext)
             {
-                return this.dataContet.Machines.AsNoTracking().Where(VertimagFilter).Count();
+                return this.dataContext.Machines.AsNoTracking().Where(VertimagFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimagModelM()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllMachinesWithFilter(this.dataContet, VertimagModelMFilter);
+            return GetAllMachinesWithFilter(this.dataContext, VertimagModelMFilter);
         }
 
         public int GetAllVertimagModelMCount()
         {
-            lock (this.dataContet)
+            lock (this.dataContext)
             {
-                return this.dataContet.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
+                return this.dataContext.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimagModelXS()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllMachinesWithFilter(this.dataContet, VertimagModelXSFilter);
+            return GetAllMachinesWithFilter(this.dataContext, VertimagModelXSFilter);
         }
 
         public int GetAllVertimagModelXSCount()
         {
-            lock (this.dataContet)
+            lock (this.dataContext)
             {
-                return this.dataContet.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
+                return this.dataContext.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
             }
         }
 
@@ -139,13 +129,13 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContet)
+            lock (this.dataContext)
             {
-                var existingModel = this.dataContet.Machines.Find(model.Id);
+                var existingModel = this.dataContext.Machines.Find(model.Id);
 
-                this.dataContet.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContet.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 
@@ -153,51 +143,48 @@ namespace Ferretto.Common.BusinessProviders
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
 
-            lock (context)
-            {
-                return context.Machines
-               .AsNoTracking()
-               .Include(m => m.Aisle)
-                    .ThenInclude(a => a.Area)
-               .Include(m => m.MachineType)
-               .Where(actualWhereFunc)
-               .Select(m => new Machine
-               {
-                   Id = m.Id,
-                   ActualWeight = m.ActualWeight,
-                   AisleName = m.Aisle.Name,
-                   AreaName = m.Aisle.Area.Name,
-                   AutomaticTime = m.AutomaticTime,
-                   BuildDate = m.BuildDate,
-                   CradlesCount = m.CradlesCount,
-                   CustomerAddress = m.CustomerAddress,
-                   CustomerCity = m.CustomerCity,
-                   CustomerCountry = m.CustomerCountry,
-                   CustomerCode = m.CustomerCode,
-                   CustomerName = m.CustomerName,
-                   ErrorTime = m.ErrorTime,
-                   Image = m.Image,
-                   InputLoadingUnitsCount = m.InputLoadingUnitsCount,
-                   InstallationDate = m.InstallationDate,
-                   LastPowerOn = m.LastPowerOn,
-                   LastServiceDate = m.LastServiceDate,
-                   Latitude = m.Latitude,
-                   Longitude = m.Longitude,
-                   LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
-                   MachineTypeDescription = m.MachineType.Description,
-                   ManualTime = m.ManualTime,
-                   MissionTime = m.MissionTime,
-                   MovedLoadingUnitsCount = m.MovedLoadingUnitsCount,
-                   NextServiceDate = m.NextServiceDate,
-                   Nickname = m.Nickname,
-                   OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
-                   PowerOnTime = m.PowerOnTime,
-                   RegistrationNumber = m.RegistrationNumber,
-                   TestDate = m.TestDate,
-                   TotalMaxWeight = m.TotalMaxWeight
-               }
-               );
-            }
+            return context.Machines
+                .AsNoTracking()
+                .Include(m => m.Aisle)
+                     .ThenInclude(a => a.Area)
+                .Include(m => m.MachineType)
+                .Where(actualWhereFunc)
+                .Select(m => new Machine
+                {
+                    Id = m.Id,
+                    ActualWeight = m.ActualWeight,
+                    AisleName = m.Aisle.Name,
+                    AreaName = m.Aisle.Area.Name,
+                    AutomaticTime = m.AutomaticTime,
+                    BuildDate = m.BuildDate,
+                    CradlesCount = m.CradlesCount,
+                    CustomerAddress = m.CustomerAddress,
+                    CustomerCity = m.CustomerCity,
+                    CustomerCountry = m.CustomerCountry,
+                    CustomerCode = m.CustomerCode,
+                    CustomerName = m.CustomerName,
+                    ErrorTime = m.ErrorTime,
+                    Image = m.Image,
+                    InputLoadingUnitsCount = m.InputLoadingUnitsCount,
+                    InstallationDate = m.InstallationDate,
+                    LastPowerOn = m.LastPowerOn,
+                    LastServiceDate = m.LastServiceDate,
+                    Latitude = m.Latitude,
+                    Longitude = m.Longitude,
+                    LoadingUnitsPerCradle = m.LoadingUnitsPerCradle,
+                    MachineTypeDescription = m.MachineType.Description,
+                    ManualTime = m.ManualTime,
+                    MissionTime = m.MissionTime,
+                    MovedLoadingUnitsCount = m.MovedLoadingUnitsCount,
+                    NextServiceDate = m.NextServiceDate,
+                    Nickname = m.Nickname,
+                    OutputLoadingUnitsCount = m.OutputLoadingUnitsCount,
+                    PowerOnTime = m.PowerOnTime,
+                    RegistrationNumber = m.RegistrationNumber,
+                    TestDate = m.TestDate,
+                    TotalMaxWeight = m.TotalMaxWeight
+                }
+                );
         }
 
         #endregion Methods

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -40,7 +40,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Int32 Add(ItemDetails model)
+        public int Add(ItemDetails model)
         {
             throw new NotImplementedException();
         }
@@ -52,9 +52,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Item> GetAll()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllItemsWithAggregations(tempContext);
+            return GetAllItemsWithAggregations(this.dataContext);
         }
 
         public int GetAllCount()
@@ -67,9 +65,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.Compartments
+            return this.dataContext.Compartments
                 .Where(c => c.Id == compartmentId)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -178,9 +174,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Item> GetWithAClass()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllItemsWithAggregations(tempContext, AClassFilter);
+            return GetAllItemsWithAggregations(this.dataContext, AClassFilter);
         }
 
         public int GetWithAClassCount()
@@ -193,9 +187,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Item> GetWithFifo()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllItemsWithAggregations(tempContext, FifoFilter);
+            return GetAllItemsWithAggregations(this.dataContext, FifoFilter);
         }
 
         public int GetWithFifoCount()
@@ -254,9 +246,8 @@ namespace Ferretto.Common.BusinessProviders
         private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
-            lock (context)
-            {
-                return context.Items
+
+            return context.Items
                .AsNoTracking()
                .Include(i => i.AbcClass)
                .Include(i => i.ItemManagementType)
@@ -316,7 +307,6 @@ namespace Ferretto.Common.BusinessProviders
                            : 0,
                    }
                );
-            }
         }
 
         #endregion Methods

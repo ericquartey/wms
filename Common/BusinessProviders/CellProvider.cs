@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
@@ -22,15 +22,15 @@ namespace Ferretto.Common.BusinessProviders
             DatabaseContext context,
             EnumerationProvider enumerationProvider)
         {
-            this.enumerationProvider = enumerationProvider;
             this.dataContext = context;
+            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Int32 Add(CellDetails model)
+        public int Add(CellDetails model)
         {
             throw new NotImplementedException();
         }
@@ -42,9 +42,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Cell> GetAll()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllCellsWithFilter(tempContext);
+            return GetAllCellsWithFilter(this.dataContext);
         }
 
         public int GetAllCount()
@@ -57,9 +55,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Enumeration> GetByAisleId(int aisleId)
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.Cells
+            return this.dataContext.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -73,9 +69,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Enumeration> GetByAreaId(int areaId)
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.Cells
+            return this.dataContext.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -90,39 +84,40 @@ namespace Ferretto.Common.BusinessProviders
 
         public CellDetails GetById(int id)
         {
-            var tempContext = new DatabaseContext();
+            lock (this.dataContext)
+            {
+                var cellDetails = this.dataContext.Cells
+                    .Where(c => c.Id == id)
+                    .Include(c => c.Aisle)
+                    .Select(c => new CellDetails
+                    {
+                        Id = c.Id,
+                        AbcClassId = c.AbcClassId,
+                        AisleId = c.AisleId,
+                        AreaId = c.Aisle.AreaId,
+                        CellStatusId = c.CellStatusId,
+                        CellTypeId = c.CellTypeId,
+                        Column = c.Column,
+                        Floor = c.Floor,
+                        Number = c.CellNumber,
+                        Priority = c.Priority,
+                        Side = (int)c.Side,
+                        XCoordinate = c.XCoordinate,
+                        YCoordinate = c.YCoordinate,
+                        ZCoordinate = c.ZCoordinate,
+                    })
+                    .Single();
 
-            var cellDetails = tempContext.Cells
-                .Where(c => c.Id == id)
-                .Include(c => c.Aisle)
-                .Select(c => new CellDetails
-                {
-                    Id = c.Id,
-                    AbcClassId = c.AbcClassId,
-                    AisleId = c.AisleId,
-                    AreaId = c.Aisle.AreaId,
-                    CellStatusId = c.CellStatusId,
-                    CellTypeId = c.CellTypeId,
-                    Column = c.Column,
-                    Floor = c.Floor,
-                    Number = c.CellNumber,
-                    Priority = c.Priority,
-                    Side = (int)c.Side,
-                    XCoordinate = c.XCoordinate,
-                    YCoordinate = c.YCoordinate,
-                    ZCoordinate = c.ZCoordinate,
-                })
-                .Single();
+                cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+                cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
+                cellDetails.SideChoices =
+                    ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
+                cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
 
-            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-            cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-            cellDetails.SideChoices =
-                ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
-
-            return cellDetails;
+                return cellDetails;
+            }
         }
 
         public bool HasAnyLoadingUnits(int cellId)
@@ -153,9 +148,8 @@ namespace Ferretto.Common.BusinessProviders
         private static IQueryable<Cell> GetAllCellsWithFilter(DatabaseContext context, Expression<Func<DataModels.Cell, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
-            lock (context)
-            {
-                return context.Cells
+
+            return context.Cells
                .AsNoTracking()
                .Include(c => c.AbcClass)
                .Include(c => c.Aisle)
@@ -201,7 +195,6 @@ namespace Ferretto.Common.BusinessProviders
                         LoadingUnitsCount = b != null ? b.LoadingUnitsCount : 0,
                         LoadingUnitsDescription = b != null ? b.LoadingUnitsDescription : "",
                     });
-            }
         }
 
         #endregion Methods

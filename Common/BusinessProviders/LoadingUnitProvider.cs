@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -20,22 +20,22 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public LoadingUnitProvider(
-            DatabaseContext dataContext,
-            EnumerationProvider enumerationProvider,
+            ICellProvider cellProvider,
             ICompartmentProvider compartmentProvider,
-            ICellProvider cellProvider)
+            DatabaseContext dataContext,
+            EnumerationProvider enumerationProvider)
         {
-            this.enumerationProvider = enumerationProvider;
-            this.dataContext = dataContext;
-            this.compartmentProvider = compartmentProvider;
             this.cellProvider = cellProvider;
+            this.compartmentProvider = compartmentProvider;
+            this.dataContext = dataContext;
+            this.enumerationProvider = enumerationProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-       public Int32 Add(LoadingUnitDetails model)
+        public int Add(LoadingUnitDetails model)
         {
             throw new NotImplementedException();
         }
@@ -44,12 +44,10 @@ namespace Ferretto.Common.BusinessProviders
         {
             throw new NotImplementedException();
         }
-		
+
         public IQueryable<LoadingUnit> GetAll()
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.LoadingUnits
+            return this.dataContext.LoadingUnits
                 .Include(l => l.LoadingUnitType)
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
@@ -81,9 +79,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<LoadingUnitDetails> GetByCellId(int id)
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.LoadingUnits
+            return this.dataContext.LoadingUnits
                 .Where(l => l.CellId == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)

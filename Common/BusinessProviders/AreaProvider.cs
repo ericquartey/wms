@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
@@ -26,7 +26,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Int32 Add(Area model)
+        public int Add(Area model)
         {
             throw new NotImplementedException();
         }
@@ -38,9 +38,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Area> GetAll()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllAreasWithFilter(tempContext);
+            return GetAllAreasWithFilter(this.dataContext);
         }
 
         public int GetAllCount()
@@ -53,25 +51,19 @@ namespace Ferretto.Common.BusinessProviders
 
         public Area GetById(int id)
         {
-            var tempContext = new DatabaseContext();
-
-            var areaDetails = tempContext.Areas
-            .Where(a => a.Id == id)
-            .Select(a => new Area
-            {
-                Id = a.Id,
-                Name = a.Name,
-            })
-            .Single();
-
-            return areaDetails;
+            return this.dataContext.Areas
+                .Where(a => a.Id == id)
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                })
+                .Single();
         }
 
         public IQueryable<Area> GetByItemIdAvailability(int id)
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.Compartments
+            return this.dataContext.Compartments
                 .Include(c => c.LoadingUnit)
                     .ThenInclude(l => l.Cell)
                     .ThenInclude(c => c.Aisle)
@@ -108,17 +100,14 @@ namespace Ferretto.Common.BusinessProviders
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
 
-            lock (context)
-            {
-                return context.Areas
-                    .AsNoTracking()
-                    .Where(actualWhereFunc)
-                    .Select(a => new Area
-                    {
-                        Id = a.Id,
-                        Name = a.Name,
-                    });
-            }
+            return context.Areas
+                .AsNoTracking()
+                .Where(actualWhereFunc)
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Name = a.Name,
+                });
         }
 
         #endregion Methods

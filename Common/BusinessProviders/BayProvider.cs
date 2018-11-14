@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
@@ -26,7 +26,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Int32 Add(Bay model)
+        public int Add(Bay model)
         {
             throw new NotImplementedException();
         }
@@ -38,9 +38,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Bay> GetAll()
         {
-            var tempContext = new DatabaseContext();
-
-            return GetAllBaysWithFilter(tempContext);
+            return GetAllBaysWithFilter(this.dataContext);
         }
 
         public int GetAllCount()
@@ -53,9 +51,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Bay> GetByAreaId(int id)
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.Bays
+            return this.dataContext.Bays
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
                 .Include(b => b.Machine)
@@ -76,26 +72,27 @@ namespace Ferretto.Common.BusinessProviders
 
         public Bay GetById(int id)
         {
-            var tempContext = new DatabaseContext();
-
-            return tempContext.Bays
-                .Include(b => b.BayType)
-                .Include(b => b.Area)
-                .Include(b => b.Machine)
-                .Where(b => b.Id == id)
-                .Select(b => new Bay
-                {
-                    Id = b.Id,
-                    Description = b.Description,
-                    LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
-                    BayTypeId = b.BayTypeId,
-                    BayTypeDescription = b.BayType.Description,
-                    AreaId = b.AreaId,
-                    AreaName = b.Area.Name,
-                    MachineId = b.MachineId,
-                    MachineNickname = b.Machine.Nickname,
-                })
-                .Single();
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .Include(b => b.BayType)
+                    .Include(b => b.Area)
+                    .Include(b => b.Machine)
+                    .Where(b => b.Id == id)
+                    .Select(b => new Bay
+                    {
+                        Id = b.Id,
+                        Description = b.Description,
+                        LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                        BayTypeId = b.BayTypeId,
+                        BayTypeDescription = b.BayType.Description,
+                        AreaId = b.AreaId,
+                        AreaName = b.Area.Name,
+                        MachineId = b.MachineId,
+                        MachineNickname = b.Machine.Nickname,
+                    })
+                    .Single();
+            }
         }
 
         public int Save(Bay model)
@@ -119,9 +116,8 @@ namespace Ferretto.Common.BusinessProviders
             Expression<Func<DataModels.Bay, bool>> whereFunc = null)
         {
             var actualWhereFunc = whereFunc ?? ((i) => true);
-            lock (context)
-            {
-                return context.Bays
+
+            return context.Bays
                 .AsNoTracking()
                 .Include(b => b.BayType)
                 .Include(b => b.Area)
@@ -139,7 +135,6 @@ namespace Ferretto.Common.BusinessProviders
                     MachineId = b.MachineId,
                     MachineNickname = b.Machine.Nickname,
                 });
-            }
         }
 
         #endregion Methods
