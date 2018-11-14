@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -198,12 +198,12 @@ namespace Ferretto.Common.Controls
             this.horizontalRuler.Width = widthNewCalculated;
             this.verticalRuler.Height = heightNewCalculated;
 
-            var majorIntervalStepHorizontal = this.horizontalRuler.MajorIntervalHorizontal;
-            var majorIntervalStepVertical = this.verticalRuler.MajorIntervalVertical;
-            this.horizontalRuler.MajorIntervalHorizontalPixel =
+            var majorIntervalStepHorizontal = this.horizontalRuler.MajorInterval;
+            var majorIntervalStepVertical = this.verticalRuler.MajorInterval;
+            this.horizontalRuler.MajorIntervalPixel =
                 (int) Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, widthNewCalculated,
                     this.Tray.Dimension.Width));
-            this.verticalRuler.MajorIntervalVerticalPixel =
+            this.verticalRuler.MajorIntervalPixel =
                 (int) Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, widthNewCalculated,
                     this.Tray.Dimension.Width));
 
