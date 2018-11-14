@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessProviders
 
         int Add(TDetailsModel model);
 
-        void Delete(int id);
+        int Delete(int id);
 
         IQueryable<TModel> GetAll();
 

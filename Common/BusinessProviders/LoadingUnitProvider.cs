@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -40,7 +40,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public void Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }

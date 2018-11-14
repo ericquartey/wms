@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -57,18 +57,19 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public void Delete(Int32 id)
+        public int Delete(int id)
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.Compartments.Find(id);
+                var existingModel = this.dataContext.Compartments.Find(id);
                 if (existingModel != null)
                 {
-                    context.Remove(existingModel);
+                    this.dataContext.Remove(existingModel);
                 }
-                context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
+
         public IQueryable<Compartment> GetAll()
         {
             var tempContext = new DatabaseContext();
