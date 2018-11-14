@@ -148,7 +148,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                    XPosition = c.XPosition,
                    YPosition = c.YPosition,
                    LoadingUnitId = c.LoadingUnitId,
-                   ItemId = c.ItemId
+                   ItemId = c.ItemId,
+                   ItemPairingDescription = c.ItemPairing.ToString(),
                })
                .Single();
 
@@ -234,7 +235,8 @@ namespace Ferretto.Common.Modules.BLL.Services
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                     LoadingUnitId = c.LoadingUnitId,
-                    ItemId = c.ItemId
+                    ItemId = c.ItemId,
+                    ItemPairingDescription = c.ItemPairing.ToString(),
                 })
                 .AsNoTracking();
         }
