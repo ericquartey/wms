@@ -171,20 +171,13 @@ namespace Ferretto.Common.Controls
 
         public void SetRuler(bool? show)
         {
-            if (show.HasValue && show.Value || this.ShowBackground)
-            {
-                this.horizontalRuler.Visibility = Visibility.Visible;
-                this.verticalRuler.Visibility = Visibility.Visible;
-                this.UnitMetric.Visibility = Visibility.Visible;
-                this.CanvasListBoxControl.Margin = new Thickness { Top = 25, Left = 25, Right = 0, Bottom = 0 };
-            }
-            else
-            {
-                this.horizontalRuler.Visibility = Visibility.Collapsed;
-                this.verticalRuler.Visibility = Visibility.Collapsed;
-                this.UnitMetric.Visibility = Visibility.Collapsed;
-                this.CanvasListBoxControl.Margin = new Thickness { Top = 0, Left = 0, Right = 0, Bottom = 0 };
-            }
+            var visibility = show.HasValue && show.Value || this.ShowBackground
+                ? Visibility.Visible
+                : Visibility.Collapsed;
+
+            this.horizontalRuler.Visibility = visibility;
+            this.verticalRuler.Visibility = visibility;
+            this.UnitMetric.Visibility = visibility;
         }
 
         public void UpdateRulers(double widthNewCalculated, double heightNewCalculated)
