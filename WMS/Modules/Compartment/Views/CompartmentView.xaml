@@ -42,7 +42,6 @@
         <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"
                             Margin="0,0,0,0"
-                            Compartments="{Binding Tray.Compartments, Mode=OneWay}"
                             ReadOnly="{Binding Tray.ReadOnly, Mode=OneWay}"
                             SelectedColorFilterFunc="{Binding SelectedColorFilterFunc, Mode=OneWay}"
                             SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"

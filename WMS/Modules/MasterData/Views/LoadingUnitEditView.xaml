@@ -25,6 +25,15 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
+        <TextBox x:Name="ErrorText"
+                 Width="500"
+                 Height="20"
+                 HorizontalAlignment="Left"
+                 FontStyle="Italic"
+                 FontWeight="Bold"
+                 Foreground="{Binding ErrorColor}"
+                 Text="{Binding Error}" />
+
         <wms:ActionBar Grid.Row="0"
                        Margin="10,10,10,0"
                        HorizontalAlignment="Right"
@@ -41,12 +50,11 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
                                GlyphSize="Custom" />
-            <wms:ActionBarItem Command="{Binding AddBulkCompartmentCommand}"
+            <wms:ActionBarItem Command="{Binding AddBulkCommand}"
                                Content="{x:Static res:MasterData.AddBulkCompartment}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_photo_size_select_small_black_24dp.png"
-                               GlyphSize="Custom"
-                               IsEnabled="False" />
+                               GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
@@ -59,9 +67,13 @@
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
-        <masterData:InputCompartmentView Grid.Row="1"
+        <masterData:InputCompartmentView x:Name="InputCompartment"
+                                         Grid.Row="1"
                                          Width="800"
-                                         HorizontalAlignment="Left" />
+                                         HorizontalAlignment="Left"
+                                         Column="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Column, Mode=TwoWay}"
+                                         EnableBulkAdd="{Binding EnableBulkAdd}"
+                                         Row="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Row, Mode=TwoWay}" />
 
         <wms:WmsTrayControl x:Name="TrayControl"
                             Grid.Row="2"
