@@ -102,6 +102,11 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
+            if (LayoutTreeHelper.GetVisualParents(this).OfType<WmsView>().FirstOrDefault(v => v.EnableHistoryView) != null)
+            {
+                return;
+            }
+
             var newWmsView = this.GetCloned();
             this.wmsHistoryView = new WmsHistoryView(newWmsView);
             this.Content = this.wmsHistoryView;

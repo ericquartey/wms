@@ -36,7 +36,7 @@
                                Panel.ZIndex="1000"
                                BorderBrush="Black"
                                BorderThickness="1,0,0,0"
-                               MajorIntervalHorizontal="1000"
+                               MajorIntervalVertical="200"
                                Orientation="Vertical" />
 
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"

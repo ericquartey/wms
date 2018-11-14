@@ -22,7 +22,7 @@ namespace Ferretto.Common.Controls
                     nameof(Compartments), typeof(BindingList<CompartmentDetails>), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnCompartmentsChanged)));
 
         public static readonly DependencyProperty IsCompartmentSelectableProperty = DependencyProperty.Register(
-                            nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(true, new PropertyChangedCallback(OnIsCompartmentSelectableChanged)));
+                            nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnIsCompartmentSelectableChanged)));
 
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
                             nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnReadOnlysChanged)));
@@ -126,7 +126,7 @@ namespace Ferretto.Common.Controls
                 drawingBrush.TileMode = TileMode.Tile;
 
                 double width = 0;
-                if (widthTrayPixel == 0)
+                if (widthTrayPixel == 0 && this.CanvasListBoxControl.Canvas != null)
                 {
                     width = this.CanvasListBoxControl.Canvas.ActualWidth;
                 }
@@ -182,6 +182,14 @@ namespace Ferretto.Common.Controls
             {
                 this.horizontalRuler.Origin = this.Tray.Origin;
                 this.verticalRuler.Origin = this.Tray.Origin;
+
+                this.horizontalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
+                this.horizontalRuler.WidthPixelForConvert = widthNewCalculated;
+                this.horizontalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
+
+                this.verticalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
+                this.verticalRuler.WidthPixelForConvert = widthNewCalculated;
+                this.verticalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
             }
             this.horizontalRuler.Width = widthNewCalculated;
             this.verticalRuler.Height = heightNewCalculated;
@@ -211,7 +219,7 @@ namespace Ferretto.Common.Controls
             {
                 Debug.WriteLine($"IsSelectable Property: {e.NewValue}");
 
-                viewModel.UpdateIsSelectablePropertyToCompartments((bool)e.NewValue);
+                viewModel.IsCompartmentSelectable = (bool)e.NewValue;
             }
         }
 
@@ -260,7 +268,7 @@ namespace Ferretto.Common.Controls
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
+            if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel && wmsTrayControl.Tray != null && wmsTrayControl.CanvasListBoxControl.Canvas != null)
             {
                 wmsTrayControl.SetBackground((bool)e.NewValue);
             }
@@ -279,9 +287,14 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 wmsTrayControl.Initialize();
-                viewModel.UpdateTray((Tray)e.NewValue);
+                viewModel.Tray = (Tray)e.NewValue;
 
-                wmsTrayControl.CanvasListBoxControl.SetControlSize(wmsTrayControl.CanvasListBoxControl.ActualHeight, wmsTrayControl.CanvasListBoxControl.ActualWidth);
+                if (wmsTrayControl.CanvasListBoxControl.ActualHeight > 0 && wmsTrayControl.CanvasListBoxControl.ActualWidth > 0)
+                {
+                    wmsTrayControl.CanvasListBoxControl.SetControlSize(wmsTrayControl.CanvasListBoxControl.ActualHeight, wmsTrayControl.CanvasListBoxControl.ActualWidth);
+                }
+
+                wmsTrayControl.SetBackground(null);
             }
         }
 

@@ -13,7 +13,6 @@
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
-
     <Grid Margin="5,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -23,7 +22,6 @@
 
         <GroupBox Grid.Row="0"
                   Margin="0"
-                  DataContext="{Binding ItemWithdraw}"
                   Header="{x:Static res:MasterData.ItemInformation}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -34,20 +32,19 @@
                     <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <wms:InfoText Content="{Binding ItemCode}" />
+                <wms:InfoText Content="{Binding ItemWithdraw.ItemCode}" />
                 <wms:InfoText Grid.Column="1"
-                              Content="{Binding ItemDescription}" />
+                              Content="{Binding ItemWithdraw.ItemDescription}" />
                 <wms:InfoText Grid.Row="1"
-                              Content="{Binding MeasureUnitDescription}" />
+                              Content="{Binding ItemWithdraw.MeasureUnitDescription}" />
                 <wms:InfoText Grid.Row="1"
                               Grid.Column="1"
-                              Content="{Binding ItemManagementTypeDescription}" />
+                              Content="{Binding ItemWithdraw.ItemManagementTypeDescription}" />
             </Grid>
         </GroupBox>
-
+        
         <GroupBox Grid.Row="1"
                   Margin="0"
-                  DataContext="{Binding ItemWithdraw}"
                   Header="{x:Static res:MasterData.WithdrawOptions}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -65,57 +62,58 @@
                 </Grid.ColumnDefinitions>
 
                 <wms:TextBox Margin="0,0,20,0"
-                             Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsDialogView}}, Path=DataContext.AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Text="{Binding ItemWithdraw.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Column="1"
-                             Text="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsDialogView}}, Path=DataContext.AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Text="{Binding ItemWithdraw.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="1"
                              Grid.Column="0"
                              Margin="0,0,20,0"
-                             Text="{Binding Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsDialogView}}, Path=DataContext.AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Text="{Binding ItemWithdraw.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="1"
                              Grid.Column="1"
-                             Text="{Binding Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsDialogView}}, Path=DataContext.AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                             Text="{Binding ItemWithdraw.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
 
                 <wms:ComboBox x:Name="SelectedArea"
                               Grid.Row="3"
                               Grid.ColumnSpan="2"
                               DisplayMember="Name"
-                              EditValue="{Binding AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding AreaChoices}" />
+                              EditValue="{Binding ItemWithdraw.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding ItemWithdraw.AreaChoices}" />
                 <wms:ComboBox x:Name="SelectedBay"
                               Grid.Row="4"
                               Grid.ColumnSpan="2"
-                              EditValue="{Binding BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding BayChoices}"
+                              EditValue="{Binding ItemWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding ItemWithdraw.BayChoices}"
                               Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}" />
                 <wms:InfoText Grid.Row="5"
-                              Content="{Binding TotalAvailable}"
+                              Content="{Binding ItemWithdraw.TotalAvailable}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
                 <wms:SpinEdit Grid.Row="5"
                               Grid.Column="1"
-                              EditValue="{Binding Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              EditValue="{Binding ItemWithdraw.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
             </Grid>
         </GroupBox>
 
-        <Grid Grid.Row="2" Grid.ColumnSpan="2">
+        <Grid Grid.Row="2"
+              Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding ValidationError}"
-                       Margin="5"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}" />
+            <TextBlock Margin="5"
+                       Style="{DynamicResource TextBlockErrorMessageStyle}"
+                       Text="{Binding ValidationError}" />
 
             <wms:ActionBar Grid.Column="1"
+                           Margin="5"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
-                           Margin="5"
                            Style="{DynamicResource ActionBarNotCustomizable}">
                 <wms:ActionBarItem Command="{Binding SimpleWithdrawCommand}"
                                    Content="{x:Static res:MasterData.SimpleWithdraw}"

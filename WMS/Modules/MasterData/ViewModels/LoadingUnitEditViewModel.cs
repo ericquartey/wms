@@ -1,3 +1,5 @@
+using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -11,20 +13,21 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
     {
         #region Fields
 
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private ICommand addCommand;
+        private ICommand cancelCommand;
         private IDataSource<CompartmentDetails> compartmentsDataSource;
-        private ICommand editCommand;
-        private bool isCompartmentSelectableTray;
+        private bool createMode;
+        private ICommand deleteCommand;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
-        private object modelSelectionChangedSubscription;
         private bool readOnlyTray;
-        private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedCompartment;
         private CompartmentDetails selectedCompartmentTray;
@@ -34,7 +37,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Constructors
 
-        public LoadingUnitDetailsViewModel()
+        public LoadingUnitEditViewModel()
         {
             this.Initialize();
         }
@@ -43,10 +46,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public ICommand AddCommand => this.addCommand ??
+          (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand, this.CanExecuteAddCommand).ObservesProperty(() => this.CreateMode));
+
+        public ICommand CancelCommand => this.cancelCommand ??
+          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
+
         public IDataSource<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
+        }
+
+        public bool CreateMode
+        {
+            get => this.createMode;
+            set
+            {
+                this.SetProperty(ref this.createMode, value);
+            }
         }
 
         public CompartmentDetails CurrentCompartment
@@ -65,14 +83,10 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ICommand EditCommand => this.editCommand ??
-                  (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
+        public ICommand DeleteCommand => this.deleteCommand ??
+          (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray).ObservesProperty(() => this.CreateMode));
 
-        public bool IsCompartmentSelectableTray
-        {
-            get => this.isCompartmentSelectableTray;
-            set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
-        }
+        public bool EditMode { get; set; }
 
         public LoadingUnitDetails LoadingUnit
         {
@@ -99,11 +113,8 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
-        public ICommand RevertCommand => this.revertCommand ??
-          (this.revertCommand = new DelegateCommand(this.LoadData));
-
         public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand).ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode));
 
         public object SelectedCompartment
         {
@@ -149,47 +160,50 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
-        protected override void OnDispose()
+        private bool CanExecuteAddCommand()
         {
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<LoadingUnit>>(this.modelSelectionChangedSubscription);
-            base.OnDispose();
+            return !this.CreateMode;
         }
 
-        private void ExecuteEditCommand()
+        private bool CanExecuteCancelCommand()
         {
-            this.NavigationService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.LoadingUnit.Id);
+            return this.CreateMode;
+        }
+
+        private bool CanExecuteDeleteCommand()
+        {
+            return this.selectedCompartmentTray != null && !this.CreateMode;
+        }
+
+        private bool CanExecuteSaveCommand()
+        {
+            return this.EditMode || this.CreateMode;
+        }
+
+        private void ExecuteAddCompartmentCommand()
+        {
+            this.SetSelectedCompartment(new CompartmentDetails());
+            this.CreateMode = true;
+        }
+
+        private void ExecuteCancelCommand()
+        {
+            this.CreateMode = false;
+        }
+
+        private void ExecuteDeleteCommand()
+        {
+            this.tray.Compartments.Remove(this.SelectedCompartmentTray);
+            this.compartmentProvider.Delete(this.SelectedCompartmentTray.Id);
         }
 
         private void ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
-
-            if (modifiedRowCount > 0)
-            {
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
-
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
-            }
+            this.SaveLoadingUnit();
         }
 
         private void Initialize()
         {
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
-                eventArgs =>
-                {
-                    if (eventArgs.ModelId.HasValue)
-                    {
-                        this.Data = eventArgs.ModelId.Value;
-                        this.LoadData();
-                    }
-                    else
-                    {
-                        this.LoadingUnit = null;
-                    }
-                },
-                 this.Token,
-                true,
-                true);
         }
 
         private void InitializeTray()
@@ -207,11 +221,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
             this.RaisePropertyChanged(nameof(this.Tray));
-
-            this.readOnlyTray = true;
-            this.isCompartmentSelectableTray = true;
-            this.RaisePropertyChanged(nameof(this.ReadOnlyTray));
-            this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
         }
 
         private void LoadData()
@@ -219,17 +228,48 @@ namespace Ferretto.WMS.Modules.MasterData
             if (this.Data is int modelId)
             {
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
-                this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
 
                 this.InitializeTray();
             }
         }
 
+        private void SaveLoadingUnit()
+        {
+            if (this.CreateMode)
+            {
+                if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
+                {
+                    this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
+                    this.SelectedCompartmentTray.CompartmentTypeId = 2;
+
+                    int add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
+                    if (add == 1)
+                    {
+                        this.tray.Compartments.Add(this.SelectedCompartmentTray);
+                    }
+                    this.CreateMode = false;
+
+                    Debug.WriteLine($"Add NEW Compartment: {add}");
+                }
+            }
+            else
+            {
+                var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
+
+                if (modifiedRowCount > 0)
+                {
+                    this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
+
+                    this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                }
+            }
+        }
+
         private void SetSelectedCompartment(object value)
         {
-            if (value is CompartmentDetails)
+            if (value is CompartmentDetails compartmentDetails)
             {
-                this.selectedCompartmentTray = (CompartmentDetails)value;
+                this.selectedCompartmentTray = compartmentDetails;
                 this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
             }
         }

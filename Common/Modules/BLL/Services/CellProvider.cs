@@ -27,6 +27,16 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
+        public Int32 Add(CellDetails model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Delete(Int32 id)
+        {
+            throw new NotImplementedException();
+        }
+
         public IQueryable<Cell> GetAll()
         {
             var context = ServiceLocator.Current.GetInstance<DatabaseContext>();

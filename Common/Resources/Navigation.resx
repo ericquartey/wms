@@ -222,4 +222,7 @@
   <data name="Machines" xml:space="preserve">
     <value>Machines</value>
   </data>
+  <data name="LoadingUnitEdit" xml:space="preserve">
+    <value>Loading Unit Edit</value>
+  </data>
 </root>
