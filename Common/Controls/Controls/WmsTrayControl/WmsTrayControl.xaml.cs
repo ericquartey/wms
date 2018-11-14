@@ -292,9 +292,12 @@ namespace Ferretto.Common.Controls
                 if (wmsTrayControl.CanvasListBoxControl.ActualHeight > 0 && wmsTrayControl.CanvasListBoxControl.ActualWidth > 0)
                 {
                     wmsTrayControl.CanvasListBoxControl.SetControlSize(wmsTrayControl.CanvasListBoxControl.ActualHeight, wmsTrayControl.CanvasListBoxControl.ActualWidth);
-                }
 
-                wmsTrayControl.SetBackground(null);
+                    if (wmsTrayControl.CanvasListBoxControl.Canvas.ActualWidth > 0)
+                    {
+                        wmsTrayControl.SetBackground(null, wmsTrayControl.CanvasListBoxControl.Canvas.ActualWidth);
+                    }
+                }
             }
         }
 
