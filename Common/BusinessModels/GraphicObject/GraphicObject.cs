@@ -96,7 +96,6 @@ namespace Ferretto.Common.BusinessModels
         #region Methods
 
         public List<CompartmentDetails> AddBulkCompartments(CompartmentDetails compartment, int row, int column)
-        //Position start, Dimension size, int row, int column, CompartmentDetails detail)
         {
             var tempList = new List<CompartmentDetails>();
             int startX = compartment.XPosition ?? 0;

@@ -200,13 +200,6 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
-        private void AbilitateCreation()
-        {
-            this.SetError(null);
-            this.SetSelectedCompartment(new CompartmentDetails());
-            this.CreateMode = true;
-        }
-
         private Boolean CanExecuteAddBulkCommand()
         {
             return !this.CreateMode;
@@ -232,17 +225,24 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.EditMode || this.CreateMode;
         }
 
+        private void EnableCreation()
+        {
+            this.SetError(null);
+            this.SetSelectedCompartment(new CompartmentDetails());
+            this.CreateMode = true;
+        }
+
         private void ExecuteAddBulkCommand()
         {
             this.EnableBulkAdd = true;
             this.Row = 0;
             this.Column = 0;
-            this.AbilitateCreation();
+            this.EnableCreation();
         }
 
         private void ExecuteAddCompartmentCommand()
         {
-            this.AbilitateCreation();
+            this.EnableCreation();
         }
 
         private void ExecuteCancelCommand()
