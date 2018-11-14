@@ -6,55 +6,73 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private static readonly Func<CompartmentDetails, CompartmentDetails, string> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
-        {
-            var stock = compartment.Stock;
-            var max = compartment.MaxCapacity;
-            var color = "GreenYellow";
+        private static readonly Func<CompartmentDetails, CompartmentDetails, string> colorFunc =
+            delegate(CompartmentDetails compartment, CompartmentDetails selected)
+            {
+                var stock = compartment.Stock;
+                var max = compartment.MaxCapacity;
+                string color;
 
-            if (max == null)
-            {
-                color = "#BDBDBD";
-            }
-            else
-            {
-                if (selected == null)
+                if (max == null || max.Value == 0)
                 {
-                    var filling = (double)stock / max.Value * 100.0;
-                    if (stock == 0 || filling < 40)
-                    {
-                        color = "#76FF03";
-                    }
-                    else if (filling < 60)
-                    {
-                        color = "#D4E157";
-                    }
-                    else if (filling < 80)
-                    {
-                        color = "#FF9800";
-                    }
-                    else if (filling <= 99)
-                    {
-                        color = "#F44336";
-                    }
-                    else
-                    {
-                        color = "#D50000";
-                    }
+                    color = "#00000000";
                 }
                 else
                 {
-                    var stockSelected = selected.Stock;
-                    var maxSelected = selected.MaxCapacity;
-                    var fillingSelected = (double)stockSelected / (int)maxSelected * 100;
-                    var filling = (double)stock / max.Value * 100;
+                    var filling = (double) stock / max.Value * 100.0;
 
-                    color = filling == fillingSelected ? "#76FF03" : "#90A4AE";
+                    if (stock == 0)
+                    {
+                        color = "#FF63BE7B";
+                    }
+                    else if (filling < 10)
+                    {
+                        color = "#FF80C77D";
+                    }
+                    else if (filling < 20)
+                    {
+                        color = "#FF9CCF7F";
+                    }
+                    else if (filling < 30)
+                    {
+                        color = "#FFB9D780";
+                    }
+                    else if (filling < 40)
+                    {
+                        color = "#FFD5DF82";
+                    }
+                    else if (filling < 50)
+                    {
+                        color = "#FFF1E784";
+                    }
+                    else if (filling < 60)
+                    {
+                        color = "#FFFEDF81";
+                    }
+                    else if (filling < 70)
+                    {
+                        color = "#FFFDC77D";
+                    }
+                    else if (filling < 80)
+                    {
+                        color = "#FFFBAF78";
+                    }
+                    else if (filling < 90)
+                    {
+                        color = "#FFFA9874";
+                    }
+                    else if (filling < 100)
+                    {
+                        color = "#FFF9806F";
+                    }
+                    else
+                    {
+                        color = "#FFF8696B";
+                    }
                 }
-            }
 
-            return color;
-        };
+                return color;
+            };
 
         #endregion Fields
 

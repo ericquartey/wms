@@ -65,14 +65,7 @@ namespace Ferretto.WMS.Modules.Compartment
 
         public int SelectedFilter
         {
-            get
-            {
-                if (this.selectedFilter == null)
-                {
-                    this.selectedFilter = -1;
-                }
-                return this.selectedFilter;
-            }
+            get => this.selectedFilter;
             set
             {
                 this.selectedFilter = value;
