@@ -10,6 +10,7 @@ using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL;
+using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -227,7 +228,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void EnableCreation()
         {
-            this.SetError(null);
+            this.SetError();
             this.SetSelectedCompartment(new CompartmentDetails());
             this.CreateMode = true;
         }
@@ -247,24 +248,21 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteCancelCommand()
         {
-            this.SetError(null);
+            this.SetError();
             this.CreateMode = false;
-            if (this.EnableBulkAdd)
-            {
-                this.EnableBulkAdd = false;
-            }
+            this.EnableBulkAdd = false;
         }
 
         private void ExecuteDeleteCommand()
         {
-            this.SetError(null);
+            this.SetError();
             this.tray.Compartments.Remove(this.SelectedCompartmentTray);
             this.compartmentProvider.Delete(this.SelectedCompartmentTray.Id);
         }
 
         private void ExecuteSaveCommand()
         {
-            this.SetError(null);
+            this.SetError();
             if (this.EnableBulkAdd)
             {
                 this.GenerateBulkCompartments();
@@ -280,10 +278,10 @@ namespace Ferretto.WMS.Modules.MasterData
             var tempTray = this.tray;
             this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
             this.SelectedCompartmentTray.CompartmentTypeId = 1;
-            List<CompartmentDetails> newCompartments = tempTray.AddBulkCompartments(this.SelectedCompartmentTray, this.Row, this.Column);
-
-            if (newCompartments != null)
+            try
             {
+                List<CompartmentDetails> newCompartments = tempTray.AddBulkCompartments(this.SelectedCompartmentTray, this.Row, this.Column);
+
                 bool addAll = true;
                 foreach (var compartment in newCompartments)
                 {
@@ -300,10 +298,10 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.EnableBulkAdd = false;
                 }
             }
-            else
+            catch (Exception ex)
             {
-                //ToDO: Dialog error
-                this.SetError("Error: it is no possible to Add Bulk Compartments.");
+                //TODO: validation error
+                this.SetError(Errors.AddBulkNoPossible);
             }
         }
 
@@ -366,7 +364,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void SetError(string message)
+        private void SetError(string message = null)
         {
             if (message == null)
             {
