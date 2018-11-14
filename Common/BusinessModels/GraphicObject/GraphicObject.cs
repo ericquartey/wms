@@ -62,7 +62,6 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public readonly int BORDER_TRAY = 1;
         public readonly int DimensionRuler = 25;
         public readonly int DOUBLE_BORDER_TRAY = 2;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
