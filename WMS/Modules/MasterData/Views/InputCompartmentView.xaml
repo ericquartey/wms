@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              mc:Ignorable="d">
-    <Grid DataContext="{Binding SelectedCompartmentTray}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"
                               MinWidth="100" />
@@ -15,10 +15,8 @@
                               MinWidth="100" />
             <ColumnDefinition Width="*"
                               MinWidth="100" />
-            <!--<ColumnDefinition Width="auto"
+            <ColumnDefinition Width="1*"
                               MinWidth="100" />
-            <ColumnDefinition Width="auto"
-                              MinWidth="100" />-->
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -39,14 +37,14 @@
                       Width="100"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
-                      EditValue="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                      EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
         <wms:SpinEdit x:Name="HeightText"
                       Grid.Row="1"
                       Grid.Column="1"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
-                      EditValue="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                      EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
         <wms:TextBox x:Name="ArticleText"
                      Grid.Row="1"
@@ -56,19 +54,19 @@
                      HorizontalAlignment="Left"
                      VerticalAlignment="Top"
                      Foreground="White"
-                     Text="{Binding ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                     Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <wms:SpinEdit x:Name="QuantityText"
                       Grid.Row="1"
-                      Grid.Column="4"
+                      Grid.Column="3"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
-                      EditValue="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Foreground="White" />
 
         <wms:SpinEdit x:Name="RowText"
                       Grid.Row="1"
-                      Grid.Column="5"
+                      Grid.Column="4"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       EditValue="{Binding Row, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -81,13 +79,13 @@
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       Background="White"
-                      EditValue="{Binding XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                      EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
         <wms:SpinEdit x:Name="PositionYText"
                       Grid.Row="2"
                       Grid.Column="1"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
-                      EditValue="{Binding YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                      EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                       Foreground="White" />
 
         <wms:ComboBox Grid.Row="2"
@@ -102,24 +100,17 @@
                       Grid.Column="3"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
-                      EditValue="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Foreground="White" />
 
-        <wms:TextBox x:Name="ColumnText"
-                     Grid.Row="2"
-                     Grid.Column="3"
-                     HorizontalAlignment="Left"
-                     VerticalAlignment="Top"
-                     Foreground="White"
-                     Text="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Visibility="Collapsed" />
-
-        <Button x:Name="CreateCompartment"
-                Grid.Row="2"
-                Grid.Column="5"
-                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsView}}, Path=DataContext.CreateNewCompartmentCommand}"
-                Content="Create"
-                Visibility="Hidden" />
+        <wms:SpinEdit x:Name="ColumnText"
+                      Grid.Row="2"
+                      Grid.Column="4"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Top"
+                      EditValue="{Binding Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Foreground="White"
+                      Visibility="Collapsed" />
 
     </Grid>
 </UserControl>
