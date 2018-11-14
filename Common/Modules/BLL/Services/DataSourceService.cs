@@ -21,25 +21,26 @@ namespace Ferretto.Common.Modules.BLL.Services
             {
                 case MasterData.ITEMS:
                     var itemsProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+                    var itemsCountProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
                     return new List<DataSource<Item>>
                     {
                         new DataSource<Item>(
                             "ItemsViewAll",
                             Resources.MasterData.ItemAll,
                             () => itemsProvider.GetAll(),
-                            () => itemsProvider.GetAllCount()),
+                            () => itemsCountProvider.GetAllCount()),
 
                         new DataSource<Item>(
                             "ItemsViewClassA",
                             Resources.MasterData.ItemClassA,
                             () => itemsProvider.GetWithAClass(),
-                            () => itemsProvider.GetWithAClassCount()),
+                            () => itemsCountProvider.GetWithAClassCount()),
 
                         new DataSource<Item>(
                             "ItemsViewFIFO",
                             Resources.MasterData.ItemFIFO,
                             () => itemsProvider.GetWithFifo(),
-                            () => itemsProvider.GetWithFifoCount())
+                            () => itemsCountProvider.GetWithFifoCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case MasterData.ITEMDETAILS:
@@ -55,6 +56,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
                 case MasterData.COMPARTMENTS:
                     var compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+                    var compartmentCountProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
                     return new List<DataSource<Compartment>>
                     {
@@ -62,7 +64,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "CompartmentsViewAll",
                             Resources.MasterData.CompartmentAll,
                             () => compartmentProvider.GetAll(),
-                            () => compartmentProvider.GetAllCount())
+                            () => compartmentCountProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case MasterData.COMPARTMENTDETAILS:
@@ -78,6 +80,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
                 case MasterData.CELLS:
                     var cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
+                    var cellCountProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
 
                     return new List<DataSource<Cell>>
                     {
@@ -85,7 +88,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "CellsViewAll",
                             Resources.MasterData.CellAll,
                             () => cellProvider.GetAll(),
-                            () => cellProvider.GetAllCount())
+                            () => cellCountProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case MasterData.CELLDETAILS:
@@ -101,6 +104,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
                 case Machines.MACHINES:
                     var machineProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
+                    var machineCountProvider = ServiceLocator.Current.GetInstance<IMachineProvider>();
 
                     return new List<DataSource<Machine>>
                     {
@@ -108,23 +112,24 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "MachinesViewAll",
                             Resources.Machines.MachineAll,
                             () => machineProvider.GetAll(),
-                            () => machineProvider.GetAllCount()),
+                            () => machineCountProvider.GetAllCount()),
 
                           new DataSource<Machine>(
                             "MachinesViewVertimagXS",
                             Resources.Machines.MachineVertimagXS,
                             () => machineProvider.GetAllVertimagModelXS(),
-                            () => machineProvider.GetAllVertimagModelXSCount()),
+                            () => machineCountProvider.GetAllVertimagModelXSCount()),
 
                           new DataSource<Machine>(
                             "MachinesViewVertimagM",
                             Resources.Machines.MachineVertimagM,
                             () => machineProvider.GetAllVertimagModelM(),
-                            () => machineProvider.GetAllVertimagModelMCount())
+                            () => machineCountProvider.GetAllVertimagModelMCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case MasterData.LOADINGUNITS:
                     var loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+                    var loadingUnitCountProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
                     return new List<DataSource<LoadingUnit>>
                     {
@@ -132,7 +137,7 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "LoadingUnitsViewAll",
                             Resources.MasterData.LoadingUnitAll,
                             () => loadingUnitProvider.GetAll(),
-                            () => loadingUnitProvider.GetAllCount())
+                            () => loadingUnitCountProvider.GetAllCount())
                     }.Cast<IDataSource<TModel>>();
 
                 case MasterData.LOADINGUNITDETAILS:

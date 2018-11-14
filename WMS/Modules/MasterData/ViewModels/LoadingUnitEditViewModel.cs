@@ -1,13 +1,12 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -61,10 +60,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public bool CreateMode
         {
             get => this.createMode;
-            set
-            {
-                this.SetProperty(ref this.createMode, value);
-            }
+            set => this.SetProperty(ref this.createMode, value);
         }
 
         public CompartmentDetails CurrentCompartment
@@ -242,7 +238,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
                     this.SelectedCompartmentTray.CompartmentTypeId = 2;
 
-                    int add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
+                    var add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
                     if (add == 1)
                     {
                         this.tray.Compartments.Add(this.SelectedCompartmentTray);
