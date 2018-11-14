@@ -208,7 +208,6 @@
                                                 CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                                 ItemType="{x:Type businessModels:CompartmentDetails}"
                                                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
-                                                SelectionMode="Row"
                                                 Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
                                 <wms:WmsGridControl.View>
                                     <dxg:TableView AllowEditing="False"
