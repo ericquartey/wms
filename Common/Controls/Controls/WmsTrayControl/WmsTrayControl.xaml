@@ -4,8 +4,9 @@
              xmlns:ctrls="clr-namespace:Ferretto.Common.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d">
-    <Grid x:Name="MainGridTray">
+             mc:Ignorable="d"
+             x:Name="WmsTray">
+    <Grid>
 
         <Label x:Name="UnitMetric"
                Width="25"
@@ -17,7 +18,7 @@
                Content="MM"
                FontWeight="Bold" />
         <ctrls:WmsRulerControl x:Name="horizontalRuler"
-                               Width="{Binding Tray.RulerSize.Width}"
+                               Width="{Binding Path=Tray.RulerSize.Width, ElementName=WmsTray}"
                                Height="25"
                                Margin="27,0,0,0"
                                HorizontalAlignment="Left"
@@ -29,7 +30,7 @@
                                Orientation="Horizontal" />
         <ctrls:WmsRulerControl x:Name="verticalRuler"
                                Width="25"
-                               Height="{Binding Tray.RulerSize.Height}"
+                               Height="{Binding Path=Tray.RulerSize.Height, ElementName=WmsTray}"
                                Margin="0,26,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
@@ -38,9 +39,9 @@
                                BorderThickness="1,0,0,0"
                                MajorIntervalVertical="200"
                                Orientation="Vertical" />
-
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
-                                       Margin="25,25,1,1"
+                                       Margin="25,25,0,0"
+                                       MinHeight="{Binding Path=CanvasMinHeight, ElementName=WmsTray}"
                                        HorizontalAlignment="Stretch"
                                        VerticalAlignment="Stretch"
                                        Panel.ZIndex="999"

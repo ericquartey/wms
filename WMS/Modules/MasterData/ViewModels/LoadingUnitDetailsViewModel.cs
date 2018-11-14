@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
@@ -15,9 +17,13 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private readonly IDataSourceService
+            dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+
+        private readonly ILoadingUnitProvider loadingUnitProvider =
+            ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
+        private IEnumerable<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
         private bool isCompartmentSelectableTray;
         private LoadingUnitDetails loadingUnit;
@@ -26,9 +32,9 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool readOnlyTray;
         private ICommand revertCommand;
         private ICommand saveCommand;
-        private object selectedCompartment;
-        private CompartmentDetails selectedCompartmentTray;
+        private CompartmentDetails selectedCompartment;
         private Tray tray;
+        private Func<CompartmentDetails, CompartmentDetails, string> trayColoringFunc;
 
         #endregion Fields
 
@@ -43,26 +49,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<CompartmentDetails> CompartmentsDataSource
+        public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
-        }
-
-        public CompartmentDetails CurrentCompartment
-        {
-            get
-            {
-                if (this.selectedCompartment == null)
-                {
-                    return default(CompartmentDetails);
-                }
-                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
-                {
-                    return default(CompartmentDetails);
-                }
-                return (CompartmentDetails)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
-            }
         }
 
         public ICommand EditCommand => this.editCommand ??
@@ -83,6 +73,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return;
                 }
+
                 this.RefreshData();
             }
         }
@@ -100,33 +91,30 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RevertCommand => this.revertCommand ??
-          (this.revertCommand = new DelegateCommand(this.LoadData));
+                                         ( this.revertCommand = new DelegateCommand(this.LoadData) );
 
         public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+                                       ( this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand) );
 
-        public object SelectedCompartment
+        public CompartmentDetails SelectedCompartment
         {
             get => this.selectedCompartment;
             set
             {
                 this.SetProperty(ref this.selectedCompartment, value);
-                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
-
-                this.SetSelectedCompartment(this.CurrentCompartment);
             }
-        }
-
-        public CompartmentDetails SelectedCompartmentTray
-        {
-            get => this.selectedCompartmentTray;
-            set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
 
         public Tray Tray
         {
             get => this.tray;
             set => this.SetProperty(ref this.tray, value);
+        }
+
+        public Func<CompartmentDetails, CompartmentDetails, string> TrayColoringFunc
+        {
+            get => this.trayColoringFunc;
+            set => this.SetProperty(ref this.trayColoringFunc, value);
         }
 
         #endregion Properties
@@ -139,7 +127,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = this.loadingUnit != null
                 ? this.dataSourceService
                     .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
-                    .Single()
+                    .Single().GetData().ToList()
                 : null;
         }
 
@@ -151,7 +139,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
-            this.EventService.Unsubscribe<ModelSelectionChangedEvent<LoadingUnit>>(this.modelSelectionChangedSubscription);
+            this.EventService.Unsubscribe<ModelSelectionChangedEvent<LoadingUnit>>(
+                this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
 
@@ -164,37 +153,40 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
 
-            if (modifiedRowCount > 0)
+            if (modifiedRowCount <= 0)
             {
-                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
-
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                return;
             }
+
+            this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
+
+            this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
         }
 
         private void Initialize()
         {
-            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
-                eventArgs =>
-                {
-                    if (eventArgs.ModelId.HasValue)
+            this.modelSelectionChangedSubscription =
+                this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
+                    eventArgs =>
                     {
-                        this.Data = eventArgs.ModelId.Value;
-                        this.LoadData();
-                    }
-                    else
-                    {
-                        this.LoadingUnit = null;
-                    }
-                },
-                 this.Token,
-                true,
-                true);
+                        if (eventArgs.ModelId.HasValue)
+                        {
+                            this.Data = eventArgs.ModelId.Value;
+                            this.LoadData();
+                        }
+                        else
+                        {
+                            this.LoadingUnit = null;
+                        }
+                    },
+                    this.Token,
+                    true,
+                    true);
         }
 
         private void InitializeTray()
         {
-            this.tray = new Tray
+            var newTray = new Tray
             {
                 Dimension = new Dimension
                 {
@@ -204,34 +196,26 @@ namespace Ferretto.WMS.Modules.MasterData
             };
             if (this.LoadingUnit.Compartments != null)
             {
-                this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
+                newTray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
-            this.RaisePropertyChanged(nameof(this.Tray));
 
-            this.readOnlyTray = true;
-            this.isCompartmentSelectableTray = true;
-            this.RaisePropertyChanged(nameof(this.ReadOnlyTray));
-            this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
+            this.Tray = newTray;
+            this.ReadOnlyTray = true;
+            this.IsCompartmentSelectableTray = true;
+            this.TrayColoringFunc = ( new FillingFilter() ).ColorFunc;
         }
 
         private void LoadData()
         {
-            if (this.Data is int modelId)
+            if (!( this.Data is int modelId ))
             {
-                this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
-                this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
-
-                this.InitializeTray();
+                return;
             }
-        }
 
-        private void SetSelectedCompartment(object value)
-        {
-            if (value is CompartmentDetails)
-            {
-                this.selectedCompartmentTray = (CompartmentDetails)value;
-                this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
-            }
+            this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
+            this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
+
+            this.InitializeTray();
         }
 
         #endregion Methods
