@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -26,6 +26,9 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
             nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OnReadOnlyChanged));
 
+        public static readonly DependencyProperty RulerStepProperty = DependencyProperty.Register(
+            nameof(RulerStep), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(100, OnRulerStepChanged));
+
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
             nameof(SelectedColorFilterFunc), typeof(Func<CompartmentDetails, CompartmentDetails, string>),
             typeof(WmsTrayControl),
@@ -45,8 +48,6 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
             nameof(Tray), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OnTrayChanged));
-
-        private readonly int STEP = 100;
 
         #endregion Fields
 
@@ -81,6 +82,12 @@ namespace Ferretto.Common.Controls
         {
             get => (bool) this.GetValue(ReadOnlyProperty);
             set => this.SetValue(ReadOnlyProperty, value);
+        }
+
+        public int RulerStep
+        {
+            get => (int) this.GetValue(RulerStepProperty);
+            set => this.SetValue(RulerStepProperty, value);
         }
 
         public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
@@ -137,7 +144,7 @@ namespace Ferretto.Common.Controls
                     width = widthTrayPixel;
                 }
 
-                var stepPixel = GraphicUtils.ConvertMillimetersToPixel(this.STEP, width, this.Tray.Dimension.Width);
+                var stepPixel = GraphicUtils.ConvertMillimetersToPixel(this.RulerStep, width, this.Tray.Dimension.Width);
 
                 drawingBrush.Viewport = new Rect(0, 0, stepPixel, stepPixel);
                 drawingBrush.ViewportUnits = BrushMappingMode.Absolute;
@@ -234,6 +241,15 @@ namespace Ferretto.Common.Controls
                 wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
                 viewModel.UpdateReadOnlyPropertyToCompartments((bool) e.NewValue);
+            }
+        }
+
+        private static void OnRulerStepChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsTrayControl trayControl)
+            {
+                trayControl.horizontalRuler.MajorInterval = (int) e.NewValue;
+                trayControl.verticalRuler.MajorInterval = (int) e.NewValue;
             }
         }
 
