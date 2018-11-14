@@ -61,6 +61,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: it is no possible to Add Bulk Compartments..
+        /// </summary>
+        public static string AddBulkNoPossible {
+            get {
+                return ResourceManager.GetString("AddBulkNoPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {

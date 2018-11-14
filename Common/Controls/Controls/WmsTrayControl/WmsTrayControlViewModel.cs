@@ -193,7 +193,6 @@ namespace Ferretto.Common.Controls
                 var newItems = new ObservableCollection<WmsBaseCompartment>();
                 foreach (var compartment in compartments)
                 {
-                    //compartment.PropertyChanged += this.Compartment_PropertyChanged;
                     newItems.Add(new WmsCompartmentViewModel
                     {
                         Tray = this.Tray,
@@ -281,7 +280,6 @@ namespace Ferretto.Common.Controls
             {
                 if (sender is IList<CompartmentDetails> compartments)
                 {
-                    Debug.WriteLine($"Compartments: {compartments.Count}");
                     var addedCompartment = compartments[compartments.Count - 1];
                     var compartmentGraphic = this.AddCompartment(addedCompartment);
 

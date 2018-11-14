@@ -182,15 +182,15 @@ namespace Ferretto.Common.Controls
             {
                 this.horizontalRuler.Origin = this.Tray.Origin;
                 this.verticalRuler.Origin = this.Tray.Origin;
-
-                this.horizontalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
-                this.horizontalRuler.WidthPixelForConvert = widthNewCalculated;
-                this.horizontalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
-
-                this.verticalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
-                this.verticalRuler.WidthPixelForConvert = widthNewCalculated;
-                this.verticalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
             }
+            this.horizontalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
+            this.horizontalRuler.WidthPixelForConvert = widthNewCalculated;
+            this.horizontalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
+
+            this.verticalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
+            this.verticalRuler.WidthPixelForConvert = widthNewCalculated;
+            this.verticalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
+
             this.horizontalRuler.Width = widthNewCalculated;
             this.verticalRuler.Height = heightNewCalculated;
 
