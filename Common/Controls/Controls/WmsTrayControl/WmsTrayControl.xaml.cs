@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -191,15 +191,6 @@ namespace Ferretto.Common.Controls
                     this.Tray.Dimension.Width));
 
             this.SetBackground(this.ShowBackground, widthNewCalculated);
-        }
-
-        private static void OnCompartmentsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl &&
-                wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
-            {
-                viewModel.UpdateCompartments((IEnumerable<CompartmentDetails>) e.NewValue);
-            }
         }
 
         private static void OnIsCompartmentSelectableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
