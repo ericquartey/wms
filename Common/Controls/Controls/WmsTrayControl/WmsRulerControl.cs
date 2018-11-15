@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -448,9 +448,10 @@ namespace Ferretto.Common.Controls
         private void DrawText(ref DrawingContext drawingContext, int i, int majorInterval, int majorIntervalPixel, double pseudoStartValue)
         {
             var ft = new FormattedText(
-                    (pseudoStartValue * majorInterval).ToString(),
+                    (pseudoStartValue * majorInterval).ToString(CultureInfo.InvariantCulture),
                     CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                    new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
+                    new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black,
+                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
             var startFrom = 0;
             var toDraw = true;
 
