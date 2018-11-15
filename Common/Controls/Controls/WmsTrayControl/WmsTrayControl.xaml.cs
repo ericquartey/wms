@@ -8,9 +8,6 @@ using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
-    /// <summary>
-    /// Interaction logic for WmsTrayControl.xaml
-    /// </summary>
     public partial class WmsTrayControl : UserControl
     {
         #region Fields
@@ -42,8 +39,7 @@ namespace Ferretto.Common.Controls
             new FrameworkPropertyMetadata(OnShowBackgroundChanged));
 
         public static readonly DependencyProperty ShowRulerProperty = DependencyProperty.Register(
-            nameof(ShowRuler), typeof(bool), typeof(WmsTrayControl),
-            new FrameworkPropertyMetadata(OnShowRulerChanged));
+            nameof(ShowRuler), typeof(bool), typeof(WmsTrayControl));
 
         public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
             nameof(Tray), typeof(Tray), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OnTrayChanged));
@@ -58,7 +54,6 @@ namespace Ferretto.Common.Controls
             this.CanvasListBoxControl.DataContext = new WmsTrayControlViewModel();
             this.CanvasListBoxControl.TrayControl = this;
             this.SetBackground(this.ShowBackground);
-            this.SetRuler(this.ShowRuler);
         }
 
         #endregion Constructors
@@ -280,15 +275,6 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel && wmsTrayControl.Tray != null && wmsTrayControl.CanvasListBoxControl.Canvas != null)
             {
                 wmsTrayControl.SetBackground((bool) e.NewValue);
-            }
-        }
-
-        private static void OnShowRulerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is WmsTrayControl wmsTrayControl &&
-                wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel)
-            {
-                wmsTrayControl.SetRuler((bool) e.NewValue);
             }
         }
 
