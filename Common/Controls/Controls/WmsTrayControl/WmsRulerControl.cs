@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -245,7 +245,7 @@ namespace Ferretto.Common.Controls
                 new Point(Math.Floor(mark.XEnd), Math.Floor(mark.YEnd)));
         }
 
-        private void DrawLittleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
+        private void DrawLittleMark(ref DrawingContext drawingContext, int i)
         {
             for (int j = 1; j < this.N_MARKS; j++)
             {
@@ -315,7 +315,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void DrawMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
+        private void DrawMark(ref DrawingContext drawingContext, int i)
         {
             var mark = new Line();
 
@@ -362,7 +362,7 @@ namespace Ferretto.Common.Controls
                 new Point(Math.Round(mark.XEnd), Math.Round(mark.YEnd)));
         }
 
-        private void DrawMiddleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
+        private void DrawMiddleMark(ref DrawingContext drawingContext, int i)
         {
             var middleMark = new Line();
             bool toDraw = true;
@@ -433,10 +433,10 @@ namespace Ferretto.Common.Controls
         {
             var actualDimension = this.InfoRuler.OrientationRuler == Orientation.Horizontal ? this.ActualWidth : this.ActualHeight;
 
-            this.DrawText(ref drawingContext, i, this.MajorInterval, this.MajorIntervalPixel, pseudoStartValue);
-            this.DrawMark(ref drawingContext, i, this.MajorIntervalPixel);
-            this.DrawMiddleMark(ref drawingContext, i, this.MajorIntervalPixel);
-            this.DrawLittleMark(ref drawingContext, i, this.MajorIntervalPixel);
+            this.DrawText(ref drawingContext, i, this.MajorInterval, pseudoStartValue);
+            this.DrawMark(ref drawingContext, i);
+            this.DrawMiddleMark(ref drawingContext, i);
+            this.DrawLittleMark(ref drawingContext, i);
             if (i == count - 1)
             {
                 this.DrawEndDraw(ref drawingContext, actualDimension);
@@ -445,7 +445,7 @@ namespace Ferretto.Common.Controls
             pseudoStartValue++;
         }
 
-        private void DrawText(ref DrawingContext drawingContext, int i, int majorInterval, int majorIntervalPixel, double pseudoStartValue)
+        private void DrawText(ref DrawingContext drawingContext, int i, int majorInterval, double pseudoStartValue)
         {
             var ft = new FormattedText(
                     (pseudoStartValue * majorInterval).ToString(CultureInfo.InvariantCulture),
