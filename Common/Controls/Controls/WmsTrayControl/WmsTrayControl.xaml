@@ -20,8 +20,8 @@
 
         <Label x:Name="UnitMetric"
                Margin="0"
-               HorizontalAlignment="Left"
-               VerticalAlignment="Top"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
                Content="mm"
                FontWeight="Bold" />
 
@@ -29,6 +29,7 @@
                                Grid.Column="1"
                                Height="25"
                                HorizontalAlignment="Left"
+                               Margin="2,0,0,0"
                                VerticalAlignment="Top"
                                BorderBrush="Black"
                                BorderThickness="0,1,1,0"
@@ -38,6 +39,7 @@
                                Grid.Row="1"
                                Width="25"
                                HorizontalAlignment="Left"
+                               Margin="0,1,0,0"
                                VerticalAlignment="Top"
                                BorderBrush="Black"
                                BorderThickness="1,0,0,0"

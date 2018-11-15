@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -241,8 +240,8 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl trayControl)
             {
-                trayControl.horizontalRuler.MajorInterval = (int) e.NewValue;
-                trayControl.verticalRuler.MajorInterval = (int) e.NewValue;
+                trayControl.horizontalRuler.MajorInterval = 2 * (int) e.NewValue;
+                trayControl.verticalRuler.MajorInterval = 2 * (int) e.NewValue;
             }
         }
 
