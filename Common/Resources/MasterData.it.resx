@@ -231,4 +231,7 @@
   <data name="AddCompartment" xml:space="preserve">
     <value>Aggiungi Scomparto</value>
   </data>
+  <data name="EditCompartment" xml:space="preserve">
+    <value>Modifica Scomparto</value>
+  </data>
 </root>

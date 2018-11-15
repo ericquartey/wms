@@ -147,4 +147,10 @@
   <data name="AddBulkNoPossible" xml:space="preserve">
     <value>Errore: non è stato possibile eseguire la Scompartizione Dinamica.</value>
   </data>
+  <data name="AddNoPossible" xml:space="preserve">
+    <value>Errore: non è stato possibile aggiungere un nuovo Scomparto.</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToNavigationStyleType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo GridViewNavigationStyle.</value>
+  </data>
 </root>
