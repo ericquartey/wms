@@ -217,8 +217,6 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl wmsTrayControl && wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                Debug.WriteLine($"IsSelectable Property: {e.NewValue}");
-
                 viewModel.IsCompartmentSelectable = (bool)e.NewValue;
             }
         }
