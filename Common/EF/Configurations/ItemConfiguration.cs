@@ -1,12 +1,13 @@
 ﻿using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
 
 namespace Ferretto.Common.EF.Configurations
 {
     public class ItemConfiguration : IEntityTypeConfiguration<Item>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<Item> builder)
         {
             if (builder == null)
@@ -24,7 +25,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.Note)
                 .HasColumnType("text");
             builder.Property(i => i.CreationDate)
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasOne(i => i.AbcClass)
                 .WithMany(a => a.Items)
@@ -43,5 +44,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(i => i.ItemCategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion Methods
     }
 }

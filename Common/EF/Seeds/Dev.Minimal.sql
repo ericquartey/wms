@@ -30,23 +30,24 @@ EXEC sp_MSforeachtable 'ALTER TABLE ? CHECK CONSTRAINT ALL'
 
 BEGIN TRANSACTION;
 
-DECLARE @vertimag_area int;
-SET @vertimag_area = 2;
+DECLARE
+    @vrtmag_area int = 2,
+    @traslo_area int = 1
 
 -- Areas / Aisles
 SET IDENTITY_INSERT Areas ON;
 INSERT INTO Areas (Id, Name) VALUES (1, 'Traslo Area');
-INSERT INTO Areas (Id, Name) VALUES (@vertimag_area, 'Vertimag Area');
+INSERT INTO Areas (Id, Name) VALUES (@vrtmag_area, 'Vertimag Area');
 SET IDENTITY_INSERT Areas OFF;
 
 SET IDENTITY_INSERT Aisles ON;
-INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (1, 'Aisle 1', 1, 5, 10);
-INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (2, 'Aisle 2', 1, 5, 10);
-INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (3, 'Aisle 3', 1, 5, 10);
-INSERT INTO Aisles (Id, Name, AreaId) VALUES (4, 'Vertimag 1', @vertimag_area);
-INSERT INTO Aisles (Id, Name, AreaId) VALUES (5, 'Vertimag 2', @vertimag_area);
-INSERT INTO Aisles (Id, Name, AreaId) VALUES (6, 'Vertimag 3', @vertimag_area);
-INSERT INTO Aisles (Id, Name, AreaId) VALUES (7, 'Vertimag 4', @vertimag_area);
+INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (1, 'Aisle 1', @traslo_area, 5, 10);
+INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (2, 'Aisle 2', @traslo_area, 5, 10);
+INSERT INTO Aisles (Id, Name, AreaId, Floors, Columns) VALUES (3, 'Aisle 3', @traslo_area, 5, 10);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (4, 'Vertimag 1', @vrtmag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (5, 'Vertimag 2', @vrtmag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (6, 'Vertimag 3', @vrtmag_area);
+INSERT INTO Aisles (Id, Name, AreaId) VALUES (7, 'Vertimag 4', @vrtmag_area);
 SET IDENTITY_INSERT Aisles OFF;
 
 
@@ -81,18 +82,18 @@ INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagem
 INSERT INTO Items (Id, Code, Description, AbcClassId, MeasureUnitId, ItemManagementTypeId, ItemCategoryId) VALUES (6, '0U000640', '000640        FRESA A PLACCHE RIPORTATE', 'C', 'PZ', 2, 1);
 SET IDENTITY_INSERT Items OFF;
 
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, 1);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (2, 1);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, 1);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, 1);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, 1);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, 1);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, @vertimag_area);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (2, @vertimag_area);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, @vertimag_area);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, @vertimag_area);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, @vertimag_area);
-INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, @vertimag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, @traslo_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (2, @traslo_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, @traslo_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, @traslo_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, @traslo_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, @traslo_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (1, @vrtmag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (2, @vrtmag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (3, @vrtmag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (4, @vrtmag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (5, @vrtmag_area);
+INSERT INTO ItemsAreas (ItemId, AreaId) VALUES (6, @vrtmag_area);
 
 
 -- Cells
@@ -695,19 +696,40 @@ INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, 
 INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (4, 7, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-XS');
 SET IDENTITY_INSERT Machines OFF;
 
+-- Bay Types
+DECLARE
+    @BayTypes_Input char(1) = 'I',
+    @BayTypes_Output char(1) = 'W',
+    @BayTypes_Picking char(1) = 'P',
+    @BayTypes_TrasloLoad char(1) = 'L',
+    @BayTypes_TrasloUnload char(1) = 'U',
+    @BayTypes_Vertimag char(1) = 'V';
 
 -- Bays
-INSERT INTO BayTypes (Id, Description) VALUES ('I', 'Input Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('O', 'Output Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('P', 'Picking Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('L', 'Traslo load Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('U', 'Traslo unload Bay');
-INSERT INTO BayTypes (Id, Description) VALUES ('V', 'Vertimag Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Input, 'Input Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Output, 'Output Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Picking, 'Picking Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_TrasloLoad, 'Traslo load Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_TrasloUnload, 'Traslo unload Bay');
+INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Vertimag, 'Vertimag Bay');
 
 SET IDENTITY_INSERT Bays ON;
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (1, 'P', 1, 'Single Pick Bay', 1, null);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (2, 'V', 1, 'Vertimag Bay', 2, 1);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (1, @BayTypes_Picking, 1, 'Single Pick Bay', @traslo_area, null);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (2, @BayTypes_Vertimag, 1, 'Vertimag Bay', @vrtmag_area, 1);
 SET IDENTITY_INSERT Bays OFF;
 
+-- Operation Type
+DECLARE
+    @OperationType_Insertion char(1) = 'I',
+    @OperationType_Withdrawal char(1) = 'W',
+    @OperationType_Replacement char(1) = 'R',
+    @OperationType_Reorder char(1) = 'O';
+
+-- Scheduler Requests
+SET IDENTITY_INSERT SchedulerRequests ON;
+INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId) VALUES (1, 1, 1, 's1s1s1', 1, @OperationType_Withdrawal, @vrtmag_area);
+INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId) VALUES (2, 1, 1, null, 1, @OperationType_Withdrawal, @vrtmag_area);
+INSERT INTO SchedulerRequests (Id, IsInstant, ItemId, Sub1, RequestedQuantity, OperationType, AreaId) VALUES (3, 1, 1, null, 1, @OperationType_Withdrawal, @vrtmag_area);
+SET IDENTITY_INSERT SchedulerRequests OFF;
 
 COMMIT;

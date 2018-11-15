@@ -70,11 +70,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: it is no possible to Add new Compartment..
+        /// </summary>
+        public static string AddNoPossible {
+            get {
+                return ResourceManager.GetString("AddNoPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {
             get {
                 return ResourceManager.GetString("CannotRetrieveDocumentGroupFromLayoutManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type GridViewNavigationStyle..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToNavigationStyleType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToNavigationStyleType", resourceCulture);
             }
         }
         

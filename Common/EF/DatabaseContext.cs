@@ -79,6 +79,7 @@ namespace Ferretto.Common.EF
         public virtual DbSet<MissionStatus> MissionStatuses { get; set; }
         public virtual DbSet<MissionType> MissionTypes { get; set; }
         public virtual DbSet<PackageType> PackageTypes { get; set; }
+        public virtual DbSet<SchedulerRequest> SchedulerRequests { get; set; }
 
         #endregion Properties
 
@@ -163,6 +164,7 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new MissionStatusConfiguration());
             modelBuilder.ApplyConfiguration(new MissionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SchedulerRequestConfiguration());
         }
 
         #endregion Methods

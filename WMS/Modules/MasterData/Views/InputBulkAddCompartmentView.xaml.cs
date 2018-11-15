@@ -1,33 +1,41 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Controls;
-using Ferretto.Common.Modules.BLL.Models;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
     /// <summary>
-    /// Interaction logic for WmsInputCompartmentView.xaml
+    /// Interaction logic for InputBulkAddCompartmentView.xaml
     /// </summary>
-    public partial class InputCompartmentView : UserControl
+    public partial class InputBulkAddCompartmentView : UserControl
     {
         #region Fields
 
         public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register(
-                    nameof(Column), typeof(int), typeof(InputCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnColumnChanged)));
+                    nameof(Column), typeof(int), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnColumnChanged)));
 
         public static readonly DependencyProperty EnableBulkAddProperty = DependencyProperty.Register(
-                            nameof(EnableBulkAdd), typeof(bool), typeof(InputCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnEnableBulkAddChanged)));
+                            nameof(EnableBulkAdd), typeof(bool), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnEnableBulkAddChanged)));
 
         public static readonly DependencyProperty RowProperty = DependencyProperty.Register(
-                    nameof(Row), typeof(int), typeof(InputCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnRowChanged)));
+                    nameof(Row), typeof(int), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnRowChanged)));
 
         #endregion Fields
 
         #region Constructors
 
-        public InputCompartmentView()
+        public InputBulkAddCompartmentView()
         {
             this.InitializeComponent();
         }
@@ -62,7 +70,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private static void OnColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is InputCompartmentView inputCompartment)
+            if (d is InputBulkAddCompartmentView inputCompartment)
             {
                 inputCompartment.Column = (int)e.NewValue;
             }
@@ -70,7 +78,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private static void OnEnableBulkAddChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is InputCompartmentView inputCompartment)
+            if (d is InputBulkAddCompartmentView inputCompartment)
             {
                 inputCompartment.EnableBulkAddVisibility((bool)e.NewValue);
             }
@@ -78,36 +86,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private static void OnRowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is InputCompartmentView inputCompartment)
+            if (d is InputBulkAddCompartmentView inputCompartment)
             {
                 inputCompartment.Row = (int)e.NewValue;
             }
         }
 
         #endregion Methods
-
-        //private void DisenableAllInput()
-        //{
-        //    this.WidthText.IsEnabled = false;
-        //    this.HeightText.IsEnabled = false;
-        //    this.PositionXText.IsEnabled = false;
-        //    this.PositionYText.IsEnabled = false;
-        //    this.ArticleText.IsEnabled = false;
-        //    this.QuantityText.IsEnabled = false;
-        //    this.CapacityText.IsEnabled = false;
-        //    //this.CreateCompartment.IsEnabled = false;
-        //}
-
-        //private void EnableAllInput()
-        //{
-        //    this.WidthText.IsEnabled = true;
-        //    this.HeightText.IsEnabled = true;
-        //    this.PositionXText.IsEnabled = true;
-        //    this.PositionYText.IsEnabled = true;
-        //    this.ArticleText.IsEnabled = true;
-        //    this.QuantityText.IsEnabled = true;
-        //    this.CapacityText.IsEnabled = true;
-        //    //this.CreateCompartment.IsEnabled = true;
-        //}
     }
 }

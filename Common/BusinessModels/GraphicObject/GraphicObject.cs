@@ -159,6 +159,21 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        public bool CanAddBulkCompartment(CompartmentDetails compartment, int row, int column)
+        {
+            if (compartment != null && row > 1 && column > 1)
+            {
+                CompartmentDetails compartmentBulk = compartment;
+                compartmentBulk.Width = compartment.Width * row;
+                compartmentBulk.Height = compartment.Height * column;
+                return this.CanAddCompartment(compartmentBulk);
+            }
+            else
+            {
+                throw new ArgumentException();
+            }
+        }
+
         public bool CanAddCompartment(CompartmentDetails compartmentDetails)
         {
             //CHECK: exit from window
