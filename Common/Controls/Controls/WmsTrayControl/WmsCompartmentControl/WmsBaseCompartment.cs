@@ -16,7 +16,6 @@ namespace Ferretto.Common.Controls
         private double left;
         private int quantity;
         private bool readOnly;
-        private string selected;
         private double top;
         private double width;
 

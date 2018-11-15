@@ -298,7 +298,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.EnableBulkAdd = false;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //TODO: validation error
                 this.SetError(Errors.AddBulkNoPossible);
