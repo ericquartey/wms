@@ -26,7 +26,7 @@
         public int? MaterialStatusId { get; set; }
         public OperationType OperationType { get; set; }
         public PackageType PackageType { get; set; }
-        public int PackageTypeId { get; set; }
+        public int? PackageTypeId { get; set; }
         public string RegistrationNumber { get; set; }
         public int? RequestedQuantity { get; set; }
         public string Sub1 { get; set; }

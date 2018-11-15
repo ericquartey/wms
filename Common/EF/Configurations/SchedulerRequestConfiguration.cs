@@ -1,4 +1,4 @@
-using Ferretto.Common.DataModels;
+﻿using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -17,7 +17,8 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(a => a.Id);
 
-            builder.HasOne(i => i.Area)
+            builder.Property(a => a.OperationType)
+                .HasColumnType("char(1)");
 
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");

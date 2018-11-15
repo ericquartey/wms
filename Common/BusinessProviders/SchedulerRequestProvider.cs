@@ -2,10 +2,8 @@
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
-using Ferretto.Common.Modules.BLL.Interfaces;
-using Microsoft.Practices.ServiceLocation;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class SchedulerRequestProvider : ISchedulerRequestProvider
     {
@@ -31,7 +29,7 @@ namespace Ferretto.Common.Modules.BLL.Services
             throw new NotImplementedException();
         }
 
-        public void Delete(int id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
@@ -71,20 +69,45 @@ namespace Ferretto.Common.Modules.BLL.Services
                     } as SchedulerRequest);
         }
 
-        public Area GetById(int id)
+        public int GetAllCount()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+            return this.dataContext.SchedulerRequests.Count();
+        }
 
-            var areaDetails = context.Areas
-                .Where(a => a.Id == id)
-                .Select(a => new Area
-                {
-                    Id = a.Id,
-                    Name = a.Name,
-                })
+        public SchedulerRequest GetById(int id)
+        {
+            return this.dataContext.SchedulerRequests
+                .Where(s => s.Id == id)
+                .Select(s =>
+                s.IsInstant ?
+                    new InstantSchedulerRequest
+                    {
+                        Id = s.Id,
+                        AreaId = s.AreaId,
+                        BayId = s.BayId,
+                        CreationDate = s.CreationDate,
+                        ItemId = s.ItemId,
+                        LoadingUnitId = s.LoadingUnitId,
+                        LoadingUnitTypeId = s.LoadingUnitTypeId,
+                        MaterialStatusId = s.MaterialStatusId,
+                        Lot = s.Lot,
+                        OperationType = s.OperationType.ToString(),
+                        PackageTypeId = s.PackageTypeId,
+                        RegistrationNumber = s.RegistrationNumber,
+                        RequestedQuantity = s.RequestedQuantity,
+                        Sub1 = s.Sub1,
+                        Sub2 = s.Sub2
+                    } as SchedulerRequest
+                    :
+                    new ListSchedulerRequest
+                    {
+                        Id = s.Id,
+                        AreaId = s.AreaId,
+                        BayId = s.BayId,
+                        CreationDate = s.CreationDate,
+                        OperationType = s.OperationType.ToString(),
+                    } as SchedulerRequest)
                 .Single();
-
-            return areaDetails;
         }
 
         public int Save(SchedulerRequest model)

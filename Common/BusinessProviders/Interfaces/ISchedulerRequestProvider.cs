@@ -1,6 +1,6 @@
 ﻿using Ferretto.Common.BusinessModels;
 
-namespace Ferretto.Common.Modules.BLL.Interfaces
+namespace Ferretto.Common.BusinessProviders
 {
     public interface ISchedulerRequestProvider : IBusinessProvider<SchedulerRequest, SchedulerRequest>
     {
