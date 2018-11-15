@@ -1,4 +1,4 @@
-﻿using Ferretto.Common.DataModels;
+using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,38 +18,43 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasKey(a => a.Id);
 
             builder.HasOne(i => i.Area)
+
+            builder.Property(i => i.CreationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            builder.HasOne(s => s.Area)
                 .WithMany(a => a.SchedulerRequests)
-                .HasForeignKey(i => i.AreaId)
+                .HasForeignKey(s => s.AreaId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(i => i.Bay)
+            builder.HasOne(s => s.Bay)
                .WithMany(b => b.SchedulerRequests)
-               .HasForeignKey(i => i.BayId)
+               .HasForeignKey(s => s.BayId)
                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(i => i.Item)
+            builder.HasOne(s => s.Item)
                .WithMany(b => b.SchedulerRequests)
-               .HasForeignKey(i => i.ItemId)
+               .HasForeignKey(s => s.ItemId)
                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(i => i.List)
+            builder.HasOne(s => s.List)
                .WithMany(l => l.SchedulerRequests)
-               .HasForeignKey(i => i.ListId)
+               .HasForeignKey(s => s.ListId)
                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(i => i.ListRow)
+            builder.HasOne(s => s.ListRow)
                .WithMany(l => l.SchedulerRequests)
-               .HasForeignKey(i => i.ListRowId)
+               .HasForeignKey(s => s.ListRowId)
                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(i => i.LoadingUnit)
+            builder.HasOne(s => s.LoadingUnit)
                .WithMany(l => l.SchedulerRequests)
-               .HasForeignKey(i => i.LoadingUnitId)
+               .HasForeignKey(s => s.LoadingUnitId)
                .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(i => i.LoadingUnitType)
+            builder.HasOne(s => s.LoadingUnitType)
                .WithMany(l => l.SchedulerRequests)
-               .HasForeignKey(i => i.LoadingUnitTypeId)
+               .HasForeignKey(s => s.LoadingUnitTypeId)
                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(c => c.MaterialStatus)
