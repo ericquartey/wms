@@ -55,30 +55,21 @@
                       DataContext="{Binding LoadingUnit}"
                       Focusable="False"
                       IsTabStop="True">
-            <Grid>
+            <Grid Margin="0,0,5,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"
-                                   MinHeight="100" />
-                    <RowDefinition Height="Auto"
-                                   MinHeight="100" />
-                    <RowDefinition Height="Auto"
-                                   MinHeight="100" />
-                    <RowDefinition Height="Auto"
-                                   MinHeight="100" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="400" />
-                    <ColumnDefinition Width="Auto"
-                                      MinWidth="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="0"
-                          Grid.ColumnSpan="2"
+                          Grid.RowSpan="2"
                           Margin="0"
                           Header="{x:Static res:MasterData.LoadingUnitInformation}">
                     <Grid>
@@ -86,12 +77,12 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="1*" />
-                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:TextBox Grid.ColumnSpan="3"
                                      Margin="0,0,20,0"
@@ -115,17 +106,17 @@
                                       Margin="0,0,20,0"
                                       EditValue="{Binding ReferenceType}"
                                       ItemsSource="{Binding Path=ReferenceTypeChoices}" />
-                        <wms:TextBox Grid.RowSpan="3"
-                                     Grid.Column="3"
-                                     VerticalAlignment="Stretch"
-                                     VerticalContentAlignment="Stretch"
+                        <wms:TextBox Grid.Row="3"
+                                     Grid.ColumnSpan="3"
+                                     Margin="0,0,20,0"
+                                     Height="100"
                                      IsMultiline="True"
                                      Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="1"
-                          Grid.Column="0"
+                <GroupBox Grid.Row="0"
+                          Grid.Column="1"
                           Margin="0"
                           Header="{x:Static res:MasterData.CurrentCellInformation}">
                     <Grid>
@@ -134,8 +125,8 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:ComboBox Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
@@ -159,20 +150,17 @@
                           Margin="0"
                           Header="{x:Static res:MasterData.PhysicalInformation}">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
                                       EditValue="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:SpinEdit Grid.Row="1"
+                        <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:SpinEdit Grid.Column="1"
+                        <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -186,30 +174,30 @@
                           Header="{x:Static res:MasterData.Compartments}">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"
-                                           MinHeight="220" />
+                            <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <wms:WmsTrayControl x:Name="TrayControl"
-                                            Grid.Row="0"
-                                            Margin="0,0,0,0"
+                        <wms:WmsTrayControl Grid.Row="0"
+                                            Margin="0"
+                                            CanvasMinHeight="150"
+                                            SelectedColorFilterFunc="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.TrayColoringFunc, Mode=OneWay}"
+                                            ShowBackground="True"
                                             IsCompartmentSelectable="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsCompartmentSelectableTray, Mode=OneWay}"
                                             ReadOnly="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ReadOnlyTray, Mode=OneWay}"
                                             SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
                                             ShowBackground="True"
                                             Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
 
-                        <StackPanel Grid.Row="1">
+                        <StackPanel Grid.Row="1" Margin="0,5,0,0">
                             <TextBlock Text="{x:Static res:MasterData.LoadingUnitWithNoCompartment}"
                                        Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVIC}}" />
-                            <wms:WmsGridControl MinHeight="50"
+                            <wms:WmsGridControl MinHeight="200"
                                                 MaxWidth="2000"
-                                                MaxHeight="500"
+                                                MaxHeight="200"
                                                 CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                                 ItemType="{x:Type businessModels:CompartmentDetails}"
                                                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
-                                                SelectionMode="Row"
                                                 Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
                                 <wms:WmsGridControl.View>
                                     <dxg:TableView AllowEditing="False"
@@ -221,7 +209,7 @@
                                                    ShowSearchPanelMode="Never">
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="RowDoubleClick">
-                                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment.Id, Mode=OneWay}"
                                                                           StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                                           StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                             </i:EventTrigger>
@@ -244,6 +232,8 @@
                                                     FieldName="CompartmentStatusDescription" />
                                     <dxg:GridColumn Width="100*"
                                                     FieldName="Stock" />
+                                    <dxg:GridColumn Width="100*"
+                                                    FieldName="MaxCapacity" />
                                     <dxg:GridColumn Width="200*"
                                                     FieldName="ItemPairingDescription" />
                                 </wms:WmsGridControl.Columns>

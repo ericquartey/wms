@@ -78,12 +78,6 @@ namespace Ferretto.Common.Controls
 
         public bool ReadOnly { get => this.readOnly; set => this.SetProperty(ref this.readOnly, value); }
 
-        public string Selected
-        {
-            get => this.selected;
-            set => this.SetProperty(ref this.selected, value);
-        }
-
         public double Top
         {
             get => this.top;

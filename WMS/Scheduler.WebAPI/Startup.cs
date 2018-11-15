@@ -1,4 +1,7 @@
-﻿using Ferretto.Common.EF;
+﻿using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.Core;
+using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,12 +62,18 @@ namespace Ferretto.WMS.Scheduler.WebAPI
 #endif
             app.UseHttpsRedirection();
 
-            app.UseSignalR(routes =>
+            var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
+            if (string.IsNullOrWhiteSpace(wakeupHubEndpoint) == false)
             {
-                routes.MapHub<WakeupHub>($"/wakeup-hub");
-            });
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
+                });
+            }
 
             app.UseMvc();
+
+            Core.ServiceLocator.Instance = app.ApplicationServices;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -76,7 +85,12 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
-            services.AddSingleton<IEngine>(new Engine());
+            services.AddBusinessProviders();
+
+            var schedulerUrl = this.Configuration["Scheduler:Url"];
+            services.AddWebAPIClients(schedulerUrl);
+
+            services.AddTransient<IWarehouse, Warehouse>();
 
             services.AddSignalR();
         }

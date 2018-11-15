@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 
-namespace Ferretto.Common.Modules.BLL
+namespace Ferretto.Common.BusinessProviders
 {
     public interface IBusinessProvider<out TModel, TDetailsModel>
         where TModel : IBusinessObject
@@ -11,7 +11,7 @@ namespace Ferretto.Common.Modules.BLL
 
         int Add(TDetailsModel model);
 
-        void Delete(int id);
+        int Delete(int id);
 
         IQueryable<TModel> GetAll();
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -52,7 +51,6 @@ namespace Ferretto.Common.Controls
                     new FrameworkPropertyMetadata(OnOrientationChanged));
 
         private readonly int BORDER = 1;
-        private readonly int DIMENSION_RULER = 25;
         private readonly int FONTSIZE = 10;
         private readonly int N_MARKS = 10;
         private readonly int OFFSET_BORDER = 2;
@@ -186,10 +184,8 @@ namespace Ferretto.Common.Controls
             }
             if (!double.IsPositiveInfinity(ratio) && !double.IsNegativeInfinity(ratio) && ratio != 0)
             {
-                Debug.WriteLine($"Ruler: W={this.WidthMmForConvert} H={this.HeightMmForRatio} Ratio={ratio} IntervalH={this.MajorIntervalHorizontal} IntervalV={this.MajorIntervalVertical} Orientation: {this.InfoRuler.OrientationRuler}");
-
                 ratio = Math.Round(ratio) + 1;
-                for (int i = 0; i < ratio; i++)
+                for (var i = 0; i < ratio; i++)
                 {
                     this.DrawRuler(drawingContext, i, ref pseudoStartValue, (int)ratio);
                 }

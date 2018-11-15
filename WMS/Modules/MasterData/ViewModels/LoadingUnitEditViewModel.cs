@@ -1,15 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -102,10 +101,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public int Column
         {
             get => this.column;
-            set
-            {
-                this.SetProperty(ref this.column, value);
-            }
+            set => this.SetProperty(ref this.column, value);
         }
 
         public IDataSource<CompartmentDetails> CompartmentsDataSource
@@ -117,10 +113,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public bool CreateMode
         {
             get => this.createMode;
-            set
-            {
-                this.SetProperty(ref this.createMode, value);
-            }
+            set => this.SetProperty(ref this.createMode, value);
         }
 
         public CompartmentDetails CurrentCompartment
@@ -159,15 +152,11 @@ namespace Ferretto.WMS.Modules.MasterData
         public bool EnableBulkAdd
         {
             get => this.enableBulkAdd;
-            set
-            {
-                this.SetProperty(ref this.enableBulkAdd, value);
-            }
+            set => this.SetProperty(ref this.enableBulkAdd, value);
         }
 
-        public string Error { get => this.error; set { this.SetProperty(ref this.error, value); } }
-
-        public string ErrorColor { get => this.errorColor; set { this.SetProperty(ref this.errorColor, value); } }
+        public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
+        public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
         public bool IsExpand
         {
@@ -221,10 +210,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public int Row
         {
             get => this.row;
-            set
-            {
-                this.SetProperty(ref this.row, value);
-            }
+            set => this.SetProperty(ref this.row, value);
         }
 
         public ICommand SaveCommand => this.saveCommand ??
@@ -397,12 +383,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.SelectedCompartmentTray.CompartmentTypeId = 1;
             try
             {
-                List<CompartmentDetails> newCompartments = tempTray.AddBulkCompartments(this.SelectedCompartmentTray, this.Row, this.Column);
+                var newCompartments = tempTray.AddBulkCompartments(this.SelectedCompartmentTray, this.Row, this.Column);
 
-                bool addAll = true;
+                var addAll = true;
                 foreach (var compartment in newCompartments)
                 {
-                    int add = this.compartmentProvider.Add(compartment);
+                    var add = this.compartmentProvider.Add(compartment);
                     if (add != 1)
                     {
                         addAll = false;
@@ -459,7 +445,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
                     this.SelectedCompartmentTray.CompartmentTypeId = 2;
 
-                    int add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
+                    var add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
                     if (add == 1)
                     {
                         this.tray.Compartments.Add(this.SelectedCompartmentTray);

@@ -4,44 +4,54 @@ using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class AreaProvider : IAreaProvider
     {
+        #region Fields
+
+        private readonly DatabaseContext dataContext;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public AreaProvider(DatabaseContext dataContext)
+        {
+            this.dataContext = dataContext;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
-        public Int32 Add(Area model)
+        public int Add(Area model)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
 
         public IQueryable<Area> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllAreasWithFilter(context);
+            return GetAllAreasWithFilter(this.dataContext);
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Areas.AsNoTracking().Count();
+                return this.dataContext.Areas.AsNoTracking().Count();
             }
         }
 
         public Area GetById(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var areaDetails = context.Areas
+            return this.dataContext.Areas
                 .Where(a => a.Id == id)
                 .Select(a => new Area
                 {
@@ -49,15 +59,11 @@ namespace Ferretto.Common.Modules.BLL.Services
                     Name = a.Name,
                 })
                 .Single();
-
-            return areaDetails;
         }
 
         public IQueryable<Area> GetByItemIdAvailability(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            var areaDetails = context.Compartments
+            return this.dataContext.Compartments
                 .Include(c => c.LoadingUnit)
                     .ThenInclude(l => l.Cell)
                     .ThenInclude(c => c.Aisle)
@@ -70,8 +76,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                     Name = c.LoadingUnit.Cell.Aisle.Area.Name,
                 })
                 .Distinct();
-
-            return areaDetails;
         }
 
         public int Save(Area model)
@@ -81,13 +85,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.Areas.Find(model.Id);
+                var existingModel = this.dataContext.Areas.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 
