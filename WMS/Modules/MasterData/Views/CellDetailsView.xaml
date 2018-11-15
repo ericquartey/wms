@@ -164,7 +164,6 @@
                                             CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedLoadingUnit, Mode=TwoWay}"
                                             ItemType="{x:Type businessModels:LoadingUnitDetails}"
                                             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitsDataSource, Mode=OneWay}"
-                                            SelectionMode="Row"
                                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CellHasLoadingUnits, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
                                 <dxg:TableView AllowEditing="False"

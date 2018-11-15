@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Services;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
