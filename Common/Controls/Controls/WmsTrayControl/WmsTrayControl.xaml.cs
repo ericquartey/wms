@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -168,41 +168,30 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public void SetRuler(bool? show)
-        {
-            var visibility = show.HasValue && show.Value || this.ShowBackground
-                ? Visibility.Visible
-                : Visibility.Collapsed;
-
-            this.horizontalRuler.Visibility = visibility;
-            this.verticalRuler.Visibility = visibility;
-            this.UnitMetric.Visibility = visibility;
-        }
-
         public void UpdateRulers(double widthNewCalculated, double heightNewCalculated)
         {
-            if (this.horizontalRuler.Origin == null)
+            if (this.HorizontalRulerControl.Origin == null)
             {
-                this.horizontalRuler.Origin = this.Tray.Origin;
-                this.verticalRuler.Origin = this.Tray.Origin;
+                this.HorizontalRulerControl.Origin = this.Tray.Origin;
+                this.VerticalRulerControl.Origin = this.Tray.Origin;
             }
-            this.horizontalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
-            this.horizontalRuler.WidthPixelForConvert = widthNewCalculated;
-            this.horizontalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
+            this.HorizontalRulerControl.WidthMmForConvert = this.Tray.Dimension.Width;
+            this.HorizontalRulerControl.WidthPixelForConvert = widthNewCalculated;
+            this.HorizontalRulerControl.HeightMmForRatio = this.Tray.Dimension.Height;
 
-            this.verticalRuler.WidthMmForConvert = this.Tray.Dimension.Width;
-            this.verticalRuler.WidthPixelForConvert = widthNewCalculated;
-            this.verticalRuler.HeightMmForRatio = this.Tray.Dimension.Height;
+            this.VerticalRulerControl.WidthMmForConvert = this.Tray.Dimension.Width;
+            this.VerticalRulerControl.WidthPixelForConvert = widthNewCalculated;
+            this.VerticalRulerControl.HeightMmForRatio = this.Tray.Dimension.Height;
 
-            this.horizontalRuler.Width = widthNewCalculated;
-            this.verticalRuler.Height = heightNewCalculated;
+            this.HorizontalRulerControl.Width = widthNewCalculated;
+            this.VerticalRulerControl.Height = heightNewCalculated;
 
-            var majorIntervalStepHorizontal = this.horizontalRuler.MajorInterval;
-            var majorIntervalStepVertical = this.verticalRuler.MajorInterval;
-            this.horizontalRuler.MajorIntervalPixel =
+            var majorIntervalStepHorizontal = this.HorizontalRulerControl.MajorInterval;
+            var majorIntervalStepVertical = this.VerticalRulerControl.MajorInterval;
+            this.HorizontalRulerControl.MajorIntervalPixel =
                 (int) Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepHorizontal, widthNewCalculated,
                     this.Tray.Dimension.Width));
-            this.verticalRuler.MajorIntervalPixel =
+            this.VerticalRulerControl.MajorIntervalPixel =
                 (int) Math.Floor(GraphicUtils.ConvertMillimetersToPixel(majorIntervalStepVertical, widthNewCalculated,
                     this.Tray.Dimension.Width));
 
@@ -240,8 +229,8 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl trayControl)
             {
-                trayControl.horizontalRuler.MajorInterval = 2 * (int) e.NewValue;
-                trayControl.verticalRuler.MajorInterval = 2 * (int) e.NewValue;
+                trayControl.HorizontalRulerControl.MajorInterval = 2 * (int) e.NewValue;
+                trayControl.VerticalRulerControl.MajorInterval = 2 * (int) e.NewValue;
             }
         }
 
