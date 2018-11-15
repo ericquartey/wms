@@ -105,7 +105,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             }
 
             this.logger.LogInformation($"Withdrawal request of item {withdrawRequest.ItemId} accepted.");
-            return this.CreatedAtAction(nameof(Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
+            return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
         }
 
         #endregion Methods
