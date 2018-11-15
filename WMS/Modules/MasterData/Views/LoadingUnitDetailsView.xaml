@@ -68,8 +68,8 @@
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
-                          Grid.Column="0"
                           Grid.RowSpan="2"
+                          Grid.Column="0"
                           Margin="0"
                           Header="{x:Static res:MasterData.LoadingUnitInformation}">
                     <Grid>
@@ -108,8 +108,8 @@
                                       ItemsSource="{Binding Path=ReferenceTypeChoices}" />
                         <wms:TextBox Grid.Row="3"
                                      Grid.ColumnSpan="3"
-                                     Margin="0,0,20,0"
                                      Height="100"
+                                     Margin="0,0,20,0"
                                      IsMultiline="True"
                                      Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
@@ -181,15 +181,15 @@
                         <wms:WmsTrayControl Grid.Row="0"
                                             Margin="0"
                                             CanvasMinHeight="150"
-                                            SelectedColorFilterFunc="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.TrayColoringFunc, Mode=OneWay}"
-                                            ShowBackground="True"
                                             IsCompartmentSelectable="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsCompartmentSelectableTray, Mode=OneWay}"
                                             ReadOnly="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ReadOnlyTray, Mode=OneWay}"
+                                            SelectedColorFilterFunc="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.TrayColoringFunc, Mode=OneWay}"
                                             SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
                                             ShowBackground="True"
                                             Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
 
-                        <StackPanel Grid.Row="1" Margin="0,5,0,0">
+                        <StackPanel Grid.Row="1"
+                                    Margin="0,5,0,0">
                             <TextBlock Text="{x:Static res:MasterData.LoadingUnitWithNoCompartment}"
                                        Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVIC}}" />
                             <wms:WmsGridControl MinHeight="200"

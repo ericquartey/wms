@@ -88,6 +88,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type GridViewNavigationStyle..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToNavigationStyleType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToNavigationStyleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type string..
         /// </summary>
         public static string ConverterCanConvertOnlyToStringType {

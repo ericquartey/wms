@@ -44,6 +44,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool enableBulkAdd;
         private string error;
         private string errorColor;
+        private bool isEnabledGrid;
         private bool isExpand;
         private bool isReadOnlyTray;
         private bool isSelectableTray;
@@ -65,9 +66,11 @@ namespace Ferretto.WMS.Modules.MasterData
         public LoadingUnitEditViewModel()
         {
             this.IsSelectableTray = true;
+            this.ReadOnlyTray = false;
             this.IsVisibleMainCommandBar = true;
             this.SelectedCompartmentTray = null;
             this.SelectedCompartment = null;
+            this.IsEnabledGrid = true;
         }
 
         #endregion Constructors
@@ -156,7 +159,14 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
+
         public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
+
+        public bool IsEnabledGrid
+        {
+            get { return this.isEnabledGrid; }
+            set { this.SetProperty(ref this.isEnabledGrid, value); }
+        }
 
         public bool IsExpand
         {
@@ -303,6 +313,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsExpand = true;
             this.IsSelectableTray = false;
             this.ReadOnlyTray = true;
+            this.IsEnabledGrid = false;
             this.IsVisibleMainCommandBar = false;
         }
 
@@ -311,6 +322,9 @@ namespace Ferretto.WMS.Modules.MasterData
             this.SetError();
             this.EditMode = true;
             this.IsExpand = true;
+            this.IsSelectableTray = false;
+            this.ReadOnlyTray = true;
+            this.IsEnabledGrid = false;
             this.IsVisibleMainCommandBar = false;
         }
 
@@ -338,6 +352,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.IsExpand = false;
             this.IsSelectableTray = true;
             this.ReadOnlyTray = false;
+            this.IsEnabledGrid = true;
             this.IsVisibleMainCommandBar = true;
             this.SetFunctionPanel();
         }
