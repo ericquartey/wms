@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Ferretto.Common.BusinessModels;
 
-namespace Ferretto.Common.Modules.BLL
+namespace Ferretto.Common.BusinessProviders
 {
     public interface ICellProvider : IBusinessProvider<Cell, CellDetails>
     {
