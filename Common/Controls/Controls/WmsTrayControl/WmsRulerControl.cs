@@ -539,8 +539,6 @@ namespace Ferretto.Common.Controls
             }
             if (toDraw)
             {
-                Debug.WriteLine($"Text: X={position.X} Y={position.Y} Orientation: {this.InfoRuler.OrientationRuler} I={majorInterval}");
-
                 drawingContext.DrawText(ft, new Point(position.X, position.Y));
                 if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
                 {
