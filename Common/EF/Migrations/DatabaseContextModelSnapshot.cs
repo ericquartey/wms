@@ -20,1751 +20,1647 @@ namespace Ferretto.Common.EF.Migrations
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Ferretto.Common.DataModels.AbcClass", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(1)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(1)");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("AbcClasses");
-                });
+                b.ToTable("AbcClasses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Aisle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AreaId");
+                b.Property<int>("AreaId");
 
-                    b.Property<int?>("Columns");
+                b.Property<int?>("Columns");
 
-                    b.Property<int?>("Floors");
+                b.Property<int?>("Floors");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                b.Property<string>("Name")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AreaId");
+                b.HasIndex("AreaId");
 
-                    b.ToTable("Aisles");
-                });
+                b.ToTable("Aisles");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Area", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                b.Property<string>("Name")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("Areas");
-                });
+                b.ToTable("Areas");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Bay", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AreaId");
+                b.Property<int>("AreaId");
 
-                    b.Property<string>("BayTypeId");
+                b.Property<string>("BayTypeId");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int?>("LoadingUnitsBufferSize");
+                b.Property<int?>("LoadingUnitsBufferSize");
 
-                    b.Property<int?>("MachineId");
+                b.Property<int?>("MachineId");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AreaId");
+                b.HasIndex("AreaId");
 
-                    b.HasIndex("BayTypeId");
+                b.HasIndex("BayTypeId");
 
-                    b.HasIndex("MachineId");
+                b.HasIndex("MachineId");
 
-                    b.ToTable("Bays");
-                });
+                b.ToTable("Bays");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.BayType", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(1)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(1)");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("BayTypes");
-                });
+                b.ToTable("BayTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Cell", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AbcClassId")
-                        .IsRequired()
-                        .HasColumnType("char(1)");
+                b.Property<string>("AbcClassId")
+                    .IsRequired()
+                    .HasColumnType("char(1)");
 
-                    b.Property<int>("AisleId");
+                b.Property<int>("AisleId");
 
-                    b.Property<int?>("CellNumber");
+                b.Property<int?>("CellNumber");
 
-                    b.Property<int>("CellStatusId");
+                b.Property<int>("CellStatusId");
 
-                    b.Property<int?>("CellTypeId");
+                b.Property<int?>("CellTypeId");
 
-                    b.Property<int?>("Column")
-                        .IsRequired();
+                b.Property<int?>("Column")
+                    .IsRequired();
 
-                    b.Property<int?>("Floor")
-                        .IsRequired();
+                b.Property<int?>("Floor")
+                    .IsRequired();
 
-                    b.Property<int>("Priority")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(1);
+                b.Property<int>("Priority")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(1);
 
-                    b.Property<string>("Side")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
+                b.Property<string>("Side")
+                    .IsRequired()
+                    .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                    .HasColumnType("char(1)");
 
-                    b.Property<int?>("XCoordinate");
+                b.Property<int?>("XCoordinate");
 
-                    b.Property<int?>("YCoordinate");
+                b.Property<int?>("YCoordinate");
 
-                    b.Property<int?>("ZCoordinate");
+                b.Property<int?>("ZCoordinate");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AbcClassId");
+                b.HasIndex("AbcClassId");
 
-                    b.HasIndex("AisleId");
+                b.HasIndex("AisleId");
 
-                    b.HasIndex("CellStatusId");
+                b.HasIndex("CellStatusId");
 
-                    b.HasIndex("CellTypeId");
+                b.HasIndex("CellTypeId");
 
-                    b.ToTable("Cells");
-                });
+                b.ToTable("Cells");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellConfiguration", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CellConfigurations");
-                });
+                b.ToTable("CellConfigurations");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellConfigurationCellPositionLoadingUnitType", b =>
-                {
-                    b.Property<int>("CellPositionId");
+            {
+                b.Property<int>("CellPositionId");
 
-                    b.Property<int>("CellConfigurationId");
+                b.Property<int>("CellConfigurationId");
 
-                    b.Property<int>("LoadingUnitTypeId");
+                b.Property<int>("LoadingUnitTypeId");
 
-                    b.Property<int>("Priority")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(1);
+                b.Property<int>("Priority")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(1);
 
-                    b.HasKey("CellPositionId", "CellConfigurationId", "LoadingUnitTypeId");
+                b.HasKey("CellPositionId", "CellConfigurationId", "LoadingUnitTypeId");
 
-                    b.HasIndex("CellConfigurationId");
+                b.HasIndex("CellConfigurationId");
 
-                    b.HasIndex("LoadingUnitTypeId");
+                b.HasIndex("LoadingUnitTypeId");
 
-                    b.ToTable("CellConfigurationCellPositionLoadingUnitTypes");
-                });
+                b.ToTable("CellConfigurationCellPositionLoadingUnitTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellConfigurationCellType", b =>
-                {
-                    b.Property<int>("CellConfigurationId");
+            {
+                b.Property<int>("CellConfigurationId");
 
-                    b.Property<int>("CellTypeId");
+                b.Property<int>("CellTypeId");
 
-                    b.Property<int>("Priority")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(1);
+                b.Property<int>("Priority")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(1);
 
-                    b.HasKey("CellConfigurationId", "CellTypeId");
+                b.HasKey("CellConfigurationId", "CellTypeId");
 
-                    b.HasIndex("CellTypeId");
+                b.HasIndex("CellTypeId");
 
-                    b.ToTable("CellConfigurationCellTypes");
-                });
+                b.ToTable("CellConfigurationCellTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellHeightClass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int>("MaxHeight");
+                b.Property<int>("MaxHeight");
 
-                    b.Property<int>("MinHeight");
+                b.Property<int>("MinHeight");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CellHeightClasses");
-                });
+                b.ToTable("CellHeightClasses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellPosition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int?>("XOffset");
+                b.Property<int?>("XOffset");
 
-                    b.Property<int?>("YOffset");
+                b.Property<int?>("YOffset");
 
-                    b.Property<int?>("ZOffset");
+                b.Property<int?>("ZOffset");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CellPositions");
-                });
+                b.ToTable("CellPositions");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellSizeClass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int>("Length");
+                b.Property<int>("Length");
 
-                    b.Property<int>("Width");
+                b.Property<int>("Width");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CellSizeClasses");
-                });
+                b.ToTable("CellSizeClasses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CellStatuses");
-                });
+                b.ToTable("CellStatuses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellTotal", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AisleId");
+                b.Property<int>("AisleId");
 
-                    b.Property<int>("CellStatusId");
+                b.Property<int>("CellStatusId");
 
-                    b.Property<int>("CellTypeId");
+                b.Property<int>("CellTypeId");
 
-                    b.Property<int>("CellsNumber");
+                b.Property<int>("CellsNumber");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AisleId");
+                b.HasIndex("AisleId");
 
-                    b.HasIndex("CellStatusId");
+                b.HasIndex("CellStatusId");
 
-                    b.HasIndex("CellTypeId");
+                b.HasIndex("CellTypeId");
 
-                    b.ToTable("CellTotals");
-                });
+                b.ToTable("CellTotals");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CellHeightClassId");
+                b.Property<int>("CellHeightClassId");
 
-                    b.Property<int>("CellSizeClassId");
+                b.Property<int>("CellSizeClassId");
 
-                    b.Property<int>("CellWeightClassId");
+                b.Property<int>("CellWeightClassId");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CellHeightClassId");
+                b.HasIndex("CellHeightClassId");
 
-                    b.HasIndex("CellSizeClassId");
+                b.HasIndex("CellSizeClassId");
 
-                    b.HasIndex("CellWeightClassId");
+                b.HasIndex("CellWeightClassId");
 
-                    b.ToTable("CellTypes");
-                });
+                b.ToTable("CellTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellTypeAisle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AisleId");
+                b.Property<int>("AisleId");
 
-                    b.Property<int>("CellTypeId");
+                b.Property<int>("CellTypeId");
 
-                    b.Property<int>("CellTypeTotal")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                b.Property<int>("CellTypeTotal")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(0);
 
-                    b.Property<decimal>("Ratio")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(3, 2)")
-                        .HasDefaultValue(1m);
+                b.Property<decimal>("Ratio")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("decimal(3, 2)")
+                    .HasDefaultValue(1m);
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AisleId");
+                b.HasIndex("AisleId");
 
-                    b.HasIndex("CellTypeId");
+                b.HasIndex("CellTypeId");
 
-                    b.ToTable("CellTypesAisles");
-                });
+                b.ToTable("CellTypesAisles");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellWeightClass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int>("MaxWeight");
+                b.Property<int>("MaxWeight");
 
-                    b.Property<int>("MinWeight");
+                b.Property<int>("MinWeight");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CellWeightClasses");
-                });
+                b.ToTable("CellWeightClasses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Compartment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code");
+                b.Property<string>("Code");
 
-                    b.Property<int?>("CompartmentStatusId");
+                b.Property<int?>("CompartmentStatusId");
 
-                    b.Property<int>("CompartmentTypeId");
+                b.Property<int>("CompartmentTypeId");
 
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                b.Property<DateTime>("CreationDate")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int?>("FifoTime");
+                b.Property<int?>("FifoTime");
 
-                    b.Property<DateTime?>("FirstStoreDate");
+                b.Property<DateTime?>("FirstStoreDate");
 
-                    b.Property<int?>("Height");
+                b.Property<int?>("Height");
 
-                    b.Property<DateTime?>("InventoryDate");
+                b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<int?>("ItemId");
+                b.Property<int?>("ItemId");
 
-                    b.Property<string>("ItemPairing")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(MAX)");
+                b.Property<string>("ItemPairing")
+                    .IsRequired()
+                    .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<DateTime?>("LastHandlingDate");
+                b.Property<DateTime?>("LastHandlingDate");
 
-                    b.Property<DateTime?>("LastPickDate");
+                b.Property<DateTime?>("LastPickDate");
 
-                    b.Property<DateTime?>("LastStoreDate");
+                b.Property<DateTime?>("LastStoreDate");
 
-                    b.Property<int>("LoadingUnitId");
+                b.Property<int>("LoadingUnitId");
 
-                    b.Property<string>("Lot");
+                b.Property<string>("Lot");
 
-                    b.Property<int?>("MaterialStatusId");
+                b.Property<int?>("MaterialStatusId");
 
-                    b.Property<int?>("MaxCapacity");
+                b.Property<int?>("MaxCapacity");
 
-                    b.Property<int?>("PackageTypeId");
+                b.Property<int?>("PackageTypeId");
 
-                    b.Property<string>("RegistrationNumber");
+                b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("ReservedForPick")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                b.Property<int>("ReservedForPick")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(0);
 
-                    b.Property<int>("ReservedToStore")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                b.Property<int>("ReservedToStore")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(0);
 
-                    b.Property<int>("Stock")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                b.Property<int>("Stock")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(0);
 
-                    b.Property<string>("Sub1");
+                b.Property<string>("Sub1");
 
-                    b.Property<string>("Sub2");
+                b.Property<string>("Sub2");
 
-                    b.Property<int?>("Width");
+                b.Property<int?>("Width");
 
-                    b.Property<int?>("XPosition");
+                b.Property<int?>("XPosition");
 
-                    b.Property<int?>("YPosition");
+                b.Property<int?>("YPosition");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL");
+                b.HasIndex("Code")
+                    .IsUnique()
+                    .HasFilter("[Code] IS NOT NULL");
 
-                    b.HasIndex("CompartmentStatusId");
+                b.HasIndex("CompartmentStatusId");
 
-                    b.HasIndex("CompartmentTypeId");
+                b.HasIndex("CompartmentTypeId");
 
-                    b.HasIndex("ItemId");
+                b.HasIndex("ItemId");
 
-                    b.HasIndex("LoadingUnitId");
+                b.HasIndex("LoadingUnitId");
 
-                    b.HasIndex("MaterialStatusId");
+                b.HasIndex("MaterialStatusId");
 
-                    b.HasIndex("PackageTypeId");
+                b.HasIndex("PackageTypeId");
 
-                    b.ToTable("Compartments");
-                });
+                b.ToTable("Compartments");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CompartmentStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CompartmentStatuses");
-                });
+                b.ToTable("CompartmentStatuses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CompartmentType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int?>("Height");
+                b.Property<int?>("Height");
 
-                    b.Property<int?>("Width");
+                b.Property<int?>("Width");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("CompartmentTypes");
-                });
+                b.ToTable("CompartmentTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.DefaultCompartment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CompartmentTypeId");
+                b.Property<int>("CompartmentTypeId");
 
-                    b.Property<int>("DefaultLoadingUnitId");
+                b.Property<int>("DefaultLoadingUnitId");
 
-                    b.Property<string>("Image");
+                b.Property<string>("Image");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
+                b.Property<string>("Note")
+                    .HasColumnType("text");
 
-                    b.Property<int>("XPosition");
+                b.Property<int>("XPosition");
 
-                    b.Property<int>("YPosition");
+                b.Property<int>("YPosition");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CompartmentTypeId");
+                b.HasIndex("CompartmentTypeId");
 
-                    b.HasIndex("DefaultLoadingUnitId");
+                b.HasIndex("DefaultLoadingUnitId");
 
-                    b.ToTable("DefaultCompartments");
-                });
+                b.ToTable("DefaultCompartments");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.DefaultLoadingUnit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CellPairing")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(MAX)");
+                b.Property<string>("CellPairing")
+                    .IsRequired()
+                    .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("DefaultHandlingParametersCorrection");
+                b.Property<int>("DefaultHandlingParametersCorrection");
 
-                    b.Property<string>("Image");
+                b.Property<string>("Image");
 
-                    b.Property<int>("LoadingUnitTypeId");
+                b.Property<int>("LoadingUnitTypeId");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("LoadingUnitTypeId");
+                b.HasIndex("LoadingUnitTypeId");
 
-                    b.ToTable("DefaultLoadingUnits");
-                });
+                b.ToTable("DefaultLoadingUnits");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Item", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AbcClassId")
-                        .IsRequired()
-                        .HasColumnType("char(1)");
+                b.Property<string>("AbcClassId")
+                    .IsRequired()
+                    .HasColumnType("char(1)");
 
-                    b.Property<int?>("AverageWeight");
+                b.Property<int?>("AverageWeight");
 
-                    b.Property<string>("Code")
-                        .IsRequired();
+                b.Property<string>("Code")
+                    .IsRequired();
 
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                b.Property<DateTime>("CreationDate")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("Description");
+                b.Property<string>("Description");
 
-                    b.Property<int?>("FifoTimePick");
+                b.Property<int?>("FifoTimePick");
 
-                    b.Property<int?>("FifoTimeStore");
+                b.Property<int?>("FifoTimeStore");
 
-                    b.Property<int?>("Height");
+                b.Property<int?>("Height");
 
-                    b.Property<string>("Image");
+                b.Property<string>("Image");
 
-                    b.Property<DateTime?>("InventoryDate");
+                b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<int?>("InventoryTolerance");
+                b.Property<int?>("InventoryTolerance");
 
-                    b.Property<int?>("ItemCategoryId");
+                b.Property<int?>("ItemCategoryId");
 
-                    b.Property<int?>("ItemManagementTypeId");
+                b.Property<int?>("ItemManagementTypeId");
 
-                    b.Property<DateTime?>("LastModificationDate");
+                b.Property<DateTime?>("LastModificationDate");
 
-                    b.Property<DateTime?>("LastPickDate");
+                b.Property<DateTime?>("LastPickDate");
 
-                    b.Property<DateTime?>("LastStoreDate");
+                b.Property<DateTime?>("LastStoreDate");
 
-                    b.Property<int?>("Length");
+                b.Property<int?>("Length");
 
-                    b.Property<string>("MeasureUnitId");
+                b.Property<string>("MeasureUnitId");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
+                b.Property<string>("Note")
+                    .HasColumnType("text");
 
-                    b.Property<int?>("PickTolerance");
+                b.Property<int?>("PickTolerance");
 
-                    b.Property<int?>("ReorderPoint");
+                b.Property<int?>("ReorderPoint");
 
-                    b.Property<int?>("ReorderQuantity");
+                b.Property<int?>("ReorderQuantity");
 
-                    b.Property<int?>("StoreTolerance");
+                b.Property<int?>("StoreTolerance");
 
-                    b.Property<int?>("Width");
+                b.Property<int?>("Width");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AbcClassId");
+                b.HasIndex("AbcClassId");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
+                b.HasIndex("Code")
+                    .IsUnique();
 
-                    b.HasIndex("ItemCategoryId");
+                b.HasIndex("ItemCategoryId");
 
-                    b.HasIndex("ItemManagementTypeId");
+                b.HasIndex("ItemManagementTypeId");
 
-                    b.HasIndex("MeasureUnitId");
+                b.HasIndex("MeasureUnitId");
 
-                    b.ToTable("Items");
-                });
+                b.ToTable("Items");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemArea", b =>
-                {
-                    b.Property<int>("ItemId");
+            {
+                b.Property<int>("ItemId");
 
-                    b.Property<int>("AreaId");
+                b.Property<int>("AreaId");
 
-                    b.HasKey("ItemId", "AreaId");
+                b.HasKey("ItemId", "AreaId");
 
-                    b.HasIndex("AreaId");
+                b.HasIndex("AreaId");
 
-                    b.ToTable("ItemsAreas");
-                });
+                b.ToTable("ItemsAreas");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("ItemCategories");
-                });
+                b.ToTable("ItemCategories");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemCompartmentType", b =>
-                {
-                    b.Property<int>("CompartmentTypeId");
+            {
+                b.Property<int>("CompartmentTypeId");
 
-                    b.Property<int>("ItemId");
+                b.Property<int>("ItemId");
 
-                    b.Property<int?>("MaxCapacity");
+                b.Property<int?>("MaxCapacity");
 
-                    b.HasKey("CompartmentTypeId", "ItemId");
+                b.HasKey("CompartmentTypeId", "ItemId");
 
-                    b.HasIndex("ItemId");
+                b.HasIndex("ItemId");
 
-                    b.ToTable("ItemsCompartmentTypes");
-                });
+                b.ToTable("ItemsCompartmentTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemList", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AreaId");
+                b.Property<int>("AreaId");
 
-                    b.Property<string>("Code")
-                        .IsRequired();
+                b.Property<string>("Code")
+                    .IsRequired();
 
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                b.Property<DateTime>("CreationDate")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("CustomerOrderCode");
+                b.Property<string>("CustomerOrderCode");
 
-                    b.Property<string>("CustomerOrderDescription");
+                b.Property<string>("CustomerOrderDescription");
 
-                    b.Property<string>("Description");
+                b.Property<string>("Description");
 
-                    b.Property<DateTime?>("ExecutionEndDate");
+                b.Property<DateTime?>("ExecutionEndDate");
 
-                    b.Property<DateTime?>("FirstExecutionDate");
+                b.Property<DateTime?>("FirstExecutionDate");
 
-                    b.Property<int>("ItemListStatusId");
+                b.Property<int>("ItemListStatusId");
 
-                    b.Property<int>("ItemListTypeId");
+                b.Property<int>("ItemListTypeId");
 
-                    b.Property<string>("Job");
+                b.Property<string>("Job");
 
-                    b.Property<DateTime?>("LastModificationDate");
+                b.Property<DateTime?>("LastModificationDate");
 
-                    b.Property<int>("Priority")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(1);
+                b.Property<int>("Priority")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(1);
 
-                    b.Property<bool>("ShipmentUnitAssociated");
+                b.Property<bool>("ShipmentUnitAssociated");
 
-                    b.Property<string>("ShipmentUnitCode");
+                b.Property<string>("ShipmentUnitCode");
 
-                    b.Property<string>("ShipmentUnitDescription");
+                b.Property<string>("ShipmentUnitDescription");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AreaId");
+                b.HasIndex("AreaId");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
+                b.HasIndex("Code")
+                    .IsUnique();
 
-                    b.HasIndex("ItemListStatusId");
+                b.HasIndex("ItemListStatusId");
 
-                    b.HasIndex("ItemListTypeId");
+                b.HasIndex("ItemListTypeId");
 
-                    b.ToTable("ItemLists");
-                });
+                b.ToTable("ItemLists");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemListRow", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code")
-                        .IsRequired();
+                b.Property<string>("Code")
+                    .IsRequired();
 
-                    b.Property<DateTime?>("CompletionDate");
+                b.Property<DateTime?>("CompletionDate");
 
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                b.Property<DateTime>("CreationDate")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int>("EvadedQuantity");
+                b.Property<int>("EvadedQuantity");
 
-                    b.Property<int>("ItemId");
+                b.Property<int>("ItemId");
 
-                    b.Property<int>("ItemListId");
+                b.Property<int>("ItemListId");
 
-                    b.Property<int>("ItemListRowStatusId");
+                b.Property<int>("ItemListRowStatusId");
 
-                    b.Property<DateTime?>("LastExecutionDate");
+                b.Property<DateTime?>("LastExecutionDate");
 
-                    b.Property<DateTime?>("LastModificationDate");
+                b.Property<DateTime?>("LastModificationDate");
 
-                    b.Property<string>("Lot");
+                b.Property<string>("Lot");
 
-                    b.Property<int>("MaterialStatusId");
+                b.Property<int>("MaterialStatusId");
 
-                    b.Property<int>("PackageTypeId");
+                b.Property<int>("PackageTypeId");
 
-                    b.Property<string>("RegistrationNumber");
+                b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequiredQuantity");
+                b.Property<int>("RequiredQuantity");
 
-                    b.Property<int>("RowPriority");
+                b.Property<int>("RowPriority");
 
-                    b.Property<string>("Sub1");
+                b.Property<string>("Sub1");
 
-                    b.Property<string>("Sub2");
+                b.Property<string>("Sub2");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
+                b.HasIndex("Code")
+                    .IsUnique();
 
-                    b.HasIndex("ItemId");
+                b.HasIndex("ItemId");
 
-                    b.HasIndex("ItemListId");
+                b.HasIndex("ItemListId");
 
-                    b.HasIndex("ItemListRowStatusId");
+                b.HasIndex("ItemListRowStatusId");
 
-                    b.HasIndex("MaterialStatusId");
+                b.HasIndex("MaterialStatusId");
 
-                    b.HasIndex("PackageTypeId");
+                b.HasIndex("PackageTypeId");
 
-                    b.ToTable("ItemListRows");
-                });
+                b.ToTable("ItemListRows");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemListRowStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("ItemListRowStatuses");
-                });
+                b.ToTable("ItemListRowStatuses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemListStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("ItemListStatuses");
-                });
+                b.ToTable("ItemListStatuses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemListType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("ItemListTypes");
-                });
+                b.ToTable("ItemListTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemManagementType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("ItemManagementTypes");
-                });
+                b.ToTable("ItemManagementTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnit", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AbcClassId")
-                        .IsRequired()
-                        .HasColumnType("char(1)");
+                b.Property<string>("AbcClassId")
+                    .IsRequired()
+                    .HasColumnType("char(1)");
 
-                    b.Property<int>("CellId");
+                b.Property<int>("CellId");
 
-                    b.Property<string>("CellPairing")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(MAX)");
+                b.Property<string>("CellPairing")
+                    .IsRequired()
+                    .HasColumnType("NVARCHAR(MAX)");
 
-                    b.Property<int>("CellPositionId");
+                b.Property<int>("CellPositionId");
 
-                    b.Property<string>("Code")
-                        .IsRequired();
+                b.Property<string>("Code")
+                    .IsRequired();
 
-                    b.Property<DateTime>("CreationDate")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                b.Property<DateTime>("CreationDate")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int?>("HandlingParametersCorrection");
+                b.Property<int?>("HandlingParametersCorrection");
 
-                    b.Property<int>("Height");
+                b.Property<int>("Height");
 
-                    b.Property<int>("InCycleCount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                b.Property<int>("InCycleCount")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(0);
 
-                    b.Property<DateTime?>("InventoryDate");
+                b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<DateTime?>("LastHandlingDate");
+                b.Property<DateTime?>("LastHandlingDate");
 
-                    b.Property<DateTime?>("LastPickDate");
+                b.Property<DateTime?>("LastPickDate");
 
-                    b.Property<DateTime?>("LastStoreDate");
+                b.Property<DateTime?>("LastStoreDate");
 
-                    b.Property<string>("LoadingUnitStatusId")
-                        .IsRequired()
-                        .HasColumnType("char(1)");
+                b.Property<string>("LoadingUnitStatusId")
+                    .IsRequired()
+                    .HasColumnType("char(1)");
 
-                    b.Property<int>("LoadingUnitTypeId");
+                b.Property<int>("LoadingUnitTypeId");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
+                b.Property<string>("Note")
+                    .HasColumnType("text");
 
-                    b.Property<int>("OtherCycleCount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                b.Property<int>("OtherCycleCount")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(0);
 
-                    b.Property<int>("OutCycleCount")
-                        .ValueGeneratedOnAdd()
-                        .HasDefaultValue(0);
+                b.Property<int>("OutCycleCount")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValue(0);
 
-                    b.Property<string>("Reference")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
+                b.Property<string>("Reference")
+                    .IsRequired()
+                    .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                    .HasColumnType("char(1)");
 
-                    b.Property<int>("Weight");
+                b.Property<int>("Weight");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AbcClassId");
+                b.HasIndex("AbcClassId");
 
-                    b.HasIndex("CellId");
+                b.HasIndex("CellId");
 
-                    b.HasIndex("CellPositionId");
+                b.HasIndex("CellPositionId");
 
-                    b.HasIndex("Code")
-                        .IsUnique();
+                b.HasIndex("Code")
+                    .IsUnique();
 
-                    b.HasIndex("LoadingUnitStatusId");
+                b.HasIndex("LoadingUnitStatusId");
 
-                    b.HasIndex("LoadingUnitTypeId");
+                b.HasIndex("LoadingUnitTypeId");
 
-                    b.ToTable("LoadingUnits");
-                });
+                b.ToTable("LoadingUnits");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitHeightClass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int>("MaxHeight");
+                b.Property<int>("MaxHeight");
 
-                    b.Property<int>("MinHeight");
+                b.Property<int>("MinHeight");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("LoadingUnitHeightClasses");
-                });
+                b.ToTable("LoadingUnitHeightClasses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitRange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ActualValue");
+                b.Property<int?>("ActualValue");
 
-                    b.Property<int>("AreaId");
+                b.Property<int>("AreaId");
 
-                    b.Property<int>("MaxValue");
+                b.Property<int>("MaxValue");
 
-                    b.Property<int>("MinValue");
+                b.Property<int>("MinValue");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AreaId");
+                b.HasIndex("AreaId");
 
-                    b.ToTable("LoadingUnitRanges");
-                });
+                b.ToTable("LoadingUnitRanges");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitSizeClass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BayForksUnthread");
+                b.Property<int?>("BayForksUnthread");
 
-                    b.Property<int?>("BayOffset");
+                b.Property<int?>("BayOffset");
 
-                    b.Property<int?>("CellForksUnthread");
+                b.Property<int?>("CellForksUnthread");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int>("Length");
+                b.Property<int>("Length");
 
-                    b.Property<int?>("Lift");
+                b.Property<int?>("Lift");
 
-                    b.Property<int>("Width");
+                b.Property<int>("Width");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("LoadingUnitSizeClasses");
-                });
+                b.ToTable("LoadingUnitSizeClasses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitStatus", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(1)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(1)");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("LoadingUnitStatuses");
-                });
+                b.ToTable("LoadingUnitStatuses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int>("LoadingUnitHeightClassId");
+                b.Property<int>("LoadingUnitHeightClassId");
 
-                    b.Property<int>("LoadingUnitSizeClassId");
+                b.Property<int>("LoadingUnitSizeClassId");
 
-                    b.Property<int>("LoadingUnitWeightClassId");
+                b.Property<int>("LoadingUnitWeightClassId");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("LoadingUnitHeightClassId");
+                b.HasIndex("LoadingUnitHeightClassId");
 
-                    b.HasIndex("LoadingUnitSizeClassId");
+                b.HasIndex("LoadingUnitSizeClassId");
 
-                    b.HasIndex("LoadingUnitWeightClassId");
+                b.HasIndex("LoadingUnitWeightClassId");
 
-                    b.ToTable("LoadingUnitTypes");
-                });
+                b.ToTable("LoadingUnitTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitTypeAisle", b =>
-                {
-                    b.Property<int>("AisleId");
+            {
+                b.Property<int>("AisleId");
 
-                    b.Property<int>("LoadingUnitTypeId");
+                b.Property<int>("LoadingUnitTypeId");
 
-                    b.HasKey("AisleId", "LoadingUnitTypeId");
+                b.HasKey("AisleId", "LoadingUnitTypeId");
 
-                    b.HasIndex("LoadingUnitTypeId");
+                b.HasIndex("LoadingUnitTypeId");
 
-                    b.ToTable("LoadingUnitTypesAisles");
-                });
+                b.ToTable("LoadingUnitTypesAisles");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitWeightClass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.Property<int>("MaxWeight");
+                b.Property<int>("MaxWeight");
 
-                    b.Property<int>("MinWeight");
+                b.Property<int>("MinWeight");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("LoadingUnitWeightClasses");
-                });
+                b.ToTable("LoadingUnitWeightClasses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Machine", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("ActualWeight");
+                b.Property<long?>("ActualWeight");
 
-                    b.Property<int>("AisleId");
+                b.Property<int>("AisleId");
 
-                    b.Property<long?>("AutomaticTime");
+                b.Property<long?>("AutomaticTime");
 
-                    b.Property<DateTime?>("BuildDate");
+                b.Property<DateTime?>("BuildDate");
 
-                    b.Property<int?>("CradlesCount");
+                b.Property<int?>("CradlesCount");
 
-                    b.Property<string>("CustomerAddress");
+                b.Property<string>("CustomerAddress");
 
-                    b.Property<string>("CustomerCity");
+                b.Property<string>("CustomerCity");
 
-                    b.Property<string>("CustomerCode");
+                b.Property<string>("CustomerCode");
 
-                    b.Property<string>("CustomerCountry");
+                b.Property<string>("CustomerCountry");
 
-                    b.Property<string>("CustomerName");
+                b.Property<string>("CustomerName");
 
-                    b.Property<long?>("ErrorTime");
+                b.Property<long?>("ErrorTime");
 
-                    b.Property<string>("Image");
+                b.Property<string>("Image");
 
-                    b.Property<long?>("InputLoadingUnitsCount");
+                b.Property<long?>("InputLoadingUnitsCount");
 
-                    b.Property<DateTime?>("InstallationDate");
+                b.Property<DateTime?>("InstallationDate");
 
-                    b.Property<DateTime?>("LastPowerOn");
+                b.Property<DateTime?>("LastPowerOn");
 
-                    b.Property<DateTime?>("LastServiceDate");
+                b.Property<DateTime?>("LastServiceDate");
 
-                    b.Property<double?>("Latitude");
+                b.Property<double?>("Latitude");
 
-                    b.Property<int?>("LoadingUnitsPerCradle");
+                b.Property<int?>("LoadingUnitsPerCradle");
 
-                    b.Property<double?>("Longitude");
+                b.Property<double?>("Longitude");
 
-                    b.Property<string>("MachineTypeId")
-                        .IsRequired()
-                        .HasColumnType("char(1)");
+                b.Property<string>("MachineTypeId")
+                    .IsRequired()
+                    .HasColumnType("char(1)");
 
-                    b.Property<long?>("ManualTime");
+                b.Property<long?>("ManualTime");
 
-                    b.Property<long?>("MissionTime");
+                b.Property<long?>("MissionTime");
 
-                    b.Property<string>("Model");
+                b.Property<string>("Model");
 
-                    b.Property<long?>("MovedLoadingUnitsCount");
+                b.Property<long?>("MovedLoadingUnitsCount");
 
-                    b.Property<DateTime?>("NextServiceDate");
+                b.Property<DateTime?>("NextServiceDate");
 
-                    b.Property<string>("Nickname")
-                        .IsRequired();
+                b.Property<string>("Nickname")
+                    .IsRequired();
 
-                    b.Property<long?>("OutputLoadingUnitsCount");
+                b.Property<long?>("OutputLoadingUnitsCount");
 
-                    b.Property<long?>("PowerOnTime");
+                b.Property<long?>("PowerOnTime");
 
-                    b.Property<string>("RegistrationNumber");
+                b.Property<string>("RegistrationNumber");
 
-                    b.Property<DateTime?>("TestDate");
+                b.Property<DateTime?>("TestDate");
 
-                    b.Property<long?>("TotalMaxWeight");
+                b.Property<long?>("TotalMaxWeight");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("AisleId");
+                b.HasIndex("AisleId");
 
-                    b.HasIndex("MachineTypeId");
+                b.HasIndex("MachineTypeId");
 
-                    b.ToTable("Machines");
-                });
+                b.ToTable("Machines");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.MachineType", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(1)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(1)");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("MachineTypes");
-                });
+                b.ToTable("MachineTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.MaterialStatus", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("MaterialStatuses");
-                });
+                b.ToTable("MaterialStatuses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.MeasureUnit", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(2)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(2)");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("MeasureUnits");
-                });
+                b.ToTable("MeasureUnits");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Mission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CompartmentId");
+                b.Property<int?>("CompartmentId");
 
-                    b.Property<int?>("DestinationBayId");
+                b.Property<int?>("DestinationBayId");
 
-                    b.Property<int?>("DestinationCellId");
+                b.Property<int?>("DestinationCellId");
 
-                    b.Property<int?>("ItemId");
+                b.Property<int?>("ItemId");
 
-                    b.Property<int?>("ItemListId");
+                b.Property<int?>("ItemListId");
 
-                    b.Property<int?>("ItemListRowId");
+                b.Property<int?>("ItemListRowId");
 
-                    b.Property<int?>("LoadingUnitId");
+                b.Property<int?>("LoadingUnitId");
 
-                    b.Property<string>("Lot");
+                b.Property<string>("Lot");
 
-                    b.Property<int?>("MaterialStatusId");
+                b.Property<int?>("MaterialStatusId");
 
-                    b.Property<string>("MissionStatusId")
-                        .HasColumnType("char(1)");
+                b.Property<string>("MissionStatusId")
+                    .HasColumnType("char(1)");
 
-                    b.Property<string>("MissionTypeId")
-                        .HasColumnType("char(2)");
+                b.Property<string>("MissionTypeId")
+                    .HasColumnType("char(2)");
 
-                    b.Property<int?>("PackageTypeId");
+                b.Property<int?>("PackageTypeId");
 
-                    b.Property<int>("Priority");
+                b.Property<int>("Priority");
 
-                    b.Property<string>("RegistrationNumber");
+                b.Property<string>("RegistrationNumber");
 
-                    b.Property<int>("RequiredQuantity");
+                b.Property<int>("RequiredQuantity");
 
-                    b.Property<int?>("SourceBayId");
+                b.Property<int?>("SourceBayId");
 
-                    b.Property<int?>("SourceCellId");
+                b.Property<int?>("SourceCellId");
 
-                    b.Property<string>("Sub1");
+                b.Property<string>("Sub1");
 
-                    b.Property<string>("Sub2");
+                b.Property<string>("Sub2");
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.HasIndex("CompartmentId");
+                b.HasIndex("CompartmentId");
 
-                    b.HasIndex("DestinationBayId");
+                b.HasIndex("DestinationBayId");
 
-                    b.HasIndex("DestinationCellId");
+                b.HasIndex("DestinationCellId");
 
-                    b.HasIndex("ItemId");
+                b.HasIndex("ItemId");
 
-                    b.HasIndex("ItemListId");
+                b.HasIndex("ItemListId");
 
-                    b.HasIndex("ItemListRowId");
+                b.HasIndex("ItemListRowId");
 
-                    b.HasIndex("LoadingUnitId");
+                b.HasIndex("LoadingUnitId");
 
-                    b.HasIndex("MaterialStatusId");
+                b.HasIndex("MaterialStatusId");
 
-                    b.HasIndex("MissionStatusId");
+                b.HasIndex("MissionStatusId");
 
-                    b.HasIndex("MissionTypeId");
+                b.HasIndex("MissionTypeId");
 
-                    b.HasIndex("PackageTypeId");
+                b.HasIndex("PackageTypeId");
 
-                    b.HasIndex("SourceBayId");
+                b.HasIndex("SourceBayId");
 
-                    b.HasIndex("SourceCellId");
+                b.HasIndex("SourceCellId");
 
-                    b.ToTable("Missions");
-                });
+                b.ToTable("Missions");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.MissionStatus", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(1)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(1)");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("MissionStatuses");
-                });
+                b.ToTable("MissionStatuses");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.MissionType", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(2)");
+            {
+                b.Property<string>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("char(2)");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("MissionTypes");
-                });
+                b.ToTable("MissionTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.PackageType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                b.Property<string>("Description")
+                    .IsRequired();
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("PackageTypes");
-                });
-
-            modelBuilder.Entity("Ferretto.Common.DataModels.SchedulerRequest", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AreaId");
-
-                    b.Property<int?>("BayId");
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<bool>("IsInstant");
-
-                    b.Property<int?>("ItemId");
-
-                    b.Property<int?>("ListId");
-
-                    b.Property<int?>("ListRowId");
-
-                    b.Property<int?>("LoadingUnitId");
-
-                    b.Property<int?>("LoadingUnitTypeId");
-
-                    b.Property<string>("Lot");
-
-                    b.Property<int?>("MaterialStatusId");
-
-                    b.Property<int>("OperationType");
-
-                    b.Property<int>("PackageTypeId");
-
-                    b.Property<string>("RegistrationNumber");
-
-                    b.Property<int?>("RequestedQuantity");
-
-                    b.Property<string>("Sub1");
-
-                    b.Property<string>("Sub2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AreaId");
-
-                    b.HasIndex("BayId");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("ListId");
-
-                    b.HasIndex("ListRowId");
-
-                    b.HasIndex("LoadingUnitId");
-
-                    b.HasIndex("LoadingUnitTypeId");
-
-                    b.HasIndex("MaterialStatusId");
-
-                    b.HasIndex("PackageTypeId");
-
-                    b.ToTable("SchedulerRequest");
-                });
+                b.ToTable("PackageTypes");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Aisle", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
-                        .WithMany("Aisles")
-                        .HasForeignKey("AreaId");
-                });
+            {
+                b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                    .WithMany("Aisles")
+                    .HasForeignKey("AreaId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Bay", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
-                        .WithMany("Bays")
-                        .HasForeignKey("AreaId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                    .WithMany("Bays")
+                    .HasForeignKey("AreaId");
 
-                    b.HasOne("Ferretto.Common.DataModels.BayType", "BayType")
-                        .WithMany("Bays")
-                        .HasForeignKey("BayTypeId");
+                b.HasOne("Ferretto.Common.DataModels.BayType", "BayType")
+                    .WithMany("Bays")
+                    .HasForeignKey("BayTypeId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Machine", "Machine")
-                        .WithMany("Bays")
-                        .HasForeignKey("MachineId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.Machine", "Machine")
+                    .WithMany("Bays")
+                    .HasForeignKey("MachineId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Cell", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.AbcClass", "AbcClass")
-                        .WithMany("Cells")
-                        .HasForeignKey("AbcClassId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.AbcClass", "AbcClass")
+                    .WithMany("Cells")
+                    .HasForeignKey("AbcClassId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
-                        .WithMany("Cells")
-                        .HasForeignKey("AisleId");
+                b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
+                    .WithMany("Cells")
+                    .HasForeignKey("AisleId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellStatus", "CellStatus")
-                        .WithMany("Cells")
-                        .HasForeignKey("CellStatusId");
+                b.HasOne("Ferretto.Common.DataModels.CellStatus", "CellStatus")
+                    .WithMany("Cells")
+                    .HasForeignKey("CellStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
-                        .WithMany("Cells")
-                        .HasForeignKey("CellTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
+                    .WithMany("Cells")
+                    .HasForeignKey("CellTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellConfigurationCellPositionLoadingUnitType", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.CellConfiguration", "CellConfiguration")
-                        .WithMany("CellConfigurationCellPositionLoadingUnitTypes")
-                        .HasForeignKey("CellConfigurationId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.CellConfiguration", "CellConfiguration")
+                    .WithMany("CellConfigurationCellPositionLoadingUnitTypes")
+                    .HasForeignKey("CellConfigurationId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellPosition", "CellPosition")
-                        .WithMany("CellConfigurationCellPositionLoadingUnitTypes")
-                        .HasForeignKey("CellPositionId");
+                b.HasOne("Ferretto.Common.DataModels.CellPosition", "CellPosition")
+                    .WithMany("CellConfigurationCellPositionLoadingUnitTypes")
+                    .HasForeignKey("CellPositionId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
-                        .WithMany("CellConfigurationCellPositionLoadingUnitTypes")
-                        .HasForeignKey("LoadingUnitTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
+                    .WithMany("CellConfigurationCellPositionLoadingUnitTypes")
+                    .HasForeignKey("LoadingUnitTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellConfigurationCellType", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.CellConfiguration", "CellConfiguration")
-                        .WithMany("CellConfigurationCellTypes")
-                        .HasForeignKey("CellConfigurationId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.CellConfiguration", "CellConfiguration")
+                    .WithMany("CellConfigurationCellTypes")
+                    .HasForeignKey("CellConfigurationId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
-                        .WithMany("CellConfigurationCellTypes")
-                        .HasForeignKey("CellTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
+                    .WithMany("CellConfigurationCellTypes")
+                    .HasForeignKey("CellTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellTotal", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
-                        .WithMany("CellTotals")
-                        .HasForeignKey("AisleId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
+                    .WithMany("CellTotals")
+                    .HasForeignKey("AisleId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellStatus", "CellStatus")
-                        .WithMany("CellTotals")
-                        .HasForeignKey("CellStatusId");
+                b.HasOne("Ferretto.Common.DataModels.CellStatus", "CellStatus")
+                    .WithMany("CellTotals")
+                    .HasForeignKey("CellStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
-                        .WithMany("CellTotals")
-                        .HasForeignKey("CellTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
+                    .WithMany("CellTotals")
+                    .HasForeignKey("CellTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellType", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.CellHeightClass", "CellHeightClass")
-                        .WithMany("CellTypes")
-                        .HasForeignKey("CellHeightClassId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.CellHeightClass", "CellHeightClass")
+                    .WithMany("CellTypes")
+                    .HasForeignKey("CellHeightClassId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellSizeClass", "CellSizeClass")
-                        .WithMany("CellTypes")
-                        .HasForeignKey("CellSizeClassId");
+                b.HasOne("Ferretto.Common.DataModels.CellSizeClass", "CellSizeClass")
+                    .WithMany("CellTypes")
+                    .HasForeignKey("CellSizeClassId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellWeightClass", "CellWeightClass")
-                        .WithMany("CellTypes")
-                        .HasForeignKey("CellWeightClassId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.CellWeightClass", "CellWeightClass")
+                    .WithMany("CellTypes")
+                    .HasForeignKey("CellWeightClassId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.CellTypeAisle", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
-                        .WithMany("AisleCellsTypes")
-                        .HasForeignKey("AisleId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
+                    .WithMany("AisleCellsTypes")
+                    .HasForeignKey("AisleId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
-                        .WithMany("CellTypeAisles")
-                        .HasForeignKey("CellTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.CellType", "CellType")
+                    .WithMany("CellTypeAisles")
+                    .HasForeignKey("CellTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Compartment", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.CompartmentStatus", "CompartmentStatus")
-                        .WithMany("Compartments")
-                        .HasForeignKey("CompartmentStatusId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.CompartmentStatus", "CompartmentStatus")
+                    .WithMany("Compartments")
+                    .HasForeignKey("CompartmentStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CompartmentType", "CompartmentType")
-                        .WithMany("Compartments")
-                        .HasForeignKey("CompartmentTypeId");
+                b.HasOne("Ferretto.Common.DataModels.CompartmentType", "CompartmentType")
+                    .WithMany("Compartments")
+                    .HasForeignKey("CompartmentTypeId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Item", "Item")
-                        .WithMany("Compartments")
-                        .HasForeignKey("ItemId");
+                b.HasOne("Ferretto.Common.DataModels.Item", "Item")
+                    .WithMany("Compartments")
+                    .HasForeignKey("ItemId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany("Compartments")
-                        .HasForeignKey("LoadingUnitId");
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnit", "LoadingUnit")
+                    .WithMany("Compartments")
+                    .HasForeignKey("LoadingUnitId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
-                        .WithMany("Compartments")
-                        .HasForeignKey("MaterialStatusId");
+                b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
+                    .WithMany("Compartments")
+                    .HasForeignKey("MaterialStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
-                        .WithMany("Compartments")
-                        .HasForeignKey("PackageTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
+                    .WithMany("Compartments")
+                    .HasForeignKey("PackageTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.DefaultCompartment", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.CompartmentType", "CompartmentType")
-                        .WithMany("DefaultCompartments")
-                        .HasForeignKey("CompartmentTypeId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.CompartmentType", "CompartmentType")
+                    .WithMany("DefaultCompartments")
+                    .HasForeignKey("CompartmentTypeId");
 
-                    b.HasOne("Ferretto.Common.DataModels.DefaultLoadingUnit", "DefaultLoadingUnit")
-                        .WithMany("DefaultCompartments")
-                        .HasForeignKey("DefaultLoadingUnitId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.DefaultLoadingUnit", "DefaultLoadingUnit")
+                    .WithMany("DefaultCompartments")
+                    .HasForeignKey("DefaultLoadingUnitId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.DefaultLoadingUnit", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
-                        .WithMany("DefaultLoadingUnits")
-                        .HasForeignKey("LoadingUnitTypeId");
-                });
+            {
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
+                    .WithMany("DefaultLoadingUnits")
+                    .HasForeignKey("LoadingUnitTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Item", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.AbcClass", "AbcClass")
-                        .WithMany("Items")
-                        .HasForeignKey("AbcClassId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.AbcClass", "AbcClass")
+                    .WithMany("Items")
+                    .HasForeignKey("AbcClassId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemCategory", "ItemCategory")
-                        .WithMany("Items")
-                        .HasForeignKey("ItemCategoryId");
+                b.HasOne("Ferretto.Common.DataModels.ItemCategory", "ItemCategory")
+                    .WithMany("Items")
+                    .HasForeignKey("ItemCategoryId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemManagementType", "ItemManagementType")
-                        .WithMany("Items")
-                        .HasForeignKey("ItemManagementTypeId");
+                b.HasOne("Ferretto.Common.DataModels.ItemManagementType", "ItemManagementType")
+                    .WithMany("Items")
+                    .HasForeignKey("ItemManagementTypeId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MeasureUnit", "MeasureUnit")
-                        .WithMany("Items")
-                        .HasForeignKey("MeasureUnitId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.MeasureUnit", "MeasureUnit")
+                    .WithMany("Items")
+                    .HasForeignKey("MeasureUnitId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemArea", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
-                        .WithMany("AreaItems")
-                        .HasForeignKey("AreaId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                    .WithMany("AreaItems")
+                    .HasForeignKey("AreaId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Item", "Item")
-                        .WithMany("ItemAreas")
-                        .HasForeignKey("ItemId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.Item", "Item")
+                    .WithMany("ItemAreas")
+                    .HasForeignKey("ItemId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemCompartmentType", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.CompartmentType", "CompartmentType")
-                        .WithMany("ItemsCompartmentTypes")
-                        .HasForeignKey("CompartmentTypeId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.CompartmentType", "CompartmentType")
+                    .WithMany("ItemsCompartmentTypes")
+                    .HasForeignKey("CompartmentTypeId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Item", "Item")
-                        .WithMany("ItemsCompartmentTypes")
-                        .HasForeignKey("ItemId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.Item", "Item")
+                    .WithMany("ItemsCompartmentTypes")
+                    .HasForeignKey("ItemId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemList", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
-                        .WithMany("ItemLists")
-                        .HasForeignKey("AreaId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                    .WithMany("ItemLists")
+                    .HasForeignKey("AreaId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemListStatus", "ItemListStatus")
-                        .WithMany("ItemLists")
-                        .HasForeignKey("ItemListStatusId");
+                b.HasOne("Ferretto.Common.DataModels.ItemListStatus", "ItemListStatus")
+                    .WithMany("ItemLists")
+                    .HasForeignKey("ItemListStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemListType", "ItemListType")
-                        .WithMany("ItemLists")
-                        .HasForeignKey("ItemListTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.ItemListType", "ItemListType")
+                    .WithMany("ItemLists")
+                    .HasForeignKey("ItemListTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemListRow", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Item", "Item")
-                        .WithMany("ItemListRows")
-                        .HasForeignKey("ItemId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Item", "Item")
+                    .WithMany("ItemListRows")
+                    .HasForeignKey("ItemId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemList", "ItemList")
-                        .WithMany("ItemListRows")
-                        .HasForeignKey("ItemListId");
+                b.HasOne("Ferretto.Common.DataModels.ItemList", "ItemList")
+                    .WithMany("ItemListRows")
+                    .HasForeignKey("ItemListId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemListRowStatus", "ItemListRowStatus")
-                        .WithMany("ItemListRows")
-                        .HasForeignKey("ItemListRowStatusId");
+                b.HasOne("Ferretto.Common.DataModels.ItemListRowStatus", "ItemListRowStatus")
+                    .WithMany("ItemListRows")
+                    .HasForeignKey("ItemListRowStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
-                        .WithMany("ItemListRows")
-                        .HasForeignKey("MaterialStatusId");
+                b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
+                    .WithMany("ItemListRows")
+                    .HasForeignKey("MaterialStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
-                        .WithMany("ItemListRows")
-                        .HasForeignKey("PackageTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
+                    .WithMany("ItemListRows")
+                    .HasForeignKey("PackageTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnit", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.AbcClass", "AbcClass")
-                        .WithMany("LoadingUnits")
-                        .HasForeignKey("AbcClassId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.AbcClass", "AbcClass")
+                    .WithMany("LoadingUnits")
+                    .HasForeignKey("AbcClassId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Cell", "Cell")
-                        .WithMany("LoadingUnits")
-                        .HasForeignKey("CellId");
+                b.HasOne("Ferretto.Common.DataModels.Cell", "Cell")
+                    .WithMany("LoadingUnits")
+                    .HasForeignKey("CellId");
 
-                    b.HasOne("Ferretto.Common.DataModels.CellPosition", "CellPosition")
-                        .WithMany("LoadingUnits")
-                        .HasForeignKey("CellPositionId");
+                b.HasOne("Ferretto.Common.DataModels.CellPosition", "CellPosition")
+                    .WithMany("LoadingUnits")
+                    .HasForeignKey("CellPositionId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitStatus", "LoadingUnitStatus")
-                        .WithMany("LoadingUnits")
-                        .HasForeignKey("LoadingUnitStatusId");
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitStatus", "LoadingUnitStatus")
+                    .WithMany("LoadingUnits")
+                    .HasForeignKey("LoadingUnitStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
-                        .WithMany("LoadingUnits")
-                        .HasForeignKey("LoadingUnitTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
+                    .WithMany("LoadingUnits")
+                    .HasForeignKey("LoadingUnitTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitRange", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
-                        .WithMany("LoadingUnitRanges")
-                        .HasForeignKey("AreaId");
-                });
+            {
+                b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                    .WithMany("LoadingUnitRanges")
+                    .HasForeignKey("AreaId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitType", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitHeightClass", "LoadingUnitHeightClass")
-                        .WithMany("LoadingUnitTypes")
-                        .HasForeignKey("LoadingUnitHeightClassId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitHeightClass", "LoadingUnitHeightClass")
+                    .WithMany("LoadingUnitTypes")
+                    .HasForeignKey("LoadingUnitHeightClassId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitSizeClass", "LoadingUnitSizeClass")
-                        .WithMany("LoadingUnitTypes")
-                        .HasForeignKey("LoadingUnitSizeClassId");
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitSizeClass", "LoadingUnitSizeClass")
+                    .WithMany("LoadingUnitTypes")
+                    .HasForeignKey("LoadingUnitSizeClassId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitWeightClass", "LoadingUnitWeightClass")
-                        .WithMany("LoadingUnitTypes")
-                        .HasForeignKey("LoadingUnitWeightClassId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitWeightClass", "LoadingUnitWeightClass")
+                    .WithMany("LoadingUnitTypes")
+                    .HasForeignKey("LoadingUnitWeightClassId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnitTypeAisle", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
-                        .WithMany("AisleLoadingUnitTypes")
-                        .HasForeignKey("AisleId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
+                    .WithMany("AisleLoadingUnitTypes")
+                    .HasForeignKey("AisleId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnit")
-                        .WithMany("LoadingUnitTypeAisles")
-                        .HasForeignKey("LoadingUnitTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnit")
+                    .WithMany("LoadingUnitTypeAisles")
+                    .HasForeignKey("LoadingUnitTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Machine", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
-                        .WithMany("Machines")
-                        .HasForeignKey("AisleId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Aisle", "Aisle")
+                    .WithMany("Machines")
+                    .HasForeignKey("AisleId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MachineType", "MachineType")
-                        .WithMany("Machines")
-                        .HasForeignKey("MachineTypeId");
-                });
+                b.HasOne("Ferretto.Common.DataModels.MachineType", "MachineType")
+                    .WithMany("Machines")
+                    .HasForeignKey("MachineTypeId");
+            });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Mission", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Compartment", "Compartment")
-                        .WithMany("Missions")
-                        .HasForeignKey("CompartmentId");
+            {
+                b.HasOne("Ferretto.Common.DataModels.Compartment", "Compartment")
+                    .WithMany("Missions")
+                    .HasForeignKey("CompartmentId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Bay", "DestinationBay")
-                        .WithMany("DestinationMissions")
-                        .HasForeignKey("DestinationBayId");
+                b.HasOne("Ferretto.Common.DataModels.Bay", "DestinationBay")
+                    .WithMany("DestinationMissions")
+                    .HasForeignKey("DestinationBayId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Cell", "DestinationCell")
-                        .WithMany("DestinationMissions")
-                        .HasForeignKey("DestinationCellId");
+                b.HasOne("Ferretto.Common.DataModels.Cell", "DestinationCell")
+                    .WithMany("DestinationMissions")
+                    .HasForeignKey("DestinationCellId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Item", "Item")
-                        .WithMany("Missions")
-                        .HasForeignKey("ItemId");
+                b.HasOne("Ferretto.Common.DataModels.Item", "Item")
+                    .WithMany("Missions")
+                    .HasForeignKey("ItemId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemList", "ItemList")
-                        .WithMany("Missions")
-                        .HasForeignKey("ItemListId");
+                b.HasOne("Ferretto.Common.DataModels.ItemList", "ItemList")
+                    .WithMany("Missions")
+                    .HasForeignKey("ItemListId");
 
-                    b.HasOne("Ferretto.Common.DataModels.ItemListRow", "ItemListRow")
-                        .WithMany("Missions")
-                        .HasForeignKey("ItemListRowId");
+                b.HasOne("Ferretto.Common.DataModels.ItemListRow", "ItemListRow")
+                    .WithMany("Missions")
+                    .HasForeignKey("ItemListRowId");
 
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany("Missions")
-                        .HasForeignKey("LoadingUnitId");
+                b.HasOne("Ferretto.Common.DataModels.LoadingUnit", "LoadingUnit")
+                    .WithMany("Missions")
+                    .HasForeignKey("LoadingUnitId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
-                        .WithMany("Missions")
-                        .HasForeignKey("MaterialStatusId");
+                b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
+                    .WithMany("Missions")
+                    .HasForeignKey("MaterialStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MissionStatus", "MissionStatus")
-                        .WithMany("Missions")
-                        .HasForeignKey("MissionStatusId");
+                b.HasOne("Ferretto.Common.DataModels.MissionStatus", "MissionStatus")
+                    .WithMany("Missions")
+                    .HasForeignKey("MissionStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MissionType", "MissionType")
-                        .WithMany("Missions")
-                        .HasForeignKey("MissionTypeId");
+                b.HasOne("Ferretto.Common.DataModels.MissionType", "MissionType")
+                    .WithMany("Missions")
+                    .HasForeignKey("MissionTypeId");
 
-                    b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
-                        .WithMany("Missions")
-                        .HasForeignKey("PackageTypeId");
+                b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
+                    .WithMany("Missions")
+                    .HasForeignKey("PackageTypeId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Bay", "SourceBay")
-                        .WithMany("SourceMissions")
-                        .HasForeignKey("SourceBayId");
+                b.HasOne("Ferretto.Common.DataModels.Bay", "SourceBay")
+                    .WithMany("SourceMissions")
+                    .HasForeignKey("SourceBayId");
 
-                    b.HasOne("Ferretto.Common.DataModels.Cell", "SourceCell")
-                        .WithMany("SourceMissions")
-                        .HasForeignKey("SourceCellId");
-                });
-
-            modelBuilder.Entity("Ferretto.Common.DataModels.SchedulerRequest", b =>
-                {
-                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("AreaId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Ferretto.Common.DataModels.Bay", "Bay")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("BayId");
-
-                    b.HasOne("Ferretto.Common.DataModels.Item", "Item")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("ItemId");
-
-                    b.HasOne("Ferretto.Common.DataModels.ItemList", "List")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("ListId");
-
-                    b.HasOne("Ferretto.Common.DataModels.ItemListRow", "ListRow")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("ListRowId");
-
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("LoadingUnitId");
-
-                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("LoadingUnitTypeId");
-
-                    b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("MaterialStatusId");
-
-                    b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
-                        .WithMany("SchedulerRequests")
-                        .HasForeignKey("PackageTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
+                b.HasOne("Ferretto.Common.DataModels.Cell", "SourceCell")
+                    .WithMany("SourceMissions")
+                    .HasForeignKey("SourceCellId");
+            });
 #pragma warning restore 612, 618
         }
     }
