@@ -4,10 +4,10 @@ using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -91,18 +91,15 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RevertCommand => this.revertCommand ??
-                                         ( this.revertCommand = new DelegateCommand(this.LoadData) );
+                                         (this.revertCommand = new DelegateCommand(this.LoadData));
 
         public ICommand SaveCommand => this.saveCommand ??
-                                       ( this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand) );
+                                       (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
         public CompartmentDetails SelectedCompartment
         {
             get => this.selectedCompartment;
-            set
-            {
-                this.SetProperty(ref this.selectedCompartment, value);
-            }
+            set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
         public Tray Tray
@@ -202,12 +199,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Tray = newTray;
             this.ReadOnlyTray = true;
             this.IsCompartmentSelectableTray = true;
-            this.TrayColoringFunc = ( new FillingFilter() ).ColorFunc;
+            this.TrayColoringFunc = (new FillingFilter()).ColorFunc;
         }
 
         private void LoadData()
         {
-            if (!( this.Data is int modelId ))
+            if (!(this.Data is int modelId))
             {
                 return;
             }

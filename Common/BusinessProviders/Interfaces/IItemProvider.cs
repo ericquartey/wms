@@ -2,13 +2,15 @@
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
-namespace Ferretto.Common.Modules.BLL
+namespace Ferretto.Common.BusinessProviders
 {
     public interface IItemProvider : IBusinessProvider<Item, ItemDetails>
     {
         #region Methods
 
         IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId);
+
+        Task<int> GetAvailableQuantity(int itemId, string lot, string registrationNumber, string sub1, string sub2);
 
         IQueryable<Item> GetWithAClass();
 

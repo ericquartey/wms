@@ -4,22 +4,25 @@ using System.Linq.Expressions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Practices.ServiceLocation;
 
-namespace Ferretto.Common.Modules.BLL.Services
+namespace Ferretto.Common.BusinessProviders
 {
     public class CellProvider : ICellProvider
     {
         #region Fields
 
+        private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public CellProvider(EnumerationProvider enumerationProvider)
+        public CellProvider(
+            DatabaseContext context,
+            EnumerationProvider enumerationProvider)
         {
+            this.dataContext = context;
             this.enumerationProvider = enumerationProvider;
         }
 
@@ -27,36 +30,32 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         #region Methods
 
-        public Int32 Add(CellDetails model)
+        public int Add(CellDetails model)
         {
             throw new NotImplementedException();
         }
 
-        public void Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
 
         public IQueryable<Cell> GetAll()
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return GetAllCellsWithFilter(context);
+            return GetAllCellsWithFilter(this.dataContext);
         }
 
         public int GetAllCount()
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.Cells.AsNoTracking().Count();
+                return this.dataContext.Cells.AsNoTracking().Count();
             }
         }
 
         public IQueryable<Enumeration> GetByAisleId(int aisleId)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.Cells
+            return this.dataContext.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -70,9 +69,7 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public IQueryable<Enumeration> GetByAreaId(int areaId)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
-
-            return context.Cells
+            return this.dataContext.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -87,46 +84,47 @@ namespace Ferretto.Common.Modules.BLL.Services
 
         public CellDetails GetById(int id)
         {
-            var context = ServiceLocator.Current.GetInstance<DatabaseContext>();
+            lock (this.dataContext)
+            {
+                var cellDetails = this.dataContext.Cells
+                    .Where(c => c.Id == id)
+                    .Include(c => c.Aisle)
+                    .Select(c => new CellDetails
+                    {
+                        Id = c.Id,
+                        AbcClassId = c.AbcClassId,
+                        AisleId = c.AisleId,
+                        AreaId = c.Aisle.AreaId,
+                        CellStatusId = c.CellStatusId,
+                        CellTypeId = c.CellTypeId,
+                        Column = c.Column,
+                        Floor = c.Floor,
+                        Number = c.CellNumber,
+                        Priority = c.Priority,
+                        Side = (int)c.Side,
+                        XCoordinate = c.XCoordinate,
+                        YCoordinate = c.YCoordinate,
+                        ZCoordinate = c.ZCoordinate,
+                    })
+                    .Single();
 
-            var cellDetails = context.Cells
-                .Where(c => c.Id == id)
-                .Include(c => c.Aisle)
-                .Select(c => new CellDetails
-                {
-                    Id = c.Id,
-                    AbcClassId = c.AbcClassId,
-                    AisleId = c.AisleId,
-                    AreaId = c.Aisle.AreaId,
-                    CellStatusId = c.CellStatusId,
-                    CellTypeId = c.CellTypeId,
-                    Column = c.Column,
-                    Floor = c.Floor,
-                    Number = c.CellNumber,
-                    Priority = c.Priority,
-                    Side = (int)c.Side,
-                    XCoordinate = c.XCoordinate,
-                    YCoordinate = c.YCoordinate,
-                    ZCoordinate = c.ZCoordinate,
-                })
-                .Single();
+                cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+                cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
+                cellDetails.SideChoices =
+                    ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
+                cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
 
-            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-            cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-            cellDetails.SideChoices =
-                ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
-
-            return cellDetails;
+                return cellDetails;
+            }
         }
 
         public bool HasAnyLoadingUnits(int cellId)
         {
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                return context.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
+                return this.dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
             }
         }
 
@@ -137,13 +135,13 @@ namespace Ferretto.Common.Modules.BLL.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            using (var context = ServiceLocator.Current.GetInstance<DatabaseContext>())
+            lock (this.dataContext)
             {
-                var existingModel = context.Cells.Find(model.Id);
+                var existingModel = this.dataContext.Cells.Find(model.Id);
 
-                context.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return context.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 

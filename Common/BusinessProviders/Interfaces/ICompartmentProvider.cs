@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Ferretto.Common.BusinessModels;
 
-namespace Ferretto.Common.Modules.BLL
+namespace Ferretto.Common.BusinessProviders
 {
     public interface ICompartmentProvider : IBusinessProvider<Compartment, CompartmentDetails>
     {
