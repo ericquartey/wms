@@ -22,8 +22,8 @@ namespace Ferretto.Common.Controls
             nameof(IsCompartmentSelectable), typeof(bool), typeof(WmsTrayControl),
             new FrameworkPropertyMetadata(true, OnIsCompartmentSelectableChanged));
 
-        public static readonly DependencyProperty ReadOnlyProperty = DependencyProperty.Register(
-            nameof(ReadOnly), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OnReadOnlyChanged));
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+            nameof(IsReadOnly), typeof(bool), typeof(WmsTrayControl), new FrameworkPropertyMetadata(OnIsReadOnlyChanged));
 
         public static readonly DependencyProperty RulerStepProperty = DependencyProperty.Register(
             nameof(RulerStep), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(100, OnRulerStepChanged));
@@ -77,10 +77,10 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(IsCompartmentSelectableProperty, value);
         }
 
-        public bool ReadOnly
+        public bool IsReadOnly
         {
-            get => (bool) this.GetValue(ReadOnlyProperty);
-            set => this.SetValue(ReadOnlyProperty, value);
+            get => (bool) this.GetValue(IsReadOnlyProperty);
+            set => this.SetValue(IsReadOnlyProperty, value);
         }
 
         public int RulerStep
@@ -216,12 +216,12 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private static void OnReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is WmsTrayControl wmsTrayControl &&
                 wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                viewModel.UpdateReadOnlyPropertyToCompartments((bool) e.NewValue);
+                viewModel.UpdateIsReadOnlyPropertyToCompartments((bool) e.NewValue);
             }
         }
 
