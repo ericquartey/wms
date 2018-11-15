@@ -7,6 +7,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class LoadingUnitConfiguration : IEntityTypeConfiguration<LoadingUnit>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<LoadingUnit> builder)
         {
             if (builder == null)
@@ -23,13 +25,13 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)");
             builder.Property(l => l.Reference).IsRequired()
                 .HasColumnType("char(1)")
-                .HasConversion(x => (char) x, x => (ReferenceType) Enum.ToObject(typeof(ReferenceType), x));
+                .HasConversion(x => (char)x, x => (ReferenceType)Enum.ToObject(typeof(ReferenceType), x));
             builder.Property(l => l.LoadingUnitStatusId).IsRequired()
                 .HasColumnType("char(1)");
             builder.Property(l => l.Note)
                 .HasColumnType("text");
             builder.Property(l => l.CreationDate)
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("GETUTCDATE()");
             builder.Property(l => l.InCycleCount)
                 .HasDefaultValue(0);
             builder.Property(l => l.OutCycleCount)
@@ -40,7 +42,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("NVARCHAR(MAX)")
                 .HasConversion(
                     x => x.ToString()
-                    , x => (Pairing) Enum.Parse(typeof(Pairing), x)
+                    , x => (Pairing)Enum.Parse(typeof(Pairing), x)
                 );
 
             builder.HasOne(l => l.AbcClass)
@@ -64,5 +66,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(l => l.LoadingUnitStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion Methods
     }
 }
