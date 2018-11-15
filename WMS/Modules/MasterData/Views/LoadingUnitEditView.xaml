@@ -23,14 +23,12 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
 
-
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
 
             <wms:ActionBar Grid.Row="0"
                            Margin="10,10,10,0"
@@ -52,7 +50,6 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_photo_size_select_small_black_24dp.png"
                                    GlyphSize="Custom" />
-
             </wms:ActionBar>
 
 
@@ -152,7 +149,7 @@
                                                                         EnableBulkAdd="{Binding EnableBulkAdd}"
                                                                         Row="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Row, Mode=TwoWay}"
                                                                         Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.BulkAddVisibility, Converter={StaticResource BTVC}, Mode=TwoWay}" />
-                                <!--  &quot;{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.BulkAddVisibility, Mode=TwoWay}&quot; /&gt;  -->
+
                                 <masterData:InputEditCompartmentView x:Name="InputEditCompartment"
                                                                      Grid.Row="1"
                                                                      HorizontalAlignment="Left"

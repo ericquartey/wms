@@ -147,4 +147,7 @@
   <data name="AddBulkNoPossible" xml:space="preserve">
     <value>Errore: non è stato possibile eseguire la Scompartizione Dinamica.</value>
   </data>
+  <data name="AddNoPossible" xml:space="preserve">
+    <value>Errore: non è stato possibile aggiungere un nuovo Scomparto.</value>
+  </data>
 </root>

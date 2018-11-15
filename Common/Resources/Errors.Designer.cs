@@ -70,6 +70,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: it is no possible to Add new Compartment..
+        /// </summary>
+        public static string AddNoPossible {
+            get {
+                return ResourceManager.GetString("AddNoPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {

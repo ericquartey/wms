@@ -278,11 +278,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteAddBulkCommand()
         {
-            if (this.EnableBulkAdd)
-            {
-                //if(this.SelectedCompartmentTray != null && this.SelectedCompartmentTray.Width != null && this.se)
-            }
-
             return !this.CreateMode && !this.EditMode;
         }
 
@@ -473,11 +468,10 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.CreateMode = false;
 
                     ok = true;
-                    Debug.WriteLine($"Add NEW Compartment: {add}");
                 }
                 else
                 {
-                    this.SetError("It can no possible to ADD COMPARTMENT.");
+                    this.SetError(Errors.AddNoPossible);
                 }
             }
             else
@@ -547,7 +541,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if (value is CompartmentDetails compartmentDetails)
             {
                 this.SelectedCompartmentTray = compartmentDetails;
-                //this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
             }
         }
 

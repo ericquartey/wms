@@ -32,7 +32,6 @@
                        HorizontalAlignment="Right"
                        Panel.ZIndex="9999"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            <!--  Margin="10,10,10,0"  -->
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
