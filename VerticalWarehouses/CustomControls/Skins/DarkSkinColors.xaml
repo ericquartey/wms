@@ -124,6 +124,9 @@
     <SolidColorBrush x:Key="IAPP_SensorState_BulletBackground_Normal"
                      Color="{StaticResource ColorFerrettoPureWhite}" />
 
+    <SolidColorBrush x:Key="IAPP_HighlightableBullet_Fill"
+                     Color="Blue" />
+
     <FontFamily x:Key="IAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
     <FontFamily x:Key="IAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 

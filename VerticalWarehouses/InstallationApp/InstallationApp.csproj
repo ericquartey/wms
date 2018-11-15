@@ -187,6 +187,10 @@
       <DependentUpon>CellsPanelsControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\GetLocalIpView.xaml.cs">
+      <DependentUpon>GetLocalIpView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\GetLocalIPViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml.cs">
       <DependentUpon>InstallationStateView.xaml</DependentUpon>
     </Compile>
@@ -303,6 +307,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\GetLocalIpView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -365,16 +373,6 @@
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>
       <Name>Utils</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Icons\down_arrow_icon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Icons\up_arrow_icon.ico">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

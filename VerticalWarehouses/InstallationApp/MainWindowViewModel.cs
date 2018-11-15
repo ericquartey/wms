@@ -1,16 +1,14 @@
 ﻿using System;
+using Prism.Mvvm;
+using System.Windows.Input;
+using Prism.Commands;
+using Ferretto.VW.Navigation;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl;
-using Prism.Mvvm;
-using System.Windows.Input;
-using Prism.Commands;
-using System.Windows.Media;
-using Ferretto.VW.Utils.Source;
-using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -29,6 +27,7 @@ namespace Ferretto.VW.InstallationApp
         private readonly Gate3HeightControlViewModel Gate3HeightControlVMInstance = new Gate3HeightControlViewModel();
         private readonly GatesControlNavigationButtonsViewModel GatesControlNavigationButtonsVMInstance = new GatesControlNavigationButtonsViewModel();
         private readonly GatesHeightControlNavigationButtonsViewModel GatesHeightControlNavigationButtonsVMInstance = new GatesHeightControlNavigationButtonsViewModel();
+        private readonly GetLocalIPViewModel GetLocalIPVMInstance = new GetLocalIPViewModel();
         private readonly InstallationStateViewModel InstallationStateVMInstance = new InstallationStateViewModel();
         private readonly LSMTGateEngineViewModel LSMTGateEngineVMInstance = new LSMTGateEngineViewModel();
         private readonly LSMTHorizontalEngineViewModel LSMTHorizontalEngineVMInstance = new LSMTHorizontalEngineViewModel();
@@ -60,15 +59,16 @@ namespace Ferretto.VW.InstallationApp
         private ICommand gates2ControlNavigationButtonCommand;
         private ICommand gates3ControlNavigationButtonCommand;
         private ICommand gatesControlButtonCommand;
+        private ICommand getIPButtonCommand;
         private ICommand installationStateButtonCommand;
         private ICommand lowSpeedMovementsTestButtonCommand;
         private ICommand lsmtGateEngineButtonCommand;
         private ICommand lsmtHorizontalEngineButtonCommand;
         private ICommand lsmtVerticalEngineButtonCommand;
-        private SolidColorBrush machineModeCircleFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639");
-        private int machineModeSelectionItem = 0;
-        private SolidColorBrush machineOnMarchCircleFill = (SolidColorBrush)new BrushConverter().ConvertFrom("#c5c7c4");
-        private int machineOnMarchSelectionItem = 0;
+        private bool machineModeSelectionBool = true;
+        private int machineModeSelectionInt;
+        private bool machineOnMarchSelectionBool = false;
+        private int machineOnMarchSelectionInt;
         private BindableBase navigationRegionCurrentViewModel;
         private ICommand resolutionCalibrationVerticalAxisButtonCommand;
         private ICommand ssBaysButtonCommand;
@@ -103,22 +103,41 @@ namespace Ferretto.VW.InstallationApp
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance));
         public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate2HeightControlVMInstance));
         public ICommand Gate3HeightControlNavigationButtonCommand => this.gate3HeightControlNavigationButtonCommand ?? (this.gate3HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate3HeightControlVMInstance));
-        public ICommand GateHeightControlButtonCommand => this.gateHeightControlButtonCommand ?? (this.gateHeightControlButtonCommand = new DelegateCommand(() => this.GatesHeightControlButtonMethod()));
+        public ICommand GateHeightControlButtonCommand => this.gateHeightControlButtonCommand ?? (this.gateHeightControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate2HeightControlVMInstance));
         public ICommand Gates1ControlNavigationButtonCommand => this.gates1ControlNavigationButtonCommand ?? (this.gates1ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1ControlVMInstance));
         public ICommand Gates2ControlNavigationButtonCommand => this.gates2ControlNavigationButtonCommand ?? (this.gates2ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate2ControlVMInstance));
         public ICommand Gates3ControlNavigationButtonCommand => this.gates3ControlNavigationButtonCommand ?? (this.gates3ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate3ControlVMInstance));
-        public ICommand GatesControlButtonCommand => this.gatesControlButtonCommand ?? (this.gatesControlButtonCommand = new DelegateCommand(() => this.GatesControlButtonMethod()));
+        public ICommand GatesControlButtonCommand => this.gatesControlButtonCommand ?? (this.gatesControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate2ControlVMInstance));
+        public ICommand GetIPButtonCommand => this.getIPButtonCommand ?? (this.getIPButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.GetLocalIPVMInstance));
         public ICommand InstallationStateButtonCommand => this.installationStateButtonCommand ?? (this.installationStateButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.InstallationStateVMInstance));
         public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = this.LSMTNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.LSMTGateEngineVMInstance; }));
         public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.LSMTHorizontalEngineVMInstance; }));
         public ICommand LSMTVerticalEngineButtonCommand => this.lsmtVerticalEngineButtonCommand ?? (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.LSMTVerticalEngineVMInstance; }));
-        public SolidColorBrush MachineModeCircleFill { get => this.machineModeCircleFill; set => this.SetProperty(ref this.machineModeCircleFill, value); }
-        public SolidColorBrush[] MachineModeCircleFillArray { get; set; } = new SolidColorBrush[] { (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639"), new SolidColorBrush(Colors.Blue) };
-        public Int32 MachineModeSelectionItem { get => this.machineModeSelectionItem; set { this.SetProperty(ref this.machineModeSelectionItem, value); this.MachineModeCircleFill = this.MachineModeCircleFillArray[value]; } }
-        public SolidColorBrush MachineOnMarchCircleFill { get => this.machineOnMarchCircleFill; set => this.SetProperty(ref this.machineOnMarchCircleFill, value); }
-        public SolidColorBrush[] MachineOnMarchCircleFillArray { get; set; } = new SolidColorBrush[] { (SolidColorBrush)new BrushConverter().ConvertFrom("#c5c7c4")/*FerrettoLightGray*/, (SolidColorBrush)new BrushConverter().ConvertFrom("#57A639")/*FerrettoGreen*/ };
-        public Int32 MachineOnMarchSelectionItem { get => this.machineOnMarchSelectionItem; set { this.SetProperty(ref this.machineOnMarchSelectionItem, value); this.MachineOnMarchCircleFill = this.MachineOnMarchCircleFillArray[value]; } }
+        public Boolean MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
+
+        public Int32 MachineModeSelectionInt
+        {
+            get => this.machineModeSelectionInt;
+            set
+            {
+                this.SetProperty(ref this.machineModeSelectionInt, value);
+                this.MachineModeSelectionBool = this.machineModeSelectionInt == 0 ? true : false;
+            }
+        }
+
+        public Boolean MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
+
+        public Int32 MachineOnMarchSelectionInt
+        {
+            get => this.machineOnMarchSelectionInt;
+            set
+            {
+                this.SetProperty(ref this.machineOnMarchSelectionInt, value);
+                this.MachineOnMarchSelectionBool = this.machineOnMarchSelectionInt == 0 ? false : true;
+            }
+        }
+
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
         public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = this.ResolutionCalibrationVerticalAxisVMInstance; }));
         public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.SSBaysVMInstance; }));
@@ -132,19 +151,5 @@ namespace Ferretto.VW.InstallationApp
         public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.WeightControlVMInstance; }));
 
         #endregion Properties
-
-        #region Methods
-
-        private void GatesControlButtonMethod()
-        {
-            this.ContentRegionCurrentViewModel = this.Gate2ControlVMInstance;
-        }
-
-        private void GatesHeightControlButtonMethod()
-        {
-            this.ContentRegionCurrentViewModel = this.Gate2HeightControlVMInstance;
-        }
-
-        #endregion Methods
     }
 }

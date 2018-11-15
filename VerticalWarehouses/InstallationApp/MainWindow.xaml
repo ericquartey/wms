@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:gatesControl="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl"
         xmlns:gatesHeightControl="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl"
@@ -74,6 +75,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type singleViews:CellsControlViewModel}">
             <singleViews:CellsControlView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type singleViews:GetLocalIPViewModel}">
+            <singleViews:GetLocalIpView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type gatesControl:GatesControlNavigationButtonsViewModel}">
             <gatesControl:GatesControlNavigationButtonsView />
@@ -174,7 +178,7 @@
                               VerticalContentAlignment="Center"
                               FontSize="25"
                               Foreground="{DynamicResource IAPP_MainWindowMachineStateComboBox_Foreground_Normal}"
-                              SelectedIndex="{Binding MachineModeSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedIndex="{Binding MachineModeSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Style="{StaticResource IAPP_MainWindowMachineStateComboBoxStyle}"
                               Template="{StaticResource IAPP_MainWindowMachineStateComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=machineModeComboBox, Path=ActualHeight}"
@@ -187,11 +191,12 @@
                                       Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"
                                       Template="{DynamicResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
                     </ComboBox>
-                    <Ellipse Grid.Column="0"
-                             Width="30"
-                             Height="30"
-                             Margin="5"
-                             Fill="{Binding MachineModeCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <custom:CustomControlHighlightableBullet Grid.Column="0"
+                                                             Width="30"
+                                                             Height="30"
+                                                             Margin="5"
+                                                             SensorState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Style="{StaticResource IAPP_ViewCustomSensorControlMachineModeStyle}" />
                 </Grid>
                 <Grid Margin="2,10,2,2"
                       Background="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}">
@@ -207,7 +212,7 @@
                               VerticalContentAlignment="Center"
                               FontSize="25"
                               Foreground="{DynamicResource IAPP_MainWindowMachineStateComboBox_Foreground_Normal}"
-                              SelectedIndex="{Binding MachineOnMarchSelectionItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              SelectedIndex="{Binding MachineOnMarchSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Template="{StaticResource IAPP_MainWindowMachineStateComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=machineOnMarchComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.Off}"
@@ -219,11 +224,12 @@
                                       Style="{StaticResource IAPP_MainWindowMachineStateComboBoxItemStyle}"
                                       Template="{DynamicResource IAPP_MainWindowMachineStateComboBoxItemTemplate}" />
                     </ComboBox>
-                    <Ellipse Grid.Column="0"
-                             Width="30"
-                             Height="30"
-                             Margin="5"
-                             Fill="{Binding MachineOnMarchCircleFill, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <custom:CustomControlHighlightableBullet Grid.Column="0"
+                                                             Width="30"
+                                                             Height="30"
+                                                             Margin="5"
+                                                             SensorState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Style="{StaticResource IAPP_ViewCustomSensorControlMachineMarchStyle}" />
                 </Grid>
                 <Button Height="70"
                         Margin="5,0,0,0"

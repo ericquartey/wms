@@ -5,10 +5,12 @@ using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Ferretto.VW.VWApp
 {
-    internal class MainWindowViewModel : BindableBase
+    internal class MainWindowViewModel : BindableBase, IDataErrorInfo
     {
         #region Fields
 
@@ -38,6 +40,12 @@ namespace Ferretto.VW.VWApp
         #region Properties
 
         public ICommand ChangeStyleButtonCommand => this.changeStyleButtonCommand ?? (this.changeStyleButtonCommand = new DelegateCommand(() => NavigationService.RaiseChangeSkinEvent()));
+
+        public string Error
+        {
+            get { return null; }
+        }
+
         public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(this.ExecuteLoginButtonCommand));
         public String LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
         public String MachineModel { get => this.machineModel; set => this.SetProperty(ref this.machineModel, value); }
@@ -47,6 +55,18 @@ namespace Ferretto.VW.VWApp
         public String UserLogin { get => this.userLogin; set => this.SetProperty(ref this.userLogin, value); }
 
         #endregion Properties
+
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                return this.Validate(columnName);
+            }
+        }
+
+        #endregion Indexers
 
         #region Methods
 
@@ -88,6 +108,22 @@ namespace Ferretto.VW.VWApp
             {
                 this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
             }
+        }
+
+        private string Validate(string propertyName)
+        {
+            string validationMessage = string.Empty;
+            switch (propertyName)
+            {
+                case "UserLogin":
+                    if (this.UserLogin == "")
+                    {
+                        validationMessage = "Error";
+                    }
+                    break;
+            }
+
+            return validationMessage;
         }
 
         #endregion Methods

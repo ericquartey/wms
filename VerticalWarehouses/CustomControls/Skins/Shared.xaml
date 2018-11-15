@@ -7,14 +7,20 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomInputFieldControlFocusableStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomControlInputFieldStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBlockStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/RepeatButtonStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomControlHighlightableBulletStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TESTCCBoxStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TESTCCBoxItemStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowMachineStateComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowMachineStateComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxItemTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

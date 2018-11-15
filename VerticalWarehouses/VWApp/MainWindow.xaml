@@ -51,8 +51,9 @@
                        Height="160" />
             <custom:CustomInputFieldControl Width="200"
                                             HorizontalAlignment="Left"
-                                            InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:General.UserLogin}" />
+                                            InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            LabelText="{x:Static res:General.UserLogin}"
+                                            Style="{StaticResource SS_MainWindowCustomControlInputField_ValidationTest}" />
             <custom:CustomInputFieldControl Width="200"
                                             HorizontalAlignment="Left"
                                             InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -67,11 +68,28 @@
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />
-            <Button Width="200"
-                    HorizontalAlignment="Left"
-                    Command="{Binding ChangeStyleButtonCommand}"
-                    Content="Change style"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+            <ComboBox Width="200"
+                      HorizontalAlignment="Left"
+                      Style="{StaticResource TESTCBoxStyle}"
+                      Template="{StaticResource TESTCBoxTemplate}">
+                <ComboBoxItem IsSelected="True"
+                              Style="{StaticResource TESTCBoxItemStyle}"
+                              Template="{StaticResource TESTCBoxItemTemplate}">
+                    Ciao1
+                </ComboBoxItem>
+                <ComboBoxItem Style="{StaticResource TESTCBoxItemStyle}"
+                              Template="{StaticResource TESTCBoxItemTemplate}">
+                    Ciao2
+                </ComboBoxItem>
+                <ComboBoxItem Style="{StaticResource TESTCBoxItemStyle}"
+                              Template="{StaticResource TESTCBoxItemTemplate}">
+                    Ciao3
+                </ComboBoxItem>
+                <ComboBoxItem Style="{StaticResource TESTCBoxItemStyle}"
+                              Template="{StaticResource TESTCBoxItemTemplate}">
+                    Ciao4
+                </ComboBoxItem>
+            </ComboBox>
         </StackPanel>
     </Grid>
 </Window>
