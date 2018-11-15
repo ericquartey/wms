@@ -323,7 +323,6 @@ namespace Ferretto.Common.Controls
             {
                 ////Ruler with origin Left
                 mark.XStart = GraphicUtils.ConvertMillimetersToPixel((i * this.MajorInterval), this.WidthPixelForConvert, this.WidthMmForConvert);
-                mark.XEnd = mark.XStart;
                 mark.YStart = 0;
                 mark.YEnd = this.MarkLength;
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
@@ -343,7 +342,6 @@ namespace Ferretto.Common.Controls
                 //Ruler with origin Top
                 mark.YStart = GraphicUtils.ConvertMillimetersToPixel((i * this.MajorInterval), this.WidthPixelForConvert, this.WidthMmForConvert);
 
-                mark.YEnd = mark.YStart;
                 mark.XStart = 0;
                 mark.XEnd = this.MarkLength;
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
