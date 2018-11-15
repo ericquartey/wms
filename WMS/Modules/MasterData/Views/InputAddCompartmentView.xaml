@@ -9,12 +9,14 @@
 
     <Grid x:Name="Add"
           MinWidth="300">
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
 
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
@@ -50,30 +52,41 @@
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Compartment Details" />
-        <!--  Grid.ColumnSpan="2"  -->
+
+        <Label x:Name="ErrorText"
+               Grid.Row="2"
+               Grid.ColumnSpan="2"
+               Height="20"
+               MinWidth="100"
+               HorizontalAlignment="Left"
+               Content="{Binding Error}"
+               FontStyle="Italic"
+               FontWeight="Bold"
+               Foreground="{Binding ErrorColor}"
+               Visibility="Visible" />
 
         <wms:SpinEdit x:Name="WidthText"
-                      Grid.Row="2"
+                      Grid.Row="3"
                       Grid.Column="0"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
         <wms:SpinEdit x:Name="HeightText"
-                      Grid.Row="2"
+                      Grid.Row="3"
                       Grid.Column="1"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
         <wms:SpinEdit x:Name="PositionXText"
-                      Grid.Row="3"
+                      Grid.Row="4"
                       Grid.Column="0"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       Background="White"
                       EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
         <wms:SpinEdit x:Name="PositionYText"
-                      Grid.Row="3"
+                      Grid.Row="4"
                       Grid.Column="1"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
@@ -81,7 +94,7 @@
                       Foreground="White" />
 
         <wms:TextBox x:Name="ArticleText"
-                     Grid.Row="4"
+                     Grid.Row="5"
                      Grid.Column="0"
                      Grid.ColumnSpan="2"
                      Width="250"
@@ -91,34 +104,19 @@
                      Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <wms:SpinEdit x:Name="QuantityText"
-                      Grid.Row="5"
+                      Grid.Row="6"
                       Grid.Column="0"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Foreground="White" />
         <wms:SpinEdit x:Name="CapacityText"
-                      Grid.Row="5"
+                      Grid.Row="6"
                       Grid.Column="1"
                       HorizontalAlignment="Left"
                       VerticalAlignment="Top"
                       EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Foreground="White" />
-
-        <TextBox x:Name="ErrorText"
-                 Grid.Row="6"
-                 Grid.ColumnSpan="2"
-                 Height="20"
-                 MinWidth="100"
-                 HorizontalAlignment="Left"
-                 VerticalAlignment="Bottom"
-                 FontStyle="Italic"
-                 FontWeight="Bold"
-                 Foreground="{Binding ErrorColor}"
-                 Text="{Binding Error}"
-                 Visibility="Visible" />
-
     </Grid>
-
 
 </UserControl>
