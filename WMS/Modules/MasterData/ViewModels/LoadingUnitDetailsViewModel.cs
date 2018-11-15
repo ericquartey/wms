@@ -91,10 +91,10 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RevertCommand => this.revertCommand ??
-                                         ( this.revertCommand = new DelegateCommand(this.LoadData) );
+                                         (this.revertCommand = new DelegateCommand(this.LoadData));
 
         public ICommand SaveCommand => this.saveCommand ??
-                                       ( this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand) );
+                                       (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
         public CompartmentDetails SelectedCompartment
         {
@@ -146,7 +146,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteEditCommand()
         {
-            this.NavigationService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.LoadingUnit.Id);
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.LoadingUnit.Id);
         }
 
         private void ExecuteSaveCommand()
@@ -202,12 +202,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.Tray = newTray;
             this.ReadOnlyTray = true;
             this.IsCompartmentSelectableTray = true;
-            this.TrayColoringFunc = ( new FillingFilter() ).ColorFunc;
+            this.TrayColoringFunc = (new FillingFilter()).ColorFunc;
         }
 
         private void LoadData()
         {
-            if (!( this.Data is int modelId ))
+            if (!(this.Data is int modelId))
             {
                 return;
             }
