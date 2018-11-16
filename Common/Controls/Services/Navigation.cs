@@ -93,6 +93,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public string Info { get; set; }
+        public bool IsSchedulerOnline { get; set; }
         public string Token { get; }
 
         #endregion Properties

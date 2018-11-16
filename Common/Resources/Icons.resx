@@ -293,4 +293,12 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Machines/vertimag_xs_icon.png</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="SchedulerOffLine" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_black_24dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="SchedulerOnLine" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_connected_black_24dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>
