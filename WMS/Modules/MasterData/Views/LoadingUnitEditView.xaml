@@ -123,6 +123,7 @@
                       VerticalAlignment="Stretch"
                       VerticalContentAlignment="Stretch"
                       ExpandDirection="Right"
+                      HideToggleButton="True"
                       IsExpanded="{Binding IsExpand}">
             <Grid>
                 <ScrollViewer Grid.Column="1"
