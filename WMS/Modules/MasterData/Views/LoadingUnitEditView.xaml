@@ -52,19 +52,15 @@
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
-
             <wms:WmsTrayControl x:Name="TrayControl"
                                 Grid.Row="1"
                                 Margin="0,10,0,0"
                                 HorizontalAlignment="Center"
                                 IsCompartmentSelectable="{Binding IsSelectableTray}"
-                                ReadOnly="{Binding ReadOnlyTray}"
+                                IsReadOnly="{Binding ReadOnlyTray}"
                                 SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
                                 ShowRuler="True"
                                 Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
-
-
-
 
             <wms:WmsGridControl Grid.Row="2"
                                 MinHeight="50"
