@@ -75,7 +75,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0"
+                        <Grid Grid.Row="1"
                               Width="{StaticResource ExpanderArrowWidth}"
                               Height="{StaticResource ExpanderArrowHeight}"
                               Background="Transparent"
@@ -89,12 +89,12 @@
                                   Stroke="{DynamicResource CommonSecondaryDark}"
                                   StrokeThickness="2">
                                 <Path.LayoutTransform>
-                                    <RotateTransform Angle="-90" />
+                                    <RotateTransform Angle="90" />
                                 </Path.LayoutTransform>
                             </Path>
                         </Grid>
                         <ContentPresenter Name="ExpanderContentPresenter"
-                                          Grid.Row="1"
+                                          Grid.Row="0"
                                           Margin="0,0,0,0"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Top"
@@ -193,12 +193,16 @@
                         </Trigger>
                         <Trigger Property="ExpandDirection" Value="Right">
                             <Setter TargetName="HeaderSite" Property="Style" Value="{StaticResource ExpanderRightHeaderStyle}" />
+                            <Setter TargetName="GridHeaderSite" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="ExpandSite" Property="Grid.Column" Value="1" />
                         </Trigger>
                         <Trigger Property="ExpandDirection" Value="Up">
                             <Setter TargetName="HeaderSite" Property="Style" Value="{StaticResource ExpanderUpHeaderStyle}" />
                         </Trigger>
                         <Trigger Property="ExpandDirection" Value="Left">
                             <Setter TargetName="HeaderSite" Property="Style" Value="{StaticResource ExpanderLeftHeaderStyle}" />
+                            <Setter TargetName="GridHeaderSite" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="ExpandSite" Property="Grid.Column" Value="0" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
