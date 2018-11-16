@@ -18,10 +18,11 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
     {
         #region Fields
 
-        private readonly ILogger logger;
-        private readonly IHubContext<WakeupHub, IWakeupHub> hubContext;
-        private readonly IServiceProvider serviceProvider;
         private const string DEFAULT_ORDERBY_FIELD = nameof(Item.Code);
+        private readonly IHubContext<WakeupHub, IWakeupHub> hubContext;
+        private readonly ILogger logger;
+        private readonly IServiceProvider serviceProvider;
+        private readonly Core.IWarehouse warehouse;
 
         #endregion Fields
 
@@ -30,16 +31,25 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         public ItemsController(
             IServiceProvider serviceProvider,
             ILogger<ItemsController> logger,
+            Core.IWarehouse warehouse,
             IHubContext<WakeupHub, IWakeupHub> hubContext)
         {
             this.serviceProvider = serviceProvider;
             this.logger = logger;
+            this.warehouse = warehouse;
             this.hubContext = hubContext;
         }
 
         #endregion Constructors
 
         #region Methods
+
+        public static Expression<Func<T, TResult>> CreateSelectorExpression<T, TResult>(string propertyName)
+        {
+            var parameterExpression = Expression.Parameter(typeof(T));
+            return (Expression<Func<T, TResult>>)Expression.Lambda(Expression.PropertyOrField(parameterExpression, propertyName),
+                                                                    parameterExpression);
+        }
 
         [HttpGet]
         public IEnumerable<Item> GetAll(int skip = 0, int take = int.MaxValue, string orderBy = DEFAULT_ORDERBY_FIELD)
@@ -66,47 +76,36 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             }
         }
 
-        public static Expression<Func<T, TResult>> CreateSelectorExpression<T, TResult>(string propertyName)
-        {
-            var parameterExpression = Expression.Parameter(typeof(T));
-            return (Expression<Func<T, TResult>>)Expression.Lambda(Expression.PropertyOrField(parameterExpression, propertyName),
-                                                                    parameterExpression);
-        }
-
         [HttpPost("withdraw")]
-        public async Task<List<Mission>> Withdraw(Contracts.WithdrawRequest withdrawRequest)
+        [ProducesResponseType(200, Type = typeof(Core.WarehouseHandlingRequest))]
+        [ProducesResponseType(201, Type = typeof(Core.WarehouseHandlingRequest))]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> Withdraw([FromBody] Contracts.WithdrawRequest withdrawRequest)
         {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest(this.ModelState);
+            }
+
             this.logger.LogInformation($"Withdrawal request of item {withdrawRequest.ItemId} received.");
 
-            var mission1Quantity = withdrawRequest.Quantity / 2;
+            var acceptedRequest = await this.warehouse.Withdraw(
+                withdrawRequest.ItemId,
+                withdrawRequest.Quantity,
+                withdrawRequest.Lot,
+                withdrawRequest.RegistrationNumber,
+                withdrawRequest.Sub1,
+                withdrawRequest.Sub2);
 
-            var missions = new List<Mission>
+            if (acceptedRequest == null)
             {
-#pragma warning disable IDE0009
-                new Mission
-                {
-                    Id = 1,
-                    ItemId = withdrawRequest.ItemId,
-                    Quantity = mission1Quantity,
-                    BayId = withdrawRequest.BayId,
-                    TypeId = "PK"
-                },
-                new Mission
-                {
-                    Id = 2,
-                    ItemId = withdrawRequest.ItemId,
-                    Quantity = withdrawRequest.Quantity  - mission1Quantity,
-                    BayId = withdrawRequest.BayId,
-                    TypeId = "PK"
-                }
- #pragma warning restore IDE0009
-            };
+                this.logger.LogWarning($"Withdrawal request of item {withdrawRequest.ItemId} could not be processed.");
 
-            this.logger.LogInformation($"Notifying new missions.");
-            await this.hubContext.Clients.All.NotifyNewMission(missions[0]);
-            await this.hubContext.Clients.All.NotifyNewMission(missions[1]);
+                return this.UnprocessableEntity(this.ModelState);
+            }
 
-            return missions;
+            this.logger.LogInformation($"Withdrawal request of item {withdrawRequest.ItemId} accepted.");
+            return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
         }
 
         #endregion Methods

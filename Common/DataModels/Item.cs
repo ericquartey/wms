@@ -40,6 +40,7 @@ namespace Ferretto.Common.DataModels
         public int? PickTolerance { get; set; }
         public int? ReorderPoint { get; set; }
         public int? ReorderQuantity { get; set; }
+        public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
         public int? StoreTolerance { get; set; }
         public int? Width { get; set; }
 

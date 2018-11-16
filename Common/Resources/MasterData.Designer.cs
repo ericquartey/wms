@@ -223,6 +223,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Compartment.
+        /// </summary>
+        public static string EditCompartment {
+            get {
+                return ResourceManager.GetString("EditCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string ItemAll {

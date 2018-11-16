@@ -75,6 +75,9 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<Enumeration> ItemPairingChoices { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
+        public string ItemPairingDescription { get; set; }
+
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
 

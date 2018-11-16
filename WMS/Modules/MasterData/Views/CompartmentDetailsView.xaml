@@ -250,7 +250,6 @@
                                             CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedAllowedItem, Mode=TwoWay}"
                                             ItemType="{x:Type models:AllowedItemInCompartment}"
                                             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AllowedItemsDataSource, Mode=OneWay}"
-                                            SelectionMode="Row"
                                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
                                 <dxg:TableView AllowEditing="False"
@@ -297,8 +296,9 @@
                     <wms:WmsTrayControl x:Name="TrayControl"
                                         Grid.Row="0"
                                         Margin="0,0,0,0"
+                                        ShowBackground="True"
                                         IsCompartmentSelectable="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsCompartmentSelectableTray, Mode=OneWay}"
-                                        ReadOnly="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ReadOnlyTray, Mode=OneWay}"
+                                        IsReadOnly="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ReadOnlyTray, Mode=OneWay}"
                                         SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
                                         Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
 

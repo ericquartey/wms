@@ -12,17 +12,27 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
+        private readonly IInputService inputService = ServiceLocator.Current.GetInstance<IInputService>();
         private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+        private IWmsHistoryView currentHistoryView;
+        private bool isControlPressed;
 
         #endregion Fields
+
+        #region Constructors
+
+        public HistoryViewService()
+        {
+            this.inputService.BeginMouseNotify(this, this.OnMouseDown);
+        }
+
+        #endregion Constructors
 
         #region Methods
 
         public void Appear(string moduleName, string viewModelName, object data = null)
         {
-            var historyView = this.GetCurrentHistoryView();
-
-            if (historyView == null)
+            if (this.currentHistoryView == null)
             {
                 return;
             }
@@ -34,22 +44,35 @@ namespace Ferretto.Common.Controls.Services
 
             this.navigationService.LoadModule(moduleName);
 
-            historyView.Appear(moduleName, viewModelName, data);
+            if (this.isControlPressed)
+            {
+                this.navigationService.Appear(moduleName, viewModelName, data);
+            }
+            else
+            {
+                this.currentHistoryView.Appear(moduleName, viewModelName, data);
+            }
+            this.Reset();
         }
 
         public void Previous()
         {
-            var historyView = this.GetCurrentHistoryView();
-
-            historyView?.Previous();
+            this.currentHistoryView?.Previous();
+            this.Reset();
         }
 
-        private IWmsHistoryView GetCurrentHistoryView()
+        private void OnMouseDown(MouseDownInfo mouseDownInfo)
         {
-            var elementWithFocus = Keyboard.FocusedElement as UIElement;
-            return LayoutTreeHelper.GetVisualParents(elementWithFocus as DependencyObject)
+            this.currentHistoryView = LayoutTreeHelper.GetVisualParents(mouseDownInfo.OriginalSource as DependencyObject)
                                 .OfType<IWmsHistoryView>()
                                 .FirstOrDefault();
+            this.isControlPressed = ((Keyboard.Modifiers & System.Windows.Input.ModifierKeys.Control) == System.Windows.Input.ModifierKeys.Control);
+        }
+
+        private void Reset()
+        {
+            this.currentHistoryView = null;
+            this.isControlPressed = false;
         }
 
         #endregion Methods

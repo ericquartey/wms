@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -61,7 +62,6 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public readonly int BORDER_TRAY = 1;
         public readonly int DimensionRuler = 25;
         public readonly int DOUBLE_BORDER_TRAY = 2;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
@@ -94,6 +94,42 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
+        public List<CompartmentDetails> AddBulkCompartments(CompartmentDetails compartment, int row, int column)
+        {
+            var tempList = new List<CompartmentDetails>();
+            int startX = (int)compartment.XPosition;
+            int startY = (int)compartment.YPosition;
+            for (int i = 0; i < row; i++)
+            {
+                for (int j = 0; j < column; j++)
+                {
+                    var newCompartment = new CompartmentDetails()
+                    {
+                        Width = compartment.Width,
+                        Height = compartment.Height,
+                        XPosition = startX + (i * compartment.Width),
+                        YPosition = startY + (j * compartment.Height),
+                        ItemPairing = compartment.ItemPairing,
+                        ItemCode = compartment.ItemCode,
+                        Stock = compartment.Stock,
+                        MaxCapacity = compartment.MaxCapacity,
+                        CompartmentTypeId = compartment.CompartmentTypeId,
+                        LoadingUnitId = compartment.LoadingUnitId
+                    };
+                    if (this.CanAddCompartment(newCompartment))
+                    {
+                        tempList.Add(newCompartment);
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                }
+            }
+            this.AddCompartmentsRange(tempList);
+            return tempList;
+        }
+
         public void AddCompartment(CompartmentDetails compartmentDetails)
         {
             if (this.CanAddCompartment(compartmentDetails))
@@ -123,15 +159,18 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public void AddDynamicCompartments(int row, int column, int XPosition, int YPosition, int width, int height)
+        public bool CanAddBulkCompartment(CompartmentDetails compartment, int row, int column)
         {
-            //TODO: add logic of dynamic scompartition
-            //      n: is calculated number of compartment to add
-            //      n: based on row/column
-            var n = 0;
-            for (var i = 0; i < n; i++)
+            if (compartment != null && row > 1 && column > 1)
             {
-                this.AddCompartment(null);
+                CompartmentDetails compartmentBulk = compartment;
+                compartmentBulk.Width = compartment.Width * row;
+                compartmentBulk.Height = compartment.Height * column;
+                return this.CanAddCompartment(compartmentBulk);
+            }
+            else
+            {
+                throw new ArgumentException();
             }
         }
 

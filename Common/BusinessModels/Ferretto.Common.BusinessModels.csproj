@@ -3,10 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />

@@ -6,6 +6,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class ItemListRowConfiguration : IEntityTypeConfiguration<ItemListRow>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<ItemListRow> builder)
         {
             if (builder == null)
@@ -18,7 +20,7 @@ namespace Ferretto.Common.EF.Configurations
             builder.HasIndex(i => i.Code).IsUnique();
             builder.Property(i => i.Code).IsRequired();
             builder.Property(i => i.CreationDate)
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasOne(i => i.ItemList)
                 .WithMany(i => i.ItemListRows)
@@ -41,5 +43,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(i => i.ItemListRowStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion Methods
     }
 }

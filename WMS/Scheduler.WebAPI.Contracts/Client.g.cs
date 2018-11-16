@@ -268,14 +268,14 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(WithdrawRequest withdrawRequest)
+        public System.Threading.Tasks.Task<WarehouseHandlingRequest> WithdrawAsync(WithdrawRequest withdrawRequest)
         {
             return WithdrawAsync(withdrawRequest, System.Threading.CancellationToken.None);
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        public async System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Mission>> WithdrawAsync(WithdrawRequest withdrawRequest, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<WarehouseHandlingRequest> WithdrawAsync(WithdrawRequest withdrawRequest, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/Items/withdraw");
@@ -312,10 +312,10 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                         if (status_ == "200") 
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            var result_ = default(System.Collections.ObjectModel.ObservableCollection<Mission>); 
+                            var result_ = default(WarehouseHandlingRequest); 
                             try
                             {
-                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.ObjectModel.ObservableCollection<Mission>>(responseData_, _settings.Value);
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<WarehouseHandlingRequest>(responseData_, _settings.Value);
                                 return result_; 
                             } 
                             catch (System.Exception exception_) 
@@ -324,13 +324,34 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                             }
                         }
                         else
+                        if (status_ == "201") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            var result_ = default(WarehouseHandlingRequest); 
+                            try
+                            {
+                                result_ = Newtonsoft.Json.JsonConvert.DeserializeObject<WarehouseHandlingRequest>(responseData_, _settings.Value);
+                                return result_; 
+                            } 
+                            catch (System.Exception exception_) 
+                            {
+                                throw new SwaggerException("Could not deserialize the response body.", (int)response_.StatusCode, responseData_, headers_, exception_);
+                            }
+                        }
+                        else
+                        if (status_ == "404") 
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("A server side error occurred.", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                        else
                         if (status_ != "200" && status_ != "204")
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(System.Collections.ObjectModel.ObservableCollection<Mission>);
+                        return default(WarehouseHandlingRequest);
                     }
                     finally
                     {

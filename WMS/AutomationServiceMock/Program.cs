@@ -21,9 +21,10 @@ namespace Ferretto.WMS.AutomationServiceMock
             services.AddSingleton<IAutomationService, AutomationService>();
 
             var schedulerUrl = configuration["Scheduler:Url"];
-            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(schedulerUrl));
-            services.AddTransient<IMissionsClient>(s => new MissionsClient(schedulerUrl));
-            services.AddTransient<IBaysClient>(s => new BaysClient(schedulerUrl));
+            var wakeUpPath = configuration["Hubs:WakeUp"];
+            services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(schedulerUrl, wakeUpPath));
+
+            services.AddWebAPIClients(schedulerUrl);
 
             return services.BuildServiceProvider();
         }

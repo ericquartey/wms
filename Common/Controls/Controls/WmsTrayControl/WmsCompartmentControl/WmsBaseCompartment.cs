@@ -15,8 +15,7 @@ namespace Ferretto.Common.Controls
         private bool isSelected;
         private double left;
         private int quantity;
-        private bool readOnly;
-        private string selected;
+        private bool isReadOnly;
         private double top;
         private double width;
 
@@ -76,13 +75,7 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.quantity, value);
         }
 
-        public bool ReadOnly { get => this.readOnly; set => this.SetProperty(ref this.readOnly, value); }
-
-        public string Selected
-        {
-            get => this.selected;
-            set => this.SetProperty(ref this.selected, value);
-        }
+        public bool IsReadOnly { get => this.isReadOnly; set => this.SetProperty(ref this.isReadOnly, value); }
 
         public double Top
         {

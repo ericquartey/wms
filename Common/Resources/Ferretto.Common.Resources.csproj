@@ -2,11 +2,6 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
-    <Platforms>AnyCPU;x86</Platforms>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
   </PropertyGroup>
   
   <ItemGroup>

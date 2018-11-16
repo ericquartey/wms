@@ -7,6 +7,8 @@ namespace Ferretto.Common.EF.Configurations
 {
     public class CompartmentConfiguration : IEntityTypeConfiguration<Compartment>
     {
+        #region Methods
+
         public void Configure(EntityTypeBuilder<Compartment> builder)
         {
             if (builder == null)
@@ -25,12 +27,12 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(c => c.ReservedToStore)
                 .HasDefaultValue(0);
             builder.Property(c => c.CreationDate)
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("GETUTCDATE()");
             builder.Property(c => c.ItemPairing)
                 .HasColumnType("NVARCHAR(MAX)")
                 .HasConversion(
                     x => x.ToString()
-                    , x => (Pairing) Enum.Parse(typeof(Pairing), x)
+                    , x => (Pairing)Enum.Parse(typeof(Pairing), x)
                 );
 
             builder.HasOne(c => c.LoadingUnit)
@@ -58,5 +60,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(c => c.CompartmentStatusId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
         }
+
+        #endregion Methods
     }
 }
