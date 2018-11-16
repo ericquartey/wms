@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+                    xmlns:dxbt="http://schemas.devexpress.com/winfx/2008/xaml/bars/themekeys"
                     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
-
-
     <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerCaptionTemplate}">
         <Grid x:Name="Root">
             <Grid.ColumnDefinitions>
@@ -24,6 +24,14 @@
             </dxc:FloatingContainerHeaderPanel>
         </Grid>
     </DataTemplate>
+
+
+    
+    <ControlTemplate x:Key="{dxbt:BarControlThemeKey ResourceKey=StatusBarTemplate, ThemeName=Office2016White}" TargetType="{x:Type ContentControl}">
+        <ContentControl>
+            <ContentPresenter />
+        </ContentControl>
+    </ControlTemplate>
 
     <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerTemplate}">
         <Grid Background="{DynamicResource CommonSecondaryMedium}"
@@ -110,16 +118,35 @@
                                                                                                  ThemeName=Office2016White,
                                                                                                  ResourceKey=FloatingContainerSizeGripTemplate}}" />
                             </StackPanel>
-                            <ctrls:StatusBar Grid.Row="1"
-                                             Height="{DynamicResource StatusBarHeight}"
-                                             Background="{DynamicResource CommonSecondaryMedium}">
-                                <TextBlock Margin="0,3,30,0"
-                                           FontFamily="{DynamicResource FontSmall}"
-                                           FontSize="{DynamicResource FontSizeSmall}"
-                                           Foreground="{DynamicResource OnCommonPrimary}"
-                                           Text="{Binding Info}"
-                                           TextAlignment="Right" />
-                            </ctrls:StatusBar>
+                            <ctrls:WmsStatusBar x:Name="sbMain"
+                                                Grid.Row="1">
+                                <dxb:BarStaticItem x:Name="biRow"                                                  
+                                                   ShowBorder="False">
+                                    <dxb:BarStaticItem.ContentTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Margin="5,0,0,0"
+                                                       FontFamily="{DynamicResource FontSmall}"
+                                                       FontSize="{DynamicResource FontSizeSmall}"
+                                                       Foreground="{DynamicResource OnCommonPrimary}"
+                                                       Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.Info}"
+                                                       TextAlignment="Left" />
+                                        </DataTemplate>
+                                    </dxb:BarStaticItem.ContentTemplate>
+                                </dxb:BarStaticItem>
+                                <dxb:BarButtonItem x:Name="biOffLine"
+                                                   Alignment="Far">
+                                    <dxb:BarButtonItem.ContentTemplate>
+                                        <DataTemplate>
+                                            <ctrls:WmsIcon Width="16"
+                                                           Height="16"
+                                                           HorizontalAlignment="Left"
+                                                           VerticalAlignment="Top"
+                                                           ColorizeBrush="White"
+                                                           SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.SchedulerStatus, Mode=TwoWay}" />
+                                        </DataTemplate>
+                                    </dxb:BarButtonItem.ContentTemplate>
+                                </dxb:BarButtonItem>
+                            </ctrls:WmsStatusBar>
                         </Grid>
                     </Border>
                 </Grid>
