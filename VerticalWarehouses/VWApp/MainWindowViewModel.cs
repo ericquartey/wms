@@ -16,6 +16,8 @@ namespace Ferretto.VW.VWApp
 
         private readonly bool installation_completed;
         private ICommand changeStyleButtonCommand;
+        private int currentSelection;
+        private bool customComboBoxStateBool = false;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string machineModel;
@@ -40,6 +42,25 @@ namespace Ferretto.VW.VWApp
         #region Properties
 
         public ICommand ChangeStyleButtonCommand => this.changeStyleButtonCommand ?? (this.changeStyleButtonCommand = new DelegateCommand(() => NavigationService.RaiseChangeSkinEvent()));
+
+        public Int32 CurrentSelection
+        {
+            get => this.currentSelection;
+            set
+            {
+                this.SetProperty(ref this.currentSelection, value);
+                if (this.CurrentSelection == 0)
+                {
+                    this.CustomComboBoxStateBool = true;
+                }
+                else
+                {
+                    this.CustomComboBoxStateBool = false;
+                }
+            }
+        }
+
+        public Boolean CustomComboBoxStateBool { get => this.customComboBoxStateBool; set => this.SetProperty(ref this.customComboBoxStateBool, value); }
 
         public string Error
         {

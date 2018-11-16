@@ -5,18 +5,12 @@
                      TargetType="{x:Type ComboBox}">
         <Grid x:Name="TemplateRoot"
               SnapsToDevicePixels="True">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
             <Popup x:Name="PART_Popup"
                    Grid.ColumnSpan="2"
                    IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                    Placement="Bottom"
                    PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                <Border x:Name="dropDownBorder"
-                        MinWidth="{Binding ActualWidth, ElementName=templateRoot}"
-                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                <Border x:Name="dropDownBorder">
                     <ScrollViewer x:Name="DropDownScrollViewer">
                         <Grid x:Name="grid"
                               RenderOptions.ClearTypeHint="Enabled">
@@ -42,7 +36,8 @@
                           Background="{TemplateBinding Background}"
                           BorderBrush="{TemplateBinding BorderBrush}"
                           BorderThickness="{TemplateBinding BorderThickness}"
-                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                          Template="{DynamicResource TESTToggleButtonTemplate}" />
             <ContentPresenter x:Name="contentPresenter"
                               Margin="{TemplateBinding Padding}"
                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

@@ -14,6 +14,7 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomControlHighlightableBulletStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TESTCCBoxStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TESTCCBoxItemStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomComboBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowMachineStateComboBoxTemplate.xaml" />
@@ -22,5 +23,6 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxItemTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTToggleButtonTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -68,28 +68,6 @@
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />
-            <ComboBox Width="200"
-                      HorizontalAlignment="Left"
-                      Style="{StaticResource TESTCBoxStyle}"
-                      Template="{StaticResource TESTCBoxTemplate}">
-                <ComboBoxItem IsSelected="True"
-                              Style="{StaticResource TESTCBoxItemStyle}"
-                              Template="{StaticResource TESTCBoxItemTemplate}">
-                    Ciao1
-                </ComboBoxItem>
-                <ComboBoxItem Style="{StaticResource TESTCBoxItemStyle}"
-                              Template="{StaticResource TESTCBoxItemTemplate}">
-                    Ciao2
-                </ComboBoxItem>
-                <ComboBoxItem Style="{StaticResource TESTCBoxItemStyle}"
-                              Template="{StaticResource TESTCBoxItemTemplate}">
-                    Ciao3
-                </ComboBoxItem>
-                <ComboBoxItem Style="{StaticResource TESTCBoxItemStyle}"
-                              Template="{StaticResource TESTCBoxItemTemplate}">
-                    Ciao4
-                </ComboBoxItem>
-            </ComboBox>
         </StackPanel>
     </Grid>
 </Window>

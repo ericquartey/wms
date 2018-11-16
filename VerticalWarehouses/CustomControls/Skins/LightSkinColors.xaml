@@ -124,8 +124,14 @@
     <SolidColorBrush x:Key="IAPP_SensorState_BulletBackground_Normal"
                      Color="{StaticResource ColorFerrettoBlack}" />
 
-    <SolidColorBrush x:Key="IAPP_HighlightableBullet_Fill"
+    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineMode_Auto"
                      Color="Blue" />
+    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineMode_Manual"
+                     Color="{StaticResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineOnMarch_On"
+                     Color="{StaticResource ColorFerrettoGreen}" />
+    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
+                     Color="{StaticResource ColorFerrettoLightGray}" />
 
     <FontFamily x:Key="IAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
     <FontFamily x:Key="IAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>

@@ -4,13 +4,15 @@
     <ControlTemplate x:Key="TESTCBoxItemTemplate"
                      TargetType="{x:Type ComboBoxItem}">
         <Border x:Name="Bd"
+                Width="{TemplateBinding Width}"
                 Padding="{TemplateBinding Padding}"
-                Background="{TemplateBinding Background}"
+                Background="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 SnapsToDevicePixels="True">
-            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+            <ContentPresenter Grid.ColumnSpan="2"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
                               Content="{TemplateBinding Content}"
                               ContentStringFormat="{TemplateBinding ContentStringFormat}"
                               ContentTemplate="{TemplateBinding ContentTemplate}"
@@ -26,8 +28,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_MainWindowUser_Background_Normal}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_MainWindowUser_BorderBrush_Normal}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -35,8 +37,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_MainWindowUser_Background_Normal}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_MainWindowUser_BorderBrush_Normal}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
