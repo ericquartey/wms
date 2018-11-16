@@ -690,10 +690,10 @@ INSERT INTO MachineTypes (Id, Description) VALUES ('L', 'LGV');
 INSERT INTO MachineTypes (Id, Description) VALUES ('V', 'Vertimag');
 
 SET IDENTITY_INSERT Machines ON;
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (1, 4, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'MachineVertimagM', 'VMAG/ver-2019/variant-M');
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (2, 5, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'MachineVertimagXS', 'VMAG/ver-2018/variant-XS');
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (3, 6, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'MachineVertimagM', 'VMAG/ver-2018/variant-M');
-INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model) VALUES (4, 7, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-XS');
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount) VALUES (1, 4, 'V', 'Vertimag 1', 'so74jnh0vyenf', 'MachineVertimagM', 'VMAG/ver-2019/variant-M', 125);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount) VALUES (2, 5, 'V', 'Vertimag 2', 'msdy30yu76sb2', 'MachineVertimagXS', 'VMAG/ver-2018/variant-XS', 286);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount) VALUES (3, 6, 'V', 'Vertimag 3', 'lwujg3ibg9h4j', 'MachineVertimagM', 'VMAG/ver-2018/variant-M', 78);
+INSERT INTO Machines (Id, AisleId, MachineTypeId, Nickname, RegistrationNumber, Image, Model, MovedLoadingUnitsCount) VALUES (4, 7, 'V', 'Vertimag 4', '20fgn37o3nbe9', 'MachineVertimagXS', 'VMAG/ver-2019/variant-XS', 1904);
 SET IDENTITY_INSERT Machines OFF;
 
 -- Bay Types
