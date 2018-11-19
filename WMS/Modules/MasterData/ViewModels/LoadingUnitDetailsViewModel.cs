@@ -143,7 +143,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteEditCommand()
         {
-            this.NavigationService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.LoadingUnit.Id);
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.LoadingUnit.Id);
         }
 
         private void ExecuteSaveCommand()

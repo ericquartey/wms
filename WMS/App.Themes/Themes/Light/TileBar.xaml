@@ -25,7 +25,7 @@
                     <Border x:Name="TileBorder"
                             MinWidth="160"
                             MaxWidth="160"
-                            Margin="5,10,10,5"
+                            Margin="5,5,5,5"
                             Padding="5,0"
                             Background="{DynamicResource CommonBackground}"
                             BorderBrush="{DynamicResource CommonSecondaryUltralight}"
@@ -84,7 +84,7 @@
 
     <Style x:Key="TileBarStyle"
            TargetType="{x:Type wms:TileBar}">
-        <Setter Property="Margin" Value="0,35,0,0" />
+        <Setter Property="Margin" Value="0,40,0,0" />
     </Style>
 
 </ResourceDictionary>

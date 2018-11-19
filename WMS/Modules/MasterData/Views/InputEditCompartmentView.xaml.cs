@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,19 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Controls;
 
-namespace Ferretto.WMS.Modules.Compartment
+namespace Ferretto.WMS.Modules.MasterData
 {
     /// <summary>
-    /// Interaction logic for ListCompartmentsView.xaml
+    /// Interaction logic for InputEditCompartmentView.xaml
     /// </summary>
-    public partial class ListCompartmentsView : UserControl
+    public partial class InputEditCompartmentView : UserControl
     {
         #region Constructors
 
-        public ListCompartmentsView()
+        public InputEditCompartmentView()
         {
             this.InitializeComponent();
         }

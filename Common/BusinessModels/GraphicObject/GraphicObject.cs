@@ -62,7 +62,6 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        public readonly int BORDER_TRAY = 1;
         public readonly int DimensionRuler = 25;
         public readonly int DOUBLE_BORDER_TRAY = 2;
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
@@ -157,6 +156,21 @@ namespace Ferretto.Common.BusinessModels
             if (error)
             {
                 System.Diagnostics.Debug.WriteLine("ERROR ADD NEW RANGE OF COMPARTMENTS: it is overlaps among other compartments or it exits from window.");
+            }
+        }
+
+        public bool CanAddBulkCompartment(CompartmentDetails compartment, int row, int column)
+        {
+            if (compartment != null && row > 1 && column > 1)
+            {
+                CompartmentDetails compartmentBulk = compartment;
+                compartmentBulk.Width = compartment.Width * row;
+                compartmentBulk.Height = compartment.Height * column;
+                return this.CanAddCompartment(compartmentBulk);
+            }
+            else
+            {
+                throw new ArgumentException();
             }
         }
 

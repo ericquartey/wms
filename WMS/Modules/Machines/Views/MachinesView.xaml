@@ -94,6 +94,7 @@
                                   AllowEditing="False"
                                   CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
                                   CardLayout="Rows"
+                                  CardMargin="0,0,6,6"
                                   CardTemplate="{StaticResource cardTemplate}"
                                   FixedSize="230"
                                   MinFixedSize="100"

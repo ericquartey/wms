@@ -263,4 +263,7 @@
   <data name="AddCompartment" xml:space="preserve">
     <value>Add Compartment</value>
   </data>
+  <data name="EditCompartment" xml:space="preserve">
+    <value>Edit Compartment</value>
+  </data>
 </root>
