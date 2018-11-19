@@ -92,9 +92,9 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public ItemManagementType ManagementType { get; set; }
+        public int ManagementType { get; set; }
 
-        public IEnumerable<(ItemManagementType Id, string Description)> ManagementTypeChoices { get; set; }
+        public IEnumerable<Enumeration> ManagementTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
         public string ManagementTypeDescription => this.ManagementType.ToString();
