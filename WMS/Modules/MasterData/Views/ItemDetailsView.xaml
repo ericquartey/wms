@@ -133,8 +133,8 @@
                                       EditValue="{Binding ReorderQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding ItemManagementTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=ItemManagementTypeChoices}" />
+                                      EditValue="{Binding ManagementType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=ManagementTypeChoices}" />
                     </Grid>
                 </GroupBox>
 
@@ -195,7 +195,7 @@
                                             MaxHeight="280"
                                             CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                             ItemType="{x:Type models:Compartment}"
-                                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"                                            
+                                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
                                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
                                 <dxg:TableView AllowEditing="False"
