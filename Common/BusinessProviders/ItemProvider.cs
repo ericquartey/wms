@@ -16,7 +16,7 @@ namespace Ferretto.Common.BusinessProviders
             item => item.AbcClassId == "A";
 
         private static readonly Expression<Func<DataModels.Item, bool>> FifoFilter =
-            item => item.ItemManagementType != null && item.ItemManagementType.Description.Contains("FIFO");
+            item => item.ManagementType == DataModels.ItemManagementType.FIFO;
 
         private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
@@ -83,22 +83,12 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
-        public Task<int> GetAvailableQuantity(int itemId, string lot, string registrationNumber, string sub1, string sub2)
-        {
-            // TODO: access database to retrieve actual quantity
-            var task = new Task<int>(() => 100);
-            task.Start();
-
-            return task;
-        }
-
         public ItemDetails GetById(int id)
         {
             lock (this.dataContext)
             {
                 var itemDetails = this.dataContext.Items
                 .Include(i => i.MeasureUnit)
-                .Include(i => i.ItemManagementType)
                 .Where(i => i.Id == id)
                 .GroupJoin(
                     this.dataContext.Compartments
@@ -132,8 +122,7 @@ namespace Ferretto.Common.BusinessProviders
                         AbcClassId = a.Item.AbcClassId,
                         MeasureUnitId = a.Item.MeasureUnitId,
                         MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                        ItemManagementTypeId = a.Item.ItemManagementTypeId,
-                        ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                        ManagementType = (ItemManagementType)a.Item.ManagementType,
                         FifoTimePick = a.Item.FifoTimePick,
                         FifoTimeStore = a.Item.FifoTimeStore,
                         ReorderPoint = a.Item.ReorderPoint,
@@ -165,7 +154,7 @@ namespace Ferretto.Common.BusinessProviders
 
                 itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
                 itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
-                itemDetails.ItemManagementTypeChoices = this.enumerationProvider.GetAllItemManagementTypes();
+                itemDetails.ManagementTypeChoices = this.enumerationProvider.GetAllItemManagementTypes();
                 itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
 
                 return itemDetails;
@@ -196,7 +185,6 @@ namespace Ferretto.Common.BusinessProviders
             {
                 return this.dataContext.Items
                     .AsNoTracking()
-                    .Include(i => i.ItemManagementType)
                     .Count(FifoFilter);
             }
         }
@@ -230,12 +218,12 @@ namespace Ferretto.Common.BusinessProviders
         public async Task WithdrawAsync(ItemWithdraw itemWithdraw)
         {
             await this.itemsClient.WithdrawAsync(
-                new WMS.Scheduler.WebAPI.Contracts.WithdrawRequest
+                new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
                 {
                     ItemId = itemWithdraw.ItemDetails.Id,
                     BayId = itemWithdraw.BayId,
                     Lot = itemWithdraw.Lot,
-                    Quantity = itemWithdraw.Quantity,
+                    RequestedQuantity = itemWithdraw.Quantity,
                     RegistrationNumber = itemWithdraw.RegistrationNumber,
                     Sub1 = itemWithdraw.Sub1,
                     Sub2 = itemWithdraw.Sub2
@@ -250,7 +238,6 @@ namespace Ferretto.Common.BusinessProviders
             return context.Items
                .AsNoTracking()
                .Include(i => i.AbcClass)
-               .Include(i => i.ItemManagementType)
                .Include(i => i.ItemCategory)
                .Where(actualWhereFunc)
                .GroupJoin(
@@ -285,7 +272,7 @@ namespace Ferretto.Common.BusinessProviders
                        Height = a.Item.Height,
                        InventoryDate = a.Item.InventoryDate,
                        InventoryTolerance = a.Item.InventoryTolerance,
-                       ItemManagementTypeDescription = a.Item.ItemManagementType.Description,
+                       ManagementTypeDescription = a.Item.ManagementType.ToString(), // TODO change
                        ItemCategoryDescription = a.Item.ItemCategory.Description,
                        LastModificationDate = a.Item.LastModificationDate,
                        LastPickDate = a.Item.LastPickDate,

@@ -70,7 +70,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ItemManagementTypeDescription => this.ItemDetails?.ItemManagementTypeDescription;
+        public string ItemManagementTypeDescription => this.ItemDetails?.ManagementTypeDescription;
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
@@ -129,7 +129,7 @@ namespace Ferretto.Common.BusinessModels
                         break;
 
                     case nameof(this.ItemDetails):
-                        if (this.ItemDetails  == null)
+                        if (this.ItemDetails == null)
                         {
                             return Resources.BusinessObjects.ItemWithdrawItemDetailsInvalidError;
                         }
