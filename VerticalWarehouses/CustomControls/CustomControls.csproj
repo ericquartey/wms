@@ -288,6 +288,8 @@
     <Resource Include="Assets\White_arrow_down.svg.png" />
     <Resource Include="Assets\brush_dark.png" />
     <Resource Include="Assets\brush_light.png" />
+    <Resource Include="Assets\ferretto_logo_light.png" />
+    <Resource Include="Assets\ferretto_logo_dark.png" />
     <Content Include="Fonts\HelveticaNeue-LightCond.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -301,9 +303,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\ferrettologo_768x162.jpg" />
-    <Resource Include="Assets\ferrettologo_768x162.png" />
-    <Resource Include="Assets\FGLogo.png" />
     <Content Include="Assets\VertimagFronte.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

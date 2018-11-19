@@ -13,16 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Picking
 {
     /// <summary>
     /// Interaction logic for PickingView.xaml
     /// </summary>
     public partial class PickingView : UserControl
     {
+        #region Constructors
+
         public PickingView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.DataContext = new PickingViewModel();
         }
+
+        #endregion Constructors
     }
 }

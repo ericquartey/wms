@@ -13,16 +13,21 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.OperatorApp.ViewsAndViewModels.Lists
 {
     /// <summary>
-    /// Interaction logic for ListsView.xaml
+    /// Interaction logic for ListDetailsView.xaml
     /// </summary>
-    public partial class ListsView : UserControl
+    public partial class ListDetailsView : UserControl
     {
-        public ListsView()
+        #region Constructors
+
+        public ListDetailsView()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.DataContext = new ListDetailsViewModel();
         }
+
+        #endregion Constructors
     }
 }

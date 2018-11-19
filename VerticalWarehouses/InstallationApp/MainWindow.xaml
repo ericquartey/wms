@@ -17,7 +17,6 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -27,7 +26,7 @@
 
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="220" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -39,9 +38,8 @@
                 Grid.Column="0"
                 Background="{DynamicResource VWAPP_BACKGROUND}"
                 BorderThickness="0">
-            <Image Margin="35,15,0,0"
-                   Source="/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg"
-                   Stretch="Uniform" />
+            <ContentPresenter Margin="15,10,0,0"
+                              Content="{DynamicResource Ferretto_Logo}" />
         </Border>
         <Border Grid.Row="0"
                 Grid.Column="1"
@@ -81,28 +79,40 @@
                 <Image Height="30"
                        Margin="0,10,30,2"
                        Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
-                <custom:CustomControlComboBox Width="110"
-                                              Margin="2,10,2,2"
-                                              BorderThickness="4"
-                                              CurrentSelection="{Binding MachineOnMarchSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              CustomComboBoxState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              FontFamily="{DynamicResource IAPP_BodyFont}"
-                                              FontSize="25"
-                                              Foreground="{StaticResource FerrettoPureWhite}"
-                                              Item1Text="Off"
-                                              Item2Text="On"
-                                              Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineOnMarch}" />
-                <custom:CustomControlComboBox Width="110"
-                                              Margin="2,10,2,2"
-                                              BorderThickness="4"
-                                              CurrentSelection="{Binding MachineModeSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              CustomComboBoxState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              FontFamily="{DynamicResource IAPP_BodyFont}"
-                                              FontSize="25"
-                                              Foreground="{StaticResource FerrettoPureWhite}"
-                                              Item1Text="Manual"
-                                              Item2Text="Auto"
-                                              Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineMode}" />
+                <Border Width="140"
+                        Height="60"
+                        Margin="2,10,2,2"
+                        BorderBrush="{StaticResource FerrettoDarkGray}"
+                        BorderThickness="2">
+                    <custom:CustomControlComboBox Width="140"
+                                                  Height="60"
+                                                  BorderThickness="0,0,40,0"
+                                                  CurrentSelection="{Binding MachineOnMarchSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  CustomComboBoxState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  FontFamily="{DynamicResource IAPP_BodyFont}"
+                                                  FontSize="25"
+                                                  Foreground="{StaticResource FerrettoPureWhite}"
+                                                  Item1Text="Off"
+                                                  Item2Text="On"
+                                                  Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineOnMarch}" />
+                </Border>
+                <Border Width="140"
+                        Height="60"
+                        Margin="2,10,2,2"
+                        BorderBrush="{StaticResource FerrettoDarkGray}"
+                        BorderThickness="2">
+                    <custom:CustomControlComboBox Width="140"
+                                                  Height="60"
+                                                  BorderThickness="0,0,40,0"
+                                                  CurrentSelection="{Binding MachineModeSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  CustomComboBoxState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  FontFamily="{DynamicResource IAPP_BodyFont}"
+                                                  FontSize="25"
+                                                  Foreground="{StaticResource FerrettoPureWhite}"
+                                                  Item1Text="Manual"
+                                                  Item2Text="Auto"
+                                                  Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineMode}" />
+                </Border>
                 <Button Height="70"
                         Margin="5,0,0,0"
                         VerticalAlignment="Bottom"
@@ -121,9 +131,8 @@
         <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
                         Grid.Row="1"
                         Grid.Column="0"
-                        Width="260"
+                        Width="210"
                         Height="610"
-                        Margin="20,10,0,0"
                         VerticalAlignment="Center"
                         Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </Grid>

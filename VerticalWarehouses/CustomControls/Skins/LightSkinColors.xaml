@@ -12,7 +12,13 @@
     <Color x:Key="ColorFerrettoPureWhite">#ffffff</Color>
 
     <SolidColorBrush x:Key="VWAPP_BACKGROUND"
-                     Color="{StaticResource ColorFerrettoPureWhite}" />
+                     Color="#E6E6E6" />
+
+    <Thickness x:Key="IAPP_ButtonBorderThickness"
+               Bottom="1"
+               Left="1"
+               Right="1"
+               Top="1" />
 
     <SolidColorBrush x:Key="IAPP_NavigationButton_Background_Normal"
                      Color="{StaticResource ColorFerrettoMediumGray}" />
