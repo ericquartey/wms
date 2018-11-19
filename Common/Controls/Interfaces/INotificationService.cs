@@ -1,12 +1,14 @@
-﻿namespace Ferretto.Common.Controls.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Ferretto.Common.Controls.Interfaces
 {
     public interface INotificationServiceClient
     {
         #region Methods
 
-        void End();
+        Task EndAsync();
 
-        void Start();
+        Task StartAsync();
 
         #endregion Methods
     }
