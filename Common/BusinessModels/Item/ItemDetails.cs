@@ -21,6 +21,7 @@ namespace Ferretto.Common.BusinessModels
         private DateTime? inventoryDate;
         private int? inventoryTolerance;
         private int? itemCategoryId;
+        private Int32? itemManagementTypeId;
         private DateTime? lastModificationDate;
         private DateTime? lastPickDate;
         private DateTime? lastStoreDate;
@@ -134,7 +135,11 @@ namespace Ferretto.Common.BusinessModels
         public string ItemManagementTypeDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public int? ItemManagementTypeId { get; set; }
+        public int? ItemManagementTypeId
+        {
+            get => this.itemManagementTypeId;
+            set => this.SetProperty(ref this.itemManagementTypeId, value);
+        }
 
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate
@@ -168,7 +173,7 @@ namespace Ferretto.Common.BusinessModels
         public int ManagementType
         {
             get => this.managementType;
-            set => this.SetIfStrictlyPositive(ref this.managementType, value);
+            set => this.SetProperty(ref this.managementType, value);
         }
 
         public IEnumerable<Enumeration> ManagementTypeChoices { get; set; }
