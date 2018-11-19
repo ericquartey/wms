@@ -83,7 +83,7 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Constructors
 
-        public StatusEventArgs(string info)
+        public StatusEventArgs(string info = null)
         {
             this.Info = info;
         }
