@@ -94,6 +94,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewsAndViewModels\NavigationButtonView.xaml.cs">
+      <DependentUpon>NavigationButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\NavigationButtonViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\ArticlesView.xaml.cs">
+      <DependentUpon>ArticlesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\ArticlesViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\ListsView.xaml.cs">
+      <DependentUpon>ListsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\ListsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\PickingView.xaml.cs">
+      <DependentUpon>PickingView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\PickingViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -106,8 +122,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\NavigationButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\ArticlesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\ListsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\PickingView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -131,10 +164,12 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="ViewsAndViewModels\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
+      <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
+      <Name>Ferretto.Common.Resources</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomControls\CustomControls.csproj">
       <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
       <Name>CustomControls</Name>

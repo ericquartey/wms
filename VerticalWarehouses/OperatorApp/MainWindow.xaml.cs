@@ -22,6 +22,7 @@ namespace Ferretto.VW.OperatorApp
         public MainWindow()
         {
             this.InitializeComponent();
+            this.DataContext = new MainWindowViewModel();
         }
 
         #endregion Constructors
