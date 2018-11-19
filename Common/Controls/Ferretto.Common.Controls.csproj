@@ -6,8 +6,8 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.1.5" />
-    <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.1.5" />
+    <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.2.3" />
+    <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.2.3" />
     <PackageReference Include="Prism.Unity" Version="6.3.0" />
     <PackageReference Include="Prism.Wpf" Version="6.3.0" />
   </ItemGroup>
