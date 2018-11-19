@@ -70,6 +70,14 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                     routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
                 });
             }
+            var healthHubEndpoint = this.Configuration["Hubs:Health"];
+            if (string.IsNullOrWhiteSpace(healthHubEndpoint) == false)
+            {
+                app.UseSignalR(routes =>
+                {
+                    routes.MapHub<HealthHub>($"/{healthHubEndpoint}");
+                });
+            }
 
             app.UseMvc();
 
