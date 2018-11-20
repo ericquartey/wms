@@ -46,7 +46,7 @@ namespace Ferretto.WMS.Modules.Layout
             navigationService.Register<MenuView, MenuViewModel>();
 
             var notificationService = ServiceLocator.Current.GetInstance<INotificationServiceClient>();
-            notificationService.Start();
+            notificationService.StartAsync().ConfigureAwait(true);
             var inputService = ServiceLocator.Current.GetInstance<IInputService>();
             inputService.Start();
 

@@ -42,24 +42,24 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
+                app.UseSwaggerUi3WithApiExplorer(settings =>
+                {
+                    settings.PostProcess = document =>
+                    {
+                        document.Info.Version = "v1";
+                        document.Info.Title = "WMS Scheduler API";
+                        document.Info.Description = "REST API for the WMS Scheduler";
+                    };
+                    settings.GeneratorSettings.DefaultPropertyNameHandling =
+                        PropertyNameHandling.CamelCase;
+                });
             }
             else
             {
                 app.UseHsts();
             }
-#if DEBUG
-            app.UseSwaggerUi3WithApiExplorer(settings =>
-            {
-                settings.PostProcess = document =>
-                {
-                    document.Info.Version = "v1";
-                    document.Info.Title = "WMS Scheduler API";
-                    document.Info.Description = "REST API for the WMS Scheduler";
-                };
-                settings.GeneratorSettings.DefaultPropertyNameHandling =
-                    PropertyNameHandling.CamelCase;
-            });
-#endif
+
             app.UseHttpsRedirection();
 
             var wakeupHubEndpoint = this.Configuration["Hubs:WakeUp"];
@@ -70,6 +70,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                     routes.MapHub<WakeupHub>($"/{wakeupHubEndpoint}");
                 });
             }
+
             var healthHubEndpoint = this.Configuration["Hubs:Health"];
             if (string.IsNullOrWhiteSpace(healthHubEndpoint) == false)
             {

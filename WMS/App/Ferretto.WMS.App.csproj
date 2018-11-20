@@ -20,10 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.1.5" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
     <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
     <ProjectReference Include="..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
@@ -53,6 +49,10 @@
     <Content Include="Images\*.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.2.3" />
   </ItemGroup>
 
 </Project>

@@ -52,7 +52,6 @@
 
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
-                      DataContext="{Binding Item}"
                       Focusable="False"
                       IsTabStop="True">
             <Grid>
@@ -83,19 +82,19 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:TextBox Text="{Binding Path=Item.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
-                                     Text="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     Text="{Binding Path=Item.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
-                                      EditValue="{Binding ItemCategoryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=ItemCategoryChoices}" />
+                                      EditValue="{Binding Path=Item.ItemCategoryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
                                      Margin="20,0,0,0"
                                      VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Stretch"
                                      IsMultiline="True"
-                                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     Text="{Binding Path=Item.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -113,28 +112,28 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
-                                      EditValue="{Binding AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=AbcClassChoices}" />
+                                      EditValue="{Binding Path=Item.AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.AbcClassChoices}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding FifoTimeStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
-                                      EditValue="{Binding ReorderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding MeasureUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=MeasureUnitChoices}" />
+                                      EditValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.MeasureUnitChoices}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding FifoTimePick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="2"
-                                      EditValue="{Binding ReorderQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding ManagementType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=ManagementTypeChoices}" />
+                                      EditValue="{Binding Path=Item.ManagementType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.ManagementTypeChoices}" />
                     </Grid>
                 </GroupBox>
 
@@ -156,31 +155,31 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding PickTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.PickTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding AverageWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.AverageWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding StoreTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.StoreTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding InventoryTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.InventoryTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -252,8 +251,7 @@
                       Focusable="False"
                       IsTabStop="False">
 
-            <Border DataContext="{Binding Item}"
-                    Style="{StaticResource InfoBoxBorderStyle}">
+            <Border Style="{StaticResource InfoBoxBorderStyle}">
 
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
@@ -262,28 +260,28 @@
                                       MaxHeight="400"
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                       BorderThickness="1"
-                                      Path="{Binding Path=Image}"
-                                      Visibility="{Binding Path=Image, Converter={StaticResource RTVC}}" />
+                                      Path="{Binding Path=Item.Image}"
+                                      Visibility="{Binding Path=Item.Image, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding CreationDate}"
-                                      Visibility="{Binding Path=CreationDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.CreationDate}"
+                                      Visibility="{Binding Path=Item.CreationDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LastModificationDate}"
-                                      Visibility="{Binding Path=LastModificationDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.LastModificationDate}"
+                                      Visibility="{Binding Path=Item.LastModificationDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding InventoryDate}"
-                                      Visibility="{Binding Path=InventoryDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.InventoryDate}"
+                                      Visibility="{Binding Path=Item.InventoryDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LastPickDate}"
-                                      Visibility="{Binding Path=LastPickDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.LastPickDate}"
+                                      Visibility="{Binding Path=Item.LastPickDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LastStoreDate}"
-                                      Visibility="{Binding Path=LastStoreDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.LastStoreDate}"
+                                      Visibility="{Binding Path=Item.LastStoreDate, Converter={StaticResource RTVC}}" />
                     </StackPanel>
 
                 </GroupBox>

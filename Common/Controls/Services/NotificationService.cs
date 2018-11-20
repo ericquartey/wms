@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Configuration;
+using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls.Services
@@ -11,14 +12,13 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Fields
 
-        private const string HealthIsOnLine = "IsOnLine";
-        private const int startConnEvery = 10000;
+        private const string HealthIsOnLineMessage = "IsOnline";
+        private const int RetryConnectionTimeout = 10000;
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly string healthPath;
         private readonly string url;
-        private HubConnection connection;
+        private Microsoft.AspNetCore.SignalR.Client.HubConnection connection;
         private bool isConnected;
-        private IHubProxy proxy;
 
         #endregion Fields
 
@@ -34,69 +34,67 @@ namespace Ferretto.Common.Controls.Services
 
         #region Methods
 
-        public void End()
+        public async Task EndAsync()
         {
-            this.connection.Stop();
+            await this.connection.StopAsync();
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
             try
             {
-                this.Initialize();
+                await this.InitializeAsync();
             }
-            catch (Exception)
+            catch
             {
-                System.Diagnostics.Debug.WriteLine("Hub connection failed.");
-                System.Threading.Thread.Sleep(startConnEvery);
-                this.connection.Start();
+                System.Diagnostics.Debug.WriteLine($"Hub connection failed. Retrying in {RetryConnectionTimeout / 1000.0} seconds ...");
+
+                await Task.Delay(RetryConnectionTimeout);
+
+                await this.connection?.StartAsync();
             }
         }
 
-        private void Initialize()
+        private async Task ConnectAsync()
         {
-            this.connection = new HubConnection(this.url);
-            this.proxy = this.connection.CreateHubProxy(this.healthPath);
-            this.proxy.On(HealthIsOnLine, this.OnIsOnLine_MessageReceived);
-            this.connection.StateChanged += this.OnConnectionStateChanged;
+            System.Diagnostics.Debug.WriteLine("Hub connecting...");
+            await this.connection.StartAsync();
+            System.Diagnostics.Debug.WriteLine("Hub connected.");
+            await this.connection.SendAsync(HealthIsOnLineMessage);
+            System.Diagnostics.Debug.WriteLine("Message to hub sent.");
+        }
 
-            this.connection.Closed += () =>
+        private async Task InitializeAsync()
+        {
+            this.connection = new Microsoft.AspNetCore.SignalR.Client.HubConnectionBuilder()
+             .WithUrl(new Uri(new Uri(this.url), this.healthPath).AbsoluteUri)
+             .Build();
+
+            this.connection.On(HealthIsOnLineMessage, this.OnIsOnLine_MessageReceived);
+
+            this.connection.Closed += async (error) =>
             {
+                System.Diagnostics.Debug.WriteLine("Connection to hub closed.");
+
                 if (this.isConnected)
                 {
                     this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = false });
                 }
+
                 this.isConnected = false;
                 System.Diagnostics.Debug.WriteLine("Retrying connection to hub...");
-                System.Threading.Thread.Sleep(startConnEvery);
-                this.connection.Start();
-            };
-            this.connection.Start();
-        }
 
-        private void OnConnectionStateChanged(StateChange obj)
-        {
-            if (obj.NewState == ConnectionState.Disconnected)
-            {
-                System.Diagnostics.Debug.WriteLine("Hub disconnected.");
-                this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = false });
-            }
-            else if (obj.NewState == ConnectionState.Connecting)
-            {
-                System.Diagnostics.Debug.WriteLine("Hub connecting...");
-                this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = false });
-            }
-            else
-            {
-                System.Diagnostics.Debug.WriteLine("Hub Online");
-                this.proxy.Invoke(HealthIsOnLine);
-            }
+                await Task.Delay(RetryConnectionTimeout);
+                await this.ConnectAsync();
+            };
+
+            await this.ConnectAsync();
         }
 
         private void OnIsOnLine_MessageReceived()
         {
+            System.Diagnostics.Debug.WriteLine($"Message {HealthIsOnLineMessage} received from server.");
             this.isConnected = true;
-            System.Diagnostics.Debug.WriteLine("Hub connection successful");
             this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = true });
         }
 

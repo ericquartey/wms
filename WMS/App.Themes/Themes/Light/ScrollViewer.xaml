@@ -1,7 +1,7 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dxcn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
-                    xmlns:dxcop="clr-namespace:DevExpress.Xpf.Controls.Primitives;assembly=DevExpress.Xpf.Controls.v18.1"
+                    xmlns:dxcop="clr-namespace:DevExpress.Xpf.Controls.Primitives;assembly=DevExpress.Xpf.Controls.v18.2"
                     xmlns:themeKeys="http://schemas.devexpress.com/winfx/2008/xaml/windowsui/themekeys"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core">
 
