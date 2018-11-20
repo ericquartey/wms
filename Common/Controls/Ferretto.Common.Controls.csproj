@@ -4,11 +4,11 @@
     <LanguageTargets>$(MSBuildExtensionsPath)\$(VisualStudioVersion)\Bin\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.1.5" />
-    <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
+    <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="18.2.3" />
+    <PackageReference Include="DevExpress.Wpf.Navigation" Version="18.2.3" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
     <PackageReference Include="Prism.Unity" Version="6.3.0" />
     <PackageReference Include="Prism.Wpf" Version="6.3.0" />
   </ItemGroup>
@@ -36,5 +36,5 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  
+
 </Project>

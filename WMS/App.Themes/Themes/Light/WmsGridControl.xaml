@@ -5,7 +5,7 @@
                     xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
                     xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                     xmlns:dxght="http://schemas.devexpress.com/winfx/2008/xaml/grid/internal"
-                    xmlns:dxgn="clr-namespace:DevExpress.Xpf.Grid.Native;assembly=DevExpress.Xpf.Grid.v18.1"
+                    xmlns:dxgn="clr-namespace:DevExpress.Xpf.Grid.Native;assembly=DevExpress.Xpf.Grid.v18.2"
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
