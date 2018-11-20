@@ -1,3 +1,5 @@
+SET QUOTED_IDENTIFIER ON
+
 -- clean all tables
 EXEC sp_MSforeachtable 'ALTER TABLE ? DISABLE TRIGGER ALL'
 EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'
