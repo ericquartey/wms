@@ -6,7 +6,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public abstract class BusinessObject : BindableBase, ICloneable, IBusinessObject
+    public abstract class BusinessObject : BindableBase, ICloneable, IBusinessObject, IDisposable
     {
         #region Fields
 
@@ -42,6 +42,11 @@ namespace Ferretto.Common.BusinessModels
         public object Clone()
         {
             return this.MemberwiseClone();
+        }
+
+        public void Dispose()
+        {
+            this.PropertyChanged -= BusinessObject_PropertyChanged;
         }
 
         public void TakeSnapshot()
