@@ -51,6 +51,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool enableInputBulkAdd;
         private string error;
         private string errorColor;
+        private InputAddCompartmentViewModel inputAddVM;
         private InputBulkAddCompartmentViewModel inputBulkAddVM;
         private bool isEnabledGrid;
 
@@ -67,11 +68,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool loadingUnitHasCompartments;
 
         private bool readOnlyTray;
-
-        //private int row;
-        private ICommand saveCommandAdd;
-
-        private ICommand saveCommandEdit;
 
         private BulkCompartment selectedBulkCompartmentTray;
 
@@ -197,7 +193,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
-        public InputAddCompartmentViewModel InputAddVM { get; set; }
+        public InputAddCompartmentViewModel InputAddVM
+        {
+            get => this.inputAddVM;
+            set => this.SetProperty(ref this.inputAddVM, value);
+        }
 
         public InputBulkAddCompartmentViewModel InputBulkAddVM
         {
@@ -205,7 +205,11 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.inputBulkAddVM, value);
         }
 
-        public InputEditCompartmentViewModel InputEditVM { get; set; }
+        public InputEditCompartmentViewModel InputEditVM
+        {
+            get;/* => this.inputEditVM;*/
+            set; /*=> this.SetProperty(ref this.inputEditVM, value);*/
+        }
 
         public bool IsEnabledGrid
         {
@@ -268,15 +272,15 @@ namespace Ferretto.WMS.Modules.MasterData
         //    set => this.SetProperty(ref this.row, value);
         //}
 
-        public ICommand SaveCommandAdd => this.saveCommandAdd ??
-                  (this.saveCommandAdd = new DelegateCommand(this.ExecuteSaveCommandAdd, this.CanExecuteSaveCommandAdd)
-            .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
-            .ObservesProperty(() => this.Error));
+        //public ICommand SaveCommandAdd => this.saveCommandAdd ??
+        //          (this.saveCommandAdd = new DelegateCommand(this.ExecuteSaveCommandAdd, this.CanExecuteSaveCommandAdd)
+        //    .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
+        //    .ObservesProperty(() => this.Error));
 
-        public ICommand SaveCommandEdit => this.saveCommandEdit ??
-                  (this.saveCommandEdit = new DelegateCommand(this.ExecuteSaveCommandEdit, this.CanExecuteSaveCommandEdit)
-            .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
-            .ObservesProperty(() => this.Error));
+        //public ICommand SaveCommandEdit => this.saveCommandEdit ??
+        //          (this.saveCommandEdit = new DelegateCommand(this.ExecuteSaveCommandEdit, this.CanExecuteSaveCommandEdit)
+        //    .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
+        //    .ObservesProperty(() => this.Error));
 
         public BulkCompartment SelectedBulkCompartmentTray
         {
@@ -425,20 +429,14 @@ namespace Ferretto.WMS.Modules.MasterData
             //this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
 
             //NEW
-            //this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
-            //this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
+            this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
+            this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
         }
 
         private void ExecuteBulkAddCommand()
         {
             this.EnableBulkAdd = true;
-            //this.BulkAddVisibility = true;
-            this.IsExpand = true;
-            this.IsSelectableTray = false;
-            this.ReadOnlyTray = true;
-            this.IsEnabledGrid = false;
-            this.IsVisibleMainCommandBar = false;
-            //this.EnableCreation();
+            this.EnableCreation();
             //this.SetFunctionPanel((int)commandCompartment.BulkAdd);
 
             this.EnableInputBulkAdd = true;
@@ -477,27 +475,27 @@ namespace Ferretto.WMS.Modules.MasterData
             this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
         }
 
-        private void ExecuteSaveCommandAdd()
-        {
-            this.SetError();
-            this.EnableCheck = true;
+        //private void ExecuteSaveCommandAdd()
+        //{
+        //    this.SetError();
+        //    this.EnableCheck = true;
 
-            if (this.SaveLoadingUnit())
-            {
-                this.ResetInputView();
-            }
-        }
+        //    if (this.SaveLoadingUnit())
+        //    {
+        //        this.ResetInputView();
+        //    }
+        //}
 
-        private void ExecuteSaveCommandEdit()
-        {
-            this.SetError();
-            this.EnableCheck = true;
+        //private void ExecuteSaveCommandEdit()
+        //{
+        //    this.SetError();
+        //    this.EnableCheck = true;
 
-            if (this.SaveLoadingUnit())
-            {
-                this.ResetInputView();
-            }
-        }
+        //    if (this.SaveLoadingUnit())
+        //    {
+        //        this.ResetInputView();
+        //    }
+        //}
 
         private void InitializeTray()
         {
@@ -514,6 +512,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
             this.RaisePropertyChanged(nameof(this.Tray));
+        }
+
+        private void InputAddVM_FinishEvent(Object sender, EventArgs e)
+        {
+            //
+            this.ResetInputView();
         }
 
         private void InputBulkAddVM_FinishEvent(Object sender, EventArgs e)
@@ -550,44 +554,44 @@ namespace Ferretto.WMS.Modules.MasterData
             //this.SetFunctionPanel();
         }
 
-        private bool SaveLoadingUnit()
-        {
-            bool ok = false;
-            if (this.CreateMode)
-            {
-                if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
-                {
-                    this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
-                    this.SelectedCompartmentTray.CompartmentTypeId = 2;
+        //private bool SaveLoadingUnit()
+        //{
+        //    bool ok = false;
+        //    if (this.CreateMode)
+        //    {
+        //        if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
+        //        {
+        //            this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
+        //            this.SelectedCompartmentTray.CompartmentTypeId = 2;
 
-                    var add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
-                    if (add == 1)
-                    {
-                        this.tray.Compartments.Add(this.SelectedCompartmentTray);
-                        this.SelectedCompartment = this.SelectedCompartmentTray;
-                    }
-                    this.CreateMode = false;
+        //            var add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
+        //            if (add == 1)
+        //            {
+        //                this.tray.Compartments.Add(this.SelectedCompartmentTray);
+        //                this.SelectedCompartment = this.SelectedCompartmentTray;
+        //            }
+        //            this.CreateMode = false;
 
-                    ok = true;
-                }
-                else
-                {
-                    this.SetError(Errors.AddNoPossible);
-                }
-            }
-            else
-            {
-                var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
+        //            ok = true;
+        //        }
+        //        else
+        //        {
+        //            this.SetError(Errors.AddNoPossible);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
 
-                if (modifiedRowCount > 0)
-                {
-                    this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
+        //        if (modifiedRowCount > 0)
+        //        {
+        //            this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
 
-                    this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
-                }
-            }
-            return ok;
-        }
+        //            this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+        //        }
+        //    }
+        //    return ok;
+        //}
 
         private void SetError(string message = null)
         {
