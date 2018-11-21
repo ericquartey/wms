@@ -113,13 +113,59 @@
                                                   Item2Text="Auto"
                                                   Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineMode}" />
                 </Border>
-                <Button Height="70"
-                        Margin="5,0,0,0"
-                        VerticalAlignment="Bottom"
-                        VerticalContentAlignment="Bottom"
-                        BorderBrush="Transparent"
-                        Command="{Binding ChangeSkinButtonCommand}"
-                        Content="{DynamicResource IAPP_ImageChangeSkin}" />
+                <ComboBox Width="150"
+                          Margin="10,10,2,2"
+                          HorizontalContentAlignment="Right"
+                          VerticalContentAlignment="Center"
+                          FontSize="25"
+                          Foreground="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}"
+                          Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
+                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                  Content="Light">
+                        <ComboBoxItem.Style>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
+                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
+                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <EventSetter Event="PreviewMouseDown"
+                                             Handler="ChangeSkinToLight" />
+                            </Style>
+                        </ComboBoxItem.Style>
+                    </ComboBoxItem>
+                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                  Content="Medium">
+                        <ComboBoxItem.Style>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
+                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
+                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <EventSetter Event="PreviewMouseDown"
+                                             Handler="ChangeSkinToMedium" />
+                            </Style>
+                        </ComboBoxItem.Style>
+                    </ComboBoxItem>
+                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                  Content="Dark">
+                        <ComboBoxItem.Style>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
+                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
+                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+                                <Setter Property="FontSize" Value="20" />
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                <EventSetter Event="PreviewMouseDown"
+                                             Handler="ChangeSkinToDark" />
+                            </Style>
+                        </ComboBoxItem.Style>
+                    </ComboBoxItem>
+                </ComboBox>
             </StackPanel>
         </Border>
         <ContentControl x:Name="InstallationPageRegionContentControl"

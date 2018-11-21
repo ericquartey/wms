@@ -93,6 +93,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CustomControlComboBoxThreeItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CustomControlHighlightableBullet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -241,6 +245,9 @@
   <ItemGroup>
     <Compile Include="Controls\CustomControlComboBox.xaml.cs">
       <DependentUpon>CustomControlComboBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CustomControlComboBoxThreeItems.xaml.cs">
+      <DependentUpon>CustomControlComboBoxThreeItems.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomControlHighlightableBullet.xaml.cs">
       <DependentUpon>CustomControlHighlightableBullet.xaml</DependentUpon>
