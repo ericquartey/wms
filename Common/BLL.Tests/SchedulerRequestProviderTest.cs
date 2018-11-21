@@ -111,6 +111,59 @@ namespace Ferretto.Common.BLL.Tests
             }
         }
 
+        [TestMethod]
+        [TestProperty("Description",
+            @"GIVEN that a non-withdrawal request is created     \
+               WHEN the FullyQualifyWithdrawalRequest method is called with the invalid request\
+               THEN the method should throw an exception")]
+        public async Task FullyQualifyWithdrawalRequestWithInvalidArgumentTest()
+        {
+            #region Arrange
+
+            var request = new BusinessModels.SchedulerRequest
+            {
+                Type = BusinessModels.OperationType.Insertion
+            };
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act + Assert
+
+                var provider = new SchedulerRequestProvider(context);
+
+                await Assert.ThrowsExceptionAsync<System.ArgumentException>(() => provider.FullyQualifyWithdrawalRequest(request));
+
+                #endregion Act + Assert
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
+            @"GIVEN that a null request is created \
+               WHEN the FullyQualifyWithdrawalRequest method is called with the null new request\
+               THEN the method should throw an exception")]
+        public async Task FullyQualifyWithdrawalRequestWithNullArgumentTest()
+        {
+            #region Arrange
+
+            BusinessModels.SchedulerRequest request = null;
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act + Assert
+
+                var provider = new SchedulerRequestProvider(context);
+
+                await Assert.ThrowsExceptionAsync<System.ArgumentNullException>(() => provider.FullyQualifyWithdrawalRequest(request));
+
+                #endregion Act + Assert
+            }
+        }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -118,7 +171,7 @@ namespace Ferretto.Common.BLL.Tests
             this.aisle1 = new Aisle { Id = 1, AreaId = this.area1.Id, Name = "Aisle #1" };
             this.cell1 = new Cell { Id = 1, AisleId = this.aisle1.Id };
             this.loadingUnit1 = new LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.cell1.Id };
-            this.item1 = new Item { Id = 1, Code = "Item #1" };
+            this.item1 = new Item { Id = 1, Code = "Item #1", ManagementType = ItemManagementType.FIFO };
             this.itemFifo = new Item { Id = 2, Code = "Item #2", ManagementType = ItemManagementType.FIFO };
             this.itemVolume = new Item { Id = 3, Code = "Item #3", ManagementType = ItemManagementType.Volume };
 
@@ -133,6 +186,99 @@ namespace Ferretto.Common.BLL.Tests
                 context.Items.Add(this.itemVolume);
 
                 context.SaveChanges();
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
+          @"GIVEN a compartment with Sub1 \
+                AND no other requests are present \
+               WHEN a new request for no particular Sub1 is made \
+               THEN the new request should be accepted")]
+        public async Task SingleCompartmentWithFifoTest()
+        {
+            #region Arrange
+
+            var subX = "Sx";
+            var subZ = "Sz";
+
+            var compartments = new Compartment[]
+            {
+                new Compartment
+                {
+                    Id = 1,
+                    Code = "Compartment #1",
+                    ItemId = this.itemFifo.Id,
+                    Sub1 = subX,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 10,
+                    FirstStoreDate = System.DateTime.Now.AddHours(-1)
+                },
+                new Compartment
+                {
+                    Id = 2,
+                    Code = "Compartment #2",
+                    ItemId = this.itemFifo.Id,
+                    Sub1 = subX,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 10,
+                    FirstStoreDate = System.DateTime.Now.AddHours(-3)
+                },
+                new Compartment
+                {
+                    Id = 3,
+                    Code = "Compartment #3",
+                    ItemId = this.itemFifo.Id,
+                    Sub1 = subZ,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 10,
+                    FirstStoreDate = System.DateTime.Now.AddHours(-2)
+                },
+                new Compartment
+                {
+                    Id = 4,
+                    Code = "Compartment #4",
+                    ItemId = this.itemFifo.Id,
+                    Sub1 = subZ,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 10,
+                    FirstStoreDate = System.DateTime.Now.AddHours(-4)
+                }
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.AddRange(compartments);
+
+                context.SaveChanges();
+            }
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act
+
+                var provider = new SchedulerRequestProvider(context);
+
+                var schedulerRequest = new BusinessModels.SchedulerRequest
+                {
+                    ItemId = this.itemFifo.Id,
+                    AreaId = this.area1.Id,
+                    RequestedQuantity = 1,
+                    Type = BusinessModels.OperationType.Withdrawal
+                };
+
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+
+                #endregion Act
+
+                #region Assert
+
+                Assert.IsNotNull(acceptedRequest);
+                Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
+
+                #endregion Assert
             }
         }
 
@@ -243,7 +389,7 @@ namespace Ferretto.Common.BLL.Tests
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
-                    RequestedQuantity = compartment1.Stock - request1.RequestedQuantity,
+                    RequestedQuantity = 1,
                     Type = BusinessModels.OperationType.Withdrawal
                 };
 
@@ -264,7 +410,7 @@ namespace Ferretto.Common.BLL.Tests
         [TestProperty("Description",
             @"GIVEN a compartment with Sub1 \
                 AND two requests allocated so that the compartment has no availability \
-               WHEN a new request for the same Sub1 is made \
+               WHEN a new request is made \
                THEN the new request should be rejected")]
         public async Task SingleCompartmentWithTwoRequestsAndNoAvailabilityTest()
         {
@@ -287,7 +433,7 @@ namespace Ferretto.Common.BLL.Tests
                 Id = 1,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
-                RequestedQuantity = compartment1.Stock / 2,
+                RequestedQuantity = 5,
                 OperationType = OperationType.Withdrawal
             };
 
@@ -296,7 +442,7 @@ namespace Ferretto.Common.BLL.Tests
                 Id = 2,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
-                RequestedQuantity = compartment1.Stock - request1.RequestedQuantity,
+                RequestedQuantity = 5,
                 OperationType = OperationType.Withdrawal
             };
 
@@ -322,6 +468,200 @@ namespace Ferretto.Common.BLL.Tests
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 1,
+                    Type = BusinessModels.OperationType.Withdrawal
+                };
+
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+
+                #endregion Act
+
+                #region Assert
+
+                Assert.IsNull(acceptedRequest);
+
+                #endregion Assert
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
+       @"GIVEN a compartment with Sub1 \
+                AND no other requests are present \
+               WHEN a new request for no particular Sub1 is made \
+               THEN the new request should be accepted")]
+        public async Task SingleCompartmentWithVolumeTest()
+        {
+            #region Arrange
+
+            var subX = "Sx";
+            var subZ = "Sz";
+            var subY = "Sy";
+            var now = System.DateTime.Now;
+
+            var compartments = new Compartment[]
+            {
+                new Compartment
+                {
+                    Id = 1,
+                    Code = "Compartment #1",
+                    ItemId = this.itemVolume.Id,
+                    Sub1 = subX,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 2,
+                    FirstStoreDate = now.AddHours(-1)
+                },
+                new Compartment
+                {
+                    Id = 2,
+                    Code = "Compartment #2",
+                    ItemId = this.itemVolume.Id,
+                    Sub1 = subX,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 2,
+                    FirstStoreDate = now.AddHours(-3)
+                },
+                new Compartment
+                {
+                    Id = 3,
+                    Code = "Compartment #3",
+                    ItemId = this.itemVolume.Id,
+                    Sub1 = subZ,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 2,
+                    FirstStoreDate = now.AddHours(-1)
+                },
+                new Compartment
+                {
+                    Id = 4,
+                    Code = "Compartment #4",
+                    ItemId = this.itemVolume.Id,
+                    Sub1 = subY,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 1,
+                    FirstStoreDate = now.AddHours(-1)
+                },
+                new Compartment
+                {
+                    Id = 5,
+                    Code = "Compartment #5",
+                    ItemId = this.itemVolume.Id,
+                    Sub1 = subY,
+                    LoadingUnitId = this.loadingUnit1.Id,
+                    Stock = 1,
+                    FirstStoreDate = now.AddHours(-2)
+                },
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.AddRange(compartments);
+
+                context.SaveChanges();
+            }
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act
+
+                var provider = new SchedulerRequestProvider(context);
+
+                var schedulerRequest = new BusinessModels.SchedulerRequest
+                {
+                    ItemId = this.itemVolume.Id,
+                    AreaId = this.area1.Id,
+                    RequestedQuantity = 1,
+                    Type = BusinessModels.OperationType.Withdrawal
+                };
+
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+
+                #endregion Act
+
+                #region Assert
+
+                Assert.IsNotNull(acceptedRequest);
+                Assert.AreSame(compartments[compartments.Length - 1].Sub1, acceptedRequest.Sub1);
+
+                #endregion Assert
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
+            @"GIVEN two compartments with different Sub1's \
+                AND two requests allocated on the two Sub1's so that there is no availability for a single Sub1 \
+               WHEN a new request is made \
+               THEN the new request should be rejected")]
+        public async Task TwoCompartmentsWithDifferentSubsAndNoAvailability()
+        {
+            #region Arrange
+
+            var subX = "SX";
+            var subZ = "SZ";
+
+            var compartment1 = new Compartment
+            {
+                Id = 1,
+                Code = "Compartment #1",
+                ItemId = this.item1.Id,
+                Sub1 = subX,
+                LoadingUnitId = this.loadingUnit1.Id,
+                Stock = 10,
+            };
+
+            var compartment2 = new Compartment
+            {
+                Id = 2,
+                Code = "Compartment #2",
+                ItemId = this.item1.Id,
+                Sub1 = subZ,
+                LoadingUnitId = this.loadingUnit1.Id,
+                Stock = 10,
+            };
+
+            var request1 = new SchedulerRequest
+            {
+                Id = 1,
+                ItemId = this.item1.Id,
+                Sub1 = subX,
+                RequestedQuantity = 9,
+                OperationType = OperationType.Withdrawal
+            };
+
+            var request2 = new SchedulerRequest
+            {
+                Id = 2,
+                ItemId = this.item1.Id,
+                Sub1 = subZ,
+                RequestedQuantity = 9,
+                OperationType = OperationType.Withdrawal
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+                context.Compartments.Add(compartment2);
+                context.SchedulerRequests.Add(request1);
+                context.SchedulerRequests.Add(request2);
+
+                context.SaveChanges();
+            }
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act
+
+                var provider = new SchedulerRequestProvider(context);
+
+                var schedulerRequest = new BusinessModels.SchedulerRequest
+                {
+                    ItemId = this.item1.Id,
+                    AreaId = this.area1.Id,
+                    RequestedQuantity = 2,
                     Type = BusinessModels.OperationType.Withdrawal
                 };
 

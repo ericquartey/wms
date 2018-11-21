@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -70,76 +70,87 @@ namespace Ferretto.Common.BusinessProviders
 
             if (schedulerRequest.Type != OperationType.Withdrawal)
             {
-                throw new ArgumentException($"Only withdrawal requests are supported.", nameof(schedulerRequest));
+                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
             }
 
             var aggregatedCompartments = this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c =>
-                    c.ItemId == schedulerRequest.ItemId
-                    &&
-                    c.LoadingUnit.Cell.Aisle.Area.Id == schedulerRequest.AreaId
-                    &&
-                    (schedulerRequest.Sub1 == null || c.Sub1 == schedulerRequest.Sub1)
-                    &&
-                    (schedulerRequest.Sub2 == null || c.Sub2 == schedulerRequest.Sub2)
-                    &&
-                    (schedulerRequest.Lot == null || c.Lot == schedulerRequest.Lot)
-                    &&
-                    (schedulerRequest.PackageTypeId == null || c.PackageTypeId == schedulerRequest.PackageTypeId)
-                    &&
-                    (schedulerRequest.MaterialStatusId == null || c.MaterialStatusId == schedulerRequest.MaterialStatusId)
-                    &&
-                    (schedulerRequest.RegistrationNumber == null || c.RegistrationNumber == schedulerRequest.RegistrationNumber)
-                )
-                .GroupBy(
-                    x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
-                    (key, group) => new
-                    {
-                        Key = key,
-                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
-                        Sub1 = key.Item1,
-                        Sub2 = key.Item2,
-                        Lot = key.Item3,
-                        PackageTypeId = key.Item4,
-                        MaterialStatusId = key.Item5,
-                        RegistrationNumber = key.Item6,
-                        FirstStoreDate = group.Min(c => c.FirstStoreDate)
-                    }
-                );
+               .Include(c => c.LoadingUnit)
+               .ThenInclude(l => l.Cell)
+               .ThenInclude(c => c.Aisle)
+               .ThenInclude(a => a.Area)
+               .Where(c =>
+                   c.ItemId == schedulerRequest.ItemId
+                   &&
+                   c.LoadingUnit.Cell.Aisle.Area.Id == schedulerRequest.AreaId
+                   &&
+                   (schedulerRequest.Sub1 == null || c.Sub1 == schedulerRequest.Sub1)
+                   &&
+                   (schedulerRequest.Sub2 == null || c.Sub2 == schedulerRequest.Sub2)
+                   &&
+                   (schedulerRequest.Lot == null || c.Lot == schedulerRequest.Lot)
+                   &&
+                   (schedulerRequest.PackageTypeId == null || c.PackageTypeId == schedulerRequest.PackageTypeId)
+                   &&
+                   (schedulerRequest.MaterialStatusId == null || c.MaterialStatusId == schedulerRequest.MaterialStatusId)
+                   &&
+                   (schedulerRequest.RegistrationNumber == null || c.RegistrationNumber == schedulerRequest.RegistrationNumber)
+               )
+               .GroupBy(
+                   x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
+                   (key, group) => new
+                   {
+                       Key = key,
+                       Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
+                       Sub1 = key.Item1,
+                       Sub2 = key.Item2,
+                       Lot = key.Item3,
+                       PackageTypeId = key.Item4,
+                       MaterialStatusId = key.Item5,
+                       RegistrationNumber = key.Item6,
+                       FirstStoreDate = group.Min(c => c.FirstStoreDate)
+                   }
+               );
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
                 .Where(r => r.ItemId == schedulerRequest.ItemId)
-                .GroupBy(
+                /*.GroupBy(
                     x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
                     (key, group) => new
                     {
                         Key = key,
                         RequestedQuantity = group.Sum(r => r.RequestedQuantity)
                     }
-                );
+                )*/;
 
             var matches = aggregatedCompartments
-                .Join(
+                .GroupJoin(
                     aggregatedRequests,
-                    c => c.Key,
-                    r => r.Key,
+                    c => new Tuple<string, string, string, int?, int?, string>(c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber),
+                    r => new Tuple<string, string, string, int?, int?, string>(r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber),
                     (c, r) => new
                     {
-                        ActualAvailability = c.Availability - r.RequestedQuantity,
-                        c.Sub1,
-                        c.Sub2,
-                        c.Lot,
-                        c.PackageTypeId,
-                        c.MaterialStatusId,
-                        c.RegistrationNumber,
-                        c.FirstStoreDate
+                        c = c,
+                        r = r.DefaultIfEmpty()
                     }
                 )
-                .Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
+                .Select(g => new
+                {
+                    ActualAvailability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity),
+                    g.c.Sub1,
+                    g.c.Sub2,
+                    g.c.Lot,
+                    g.c.PackageTypeId,
+                    g.c.MaterialStatusId,
+                    g.c.RegistrationNumber,
+                    g.c.FirstStoreDate
+                }
+                );
+
+            var matchesWithAvailability = matches.Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
+
+            //    var aggregatedCompartments_Dump = aggregatedCompartments.ToArray();
+            //     var aggregatedRequests_Dump = aggregatedRequests.ToArray();
+            //      var matches_Dump = matches.ToArray();
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
@@ -148,7 +159,7 @@ namespace Ferretto.Common.BusinessProviders
             switch ((ItemManagementType)item.ManagementType)
             {
                 case ItemManagementType.FIFO:
-                    return await matches
+                    return await matchesWithAvailability
                         .OrderBy(c => c.FirstStoreDate)
                         .ThenBy(c => c.ActualAvailability)
                         .Select(c => new SchedulerRequest(schedulerRequest)
@@ -160,10 +171,10 @@ namespace Ferretto.Common.BusinessProviders
                             Sub1 = c.Sub1,
                             Sub2 = c.Sub2
                         })
-                        .FirstAsync();
+                        .FirstOrDefaultAsync();
 
                 case ItemManagementType.Volume:
-                    return await matches
+                    return await matchesWithAvailability
                         .OrderBy(c => c.ActualAvailability)
                         .ThenBy(c => c.FirstStoreDate)
                         .Select(c => new SchedulerRequest(schedulerRequest)
@@ -175,7 +186,7 @@ namespace Ferretto.Common.BusinessProviders
                             Sub1 = c.Sub1,
                             Sub2 = c.Sub2
                         })
-                        .FirstAsync();
+                        .FirstOrDefaultAsync();
 
                 default:
                     return null;
