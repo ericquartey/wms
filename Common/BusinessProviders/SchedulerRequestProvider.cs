@@ -217,47 +217,6 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<int> GetAvailableQuantity(SchedulerRequest schedulerRequest)
-        {
-            var actualAvailability = await this.dataContext.Compartments.Where(
-               c =>
-                   schedulerRequest.ItemId == c.ItemId
-                   &&
-                   c.Sub1 == schedulerRequest.Sub1
-                   &&
-                   c.Sub2 == schedulerRequest.Sub2
-                   &&
-                   c.Lot == schedulerRequest.Lot
-                   &&
-                   c.PackageTypeId == schedulerRequest.PackageTypeId
-                   &&
-                   c.MaterialStatusId == schedulerRequest.MaterialStatusId
-                   &&
-                   c.RegistrationNumber == schedulerRequest.RegistrationNumber
-               )
-               .SumAsync(c => c.Stock - c.ReservedForPick + c.ReservedToStore);
-
-            var requestedQuantity = await this.dataContext.SchedulerRequests.Where(
-                 s =>
-                    schedulerRequest.ItemId == s.ItemId
-                    &&
-                    s.Sub1 == schedulerRequest.Sub1
-                    &&
-                    s.Sub2 == schedulerRequest.Sub2
-                    &&
-                    s.Lot == schedulerRequest.Lot
-                    &&
-                    s.PackageTypeId == schedulerRequest.PackageTypeId
-                    &&
-                    s.MaterialStatusId == schedulerRequest.MaterialStatusId
-                    &&
-                    s.RegistrationNumber == schedulerRequest.RegistrationNumber
-                )
-                .SumAsync(s => s.RequestedQuantity);
-
-            return actualAvailability - requestedQuantity;
-        }
-
         public SchedulerRequest GetById(int id)
         {
             return this.dataContext.SchedulerRequests
