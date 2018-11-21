@@ -1,97 +1,109 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Ferretto.Common.BusinessModels;
+using Ferretto.Common.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
     /// <summary>
     /// Interaction logic for InputBulkAddCompartmentView.xaml
     /// </summary>
-    public partial class InputBulkAddCompartmentView : UserControl
+    public partial class InputBulkAddCompartmentView : WmsView
     {
-        #region Fields
+        //public static readonly DependencyProperty EnableProperty = DependencyProperty.Register(
+        //    nameof(Enable), typeof(bool), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(false, OnEnableChanged));
 
-        public static readonly DependencyProperty ColumnProperty = DependencyProperty.Register(
-                    nameof(Column), typeof(int), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnColumnChanged)));
+        ////public static readonly DependencyProperty EnableInternalProperty = DependencyProperty.Register(
+        ////    nameof(EnableInternal), typeof(bool), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(false, OnEnableInternalChanged));
 
-        public static readonly DependencyProperty EnableBulkAddProperty = DependencyProperty.Register(
-                            nameof(EnableBulkAdd), typeof(bool), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnEnableBulkAddChanged)));
-
-        public static readonly DependencyProperty RowProperty = DependencyProperty.Register(
-                    nameof(Row), typeof(int), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(new PropertyChangedCallback(OnRowChanged)));
-
-        #endregion Fields
+        //public static readonly DependencyProperty TrayProperty = DependencyProperty.Register(
+        //    nameof(Tray), typeof(Tray), typeof(InputBulkAddCompartmentView), new FrameworkPropertyMetadata(OnTrayChanged));
 
         #region Constructors
 
         public InputBulkAddCompartmentView()
         {
             this.InitializeComponent();
+            //this.DataContext = new InputBulkAddCompartmentViewModel();
         }
 
         #endregion Constructors
 
-        #region Properties
+        //public bool Enable
+        //{
+        //    get => (bool)this.GetValue(EnableProperty);
+        //    set => this.SetValue(EnableProperty, value);
+        //}
 
-        public int Column { get; set; }
+        //public bool EnableInternal
+        //{
+        //    get => (bool)this.GetValue(EnableInternalProperty);
+        //    set => this.SetValue(EnableInternalProperty, value);
+        //}
 
-        public bool EnableBulkAdd { get; set; }
+        //public Tray Tray
+        //{
+        //    get => (Tray)this.GetValue(TrayProperty);
+        //    set => this.SetValue(TrayProperty, value);
+        //}
 
-        public int Row { get; set; }
+        //private static void OnEnableChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is InputBulkAddCompartmentView inputBulkAdd && inputBulkAdd.DataContext is InputBulkAddCompartmentViewModel viewModel)
+        //    {
+        //        var enable = (bool)e.NewValue;
+        //        //if (enable)
+        //        //{
+        //        //    inputBulkAdd.Visibility = Visibility.Visible;
+        //        //}
+        //        //else
+        //        //{
+        //        //    inputBulkAdd.Visibility = Visibility.Collapsed;
+        //        //}
+        //        // inputBulkAdd.EnableInternal = enable;
+        //        viewModel.EnableInputBulkAdd = (bool)e.NewValue;
+        //    }
+        //}
 
-        #endregion Properties
+        //private static void OnEnableInternalChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is InputBulkAddCompartmentView inputBulkAdd && inputBulkAdd.DataContext is InputBulkAddCompartmentViewModel viewModel)
+        //    {
+        //        var enable = (bool)e.NewValue;
+        //        if (enable)
+        //        {
+        //            inputBulkAdd.Visibility = Visibility.Visible;
+        //        }
+        //        else
+        //        {
+        //            inputBulkAdd.Visibility = Visibility.Collapsed;
+        //        }
+        //        //inputBulkAdd.EnableExternal = enable;
+        //        //viewModel.BulkAddVisibility = (bool)e.NewValue;
+        //    }
+        //}
 
-        #region Methods
+        //private static void OnTrayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (d is InputBulkAddCompartmentView inputBulkAdd && inputBulkAdd.DataContext is InputBulkAddCompartmentViewModel viewModel)
+        //    {
+        //        viewModel.Tray = (Tray)e.NewValue;
+        //    }
+        //}
 
-        public void EnableBulkAddVisibility(bool enable)
-        {
-            if (enable)
-            {
-                this.ColumnText.Visibility = Visibility.Visible;
-                this.RowText.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                this.ColumnText.Visibility = Visibility.Collapsed;
-                this.RowText.Visibility = Visibility.Collapsed;
-            }
-        }
+        //private void InputBulkAddCompartmentView_IsVisibleChanged(Object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    if (!(bool)e.NewValue)
+        //    {
+        //        this.Visibility = Visibility.Collapsed;
+        //        this.Enable = false;
+        //    }
+        //    else
+        //    {
+        //        this.Visibility = Visibility.Visible;
+        //    }
+        //}
 
-        private static void OnColumnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is InputBulkAddCompartmentView inputCompartment)
-            {
-                inputCompartment.Column = (int)e.NewValue;
-            }
-        }
-
-        private static void OnEnableBulkAddChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is InputBulkAddCompartmentView inputCompartment)
-            {
-                inputCompartment.EnableBulkAddVisibility((bool)e.NewValue);
-            }
-        }
-
-        private static void OnRowChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is InputBulkAddCompartmentView inputCompartment)
-            {
-                inputCompartment.Row = (int)e.NewValue;
-            }
-        }
-
-        #endregion Methods
+        //private bool enable;
     }
 }
