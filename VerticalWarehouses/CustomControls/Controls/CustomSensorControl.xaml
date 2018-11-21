@@ -13,7 +13,7 @@
                      Height="30"
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
-                     Fill="{StaticResource FerrettoBlack}" />
+                     Fill="{DynamicResource IAPP_SensorState_BulletBackground_Normal}" />
             <Ellipse Width="28"
                      Height="28"
                      HorizontalAlignment="Center"
@@ -22,7 +22,7 @@
         </Grid>
         <TextBlock Margin="10,0,0,0"
                    VerticalAlignment="Center"
-                   Style="{StaticResource SensorControlBodyTextBlockStyle}"
+                   Style="{StaticResource IAPP_ViewCustomControlLabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

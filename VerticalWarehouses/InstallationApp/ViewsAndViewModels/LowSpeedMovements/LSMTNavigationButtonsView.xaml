@@ -17,18 +17,18 @@
         <StackPanel Grid.Row="1">
             <Button Command="{Binding DataContext.LSMTVerticalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTVerticalEngineButton}"
-                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
             <Button Command="{Binding DataContext.LSMTHorizontalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTHorizontalEngineButton}"
-                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
             <Button Command="{Binding DataContext.LSMTGateEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.LSMTGateEngineButton}"
-                    Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
         </StackPanel>
         <Button Grid.Row="2"
                 Margin="15,0,0,0"
                 Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 Content="{x:Static res:General.Back}"
-                Style="{StaticResource InstallationAppNavigationButtonStyle}" />
+                Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
     </Grid>
 </myType:BaseView>

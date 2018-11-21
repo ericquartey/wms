@@ -13,7 +13,7 @@
         WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
-    <Grid>
+    <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="4*" />
@@ -41,32 +41,33 @@
                     HorizontalAlignment="Center">
             <Rectangle Name="SpaceRectangle1"
                        Height="50" />
-            <Label HorizontalAlignment="Left"
-                   Content="{Binding MachineModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource StandardSplashScreenTitleTextStyle}" />
-            <Label HorizontalAlignment="Left"
-                   Content="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                   Style="{StaticResource StandardSplashScreenSubTitleTextStyle}" />
+            <TextBlock HorizontalAlignment="Left"
+                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                       Text="{Binding MachineModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock HorizontalAlignment="Left"
+                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Rectangle Name="SpaceRectangle2"
                        Height="160" />
             <custom:CustomInputFieldControl Width="200"
                                             HorizontalAlignment="Left"
-                                            InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:General.UserLogin}" />
+                                            InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                            LabelText="{x:Static res:General.UserLogin}"
+                                            Style="{StaticResource SS_MainWindowCustomControlInputField_ValidationTest}" />
             <custom:CustomInputFieldControl Width="200"
                                             HorizontalAlignment="Left"
                                             InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:General.PasswordLogin}" />
             <TextBlock Height="60"
                        HorizontalAlignment="Left"
-                       Style="{StaticResource ErrorBodyTextStyle}"
+                       Style="{StaticResource IAPP_ViewErrorTextBlockStyle}"
                        Text="{Binding LoginErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextWrapping="WrapWithOverflow" />
             <Button Width="200"
                     HorizontalAlignment="Left"
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"
-                    Style="{StaticResource StandardButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
         </StackPanel>
     </Grid>
 </Window>

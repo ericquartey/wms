@@ -559,4 +559,7 @@
   <data name="VerticalResolutionDone" xml:space="preserve">
     <value>Risoluzione asse verticale</value>
   </data>
+  <data name="CellsControl" xml:space="preserve">
+    <value>Controllo Celle</value>
+  </data>
 </root>

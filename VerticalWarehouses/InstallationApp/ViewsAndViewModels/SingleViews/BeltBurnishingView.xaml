@@ -19,10 +19,10 @@
             <ColumnDefinition Width="80" />
             <ColumnDefinition Width="650" />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0"
-               Grid.Column="1"
-               Content="{x:Static res:InstallationApp.BeltBurnishing}"
-               Style="{StaticResource InstallationViewsTitleTextStyle}" />
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.BeltBurnishing}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
             <Grid.RowDefinitions>
@@ -73,10 +73,10 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Content="{x:Static res:InstallationApp.Start}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Grid.Column="2"
                     Content="{x:Static res:InstallationApp.Stop}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
         </Grid>
     </Grid>
 </UserControl>
