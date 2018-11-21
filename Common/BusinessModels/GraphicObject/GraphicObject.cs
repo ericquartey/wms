@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -14,6 +18,129 @@ namespace Ferretto.Common.BusinessModels
     {
         X,
         Y
+    }
+
+    public class BulkCompartment : INotifyPropertyChanged
+    {
+        #region Fields
+
+        //private CompartmentDetails compartmentDetails;
+        private int column;
+
+        private int height;
+        private int id;
+        private int row;
+        private int width;
+        private int xPosition;
+        private int yPosition;
+
+        #endregion Fields
+
+        #region Events
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion Events
+
+        #region Properties
+
+        [Display(Name = nameof(BusinessObjects.BulkCompartmentColumn), ResourceType = typeof(BusinessObjects))]
+        public int Column
+        {
+            get => this.column;
+            set
+            {
+                this.column = value;
+                this.NotifyPropertyChanged(nameof(this.Column));
+            }
+        }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
+        public int Height
+        {
+            get => this.height;
+            set
+            {
+                this.height = value;
+                this.NotifyPropertyChanged(nameof(this.Height));
+            }
+        }
+
+        //[Display(Name = nameof(BusinessObjects.com), ResourceType = typeof(BusinessObjects))]
+        public int Id
+        {
+            get => this.id;
+            set
+            {
+                this.id = value;
+                this.NotifyPropertyChanged(nameof(this.Id));
+            }
+        }
+
+        [Display(Name = nameof(BusinessObjects.BulkCompartmentRow), ResourceType = typeof(BusinessObjects))]
+        public int Row
+        {
+            get => this.row;
+            set
+            {
+                this.row = value;
+                this.NotifyPropertyChanged(nameof(this.Row));
+            }
+        }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
+        public int Width
+        {
+            get => this.width;
+            set
+            {
+                this.width = value;
+                //this.SetIfStrictlyPositive(ref this.width, value);
+                this.NotifyPropertyChanged(nameof(this.Width));
+            }
+        }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
+        public int XPosition
+        {
+            get => this.xPosition;
+            set
+            {
+                this.xPosition = value;
+
+                this.NotifyPropertyChanged(nameof(this.XPosition));
+            }
+        }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
+        public int YPosition
+        {
+            get => this.yPosition;
+            set
+            {
+                this.yPosition = value;
+                this.NotifyPropertyChanged(nameof(this.YPosition));
+            }
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        //public CompartmentDetails CompartmentDetails
+        //{
+        //    get => this.compartmentDetails; set
+        //    {
+        //        this.compartmentDetails = value;
+        //        this.NotifyPropertyChanged(nameof(this.CompartmentDetails));
+        //    }
+        //}
+        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion Methods
     }
 
     public class Dimension
@@ -70,6 +197,12 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
+        #region Events
+
+        public event EventHandler<CompartmentEventArgs> CompartmentChangedEvent;
+
+        #endregion Events
+
         #region Properties
 
         public BindingList<CompartmentDetails> Compartments => this.compartments;
@@ -87,6 +220,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
+        public int LoadingUnitId { get; set; }
         public Position Origin { get; set; }
 
         public Dimension RulerSize { get; set; }
@@ -94,42 +228,6 @@ namespace Ferretto.Common.BusinessModels
         #endregion Properties
 
         #region Methods
-
-        public List<CompartmentDetails> AddBulkCompartments(CompartmentDetails compartment, int row, int column)
-        {
-            var tempList = new List<CompartmentDetails>();
-            int startX = (int)compartment.XPosition;
-            int startY = (int)compartment.YPosition;
-            for (int i = 0; i < row; i++)
-            {
-                for (int j = 0; j < column; j++)
-                {
-                    var newCompartment = new CompartmentDetails()
-                    {
-                        Width = compartment.Width,
-                        Height = compartment.Height,
-                        XPosition = startX + (i * compartment.Width),
-                        YPosition = startY + (j * compartment.Height),
-                        ItemPairing = compartment.ItemPairing,
-                        ItemCode = compartment.ItemCode,
-                        Stock = compartment.Stock,
-                        MaxCapacity = compartment.MaxCapacity,
-                        CompartmentTypeId = compartment.CompartmentTypeId,
-                        LoadingUnitId = compartment.LoadingUnitId
-                    };
-                    if (this.CanAddCompartment(newCompartment))
-                    {
-                        tempList.Add(newCompartment);
-                    }
-                    else
-                    {
-                        throw new ArgumentException();
-                    }
-                }
-            }
-            this.AddCompartmentsRange(tempList);
-            return tempList;
-        }
 
         public void AddCompartment(CompartmentDetails compartmentDetails)
         {
@@ -160,22 +258,44 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public bool CanAddBulkCompartment(CompartmentDetails compartment, int row, int column)
+        public List<CompartmentDetails> BulkAddCompartments(BulkCompartment bulkCompartment)
         {
-            if (compartment != null && row > 1 && column > 1)
+            var tempList = new List<CompartmentDetails>();
+            //var details = compartment.CompartmentDetails;
+            int startX = (int)bulkCompartment.XPosition;
+            int startY = (int)bulkCompartment.YPosition;
+            for (int i = 0; i < bulkCompartment.Row; i++)
             {
-                CompartmentDetails compartmentBulk = compartment;
-                compartmentBulk.Width = compartment.Width * row;
-                compartmentBulk.Height = compartment.Height * column;
-                return this.CanAddCompartment(compartmentBulk);
+                for (int j = 0; j < bulkCompartment.Column; j++)
+                {
+                    var newCompartment = new CompartmentDetails()
+                    {
+                        Width = bulkCompartment.Width,
+                        Height = bulkCompartment.Height,
+                        XPosition = startX + (i * bulkCompartment.Width),
+                        YPosition = startY + (j * bulkCompartment.Height),
+                        //ItemPairing = bulkCompartment.ItemPairing,
+                        //ItemCode = bulkCompartment.ItemCode,
+                        //Stock = bulkCompartment.Stock,
+                        //MaxCapacity = details.MaxCapacity,
+                        //CompartmentTypeId = details.CompartmentTypeId,
+                        //LoadingUnitId = details.LoadingUnitId
+                    };
+                    if (this.CanAddCompartment(newCompartment))
+                    {
+                        tempList.Add(newCompartment);
+                    }
+                    else
+                    {
+                        throw new ArgumentException();
+                    }
+                }
             }
-            else
-            {
-                throw new ArgumentException();
-            }
+            this.AddCompartmentsRange(tempList);
+            return tempList;
         }
 
-        public bool CanAddCompartment(CompartmentDetails compartmentDetails)
+        public bool CanAddCompartment(CompartmentDetails compartmentDetails, bool edit = false)
         {
             //CHECK: exit from window
             var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
@@ -187,6 +307,10 @@ namespace Ferretto.Common.BusinessModels
 
             foreach (var compartment in this.compartments)
             {
+                if (edit && compartment.Id == compartmentDetails.Id)
+                {
+                    break;
+                }
                 var areCollisions = this.HasCollision(compartmentDetails, compartment);
                 if (areCollisions)
                 {
@@ -194,6 +318,113 @@ namespace Ferretto.Common.BusinessModels
                 }
             }
             return true;
+        }
+
+        public string CanBulkAddCompartment(object compartment, Tray tray, bool onPropertyChange, bool edit = false)
+        {
+            bool isBulkAdd = true;
+            if (compartment is CompartmentDetails details)
+            {
+                compartment = this.ConvertCompartmentDetailsToBulkCompartment(details);
+                isBulkAdd = false;
+            }
+            if (compartment is BulkCompartment bulkCompartment)
+            {
+                if (onPropertyChange)
+                {
+                    return this.CanCreateNewCompartment(bulkCompartment, tray, isBulkAdd, edit);
+                }
+                else
+                {
+                    if (bulkCompartment != null && bulkCompartment.Row > 1 && bulkCompartment.Column > 1)
+                    {
+                        //CompartmentDetails compartmentBulk = compartment.CompartmentDetails;
+                        //CompartmentDetails details = compartment.CompartmentDetails;
+                        bulkCompartment.Width = bulkCompartment.Width * bulkCompartment.Row;
+                        bulkCompartment.Height = bulkCompartment.Height * bulkCompartment.Column;
+                        //return this.CanAddCompartment(compartmentBulk);
+                    }
+                    else
+                    {
+                        //throw new ArgumentException();
+                        //return false;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public void Update(CompartmentDetails compartment)
+        {
+            this.OnCompartmentChanged(compartment);
+        }
+
+        protected virtual void OnCompartmentChanged(CompartmentDetails compartment)
+        {
+            var handler = CompartmentChangedEvent;
+            if (handler != null)
+            {
+                handler(this, new CompartmentEventArgs(compartment));
+            }
+        }
+
+        private string CanCreateNewCompartment(BulkCompartment bulkCompartment, Tray tray, bool isBulkAdd, bool edit = false)
+        {
+            //var details = bulkCompartment.CompartmentDetails;
+            //if (details.XPosition != null)
+            //{
+            var errors = "";
+            foreach (var compartment in this.compartments)
+            {
+                if (edit && compartment.Id == bulkCompartment.Id)
+                {
+                    break;
+                }
+
+                errors = this.HasCollisionSingleParameter(bulkCompartment, compartment, tray, isBulkAdd);
+                if (errors == null || errors != "")
+                {
+                    return errors;
+                }
+                //if (areCollisions)
+                //{
+                //    return false;
+                //}
+            }
+            return errors;
+            //}
+            //return true;
+        }
+
+        private CompartmentDetails ConvertBulkCompartmentToCompartmentDetails(BulkCompartment bulk)
+        {
+            CompartmentDetails compartment = new CompartmentDetails();
+            int row = 1, column = 1;
+            if (bulk.Row != 0)
+            {
+                row = bulk.Row;
+            }
+            if (bulk.Column != 0)
+            {
+                column = bulk.Column;
+            }
+            compartment.Width = bulk.Width * column;
+            compartment.Height = bulk.Height * row;
+            compartment.XPosition = bulk.XPosition;
+            compartment.YPosition = bulk.YPosition;
+            return compartment;
+        }
+
+        private BulkCompartment ConvertCompartmentDetailsToBulkCompartment(CompartmentDetails compartment)
+        {
+            BulkCompartment bulk = new BulkCompartment();
+            bulk.Width = compartment.Width ?? 0;
+            bulk.Height = compartment.Height ?? 0;
+            bulk.XPosition = compartment.XPosition ?? 0;
+            bulk.YPosition = compartment.YPosition ?? 0;
+            bulk.Id = compartment.Id;
+            return bulk;
         }
 
         /// <summary>
@@ -236,6 +467,135 @@ namespace Ferretto.Common.BusinessModels
             return false;
         }
 
+        private string HasCollisionSingleParameter(BulkCompartment compartmentA, CompartmentDetails compartmentB, Tray tray, bool isBulkAdd)
+        {
+            string error = "";
+            if (compartmentA.XPosition == 0 && compartmentA.YPosition == 0 && compartmentA.Width == 0 && compartmentA.Height == 0)
+            {
+                return null;
+            }
+            if (compartmentA.Width == 0 && compartmentA.Height == 0)
+            {
+                return null;
+            }
+            if (compartmentA.Width <= 0)
+            {
+                error = "La larghezza del nuovo Scomparto non può essere minore o uguale a 0.";
+                return error;
+            }
+            if (compartmentA.Height <= 0)
+            {
+                error = "L'altezza del nuovo Scomparto non può essere minore o uguale a 0.";
+                return error;
+            }
+            if (compartmentA.XPosition < 0 || compartmentA.XPosition > tray.Dimension.Width)
+            {
+                error = "XPosition non può essere maggiore della larghezza del cassetto.";
+                return error;
+            }
+            //}
+            //if (compartmentA.YPosition != null)
+            //{
+            if (compartmentA.YPosition < 0 || compartmentA.YPosition > tray.Dimension.Height)
+            {
+                error = "XPosition non può essere maggiore dell'altezza del cassetto.";
+                return error;
+            }
+            //}
+            //if (compartmentA.XPosition != null && compartmentA.YPosition != null)
+            //{
+            //if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.YPosition >= compartmentB.YPosition
+            //    )
+            //{
+            //    error = "XPosition e YPosition è in sovrapposizione con un altro Scomparto.";
+            //    return error;
+            //}
+            //}
+            //if (compartmentA.Width != null)
+            //{
+            if (compartmentA.Width < 0 || compartmentA.Width > tray.Dimension.Width)
+            {
+                error = "Width non può essere maggiore della larghezza del cassetto.";
+                return error;
+            }
+            //}
+            //if (compartmentA.Height != null)
+            //{
+            if (compartmentA.Height < 0 || compartmentA.Height > tray.Dimension.Height)
+            {
+                error = "Height non può essere maggiore dell'altezza del cassetto.";
+                return error;
+            }
+            //}
+            //if (compartmentA.XPosition != null && compartmentA.Width != null)
+            //{
+            if (compartmentA.XPosition + compartmentA.Width > tray.Dimension.Width)
+            {
+                error = "La dimensione del nuovo Scomparto non può essere maggiore della larghezza del cassetto.";
+                return error;
+            }
+            //}
+            //if (compartmentA.YPosition != null && compartmentA.Height != null)
+            //{
+            if (compartmentA.YPosition + compartmentA.Height > tray.Dimension.Width)
+            {
+                error = "La dimensione del nuovo Scomparto non può essere maggiore dell'altezza del cassetto.";
+                return error;
+            }
+
+            CompartmentDetails compartmentDetailsA = this.ConvertBulkCompartmentToCompartmentDetails(compartmentA);
+            bool areCollision = this.HasCollision(compartmentDetailsA, compartmentB);
+            if (areCollision)
+            {
+                error = "Le dimensioni sono in sovrapposizione con un altro scomparto.";
+                return error;
+            }
+
+            if (compartmentA.Row == 0 && isBulkAdd)
+            {
+                error = "Il numero di righe del nuovo Bulk Compartment non può essere minore o uguale a 0.";
+                return error;
+            }
+            if (compartmentA.Column == 0 && isBulkAdd)
+            {
+                error = "Il numero di colonne del nuovo Bulk Compartment non può essere minore o uguale a 0.";
+                return error;
+            }
+
+            return error;
+        }
+
         #endregion Methods
+
+        #region Classes
+
+        public class CompartmentEventArgs : EventArgs
+        {
+            #region Fields
+
+            private readonly CompartmentDetails compartment;
+
+            #endregion Fields
+
+            #region Constructors
+
+            public CompartmentEventArgs(CompartmentDetails compartment)
+            {
+                this.compartment = compartment;
+            }
+
+            #endregion Constructors
+
+            #region Properties
+
+            public CompartmentDetails Compartment
+            {
+                get { return this.compartment; }
+            }
+
+            #endregion Properties
+        }
+
+        #endregion Classes
     }
 }

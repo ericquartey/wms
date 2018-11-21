@@ -4,8 +4,8 @@
              xmlns:ctrls="clr-namespace:Ferretto.Common.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Name="WmsTray">
+             x:Name="WmsTray"
+             mc:Ignorable="d">
     <Grid>
 
         <Label x:Name="UnitMetric"
@@ -40,8 +40,8 @@
                                MajorIntervalVertical="200"
                                Orientation="Vertical" />
         <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
-                                       Margin="25,25,0,0"
                                        MinHeight="{Binding Path=CanvasMinHeight, ElementName=WmsTray}"
+                                       Margin="25,25,0,0"
                                        HorizontalAlignment="Stretch"
                                        VerticalAlignment="Stretch"
                                        Panel.ZIndex="999"

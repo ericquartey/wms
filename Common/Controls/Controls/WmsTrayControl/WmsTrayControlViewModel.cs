@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
 using System.Windows;
+using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -107,6 +108,7 @@ namespace Ferretto.Common.Controls
             {
                 this.selectedCompartment = value;
                 this.UpdateColorCompartments();
+                this.UpdateCompartment();
             }
         }
 
@@ -135,10 +137,12 @@ namespace Ferretto.Common.Controls
                 if (this.tray != null)
                 {
                     this.tray.Compartments.ListChanged -= this.Compartments_ListChanged;
+                    this.tray.CompartmentChangedEvent -= this.Tray_CompartmentChangedEvent;
                 }
 
                 this.tray = value;
                 this.tray.Compartments.ListChanged += this.Compartments_ListChanged;
+                this.tray.CompartmentChangedEvent += this.Tray_CompartmentChangedEvent;
 
                 if (this.tray.Origin == null)
                 {
@@ -167,6 +171,20 @@ namespace Ferretto.Common.Controls
             foreach (var compartment in this.items)
             {
                 this.ResizeCompartment(widthTrayPixel, heightTrayPixel, compartment);
+            }
+        }
+
+        public void UpdateCompartment()
+        {
+            if (this.Tray == null)
+            {
+                return;
+            }
+
+            var current = this.items.FirstOrDefault(i => i.CompartmentDetails.Id == this.SelectedCompartment.Id);
+            if (current != null)
+            {
+                this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, current);
             }
         }
 
@@ -273,6 +291,7 @@ namespace Ferretto.Common.Controls
                     this.items.Add(compartmentGraphic);
                 }
             }
+            //ListChangedType.ItemChanged
 
             this.NotifyPropertyChanged(nameof(this.Items));
         }
@@ -307,8 +326,8 @@ namespace Ferretto.Common.Controls
 
             var compartmentEnd = new Position
             {
-                X = convertedCompartmentOrigin.X + (int) compartment.CompartmentDetails.Width,
-                Y = convertedCompartmentOrigin.Y + (int) compartment.CompartmentDetails.Height,
+                X = convertedCompartmentOrigin.X + (int)compartment.CompartmentDetails.Width,
+                Y = convertedCompartmentOrigin.Y + (int)compartment.CompartmentDetails.Height,
             };
 
             compartment.Top = GraphicUtils.ConvertMillimetersToPixel(
@@ -330,6 +349,11 @@ namespace Ferretto.Common.Controls
                 this.Tray.Dimension.Width);
             compartment.Height = bottom - compartment.Top;
             compartment.Width = right - compartment.Left;
+        }
+
+        private void Tray_CompartmentChangedEvent(Object sender, Tray.CompartmentEventArgs e)
+        {
+            this.SelectedCompartment = e.Compartment;
         }
 
         private void UpdateColorCompartments()
