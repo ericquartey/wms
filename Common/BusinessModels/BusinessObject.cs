@@ -16,15 +16,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Constructors
-
-        public BusinessObject()
-        {
-            this.PropertyChanged += BusinessObject_PropertyChanged;
-        }
-
-        #endregion Constructors
-
         #region Properties
 
         public int Id { get; set; }
@@ -54,6 +45,9 @@ namespace Ferretto.Common.BusinessModels
             this.snapshot = this.Clone() as BusinessObject;
             this.modifiedProperties = new HashSet<string>();
             this.IsModified = false;
+
+            this.PropertyChanged -= BusinessObject_PropertyChanged;
+            this.PropertyChanged += BusinessObject_PropertyChanged;
         }
 
         protected bool SetIfPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
