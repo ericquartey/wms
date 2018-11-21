@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -222,11 +222,13 @@ namespace Ferretto.Common.BusinessProviders
                 {
                     ItemId = itemWithdraw.ItemDetails.Id,
                     BayId = itemWithdraw.BayId,
+                    AreaId = itemWithdraw.AreaId,
                     Lot = itemWithdraw.Lot,
                     RequestedQuantity = itemWithdraw.Quantity,
                     RegistrationNumber = itemWithdraw.RegistrationNumber,
                     Sub1 = itemWithdraw.Sub1,
-                    Sub2 = itemWithdraw.Sub2
+                    Sub2 = itemWithdraw.Sub2,
+                    Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal
                 }
             );
         }
