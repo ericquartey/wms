@@ -129,18 +129,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.itemCategoryId, value);
         }
 
-        public IEnumerable<Enumeration> ItemManagementTypeChoices { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ItemManagementTypeDescription { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public int? ItemManagementTypeId
-        {
-            get => this.itemManagementTypeId;
-            set => this.SetProperty(ref this.itemManagementTypeId, value);
-        }
-
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate
         {
@@ -180,6 +168,13 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
         public string ManagementTypeDescription => this.ManagementType.ToString();
+
+        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
+        public int? ManagementTypeId
+        {
+            get => this.itemManagementTypeId;
+            set => this.SetProperty(ref this.itemManagementTypeId, value);
+        }
 
         public IEnumerable<EnumerationString> MeasureUnitChoices { get; set; }
 

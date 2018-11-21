@@ -13,10 +13,10 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
-    <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj" />
-    <ProjectReference Include="..\EF\Ferretto.Common.EF.csproj" />
-    <ProjectReference Include="..\..\WMS\Scheduler.WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Common\DataModels\Ferretto.Common.DataModels.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Common\EF\Ferretto.Common.EF.csproj" />
+    <ProjectReference Include="$(SolutionDir)\WMS\Scheduler.WebAPI.Contracts\Ferretto.WMS.Scheduler.WebAPI.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -42,7 +42,7 @@
                               Content="{Binding ItemWithdraw.ItemManagementTypeDescription}" />
             </Grid>
         </GroupBox>
-        
+
         <GroupBox Grid.Row="1"
                   Margin="0"
                   Header="{x:Static res:MasterData.WithdrawOptions}">

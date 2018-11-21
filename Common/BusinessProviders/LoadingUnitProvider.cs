@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public int Add(LoadingUnitDetails model)
+        public Task<int> Add(LoadingUnitDetails model)
         {
             throw new NotImplementedException();
         }

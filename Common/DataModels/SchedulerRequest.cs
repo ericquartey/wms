@@ -12,7 +12,7 @@
         public int Id { get; set; }
         public bool IsInstant { get; set; }
         public Item Item { get; set; }
-        public int? ItemId { get; set; }
+        public int ItemId { get; set; }
         public ItemList List { get; set; }
         public int? ListId { get; set; }
         public ItemListRow ListRow { get; set; }
@@ -28,7 +28,7 @@
         public PackageType PackageType { get; set; }
         public int? PackageTypeId { get; set; }
         public string RegistrationNumber { get; set; }
-        public int? RequestedQuantity { get; set; }
+        public int RequestedQuantity { get; set; }
         public string Sub1 { get; set; }
         public string Sub2 { get; set; }
 

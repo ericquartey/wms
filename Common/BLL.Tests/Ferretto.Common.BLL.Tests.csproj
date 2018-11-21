@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
   </ItemGroup>
 
 </Project>

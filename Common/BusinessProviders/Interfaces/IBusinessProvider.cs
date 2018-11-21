@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.BusinessProviders
@@ -9,7 +10,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        int Add(TDetailsModel model);
+        Task<int> Add(TDetailsModel model);
 
         int Delete(int id);
 

@@ -7,10 +7,6 @@
     <StartupObject>Ferretto.WMS.Scheduler.WebAPI.Host.Program</StartupObject>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
