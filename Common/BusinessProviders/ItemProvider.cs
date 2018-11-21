@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -40,7 +40,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public int Add(ItemDetails model)
+        public Task<int> Add(ItemDetails model)
         {
             throw new NotImplementedException();
         }
