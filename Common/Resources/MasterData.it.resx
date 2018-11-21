@@ -225,7 +225,7 @@
   <data name="ItemWithdrawCommenced" xml:space="preserve">
     <value>Immediato articolo avviato</value>
   </data>
-  <data name="AddBulkCompartment" xml:space="preserve">
+  <data name="BulkAddCompartment" xml:space="preserve">
     <value>Scompartizione Dinamica</value>
   </data>
   <data name="AddCompartment" xml:space="preserve">

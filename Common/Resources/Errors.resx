@@ -117,11 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddBulkNoPossible" xml:space="preserve">
-    <value>Error: it is no possible to Add Bulk Compartments.</value>
-  </data>
   <data name="AddNoPossible" xml:space="preserve">
     <value>Error: it is no possible to Add new Compartment.</value>
+  </data>
+  <data name="BulkAddNoPossible" xml:space="preserve">
+    <value>Error: it is no possible to Add Bulk Compartments.</value>
   </data>
   <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
     <value>Error retrieving document group from the Main Layout Manager.</value>

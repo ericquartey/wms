@@ -61,20 +61,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: it is no possible to Add Bulk Compartments..
-        /// </summary>
-        public static string AddBulkNoPossible {
-            get {
-                return ResourceManager.GetString("AddBulkNoPossible", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error: it is no possible to Add new Compartment..
         /// </summary>
         public static string AddNoPossible {
             get {
                 return ResourceManager.GetString("AddNoPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: it is no possible to Add Bulk Compartments..
+        /// </summary>
+        public static string BulkAddNoPossible {
+            get {
+                return ResourceManager.GetString("BulkAddNoPossible", resourceCulture);
             }
         }
         

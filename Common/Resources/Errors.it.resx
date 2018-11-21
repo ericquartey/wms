@@ -144,7 +144,7 @@
   <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
     <value>Errore recuperando il document group dal Main Layout Manager.</value>
   </data>
-  <data name="AddBulkNoPossible" xml:space="preserve">
+  <data name="BulkAddNoPossible" xml:space="preserve">
     <value>Errore: non è stato possibile eseguire la Scompartizione Dinamica.</value>
   </data>
   <data name="AddNoPossible" xml:space="preserve">
