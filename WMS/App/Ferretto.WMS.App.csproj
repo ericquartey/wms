@@ -8,10 +8,6 @@
     <StartupObject />
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
