@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -12,16 +12,14 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly DatabaseContext dataContext;
-        private readonly IItemProvider itemProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public SchedulerRequestProvider(DatabaseContext dataContext, IItemProvider itemProvider)
+        public SchedulerRequestProvider(DatabaseContext dataContext)
         {
             this.dataContext = dataContext;
-            this.itemProvider = itemProvider;
         }
 
         #endregion Constructors
