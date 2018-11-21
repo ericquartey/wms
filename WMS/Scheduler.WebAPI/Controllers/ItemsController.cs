@@ -60,7 +60,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 var skipValue = skip < 0 ? 0 : skip;
                 var takeValue = take < 0 ? int.MaxValue : take;
 
-                var expression = CreateSelectorExpression<Common.DataModels.Item, string>(orderByField);
+                var expression = CreateSelectorExpression<Common.DataModels.Item, object>(orderByField);
 
                 return databaseContext.Items
                     .Skip(skipValue)
@@ -77,35 +77,37 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         }
 
         [HttpPost("withdraw")]
-        [ProducesResponseType(200, Type = typeof(Core.WarehouseHandlingRequest))]
-        [ProducesResponseType(201, Type = typeof(Core.WarehouseHandlingRequest))]
-        [ProducesResponseType(404)]
-        public async Task<IActionResult> Withdraw([FromBody] Contracts.WithdrawRequest withdrawRequest)
+        [ProducesResponseType(201, Type = typeof(SchedulerRequest))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(422)]
+        public async Task<IActionResult> Withdraw([FromBody] SchedulerRequest request)
         {
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest(this.ModelState);
             }
 
-            this.logger.LogInformation($"Withdrawal request of item {withdrawRequest.ItemId} received.");
+            this.logger.LogInformation($"Withdrawal request of item {request.ItemId} received.");
 
-            var acceptedRequest = await this.warehouse.Withdraw(
-                withdrawRequest.ItemId,
-                withdrawRequest.Quantity,
-                withdrawRequest.Lot,
-                withdrawRequest.RegistrationNumber,
-                withdrawRequest.Sub1,
-                withdrawRequest.Sub2);
-
-            if (acceptedRequest == null)
+            try
             {
-                this.logger.LogWarning($"Withdrawal request of item {withdrawRequest.ItemId} could not be processed.");
+                var acceptedRequest = await this.warehouse.Withdraw(request);
+                if (acceptedRequest == null)
+                {
+                    this.logger.LogWarning($"Withdrawal request of item {request.ItemId} could not be processed.");
 
-                return this.UnprocessableEntity(this.ModelState);
+                    return this.UnprocessableEntity(this.ModelState);
+                }
+
+                this.logger.LogInformation($"Withdrawal request of item {request.ItemId} accepted.");
+
+                return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
             }
-
-            this.logger.LogInformation($"Withdrawal request of item {withdrawRequest.ItemId} accepted.");
-            return this.CreatedAtAction(nameof(this.Withdraw), new { id = acceptedRequest.Id }, acceptedRequest);
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"Withdrawal request of item {request.ItemId} could not be processed.");
+                return this.BadRequest(this.ModelState);
+            }
         }
 
         #endregion Methods

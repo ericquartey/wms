@@ -59,7 +59,6 @@ namespace Ferretto.Common.EF
         public virtual DbSet<ItemList> ItemLists { get; set; }
         public virtual DbSet<ItemListStatus> ItemListStatuses { get; set; }
         public virtual DbSet<ItemListType> ItemListTypes { get; set; }
-        public virtual DbSet<ItemManagementType> ItemManagementTypes { get; set; }
         public virtual DbSet<Item> Items { get; set; }
         public virtual DbSet<ItemArea> ItemsAreas { get; set; }
         public virtual DbSet<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
@@ -146,7 +145,6 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new ItemListRowStatusConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListStatusConfiguration());
             modelBuilder.ApplyConfiguration(new ItemListTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new ItemManagementTypeConfiguration());
             modelBuilder.ApplyConfiguration(new ItemCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitConfiguration());
             modelBuilder.ApplyConfiguration(new LoadingUnitHeightClassConfiguration());

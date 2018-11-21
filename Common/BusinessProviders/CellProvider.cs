@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public int Add(CellDetails model)
+        public Task<int> Add(CellDetails model)
         {
             throw new NotImplementedException();
         }

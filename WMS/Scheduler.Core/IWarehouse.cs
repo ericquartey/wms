@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
@@ -6,7 +7,7 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Methods
 
-        Task<WarehouseHandlingRequest> Withdraw(int itemId, int quantity, string lot, string registrationNumber, string sub1, string sub2);
+        Task<SchedulerRequest> Withdraw(SchedulerRequest request);
 
         #endregion Methods
     }

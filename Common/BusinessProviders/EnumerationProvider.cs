@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -87,11 +88,12 @@ namespace Ferretto.Common.BusinessProviders
                 .Select(x => new Enumeration(x.Id, x.Description));
         }
 
-        public IQueryable<Enumeration> GetAllItemManagementTypes()
+        public IEnumerable<Enumeration> GetAllItemManagementTypes()
         {
-            return this.dataContext.ItemManagementTypes
-                .AsNoTracking()
-                .Select(x => new Enumeration(x.Id, x.Description));
+            var values = System.Enum.GetValues(typeof(ItemManagementType));
+
+            return values.Cast<ItemManagementType>()
+                .Select(x => new Enumeration((int)x, System.Enum.GetName(typeof(ItemManagementType), x)));
         }
 
         public IQueryable<EnumerationString> GetAllLoadingUnitStatuses()

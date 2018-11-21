@@ -40,11 +40,13 @@ namespace Ferretto.WMS.Modules.Layout
                                     new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
-
+            this.Container.RegisterType<INotificationServiceClient, NotificationServiceClient>(new ContainerControlledLifetimeManager());
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
 
+            var notificationService = ServiceLocator.Current.GetInstance<INotificationServiceClient>();
+            notificationService.StartAsync().ConfigureAwait(true);
             var inputService = ServiceLocator.Current.GetInstance<IInputService>();
             inputService.Start();
 
