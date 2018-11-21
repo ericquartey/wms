@@ -65,9 +65,9 @@ namespace Ferretto.VW.InstallationApp
         private ICommand lsmtHorizontalEngineButtonCommand;
         private ICommand lsmtVerticalEngineButtonCommand;
         private bool machineModeSelectionBool = true;
-        private int machineModeSelectionInt;
+        private int machineModeSelectionInt = 0;
         private bool machineOnMarchSelectionBool = false;
-        private int machineOnMarchSelectionInt;
+        private int machineOnMarchSelectionInt = 0;
         private BindableBase navigationRegionCurrentViewModel;
         private ICommand resolutionCalibrationVerticalAxisButtonCommand;
         private ICommand ssBaysButtonCommand;
