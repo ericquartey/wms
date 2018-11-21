@@ -31,7 +31,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool enableInputBulkAdd;
         private string error;
         private string errorColor;
-        private int loadingUnitId;
         private ICommand saveCommand;
         private BulkCompartment selectedBulkCompartmentTray;
         private string title = Common.Resources.MasterData.BulkAddCompartment;
@@ -119,13 +118,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void Initialize(Tray tray, int loadingUnitId)
+        public void Initialize(Tray tray)
         {
             this.Tray = tray;
             this.SelectedBulkCompartmentTray = new BulkCompartment();
             this.EnableInputBulkAdd = true;
             this.SelectedBulkCompartmentTray.PropertyChanged += this.OnSelectedBulkCompartmentPropertyChanged;
-            this.loadingUnitId = loadingUnitId;
         }
 
         protected virtual void OnFinishEvent(EventArgs e)
@@ -150,7 +148,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteCancelCommand()
         {
-            return this.CreateMode;
+            return true;// this.CreateMode;
         }
 
         private bool CanExecuteSaveCommand()
@@ -217,17 +215,17 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool GenerateBulkCompartments()
         {
             bool ok = false;
-            var tempTray = this.tray;
+            //var tempTray = this.tray;
             //this.SelectedBulkCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
             //this.SelectedBulkCompartmentTray.CompartmentTypeId = 1;
             try
             {
-                var newCompartments = tempTray.BulkAddCompartments(this.SelectedBulkCompartmentTray);
+                var newCompartments = this.tray.BulkAddCompartments(this.SelectedBulkCompartmentTray);
 
                 var addAll = true;
                 foreach (var compartment in newCompartments)
                 {
-                    compartment.LoadingUnitId = this.loadingUnitId;
+                    compartment.LoadingUnitId = this.tray.LoadingUnitId;
                     compartment.CompartmentTypeId = 2;
                     var add = this.compartmentProvider.Add(compartment);
                     if (add != 1)
@@ -237,7 +235,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 if (addAll)
                 {
-                    this.Tray = tempTray;
+                    //this.Tray = tempTray;
                     ok = true;
                 }
             }

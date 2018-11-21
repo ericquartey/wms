@@ -128,7 +128,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteCancelCommand()
         {
-            return this.CreateMode;
+            return true;// this.CreateMode;
         }
 
         private bool CanExecuteSaveCommand()

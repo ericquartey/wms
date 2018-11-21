@@ -53,6 +53,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Register<WithdrawDialogView, WithdrawDialogViewModel>();
 
+            this.NavigationService.Register<InputAddCompartmentView, InputAddCompartmentViewModel>();
+            this.NavigationService.Register<InputBulkAddCompartmentView, InputBulkAddCompartmentViewModel>();
+            this.NavigationService.Register<InputEditCompartmentView, InputEditCompartmentViewModel>();
+
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
 
             ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
