@@ -7,7 +7,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        Task<SchedulerRequest> FullyQualifyRequest(SchedulerRequest schedulerRequest);
+        Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest);
 
         Task<int> GetAvailableQuantity(SchedulerRequest schedulerRequest);
 
