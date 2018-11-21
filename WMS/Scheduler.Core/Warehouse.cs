@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 
 namespace Ferretto.WMS.Scheduler.Core
@@ -8,37 +9,35 @@ namespace Ferretto.WMS.Scheduler.Core
         #region Fields
 
         private readonly IItemProvider itemProvider;
+        private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
         #endregion Fields
 
         #region Constructors
 
         public Warehouse(
-           IItemProvider itemProvider
+           IItemProvider itemProvider,
+           ISchedulerRequestProvider schedulerRequestProvider
            )
         {
             this.itemProvider = itemProvider;
+            this.schedulerRequestProvider = schedulerRequestProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public async Task<WarehouseHandlingRequest> Withdraw(int itemId, int quantity, string lot, string registrationNumber, string sub1, string sub2)
+        public async Task<SchedulerRequest> Withdraw(SchedulerRequest schedulerRequest)
         {
-            if (quantity <= 0)
+            var qualifiedSchedulerRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(schedulerRequest);
+            if (qualifiedSchedulerRequest != null)
             {
-                throw new System.ArgumentOutOfRangeException(nameof(quantity));
-            }
-
-            var availableQuantity = await this.itemProvider.GetAvailableQuantity(itemId, lot, registrationNumber, sub1, sub2);
-            if (availableQuantity >= quantity)
-            {
-                var warehouseRequest = new WarehouseHandlingRequest();
-
-                // TODO: save request to database
-
-                return warehouseRequest;
+                var addedRecordCount = await this.schedulerRequestProvider.Add(qualifiedSchedulerRequest);
+                if (addedRecordCount > 0)
+                {
+                    return schedulerRequest;
+                }
             }
 
             return null;
