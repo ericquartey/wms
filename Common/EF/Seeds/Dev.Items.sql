@@ -1,3 +1,5 @@
+SET QUOTED_IDENTIFIER ON
+
 DECLARE
     @item_management_fifo char(1) = 'F',
     @item_management_vol  char(1) = 'V'

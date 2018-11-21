@@ -227,7 +227,7 @@ namespace Ferretto.Common.BusinessModels
         public int TotalAvailable
         {
             get => this.totalAvailable;
-            set => this.SetIfStrictlyPositive(ref this.totalAvailable, value);
+            set => this.SetIfPositive(ref this.totalAvailable, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
