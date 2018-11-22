@@ -313,10 +313,11 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-          @"GIVEN a compartment with Sub1 \
+            @"GIVEN some compartments for a FIFO item with different Sub1's and different first store dates \
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
-               THEN the new request should be accepted")]
+               THEN the new request should be accepted\
+                AND the accepted request should select the Sub1's with oldest store date")]
         public async Task SingleCompartmentWithFifoTest()
         {
             #region Arrange
@@ -607,10 +608,11 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-        @"GIVEN a compartment with Sub1 \
+            @"GIVEN some compartments for a Volume item with different Sub1's and different stocks \
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
-               THEN the new request should be accepted")]
+               THEN the new request should be accepted \
+                AND the accepted request should select the Sub1's with less stock and oldest store date")]
         public async Task SingleCompartmentWithVolumeTest()
         {
             #region Arrange
@@ -713,8 +715,9 @@ namespace Ferretto.Common.BLL.Tests
         [TestMethod]
         [TestProperty("Description",
             @"GIVEN two compartments with different Sub1's \
-                AND two requests allocated on the two Sub1's so that there is no availability for a single Sub1 \
-               WHEN a new request is made \
+                AND two requests allocated on the two Sub1's \
+               WHEN a new request is made that has no specific Sub1, \
+                    but has as requested quantity the sum of all the remainder availability across different subs \
                THEN the new request should be rejected")]
         public async Task TwoCompartmentsWithDifferentSubsAndNoAvailability()
         {
