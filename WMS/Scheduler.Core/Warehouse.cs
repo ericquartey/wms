@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 
@@ -30,17 +31,21 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public async Task<SchedulerRequest> Withdraw(SchedulerRequest schedulerRequest)
         {
-            var qualifiedSchedulerRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(schedulerRequest);
-            if (qualifiedSchedulerRequest != null)
+            using (var scope = new TransactionScope())
             {
-                var addedRecordCount = await this.schedulerRequestProvider.Add(qualifiedSchedulerRequest);
-                if (addedRecordCount > 0)
+                var qualifiedSchedulerRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(schedulerRequest);
+                if (qualifiedSchedulerRequest != null)
                 {
-                    return schedulerRequest;
+                    var addedRecordCount = await this.schedulerRequestProvider.Add(qualifiedSchedulerRequest);
+                    if (addedRecordCount > 0)
+                    {
+                        scope.Complete();
+                        return schedulerRequest;
+                    }
                 }
-            }
 
-            return null;
+                return null;
+            }
         }
 
         #endregion Methods
