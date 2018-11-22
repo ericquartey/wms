@@ -94,7 +94,7 @@
                                      VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Stretch"
                                      IsMultiline="True"
-                                     Text="{Binding Path=Item.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     Text="{Binding Path=Item.Note, Mode=TwoWay,ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -116,9 +116,9 @@
                                       ItemsSource="{Binding Path=Item.AbcClassChoices}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
-                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -126,10 +126,10 @@
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay,  ValidatesOnExceptions=True,  UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="2"
-                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay,ValidatesOnExceptions=True,  UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Path=Item.ManagementType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

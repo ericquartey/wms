@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace Ferretto.VW.VWApp
 {
@@ -15,7 +14,6 @@ namespace Ferretto.VW.VWApp
         #region Fields
 
         private readonly bool installation_completed;
-        private ICommand changeStyleButtonCommand;
         private int currentSelection;
         private bool customComboBoxStateBool = false;
         private ICommand loginButtonCommand;
@@ -24,7 +22,7 @@ namespace Ferretto.VW.VWApp
         private string passwordLogin;
         private string serialNumber;
         private ICommand switchOffCommand;
-        private string userLogin = "Installer";
+        private string userLogin = "Operator";
 
         #endregion Fields
 
@@ -40,8 +38,6 @@ namespace Ferretto.VW.VWApp
         #endregion Constructors
 
         #region Properties
-
-        public ICommand ChangeStyleButtonCommand => this.changeStyleButtonCommand ?? (this.changeStyleButtonCommand = new DelegateCommand(() => NavigationService.RaiseChangeSkinEvent()));
 
         public Int32 CurrentSelection
         {

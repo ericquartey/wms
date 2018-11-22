@@ -230,7 +230,7 @@
             </DataTrigger>
 
             <DataTrigger Binding="{Binding IsSelected}"  Value="True">
-                <Setter TargetName="SelectedBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryLight}" />
+                <Setter TargetName="SelectedBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
             </DataTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

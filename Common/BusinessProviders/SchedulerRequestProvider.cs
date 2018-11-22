@@ -12,16 +12,14 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly DatabaseContext dataContext;
-        private readonly IItemProvider itemProvider;
 
         #endregion Fields
 
         #region Constructors
 
-        public SchedulerRequestProvider(DatabaseContext dataContext, IItemProvider itemProvider)
+        public SchedulerRequestProvider(DatabaseContext dataContext)
         {
             this.dataContext = dataContext;
-            this.itemProvider = itemProvider;
         }
 
         #endregion Constructors
@@ -72,76 +70,77 @@ namespace Ferretto.Common.BusinessProviders
 
             if (schedulerRequest.Type != OperationType.Withdrawal)
             {
-                throw new ArgumentException($"Only withdrawal requests are supported.", nameof(schedulerRequest));
+                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
             }
 
             var aggregatedCompartments = this.dataContext.Compartments
-                .Include(c => c.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .ThenInclude(c => c.Aisle)
-                .ThenInclude(a => a.Area)
-                .Where(c =>
-                    c.ItemId == schedulerRequest.ItemId
-                    &&
-                    c.LoadingUnit.Cell.Aisle.Area.Id == schedulerRequest.AreaId
-                    &&
-                    (schedulerRequest.Sub1 == null || c.Sub1 == schedulerRequest.Sub1)
-                    &&
-                    (schedulerRequest.Sub2 == null || c.Sub2 == schedulerRequest.Sub2)
-                    &&
-                    (schedulerRequest.Lot == null || c.Lot == schedulerRequest.Lot)
-                    &&
-                    (schedulerRequest.PackageTypeId == null || c.PackageTypeId == schedulerRequest.PackageTypeId)
-                    &&
-                    (schedulerRequest.MaterialStatusId == null || c.MaterialStatusId == schedulerRequest.MaterialStatusId)
-                    &&
-                    (schedulerRequest.RegistrationNumber == null || c.RegistrationNumber == schedulerRequest.RegistrationNumber)
-                )
-                .GroupBy(
-                    x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
-                    (key, group) => new
-                    {
-                        Key = key,
-                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
-                        Sub1 = key.Item1,
-                        Sub2 = key.Item2,
-                        Lot = key.Item3,
-                        PackageTypeId = key.Item4,
-                        MaterialStatusId = key.Item5,
-                        RegistrationNumber = key.Item6,
-                        FirstStoreDate = group.Min(c => c.FirstStoreDate)
-                    }
-                );
+               .Include(c => c.LoadingUnit)
+               .ThenInclude(l => l.Cell)
+               .ThenInclude(c => c.Aisle)
+               .ThenInclude(a => a.Area)
+               .Where(c =>
+                   c.ItemId == schedulerRequest.ItemId
+                   &&
+                   c.LoadingUnit.Cell.Aisle.Area.Id == schedulerRequest.AreaId
+                   &&
+                   (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
+                   &&
+                   (schedulerRequest.Sub1 == null || c.Sub1 == schedulerRequest.Sub1)
+                   &&
+                   (schedulerRequest.Sub2 == null || c.Sub2 == schedulerRequest.Sub2)
+                   &&
+                   (schedulerRequest.Lot == null || c.Lot == schedulerRequest.Lot)
+                   &&
+                   (schedulerRequest.PackageTypeId.HasValue == false || c.PackageTypeId == schedulerRequest.PackageTypeId)
+                   &&
+                   (schedulerRequest.MaterialStatusId.HasValue == false || c.MaterialStatusId == schedulerRequest.MaterialStatusId)
+                   &&
+                   (schedulerRequest.RegistrationNumber == null || c.RegistrationNumber == schedulerRequest.RegistrationNumber)
+               )
+               .GroupBy(
+                   x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
+                   (key, group) => new
+                   {
+                       Key = key,
+                       Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
+                       Sub1 = key.Item1,
+                       Sub2 = key.Item2,
+                       Lot = key.Item3,
+                       PackageTypeId = key.Item4,
+                       MaterialStatusId = key.Item5,
+                       RegistrationNumber = key.Item6,
+                       FirstStoreDate = group.Min(c => c.FirstStoreDate)
+                   }
+               );
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
-                .Where(r => r.ItemId == schedulerRequest.ItemId)
-                .GroupBy(
-                    x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
-                    (key, group) => new
-                    {
-                        Key = key,
-                        RequestedQuantity = group.Sum(r => r.RequestedQuantity)
-                    }
-                );
+                .Where(r => r.ItemId == schedulerRequest.ItemId);
 
-            var compartmentSets = aggregatedCompartments
-                .Join(
+            var matches = aggregatedCompartments
+                .GroupJoin(
                     aggregatedRequests,
-                    c => c.Key,
-                    r => r.Key,
-                    (c, r) => new CompartmentSet
+                    c => new Tuple<string, string, string, int?, int?, string>(c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber),
+                    r => new Tuple<string, string, string, int?, int?, string>(r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber),
+                    (c, r) => new
                     {
-                        ActualAvailability = c.Availability - r.RequestedQuantity,
-                        Sub1 = c.Sub1,
-                        Sub2 = c.Sub2,
-                        Lot = c.Lot,
-                        PackageTypeId = c.PackageTypeId,
-                        MaterialStatusId = c.MaterialStatusId,
-                        RegistrationNumber = c.RegistrationNumber,
-                        FirstStoreDate = c.FirstStoreDate
+                        c = c,
+                        r = r.DefaultIfEmpty()
                     }
                 )
-                .Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
+                .Select(g => new
+                {
+                    ActualAvailability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity),
+                    g.c.Sub1,
+                    g.c.Sub2,
+                    g.c.Lot,
+                    g.c.PackageTypeId,
+                    g.c.MaterialStatusId,
+                    g.c.RegistrationNumber,
+                    g.c.FirstStoreDate
+                }
+                );
+
+            var matchesWithAvailability = matches.Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })

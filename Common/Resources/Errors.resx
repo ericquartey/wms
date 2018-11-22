@@ -164,4 +164,7 @@
     <value>Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} .</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="UnableToConnectToDatabase" xml:space="preserve">
+    <value>Unable to connect to database</value>
+  </data>
 </root>

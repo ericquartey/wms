@@ -9,34 +9,36 @@
                  mc:Ignorable="d">
     <Grid Height="610">
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
-            <RowDefinition Height="45" />
-            <RowDefinition Height="500" />
-            <RowDefinition Height="45" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="470" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <RepeatButton Name="UpScroll"
-                      Grid.Row="1"
-                      Margin="15,0,0,0"
+                      Grid.Row="0"
+                      Width="200"
+                      Height="60"
                       Click="ScrollUpButtonClick"
                       IsEnabled="{Binding IsUpScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource IAPP_NavigationViewRepeatButtonStyle}">
             <RepeatButton.LayoutTransform>
                 <RotateTransform Angle="180" />
             </RepeatButton.LayoutTransform>
-            <Path Width="200"
+            <Path Width="180"
                   Height="17"
                   Data="M 0, 50 50,100 100,50"
                   Fill="{StaticResource FerrettoPureWhite}"
                   Stretch="Fill" />
         </RepeatButton>
         <RepeatButton Name="DownScroll"
-                      Grid.Row="3"
-                      Height="38"
-                      Margin="15,0,0,0"
+                      Grid.Row="4"
+                      Width="200"
+                      Height="60"
                       Click="ScrollDownButtonClick"
                       IsEnabled="{Binding IsDownScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource IAPP_NavigationViewRepeatButtonStyle}">
-            <Path Width="200"
+            <Path Width="180"
                   Height="17"
                   Data="M 0, 50 50,100 100,50"
                   Fill="{StaticResource FerrettoPureWhite}"
@@ -51,57 +53,113 @@
                       VerticalScrollBarVisibility="Hidden">
             <StackPanel>
                 <Button Command="{Binding DataContext.InstallationStateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.InstallationState}"
                         IsEnabled="{Binding IsInstallationStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.InstallationState}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.SSNavigationButtonsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.SensorsState}"
                         IsEnabled="{Binding IsSensorsStateButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.SensorsState}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.LowSpeedMovementsTestButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
                         IsEnabled="{Binding IsLowSpeedMovementsTestButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.LowSpeedMovementsTest}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.GatesControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.GateControl}"
                         IsEnabled="{Binding IsGateControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.GateControl}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.VerticalAxisCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
                         IsEnabled="{Binding IsOriginVerticalAxisButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.OriginVerticalAxis}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.ResolutionCalibrationVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.ResolutionCalibration}"
                         IsEnabled="{Binding IsSetYResolutionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.ResolutionCalibration}"
+                               TextAlignment="Center"
+                               TextWrapping="WrapWithOverflow" />
+                </Button>
                 <Button Command="{Binding DataContext.BeltBurnishingButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.BeltBurnishing}"
                         IsEnabled="{Binding IsBeltBurnishingButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.BeltBurnishing}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.GateHeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.GateHeightControl}"
                         IsEnabled="{Binding IsGateHeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.GateHeightControl}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.WeightControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.WeightControl}"
                         IsEnabled="{Binding IsWeightControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.WeightControl}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.VerticalOffsetCalibrationButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.VerticalOffsetCalibration}"
                         IsEnabled="{Binding IsVerticalOffsetCalibrationButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.CellsPanelControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.CellsPanelControl}"
                         IsEnabled="{Binding IsCellsPanelControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.CellsPanelControl}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
                 <Button Command="{Binding DataContext.CellsControlButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="{x:Static res:InstallationApp.CellsControl}"
                         IsEnabled="{Binding IsCellsControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
-                <Button Command="{Binding DataContext.GetIPButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                        Content="Get IPs"
-                        IsEnabled="{Binding IsCellsControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Text="{x:Static res:InstallationApp.CellsControl}"
+                               TextAlignment="Center"
+                               TextWrapping="Wrap" />
+                </Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

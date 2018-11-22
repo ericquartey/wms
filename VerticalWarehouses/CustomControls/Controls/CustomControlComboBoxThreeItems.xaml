@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="Ferretto.VW.CustomControls.Controls.CustomControlComboBoxThreeItems"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Grid Name="LayoutRoot">
+        <ComboBox Name="CBox"
+                  HorizontalContentAlignment="Center"
+                  VerticalContentAlignment="Center"
+                  BorderBrush="{Binding CustomBorderBrush, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  BorderThickness="4"
+                  SelectedIndex="{Binding CurrentSelection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Template="{StaticResource TESTCBoxTemplate}">
+            <ComboBoxItem Width="{Binding ElementName=LayoutRoot, Path=ActualWidth}"
+                          Height="{Binding ElementName=CBox, Path=ActualHeight}"
+                          IsSelected="True"
+                          Template="{StaticResource TESTCBoxItemTemplate}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontFamily="{DynamicResource IAPP_BodyFont}"
+                           FontSize="25"
+                           Foreground="{StaticResource FerrettoPureWhite}"
+                           Text="{Binding Item1Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </ComboBoxItem>
+            <ComboBoxItem Width="{Binding ElementName=LayoutRoot, Path=ActualWidth}"
+                          Height="{Binding ElementName=CBox, Path=ActualHeight}"
+                          Template="{StaticResource TESTCBoxItemTemplate}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontFamily="{DynamicResource IAPP_BodyFont}"
+                           FontSize="25"
+                           Foreground="{StaticResource FerrettoPureWhite}"
+                           Text="{Binding Item2Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </ComboBoxItem>
+            <ComboBoxItem Width="{Binding ElementName=LayoutRoot, Path=ActualWidth}"
+                          Height="{Binding ElementName=CBox, Path=ActualHeight}"
+                          Template="{StaticResource TESTCBoxItemTemplate}">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontFamily="{DynamicResource IAPP_BodyFont}"
+                           FontSize="25"
+                           Foreground="{StaticResource FerrettoPureWhite}"
+                           Text="{Binding Item3Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </ComboBoxItem>
+        </ComboBox>
+    </Grid>
+</UserControl>
