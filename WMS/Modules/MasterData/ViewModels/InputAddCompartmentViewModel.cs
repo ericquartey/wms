@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand CancelCommand => this.cancelCommand ??
-                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
+                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
 
         public bool CreateMode
         {
@@ -126,11 +126,6 @@ namespace Ferretto.WMS.Modules.MasterData
             return !this.CreateMode;
         }
 
-        private bool CanExecuteCancelCommand()
-        {
-            return true;// this.CreateMode;
-        }
-
         private bool CanExecuteSaveCommand()
         {
             if (!this.EnableCheck)
@@ -144,8 +139,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void EnableCreation()
         {
             this.SetError();
-            //this.SetSelectedCompartment(new CompartmentDetails());// { Width = 0, Height = 0, XPosition = 0, YPosition = 0 });
-            //this.SelectedCompartment = null;
             this.CreateMode = true;
         }
 

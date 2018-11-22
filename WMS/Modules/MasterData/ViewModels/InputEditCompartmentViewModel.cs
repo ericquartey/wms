@@ -23,7 +23,6 @@ namespace Ferretto.WMS.Modules.MasterData
         public Tray tray;
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-
         private ICommand cancelCommand;
         private bool createMode;
         private ICommand deleteCommand;
@@ -65,8 +64,6 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand DeleteCommand => this.deleteCommand ??
                   (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray));
 
-        //public bool EnableCheck { get; set; }
-
         public bool EnableInputEdit
         {
             get { return this.enableInputEdit; }
@@ -90,18 +87,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion Properties
 
-        //public Tray Tray
-        //{
-        //    get => this.tray;
-        //    set => this.SetProperty(ref this.tray, value);
-        //}
-
         #region Methods
 
         public void Initialize(Tray tray, LoadingUnitDetails loadingUnit, CompartmentDetails selectedCompartmentTray)
         {
             this.tray = tray;
-            //this.SelectedCompartmentTray = new CompartmentDetails();
             this.EnableInputEdit = true;
             this.SelectedCompartmentTray = selectedCompartmentTray;
             this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
@@ -129,35 +119,24 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteEditCommand()
         {
-            //if (this.EnableCheck)
-            //{
             string error = this.tray.CanBulkAddCompartment(this.SelectedCompartmentTray, this.tray, true, true);
             this.SetError(error);
-            //}
             bool goAhead = false;
             if (error == null || error == "")
             {
                 goAhead = true;
             }
-            return goAhead;// !this.CreateMode;
+            return goAhead;
         }
 
         private bool CanExecuteSaveCommand()
         {
-            //if (!this.EnableCheck)
-            //{
-            //    return true;
-            //}
-            //bool x = this.CreateMode && (this.Error == null || this.Error.Trim().Equals(""));
-            return this.Error == null || this.Error.Trim() == "";// this.Error.Trim().Equals(""));
+            return this.Error == null || this.Error.Trim() == "";
         }
 
         private void EnableCreation()
         {
             this.SetError();
-            //this.SetSelectedCompartment(new CompartmentDetails());// { Width = 0, Height = 0, XPosition = 0, YPosition = 0 });
-            //this.SelectedCompartment = null;
-            //this.CreateMode = true;
         }
 
         private void ExecuteCancelCommand()
@@ -186,7 +165,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteSaveCommand()
         {
             this.SetError();
-            //this.EnableCheck = true;
             if (this.SaveLoadingUnit())
             {
                 this.ResetView();
@@ -205,12 +183,10 @@ namespace Ferretto.WMS.Modules.MasterData
         private void Reset()
         {
             this.SetError();
-            //this.EnableCheck = false;
         }
 
         private void ResetView()
         {
-            //this.CreateMode = false;
             this.EnableInputEdit = false;
             this.SelectedCompartmentTray.PropertyChanged -= this.OnSelectedCompartmentPropertyChanged;
             this.Reset();
@@ -232,7 +208,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    //this.SetError("Errors");
+                    this.SetError("Errors");
                 }
             }
             else
@@ -240,10 +216,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.SetError(Errors.AddNoPossible);
             }
             ok = true;
-            //else
-            //{
-            //    this.SetError("Errors");
-            //}
             this.tray.Update(this.SelectedCompartmentTray);
             return ok;
         }

@@ -17,13 +17,9 @@ namespace Ferretto.WMS.Modules.MasterData
 {
     public class InputBulkAddCompartmentViewModel : BaseServiceNavigationViewModel
     {
-        //private ICommand bulkAddCommand;
-
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
-
-        //private bool bulkAddVisibility;
         private ICommand cancelCommand;
 
         private bool createMode;
@@ -42,16 +38,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public InputBulkAddCompartmentViewModel()
         {
-            //this.InitializeBulkCompartment();
         }
 
         #endregion Constructors
-
-        //public bool BulkAddVisibility
-        //{
-        //    get { return this.bulkAddVisibility; }
-        //    set { this.SetProperty(ref this.bulkAddVisibility, value); }
-        //}
 
         #region Events
 
@@ -62,7 +51,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand CancelCommand => this.cancelCommand ??
-                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
+                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
 
         public bool CreateMode
         {
@@ -95,14 +84,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public BulkCompartment SelectedBulkCompartmentTray
         {
-            get
-            {
-                //if (this.EnableBulkAdd)
-                //{
-                //    this.CanExecuteBulkAddCommand();
-                //}
-                return this.selectedBulkCompartmentTray;
-            }
+            get => this.selectedBulkCompartmentTray;
+
             set => this.SetProperty(ref this.selectedBulkCompartmentTray, value);
         }
 
@@ -137,7 +120,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteBulkAddCommand()
         {
-            if (this.EnableCheck)// && this.EnableBulkAdd)
+            if (this.EnableCheck)
             {
                 string error = this.Tray.CanBulkAddCompartment(this.SelectedBulkCompartmentTray, this.Tray, true);
                 this.SetError(error);
@@ -146,24 +129,12 @@ namespace Ferretto.WMS.Modules.MasterData
             return !this.CreateMode;
         }
 
-        private bool CanExecuteCancelCommand()
-        {
-            return true;// this.CreateMode;
-        }
-
         private bool CanExecuteSaveCommand()
         {
-            //if (this.EnableBulkAdd)
-            //{
             if (!this.EnableCheck)
             {
                 return true;
             }
-            //if (this.SelectedBulkCompartmentTray.Row == 0 && this.SelectedBulkCompartmentTray.Column == 0)
-            //{
-            //    return false;
-            //}
-            //}
             bool x = this.CreateMode && (this.Error == null || this.Error.Trim().Equals(""));
             return this.CreateMode && (this.Error == null || this.Error.Trim() == "");// this.Error.Trim().Equals(""));
         }
@@ -171,15 +142,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void EnableCreation()
         {
             this.SetError();
-            //this.InitializeBulkCompartment();
-            //this.SetSelectedCompartment(new CompartmentDetails());// { Width = 0, Height = 0, XPosition = 0, YPosition = 0 });
-            //this.SelectedCompartment = null;
             this.CreateMode = true;
-            //this.IsExpand = true;
-            //this.IsSelectableTray = false;
-            //this.ReadOnlyTray = true;
-            //this.IsEnabledGrid = false;
-            //this.IsVisibleMainCommandBar = false;
         }
 
         private void ExecuteBulkAddCommand()
@@ -215,9 +178,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool GenerateBulkCompartments()
         {
             bool ok = false;
-            //var tempTray = this.tray;
-            //this.SelectedBulkCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
-            //this.SelectedBulkCompartmentTray.CompartmentTypeId = 1;
             try
             {
                 var newCompartments = this.tray.BulkAddCompartments(this.SelectedBulkCompartmentTray);
@@ -235,7 +195,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 if (addAll)
                 {
-                    //this.Tray = tempTray;
                     ok = true;
                 }
             }
@@ -249,7 +208,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnSelectedBulkCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //((DelegateCommand)this.BulkAddCommand)?.RaiseCanExecuteChanged();
             if (this.CanExecuteBulkAddCommand())
             {
                 this.ExecuteBulkAddCommand();
@@ -257,27 +215,9 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CanExecuteSaveCommand();
         }
 
-        //private void InitializeBulkCompartment()
-        //{
-        //    this.SelectedBulkCompartmentTray = new BulkCompartment();
-        //    //this.SelectedBulkCompartmentTray.CompartmentDetails = new CompartmentDetails();
-        //    //this.SelectedBulkCompartmentTray.Row = 0;
-        //    //this.SelectedBulkCompartmentTray.Column = 0;
-        //    //this.SelectedBulkCompartmentTray.Width = null;
-        //    //this.SelectedBulkCompartmentTray.Height = null;
-        //    //this.SelectedBulkCompartmentTray.Row = 0;
-        //    //this.SelectedBulkCompartmentTray.XPosition = 0;
-        //    //this.SelectedBulkCompartmentTray.YPosition = 0;
-        //    this.SelectedBulkCompartmentTray.PropertyChanged += this.OnSelectedBulkCompartmentPropertyChanged;
-        //}
         private void Reset()
         {
             this.SetError();
-            //this.IsExpand = false;
-            //this.IsSelectableTray = true;
-            //this.ReadOnlyTray = false;
-            //this.IsEnabledGrid = true;
-            //this.IsVisibleMainCommandBar = true;
             this.EnableCheck = false;
             this.EnableInputBulkAdd = false;
         }
