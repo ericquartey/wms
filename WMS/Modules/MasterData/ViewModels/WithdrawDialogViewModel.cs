@@ -162,9 +162,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.ItemWithdraw.AreaId))
+            if (e.PropertyName == nameof(this.ItemWithdraw.AreaId) &&
+                this.ItemWithdraw.AreaId.HasValue)
             {
-                this.ItemWithdraw.BayChoices = this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId);
+                this.ItemWithdraw.BayChoices = this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value);
             }
         }
 
