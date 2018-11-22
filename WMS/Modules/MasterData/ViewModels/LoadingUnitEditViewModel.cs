@@ -247,6 +247,8 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.EnableCreation();
             this.HideMainViewAndShowLateralPanel();
+            this.SelectedCompartmentTray = null;
+
             //NEW
             this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
             this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
@@ -257,6 +259,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EnableCreation();
             this.HideMainViewAndShowLateralPanel();
             this.EnableInputBulkAdd = true;
+            this.SelectedCompartmentTray = null;
             //NEW
             this.InputBulkAddVM.Initialize(this.tray);
             this.InputBulkAddVM.FinishEvent += this.InputBulkAddVM_FinishEvent;
@@ -277,6 +280,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ReadOnlyTray = true;
             this.IsEnabledGrid = false;
             this.IsVisibleMainCommandBar = false;
+            this.FilterColorFunc = (new EditReadOnlyFilter()).ColorFunc;
         }
 
         private void InitializeTray()
@@ -303,16 +307,24 @@ namespace Ferretto.WMS.Modules.MasterData
         private void InputAddVM_FinishEvent(Object sender, EventArgs e)
         {
             this.ResetInputView();
+            if (sender is InputAddCompartmentViewModel model)
+            {
+                this.SelectedCompartmentTray = model.SelectedCompartmentTray;
+            }
+            this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
         }
 
         private void InputBulkAddVM_FinishEvent(Object sender, EventArgs e)
         {
             this.ResetInputView();
+            //TODO: select new comp
+            this.InputBulkAddVM.FinishEvent -= this.InputBulkAddVM_FinishEvent;
         }
 
         private void InputEditVM_FinishEvent(Object sender, EventArgs e)
         {
             this.ResetInputView();
+            this.InputEditVM.FinishEvent -= this.InputEditVM_FinishEvent;
         }
 
         private void LoadData()
@@ -349,6 +361,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ReadOnlyTray = false;
             this.IsEnabledGrid = true;
             this.IsVisibleMainCommandBar = true;
+            this.FilterColorFunc = (new EditFilter()).ColorFunc;
         }
 
         #endregion Methods

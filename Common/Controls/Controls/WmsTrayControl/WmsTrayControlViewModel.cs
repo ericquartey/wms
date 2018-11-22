@@ -176,7 +176,7 @@ namespace Ferretto.Common.Controls
 
         public void UpdateCompartment()
         {
-            if (this.Tray == null)
+            if (this.Tray == null || this.SelectedCompartment == null)
             {
                 return;
             }
@@ -265,7 +265,7 @@ namespace Ferretto.Common.Controls
                     Height = compartment.Height ?? 0,
                     Left = compartment.XPosition ?? 0,
                     Top = compartment.YPosition ?? 0,
-                    ColorFill = Colors.Aquamarine.ToString(),
+                    ColorFill = this.SelectedColorFilterFunc?.Invoke(compartment, this.SelectedCompartment) ?? Application.Current.Resources["DefaultCompartmentColor"].ToString(),
                     IsReadOnly = this.IsReadOnly,
                     IsSelectable = this.IsCompartmentSelectable
                 };
@@ -365,7 +365,7 @@ namespace Ferretto.Common.Controls
 
             foreach (var item in this.Items)
             {
-                item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment);
+                item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? Application.Current.Resources["DefaultCompartmentColor"].ToString();
             }
         }
 

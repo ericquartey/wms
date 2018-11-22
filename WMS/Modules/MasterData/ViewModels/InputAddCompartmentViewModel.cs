@@ -66,7 +66,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand SaveCommand => this.saveCommand ??
                                  (this.saveCommand = new DelegateCommand(() => this.ExecuteSaveCommand().ConfigureAwait(false), this.CanExecuteSaveCommand)
-                                 .ObservesProperty(() => this.Error));
+                                 .ObservesProperty(() => this.Error)
+                                .ObservesProperty(() => this.SelectedCompartmentTray));
 
         public CompartmentDetails SelectedCompartmentTray
         {
@@ -121,9 +122,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteSaveCommand()
         {
-            if (!this.EnableCheck)
+            if (!this.EnableCheck && this.IsNullSelectedCompartment())
             {
-                return true;
+                return false;
             }
             return (this.Error == null || this.Error.Trim() == "");
         }
@@ -158,13 +159,26 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        private bool IsNullSelectedCompartment()
+        {
+            if (this.selectedCompartmentTray != null && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null
+                && this.selectedCompartmentTray.Width != null && this.selectedCompartmentTray.Height != null && this.selectedCompartmentTray.Width != 0 && this.selectedCompartmentTray.Height != 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
         private void OnSelectedCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (this.CanExecuteAddCommand())
             {
                 this.ExecuteAddCommand();
             }
-            this.CanExecuteSaveCommand();
+            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
         }
 
         private void Reset()
@@ -192,7 +206,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 var add = await this.compartmentProvider.Add(this.SelectedCompartmentTray);
                 if (add == 1)
                 {
-                    this.tray.Compartments.Add(this.SelectedCompartmentTray);
+                    this.tray.AddCompartment(this.SelectedCompartmentTray);
                     //this.SelectedCompartment = this.SelectedCompartmentTray;
                 }
                 ok = true;

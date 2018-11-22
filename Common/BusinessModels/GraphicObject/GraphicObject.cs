@@ -260,7 +260,6 @@ namespace Ferretto.Common.BusinessModels
         public List<CompartmentDetails> BulkAddCompartments(BulkCompartment bulkCompartment)
         {
             var tempList = new List<CompartmentDetails>();
-            //var details = compartment.CompartmentDetails;
             int startX = (int)bulkCompartment.XPosition;
             int startY = (int)bulkCompartment.YPosition;
             for (int i = 0; i < bulkCompartment.Row; i++)
@@ -273,12 +272,6 @@ namespace Ferretto.Common.BusinessModels
                         Height = bulkCompartment.Height,
                         XPosition = startX + (i * bulkCompartment.Width),
                         YPosition = startY + (j * bulkCompartment.Height),
-                        //ItemPairing = bulkCompartment.ItemPairing,
-                        //ItemCode = bulkCompartment.ItemCode,
-                        //Stock = bulkCompartment.Stock,
-                        //MaxCapacity = details.MaxCapacity,
-                        //CompartmentTypeId = details.CompartmentTypeId,
-                        //LoadingUnitId = details.LoadingUnitId
                     };
                     if (this.CanAddCompartment(newCompartment))
                     {
