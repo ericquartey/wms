@@ -22,7 +22,7 @@ namespace Ferretto.VW.VWApp
         private string passwordLogin;
         private string serialNumber;
         private ICommand switchOffCommand;
-        private string userLogin = "Operator";
+        private string userLogin = "Installer";
 
         #endregion Fields
 
