@@ -1,18 +1,19 @@
 ﻿using System;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    public class StatusBarViewModel : BindableBase
+    public class StatusBarViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 
         private const int timeToKeepText = 15;
         private string info;
         private System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
+        private string schedulerStatus;
 
         #endregion Fields
 
@@ -20,6 +21,7 @@ namespace Ferretto.Common.Controls
 
         public StatusBarViewModel()
         {
+            this.SchedulerStatus = nameof(Icons.SchedulerOffLine);
             this.keepInfoTimer.Tick += new EventHandler(this.keepInfoTimer_Tick);
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
 
@@ -28,6 +30,7 @@ namespace Ferretto.Common.Controls
                {
                    this.keepInfoTimer.Stop();
                    this.Info = eventArgs.Info;
+                   this.SchedulerStatus = eventArgs.IsSchedulerOnline ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
                    this.keepInfoTimer.Start();
                });
         }
@@ -40,6 +43,12 @@ namespace Ferretto.Common.Controls
         {
             get => this.info;
             set => this.SetProperty(ref this.info, value);
+        }
+
+        public string SchedulerStatus
+        {
+            get => this.schedulerStatus;
+            set => this.SetProperty(ref this.schedulerStatus, value);
         }
 
         #endregion Properties

@@ -4,54 +4,61 @@
              xmlns:ctrls="clr-namespace:Ferretto.Common.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d">
+             mc:Ignorable="d"
+             x:Name="WmsTray">
+
     <Grid>
-        <ctrls:WmsRulerControl x:Name="horizontalRuler"
-                               Width="{Binding Tray.Dimension.Width}"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="UnitMetric"
+               Margin="0"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Bottom"
+               Content="mm"
+               FontWeight="Bold"
+               Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsTrayControl}}, Path=ShowRuler, Converter={StaticResource BTVC}}" />
+
+        <ctrls:WmsRulerControl x:Name="HorizontalRulerControl"
+                               Grid.Column="1"
                                Height="25"
-                               Margin="26,0,0,0"
                                HorizontalAlignment="Left"
+                               Margin="2,0,0,0"
                                VerticalAlignment="Top"
                                BorderBrush="Black"
-                               BorderThickness="1"
-                               MajorIntervalHorizontal="200"
-                               Orientation="Horizontal" />
-        <ctrls:WmsRulerControl x:Name="verticalRuler"
+                               BorderThickness="0,1,1,0"
+                               Orientation="Horizontal"
+                               Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsTrayControl}}, Path=ShowRuler, Converter={StaticResource BTVC}}" />
+
+        <ctrls:WmsRulerControl x:Name="VerticalRulerControl"
+                               Grid.Row="1"
                                Width="25"
-                               Height="{Binding Tray.Dimension.Height}"
-                               Margin="0,26,0,0"
                                HorizontalAlignment="Left"
+                               Margin="0,1,0,0"
                                VerticalAlignment="Top"
                                BorderBrush="Black"
-                               BorderThickness="1"
-                               MajorIntervalHorizontal="100"
-                               Orientation="Vertical" />
+                               BorderThickness="1,0,0,0"
+                               Orientation="Vertical"
+                               Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsTrayControl}}, Path=ShowRuler, Converter={StaticResource BTVC}}" />
 
-        <Border x:Name="CanvasBorder"
-                Margin="25,25,0,0"
-                BorderBrush="Black"
-                BorderThickness="2">
-            <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
-                                           ItemsSource="{Binding Items, Mode=TwoWay}">
-                <ctrls:WmsCanvasListBoxControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <ctrls:WmsTrayCanvas x:Name="TrayCanvas"
-                                             HorizontalAlignment="Left"
-                                             VerticalAlignment="Top" />
-                    </ItemsPanelTemplate>
-                </ctrls:WmsCanvasListBoxControl.ItemsPanel>
-                <ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="Padding" Value="0" />
-                        <Setter Property="Canvas.Top" Value="{Binding Top, Mode=TwoWay}" />
-                        <Setter Property="Canvas.Left" Value="{Binding Left, Mode=TwoWay}" />
-                        <Setter Property="Margin" Value="0" />
-                    </Style>
+        <ctrls:WmsCanvasListBoxControl x:Name="CanvasListBoxControl"
+                                       Grid.Row="1"
+                                       Grid.Column="1"
+                                       MinHeight="{Binding Path=CanvasMinHeight, ElementName=WmsTray}"
+                                       HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Stretch"
+                                       BorderThickness="0"
+                                       ItemContainerStyle="{DynamicResource CanvasItemStyle}"
+                                       ItemsSource="{Binding Items, Mode=TwoWay}"
+                                       Style="{DynamicResource CanvasListBox}" />
 
-                </ctrls:WmsCanvasListBoxControl.ItemContainerStyle>
-
-            </ctrls:WmsCanvasListBoxControl>
-        </Border>
     </Grid>
 
 </UserControl>

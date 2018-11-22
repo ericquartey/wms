@@ -16,7 +16,7 @@
                HorizontalAlignment="Left"
                Panel.ZIndex="1"
                Focusable="False"
-               Source="pack://application:,,,/Ferretto.WMS.Themes;component/Images/FGLogo.png" />
+               Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo.png" />
         <DockPanel Background="{DynamicResource CommonBackground}">
             <dxnav:TileBar x:Name="WMSTileNav"
                            Padding="125,10,150,0"
@@ -32,8 +32,7 @@
                           dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                           DockPanel.Dock="Right"
                           Focusable="False"
-                          HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Auto" />
+                          HorizontalScrollBarVisibility="Disabled" />
         </DockPanel>
         <Grid Margin="0,0,25,0"
               HorizontalAlignment="Right"

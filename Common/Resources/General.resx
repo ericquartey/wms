@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
   <data name="Add" xml:space="preserve">
     <value>Add</value>
     <comment>Command - Add an element to current page</comment>
@@ -125,14 +128,34 @@
     <value>Back</value>
     <comment>Command - Navigation to previous page</comment>
   </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Bottom</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
   <data name="CreationDate" xml:space="preserve">
     <value>Creation Date</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="Down" xml:space="preserve">
+    <value>Down</value>
+    <comment>Button text</comment>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
+  </data>
+  <data name="Front" xml:space="preserve">
+    <value>Front</value>
   </data>
   <data name="LastModificationDate" xml:space="preserve">
     <value>Last Modification Date</value>
@@ -144,6 +167,9 @@
   <data name="MillionsSymbol" xml:space="preserve">
     <value>M</value>
     <comment>Symbol for millions</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
   </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
@@ -176,8 +202,16 @@
     <value>k</value>
     <comment>Symbol for thousands</comment>
   </data>
+  <data name="Top" xml:space="preserve">
+    <value>Top</value>
+    <comment>Button text</comment>
+  </data>
   <data name="UnitOfMeasurement" xml:space="preserve">
     <value>Unit of measurement</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Up</value>
+    <comment>Button text</comment>
   </data>
   <data name="UserLogin" xml:space="preserve">
     <value>User Login:</value>

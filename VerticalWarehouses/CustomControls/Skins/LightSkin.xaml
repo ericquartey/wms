@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinGeneral.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinNormal.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinPressed.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinDisabled.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinImages.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

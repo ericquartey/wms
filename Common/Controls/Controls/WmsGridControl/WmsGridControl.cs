@@ -3,7 +3,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using DevExpress.Mvvm.UI;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Grid;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
@@ -17,12 +19,19 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty RefreshCommandProperty = DependencyProperty.Register(
-            nameof(RefreshCommandProperty),
+            nameof(RefreshCommand),
             typeof(ICommand),
             typeof(WmsGridControl),
             new FrameworkPropertyMetadata(null));
 
+        public static readonly DependencyProperty SelectedBusinessObjectProperty = DependencyProperty.Register(
+        nameof(SelectedBusinessObject),
+        typeof(IBusinessObject),
+        typeof(WmsGridControl),
+        new FrameworkPropertyMetadata(OnSelectedValueChanged));
+
         private Type itemType;
+
         private IRefreshDataEntityViewModel wmsViewModel;
 
         #endregion Fields
@@ -55,6 +64,12 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(RefreshCommandProperty, value);
         }
 
+        public IBusinessObject SelectedBusinessObject
+        {
+            get => (IBusinessObject)this.GetValue(SelectedBusinessObjectProperty);
+            set => this.SetValue(SelectedBusinessObjectProperty, value);
+        }
+
         #endregion Properties
 
         #region Methods
@@ -63,11 +78,45 @@ namespace Ferretto.Common.Controls
         {
             base.OnInitialized(e);
 
+            this.SetValue(ScrollBarExtensions.ScrollBarModeProperty, ScrollBarMode.TouchOverlap);
+
             this.DataContext = this.InstantiateViewModel();
 
             this.SetToken();
 
             this.SetupBindings();
+
+            this.SetSelectedItem();
+        }
+
+        private static void OnSelectedValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsGridControl gridControl)
+            {
+                if (e.NewValue is IBusinessObject bo)
+                {
+                    SetSelectedItem(gridControl, bo);
+                }
+            }
+        }
+
+        private static void SetSelectedItem(WmsGridControl gridControl, IBusinessObject bo)
+        {
+            var rowHandle = gridControl.FindRowByValue(nameof(IBusinessObject.Id), bo.Id);
+            gridControl.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    if (rowHandle > -1)
+                    {
+                        gridControl.View.FocusedRowHandle = rowHandle;
+                        gridControl.SelectItem(rowHandle);
+                        gridControl.SelectedItem = gridControl.CurrentItem;
+                    }
+                    else
+                    {
+                        gridControl.SelectedItem = gridControl.CurrentItem = null;
+                    }
+                    gridControl.SelectedItem = gridControl.CurrentItem;
+                }), DispatcherPriority.Loaded);
         }
 
         private object InstantiateViewModel()
@@ -98,9 +147,15 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        private void SetSelectedItem()
+        {
+            this.SelectedItemChanged += this.WmsGridControl_SelectedItemChanged;
+        }
+
         private void SetToken()
         {
             this.Loaded += this.WmsGridControl_Loaded;
+            this.Unloaded += this.WmsGridControl_Unloaded;
         }
 
         private void SetupBindings()
@@ -127,6 +182,17 @@ namespace Ferretto.Common.Controls
                 gridControlViewModel.Appear();
                 this.SetCmdRefreshBinding();
             }
+        }
+
+        private void WmsGridControl_SelectedItemChanged(Object sender, SelectedItemChangedEventArgs e)
+        {
+            this.SelectedBusinessObject = (e.NewItem is IBusinessObject bo) ? bo : null;
+        }
+
+        private void WmsGridControl_Unloaded(Object sender, RoutedEventArgs e)
+        {
+            this.Loaded -= this.WmsGridControl_Loaded;
+            this.SelectedItemChanged -= this.WmsGridControl_SelectedItemChanged;
         }
 
         #endregion Methods

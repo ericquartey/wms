@@ -118,179 +118,187 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Add" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="AllLists" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_list_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_list_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Cells" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/cells.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/cells.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CellStatuses" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Compartments" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_view_compact_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_view_compact_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CompartmentsMapping" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/compartments_mapping.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/compartments_mapping.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CompartmentStatuses" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CompartmentTypes" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Configuration" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_settings_white_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_settings_white_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Export" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_downward_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_downward_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemsViewAll" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemsViewClassA" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Sectors_black.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemsViewFIFO" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Products_black.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Products_black.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Import" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_upward_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_arrow_upward_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ImportExport" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/communication/ic_import_export_white_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/communication/ic_import_export_white_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Inventory" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/inventory.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/inventory.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="AbcClasses" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ListRowStatuses" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Lists" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_list_white_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_list_white_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ListStatuses" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ListTypes" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="LoadingUnits" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/loading_unit.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="LoadingUnitStatuses" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachineStatus" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/white/dashboard.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/white/dashboard.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachineTypes" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MasterData" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/white/manual_warehouse.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/white/manual_warehouse.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MaterialStatuses" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Others" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/editor/ic_functions_white_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/editor/ic_functions_white_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="PackageTypes" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="UnderStockItems" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_trending_down_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_trending_down_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="UnitsOfMeasurement" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_build_grey_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Items" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Menu/grey/items.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/items.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="UserProfile" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/action/ic_account_circle_black_18dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_account_circle_black_18dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="DropDown" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_arrow_drop_down_black_18dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CompartmentsViewAll" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="LoadingUnitsViewAll" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CellsViewAll" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachinesViewAll" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachinesViewTraslo" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/traslo_icon4_gray_alpha.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/traslo_icon4_gray_alpha.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachinesViewVertimagXS" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/vertimag_xs_icon_gray_alpha.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/vertimag_xs_icon_gray_alpha.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachinesViewVertimagM" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Tiles/vertimag_m_icon_gray_alpha.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/vertimag_m_icon_gray_alpha.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachineTraslo" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Machines/traslo_icon4.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Machines/traslo_icon4.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachineVertimagM" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Machines/vertimag_m_icon.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Machines/vertimag_m_icon.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="MachineVertimagXS" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.Themes;component/Icons/Ferretto/Machines/vertimag_xs_icon.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Machines/vertimag_xs_icon.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="SchedulerOffLine" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_black_24dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="SchedulerOnLine" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_connected_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
 </root>

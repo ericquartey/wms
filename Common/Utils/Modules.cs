@@ -32,7 +32,6 @@
         public const string MACHINES = "MachinesViewModel";
 
         #endregion Fields
-
     }
 
     public static class MasterData
@@ -46,7 +45,9 @@
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMS = "ItemsViewModel";
         public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
+        public const string LOADINGUNITEDIT = "LoadingUnitEditViewModel";
         public const string LOADINGUNITS = "LoadingUnitsViewModel";
+        public const string WITHDRAWDIALOG = "WithdrawDialogViewModel";
 
         #endregion Fields
     }

@@ -1,17 +1,18 @@
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public class ItemDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel, IEdit
     {
         #region Fields
 
@@ -24,6 +25,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand revertCommand;
         private ICommand saveCommand;
         private object selectedCompartment;
+        private ICommand withdrawCommand;
 
         #endregion Fields
 
@@ -65,10 +67,20 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.item;
             set
             {
+                if (this.Item != null && value != this.Item)
+                {
+                    this.Item.TakeSnapshot();
+                    this.Item.PropertyChanged -= this.OnItemPropertyChanged;
+                }
+
                 if (!this.SetProperty(ref this.item, value))
                 {
                     return;
                 }
+
+                this.Item.TakeSnapshot();
+                this.Item.PropertyChanged += this.OnItemPropertyChanged;
+
                 this.RefreshData();
             }
         }
@@ -80,10 +92,10 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RevertCommand => this.revertCommand ??
-                  (this.revertCommand = new DelegateCommand(this.LoadData));
+                  (this.revertCommand = new DelegateCommand(this.LoadData, this.CanExecuteRevert));
 
         public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSave));
 
         public object SelectedCompartment
         {
@@ -94,6 +106,10 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.RaisePropertyChanged(nameof(this.CurrentCompartment));
             }
         }
+
+        public ICommand WithdrawCommand => this.withdrawCommand ??
+                                          (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdraw,
+                                              this.CanExecuteWithdraw));
 
         #endregion Properties
 
@@ -121,16 +137,45 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
+        private bool CanExecuteRevert()
+        {
+            return this.Item?.IsModified == true;
+        }
+
+        private bool CanExecuteSave()
+        {
+            return this.Item?.IsModified == true;
+        }
+
+        private bool CanExecuteWithdraw()
+        {
+            return this.Item?.TotalAvailable > 0;
+        }
+
         private void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.itemProvider.Save(this.Item);
 
             if (modifiedRowCount > 0)
             {
+                this.Item.TakeSnapshot();
+
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
+        }
+
+        private void ExecuteWithdraw()
+        {
+            this.NavigationService.Appear(
+                nameof(MasterData),
+                Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
+                new
+                {
+                    Id = this.Item.Id
+                }
+            );
         }
 
         private void Initialize()
@@ -159,6 +204,19 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Item = this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
+            }
+        }
+
+        private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(this.Item.TotalAvailable))
+            {
+                ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+            }
+            else if (e.PropertyName == nameof(this.Item.IsModified))
+            {
+                ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
+                ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             }
         }
 

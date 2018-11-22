@@ -1,43 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.OperatorApp
 {
-    public partial class MainWindow : Window, IDisposable
+    public partial class MainWindow : Window
     {
         #region Constructors
 
         public MainWindow()
         {
             this.InitializeComponent();
+            NavigationService.BackToVWAppEventHandler += () => this.Hide();
+            this.DataContext = new MainWindowViewModel();
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public void BackToVWAppButtonMethod(object sender, RoutedEventArgs e)
+        public void BackToVWAppButtonMethod(object sender, MouseButtonEventArgs e)
         {
-        }
-
-        void IDisposable.Dispose()
-        {
-        }
-
-        private void BackToVWApp()
-        {
+            NavigationService.RaiseBackToVWAppEvent();
         }
 
         #endregion Methods

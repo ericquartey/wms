@@ -1,11 +1,10 @@
 ﻿using System.Windows.Media;
-using Ferretto.Common.BLL.Interfaces;
+using Ferretto.Common.Modules.BLL;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.Controls
 {
-    internal class WmsImageViewModel : BindableBase
+    internal class WmsImageViewModel : Prism.Mvvm.BindableBase
     {
         #region Fields
 

@@ -1,100 +1,62 @@
 ﻿<myType:BaseView x:Class="Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements.LSMTGateEngineView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                 d:DesignHeight="450"
-                 d:DesignWidth="800"
+                 d:DesignHeight="610"
+                 d:DesignWidth="730"
                  mc:Ignorable="d">
     <DockPanel>
-        <Label Margin="20,0,0,0"
-               HorizontalAlignment="Left"
-               Content="{x:Static res:InstallationApp.LSMTGateEngineTitle}"
-               DockPanel.Dock="Top"
-               Style="{StaticResource StandardTitleTextStyle}" />
-        <Grid Width="730"
-              Height="530">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="2*" />
-            </Grid.RowDefinitions>
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="auto" />
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="80" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Label Grid.Row="2"
-                   Grid.Column="1"
-                   HorizontalContentAlignment="Right"
-                   Content="{x:Static res:InstallationApp.ActualPosition}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Label Grid.Row="2"
-                   Grid.Column="2"
-                   HorizontalContentAlignment="Center"
-                   Content="1250,1"
-                   Style="{StaticResource StandardTitleTextStyle}" />
-            <Label Grid.Row="4"
-                   Grid.Column="1"
-                   HorizontalContentAlignment="Right"
-                   Content="{x:Static res:InstallationApp.FeedRate}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Label Grid.Row="4"
-                   Grid.Column="2"
-                   HorizontalContentAlignment="Center"
-                   Content="10%"
-                   Style="{StaticResource StandardTitleTextStyle}" />
-            <Label Grid.Row="1"
-                   Grid.Column="3"
-                   Content="{x:Static res:InstallationApp.Up}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Button Grid.Row="1"
-                    Grid.Column="4"
-                    Width="80"
-                    Height="80"
-                    Background="Transparent"
-                    BorderBrush="Transparent">
-                <Path Margin="0,0,2,0"
-                      HorizontalAlignment="Right"
-                      Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
-                      Fill="{StaticResource FerrettoGreen}"
-                      RenderTransformOrigin=".5,.5"
-                      Stretch="Fill">
-                    <Path.RenderTransform>
-                        <RotateTransform Angle="270" />
-                    </Path.RenderTransform>
-                </Path>
-            </Button>
-            <Label Grid.Row="3"
-                   Grid.Column="3"
-                   Content="{x:Static res:InstallationApp.Down}"
-                   Style="{StaticResource StandardBodyTextStyle}" />
-            <Button Grid.Row="3"
-                    Grid.Column="4"
-                    Width="80"
-                    Height="80"
-                    Background="Transparent"
-                    BorderBrush="Transparent">
-                <Path Margin="0,0,2,0"
-                      HorizontalAlignment="Right"
-                      Data="M 0,110 70,110 45,90 75,90 120,120 75,150 45,150 70,130 0,130 Z"
-                      Fill="{StaticResource FerrettoGreen}"
-                      RenderTransformOrigin=".5,.5"
-                      Stretch="Fill">
-                    <Path.RenderTransform>
-                        <RotateTransform Angle="90" />
-                    </Path.RenderTransform>
-                </Path>
-            </Button>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Grid.Column="1"
+                       Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" />
+            <Grid Grid.Row="1"
+                  Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="3*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="7*" />
+                </Grid.ColumnDefinitions>
+                <custom:CustomLabelTextBlockControl Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    ContentText="1235,2"
+                                                    LabelText="{x:Static res:InstallationApp.ActualPosition}" />
+                <custom:CustomLabelTextBlockControl Grid.Row="3"
+                                                    Grid.Column="0"
+                                                    ContentText="10%"
+                                                    LabelText="{x:Static res:InstallationApp.FeedRate}" />
+                <Button Grid.Row="1"
+                        Grid.Column="2"
+                        Content="{x:Static res:InstallationApp.Up}"
+                        Style="{StaticResource IAPP_ViewButtonStyle}" />
+                <Button Grid.Row="3"
+                        Grid.Column="2"
+                        Content="{x:Static res:InstallationApp.Down}"
+                        Style="{StaticResource IAPP_ViewButtonStyle}" />
+            </Grid>
         </Grid>
     </DockPanel>
 </myType:BaseView>

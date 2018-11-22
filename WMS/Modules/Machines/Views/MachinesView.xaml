@@ -13,6 +13,7 @@
              MinHeight="300"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             EnableHistoryView="True"
              Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
 
@@ -35,10 +36,9 @@
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
-                        <wms:InfoText FieldName="MovedLoadingUnitsCount" />
-                        <wms:InfoText FieldName="AreaName" />
-                        <wms:InfoText FieldName="RegistrationNumber" />
-
+                        <wms:InfoText Content="{Binding MovedLoadingUnitsCount}" />
+                        <wms:InfoText Content="{Binding AreaName}" />
+                        <wms:InfoText Content="{Binding RegistrationNumber}" />
                     </StackPanel>
                 </Grid>
 
@@ -75,7 +75,7 @@
 
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
@@ -94,6 +94,7 @@
                                   AllowEditing="False"
                                   CardHeaderTemplate="{StaticResource cardHeaderTemplate}"
                                   CardLayout="Rows"
+                                  CardMargin="0,0,6,6"
                                   CardTemplate="{StaticResource cardTemplate}"
                                   FixedSize="230"
                                   MinFixedSize="100"
@@ -123,6 +124,13 @@
                     <dxg:GridColumn FieldName="Nickname" />
                     <dxg:GridColumn FieldName="RegistrationNumber" />
                 </wms:WmsGridControl.Columns>
+
+                <wms:WmsGridControl.SortInfo>
+                    <dxg:GridSortInfo FieldName="AreaName"
+                                      SortOrder="Ascending" />
+                    <dxg:GridSortInfo FieldName="Nickname"
+                                      SortOrder="Ascending" />
+                </wms:WmsGridControl.SortInfo>
 
             </wms:WmsGridControl>
         </Grid>

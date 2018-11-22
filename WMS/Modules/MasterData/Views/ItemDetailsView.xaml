@@ -9,14 +9,14 @@
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             Title="{x:Static res:Navigation.ItemDetails}"
              d:DesignHeight="450"
              d:DesignWidth="800"
+             EnableHistoryView="True"
              Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 
-    <Grid x:Name="itemDetails"
-          Margin="20"
-          HorizontalAlignment="Stretch"
+    <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
         <Grid.RowDefinitions>
@@ -24,43 +24,48 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Name="ToolbarGrid">
-            <wms:ActionBar HorizontalAlignment="Right"
-                           Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Content="{x:Static res:MasterData.Withdraw}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding SaveCommand}"
-                                   Content="{x:Static res:General.Save}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_save_black_24dp.png"
-                                   GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding RevertCommand}"
-                                   Content="{x:Static res:General.Revert}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/content/ic_undo_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
-        </Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto"
+                              MaxWidth="400" />
+        </Grid.ColumnDefinitions>
+
+        <wms:ActionBar Margin="10,10,10,0"
+                       HorizontalAlignment="Right"
+                       Style="{DynamicResource ActionBarNotCustomizable}">
+            <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+                               Content="{x:Static res:MasterData.Withdraw}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
+                               GlyphSize="Custom" />
+            <wms:ActionBarItem Command="{Binding SaveCommand}"
+                               Content="{x:Static res:General.Save}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
+                               GlyphSize="Custom" />
+            <wms:ActionBarItem Command="{Binding RevertCommand}"
+                               Content="{x:Static res:General.Revert}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                               GlyphSize="Custom" />
+        </wms:ActionBar>
 
         <ScrollViewer Grid.Row="1"
-                      DataContext="{Binding Item}"
+                      Margin="10,0,10,10"
                       Focusable="False"
-                      IsTabStop="True"
-                      VerticalScrollBarVisibility="Auto">
+                      IsTabStop="True">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"
                                       MinWidth="400" />
                     <ColumnDefinition Width="*"
                                       MinWidth="400" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -77,19 +82,19 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox FieldName="Code" />
+                        <wms:TextBox Text="{Binding Path=Item.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
-                                     FieldName="Description" />
+                                     Text="{Binding Path=Item.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
-                                      EditValue="{Binding ItemCategoryId}"
-                                      ItemsSource="{Binding Path=ItemCategoryChoices}" />
+                                      EditValue="{Binding Path=Item.ItemCategoryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
                                      Margin="20,0,0,0"
                                      VerticalAlignment="Stretch"
                                      VerticalContentAlignment="Stretch"
-                                     FieldName="Note"
-                                     IsMultiline="True" />
+                                     IsMultiline="True"
+                                     Text="{Binding Path=Item.Note, Mode=TwoWay,ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -107,28 +112,28 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:ComboBox Margin="0,0,20,0"
-                                      EditValue="{Binding AbcClassId}"
-                                      ItemsSource="{Binding Path=AbcClassChoices}" />
+                                      EditValue="{Binding Path=Item.AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.AbcClassChoices}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="FifoTimeStore" />
+                                      EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
-                                      FieldName="ReorderPoint" />
+                                      EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding MeasureUnitId}"
-                                      ItemsSource="{Binding Path=MeasureUnitChoices}" />
+                                      EditValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.MeasureUnitChoices}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="FifoTimePick" />
+                                      EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay,  ValidatesOnExceptions=True,  UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="2"
-                                      FieldName="ReorderQuantity" />
+                                      EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay,ValidatesOnExceptions=True,  UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding ItemManagementTypeId}"
-                                      ItemsSource="{Binding Path=ItemManagementTypeChoices}" />
+                                      EditValue="{Binding Path=Item.ManagementType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=Item.ManagementTypeChoices}" />
                     </Grid>
                 </GroupBox>
 
@@ -150,31 +155,31 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Height" />
+                                      EditValue="{Binding Path=Item.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="PickTolerance" />
+                                      EditValue="{Binding Path=Item.PickTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      FieldName="AverageWeight" />
+                                      EditValue="{Binding Path=Item.AverageWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Length" />
+                                      EditValue="{Binding Path=Item.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="StoreTolerance" />
+                                      EditValue="{Binding Path=Item.StoreTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      FieldName="Width" />
+                                      EditValue="{Binding Path=Item.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      FieldName="InventoryTolerance" />
+                                      EditValue="{Binding Path=Item.InventoryTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -190,7 +195,6 @@
                                             CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                             ItemType="{x:Type models:Compartment}"
                                             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
-                                            SelectionMode="Row"
                                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
                                 <dxg:TableView AllowEditing="False"
@@ -209,59 +213,83 @@
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
                             </wms:WmsGridControl.View>
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="Code" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="LoadingUnitCode" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Sub1" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Sub2" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="Lot" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="CompartmentStatusDescription" />
-                            <dxg:GridColumn Width="100*"
-                                            FieldName="Stock" />
-                            <dxg:GridColumn Width="200*"
-                                            FieldName="ItemPairingDescription" />
+
+                            <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="LoadingUnitCode" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub1" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub2" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Lot" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Stock" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="ItemPairingDescription" />
+                            </wms:WmsGridControl.Columns>
+
+                            <wms:WmsGridControl.SortInfo>
+                                <dxg:GridSortInfo FieldName="Code"
+                                                  SortOrder="Ascending" />
+                            </wms:WmsGridControl.SortInfo>
+
                         </wms:WmsGridControl>
                     </StackPanel>
                 </GroupBox>
 
-                <StackPanel Grid.Row="0"
-                            Grid.RowSpan="3"
-                            Grid.Column="2"
-                            MinWidth="200"
-                            MaxWidth="400"
-                            Margin="10,0"
-                            HorizontalAlignment="Center"
-                            Orientation="Vertical">
-                    <wms:WmsImage MinWidth="200"
-                                  MinHeight="200"
-                                  MaxWidth="400"
-                                  MaxHeight="500"
-                                  BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                  Path="{Binding Path=Image}" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  FieldName="CreationDate" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  FieldName="LastModificationDate" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  FieldName="InventoryDate" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  FieldName="LastPickDate" />
-                    <wms:InfoText HorizontalAlignment="Right"
-                                  HorizontalContentAlignment="Right"
-                                  FieldName="LastStoreDate" />
-                </StackPanel>
-
             </Grid>
 
         </ScrollViewer>
+
+        <ScrollViewer Grid.RowSpan="2"
+                      Grid.Column="1"
+                      Focusable="False"
+                      IsTabStop="False">
+
+            <Border Style="{StaticResource InfoBoxBorderStyle}">
+
+                <GroupBox Margin="20,0"
+                          Header="{x:Static res:MasterData.OtherInformation}">
+                    <StackPanel Orientation="Vertical">
+                        <wms:WmsImage MaxWidth="300"
+                                      MaxHeight="400"
+                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                      BorderThickness="1"
+                                      Path="{Binding Path=Item.Image}"
+                                      Visibility="{Binding Path=Item.Image, Converter={StaticResource RTVC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding Path=Item.CreationDate}"
+                                      Visibility="{Binding Path=Item.CreationDate, Converter={StaticResource RTVC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding Path=Item.LastModificationDate}"
+                                      Visibility="{Binding Path=Item.LastModificationDate, Converter={StaticResource RTVC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding Path=Item.InventoryDate}"
+                                      Visibility="{Binding Path=Item.InventoryDate, Converter={StaticResource RTVC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding Path=Item.LastPickDate}"
+                                      Visibility="{Binding Path=Item.LastPickDate, Converter={StaticResource RTVC}}" />
+                        <wms:InfoText HorizontalAlignment="Left"
+                                      HorizontalContentAlignment="Left"
+                                      Content="{Binding Path=Item.LastStoreDate}"
+                                      Visibility="{Binding Path=Item.LastStoreDate, Converter={StaticResource RTVC}}" />
+                    </StackPanel>
+
+                </GroupBox>
+
+            </Border>
+
+        </ScrollViewer>
+
     </Grid>
+
 </wms:WmsView>

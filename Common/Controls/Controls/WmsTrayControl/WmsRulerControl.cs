@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,12 +30,8 @@ namespace Ferretto.Common.Controls
                     DependencyProperty.Register("LittleMarkLengthProperty", typeof(int), typeof(WmsRulerControl),
                     new UIPropertyMetadata(8));
 
-        public static readonly DependencyProperty MajorIntervalHorizontalProperty =
-                    DependencyProperty.Register("MajorIntervalHorizontalProperty", typeof(int), typeof(WmsRulerControl),
-                    new UIPropertyMetadata(100));
-
-        public static readonly DependencyProperty MajorIntervalVerticalProperty =
-                    DependencyProperty.Register(nameof(MajorIntervalVertical), typeof(int), typeof(WmsRulerControl),
+        public static readonly DependencyProperty MajorIntervalProperty =
+                    DependencyProperty.Register("MajorIntervalProperty", typeof(int), typeof(WmsRulerControl),
                     new UIPropertyMetadata(100));
 
         public static readonly DependencyProperty MarkLengthProperty =
@@ -50,9 +46,14 @@ namespace Ferretto.Common.Controls
                     DependencyProperty.Register("DisplayMode", typeof(Orientation), typeof(WmsRulerControl),
                     new FrameworkPropertyMetadata(OnOrientationChanged));
 
+        private readonly int BORDER = 1;
         private readonly int FONTSIZE = 10;
         private readonly int N_MARKS = 10;
+        private readonly int OFFSET_BORDER = 2;
         private readonly int OFFSET_TEXT = 1;
+        private readonly double startFrom = 0;
+        private readonly int WIDTH_MARK = 1;
+        private readonly int WIDTH_MARK_MINOR = 1;
         private Position origin;
 
         #endregion Fields
@@ -68,52 +69,39 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
+        public double HeightMmForRatio { get; set; }
         public InfoRuler InfoRuler { get; set; }
 
         public int LittleMarkLength
         {
-            get { return (int)this.GetValue(LittleMarkLengthProperty); }
-            set { this.SetValue(LittleMarkLengthProperty, value); }
+            get => (int)this.GetValue(LittleMarkLengthProperty);
+            set => this.SetValue(LittleMarkLengthProperty, value);
         }
 
-        public int MajorIntervalHorizontal
+        public int MajorInterval
         {
-            get
-            {
-                return (int)this.GetValue(MajorIntervalHorizontalProperty);
-            }
-            set { this.SetValue(MajorIntervalHorizontalProperty, value); }
+            get => (int)this.GetValue(MajorIntervalProperty);
+            set => this.SetValue(MajorIntervalProperty, value);
         }
 
-        public int MajorIntervalHorizontalPixel { get; set; }
-
-        public int MajorIntervalVertical
-        {
-            get
-            {
-                return (int)this.GetValue(MajorIntervalVerticalProperty);
-            }
-            set { this.SetValue(MajorIntervalVerticalProperty, value); }
-        }
-
-        public int MajorIntervalVerticalPixel { get; set; }
+        public int MajorIntervalPixel { get; set; }
 
         public int MarkLength
         {
-            get { return (int)this.GetValue(MarkLengthProperty); }
-            set { this.SetValue(MarkLengthProperty, value); }
+            get => (int)this.GetValue(MarkLengthProperty);
+            set => this.SetValue(MarkLengthProperty, value);
         }
 
         public int MiddleMarkLength
         {
-            get { return (int)this.GetValue(MiddleMarkLengthProperty); }
-            set { this.SetValue(MiddleMarkLengthProperty, value); }
+            get => (int)this.GetValue(MiddleMarkLengthProperty);
+            set => this.SetValue(MiddleMarkLengthProperty, value);
         }
 
         public Orientation Orientation
         {
-            get { return (Orientation)this.GetValue(OrientationProperty); }
-            set { this.SetValue(OrientationProperty, value); }
+            get => (Orientation)this.GetValue(OrientationProperty);
+            set => this.SetValue(OrientationProperty, value);
         }
 
         public Position Origin
@@ -122,7 +110,7 @@ namespace Ferretto.Common.Controls
             set
             {
                 this.origin = value;
-                if (value.XPosition == 0)
+                if (value.X == 0)
                 {
                     this.InfoRuler.OriginHorizontal = OriginHorizontal.Left;
                 }
@@ -130,7 +118,7 @@ namespace Ferretto.Common.Controls
                 {
                     this.InfoRuler.OriginHorizontal = OriginHorizontal.Right;
                 }
-                if (value.YPosition == 0)
+                if (value.Y == 0)
                 {
                     this.InfoRuler.OriginVertical = OriginVertical.Top;
                 }
@@ -140,6 +128,9 @@ namespace Ferretto.Common.Controls
                 }
             }
         }
+
+        public double WidthMmForConvert { get; set; }
+        public double WidthPixelForConvert { get; set; }
 
         #endregion Properties
 
@@ -153,35 +144,48 @@ namespace Ferretto.Common.Controls
             double pseudoStartValue = 0;
             double ratio = 0;
 
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            switch (this.InfoRuler.OrientationRuler)
             {
-                if (this.ActualWidth > 0 && this.MajorIntervalHorizontalPixel > 0)
+                case Orientation.Horizontal:
                 {
-                    ratio = this.ActualWidth / this.MajorIntervalHorizontalPixel;
-                    if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                    this.MarkLength = (int)this.ActualHeight;
+
+                    if (this.ActualWidth > 0 && this.MajorIntervalPixel > 0)
                     {
-                        ratio = 0;
+                        ratio = this.WidthMmForConvert / this.MajorInterval;
+                        if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                        {
+                            ratio = 0;
+                        }
                     }
+
+                    break;
                 }
-            }
-            if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
-            {
-                if (this.ActualHeight > 0 && this.MajorIntervalVerticalPixel > 0)
+                case Orientation.Vertical:
                 {
-                    ratio = this.ActualHeight / this.MajorIntervalVerticalPixel;
-                    if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                    this.MarkLength = (int)this.ActualWidth;
+
+                    if (this.ActualHeight > 0 && this.MajorIntervalPixel > 0)
                     {
-                        ratio = 0;
+                        ratio = this.HeightMmForRatio / this.MajorInterval;
+                        if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                        {
+                            ratio = 0;
+                        }
                     }
+
+                    break;
                 }
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-            Debug.WriteLine($"RulerControl: OnRender() orientation: {this.InfoRuler.OrientationRuler}, ratio: {ratio}");
-            Debug.WriteLine($"INFO: ActualWidth= {this.ActualWidth}  MajorIntervalHorizontalPixel= {this.MajorIntervalHorizontalPixel}");
-            if (!double.IsPositiveInfinity(ratio) && !double.IsNegativeInfinity(ratio))
+
+            if (!double.IsPositiveInfinity(ratio) && !double.IsNegativeInfinity(ratio) && ratio != 0)
             {
-                for (int i = 0; i < ratio; i++)
+                ratio = Math.Round(ratio) + 1;
+                for (var i = 0; i < ratio; i++)
                 {
-                    this.DrawRuler(drawingContext, i, ref pseudoStartValue);
+                    this.DrawRuler(drawingContext, i, ref pseudoStartValue, (int)ratio);
                 }
             }
         }
@@ -194,59 +198,110 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        private void DrawLittleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
+        private void DrawEndDraw(ref DrawingContext drawingContext, double actualDimension)
         {
-            int startFrom = 0;
+            var mark = new Line();
+
+            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            {
+                //Ruler with origin Left
+                mark.XStart = actualDimension;
+                mark.XEnd = mark.XStart;
+                mark.YStart = 0;
+                mark.YEnd = this.MarkLength;
+                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
+                {
+                    mark.XStart += this.startFrom;
+                }
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                {
+                    mark.XStart = this.BORDER;
+                }
+
+                mark.XEnd = mark.XStart;
+            }
+            else
+            {
+                //Ruler with origin Top
+                mark.YStart = actualDimension;
+                mark.YEnd = mark.YStart;
+                mark.XStart = 0;
+                mark.XEnd = this.MarkLength;
+                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
+                {
+                    mark.YStart += this.startFrom;
+                }
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                {
+                    mark.YStart = this.BORDER;
+                }
+
+                mark.YEnd = mark.YStart;
+            }
+
+            drawingContext.DrawLine(
+                new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK),
+                new Point(Math.Floor(mark.XStart), Math.Floor(mark.YStart)),
+                new Point(Math.Floor(mark.XEnd), Math.Floor(mark.YEnd)));
+        }
+
+        private void DrawLittleMark(ref DrawingContext drawingContext, int i)
+        {
             for (int j = 1; j < this.N_MARKS; j++)
             {
                 var littleMark = new Line();
                 if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
                 {
-                    littleMark.XStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / this.N_MARKS);
+                    var temp = i * this.MajorInterval + ((this.MajorInterval * j) / this.N_MARKS);
+                    littleMark.XStart = GraphicUtils.ConvertMillimetersToPixel(temp, this.WidthPixelForConvert, this.WidthMmForConvert);
+
                     littleMark.XEnd = littleMark.XStart;
                     littleMark.YStart = 0;
                     littleMark.YEnd = this.LittleMarkLength;
                     if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                     {
-                        if (littleMark.XEnd >= this.ActualWidth)
+                        littleMark.XStart += this.startFrom;
+                        if (littleMark.XStart >= this.ActualWidth)
                         {
                             break;
                         }
                     }
-                    if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                    else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                     {
-                        startFrom = (int)this.ActualWidth;
-                        littleMark.XStart = startFrom - littleMark.XStart;
-                        littleMark.XEnd = littleMark.XStart;
-                        if (littleMark.XEnd <= 0)
+                        littleMark.XStart = (this.ActualWidth - this.startFrom) - littleMark.XStart;
+                        if (littleMark.XStart <= 0)
                         {
                             break;
                         }
                     }
+
+                    littleMark.XEnd = littleMark.XStart;
                 }
                 else
                 {
                     littleMark.XStart = 0;
                     littleMark.XEnd = this.LittleMarkLength;
-                    littleMark.YStart = i * majorIntervalPixel + ((majorIntervalPixel * j) / this.N_MARKS);
+                    var temp = i * this.MajorInterval + ((this.MajorInterval * j) / this.N_MARKS);
+                    littleMark.YStart = GraphicUtils.ConvertMillimetersToPixel(temp, this.WidthPixelForConvert, this.WidthMmForConvert);
                     littleMark.YEnd = littleMark.YStart;
                     if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                     {
-                        if (littleMark.YEnd >= this.ActualHeight)
+                        littleMark.YStart += this.startFrom;
+                        if (littleMark.YStart >= this.ActualHeight)
                         {
                             break;
                         }
                     }
-                    if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                    else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                     {
-                        startFrom = (int)this.ActualHeight;
-                        littleMark.YStart = startFrom - littleMark.YStart;
-                        littleMark.YEnd = littleMark.YStart;
-                        if (littleMark.YEnd <= 0)
+                        littleMark.YStart = (this.ActualHeight - this.startFrom) - littleMark.YStart;
+                        if (littleMark.YStart <= 0)
                         {
                             break;
                         }
                     }
+
+                    littleMark.YEnd = littleMark.YStart;
                 }
 
                 if (j == this.N_MARKS / 2)
@@ -254,205 +309,215 @@ namespace Ferretto.Common.Controls
                     continue;
                 }
                 drawingContext.DrawLine(
-                                new Pen(new SolidColorBrush(Colors.Black), 1),
-                                new Point(littleMark.XStart, littleMark.YStart),
-                                new Point(littleMark.XEnd, littleMark.YEnd));
+                                new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK_MINOR),
+                                new Point(Math.Floor(littleMark.XStart), Math.Floor(littleMark.YStart)),
+                                new Point(Math.Floor(littleMark.XEnd), Math.Floor(littleMark.YEnd)));
             }
         }
 
-        private void DrawMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
+        private void DrawMark(ref DrawingContext drawingContext, int i)
         {
             var mark = new Line();
-            int startFrom = 0;
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                //Ruler with origin Left
-                mark.XStart = i * majorIntervalPixel;
-                mark.XEnd = mark.XStart;
+                ////Ruler with origin Left
+                mark.XStart = GraphicUtils.ConvertMillimetersToPixel((i * this.MajorInterval), this.WidthPixelForConvert, this.WidthMmForConvert);
                 mark.YStart = 0;
                 mark.YEnd = this.MarkLength;
-
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    startFrom = (int)this.ActualWidth;
-                    mark.XStart = startFrom - mark.XStart;
-                    mark.XEnd = mark.XStart;
+                    mark.XStart += this.startFrom;
                 }
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                {
+                    mark.XStart = (this.ActualWidth - this.startFrom) - mark.XStart;
+                }
+
+                mark.XEnd = mark.XStart;
             }
+            //Vertical Ruler
             else
             {
                 //Ruler with origin Top
-                mark.YStart = i * majorIntervalPixel;
-                mark.YEnd = mark.YStart;
+                mark.YStart = GraphicUtils.ConvertMillimetersToPixel((i * this.MajorInterval), this.WidthPixelForConvert, this.WidthMmForConvert);
+
                 mark.XStart = 0;
                 mark.XEnd = this.MarkLength;
-
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
-                    startFrom = (int)this.ActualHeight;
-                    mark.YStart = startFrom - mark.YStart;
-                    mark.YEnd = mark.YStart;
+                    mark.YStart += this.startFrom;
                 }
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                {
+                    mark.YStart = (this.ActualHeight - this.startFrom) - mark.YStart;
+                }
+
+                mark.YEnd = mark.YStart;
             }
 
             drawingContext.DrawLine(
-                new Pen(new SolidColorBrush(Colors.Black), 2),
-                new Point(mark.XStart, mark.YStart),
-                new Point(mark.XEnd, mark.YEnd));
+                new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK),
+                new Point(Math.Round(mark.XStart), Math.Round(mark.YStart)),
+                new Point(Math.Round(mark.XEnd), Math.Round(mark.YEnd)));
         }
 
-        private void DrawMiddleMark(ref DrawingContext drawingContext, int i, int majorIntervalPixel)
+        private void DrawMiddleMark(ref DrawingContext drawingContext, int i)
         {
             var middleMark = new Line();
             bool toDraw = true;
-            int startFrom = 0;
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                middleMark.XStart = i * majorIntervalPixel + (majorIntervalPixel / 2);
-                middleMark.XEnd = middleMark.XStart;
+                var temp = (i * this.MajorInterval + (this.MajorInterval / 2)) + 1;
+                middleMark.XStart = GraphicUtils.ConvertMillimetersToPixel(temp, this.WidthPixelForConvert, this.WidthMmForConvert);
                 middleMark.YStart = 0;
                 middleMark.YEnd = this.MiddleMarkLength;
 
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    if (middleMark.XEnd >= this.ActualWidth)
+                    middleMark.XStart += this.startFrom;
+                    if (middleMark.XStart >= this.ActualWidth)
                     {
                         toDraw = false;
                     }
                 }
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
-                    startFrom = (int)this.ActualWidth;
-                    middleMark.XStart = startFrom - middleMark.XStart;
-                    middleMark.XEnd = middleMark.XStart;
-                    if (middleMark.XEnd <= 0)
+                    middleMark.XStart = (this.ActualWidth - this.startFrom) - middleMark.XStart;
+                    if (middleMark.XStart <= 0)
                     {
                         toDraw = false;
                     }
                 }
+
+                middleMark.XEnd = middleMark.XStart;
             }
             else
             {
                 middleMark.XStart = 0;
                 middleMark.XEnd = this.MiddleMarkLength;
-                middleMark.YStart = i * majorIntervalPixel + (majorIntervalPixel / 2);
+                var temp = i * this.MajorInterval + (this.MajorInterval / 2);
+                middleMark.YStart = GraphicUtils.ConvertMillimetersToPixel(temp, this.WidthPixelForConvert, this.WidthMmForConvert);
                 middleMark.YEnd = middleMark.YStart;
 
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
-                    if (middleMark.YEnd >= this.ActualHeight)
+                    middleMark.YStart += this.startFrom;
+                    if (middleMark.YStart >= this.ActualHeight)
                     {
                         toDraw = false;
                     }
                 }
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
-                    startFrom = (int)this.ActualHeight;
-                    middleMark.YStart = startFrom - middleMark.YStart;
-                    middleMark.YEnd = middleMark.YStart;
-                    if (middleMark.YEnd <= 0)
+                    middleMark.YStart = (this.ActualHeight - this.startFrom) - middleMark.YStart;
+                    if (middleMark.YStart <= 0)
                     {
                         toDraw = false;
                     }
                 }
+
+                middleMark.YEnd = middleMark.YStart;
             }
+
             if (toDraw)
             {
                 drawingContext.DrawLine(
-                   new Pen(new SolidColorBrush(Colors.Black), 1),
-                   new Point(middleMark.XStart, middleMark.YStart),
-                   new Point(middleMark.XEnd, middleMark.YEnd));
+                   new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK_MINOR),
+                   new Point(Math.Floor(middleMark.XStart), Math.Floor(middleMark.YStart)),
+                   new Point(Math.Floor(middleMark.XEnd), Math.Floor(middleMark.YEnd)));
             }
         }
 
-        private void DrawRuler(DrawingContext drawingContext, int i, ref double pseudoStartValue)
+        private void DrawRuler(DrawingContext drawingContext, int i, ref double pseudoStartValue, int count)
         {
-            double actualDimension = 0;
-            int majorInterval = 0;
-            int majorIntervalPixel = 0;
+            var actualDimension = this.InfoRuler.OrientationRuler == Orientation.Horizontal ? this.ActualWidth : this.ActualHeight;
 
-            if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
+            this.DrawText(ref drawingContext, i, this.MajorInterval, pseudoStartValue);
+            this.DrawMark(ref drawingContext, i);
+            this.DrawMiddleMark(ref drawingContext, i);
+            this.DrawLittleMark(ref drawingContext, i);
+            if (i == count - 1)
             {
-                actualDimension = this.ActualWidth;
-                majorInterval = this.MajorIntervalHorizontal;
-                majorIntervalPixel = this.MajorIntervalHorizontalPixel;
+                this.DrawEndDraw(ref drawingContext, actualDimension);
             }
-            else
-            {
-                actualDimension = this.ActualHeight;
-                majorInterval = this.MajorIntervalVertical;
-                majorIntervalPixel = this.MajorIntervalVerticalPixel;
-            }
-
-            this.DrawText(ref drawingContext, i, majorInterval, majorIntervalPixel, pseudoStartValue);
-            this.DrawMark(ref drawingContext, i, majorIntervalPixel);
-            this.DrawMiddleMark(ref drawingContext, i, majorIntervalPixel);
-            this.DrawLittleMark(ref drawingContext, i, majorIntervalPixel);
 
             pseudoStartValue++;
         }
 
-        private void DrawText(ref DrawingContext drawingContext, int i, int majorInterval, int majorIntervalPixel, double pseudoStartValue)
+        private void DrawText(ref DrawingContext drawingContext, int i, int majorInterval, double pseudoStartValue)
         {
             var ft = new FormattedText(
-                    (pseudoStartValue * majorInterval).ToString(),
+                    (pseudoStartValue * majorInterval).ToString(CultureInfo.InvariantCulture),
                     CultureInfo.CurrentUICulture, FlowDirection.LeftToRight,
-                    new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black);
-            int startFrom = 0;
-            bool toDraw = true;
+                    new Typeface("Tahoma"), this.FONTSIZE, Brushes.Black,
+                    VisualTreeHelper.GetDpi(this).PixelsPerDip);
+            var startFrom = 0;
+            var toDraw = true;
 
             var position = new Position();
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
-                position.XPosition = i * majorIntervalPixel;
-                position.YPosition = (int)(this.ActualHeight - ft.Height - this.OFFSET_TEXT);
+                var temp = i * majorInterval;
+                position.X = (int)GraphicUtils.ConvertMillimetersToPixel(temp, this.WidthPixelForConvert, this.WidthMmForConvert);
+
+                position.Y = (int)(this.ActualHeight - ft.Height - this.OFFSET_TEXT);
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
-                    if (position.XPosition >= this.ActualWidth)
+                    position.X += this.OFFSET_BORDER;
+                    if (position.X + ft.Width >= this.ActualWidth)
+                    {
+                        toDraw = false;
+                    }
+                }
+                else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
+                {
+                    startFrom = (int)this.ActualWidth;
+                    position.X = startFrom - position.X - (int)ft.Width;
+                    position.X -= this.OFFSET_BORDER;
+
+                    if (position.X <= 0)
+                    {
+                        toDraw = false;
+                    }
+                }
+            }
+            // Vertical Ruler
+            else
+            {
+                position.X = (int)(this.ActualWidth - ft.Height - this.OFFSET_TEXT);
+                var temp = i * majorInterval;
+                position.Y = (int)GraphicUtils.ConvertMillimetersToPixel(temp, this.WidthPixelForConvert, this.WidthMmForConvert);
+
+                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
+                {
+                    position.Y += 5 + (int)ft.Height;
+
+                    if (position.Y + ft.Height >= this.ActualHeight)
+                    {
+                        toDraw = false;
+                    }
+                }
+                else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
+                {
+                    startFrom = (int)this.ActualHeight;
+                    position.Y = startFrom - position.Y;
+                    position.Y -= this.OFFSET_BORDER;
+
+                    if (position.Y - ft.Width <= 0)
                     {
                         toDraw = false;
                     }
                 }
 
-                if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
-                {
-                    startFrom = (int)this.ActualWidth;
-                    position.XPosition = startFrom - position.XPosition;
-                    if (position.XPosition <= 0)
-                    {
-                        toDraw = false;
-                    }
-                }
-            }
-            else
-            {
-                position.XPosition = (int)(this.ActualWidth - ft.Height - this.OFFSET_TEXT);
-                position.YPosition = i * majorIntervalPixel;
-                if (this.InfoRuler.OriginVertical == OriginVertical.Top)
-                {
-                    if (position.YPosition >= this.ActualHeight)
-                    {
-                        toDraw = false;
-                    }
-                }
-                if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
-                {
-                    startFrom = (int)this.ActualHeight;
-                    position.YPosition = startFrom - position.YPosition;
-                    if (position.YPosition <= 0)
-                    {
-                        toDraw = false;
-                    }
-                }
                 if (toDraw)
                 {
-                    drawingContext.PushTransform(new RotateTransform(-90, position.XPosition, position.YPosition));
+                    drawingContext.PushTransform(new RotateTransform(-90, position.X, position.Y));
                 }
             }
             if (toDraw)
             {
-                drawingContext.DrawText(ft, new Point(position.XPosition, position.YPosition));
+                drawingContext.DrawText(ft, new Point(position.X, position.Y));
                 if (this.InfoRuler.OrientationRuler == Orientation.Vertical)
                 {
                     drawingContext.Pop();

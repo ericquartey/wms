@@ -1,0 +1,29 @@
+{
+  "runtime": "NetCore21",
+  "defaultVariables": null,
+  "swaggerGenerator": {
+    "aspNetCoreToSwagger": {
+      "configuration": "$(Configuration)",
+      "project": "../Scheduler.WebAPI/Ferretto.WMS.Scheduler.WebAPI.csproj"
+
+      //...
+    }
+  },
+  "codeGenerators": {
+    "swaggerToCSharpClient": {
+      "clientBaseClass": "ClientBase",
+      "configurationClass": null,
+      "generateClientClasses": true,
+      "generateClientInterfaces": true,
+
+      "useHttpRequestMessageCreationMethod": true,
+      "clientClassAccessModifier": "public",
+      "typeAccessModifier": "public",
+      "generateContractsOutput": true,
+      "contractsNamespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts",
+      "contractsOutputFilePath": "Contracts.g.cs",
+      "namespace": "Ferretto.WMS.Scheduler.WebAPI.Contracts",
+      "output": "Client.g.cs"
+    }
+  }
+}

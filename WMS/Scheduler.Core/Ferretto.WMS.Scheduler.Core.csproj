@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\BusinessProviders\Ferretto.Common.BusinessProviders.csproj" />
+    <ProjectReference Include="..\Scheduler.Drivers.Vertimag\Ferretto.WMS.Scheduler.Drivers.Vertimag.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,4 @@
 ﻿using Ferretto.Common.BLL.Interfaces;
-using Prism.Mvvm;
 
 namespace Ferretto.Common.BusinessModels
 {

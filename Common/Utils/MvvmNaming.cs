@@ -41,9 +41,14 @@ namespace Ferretto.Common.Utils
             return (vmMatch.Groups[0].Value, vmMatch.Groups[1].Value);
         }
 
-        public static string GetViewName(string moduleName, string regionName)
+        public static string GetViewName(string moduleName, string viewModel)
         {
-            return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{moduleName}.{regionName}{Common.VIEW_SUFFIX}";
+            return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{moduleName}.{viewModel}{Common.VIEW_SUFFIX}";
+        }
+
+        public static string GetViewModelName(string moduleName, string viewModel)
+        {
+            return $"{Common.ASSEMBLY_QUALIFIEDNAME_PREFIX}.{moduleName}.{viewModel}";
         }
 
         public static string GetViewNameFromViewModelName(string viewModelName)

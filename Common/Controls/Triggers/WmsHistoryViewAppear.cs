@@ -15,6 +15,7 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(nameof(StartModuleName), typeof(string), typeof(WmsHistoryViewAppear));
         public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsHistoryViewAppear));
         private readonly IHistoryViewService historyViewService = ServiceLocator.Current.GetInstance<IHistoryViewService>();
+        private readonly INavigationService navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
         #endregion Fields
 

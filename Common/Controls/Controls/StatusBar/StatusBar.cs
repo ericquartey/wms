@@ -1,12 +1,13 @@
 ﻿using System.Windows.Controls;
+using DevExpress.Xpf.Bars;
 
 namespace Ferretto.Common.Controls
 {
-    public class StatusBar : ContentControl
+    public class WmsStatusBar : StatusBarControl
     {
         #region Constructors
 
-        public StatusBar()
+        public WmsStatusBar()
         {
             this.DataContext = new StatusBarViewModel();
         }

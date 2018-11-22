@@ -41,7 +41,7 @@
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
                                    GlyphSize="Custom" />
             </wms:ActionBar>
 
@@ -51,8 +51,7 @@
                                 Margin="3"
                                 CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItem, Mode=TwoWay}"
                                 ItemType="{x:Type models:Compartment}"
-                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
-                                SelectionMode="Row"
+                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"                                
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
                     <dxg:TableView AllowEditing="False"
@@ -97,6 +96,11 @@
                     <dxg:GridColumn Width="50*"
                                     FieldName="Stock" />
                 </wms:WmsGridControl.Columns>
+
+                <wms:WmsGridControl.SortInfo>
+                    <dxg:GridSortInfo FieldName="Code"
+                                      SortOrder="Ascending" />
+                </wms:WmsGridControl.SortInfo>
 
             </wms:WmsGridControl>
         </Grid>

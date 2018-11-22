@@ -21,12 +21,6 @@ namespace Ferretto.Common.BusinessModels
 
         #endregion Fields
 
-        #region Events
-
-        public event EventHandler UpdateCompartmentEvent;
-
-        #endregion Events
-
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
@@ -74,10 +68,15 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemDescription_extended), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 
+        public int? ItemId { get; set; }
+
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
         public int ItemPairing { get; set; }
 
         public IEnumerable<Enumeration> ItemPairingChoices { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
+        public string ItemPairingDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
@@ -90,6 +89,8 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }
+
+        public int LoadingUnitId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
@@ -163,18 +164,5 @@ namespace Ferretto.Common.BusinessModels
         }
 
         #endregion Properties
-
-        #region Methods
-
-        public void OnUpdateCompartmentEvent(EventArgs e)
-        {
-            var handler = this.UpdateCompartmentEvent;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-        #endregion Methods
     }
 }

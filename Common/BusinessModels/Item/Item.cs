@@ -80,9 +80,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
         public string ItemCategoryDescription { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ItemManagementTypeDescription { get; set; }
-
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
@@ -98,6 +95,9 @@ namespace Ferretto.Common.BusinessModels
             get => this.length;
             set => this.SetIfStrictlyPositive(ref this.length, value);
         }
+
+        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
+        public string ManagementTypeDescription { get; set; }
 
         [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
         public string MeasureUnitDescription { get; set; }

@@ -204,4 +204,25 @@
   <data name="PackageTypes" xml:space="preserve">
     <value>Package Types</value>
   </data>
+  <data name="ItemWithdraw" xml:space="preserve">
+    <value>Item Withdraw</value>
+  </data>
+  <data name="CellDetails" xml:space="preserve">
+    <value>Cell Details</value>
+  </data>
+  <data name="CompartmentDetails" xml:space="preserve">
+    <value>Compartment Details</value>
+  </data>
+  <data name="ItemDetails" xml:space="preserve">
+    <value>Item Details</value>
+  </data>
+  <data name="LoadingUnitDetails" xml:space="preserve">
+    <value>Loading Unit Details</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Machines</value>
+  </data>
+  <data name="LoadingUnitEdit" xml:space="preserve">
+    <value>Loading Unit Edit</value>
+  </data>
 </root>

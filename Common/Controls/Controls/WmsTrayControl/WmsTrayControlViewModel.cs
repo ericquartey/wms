@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Data;
 using System.Windows.Media;
-using DevExpress.Mvvm.UI;
 using Ferretto.Common.BusinessModels;
+using System.Windows;
 
 namespace Ferretto.Common.Controls
 {
@@ -15,23 +13,19 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        private double heightTrayPixel;
+        private bool isCompartmentSelectable;
         private ObservableCollection<WmsBaseCompartment> items;
-
         private int left;
         private SolidColorBrush penBrush;
         private int penThickness;
+        private Func<CompartmentDetails, CompartmentDetails, string> selectedColorFilterFunc;
+        private CompartmentDetails selectedCompartment;
         private int top;
         private Tray tray;
+        private double widthTrayPixel;
 
         #endregion Fields
-
-        #region Constructors
-
-        public WmsTrayControlViewModel()
-        {
-        }
-
-        #endregion Constructors
 
         #region Events
 
@@ -43,11 +37,30 @@ namespace Ferretto.Common.Controls
 
         public CompartmentDetails CompartmentDetailsProperty { get; set; }
 
-        public ObservableCollection<WmsBaseCompartment> Items { get => this.items; set => this.items = value; }
+        public bool IsCompartmentSelectable
+        {
+            get => this.isCompartmentSelectable;
+            set
+            {
+                this.isCompartmentSelectable = value;
+                this.UpdateIsSelectablePropertyToCompartments();
+                this.NotifyPropertyChanged(nameof(this.IsCompartmentSelectable));
+            }
+        }
+
+        public ObservableCollection<WmsBaseCompartment> Items
+        {
+            get => this.items;
+            set
+            {
+                this.items = value;
+                this.NotifyPropertyChanged(nameof(this.Items));
+            }
+        }
 
         public int Left
         {
-            get { return this.left; }
+            get => this.left;
             set
             {
                 this.left = value;
@@ -75,9 +88,34 @@ namespace Ferretto.Common.Controls
             }
         }
 
+        public bool IsReadOnly { get; set; }
+
+        public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
+        {
+            get => this.selectedColorFilterFunc;
+            set
+            {
+                this.selectedColorFilterFunc = value;
+                this.UpdateColorCompartments();
+            }
+        }
+
+        public CompartmentDetails SelectedCompartment
+        {
+            get => this.selectedCompartment;
+            set
+            {
+                this.selectedCompartment = value;
+                this.UpdateColorCompartments();
+            }
+        }
+
+        public bool ShowBackground { get; set; }
+        public bool ShowRuler { get; set; }
+
         public int Top
         {
-            get { return this.top; }
+            get => this.top;
             set
             {
                 this.top = value;
@@ -91,18 +129,26 @@ namespace Ferretto.Common.Controls
         /// </summary>
         public Tray Tray
         {
-            get { return this.tray; }
+            get => this.tray;
             set
             {
+                if (this.tray != null)
+                {
+                    this.tray.Compartments.ListChanged -= this.Compartments_ListChanged;
+                }
+
                 this.tray = value;
+                this.tray.Compartments.ListChanged += this.Compartments_ListChanged;
+
                 if (this.tray.Origin == null)
                 {
                     this.tray.Origin = new Position
                     {
-                        XPosition = 0,
-                        YPosition = this.tray.Dimension.Height
+                        X = 0,
+                        Y = this.tray.Dimension.Height
                     };
                 }
+                this.UpdateCompartments(this.Tray.Compartments);
                 this.NotifyPropertyChanged(nameof(this.Tray));
             }
         }
@@ -111,45 +157,45 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Resize(double widthTrayPixel, double heightTrayPixel)
+        public void ResizeCompartments(double widthTrayPixel, double heightTrayPixel)
         {
-            if (this.items != null)
+            if (this.items == null)
             {
-                foreach (var i in this.items)
-                {
-                    i.Width = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Width, widthTrayPixel, this.Tray.Dimension.Width);
-                    i.Height = GraphicUtils.ConvertMillimetersToPixel((int)i.CompartmentDetails.Height, widthTrayPixel, this.Tray.Dimension.Width);
-                    Dimension compartmentDimension = new Dimension() { Width = (int)i.CompartmentDetails.Width, Height = (int)i.CompartmentDetails.Height };
-                    Position compartmentOrigin = new Position { XPosition = (int)i.CompartmentDetails.XPosition, YPosition = (int)i.CompartmentDetails.YPosition };
+                return;
+            }
 
-                    Position convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOrigin(compartmentOrigin, this.Tray.Origin, this.Tray.Dimension, compartmentDimension);
-                    i.Top = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.YPosition, widthTrayPixel, this.Tray.Dimension.Width);
-                    i.Left = GraphicUtils.ConvertMillimetersToPixel(convertedCompartmentOrigin.XPosition, widthTrayPixel, this.Tray.Dimension.Width);
-                }
+            foreach (var compartment in this.items)
+            {
+                this.ResizeCompartment(widthTrayPixel, heightTrayPixel, compartment);
             }
         }
 
-        public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments, float ratio = 1)
+        public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments)
         {
-            if (this.Tray != null)
+            if (this.Tray == null)
             {
-                foreach (var compartment in compartments)
-                {
-                    this.items.Add(new WmsCompartmentViewModel
-                    {
-                        Tray = this.Tray,
-                        CompartmentDetails = compartment,
-
-                        Width = (int)(compartment.Width * ratio),
-                        Height = (int)(compartment.Height * ratio),
-                        Left = (int)(compartment.XPosition * ratio),
-                        Top = (int)(compartment.YPosition * ratio),
-                        ColorFill = Colors.Aquamarine.ToString(),
-                        Selected = Colors.RoyalBlue.ToString(),
-                        IsSelected = true
-                    });
-                }
+                return;
             }
+
+            var newItems = new ObservableCollection<WmsBaseCompartment>();
+            foreach (var compartment in compartments)
+            {
+                newItems.Add(new WmsCompartmentViewModel
+                {
+                    Tray = this.Tray,
+
+                    CompartmentDetails = compartment,
+                    Width = compartment.Width ?? 0,
+                    Height = compartment.Height ?? 0,
+                    Left = compartment.XPosition ?? 0,
+                    Top = compartment.YPosition ?? 0,
+                    ColorFill = this.SelectedColorFilterFunc?.Invoke(compartment, this.SelectedCompartment) ?? Application.Current.Resources["DefaultCompartmentColor"].ToString(),
+                    IsReadOnly = this.IsReadOnly,
+                    IsSelectable = this.IsCompartmentSelectable
+                });
+            }
+
+            this.Items = newItems;
         }
 
         public void UpdateInputForm(CompartmentDetails compartment)
@@ -158,48 +204,157 @@ namespace Ferretto.Common.Controls
             this.NotifyPropertyChanged(nameof(this.CompartmentDetailsProperty));
         }
 
-        public void UpdateTray(Tray tray)
+        public void UpdateIsSelectablePropertyToCompartments(bool value)
         {
-            this.Tray = tray;
-            this.items = new ObservableCollection<WmsBaseCompartment>();
+            if (this.items == null)
+            {
+                return;
+            }
 
-            this.TransformDataInput();
-            this.NotifyPropertyChanged(nameof(this.Items));
+            foreach (var item in this.Items)
+            {
+                item.IsSelectable = value;
+            }
+        }
+
+        public void UpdateIsReadOnlyPropertyToCompartments(bool value)
+        {
+            if (this.items == null)
+            {
+                return;
+            }
+
+            foreach (var item in this.Items)
+            {
+                item.IsReadOnly = value;
+            }
         }
 
         protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
-            if (this.PropertyChanged != null)
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private WmsCompartmentViewModel AddCompartment(CompartmentDetails compartment)
+        {
+            if (this.Tray != null)
             {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+                return new WmsCompartmentViewModel
+                {
+                    Tray = this.Tray,
+                    CompartmentDetails = compartment,
+                    Width = compartment.Width ?? 0,
+                    Height = compartment.Height ?? 0,
+                    Left = compartment.XPosition ?? 0,
+                    Top = compartment.YPosition ?? 0,
+                    ColorFill = Colors.Aquamarine.ToString(),
+                    IsReadOnly = this.IsReadOnly,
+                    IsSelectable = this.IsCompartmentSelectable
+                };
             }
+            return null;
+        }
+
+        private void Compartments_ListChanged(Object sender, ListChangedEventArgs e)
+        {
+            if (e.ListChangedType == ListChangedType.ItemDeleted)
+            {
+                this.items.RemoveAt(e.NewIndex);
+            }
+            else if (e.ListChangedType == ListChangedType.ItemAdded)
+            {
+                if (sender is IList<CompartmentDetails> compartments)
+                {
+                    var addedCompartment = compartments[compartments.Count - 1];
+                    var compartmentGraphic = this.AddCompartment(addedCompartment);
+
+                    this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, compartmentGraphic);
+
+                    this.items.Add(compartmentGraphic);
+                }
+            }
+
+            this.NotifyPropertyChanged(nameof(this.Items));
         }
 
         private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
         {
-            this.items = new ObservableCollection<WmsBaseCompartment>();
-            this.TransformDataInput();
-            this.NotifyPropertyChanged(nameof(this.Items));
+            this.UpdateCompartments(this.Tray.Compartments);
         }
 
-        private void TransformDataInput(float ratio = 1)
+        private void ResizeCompartment(double widthTrayPixel, double heightTrayPixel, WmsBaseCompartment compartment)
+        // TODO: consider moving this into the view
         {
-            foreach (var compartment in this.Tray.Compartments)
-            {
-                this.items.Add(new WmsCompartmentViewModel
-                {
-                    Tray = this.Tray,
-                    CompartmentDetails = compartment,
+            this.widthTrayPixel = widthTrayPixel;
+            this.heightTrayPixel = heightTrayPixel;
 
-                    Width = (int)(compartment.Width * ratio),
-                    Height = (int)(compartment.Height * ratio),
-                    Left = (int)(compartment.XPosition * ratio),
-                    Top = (int)(compartment.YPosition * ratio),
-                    ColorFill = Colors.Aquamarine.ToString(),
-                    Selected = Colors.RoyalBlue.ToString(),
-                    RectangleBorderThickness = 1,
-                    IsSelected = true
-                });
+            if (compartment.CompartmentDetails.Width == null || compartment.CompartmentDetails.Height == null ||
+                compartment.CompartmentDetails.XPosition == null || compartment.CompartmentDetails.YPosition == null)
+            {
+                return;
+            }
+
+            var compartmentOrigin = new Position
+            {
+                X = (int)compartment.CompartmentDetails.XPosition,
+                Y = (int)compartment.CompartmentDetails.YPosition
+            };
+            var convertedCompartmentOrigin = GraphicUtils.ConvertWithStandardOrigin(
+                compartmentOrigin,
+                this.Tray,
+                (int)compartment.CompartmentDetails.Width,
+                (int)compartment.CompartmentDetails.Height);
+
+            var compartmentEnd = new Position
+            {
+                X = convertedCompartmentOrigin.X + (int) compartment.CompartmentDetails.Width,
+                Y = convertedCompartmentOrigin.Y + (int) compartment.CompartmentDetails.Height,
+            };
+
+            compartment.Top = GraphicUtils.ConvertMillimetersToPixel(
+                convertedCompartmentOrigin.Y,
+                heightTrayPixel,
+                this.Tray.Dimension.Height);
+            compartment.Left = GraphicUtils.ConvertMillimetersToPixel(
+                convertedCompartmentOrigin.X,
+                widthTrayPixel,
+                this.Tray.Dimension.Width);
+
+            var bottom = GraphicUtils.ConvertMillimetersToPixel(
+                compartmentEnd.Y,
+                heightTrayPixel,
+                this.Tray.Dimension.Height);
+            var right = GraphicUtils.ConvertMillimetersToPixel(
+                compartmentEnd.X,
+                widthTrayPixel,
+                this.Tray.Dimension.Width);
+            compartment.Height = bottom - compartment.Top;
+            compartment.Width = right - compartment.Left;
+        }
+
+        private void UpdateColorCompartments()
+        {
+            if (this.items == null || this.selectedColorFilterFunc == null)
+            {
+                return;
+            }
+
+            foreach (var item in this.Items)
+            {
+                item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment);
+            }
+        }
+
+        private void UpdateIsSelectablePropertyToCompartments()
+        {
+            if (this.items == null)
+            {
+                return;
+            }
+
+            foreach (var item in this.Items)
+            {
+                item.IsSelectable = this.isCompartmentSelectable;
             }
         }
 

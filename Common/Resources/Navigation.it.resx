@@ -204,4 +204,10 @@
   <data name="UnderStockItems" xml:space="preserve">
     <value>Articoli Sottoscorta</value>
   </data>
+  <data name="ItemWithdraw" xml:space="preserve">
+    <value>Immediato Articolo</value>
+  </data>
+  <data name="LoadingUnitEdit" xml:space="preserve">
+    <value>Modifica Unità di Carico</value>
+  </data>
 </root>

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
@@ -11,71 +8,35 @@ namespace Ferretto.Common.Controls
     {
         #region Methods
 
-        public static double ConvertMillimetersToPixel(double value, double pixel, double mm, int offsetMM = 0)
+        public static double ConvertMillimetersToPixel(double value, double pixel, double mm)
         {
-            if (mm > 0)
-            {
-                return (pixel * value) / mm + offsetMM;
-            }
-            return value;
+            return mm > 0 ? Math.Floor(pixel * value / mm) : value;
         }
 
-        public static Position ConvertWithStandardOrigin(Position compartmentOrigin, Position trayOrigin, Dimension trayDimension, Dimension compartmentDimension)
+        public static Position ConvertWithStandardOrigin(Position compartmentOrigin, Tray tray,
+            int widthCompartment, int heightCompartment)
         {
-            //case: Origin X=0, Y=0
-            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == 0) { }
-            //case: Origin X=0, Y=Height
-            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == trayDimension.Height)
-            {
-                compartmentOrigin.YPosition = trayOrigin.YPosition - compartmentOrigin.YPosition - compartmentDimension.Height;
-            }
-            //case: Origin X=Width, Y=0
-            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == 0)
-            {
-                compartmentOrigin.XPosition = trayDimension.Width - compartmentOrigin.XPosition - compartmentDimension.Width;
-            }
-            //case: Origin X=Width, Y=Height
-            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == trayDimension.Height)
-            {
-                compartmentOrigin.XPosition = trayDimension.Width - compartmentOrigin.XPosition - compartmentDimension.Width;
-                compartmentOrigin.YPosition = trayOrigin.YPosition - compartmentOrigin.YPosition - compartmentDimension.Height;
-            }
-            return compartmentOrigin;
-        }
+            var ret = new Position() {X = compartmentOrigin.X, Y = compartmentOrigin.Y};
 
-        public static double ConvertWithStandardOriginSingleValue(double value, PositionType positionType, Position trayOrigin, Dimension trayDimension, Dimension compartmentDimension)
-        {
-            //case: Origin X=0, Y=0
-            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == 0) { }
+            //case: Origin X=0, Y=0 -> do nothing
             //case: Origin X=0, Y=Height
-            if (trayOrigin.XPosition == 0 && trayOrigin.YPosition == trayDimension.Height)
+            if (tray.Origin.X == 0 && tray.Origin.Y == tray.Dimension.Height)
             {
-                if (positionType == PositionType.Y)
-                {
-                    value = trayOrigin.YPosition - value - compartmentDimension.Height;
-                }
+                ret.Y = tray.Dimension.Height - compartmentOrigin.Y - heightCompartment;
             }
             //case: Origin X=Width, Y=0
-            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == 0)
+            else if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == 0)
             {
-                if (positionType == PositionType.X)
-                {
-                    value = trayDimension.Width - value - compartmentDimension.Width;
-                }
+                ret.X = tray.Dimension.Width - compartmentOrigin.X - widthCompartment;
             }
             //case: Origin X=Width, Y=Height
-            if (trayOrigin.XPosition == trayDimension.Width && trayOrigin.YPosition == trayDimension.Height)
+            else if (tray.Origin.X == tray.Dimension.Width && tray.Origin.Y == tray.Dimension.Height)
             {
-                if (positionType == PositionType.X)
-                {
-                    value = trayDimension.Width - value - compartmentDimension.Width;
-                }
-                if (positionType == PositionType.Y)
-                {
-                    value = trayOrigin.YPosition - value - compartmentDimension.Height;
-                }
+                ret.X = tray.Dimension.Width - compartmentOrigin.X - widthCompartment;
+                ret.Y = tray.Dimension.Height - compartmentOrigin.Y - heightCompartment;
             }
-            return value;
+
+            return ret;
         }
 
         #endregion Methods

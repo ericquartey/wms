@@ -6,42 +6,34 @@
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                 Height="610"
                  mc:Ignorable="d">
-    <Border Height="630"
-            Background="{StaticResource FerrettoPureWhite}">
-        <StackPanel>
-            <Rectangle Height="20" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+    <Grid Height="610">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
+            <RowDefinition Height="520" />
+            <RowDefinition Height="70" />
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="1">
+            <Button Command="{Binding DataContext.SsVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.VerticalAxis}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding}"
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+            <Button Command="{Binding DataContext.SsCradleButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Cradle}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding}"
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+            <Button Command="{Binding DataContext.SsBaysButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Bays}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding}"
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+            <Button Command="{Binding DataContext.SsGateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.Gate}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.SsProvaViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+            <Button Command="{Binding DataContext.SsVariousInputsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:InstallationApp.VariousInputs}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
-            <Rectangle Height="190" />
-            <Button Height="60"
-                    Margin="15,0,0,5"
-                    Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    Content="{x:Static res:General.Back}"
-                    Style="{StaticResource StandardMainWindowButtonStyle}" />
+                    Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
         </StackPanel>
-    </Border>
+        <Button Grid.Row="2"
+                Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                Content="{x:Static res:General.Back}"
+                Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+    </Grid>
 </myType:BaseView>
