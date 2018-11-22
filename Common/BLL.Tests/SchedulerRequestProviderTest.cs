@@ -100,7 +100,7 @@ namespace Ferretto.Common.BLL.Tests
           @"GIVEN two compartments with same Sub1, but in different areas \
                 AND a requests allocated to the first area, so that there is no availability on that area \
                WHEN a new request for the first area is made \
-               THEN the new request should be accepted")]
+               THEN the new request should be rejected")]
         public async Task CompartmentsInDifferentAreasTest()
         {
             #region Arrange
@@ -176,8 +176,7 @@ namespace Ferretto.Common.BLL.Tests
         [TestMethod]
         [TestProperty("Description",
          @"GIVEN a compartment in a specific area and aisle \
-                AND a requests allocated to a bay of another area \
-               WHEN a new request for the first area is made \
+               WHEN a new request is made for another area that has no compatible compartments \
                THEN the new request should be rejected")]
         public async Task CompartmentsNotInBay()
         {
