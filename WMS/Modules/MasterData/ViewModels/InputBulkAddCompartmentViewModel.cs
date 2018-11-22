@@ -228,7 +228,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     compartment.LoadingUnitId = this.tray.LoadingUnitId;
                     compartment.CompartmentTypeId = 2;
                     var add = this.compartmentProvider.Add(compartment);
-                    if (add != 1)
+                    if (add.Result != 1)
                     {
                         addAll = false;
                     }

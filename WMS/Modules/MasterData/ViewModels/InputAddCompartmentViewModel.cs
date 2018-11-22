@@ -29,7 +29,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private int loadingUnitId;
         private ICommand saveCommand;
         private CompartmentDetails selectedCompartmentTray;
-        private string title = Common.Resources.MasterData.BulkAddCompartment;
+        private string title = Common.Resources.MasterData.AddCompartment;
         private Tray tray;
 
         #endregion Fields
@@ -72,7 +72,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
         public ICommand SaveCommand => this.saveCommand ??
-                                 (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand)
+                                 (this.saveCommand = new DelegateCommand(() => this.ExecuteSaveCommand().ConfigureAwait(false), this.CanExecuteSaveCommand)
            .ObservesProperty(() => this.CreateMode)
            .ObservesProperty(() => this.Error));
 
@@ -164,11 +164,11 @@ namespace Ferretto.WMS.Modules.MasterData
             //TO PARENT UPDATE
         }
 
-        private void ExecuteSaveCommand()
+        private async Task ExecuteSaveCommand()
         {
             this.SetError();
             this.EnableCheck = true;
-            if (this.SaveLoadingUnit())
+            if (await this.SaveLoadingUnit())
             {
                 this.ResetView();
             }
@@ -198,7 +198,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.OnFinishEvent(null);
         }
 
-        private bool SaveLoadingUnit()
+        private async Task<bool> SaveLoadingUnit()
         {
             bool ok = false;
             if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
@@ -206,7 +206,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.SelectedCompartmentTray.LoadingUnitId = this.loadingUnitId;
                 this.SelectedCompartmentTray.CompartmentTypeId = 2;
 
-                var add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
+                var add = await this.compartmentProvider.Add(this.SelectedCompartmentTray);
                 if (add == 1)
                 {
                     this.tray.Compartments.Add(this.SelectedCompartmentTray);
