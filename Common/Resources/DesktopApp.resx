@@ -164,4 +164,16 @@
     <value>Opening main window ...</value>
     <comment>Splash screen message</comment>
   </data>
+  <data name="ApplyingDatabaseMigrations" xml:space="preserve">
+    <value>Applying database migrations ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="ReseedingDatabase" xml:space="preserve">
+    <value>Reseeding database ...</value>
+    <comment>Splash screen message</comment>
+  </data>
+  <data name="CheckingDatabaseStructure" xml:space="preserve">
+    <value>Checking database structure ...</value>
+    <comment>Splash screen message</comment>
+  </data>
 </root>

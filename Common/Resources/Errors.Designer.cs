@@ -187,6 +187,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to connect to database.
+        /// </summary>
+        public static string UnableToConnectToDatabase {
+            get {
+                return ResourceManager.GetString("UnableToConnectToDatabase", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} ..
         /// </summary>
         public static string WmsHistoryViewAppearSyntax {

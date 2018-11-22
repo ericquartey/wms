@@ -153,4 +153,7 @@
   <data name="ConverterCanConvertOnlyToNavigationStyleType" xml:space="preserve">
     <value>Questo converter può convertire solo valori di tipo GridViewNavigationStyle.</value>
   </data>
+  <data name="UnableToConnectToDatabase" xml:space="preserve">
+    <value>Impossibile connettersi al database</value>
+  </data>
 </root>
