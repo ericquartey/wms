@@ -21,9 +21,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private ICommand cancelCommand;
-
-        private bool createMode;
-        private bool enableBulkAdd;
         private bool enableInputBulkAdd;
         private string error;
         private string errorColor;
@@ -51,19 +48,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand CancelCommand => this.cancelCommand ??
-                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
-
-        public bool CreateMode
-        {
-            get => this.createMode;
-            set => this.SetProperty(ref this.createMode, value);
-        }
-
-        public bool EnableBulkAdd
-        {
-            get => this.enableBulkAdd;
-            set => this.SetProperty(ref this.enableBulkAdd, value);
-        }
+                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand));
 
         public bool EnableCheck { get; set; }
 
@@ -79,13 +64,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand SaveCommand => this.saveCommand ??
                                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand)
-           .ObservesProperty(() => this.CreateMode)
-           .ObservesProperty(() => this.Error));
+                                .ObservesProperty(() => this.Error));
 
         public BulkCompartment SelectedBulkCompartmentTray
         {
             get => this.selectedBulkCompartmentTray;
-
             set => this.SetProperty(ref this.selectedBulkCompartmentTray, value);
         }
 
@@ -124,9 +107,9 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 string error = this.Tray.CanBulkAddCompartment(this.SelectedBulkCompartmentTray, this.Tray, true);
                 this.SetError(error);
+                return error != null && error.Trim() != "";
             }
-
-            return !this.CreateMode;
+            return true;
         }
 
         private bool CanExecuteSaveCommand()
@@ -135,19 +118,16 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 return true;
             }
-            bool x = this.CreateMode && (this.Error == null || this.Error.Trim().Equals(""));
-            return this.CreateMode && (this.Error == null || this.Error.Trim() == "");// this.Error.Trim().Equals(""));
+            return (this.Error == null || this.Error.Trim() == "");
         }
 
         private void EnableCreation()
         {
             this.SetError();
-            this.CreateMode = true;
         }
 
         private void ExecuteBulkAddCommand()
         {
-            this.EnableBulkAdd = true;
             this.EnableCreation();
             this.EnableInputBulkAdd = true;
         }
@@ -166,12 +146,9 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.SetError();
             this.EnableCheck = true;
-            if (this.EnableBulkAdd)
+            if (this.GenerateBulkCompartments())
             {
-                if (this.GenerateBulkCompartments())
-                {
-                    this.ResetView();
-                }
+                this.ResetView();
             }
         }
 
@@ -224,8 +201,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ResetView()
         {
-            this.CreateMode = false;
-            this.EnableBulkAdd = false;
             this.EnableInputBulkAdd = false;
             this.SelectedBulkCompartmentTray.PropertyChanged -= this.OnSelectedBulkCompartmentPropertyChanged;
             this.Reset();

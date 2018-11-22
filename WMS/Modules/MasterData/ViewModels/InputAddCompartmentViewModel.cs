@@ -22,7 +22,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
 
         private ICommand cancelCommand;
-        private bool createMode;
         private bool enableInputAdd;
         private string error;
         private string errorColor;
@@ -51,13 +50,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand CancelCommand => this.cancelCommand ??
-                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
-
-        public bool CreateMode
-        {
-            get => this.createMode;
-            set => this.SetProperty(ref this.createMode, value);
-        }
+                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand));
 
         public bool EnableCheck { get; set; }
 
@@ -73,8 +66,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand SaveCommand => this.saveCommand ??
                                  (this.saveCommand = new DelegateCommand(() => this.ExecuteSaveCommand().ConfigureAwait(false), this.CanExecuteSaveCommand)
-           .ObservesProperty(() => this.CreateMode)
-           .ObservesProperty(() => this.Error));
+                                 .ObservesProperty(() => this.Error));
 
         public CompartmentDetails SelectedCompartmentTray
         {
@@ -121,9 +113,10 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 string error = this.Tray.CanBulkAddCompartment(this.SelectedCompartmentTray, this.Tray, true);
                 this.SetError(error);
+                return error != null && error.Trim() != "";
             }
 
-            return !this.CreateMode;
+            return true;
         }
 
         private bool CanExecuteSaveCommand()
@@ -132,14 +125,12 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 return true;
             }
-            bool x = this.CreateMode && (this.Error == null || this.Error.Trim().Equals(""));
-            return this.CreateMode && (this.Error == null || this.Error.Trim() == "");// this.Error.Trim().Equals(""));
+            return (this.Error == null || this.Error.Trim() == "");
         }
 
         private void EnableCreation()
         {
             this.SetError();
-            this.CreateMode = true;
         }
 
         private void ExecuteAddCommand()
@@ -184,7 +175,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ResetView()
         {
-            this.CreateMode = false;
             this.EnableInputAdd = false;
             this.SelectedCompartmentTray.PropertyChanged -= this.OnSelectedCompartmentPropertyChanged;
             this.Reset();
@@ -205,8 +195,6 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.tray.Compartments.Add(this.SelectedCompartmentTray);
                     //this.SelectedCompartment = this.SelectedCompartmentTray;
                 }
-                this.CreateMode = false;
-
                 ok = true;
             }
             else

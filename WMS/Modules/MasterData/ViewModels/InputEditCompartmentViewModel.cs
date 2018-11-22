@@ -24,7 +24,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand cancelCommand;
-        private bool createMode;
         private ICommand deleteCommand;
         private bool enableInputEdit;
         private string error;
@@ -53,13 +52,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand CancelCommand => this.cancelCommand ??
-                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand).ObservesProperty(() => this.CreateMode));
-
-        public bool CreateMode
-        {
-            get => this.createMode;
-            set => this.SetProperty(ref this.createMode, value);
-        }
+                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand));
 
         public ICommand DeleteCommand => this.deleteCommand ??
                   (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray));
@@ -107,14 +100,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private bool CanExecuteCancelCommand()
-        {
-            return true;
-        }
-
         private bool CanExecuteDeleteCommand()
         {
-            return this.selectedCompartmentTray != null && !this.CreateMode;
+            return this.selectedCompartmentTray != null;
         }
 
         private bool CanExecuteEditCommand()
@@ -232,10 +220,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Error = message;
                 this.ErrorColor = Colors.Red.ToString();
             }
-        }
-
-        private void Tray_CompartmentChangedEvent(Object sender, Tray.CompartmentEventArgs e)
-        {
         }
 
         #endregion Methods
