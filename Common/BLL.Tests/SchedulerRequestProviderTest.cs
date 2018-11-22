@@ -38,8 +38,8 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-         @"GIVEN two compartments with same Sub1, but in different areas \
-                AND a requests allocated to the first area, so that there is no availability on that area \
+            @"GIVEN a compartment in a specific area and aisle  \
+                AND a requests allocated to a bay of the specified area \
                WHEN a new request for the first area is made \
                THEN the new request should be accepted")]
         public async Task CompartmentsInBay()
@@ -175,10 +175,10 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-         @"GIVEN two compartments with same Sub1, but in different areas \
-                AND a requests allocated to the first area, so that there is no availability on that area \
+         @"GIVEN a compartment in a specific area and aisle \
+                AND a requests allocated to a bay of another area \
                WHEN a new request for the first area is made \
-               THEN the new request should be accepted")]
+               THEN the new request should be rejected")]
         public async Task CompartmentsNotInBay()
         {
             #region Arrange
@@ -233,7 +233,7 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-            @"GIVEN that a non-withdrawal request is created     \
+            @"GIVEN that a non-withdrawal request is created \
                WHEN the FullyQualifyWithdrawalRequest method is called with the invalid request\
                THEN the method should throw an exception")]
         public async Task FullyQualifyWithdrawalRequestWithInvalidArgumentTest()
