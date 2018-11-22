@@ -66,10 +66,9 @@
                             <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
                         </DataTrigger>
 
-                        <DataTrigger Binding="{Binding ReadOnly}"
+                        <DataTrigger Binding="{Binding IsReadOnly}"
                                      Value="False">
                             <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
-                            <Setter TargetName="Rectangle" Property="Fill" Value="{StaticResource EditCompartment}" />
                         </DataTrigger>
 
                         <MultiDataTrigger>
@@ -105,6 +104,11 @@
                         <DataTrigger Binding="{Binding IsSelectable}"
                                      Value="False">
                             <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsSelectable}"
+                                     Value="True">
+                            <Setter Property="IsEnabled" Value="True" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

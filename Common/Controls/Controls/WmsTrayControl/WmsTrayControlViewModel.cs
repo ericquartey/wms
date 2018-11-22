@@ -15,7 +15,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private double heightTrayPixel;
-        private bool isCompartmentSelectable;
+        private bool isCompartmentSelectable = true;
         private ObservableCollection<WmsBaseCompartment> items;
         private int left;
         private SolidColorBrush penBrush;
@@ -48,6 +48,8 @@ namespace Ferretto.Common.Controls
                 this.NotifyPropertyChanged(nameof(this.IsCompartmentSelectable));
             }
         }
+
+        public bool IsReadOnly { get; set; }
 
         public ObservableCollection<WmsBaseCompartment> Items
         {
@@ -88,8 +90,6 @@ namespace Ferretto.Common.Controls
                 this.NotifyPropertyChanged(nameof(this.PenThickness));
             }
         }
-
-        public bool IsReadOnly { get; set; }
 
         public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
         {
@@ -222,19 +222,6 @@ namespace Ferretto.Common.Controls
             this.NotifyPropertyChanged(nameof(this.CompartmentDetailsProperty));
         }
 
-        public void UpdateIsSelectablePropertyToCompartments(bool value)
-        {
-            if (this.items == null)
-            {
-                return;
-            }
-
-            foreach (var item in this.Items)
-            {
-                item.IsSelectable = value;
-            }
-        }
-
         public void UpdateIsReadOnlyPropertyToCompartments(bool value)
         {
             if (this.items == null)
@@ -245,6 +232,19 @@ namespace Ferretto.Common.Controls
             foreach (var item in this.Items)
             {
                 item.IsReadOnly = value;
+            }
+        }
+
+        public void UpdateIsSelectablePropertyToCompartments(bool value)
+        {
+            if (this.items == null)
+            {
+                return;
+            }
+
+            foreach (var item in this.Items)
+            {
+                item.IsSelectable = value;
             }
         }
 
