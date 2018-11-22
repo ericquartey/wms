@@ -53,6 +53,7 @@
     <Compile Include="Source\ActionsBasic\CalibrateVerticalAxis.cs" />
     <Compile Include="Source\ActionsBasic\MoveOnVertical.cs" />
     <Compile Include="Source\ActionsBasic\EmbarkDrawer.cs" />
+    <Compile Include="Source\ActionsBasic\PositioningOnOrizontalAxis.cs" />
     <Compile Include="Source\ActionsBasic\Support.cs" />
     <Compile Include="Source\Command.cs" />
   </ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.InverterDriver;
@@ -8,25 +9,26 @@ namespace Ferretto.VW.ActionBlocks
 {
     public class CalibrateVerticalAxis
     {
-        #region Fields
+        #region FieldsSelectTelegram
 
         private const int TIME_OUT = 1000;  // Time out 1 sec
 
-        private const int TIME_OUT_STATUS_WORD = 250;  // Time out 250 msec
+        private const int TIME_OUT_STATUS_WORD = 500;  // Time out 250 msec
 
         private InverterDriver.InverterDriver inverterDriver;
-        private CalibrateVerticalAxis calibrateVerticalAxis;
+
+        // private CalibrateVerticalAxis calibrateVerticalAxis;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private int   m;      // Mode
+        private int m;      // Mode
         private short ofs;    // Offset to change to float
         private short vFast;  // Fast Speed to change to float
         private short vCreed; // Creep speed to change to float
 
         private Thread pollingThread;
 
-        private readonly string[] calibrateVerticalAxisSteps = new string[] { "1.1", "1.2", "1.3", "1.4", "2.1", "3.0", "3.1", "3.2", "3.3", "3.4", "3.5" };
+        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", "2", "3", "4", "5", "6a" };
 
         // Index for the calibration steps
         int i = 0;
@@ -34,29 +36,33 @@ namespace Ferretto.VW.ActionBlocks
         // Variable to keep the operation to do
         string calibrateOperation;
 
-        private byte systemIndex = 0x00; // For our purposes, its value is 0 until now
+        private byte systemIndex = 0x00; // For our purposes at this time is 0
 
         private byte dataSetIndex = 0x00;
 
         private object valParam = "";
+
+        Stopwatch sw;
 
         // Variables to keep the value to pass
         ParameterID paramID = ParameterID.HOMING_MODE_PARAM;
 
         public InverterDriver.InverterDriver SetInverterDriverInterface
         {
-            set { inverterDriver = value; }
+            set
+            { inverterDriver = value; }
         }
 
         #endregion Fields
 
         #region Constructors
 
-        public CalibrateVerticalAxis()
+        public void Initialize()
         {
-            // Subscription to the InverterDriver events.
-            // inverterDriver.SelectTelegramDone += new calibrateVerticalAxis.SelectTelegram(this.SelectTelegram);
-            // inverterDriver.EnquiryTelegramDone += new calibrateVerticalAxis.EnquiryTelegram(this.EnquiryTelegram);
+            sw = new Stopwatch();
+
+            //inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(SelectTelegram);
+            //inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(EnquiryTelegram);
         }
 
         #endregion Constructors
@@ -83,6 +89,17 @@ namespace Ferretto.VW.ActionBlocks
 
         #region Methods
 
+        public void Stop()
+        {
+            inverterDriver.EnableGetStatusWord(false);
+            Thread.Sleep(100);
+
+            // Reset
+            this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            this.valParam = (short)0x00; // 0000 0000
+            InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+        }
+
         public void SetVAxisOrigin(int m, short ofs, short vFast, short vCreed)
         {
             bool checkError = false;
@@ -92,25 +109,70 @@ namespace Ferretto.VW.ActionBlocks
             this.vFast = vFast;
             this.vCreed = vCreed;
 
-            logger.Log(LogLevel.Debug, "mode = " + m);
-            logger.Log(LogLevel.Debug, "ofs = " + ofs);
-            logger.Log(LogLevel.Debug, "vFast = " + vFast);
-            logger.Log(LogLevel.Debug, "vCreed = " + vCreed);
+            //this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            //this.valParam = (short)0x00; // 0000 0000
+            //InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
 
-            inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(this.SelectTelegram);
-            inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(this.EnquiryTelegram);
+            //Thread.Sleep(500);
+
+            //// Set operating mode
+            //this.dataSetIndex = 0x05;
+            //this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
+            //this.valParam = 6; // 0000 0110
+            //idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+
+            //Thread.Sleep(500);
+
+            //// Shutdown
+            //this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            //this.valParam = (short)0x06; // 0000 0110
+            //idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+
+            //Thread.Sleep(500);
+
+            //// Switch on
+            //this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            //this.valParam = (short)0x07; // 0000 0111
+            //idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+
+            //Thread.Sleep(500);
+
+            //// Enable voltage
+            //this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            //this.valParam = (short)0x0F; // 0000 1111
+            //idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+
+            //Thread.Sleep(500);
+
+            //// Homing start
+            //this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            //this.valParam = (short)0x1F; // 0001 1111
+            //idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+
+            //Thread.Sleep(500);
+
+            //inverterDriver.EnableGetStatusWord(true);
+
+            //return;
+
+            sw.Start();
+
+            //logger.Log(LogLevel.Debug, "mode = " + m);
+            //logger.Log(LogLevel.Debug, "ofs = " + ofs);
+            //logger.Log(LogLevel.Debug, "vFast = " + vFast);
+            //logger.Log(LogLevel.Debug, "vCreed = " + vCreed);
 
             // Polling Thread Creation to check the Inverter Driver Status
-            checkError = CreateThread();
+            //checkError = false; //CreateThread();
 
             logger.Log(LogLevel.Debug, "Thread creation error = " + checkError);
 
             // If cechkError is true, an error happened during the Polling Thread creation
-            if (!checkError)
-            {
+            //if (!checkError)
+            //{
                 // In this case i = 0
                 StepExecution();
-            }
+            //}
         }
 
         private void StepExecution()
@@ -118,11 +180,11 @@ namespace Ferretto.VW.ActionBlocks
             // Var to keep the Inverter Driver Exist Status
             InverterDriverExitStatus idExitStatus;
 
-            logger.Log(LogLevel.Debug, "i = " + i.ToString());
+            //logger.Log(LogLevel.Debug, "i = " + i.ToString());
 
             calibrateOperation = calibrateVerticalAxisSteps[i];
 
-            logger.Log(LogLevel.Debug, "calibrateOperation = " + calibrateOperation);
+            //logger.Log(LogLevel.Debug, "calibrateOperation = " + calibrateOperation);
 
             switch (calibrateOperation)
             {
@@ -136,54 +198,51 @@ namespace Ferretto.VW.ActionBlocks
                 case "1.2":
                     paramID = ParameterID.HOMING_OFFSET_PARAM;
                     dataSetIndex = 0x05;
-                    valParam = ofs;
+                    valParam = (int)0; //ofs;
 
                     break;
                 case "1.3":
                     paramID = ParameterID.HOMING_FAST_SPEED_PARAM;
-                    valParam = vFast;
+                    valParam = (int)vFast;
 
                     break;
                 case "1.4":
                     paramID = ParameterID.HOMING_CREEP_SPEED_PARAM;
-                    valParam = vCreed;
+                    valParam = (int)vCreed;
 
                     break;
-                // 2) Set operating mode
-                case "2.1":
+                // 2) Homing mode sequence
+                case "1":
+                    dataSetIndex = 0x05;
+                    // int value = i;
+                    paramID = ParameterID.CONTROL_WORD_PARAM;
+                    valParam = (short) 0x00; // 0000 0000
+
+                    break;
+                case "2":
+                    dataSetIndex = 0x05;
                     paramID = ParameterID.SET_OPERATING_MODE_PARAM;
-                    valParam = 6;
+                    valParam = 6; // 0000 0110
 
                     break;
-                // 3) Engine commands
-                case "3.0": // verify if it is necessary
+                case "3":
                     paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = 0x00;
+                    valParam = (short) 0x06; // 0000 0110
 
                     break;
-                case "3.1":
+                case "4":
                     paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = 0x04;
+                    valParam = (short) 0x07; // 0000 0111
 
                     break;
-                case "3.2":
+                case "5":
                     paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = 0x06;
+                    valParam = (short) 0x0F; // 0000 1111
 
                     break;
-                case "3.3":
+                case "6a":
                     paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = 0x07;
-
-                    break;
-                case "3.4":
-                    paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = 0x0F;
-
-                    break;
-                case "3.5":
-                    paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = 0x1F;
+                    valParam = (short) 0x1F; // 0001 1111
 
                     break;
                 default:
@@ -192,76 +251,28 @@ namespace Ferretto.VW.ActionBlocks
                     break;
             }
 
-            logger.Log(LogLevel.Debug, "paramID      = " + paramID.ToString());
-            logger.Log(LogLevel.Debug, "systemIndex  = " + systemIndex.ToString());
-            logger.Log(LogLevel.Debug, "dataSetIndex = " + dataSetIndex.ToString());
-            logger.Log(LogLevel.Debug, "valParam     = " + valParam.ToString());
-            /*
+            //logger.Log(LogLevel.Debug, "paramID      = " + paramID.ToString());
+            //logger.Log(LogLevel.Debug, "systemIndex  = " + systemIndex.ToString());
+            //logger.Log(LogLevel.Debug, "dataSetIndex = " + dataSetIndex.ToString());
+            //logger.Log(LogLevel.Debug, "valParam     = " + valParam.ToString());
+
             idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
 
-            logger.Log(LogLevel.Debug, "idExitStatus = " + idExitStatus.ToString());
-
-            if (idExitStatus != InverterDriverExitStatus.Success)
-            {
-                CalibrationStatus errorDescription = CalibrationStatus.NO_ERROR;
-
-                switch (idExitStatus)
-                {
-                    case (InverterDriverExitStatus.InvalidArgument):
-                        errorDescription = CalibrationStatus.INVALID_ARGUMENTS;
-                        break;
-                    case (InverterDriverExitStatus.InvalidOperation):
-                        errorDescription = CalibrationStatus.INVALID_OPERATION;
-                        break;
-                    case (InverterDriverExitStatus.Failure):
-                        errorDescription = CalibrationStatus.OPERATION_FAILED;
-                        break;
-                    default:
-                        break;
-                }
-
-                logger.Log(LogLevel.Debug, "errorDescription = " + errorDescription.ToString());
-
-                // Send the error description to the UI
-                ThrowErrorEvent?.Invoke(errorDescription);
-            }
-            */
-        }
-
-        /// <summary>
-        /// Create working thread.
-        /// </summary>
-        private bool CreateThread()
-        {
-            bool creationError = false;
-
-            try
-            { 
-                this.pollingThread = new Thread(this.MainThread);
-                this.pollingThread.Name = "PollingThread";
-                this.pollingThread.Start();
-            }
-            catch (Exception ex)
-            {
-                creationError=true;
-
-                logger.Log(LogLevel.Debug, "Messaggio errore = " + ex.Message);
-            }
-
-            return creationError;
+            CtrExistStatus(idExitStatus);
         }
 
         private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         {
             logger.Log(LogLevel.Debug, "Condition = " + (calibrateVerticalAxisSteps.Length < i).ToString());
 
-            if (calibrateVerticalAxisSteps.Length < i)
+            if (calibrateVerticalAxisSteps.Length > i)
             {
                 logger.Log(LogLevel.Debug, "Calibrate Operation = " + calibrateOperation);
 
                 // In the case of Command Engine we have to check the StatusWord
-                if (calibrateOperation == "3.0" || calibrateOperation == "3.1" || calibrateOperation == "3.2" || calibrateOperation == "3.3" || calibrateOperation == "3.4" || calibrateOperation == "3.5")
+                if (calibrateOperation == "1" || calibrateOperation == "3" || calibrateOperation == "4" || calibrateOperation == "5" || calibrateOperation == "6a")
                 {
+                    paramID = ParameterID.STATUS_WORD_PARAM;
                     // Insert a delay
                     inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
                 }
@@ -279,10 +290,19 @@ namespace Ferretto.VW.ActionBlocks
                     pollingThread.Abort();
                 }
 
+                sw.Stop();
+
+                logger.Log(LogLevel.Debug, String.Format("  Round trip command time RestClient: {0} ms", sw.ElapsedMilliseconds));
+
                 // No other step to do, but it sends a signal to the UI about the end of the execution
                 // true succeffully calibration ended
                 ThrowEndEvent?.Invoke(true);
             }
+        }
+
+        private void InvDriverConnected(object sender, ConnectedEventArgs eventArgs)
+        {
+            //ThrowConnectedEvent?.Invoke(true);
         }
 
         private void EnquiryTelegram(object sender, EnquiryTelegramDoneEventArgs eventArgs)
@@ -290,12 +310,10 @@ namespace Ferretto.VW.ActionBlocks
             ValueDataType type = eventArgs.Type;
 
             byte[] statusWord;
+            byte[] valueBytes;
 
             // Variable to keep the right or wrong value of the status word
             bool statusWordValue = false;
-            byte byteMask;
-
-            int ctrStatusWord;
 
             switch (type)
             {
@@ -328,72 +346,41 @@ namespace Ferretto.VW.ActionBlocks
 
             switch (calibrateOperation)
             {
-                case "3.0":
-                    byteMask = 0x40;
-
-                    ctrStatusWord = statusWord[0] & byteMask;
-
-                    if (ctrStatusWord == 64)
+                case "1":
+                    if (statusWord[0] == 0x50 && statusWord[1] == 0x00) // 80 Dec = 50 Hex - 0x0050
                     {
                         statusWordValue = true;
                     }
 
                     break;
-                case "3.1":
-                    byteMask = 0x10;
+                case "2":
 
-                    ctrStatusWord = statusWord[0] & byteMask;
-
-                    if (ctrStatusWord == 16)
+                    break;
+                case "3":
+                    if (statusWord[0] == 0x31 && statusWord[1] == 0x00) // 0x0031
                     {
                         statusWordValue = true;
                     }
 
                     break;
-                case "3.2":
-                    byteMask = 0x31;
-
-                    ctrStatusWord = statusWord[0] & byteMask;
-
-                    if (ctrStatusWord == 49)
+                case "4":
+                    if (statusWord[0] == 0x33 && statusWord[1] == 0x00) // 0x0033
                     {
                         statusWordValue = true;
                     }
 
                     break;
-                case "3.3":
-                    byteMask = 0x32;
-
-                    ctrStatusWord = statusWord[0] & byteMask;
-
-                    if (ctrStatusWord == 50)
+                case "5":
+                    if (statusWord[0] == 0x37) // 0xnn37 - statusWord[1] is not matter
                     {
                         statusWordValue = true;
                     }
 
                     break;
-                case "3.4":
-                    byteMask = 0x36;
+                case "6a":
+                    int ctrStatusWord = statusWord[1] & 0x1F; // 1F to filter 1n
 
-                    ctrStatusWord = statusWord[0] & byteMask;
-
-                    if (ctrStatusWord == 54)
-                    {
-                        statusWordValue = true;
-                    }
-
-                    break;
-                case "3.5":
-                    int ctrStatusWord0;
-                    int ctrStatusWord1;
-
-                    byte byteMask0 = 0x36;
-                    byte byteMask1 = 0x10;
-
-                    ctrStatusWord0 = statusWord[0] & byteMask0;
-                    ctrStatusWord1 = statusWord[1] & byteMask1;
-
-                    if (ctrStatusWord0 == 54 && ctrStatusWord1 == 16)
+                    if (statusWord[0] == 0x37 && ctrStatusWord == 16) // 0X1n37
                     {
                         statusWordValue = true;
                     }
@@ -409,14 +396,29 @@ namespace Ferretto.VW.ActionBlocks
             {
                 // The StatusWord is corret, we can go on with another step of Engine Movement
                 i++;
-                StepExecution();
+
+                if (i < calibrateVerticalAxisSteps.Length)
+                    StepExecution();
+                else // The execution ended
+                {
+                    sw.Stop();
+
+                    logger.Log(LogLevel.Debug, String.Format("  Round trip command time RestClient: {0} ms", sw.ElapsedMilliseconds));
+                    ThrowEndEvent?.Invoke(true);
+                }
             }
             else
             {
                 // Insert a delay
                 Thread.Sleep(TIME_OUT_STATUS_WORD);
+
                 // A new request to read the StatusWord
-                inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
+                InverterDriverExitStatus idExitStatus = inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
+
+                // Insert a delay
+                Thread.Sleep(TIME_OUT_STATUS_WORD);
+
+                CtrExistStatus(idExitStatus);
             }
         }
 
@@ -457,34 +459,65 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Polling thread.
         /// </summary>
-        private void MainThread()
+        //private void MainThread()
+        //{
+        //    InverterDriverState state;
+        //    var ctrLoop = true;
+        //    CalibrationStatus errorDescription = CalibrationStatus.NO_ERROR;
+
+        //    while (ctrLoop)
+        //    {
+        //        Thread.Sleep(TIME_OUT);
+
+        //        state = inverterDriver.GetMainState;
+
+        //        logger.Log(LogLevel.Debug, "state = " + state);
+
+        //        switch (state)
+        //        {
+        //            case InverterDriverState.Idle:
+        //            case InverterDriverState.Ready:
+        //            case InverterDriverState.Working:
+
+        //                break;
+
+        //            default: // InverterDriverState.Error included in this case
+        //                // Send the error description to the UI
+        //                ThrowErrorEvent?.Invoke(CalibrationStatus.INVERTER_DRIVER_UNKNOWN_ERROR);
+        //                ctrLoop = false;
+        //                break;
+        //        }
+        //    }
+        //}
+
+        private void CtrExistStatus(InverterDriverExitStatus idStatus)
         {
-            InverterDriverState state;
-            var ctrLoop = true;
-            CalibrationStatus errorDescription = CalibrationStatus.NO_ERROR;
+            logger.Log(LogLevel.Debug, "idStatus = " + idStatus.ToString());
 
-            while (ctrLoop)
+            if (idStatus != InverterDriverExitStatus.Success)
             {
-                Thread.Sleep(TIME_OUT);
+                CalibrationStatus errorDescription = CalibrationStatus.NO_ERROR;
 
-                state = inverterDriver.GetMainState;
-
-                logger.Log(LogLevel.Debug, "state = " + state);
-
-                switch (state)
+                switch (idStatus)
                 {
-                    case InverterDriverState.Idle:
-                    case InverterDriverState.Ready:
-                    case InverterDriverState.Working:
-
+                    case (InverterDriverExitStatus.InvalidArgument):
+                        errorDescription = CalibrationStatus.INVALID_ARGUMENTS;
                         break;
-
-                    default: // InverterDriverState.Error included in this case
-                        // Send the error description to the UI
-                        ThrowErrorEvent?.Invoke(CalibrationStatus.INVERTER_DRIVER_UNKNOWN_ERROR);
-                        ctrLoop = false;
+                    case (InverterDriverExitStatus.InvalidOperation):
+                        errorDescription = CalibrationStatus.INVALID_OPERATION;
+                        break;
+                    case (InverterDriverExitStatus.Failure):
+                        errorDescription = CalibrationStatus.OPERATION_FAILED;
+                        break;
+                    default:
+                        errorDescription = CalibrationStatus.UNKNOWN_OPERATION;
                         break;
                 }
+
+                logger.Log(LogLevel.Debug, "errorDescription = " + errorDescription.ToString());
+
+                // Send the error description to the UI
+                ThrowErrorEvent?.Invoke(errorDescription);
             }
         }
 

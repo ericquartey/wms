@@ -20,7 +20,8 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
+        public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248"; // Bender
+        // public const string IP_ADDR_INVERTER_DEFAULT = "172.16.199.200";
         public const int LONG_TIME_OUT = 250;
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
 
@@ -52,6 +53,7 @@ namespace Ferretto.VW.InverterDriver
         private Int16 statusWordValue;  // it represents a shared memory where status information lived
         private AutoResetEvent terminateEvent;
         private int timeOut;
+        private Boolean enableGetStatusWord;
 
         #endregion Fields
 
@@ -220,6 +222,7 @@ namespace Ferretto.VW.InverterDriver
 
             QueryPerformanceFrequency(out this.perfFrequency);
             this.executeRequestOnRunning = false;
+            this.enableGetStatusWord = false;
 
             var bResult = this.connect_to_inverter();
             return bResult;
@@ -238,49 +241,61 @@ namespace Ferretto.VW.InverterDriver
                 // Socket' stuff
                 var theSockId = (SocketPacket)asyn.AsyncState;
                 var iRx = theSockId.thisSocket.EndReceive(asyn);
-                var nBytes = theSockId.dataBuffer[0];
 
-                // ------
-                // The class Telegram performs the parsing of incoming data buffer and extract the information from it
-                // ------
-
-                var telegramRead = new byte[iRx];
-                Array.Copy(theSockId.dataBuffer, 0, telegramRead, 0, iRx);
-
-                // Parse the received telegram
-                this.errorReceivedTelegram = !this.received_telegram(telegramRead, offsetTime_ms, out var paramID, out this.retParameterValue);
-                if (!this.errorReceivedTelegram)
+                if (iRx > 0)
                 {
-                    if (this.currentRequest.Type == TypeOfRequest.SendRequest)
+
+                    var nBytes = theSockId.dataBuffer[0];
+
+                    // ------
+                    // The class Telegram performs the parsing of incoming data buffer and extract the information from it
+                    // ------
+
+                    var telegramRead = new byte[iRx];
+                    Array.Copy(theSockId.dataBuffer, 0, telegramRead, 0, iRx);
+
+                    lock (lockObj)
                     {
-                        // Notify the <EnquiryTelegram> via Event firing
-                        EnquiryTelegramDone?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                        this.executeRequestOnRunning = false;
+                    }
+
+                    // Parse the received telegram
+                    this.errorReceivedTelegram = this.received_telegram(telegramRead, offsetTime_ms, out var paramID, out this.retParameterValue);
+                    if (!this.errorReceivedTelegram)
+                    {
+                        if (this.currentRequest.Type == TypeOfRequest.SendRequest)
+                        {
+                            // Notify the <EnquiryTelegram> via Event firing
+                            EnquiryTelegramDone?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                        }
+                        else
+                        {
+                            // Notify the <SelectTelegram> via Event firing
+                            SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                        }
+
+                        // cache value of status word (in cache memory shared)
+                        if (this.currentRequest.ParameterID == ParameterID.STATUS_WORD_PARAM)
+                        {
+                            lock (lockObj)
+                            {
+                                this.statusWordValue = Convert.ToInt16(this.retParameterValue);
+                            }
+                        }
                     }
                     else
                     {
-                        // Notify the <SelectTelegram> via Event firing
-                        SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                        int y = 0;
+                        // if we are here, an error occurs
+                        // and so we have to manage it
                     }
 
-                    // cache value of status word (in cache memory shared)
-                    if (this.currentRequest.ParameterID == ParameterID.STATUS_WORD_PARAM)
-                    {
-                        lock (lockObj)
-                        {
-                            this.statusWordValue = Convert.ToInt16(this.retParameterValue);
-                        }
-                    }
-                }
-                else
-                {
-                    // if we are here, an error occurs
-                    // and so we have to manage it
                 }
 
-                lock (lockObj)
-                {
-                    this.executeRequestOnRunning = false;
-                }
+                //lock (lockObj)
+                //{
+                //    this.executeRequestOnRunning = false;
+                //}
 
                 // Prompt to receive a new message
                 this.waitForData();
@@ -352,11 +367,26 @@ namespace Ferretto.VW.InverterDriver
                 return InverterDriverExitStatus.InvalidOperation;
             }
 
-            this.currentRequest = new Request(TypeOfRequest.SettingRequest, paramID, systemIndex, dataSetIndex, ValueDataType.Int16, value);
+            ValueDataType dataType = ValueDataType.Int16;
+
+            if (paramID == ParameterID.HOMING_OFFSET_PARAM ||
+                paramID == ParameterID.HOMING_FAST_SPEED_PARAM ||
+                paramID == ParameterID.HOMING_CREEP_SPEED_PARAM)
+            {
+                dataType = ValueDataType.Int32;
+            }
+
+
+            this.currentRequest = new Request(TypeOfRequest.SettingRequest, paramID, systemIndex, dataSetIndex, dataType, value);
             this.errorReceivedTelegram = false;
             this.makeRequestEvent.Set();
 
             return InverterDriverExitStatus.Success;
+        }
+
+        public void EnableGetStatusWord(bool enable)
+        {
+            this.enableGetStatusWord = enable;
         }
 
         /// <summary>
@@ -546,7 +576,7 @@ namespace Ferretto.VW.InverterDriver
             handles[0] = this.terminateEvent;
             handles[1] = this.makeRequestEvent;
 
-            this.timeOut = LONG_TIME_OUT;
+            this.timeOut = /*LONG_TIME_OUT*/1000;
             var bExit = false;
 
             while (!bExit)
@@ -581,12 +611,15 @@ namespace Ferretto.VW.InverterDriver
                                 // Handle it!
 
                                 this.LastError = InverterDriverErrors.IOError;
-                                Error?.Invoke(this, new ErrorEventArgs(this.LastError));
+                                //Error?.Invoke(this, new ErrorEventArgs(this.LastError));
                             }
                             else
                             {
-                                // Send a request to inverter about the status
-                                this.send_request_to_get_status_inverter();
+                                if (this.enableGetStatusWord)
+                                {
+                                    // Send a request to inverter about the status
+                                    this.send_request_to_inverter_about_statusWord();
+                                }
                             }
                             break;
                         }
@@ -611,27 +644,27 @@ namespace Ferretto.VW.InverterDriver
             return error;
         }
 
-        private void send_request_to_get_IOEmergency_state()
-        {
-            // TODO Add your implementation code here
-        }
+        //private void send_request_to_get_IOEmergency_state()
+        //{
+        //    // TODO Add your implementation code here
+        //}
 
-        /// <summary>
-        /// Send a request to inverter to get the status.
-        /// </summary>
-        private void send_request_to_get_status_inverter()
-        {
-            if (this.executeRequestOnRunning)
-            {
-                return;
-            }
+        ///// <summary>
+        ///// Send a request to inverter to get the status.
+        ///// </summary>
+        //private void send_request_to_get_status_inverter()
+        //{
+        //    if (this.executeRequestOnRunning)
+        //    {
+        //        return;
+        //    }
 
-            var valueType = ParameterIDClass.Instance.GetDataValueType(ParameterID.STATUS_WORD_PARAM);
+        //    var valueType = ParameterIDClass.Instance.GetDataValueType(ParameterID.STATUS_WORD_PARAM);
 
-            this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x06, valueType, null);
-            this.errorReceivedTelegram = false;
-            this.makeRequestEvent.Set();
-        }
+        //    this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x06, valueType, null);
+        //    this.errorReceivedTelegram = false;
+        //    this.makeRequestEvent.Set();
+        //}
 
         private void send_request_to_inverter()
         {
@@ -656,6 +689,24 @@ namespace Ferretto.VW.InverterDriver
                         break;
                     }
             }
+
+            // Send the telegram related to the current request to inverter
+            this.sendDataToInverter(telegramToSend);
+
+            // Update the flag
+            lock (lockObj)
+            {
+                this.executeRequestOnRunning = true;
+            }
+        }
+
+        private void send_request_to_inverter_about_statusWord()
+        {
+            this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x05, ValueDataType.Int16, null);
+          
+            byte[] telegramToSend = null;
+            var telegram = new Telegram();
+            telegramToSend = telegram.BuildReadPacket(0x00, 0x05, Convert.ToInt16(ParameterID.STATUS_WORD_PARAM));
 
             // Send the telegram related to the current request to inverter
             this.sendDataToInverter(telegramToSend);

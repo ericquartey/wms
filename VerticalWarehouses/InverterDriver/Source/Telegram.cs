@@ -55,6 +55,7 @@ namespace Ferretto.VW.InverterDriver
                 case ValueDataType.Float: nBytesPayLoad = 4; break;
                 case ValueDataType.Double: nBytesPayLoad = 8; break;
                 case ValueDataType.String: nBytesPayLoad = Convert.ToString(value).Length; break;
+                default: break;
             }
             Write_nBytes_Total = 1 + 1 + 1 + 1 + 2 + nBytesPayLoad;
 
@@ -76,50 +77,61 @@ namespace Ferretto.VW.InverterDriver
             ///<summary>
             ///Write_Data
             ///</summary>
-            if (Write_DataType == ValueDataType.Byte)
+            switch (Write_DataType)
             {
-                var ans_Write_data = new byte[1];
-                var parameterNo_Write_data = new byte[sizeof(byte)];
-                parameterNo_Write_data = BitConverter.GetBytes(Convert.ToByte(value));
-                parameterNo_Write_data.CopyTo(ans_Write_data, 0);
-                Array.Copy(ans_Write_data, 0, WritePacket, 6, 1);
-            }
-            else if (Write_DataType == ValueDataType.Float)
-            {
-                var ans_Write_data = new byte[4];
-                var parameterNo_Write_data = new byte[sizeof(float)];
-                parameterNo_Write_data = BitConverter.GetBytes(Convert.ToSingle(value));
-                parameterNo_Write_data.CopyTo(ans_Write_data, 0);
-                Array.Copy(ans_Write_data, 0, WritePacket, 6, 4);
-            }
-            else if (Write_DataType == ValueDataType.Double)
-            {
-                var ans_Write_data = new byte[8];
-                var parameterNo_Write_data = new byte[sizeof(double)];
-                parameterNo_Write_data = BitConverter.GetBytes(Convert.ToDouble(value));
-                parameterNo_Write_data.CopyTo(ans_Write_data, 0);
-                Array.Copy(ans_Write_data, 0, WritePacket, 6, 8);
-            }
-            else if (Write_DataType == ValueDataType.Int16)
-            {
-                var ans_Write_data = new byte[2];
-                var parameterNo_Write_data = new byte[sizeof(short)];
-                parameterNo_Write_data = BitConverter.GetBytes(Convert.ToInt16(value));
-                parameterNo_Write_data.CopyTo(ans_Write_data, 0);
-                Array.Copy(ans_Write_data, 0, WritePacket, 6, 2);
-            }
-            else if (Write_DataType == ValueDataType.Int32)
-            {
-                var ans_Write_data = new byte[4];
-                var parameterNo_Write_data = new byte[sizeof(Int32)];
-                parameterNo_Write_data = BitConverter.GetBytes(Convert.ToInt32(value));
-                parameterNo_Write_data.CopyTo(ans_Write_data, 0);
-                Array.Copy(ans_Write_data, 0, WritePacket, 6, 4);
-            }
-            else if (Write_DataType == ValueDataType.String)
-            {
+             case ValueDataType.Byte:
+            
+                var ans_Write_data_byte = new byte[1];
+                var parameterNo_Write_data_byte = new byte[sizeof(byte)];
+                parameterNo_Write_data_byte = BitConverter.GetBytes(Convert.ToByte(value));
+                parameterNo_Write_data_byte.CopyTo(ans_Write_data_byte, 0);
+                Array.Copy(ans_Write_data_byte, 0, WritePacket, 6, 1);
+                    break;
+
+             case ValueDataType.Float:
+            
+                var ans_Write_data_float = new byte[4];
+                var parameterNo_Write_data_float = new byte[sizeof(float)];
+                parameterNo_Write_data_float = BitConverter.GetBytes(Convert.ToSingle(value));
+                parameterNo_Write_data_float.CopyTo(ans_Write_data_float, 0);
+                Array.Copy(ans_Write_data_float, 0, WritePacket, 6, 4);
+                    break;
+
+             case ValueDataType.Double:
+            
+                var ans_Write_data_double = new byte[8];
+                var parameterNo_Write_data_double = new byte[sizeof(double)];
+                parameterNo_Write_data_double = BitConverter.GetBytes(Convert.ToDouble(value));
+                parameterNo_Write_data_double.CopyTo(ans_Write_data_double, 0);
+                Array.Copy(ans_Write_data_double, 0, WritePacket, 6, 8);
+                    break;
+
+             case ValueDataType.Int16:
+            
+                var ans_Write_data_Int16 = new byte[2];
+                var parameterNo_Write_data_Int16 = new byte[sizeof(short)];
+                parameterNo_Write_data_Int16 = BitConverter.GetBytes(Convert.ToInt16(value));
+                parameterNo_Write_data_Int16.CopyTo(ans_Write_data_Int16, 0);
+                Array.Copy(ans_Write_data_Int16, 0, WritePacket, 6, 2);
+                    break;
+
+             case ValueDataType.Int32:
+            
+                var ans_Write_data_Int32 = new byte[4];
+                var parameterNo_Write_data_Int32 = new byte[sizeof(Int32)];
+                parameterNo_Write_data_Int32 = BitConverter.GetBytes(Convert.ToInt32(value));
+                parameterNo_Write_data_Int32.CopyTo(ans_Write_data_Int32, 0);
+                Array.Copy(ans_Write_data_Int32, 0, WritePacket, 6, 4);
+                    break;
+
+             case ValueDataType.String:
+            
                 var bytes = System.Text.Encoding.Unicode.GetBytes(Convert.ToString(value));
                 Array.Copy(bytes, 0, WritePacket, 6, bytes.Length);
+                    break;
+
+             default:
+                    break;
             }
             return WritePacket;
         }
@@ -136,6 +148,7 @@ namespace Ferretto.VW.InverterDriver
         #region -ParseDataBuffer Method-
         public void ParseDataBuffer(byte[] telegram, int nBytes, out bool error)
         {
+
             error = false;
             byte header = telegram[0];
 
@@ -146,6 +159,11 @@ namespace Ferretto.VW.InverterDriver
             var bits = new bool[N_BITS_8];
             t.CopyTo(bits, 0);
             error = bits[6];
+
+            if (error)
+            {
+                int y = 0;
+            }
             
             byte noBytes = telegram[1];
             byte sys = telegram[2];
@@ -162,7 +180,7 @@ namespace Ferretto.VW.InverterDriver
             ///<summary>
             ///ParseDataBuffer_Data
             ///</summary>
-            ValueDataType type = ValueDataType.Byte;
+            var type = ValueDataType.Byte;
             int nBytesPayLoad = nBytes - 6;
             if (nBytesPayLoad == 1)
             {
@@ -194,7 +212,7 @@ namespace Ferretto.VW.InverterDriver
                 RetValueFromParse = BitConverter.ToString(telegram, 6);
             }
 
-            return;
+            // return;
         }
         #endregion
     }
