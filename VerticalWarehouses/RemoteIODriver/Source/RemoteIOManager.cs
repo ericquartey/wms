@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.RemoteIODriver.Source
 {
@@ -58,7 +60,7 @@ namespace Ferretto.VW.RemoteIODriver.Source
                 this.Inputs.Clear();
                 this.Inputs = this.remoteIO.ReadData();
                 this.remoteIO.WriteData();
-                await Task.Delay(CICLE_PERIOD_MS);
+                await Task.Delay(20);
                 this.RaiseSensorsSyncronizedEvent();
             }
         }
