@@ -266,7 +266,7 @@
     <comment>Label text</comment>
   </data>
   <data name="ResolutionCalibration" xml:space="preserve">
-    <value>Resolution Calibration</value>
+    <value>Resolution     Calibration</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="SensorsState" xml:space="preserve">

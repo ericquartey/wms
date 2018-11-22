@@ -1,4 +1,6 @@
-﻿using Prism.Mvvm;
+﻿using System.Collections.Generic;
+using Prism.Mvvm;
+using Ferretto.VW.RemoteIODriver.Source;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 {
@@ -16,6 +18,15 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 
         #endregion Fields
 
+        #region Constructors
+
+        public SSVariousInputsViewModel()
+        {
+            RemoteIOManager.Current.SensorsSyncronizedEventHandler += this.UpdateSensorsStates;
+        }
+
+        #endregion Constructors
+
         #region Properties
 
         public System.Boolean AntiIntrusionGate { get => this.antiIntrusionGate; set => this.SetProperty(ref this.antiIntrusionGate, value); }
@@ -27,5 +38,27 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public System.Boolean SecurityFunctionActive { get => this.securityFunctionActive; set => this.SetProperty(ref this.securityFunctionActive, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        private void UpdateSensorsStates()
+        {
+            var tmp = new List<bool>();
+
+            for (int i = 0; i < 7; i++)
+            {
+                tmp.Add(RemoteIOManager.Current.Inputs[i]);
+            }
+
+            this.AntiIntrusionGate = tmp[0];
+            this.CradleEngineSelected = tmp[1];
+            this.ElevatorEngineSelected = tmp[2];
+            this.MicroCarterLeftSide = tmp[3];
+            this.MicroCarterRightSide = tmp[4];
+            this.MushroomHeadButton = tmp[5];
+            this.SecurityFunctionActive = tmp[6];
+        }
+
+        #endregion Methods
     }
 }

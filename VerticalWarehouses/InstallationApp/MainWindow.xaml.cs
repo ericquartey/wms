@@ -24,6 +24,21 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.RaiseBackToVWAppEvent();
         }
 
+        public void ChangeSkinToDark(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.RaiseChangeSkinToDarkEvent();
+        }
+
+        public void ChangeSkinToLight(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.RaiseChangeSkinToLightEvent();
+        }
+
+        public void ChangeSkinToMedium(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.RaiseChangeSkinToMediumEvent();
+        }
+
         #endregion Methods
     }
 }

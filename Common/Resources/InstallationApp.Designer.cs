@@ -1114,7 +1114,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resolution Calibration.
+        ///   Looks up a localized string similar to Resolution     Calibration.
         /// </summary>
         public static string ResolutionCalibration {
             get {
