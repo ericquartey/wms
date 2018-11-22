@@ -16,6 +16,7 @@
     <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.TextBox,
                                                                 ThemeName=Office2016White}}"
            TargetType="{x:Type wms:TextBox}">
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wms:TextBox}">
