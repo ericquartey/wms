@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -29,32 +30,29 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public int Add(CompartmentDetails model)
+        public async Task<int> Add(CompartmentDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            this.dataContext.Compartments.Add(new DataModels.Compartment
             {
-                this.dataContext.Compartments.Add(new DataModels.Compartment
-                {
-                    Width = model.Width,
-                    Height = model.Height,
-                    XPosition = model.XPosition,
-                    YPosition = model.YPosition,
-                    LoadingUnitId = model.LoadingUnitId,
-                    CompartmentTypeId = model.CompartmentTypeId,
-                    ItemPairing = DataModels.Pairing.Free,
-                    Stock = model.Stock,
-                    ReservedForPick = model.ReservedForPick,
-                    ReservedToStore = model.ReservedToStore,
-                    CreationDate = DateTime.Now
-                });
+                Width = model.Width,
+                Height = model.Height,
+                XPosition = model.XPosition,
+                YPosition = model.YPosition,
+                LoadingUnitId = model.LoadingUnitId,
+                CompartmentTypeId = model.CompartmentTypeId,
+                ItemPairing = DataModels.Pairing.Free,
+                Stock = model.Stock,
+                ReservedForPick = model.ReservedForPick,
+                ReservedToStore = model.ReservedToStore,
+                CreationDate = DateTime.Now
+            });
 
-                return this.dataContext.SaveChanges();
-            }
+            return await this.dataContext.SaveChangesAsync();
         }
 
         public int Delete(int id)

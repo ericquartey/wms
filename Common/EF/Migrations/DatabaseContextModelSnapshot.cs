@@ -396,7 +396,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int?>("FifoTime");
 
@@ -573,7 +573,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Description");
 
@@ -591,8 +591,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("ItemCategoryId");
 
-                    b.Property<int?>("ItemManagementTypeId");
-
                     b.Property<DateTime?>("LastModificationDate");
 
                     b.Property<DateTime?>("LastPickDate");
@@ -600,6 +598,10 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<DateTime?>("LastStoreDate");
 
                     b.Property<int?>("Length");
+
+                    b.Property<string>("ManagementType")
+                        .IsRequired()
+                        .HasColumnType("char(1)");
 
                     b.Property<string>("MeasureUnitId");
 
@@ -624,8 +626,6 @@ namespace Ferretto.Common.EF.Migrations
                         .IsUnique();
 
                     b.HasIndex("ItemCategoryId");
-
-                    b.HasIndex("ItemManagementTypeId");
 
                     b.HasIndex("MeasureUnitId");
 
@@ -687,7 +687,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("CustomerOrderCode");
 
@@ -744,7 +744,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int>("EvadedQuantity");
 
@@ -834,20 +834,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.ToTable("ItemListTypes");
                 });
 
-            modelBuilder.Entity("Ferretto.Common.DataModels.ItemManagementType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ItemManagementTypes");
-                });
-
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnit", b =>
                 {
                     b.Property<int>("Id")
@@ -871,7 +857,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
-                        .HasDefaultValueSql("GETDATE()");
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int?>("HandlingParametersCorrection");
 
@@ -1308,6 +1294,73 @@ namespace Ferretto.Common.EF.Migrations
                     b.ToTable("PackageTypes");
                 });
 
+            modelBuilder.Entity("Ferretto.Common.DataModels.SchedulerRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AreaId");
+
+                    b.Property<int?>("BayId");
+
+                    b.Property<DateTime>("CreationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsInstant");
+
+                    b.Property<int>("ItemId");
+
+                    b.Property<int?>("ListId");
+
+                    b.Property<int?>("ListRowId");
+
+                    b.Property<int?>("LoadingUnitId");
+
+                    b.Property<int?>("LoadingUnitTypeId");
+
+                    b.Property<string>("Lot");
+
+                    b.Property<int?>("MaterialStatusId");
+
+                    b.Property<string>("OperationType")
+                        .IsRequired()
+                        .HasColumnType("char(1)");
+
+                    b.Property<int?>("PackageTypeId");
+
+                    b.Property<string>("RegistrationNumber");
+
+                    b.Property<int>("RequestedQuantity");
+
+                    b.Property<string>("Sub1");
+
+                    b.Property<string>("Sub2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("BayId");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("ListId");
+
+                    b.HasIndex("ListRowId");
+
+                    b.HasIndex("LoadingUnitId");
+
+                    b.HasIndex("LoadingUnitTypeId");
+
+                    b.HasIndex("MaterialStatusId");
+
+                    b.HasIndex("PackageTypeId");
+
+                    b.ToTable("SchedulerRequests");
+                });
+
             modelBuilder.Entity("Ferretto.Common.DataModels.Aisle", b =>
                 {
                     b.HasOne("Ferretto.Common.DataModels.Area", "Area")
@@ -1470,10 +1523,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasOne("Ferretto.Common.DataModels.ItemCategory", "ItemCategory")
                         .WithMany("Items")
                         .HasForeignKey("ItemCategoryId");
-
-                    b.HasOne("Ferretto.Common.DataModels.ItemManagementType", "ItemManagementType")
-                        .WithMany("Items")
-                        .HasForeignKey("ItemManagementTypeId");
 
                     b.HasOne("Ferretto.Common.DataModels.MeasureUnit", "MeasureUnit")
                         .WithMany("Items")
@@ -1660,6 +1709,45 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasOne("Ferretto.Common.DataModels.Cell", "SourceCell")
                         .WithMany("SourceMissions")
                         .HasForeignKey("SourceCellId");
+                });
+
+            modelBuilder.Entity("Ferretto.Common.DataModels.SchedulerRequest", b =>
+                {
+                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("AreaId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Bay", "Bay")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("BayId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Item", "Item")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("ItemId");
+
+                    b.HasOne("Ferretto.Common.DataModels.ItemList", "List")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("ListId");
+
+                    b.HasOne("Ferretto.Common.DataModels.ItemListRow", "ListRow")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("ListRowId");
+
+                    b.HasOne("Ferretto.Common.DataModels.LoadingUnit", "LoadingUnit")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("LoadingUnitId");
+
+                    b.HasOne("Ferretto.Common.DataModels.LoadingUnitType", "LoadingUnitType")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("LoadingUnitTypeId");
+
+                    b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("MaterialStatusId");
+
+                    b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
+                        .WithMany("SchedulerRequests")
+                        .HasForeignKey("PackageTypeId");
                 });
 #pragma warning restore 612, 618
         }

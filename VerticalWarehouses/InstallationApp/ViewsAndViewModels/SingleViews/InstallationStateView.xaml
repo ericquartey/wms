@@ -18,9 +18,9 @@
             <RowDefinition Height="80" />
             <RowDefinition Height="530" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="1"
-               Content="{x:Static res:InstallationApp.InstallationState}"
-               Style="{StaticResource InstallationViewsTitleTextStyle}" />
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.InstallationState}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -45,59 +45,59 @@
             <custom:CustomSensorControl Grid.Row="0"
                                         LabelText="{x:Static res:InstallationApp.VerticalAxisHomedDone}"
                                         SensorState="{Binding IsVerticalHomingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="1"
                                         LabelText="{x:Static res:InstallationApp.HorizontalAxisHomedDone}"
                                         SensorState="{Binding IsHorizontalHomingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="2"
                                         LabelText="{x:Static res:InstallationApp.VerticalResolutionDone}"
                                         SensorState="{Binding IsSetResolutionDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="3"
                                         LabelText="{x:Static res:InstallationApp.BeltBurnishingDone}"
                                         SensorState="{Binding IsBeltBurnishingDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="4"
                                         LabelText="{x:Static res:InstallationApp.Gate1Done}"
                                         SensorState="{Binding IsGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="5"
                                         LabelText="{x:Static res:InstallationApp.Gate2Done}"
                                         SensorState="{Binding IsGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="6"
                                         LabelText="{x:Static res:InstallationApp.Gate3Done}"
                                         SensorState="{Binding IsGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="7"
                                         LabelText="{x:Static res:InstallationApp.Shape1Done}"
                                         SensorState="{Binding IsShapeGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="8"
                                         LabelText="{x:Static res:InstallationApp.Shape2Done}"
                                         SensorState="{Binding IsShapeGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="9"
                                         LabelText="{x:Static res:InstallationApp.Shape3Done}"
                                         SensorState="{Binding IsShapeGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="10"
                                         LabelText="{x:Static res:InstallationApp.Laser1Done}"
                                         SensorState="{Binding IsLaserGate1Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="11"
                                         LabelText="{x:Static res:InstallationApp.Laser2Done}"
                                         SensorState="{Binding IsLaserGate2Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="12"
                                         LabelText="{x:Static res:InstallationApp.Laser3Done}"
                                         SensorState="{Binding IsLaserGate3Done, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
             <custom:CustomSensorControl Grid.Row="13"
                                         LabelText="{x:Static res:InstallationApp.MachineDone}"
                                         SensorState="{Binding IsMachineDone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        Style="{StaticResource CustomSensorControlStyle}" />
+                                        Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
         </Grid>
     </Grid>
 </UserControl>

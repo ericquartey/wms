@@ -19,14 +19,14 @@
             <ColumnDefinition Width="80" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <Label Grid.Row="0"
-               Grid.Column="1"
-               Content="{x:Static res:InstallationApp.Gate1HeightControl}"
-               Style="{StaticResource InstallationViewsTitleTextStyle}" />
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.Gate1HeightControl}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="20" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -75,10 +75,10 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Content="{x:Static res:InstallationApp.Start}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Grid.Column="2"
                     Content="{x:Static res:InstallationApp.Stop}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
         </Grid>
     </Grid>
 </UserControl>

@@ -3,18 +3,14 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
   
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
-    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Common\BLL.Interfaces\Ferretto.Common.BLL.Interfaces.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Common\Resources\Ferretto.Common.Resources.csproj" />
   </ItemGroup>
 
 </Project>

@@ -61,7 +61,7 @@
                     </Border>
 
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding ReadOnly}"
+                        <DataTrigger Binding="{Binding IsReadOnly}"
                                      Value="True">
                             <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
                         </DataTrigger>
@@ -92,7 +92,7 @@
 
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding ReadOnly}" Value="False" />
+                                <Condition Binding="{Binding IsReadOnly}" Value="False" />
                                 <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
                             </MultiDataTrigger.Conditions>
                             <Setter TargetName="BorderOfRectangle" Property="BorderThickness" Value="3" />
@@ -150,7 +150,7 @@
 
                     </Border>
                     <ControlTemplate.Triggers>
-                        <DataTrigger Binding="{Binding ReadOnly}"
+                        <DataTrigger Binding="{Binding IsReadOnly}"
                                      Value="false">
                             <Setter TargetName="ListBoxBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
                         </DataTrigger>

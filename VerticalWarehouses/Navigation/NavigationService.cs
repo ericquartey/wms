@@ -10,7 +10,13 @@
 
         public delegate void CellsChangedEvent();
 
+        public delegate void ChangeSkinEvent();
+
         public delegate void DrawersChangedEvent();
+
+        public delegate void ExitViewEvent();
+
+        public delegate void GoToViewEvent();
 
         public delegate void InstallationInfoChangedEvent();
 
@@ -24,7 +30,13 @@
 
         public static event CellsChangedEvent CellsChangedEventHandler;
 
+        public static event ChangeSkinEvent ChangeSkinEventHandler;
+
         public static event DrawersChangedEvent DrawersChangedEventHandler;
+
+        public static event ExitViewEvent ExitViewEventHandler;
+
+        public static event GoToViewEvent GoToViewEventHandler;
 
         public static event InstallationInfoChangedEvent InstallationInfoChangedEventHandler;
 
@@ -38,6 +50,9 @@
             CellsChangedEventHandler += InitializerMethod;
             DrawersChangedEventHandler += InitializerMethod;
             InstallationInfoChangedEventHandler += InitializerMethod;
+            GoToViewEventHandler += InitializerMethod;
+            ExitViewEventHandler += InitializerMethod;
+            ChangeSkinEventHandler += InitializerMethod;
         }
 
         public static void RaiseBackToVWAppEvent() => BackToVWAppEventHandler();
@@ -46,7 +61,13 @@
 
         public static void RaiseCellsChangedEvent() => CellsChangedEventHandler();
 
+        public static void RaiseChangeSkinEvent() => ChangeSkinEventHandler();
+
         public static void RaiseDrawersChangedEvent() => DrawersChangedEventHandler();
+
+        public static void RaiseExitViewEvent() => ExitViewEventHandler();
+
+        public static void RaiseGoToViewEvent() => GoToViewEventHandler();
 
         public static void RaiseInstallationInfoChangedEvent() => InstallationInfoChangedEventHandler();
 

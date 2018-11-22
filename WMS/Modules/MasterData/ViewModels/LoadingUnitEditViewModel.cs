@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
@@ -105,8 +106,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public bool AddVisibility
         {
-            get { return this.addVisibility; }
-            set { this.SetProperty(ref this.addVisibility, value); }
+            get => this.addVisibility;
+            set => this.SetProperty(ref this.addVisibility, value);
         }
 
         public ICommand BulkAddCommand => this.bulkAddCommand ??
@@ -161,12 +162,12 @@ namespace Ferretto.WMS.Modules.MasterData
             .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
-        public bool EditMode { get => this.editMode; set { this.SetProperty(ref this.editMode, value); } }
+        public bool EditMode { get => this.editMode; set => this.SetProperty(ref this.editMode, value); }
 
         public bool EditVisibility
         {
-            get { return this.editVisibility; }
-            set { this.SetProperty(ref this.editVisibility, value); }
+            get => this.editVisibility;
+            set => this.SetProperty(ref this.editVisibility, value);
         }
 
         public bool EnableBulkAdd
@@ -207,32 +208,32 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public bool IsEnabledGrid
         {
-            get { return this.isEnabledGrid; }
-            set { this.SetProperty(ref this.isEnabledGrid, value); }
+            get => this.isEnabledGrid;
+            set => this.SetProperty(ref this.isEnabledGrid, value);
         }
 
         public bool IsExpand
         {
-            get { return this.isExpand; }
-            set { this.SetProperty(ref this.isExpand, value); }
+            get => this.isExpand;
+            set => this.SetProperty(ref this.isExpand, value);
         }
 
         public bool IsReadOnlyTray
         {
-            get { return this.isReadOnlyTray; }
-            set { this.SetProperty(ref this.isReadOnlyTray, value); }
+            get => this.isReadOnlyTray;
+            set => this.SetProperty(ref this.isReadOnlyTray, value);
         }
 
         public bool IsSelectableTray
         {
-            get { return this.isSelectableTray; }
-            set { this.SetProperty(ref this.isSelectableTray, value); }
+            get => this.isSelectableTray;
+            set => this.SetProperty(ref this.isSelectableTray, value);
         }
 
         public bool IsVisibleMainCommandBar
         {
-            get { return this.isVisibleMainCommandBar; }
-            set { this.SetProperty(ref this.isVisibleMainCommandBar, value); }
+            get => this.isVisibleMainCommandBar;
+            set => this.SetProperty(ref this.isVisibleMainCommandBar, value);
         }
 
         public LoadingUnitDetails LoadingUnit
@@ -307,8 +308,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
 
-        public string TitleAdd { get => this.titleAdd; private set => this.SetProperty(ref this.titleAdd, value); }
-        public string TitleEdit { get => this.titleEdit; private set => this.SetProperty(ref this.titleEdit, value); }
 
         public Tray Tray
         {
@@ -552,9 +551,9 @@ namespace Ferretto.WMS.Modules.MasterData
             //this.SetFunctionPanel();
         }
 
-        private bool SaveLoadingUnit()
+        private async Task<bool> SaveLoadingUnit()
         {
-            bool ok = false;
+            var ok = false;
             if (this.CreateMode)
             {
                 if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
@@ -562,7 +561,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
                     this.SelectedCompartmentTray.CompartmentTypeId = 2;
 
-                    var add = this.compartmentProvider.Add(this.SelectedCompartmentTray);
+                    var add = await this.compartmentProvider.Add(this.SelectedCompartmentTray);
                     if (add == 1)
                     {
                         this.tray.Compartments.Add(this.SelectedCompartmentTray);

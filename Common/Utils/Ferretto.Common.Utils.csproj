@@ -7,9 +7,5 @@
   <ItemGroup>
     <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
   </ItemGroup>
-  
-  <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
 
 </Project>

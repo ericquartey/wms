@@ -83,7 +83,7 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Constructors
 
-        public StatusEventArgs(string info)
+        public StatusEventArgs(string info = null)
         {
             this.Info = info;
         }
@@ -93,6 +93,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public string Info { get; set; }
+        public bool IsSchedulerOnline { get; set; }
         public string Token { get; }
 
         #endregion Properties

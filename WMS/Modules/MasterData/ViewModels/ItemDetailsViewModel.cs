@@ -69,6 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.Item != null && value != this.Item)
                 {
+                    this.Item.TakeSnapshot();
                     this.Item.PropertyChanged -= this.OnItemPropertyChanged;
                 }
 
@@ -77,6 +78,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     return;
                 }
 
+                this.Item.TakeSnapshot();
                 this.Item.PropertyChanged += this.OnItemPropertyChanged;
 
                 this.RefreshData();
@@ -90,10 +92,10 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand RevertCommand => this.revertCommand ??
-                  (this.revertCommand = new DelegateCommand(this.LoadData));
+                  (this.revertCommand = new DelegateCommand(this.LoadData, this.CanExecuteRevert));
 
         public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
+                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSave));
 
         public object SelectedCompartment
         {
@@ -135,6 +137,16 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
+        private bool CanExecuteRevert()
+        {
+            return this.Item?.IsModified == true;
+        }
+
+        private bool CanExecuteSave()
+        {
+            return this.Item?.IsModified == true;
+        }
+
         private bool CanExecuteWithdraw()
         {
             return this.Item?.TotalAvailable > 0;
@@ -146,6 +158,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (modifiedRowCount > 0)
             {
+                this.Item.TakeSnapshot();
+
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
@@ -198,6 +212,11 @@ namespace Ferretto.WMS.Modules.MasterData
             if (e.PropertyName == nameof(this.Item.TotalAvailable))
             {
                 ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+            }
+            else if (e.PropertyName == nameof(this.Item.IsModified))
+            {
+                ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
+                ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             }
         }
 

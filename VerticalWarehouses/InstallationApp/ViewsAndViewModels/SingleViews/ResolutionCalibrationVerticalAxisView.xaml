@@ -17,18 +17,17 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
-            <RowDefinition Height="530" />
+            <RowDefinition Height="370" />
+            <RowDefinition Height="80" />
+            <RowDefinition Height="80" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="1"
-               Content="{x:Static res:InstallationApp.VerticalResolutionCalibration}"
-               Style="{StaticResource InstallationViewsTitleTextStyle}" />
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
@@ -38,72 +37,109 @@
                 <ColumnDefinition Width="100" />
                 <ColumnDefinition Width="300" />
             </Grid.ColumnDefinitions>
-            <custom:CustomInputFieldControlFocusable Grid.Row="0"
-                                                     Grid.Column="0"
-                                                     BorderColor="{Binding Input1BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     InputScope="Number"
-                                                     InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                                                     LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}" />
-            <custom:CustomInputFieldControlFocusable Grid.Row="1"
-                                                     Grid.Column="0"
-                                                     BorderColor="{Binding Input2BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     InputScope="Number"
-                                                     InputText="{Binding RepositionLenght, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                                                     IsEnabled="{Binding IsRepositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.DesiredMovement}" />
-            <custom:CustomInputFieldControlFocusable Grid.Row="2"
-                                                     Grid.Column="0"
-                                                     BorderColor="{Binding Input3BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     InputScope="Number"
-                                                     InputText="{Binding MesuredLenght, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
-                                                     IsEnabled="{Binding IsMesuredLenghtTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:InstallationApp.MesuredMovement}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="3"
-                                                Grid.Column="0"
-                                                ContentText="{Binding CurrentResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
-            <custom:CustomInputFieldControl Grid.Row="4"
-                                            Grid.Column="0"
-                                            InputScope="Number"
-                                            InputText="{Binding NewResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.NewResolution}" />
-            <custom:CustomLabelTextBlockControl Grid.Row="3"
-                                                Grid.Column="2"
-                                                ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                LabelText="{x:Static res:InstallationApp.Output}" />
-            <Button Grid.Row="0"
+            <Grid Grid.Row="1"
+                  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <custom:CustomInputFieldControlFocusable Grid.Row="0"
+                                                         Highlighted="False"
+                                                         InputScope="Number"
+                                                         InputText="{Binding DesiredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         LabelText="{x:Static res:InstallationApp.DesiredInitialPosition}"
+                                                         Style="{StaticResource IAPP_ViewCustomInputFieldControlFocusableStyle}" />
+                <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                         Highlighted="{Binding IsMesuredInitialPositionHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         InputScope="Number"
+                                                         InputText="{Binding MesuredInitialPosition, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                         IsEnabled="{Binding IsMesuredInitialPositionTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         LabelText="{x:Static res:InstallationApp.MesuredInitialPosition}"
+                                                         Style="{StaticResource IAPP_ViewCustomInputFieldControlFocusableStyle}" />
+            </Grid>
+            <Grid Grid.Row="2"
+                  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <custom:CustomInputFieldControlFocusable Grid.Row="0"
+                                                         Grid.Column="0"
+                                                         Highlighted="{Binding Input2Highlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         InputScope="Number"
+                                                         InputText="{Binding RepositionLenght, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         LabelText="{x:Static res:InstallationApp.DesiredMovement}"
+                                                         Style="{StaticResource IAPP_ViewCustomInputFieldControlFocusableStyle}" />
+                <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                         Grid.Column="0"
+                                                         Highlighted="{Binding IsMesuredMovementHighlighted, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         InputScope="Number"
+                                                         InputText="{Binding MesuredLenght, Mode=TwoWay, UpdateSourceTrigger=Explicit}"
+                                                         IsEnabled="{Binding IsMesuredLenghtTextInputActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                         LabelText="{x:Static res:InstallationApp.MesuredMovement}"
+                                                         Style="{StaticResource IAPP_ViewCustomInputFieldControlFocusableStyle}" />
+            </Grid>
+            <Grid Grid.Row="3"
+                  Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <custom:CustomLabelTextBlockControl Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    ContentText="{Binding CurrentResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
+                <custom:CustomLabelTextBlockControl Grid.Row="1"
+                                                    Grid.Column="0"
+                                                    ContentText="{Binding NewResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    LabelText="{x:Static res:InstallationApp.NewResolution}" />
+            </Grid>
+            <Button Grid.Row="1"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Command="{Binding SetPositionButtonCommand}"
                     Content="{x:Static res:InstallationApp.SetPosition}"
                     IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
-            <Button Grid.Row="1"
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+            <Button Grid.Row="2"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Command="{Binding MoveButtonCommand}"
                     Content="{x:Static res:InstallationApp.Move}"
                     IsEnabled="{Binding IsMoveButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
-            <Button Grid.Row="5"
-                    Grid.Column="0"
-                    HorizontalAlignment="Left"
-                    Command="{Binding CancelButtonCommand}"
-                    Content="{x:Static res:General.Cancel}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
-            <Button Grid.Row="5"
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+
+            <Button Grid.Row="3"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Command="{Binding AcceptButtonCommand}"
                     Content="{x:Static res:General.Accept}"
                     IsEnabled="{Binding IsAcceptButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
-            <Button Grid.Row="6"
-                    Grid.Column="0"
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+
+        </Grid>
+        <custom:CustomLabelTextBlockControl Grid.Row="2"
+                                            Grid.Column="1"
+                                            ContentText="{Binding NoteString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            LabelText="{x:Static res:InstallationApp.Output}" />
+        <Grid Grid.Row="3"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="2"
+                    HorizontalAlignment="Left"
+                    Command="{Binding CancelButtonCommand}"
+                    Content="{x:Static res:General.Cancel}"
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+            <Button Grid.Column="0"
                     HorizontalAlignment="Left"
                     Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:General.Back}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
         </Grid>
     </Grid>
 </UserControl>

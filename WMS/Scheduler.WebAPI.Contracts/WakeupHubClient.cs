@@ -14,7 +14,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         private const string WakeUpMessageName = "WakeUp";
         private const string NotifyNewMissionMessageName = "NotifyNewMission";
-        public const string WakeUpEndpoint = "wakeup-hub";
 
         private readonly HubConnection connection;
 #if NET4
@@ -25,18 +24,18 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         #region Constructors
 
-        public WakeupHubClient(string url)
+        public WakeupHubClient(string url, string wakeUpPath)
         {
 #if NET4
             this.connection = new HubConnection(url);
-            this.proxy = this.connection.CreateHubProxy(WakeUpEndpoint);
+            this.proxy = this.connection.CreateHubProxy(wakeUpPath);
 
             this.proxy.On<string, string>(WakeUpMessageName, (a, b) => this.OnWakeUp_MessageReceived(a, b));
 
             this.connection.StateChanged += this.OnConnectionStateChanged;
 #else
             this.connection = new HubConnectionBuilder()
-              .WithUrl(new Uri(new Uri(url), WakeUpEndpoint).AbsoluteUri)
+              .WithUrl(new Uri(new Uri(url), wakeUpPath).AbsoluteUri)
               .Build();
 
             this.connection.On<string, string>(WakeUpMessageName, this.OnWakeUp_MessageReceived);

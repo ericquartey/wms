@@ -33,7 +33,8 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public WmsTrayCanvas Canvas {
+        public WmsTrayCanvas Canvas
+        {
             get => this.canvas;
             private set { }
         }

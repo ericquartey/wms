@@ -24,6 +24,7 @@ namespace Ferretto.VW.CustomControls.Controls
         #region Fields
 
         public static readonly DependencyProperty BorderColorProperty = DependencyProperty.Register("BorderColor", typeof(SolidColorBrush), typeof(CustomInputFieldControlFocusable));
+        public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register("Highlighted", typeof(bool), typeof(CustomInputFieldControlFocusable));
         public static readonly DependencyProperty InputProperty = DependencyProperty.Register("InputText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(""));
         public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("LabelText", typeof(string), typeof(CustomInputFieldControlFocusable), new PropertyMetadata(""));
 
@@ -51,6 +52,12 @@ namespace Ferretto.VW.CustomControls.Controls
         {
             get => (SolidColorBrush)this.GetValue(BorderColorProperty);
             set { this.SetValue(BorderColorProperty, value); this.RaisePropertyChanged("BorderColor"); }
+        }
+
+        public bool Highlighted
+        {
+            get => (bool)this.GetValue(HighlightedProperty);
+            set { this.SetValue(HighlightedProperty, value); this.RaisePropertyChanged("Highlighted"); }
         }
 
         public string InputText

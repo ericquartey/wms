@@ -8,19 +8,11 @@
     <StartupObject />
   </PropertyGroup>
 
-  <PropertyGroup>
-    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-  </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.1.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -53,6 +45,10 @@
     <Content Include="Images\*.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DevExpress.Wpf.PrismAdapters" Version="18.2.3" />
   </ItemGroup>
 
 </Project>

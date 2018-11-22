@@ -7,17 +7,8 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/FontsAndColors.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ButtonStyles.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextStyles.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ComboBoxTemplates.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/UserComboBoxTemplates.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ComboBoxItemsTemplates.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/RepeatButtonStyles.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewsComboBoxTemplate.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewsComboBoxItemTemplate.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomSensorControlStyle.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

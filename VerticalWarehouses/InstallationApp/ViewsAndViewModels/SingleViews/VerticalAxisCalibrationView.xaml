@@ -20,10 +20,10 @@
             <RowDefinition Height="450" />
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0"
-               Grid.Column="1"
-               Content="{x:Static res:InstallationApp.OriginVerticalAxis}"
-               Style="{StaticResource InstallationViewsTitleTextStyle}" />
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
+                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
             <Grid.RowDefinitions>
@@ -72,12 +72,12 @@
                     Command="{Binding StartButtonCommand}"
                     Content="{x:Static res:InstallationApp.Start}"
                     IsEnabled="{Binding EnableStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Grid.Column="2"
                     Command="{Binding StopButtonCommand}"
                     Content="{x:Static res:InstallationApp.Stop}"
                     IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
         </Grid>
     </Grid>
 </myType:BaseView>

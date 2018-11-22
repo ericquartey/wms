@@ -26,13 +26,12 @@ namespace Ferretto.Common.DataModels
         public virtual ItemCategory ItemCategory { get; set; }
         public int? ItemCategoryId { get; set; }
         public IEnumerable<ItemListRow> ItemListRows { get; set; }
-        public virtual ItemManagementType ItemManagementType { get; set; }
-        public int? ItemManagementTypeId { get; set; }
         public IEnumerable<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
         public DateTime? LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }
         public DateTime? LastStoreDate { get; set; }
         public int? Length { get; set; }
+        public ItemManagementType ManagementType { get; set; }
         public virtual MeasureUnit MeasureUnit { get; set; }
         public string MeasureUnitId { get; set; }
         public IEnumerable<Mission> Missions { get; set; }
@@ -40,6 +39,7 @@ namespace Ferretto.Common.DataModels
         public int? PickTolerance { get; set; }
         public int? ReorderPoint { get; set; }
         public int? ReorderQuantity { get; set; }
+        public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }
         public int? StoreTolerance { get; set; }
         public int? Width { get; set; }
 

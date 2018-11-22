@@ -18,9 +18,9 @@
             <RowDefinition Height="80" />
             <RowDefinition Height="530" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="1"
-               Content="{x:Static res:InstallationApp.PanelsControl}"
-               Style="{StaticResource InstallationViewsTitleTextStyle}" />
+        <TextBlock Grid.Column="1"
+                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.PanelsControl}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
             <Grid.ColumnDefinitions>
@@ -42,24 +42,29 @@
             </Grid.RowDefinitions>
             <ComboBox Name="CBox"
                       Grid.Row="1"
-                      Width="160"
-                      Margin="5,0,0,15"
+                      Width="170"
+                      Height="60"
                       HorizontalAlignment="Left"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
-                      Background="Transparent"
-                      FontSize="20"
+                      FontSize="25"
                       Foreground="{StaticResource FerrettoPureWhite}"
-                      Style="{StaticResource InstallationAppViewComboBoxTemplate}">
-                <ComboBoxItem Height="{Binding ElementName=CBox, Path=ActualHeight}"
-                              Content="{x:Static res:General.Back}"
+                      Template="{StaticResource IAPP_ViewComboBoxTemplate}">
+                <ComboBoxItem Height="{Binding ActualHeight, ElementName=CBox}"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              Content="{x:Static res:InstallationApp.Back}"
+                              FontSize="25"
+                              Foreground="{StaticResource FerrettoPureWhite}"
                               IsSelected="True"
-                              Style="{StaticResource InstallationAppViewsComboBoxItemStyle}"
-                              Template="{StaticResource InstallationAppViewsComboBoxItemTemplate}" />
-                <ComboBoxItem Height="{Binding ElementName=CBox, Path=ActualHeight}"
-                              Content="{x:Static res:General.Front}"
-                              Style="{StaticResource InstallationAppViewsComboBoxItemStyle}"
-                              Template="{StaticResource InstallationAppViewsComboBoxItemTemplate}" />
+                              Template="{StaticResource IAPP_ViewComboBoxItemTemplate}" />
+                <ComboBoxItem Height="{Binding ActualHeight, ElementName=CBox}"
+                              HorizontalContentAlignment="Center"
+                              VerticalContentAlignment="Center"
+                              Content="{x:Static res:InstallationApp.Front}"
+                              FontSize="25"
+                              Foreground="{StaticResource FerrettoPureWhite}"
+                              Template="{StaticResource IAPP_ViewComboBoxItemTemplate}" />
             </ComboBox>
             <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                 Margin="0,0,100,0"
@@ -92,27 +97,27 @@
             <Button Grid.Row="4"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:General.Next}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Grid.Row="4"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.SetPosition}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Grid.Row="5"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.StepUp}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Grid.Row="6"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.StepDown}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
             <Button Grid.Row="7"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.Correct}"
-                    Style="{StaticResource InstallationAppViewsButtonStyle}" />
+                    Style="{StaticResource IAPP_ViewButtonStyle}" />
 
         </Grid>
     </Grid>
