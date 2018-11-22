@@ -73,18 +73,19 @@
                            VerticalAlignment="Top"
                            Content="Compartment Details" />
 
-                    <Label x:Name="ErrorText"
-                           Grid.Row="2"
-                           Grid.ColumnSpan="2"
-                           Height="20"
-                           MinWidth="100"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Bottom"
-                           Content="{Binding Error}"
-                           FontStyle="Italic"
-                           FontWeight="Bold"
-                           Foreground="{Binding ErrorColor}"
-                           Visibility="Visible" />
+                    <TextBlock x:Name="ErrorText"
+                               Grid.Row="2"
+                               Grid.ColumnSpan="2"
+                               Height="20"
+                               MinWidth="100"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Bottom"
+                               FontStyle="Italic"
+                               FontWeight="Bold"
+                               Foreground="{Binding ErrorColor}"
+                               Text="{Binding Error}"
+                               TextWrapping="WrapWithOverflow"
+                               Visibility="Visible" />
 
                     <wms:SpinEdit x:Name="WidthText"
                                   Grid.Row="3"

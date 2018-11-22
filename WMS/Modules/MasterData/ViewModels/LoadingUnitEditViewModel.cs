@@ -52,6 +52,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool enableInputBulkAdd;
         private string error;
         private string errorColor;
+        private Func<CompartmentDetails, CompartmentDetails, string> filterColorFunc;
         private InputAddCompartmentViewModel inputAddVM;
         private InputBulkAddCompartmentViewModel inputBulkAddVM;
         private InputEditCompartmentViewModel inputEditVM;
@@ -77,10 +78,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private CompartmentDetails selectedCompartmentTray;
 
-        private string titleAdd = Common.Resources.MasterData.AddCompartment;
-
-        private string titleEdit = Common.Resources.MasterData.EditCompartment;
-
         private Tray tray;
 
         #endregion Fields
@@ -89,12 +86,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public LoadingUnitEditViewModel()
         {
-            this.SelectedCompartmentTray = null;
-            this.SelectedCompartment = null;
+            //this.SelectedCompartmentTray = null;
+            //this.SelectedCompartment = null;
 
             this.ShowMainViewAndHideLateralPanel();
 
-            this.EnableInputBulkAdd = false;
+            //this.EnableInputBulkAdd = false;
         }
 
         #endregion Constructors
@@ -188,6 +185,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
+        public Func<CompartmentDetails, CompartmentDetails, string> FilterColorFunc
+        {
+            get { return this.filterColorFunc; }
+            set { this.SetProperty(ref this.filterColorFunc, value); }
+        }
+
         public InputAddCompartmentViewModel InputAddVM
         {
             get => this.inputAddVM;
@@ -261,6 +264,19 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
+        public BulkCompartment SelectedBulkCompartmentTray
+        {
+            get
+            {
+                //if (this.EnableBulkAdd)
+                //{
+                //    this.CanExecuteBulkAddCommand();
+                //}
+                return this.selectedBulkCompartmentTray;
+            }
+            set => this.SetProperty(ref this.selectedBulkCompartmentTray, value);
+        }
+
         //public int Row
         //{
         //    get => this.row;
@@ -276,20 +292,6 @@ namespace Ferretto.WMS.Modules.MasterData
         //          (this.saveCommandEdit = new DelegateCommand(this.ExecuteSaveCommandEdit, this.CanExecuteSaveCommandEdit)
         //    .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
         //    .ObservesProperty(() => this.Error));
-
-        public BulkCompartment SelectedBulkCompartmentTray
-        {
-            get
-            {
-                //if (this.EnableBulkAdd)
-                //{
-                //    this.CanExecuteBulkAddCommand();
-                //}
-                return this.selectedBulkCompartmentTray;
-            }
-            set => this.SetProperty(ref this.selectedBulkCompartmentTray, value);
-        }
-
         public object SelectedCompartment
         {
             get => this.selectedCompartment;
@@ -307,7 +309,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.selectedCompartmentTray;
             set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
-
 
         public Tray Tray
         {
@@ -374,7 +375,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteEditCommand()
         {
-            return this.selectedCompartmentTray != null;
+            return (this.selectedCompartmentTray != null && this.selectedCompartmentTray.Width != null && this.selectedCompartmentTray.Height != null
+                && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null);
+
             //return !this.CreateMode && !this.EditMode && this.selectedCompartmentTray != null
             //    && this.selectedCompartmentTray.Width != null && this.selectedCompartmentTray.Height != null
             //    && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null;
@@ -479,12 +482,15 @@ namespace Ferretto.WMS.Modules.MasterData
                     Height = this.LoadingUnit.Length,
                     Width = this.LoadingUnit.Width
                 },
-                LoadingUnitId = this.LoadingUnit.Id
+                LoadingUnitId = this.LoadingUnit.Id,
             };
             if (this.LoadingUnit.Compartments != null)
             {
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
+
+            this.FilterColorFunc = (new EditFilter()).ColorFunc;
+
             this.RaisePropertyChanged(nameof(this.Tray));
         }
 

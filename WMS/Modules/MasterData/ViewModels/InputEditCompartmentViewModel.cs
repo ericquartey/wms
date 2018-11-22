@@ -235,6 +235,10 @@ namespace Ferretto.WMS.Modules.MasterData
                     //this.SetError("Errors");
                 }
             }
+            else
+            {
+                this.SetError(Errors.AddNoPossible);
+            }
             ok = true;
             //else
             //{
