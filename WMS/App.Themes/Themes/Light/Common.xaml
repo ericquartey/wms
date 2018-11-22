@@ -11,6 +11,7 @@
     <Color x:Key="LightGrey">#c5c7c4</Color>
     <Color x:Key="MediumGrey">#707173</Color>
     <Color x:Key="DarkGrey">#293133</Color>
+    <Color x:Key="MediumRed">#DC000C</Color>
     <Color x:Key="Red">#e2001a</Color>
     <Color x:Key="Black">#0A0A0A</Color>
     <Color x:Key="Green">#57A639</Color>
@@ -63,6 +64,10 @@
     <!-- messages -->
     <SolidColorBrush x:Key="ErrorMessageColorBrush"
                      Color="{StaticResource Red}" />
+    <SolidColorBrush x:Key="ErrorMessageBackgroundColor"
+                     Color="{StaticResource MediumRed}" />
+    <SolidColorBrush x:Key="ErrorMessageTextToolTipForegroundColor"
+                     Color="{StaticResource PureWhite}" />
 
     <!--  fonts  -->
     <system:Double x:Key="WindowTitleFontSize">14</system:Double>

@@ -15,6 +15,7 @@
 
     <Style TargetType="wms:SpinEdit">
         <Setter Property="EditValueType" Value="{x:Type sys:Int32}" />
+        <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wms:SpinEdit}">
@@ -38,12 +39,16 @@
                                       Grid.Row="1"
                                       MinWidth="100"
                                       AllowNullInput="True"
-                                      EditValue="{Binding Path=EditValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Path=EditValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay,
+                                                          ValidatesOnExceptions=True,
+                                                          NotifyOnValidationError=True,
+                                                          ValidatesOnDataErrors=True,
+                                                          UpdateSourceTrigger=PropertyChanged}"
                                       EditValueType="{TemplateBinding EditValueType}"
                                       IsFloatValue="False"
                                       IsTextEditable="True"
                                       Mask="{TemplateBinding Mask}"
-                                      MaskType="{TemplateBinding MaskType}" />
+                                      MaskType="{TemplateBinding MaskType}"/>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>
