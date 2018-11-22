@@ -116,7 +116,7 @@ namespace Ferretto.Common.BusinessProviders
             var aggregatedRequests = this.dataContext.SchedulerRequests
                 .Where(r => r.ItemId == schedulerRequest.ItemId);
 
-            var matches = aggregatedCompartments
+            var compartmentSets = aggregatedCompartments
                 .GroupJoin(
                     aggregatedRequests,
                     c => new Tuple<string, string, string, int?, int?, string>(c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber),
@@ -127,20 +127,19 @@ namespace Ferretto.Common.BusinessProviders
                         r = r.DefaultIfEmpty()
                     }
                 )
-                .Select(g => new
+                .Select(g => new CompartmentSet
                 {
                     ActualAvailability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity),
-                    g.c.Sub1,
-                    g.c.Sub2,
-                    g.c.Lot,
-                    g.c.PackageTypeId,
-                    g.c.MaterialStatusId,
-                    g.c.RegistrationNumber,
-                    g.c.FirstStoreDate
+                    Sub1 = g.c.Sub1,
+                    Sub2 = g.c.Sub2,
+                    Lot = g.c.Lot,
+                    PackageTypeId = g.c.PackageTypeId,
+                    MaterialStatusId = g.c.MaterialStatusId,
+                    RegistrationNumber = g.c.RegistrationNumber,
+                    FirstStoreDate = g.c.FirstStoreDate
                 }
-                );
-
-            var matchesWithAvailability = matches.Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
+                )
+                .Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
