@@ -12,8 +12,11 @@ namespace Ferretto.Common.BLL.Tests
     {
         #region Fields
 
+        private const int OtherBayId = 1000;
+        private const int OtherLoadingUnitId = 1000;
         private Aisle aisle1;
         private Area area1;
+        private Bay bay1;
         private Cell cell1;
         private Item item1;
         private Item itemFifo;
@@ -30,6 +33,65 @@ namespace Ferretto.Common.BLL.Tests
             using (var context = this.CreateContext())
             {
                 context.Database.EnsureDeleted();
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
+         @"GIVEN two compartments with same Sub1, but in different areas \
+                AND a requests allocated to the first area, so that there is no availability on that area \
+               WHEN a new request for the first area is made \
+               THEN the new request should be accepted")]
+        public async Task CompartmentsInBay()
+        {
+            #region Arrange
+
+            var sub1 = "S1";
+
+            var compartment1 = new Compartment
+            {
+                Id = 1,
+                Code = "Compartment #1",
+                ItemId = this.item1.Id,
+                Sub1 = sub1,
+                LoadingUnitId = this.loadingUnit1.Id,
+                Stock = 10,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+
+                context.SaveChanges();
+            }
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act
+
+                var provider = new SchedulerRequestProvider(context);
+
+                var schedulerRequest = new BusinessModels.SchedulerRequest
+                {
+                    ItemId = this.item1.Id,
+                    AreaId = this.area1.Id,
+                    BayId = this.bay1.Id,
+                    RequestedQuantity = 1,
+                    Type = BusinessModels.OperationType.Withdrawal
+                };
+
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+
+                #endregion Act
+
+                #region Assert
+
+                Assert.IsNotNull(acceptedRequest);
+                Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
+
+                #endregion Assert
             }
         }
 
@@ -61,7 +123,7 @@ namespace Ferretto.Common.BLL.Tests
                 Code = "Compartment #2",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
-                LoadingUnitId = 2,
+                LoadingUnitId = OtherLoadingUnitId,
                 Stock = 10,
             };
 
@@ -95,6 +157,64 @@ namespace Ferretto.Common.BLL.Tests
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
+                    RequestedQuantity = 1,
+                    Type = BusinessModels.OperationType.Withdrawal
+                };
+
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+
+                #endregion Act
+
+                #region Assert
+
+                Assert.IsNull(acceptedRequest);
+
+                #endregion Assert
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
+         @"GIVEN two compartments with same Sub1, but in different areas \
+                AND a requests allocated to the first area, so that there is no availability on that area \
+               WHEN a new request for the first area is made \
+               THEN the new request should be accepted")]
+        public async Task CompartmentsNotInBay()
+        {
+            #region Arrange
+
+            var sub1 = "S1";
+
+            var compartment1 = new Compartment
+            {
+                Id = 1,
+                Code = "Compartment #1",
+                ItemId = this.item1.Id,
+                Sub1 = sub1,
+                LoadingUnitId = this.loadingUnit1.Id,
+                Stock = 10,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+
+                context.SaveChanges();
+            }
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act
+
+                var provider = new SchedulerRequestProvider(context);
+
+                var schedulerRequest = new BusinessModels.SchedulerRequest
+                {
+                    ItemId = this.item1.Id,
+                    AreaId = this.area1.Id,
+                    BayId = OtherBayId,
                     RequestedQuantity = 1,
                     Type = BusinessModels.OperationType.Withdrawal
                 };
@@ -171,6 +291,7 @@ namespace Ferretto.Common.BLL.Tests
             this.aisle1 = new Aisle { Id = 1, AreaId = this.area1.Id, Name = "Aisle #1" };
             this.cell1 = new Cell { Id = 1, AisleId = this.aisle1.Id };
             this.loadingUnit1 = new LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.cell1.Id };
+            this.bay1 = new Bay { Id = 1, Description = "Bay #1", AreaId = this.area1.Id };
             this.item1 = new Item { Id = 1, Code = "Item #1", ManagementType = ItemManagementType.FIFO };
             this.itemFifo = new Item { Id = 2, Code = "Item #2", ManagementType = ItemManagementType.FIFO };
             this.itemVolume = new Item { Id = 3, Code = "Item #3", ManagementType = ItemManagementType.Volume };
@@ -179,6 +300,7 @@ namespace Ferretto.Common.BLL.Tests
             {
                 context.Areas.Add(this.area1);
                 context.Aisles.Add(this.aisle1);
+                context.Bays.Add(this.bay1);
                 context.Cells.Add(this.cell1);
                 context.LoadingUnits.Add(this.loadingUnit1);
                 context.Items.Add(this.item1);
@@ -485,7 +607,7 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-       @"GIVEN a compartment with Sub1 \
+        @"GIVEN a compartment with Sub1 \
                 AND no other requests are present \
                WHEN a new request for no particular Sub1 is made \
                THEN the new request should be accepted")]
