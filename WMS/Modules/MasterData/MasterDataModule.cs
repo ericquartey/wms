@@ -1,7 +1,12 @@
+using System;
+using System.IO;
 using System.Linq;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.EF;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -53,11 +58,34 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Register<WithdrawDialogView, WithdrawDialogViewModel>();
 
+#if DEBUG
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.CheckingDatabaseStructure);
+
+            var dataContext  = ServiceLocator.Current.GetInstance<DatabaseContext>();
+            try
+            {
+                var pendingMigrations = dataContext.Database.GetPendingMigrations();
+                if (pendingMigrations.Any())
+                {
+                    SplashScreenService.SetMessage(Common.Resources.DesktopApp.ApplyingDatabaseMigrations);
+                    dataContext.Database.Migrate();
+
+                    SplashScreenService.SetMessage(Common.Resources.DesktopApp.ReseedingDatabase);
+                    dataContext.Database.ExecuteSqlCommand(File.ReadAllText(@"bin\Debug\net471\Seeds\Dev.Minimal.sql"));
+                    dataContext.Database.ExecuteSqlCommand(File.ReadAllText(@"bin\Debug\net471\Seeds\Dev.Items.sql"));
+                }
+            }
+            catch (Exception e)
+            {
+                SplashScreenService.SetMessage(Common.Resources.Errors.UnableToConnectToDatabase);
+            }
+#else
+
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
-
             ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
-
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
+
+#endif
         }
 
         #endregion Methods

@@ -153,4 +153,13 @@
   <data name="InitializingMachinesModule" xml:space="preserve">
     <value>Inizializzazione modulo Macchine ...</value>
   </data>
+  <data name="ApplyingDatabaseMigrations" xml:space="preserve">
+    <value>Applicazione migrazioni database ...</value>
+  </data>
+  <data name="ReseedingDatabase" xml:space="preserve">
+    <value>Ripopolamento database ...</value>
+  </data>
+  <data name="CheckingDatabaseStructure" xml:space="preserve">
+    <value>Controllo struttura database ...</value>
+  </data>
 </root>

@@ -70,6 +70,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Applying database migrations ....
+        /// </summary>
+        public static string ApplyingDatabaseMigrations {
+            get {
+                return ResourceManager.GetString("ApplyingDatabaseMigrations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Checking database structure ....
+        /// </summary>
+        public static string CheckingDatabaseStructure {
+            get {
+                return ResourceManager.GetString("CheckingDatabaseStructure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuring Prism module catalog ....
         /// </summary>
         public static string ConfiguringPrismModuleCatalog {
@@ -165,6 +183,15 @@ namespace Ferretto.Common.Resources {
         public static string OpeningMainWindow {
             get {
                 return ResourceManager.GetString("OpeningMainWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reseeding database ....
+        /// </summary>
+        public static string ReseedingDatabase {
+            get {
+                return ResourceManager.GetString("ReseedingDatabase", resourceCulture);
             }
         }
     }
