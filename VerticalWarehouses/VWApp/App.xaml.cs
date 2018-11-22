@@ -8,6 +8,7 @@ using System.IO;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
 using System.Diagnostics;
+using Ferretto.VW.RemoteIODriver.Source;
 
 namespace Ferretto.VW.VWApp
 {
@@ -31,6 +32,7 @@ namespace Ferretto.VW.VWApp
             NavigationService.ChangeSkinToLightEventHandler += (Current as App).ChangeSkinToLight;
             NavigationService.ChangeSkinToMediumEventHandler += (Current as App).ChangeSkinToMedium;
             NavigationService.ChangeSkinToDarkEventHandler += (Current as App).ChangeSkinToDark;
+            RemoteIOManager.Current = new RemoteIOManager();
         }
 
         #endregion Constructors

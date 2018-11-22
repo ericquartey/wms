@@ -345,6 +345,7 @@
     <Resource Include="Assets\brush_light.png" />
     <Resource Include="Assets\ferretto_logo_light.png" />
     <Resource Include="Assets\ferretto_logo_dark.png" />
+    <Resource Include="Assets\background_machine.png" />
     <Content Include="Fonts\HelveticaNeue-LightCond.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -356,15 +357,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\VertimagFronte.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="Assets\VertimagTreQuartiDX.png" />
-    <Content Include="Assets\VertimagTreQuartiStretta.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">

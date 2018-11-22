@@ -26,7 +26,6 @@
                     Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
         </StackPanel>
         <Button Grid.Row="2"
-                Margin="15,0,0,0"
                 Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                 Content="{x:Static res:General.Back}"
                 Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
