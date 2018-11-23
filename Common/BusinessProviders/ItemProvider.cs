@@ -220,6 +220,8 @@ namespace Ferretto.Common.BusinessProviders
             await this.itemsClient.WithdrawAsync(
                 new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
                 {
+                    IsInstant = true,
+                    Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
                     ItemId = itemWithdraw.ItemDetails.Id,
                     BayId = itemWithdraw.BayId,
                     AreaId = itemWithdraw.AreaId,
@@ -228,7 +230,6 @@ namespace Ferretto.Common.BusinessProviders
                     RegistrationNumber = itemWithdraw.RegistrationNumber,
                     Sub1 = itemWithdraw.Sub1,
                     Sub2 = itemWithdraw.Sub2,
-                    Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal
                 }
             );
         }
