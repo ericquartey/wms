@@ -8,7 +8,6 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml" />
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

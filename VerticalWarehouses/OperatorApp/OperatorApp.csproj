@@ -94,22 +94,46 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ViewsAndViewModels\Articles\ArticleDetailsView.xaml.cs">
+      <DependentUpon>ArticleDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\Articles\ArticleDetailsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Articles\ArticlesNavigationButtonView.xaml.cs">
+      <DependentUpon>ArticlesNavigationButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\Articles\ArticlesNavigationButtonViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Articles\ArticlesView.xaml.cs">
+      <DependentUpon>ArticlesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\Articles\ArticlesViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Lists\ListDetailsView.xaml.cs">
+      <DependentUpon>ListDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\Lists\ListDetailsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Lists\ListsNavigationButtonView.xaml.cs">
+      <DependentUpon>ListsNavigationButtonView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\Lists\ListsNavigationButtonViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Lists\ListsView.xaml.cs">
+      <DependentUpon>ListsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\Lists\ListsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\NavigationButtonView.xaml.cs">
       <DependentUpon>NavigationButtonView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\NavigationButtonViewModel.cs" />
-    <Compile Include="ViewsAndViewModels\SingleViews\ArticlesView.xaml.cs">
-      <DependentUpon>ArticlesView.xaml</DependentUpon>
+    <Compile Include="ViewsAndViewModels\Picking\PickingDetailsView.xaml.cs">
+      <DependentUpon>PickingDetailsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewsAndViewModels\SingleViews\ArticlesViewModel.cs" />
-    <Compile Include="ViewsAndViewModels\SingleViews\ListsView.xaml.cs">
-      <DependentUpon>ListsView.xaml</DependentUpon>
+    <Compile Include="ViewsAndViewModels\Picking\PickingDetailsViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Picking\PickingNavigationButtonView.xaml.cs">
+      <DependentUpon>PickingNavigationButtonView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewsAndViewModels\SingleViews\ListsViewModel.cs" />
-    <Compile Include="ViewsAndViewModels\SingleViews\PickingView.xaml.cs">
+    <Compile Include="ViewsAndViewModels\Picking\PickingNavigationButtonViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Picking\PickingView.xaml.cs">
       <DependentUpon>PickingView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewsAndViewModels\SingleViews\PickingViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\Picking\PickingViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -122,19 +146,43 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\Articles\ArticleDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\Articles\ArticlesNavigationButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\Articles\ArticlesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\Lists\ListDetailsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\Lists\ListsNavigationButtonView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewsAndViewModels\Lists\ListsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\NavigationButtonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewsAndViewModels\SingleViews\ArticlesView.xaml">
+    <Page Include="ViewsAndViewModels\Picking\PickingDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewsAndViewModels\SingleViews\ListsView.xaml">
+    <Page Include="ViewsAndViewModels\Picking\PickingNavigationButtonView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewsAndViewModels\SingleViews\PickingView.xaml">
+    <Page Include="ViewsAndViewModels\Picking\PickingView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

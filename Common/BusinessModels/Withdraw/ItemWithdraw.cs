@@ -11,9 +11,9 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private IEnumerable<Area> areaChoices;
-        private int areaId;
+        private int? areaId;
         private IEnumerable<Bay> bayChoices;
-        private int bayId;
+        private int? bayId;
         private ItemDetails itemDetails;
         private int quantity;
 
@@ -28,7 +28,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawArea), ResourceType = typeof(BusinessObjects))]
-        public int AreaId
+        public int? AreaId
         {
             get => this.areaId;
             set => this.SetProperty(ref this.areaId, value);
@@ -41,7 +41,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawBay), ResourceType = typeof(BusinessObjects))]
-        public int BayId
+        public int? BayId
         {
             get => this.bayId;
             set => this.SetProperty(ref this.bayId, value);
@@ -108,14 +108,16 @@ namespace Ferretto.Common.BusinessModels
                 switch (columnName)
                 {
                     case nameof(this.AreaId):
-                        if (this.AreaId == 0)
+                        if (this.areaId.HasValue == false ||
+                            this.areaId.Value == 0)
                         {
                             return Resources.BusinessObjects.ItemWithdrawAreaInvalidError;
                         }
                         break;
 
                     case nameof(this.BayId):
-                        if (this.BayId == 0)
+                        if (this.bayId.HasValue == false ||
+                            this.bayId.Value == 0)
                         {
                             return Resources.BusinessObjects.ItemWithdrawBayInvalidError;
                         }

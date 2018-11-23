@@ -189,4 +189,7 @@
   <data name="EditNoPossible" xml:space="preserve">
     <value>Errore: non è stato possibile editare questo scomparto.</value>
   </data>
+  <data name="UnableToConnectToDatabase" xml:space="preserve">
+    <value>Impossibile connettersi al database</value>
+  </data>
 </root>

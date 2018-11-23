@@ -2,7 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/FontsAndColors.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ButtonStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomSensorControlStyle.xaml" />

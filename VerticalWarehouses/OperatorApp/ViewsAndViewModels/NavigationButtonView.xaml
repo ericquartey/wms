@@ -3,6 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.OperatorApp.ViewsAndViewModels"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Grid />
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <StackPanel>
+                <Button Command="{Binding}"
+                        Content="{x:Static res:OperatorApp.Picking}"
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                <Button Command="{Binding DataContext.ArticlesButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        Content="{x:Static res:OperatorApp.Articles}"
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+                <Button Command="{Binding}"
+                        Content="{x:Static res:OperatorApp.Lists}"
+                        Style="{StaticResource IAPP_NavigationViewButtonStyle}" />
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </UserControl>
