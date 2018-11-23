@@ -1,3 +1,4 @@
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
@@ -8,6 +9,8 @@ namespace Ferretto.Common.BusinessProviders
         #region Methods
 
         Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest);
+
+        IQueryable<CompartmentCore> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest);
 
         Task<SchedulerRequest> GetNextRequest();
 

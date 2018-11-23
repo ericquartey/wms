@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -241,6 +241,62 @@ namespace Ferretto.Common.BusinessProviders
                         Sub2 = s.Sub2
                     })
                 .Single();
+        }
+
+        public IQueryable<CompartmentCore> GetCandidateWithdrawalCompartments(SchedulerRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
+            }
+
+            if (request.Type != OperationType.Withdrawal)
+            {
+                throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
+            }
+
+            return this.dataContext.Compartments
+                .Include(c => c.LoadingUnit)
+                .ThenInclude(l => l.Cell)
+                .ThenInclude(c => c.Aisle)
+                .ThenInclude(a => a.Area)
+                .ThenInclude(a => a.Bays)
+                .Where(c =>
+                    c.ItemId == request.ItemId
+                    &&
+                    c.Lot == request.Lot
+                    &&
+                    c.MaterialStatusId == request.MaterialStatusId
+                    &&
+                    c.MaterialStatusId == request.PackageTypeId
+                    &&
+                    c.RegistrationNumber == request.RegistrationNumber
+                    &&
+                    c.Sub1 == request.Sub1
+                    &&
+                    c.Sub2 == request.Sub2
+                    &&
+                    (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
+                    &&
+                    (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
+                    )
+                .Select(c => new CompartmentCore
+                {
+                    Id = c.Id,
+                    Code = c.Code,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
+                    FifoTime = c.FifoTime,
+                    FirstStoreDate = c.FirstStoreDate,
+                    ItemId = c.ItemId.Value,
+                    LoadingUnitId = c.LoadingUnitId,
+                    Stock = c.Stock,
+                    ReservedToStore = c.ReservedToStore,
+                    ReservedForPick = c.ReservedForPick,
+                    PackageTypeId = c.PackageTypeId,
+                    Lot = c.Lot,
+                    Availability = c.Stock - c.ReservedForPick + c.ReservedToStore
+                });
         }
 
         public Task<SchedulerRequest> GetNextRequest()
