@@ -68,7 +68,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.Driv
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.Scheduler.WebAPI", "WMS\Scheduler.WebAPI\Ferretto.WMS.Scheduler.WebAPI.csproj", "{E437D7CD-D68E-4DE2-A156-D18172F645D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.WMS.AutomationServiceMock", "WMS\AutomationServiceMock\Ferretto.WMS.AutomationServiceMock.csproj", "{B42F9CC0-AB23-4A32-9280-7117CE8EF47C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.AutomationServiceMock", "WMS\AutomationServiceMock\Ferretto.WMS.AutomationServiceMock.csproj", "{B42F9CC0-AB23-4A32-9280-7117CE8EF47C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
