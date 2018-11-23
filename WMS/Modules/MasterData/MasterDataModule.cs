@@ -1,13 +1,17 @@
-using System.IO;
 using System.Linq;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
-using Ferretto.Common.EF;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 using Prism.Regions;
+#if DEBUG
+using System.IO;
+using Ferretto.Common.EF;
+using Microsoft.EntityFrameworkCore;
+#else
+using Ferretto.Common.BusinessProviders;
+#endif
 
 namespace Ferretto.WMS.Modules.MasterData
 {
@@ -85,7 +89,6 @@ namespace Ferretto.WMS.Modules.MasterData
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
             ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
-
 #endif
         }
 
