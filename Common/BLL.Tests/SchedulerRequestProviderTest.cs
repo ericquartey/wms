@@ -38,9 +38,9 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-            @"GIVEN a compartment in a specific area and aisle  \
-                AND a requests allocated to a bay of the specified area \
-               WHEN a new request for the first area is made \
+            @"GIVEN a compartment in a specific area, associated to a specific item \
+                AND a withdrawal request for the given item on a bay of the specified area \
+               WHEN a new request for the same item and area is made \
                THEN the new request should be accepted")]
         public async Task CompartmentsInBay()
         {
@@ -225,6 +225,74 @@ namespace Ferretto.Common.BLL.Tests
                 #region Assert
 
                 Assert.IsNull(acceptedRequest);
+
+                #endregion Assert
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
+            @"GIVEN a compartment associated to an item \
+                AND no other requests are present \
+               WHEN a new request for no particular Sub1 is made \
+               THEN the new request should be accepted")]
+        public async Task FullRequestQualificationTest()
+        {
+            #region Arrange
+
+            var compartment1 = new Compartment
+            {
+                Id = 1,
+                Code = "Compartment #1",
+                ItemId = this.item1.Id,
+                Sub1 = "S1",
+                Sub2 = "S2",
+                Lot = "Lot1",
+                PackageTypeId = 1,
+                RegistrationNumber = "RegistrationNumber1",
+                MaterialStatusId = 1,
+                LoadingUnitId = this.loadingUnit1.Id,
+                Stock = 10,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+
+                context.SaveChanges();
+            }
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act
+
+                var provider = new SchedulerRequestProvider(context);
+
+                var schedulerRequest = new BusinessModels.SchedulerRequest
+                {
+                    ItemId = this.item1.Id,
+                    AreaId = this.area1.Id,
+                    RequestedQuantity = 1,
+                    IsInstant = true,
+                    Type = BusinessModels.OperationType.Withdrawal
+                };
+
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+
+                #endregion Act
+
+                #region Assert
+
+                Assert.IsNotNull(acceptedRequest);
+                Assert.IsTrue(acceptedRequest.IsInstant);
+                Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
+                Assert.AreSame(compartment1.Sub2, acceptedRequest.Sub2);
+                Assert.AreSame(compartment1.Lot, acceptedRequest.Lot);
+                Assert.AreEqual(compartment1.PackageTypeId.Value, acceptedRequest.PackageTypeId.Value);
+                Assert.AreEqual(compartment1.MaterialStatusId.Value, acceptedRequest.MaterialStatusId.Value);
+                Assert.AreSame(compartment1.RegistrationNumber, acceptedRequest.RegistrationNumber);
 
                 #endregion Assert
             }
