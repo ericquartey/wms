@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -29,6 +30,32 @@ namespace Ferretto.Common.BusinessProviders
         public Task<int> Add(Mission model)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<int> AddRange(IEnumerable<Mission> missions)
+        {
+            if (missions == null)
+            {
+                throw new ArgumentNullException(nameof(missions));
+            }
+
+            this.dataContext.AddRange(missions.Select(m => new DataModels.Mission
+            {
+                CompartmentId = m.CompartmentId,
+                // BayId = m.BayId,  // TODO: remove destination/source bay id
+                // CellId = m.CellId,        // TODO: remove destination/source cell id
+                ItemId = m.ItemId,
+                ItemListId = m.ItemListId,
+                ItemListRowId = m.ItemListRowId,
+                LoadingUnitId = m.LoadingUnitId,
+                MaterialStatusId = m.MaterialStatusId,
+                MissionTypeId = m.MissionTypeId,
+                PackageTypeId = m.PackageTypeId,
+                Sub1 = m.Sub1,
+                Sub2 = m.Sub2,
+            }));
+
+            return await this.dataContext.SaveChangesAsync();
         }
 
         public int Delete(int id)

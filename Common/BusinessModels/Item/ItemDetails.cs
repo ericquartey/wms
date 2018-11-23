@@ -26,7 +26,6 @@ namespace Ferretto.Common.BusinessModels
         private DateTime? lastStoreDate;
         private int? length;
         private ItemManagementType managementType;
-        private int? managementTypeId;
         private string measureUnitId;
         private string note;
         private int? pickTolerance;

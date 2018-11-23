@@ -267,18 +267,27 @@ namespace Ferretto.Common.BusinessProviders
                 .Select(c => new CompartmentCore
                 {
                     Id = c.Id,
+                    ItemId = c.ItemId.Value,
+                    LoadingUnitId = c.LoadingUnit.Id,
+                    CellId = c.LoadingUnit.Cell.Id,
+                    AreaId = c.LoadingUnit.Cell.Aisle.Area.Id,
                     Code = c.Code,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                     FifoTime = c.FifoTime,
                     FirstStoreDate = c.FirstStoreDate,
-                    ItemId = c.ItemId.Value,
-                    LoadingUnitId = c.LoadingUnitId,
                     Stock = c.Stock,
                     ReservedToStore = c.ReservedToStore,
                     ReservedForPick = c.ReservedForPick,
                     PackageTypeId = c.PackageTypeId,
                     Lot = c.Lot,
+                    Bays = c.LoadingUnit.Cell.Aisle.Area.Bays.Select(
+                        b => new Bay
+                        {
+                            Id = b.Id,
+                            LoadingUnitsBufferSize = b.LoadingUnitsBufferSize
+                        }
+                        ),
                     Availability = c.Stock - c.ReservedForPick + c.ReservedToStore
                 });
         }

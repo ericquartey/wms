@@ -40,6 +40,8 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<Bay> Bays { get; set; }
 
+        public int CellId { get; set; }
+
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
