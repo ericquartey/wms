@@ -233,9 +233,8 @@ namespace Ferretto.Common.BLL.Tests
         [TestMethod]
         [TestProperty("Description",
             @"GIVEN a compartment associated to an item \
-                AND no other requests are present \
-               WHEN a new request for no particular Sub1 is made \
-               THEN the new request should be accepted")]
+               WHEN a new request for that item is made, without specific selection parameters (eg. Sub1, Lot, etc.) \
+               THEN the new request should be accepted and all the request parameters should be populated")]
         public async Task FullRequestQualificationTest()
         {
             #region Arrange
