@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
 using System.Windows;
+using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -14,7 +15,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private double heightTrayPixel;
-        private bool isCompartmentSelectable;
+        private bool isCompartmentSelectable = true;
         private ObservableCollection<WmsBaseCompartment> items;
         private int left;
         private SolidColorBrush penBrush;
@@ -47,6 +48,8 @@ namespace Ferretto.Common.Controls
                 this.NotifyPropertyChanged(nameof(this.IsCompartmentSelectable));
             }
         }
+
+        public bool IsReadOnly { get; set; }
 
         public ObservableCollection<WmsBaseCompartment> Items
         {
@@ -88,8 +91,6 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public bool IsReadOnly { get; set; }
-
         public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
         {
             get => this.selectedColorFilterFunc;
@@ -107,6 +108,7 @@ namespace Ferretto.Common.Controls
             {
                 this.selectedCompartment = value;
                 this.UpdateColorCompartments();
+                this.UpdateCompartment();
             }
         }
 
@@ -135,10 +137,12 @@ namespace Ferretto.Common.Controls
                 if (this.tray != null)
                 {
                     this.tray.Compartments.ListChanged -= this.Compartments_ListChanged;
+                    this.tray.CompartmentChangedEvent -= this.Tray_CompartmentChangedEvent;
                 }
 
                 this.tray = value;
                 this.tray.Compartments.ListChanged += this.Compartments_ListChanged;
+                this.tray.CompartmentChangedEvent += this.Tray_CompartmentChangedEvent;
 
                 if (this.tray.Origin == null)
                 {
@@ -167,6 +171,20 @@ namespace Ferretto.Common.Controls
             foreach (var compartment in this.items)
             {
                 this.ResizeCompartment(widthTrayPixel, heightTrayPixel, compartment);
+            }
+        }
+
+        public void UpdateCompartment()
+        {
+            if (this.Tray == null || this.SelectedCompartment == null)
+            {
+                return;
+            }
+
+            var current = this.items.FirstOrDefault(i => i.CompartmentDetails.Id == this.SelectedCompartment.Id);
+            if (current != null)
+            {
+                this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, current);
             }
         }
 
@@ -204,19 +222,6 @@ namespace Ferretto.Common.Controls
             this.NotifyPropertyChanged(nameof(this.CompartmentDetailsProperty));
         }
 
-        public void UpdateIsSelectablePropertyToCompartments(bool value)
-        {
-            if (this.items == null)
-            {
-                return;
-            }
-
-            foreach (var item in this.Items)
-            {
-                item.IsSelectable = value;
-            }
-        }
-
         public void UpdateIsReadOnlyPropertyToCompartments(bool value)
         {
             if (this.items == null)
@@ -227,6 +232,19 @@ namespace Ferretto.Common.Controls
             foreach (var item in this.Items)
             {
                 item.IsReadOnly = value;
+            }
+        }
+
+        public void UpdateIsSelectablePropertyToCompartments(bool value)
+        {
+            if (this.items == null)
+            {
+                return;
+            }
+
+            foreach (var item in this.Items)
+            {
+                item.IsSelectable = value;
             }
         }
 
@@ -247,7 +265,7 @@ namespace Ferretto.Common.Controls
                     Height = compartment.Height ?? 0,
                     Left = compartment.XPosition ?? 0,
                     Top = compartment.YPosition ?? 0,
-                    ColorFill = Colors.Aquamarine.ToString(),
+                    ColorFill = this.SelectedColorFilterFunc?.Invoke(compartment, this.SelectedCompartment) ?? Application.Current.Resources["DefaultCompartmentColor"].ToString(),
                     IsReadOnly = this.IsReadOnly,
                     IsSelectable = this.IsCompartmentSelectable
                 };
@@ -307,8 +325,8 @@ namespace Ferretto.Common.Controls
 
             var compartmentEnd = new Position
             {
-                X = convertedCompartmentOrigin.X + (int) compartment.CompartmentDetails.Width,
-                Y = convertedCompartmentOrigin.Y + (int) compartment.CompartmentDetails.Height,
+                X = convertedCompartmentOrigin.X + (int)compartment.CompartmentDetails.Width,
+                Y = convertedCompartmentOrigin.Y + (int)compartment.CompartmentDetails.Height,
             };
 
             compartment.Top = GraphicUtils.ConvertMillimetersToPixel(
@@ -332,6 +350,11 @@ namespace Ferretto.Common.Controls
             compartment.Width = right - compartment.Left;
         }
 
+        private void Tray_CompartmentChangedEvent(Object sender, Tray.CompartmentEventArgs e)
+        {
+            this.SelectedCompartment = e.Compartment;
+        }
+
         private void UpdateColorCompartments()
         {
             if (this.items == null || this.selectedColorFilterFunc == null)
@@ -341,7 +364,7 @@ namespace Ferretto.Common.Controls
 
             foreach (var item in this.Items)
             {
-                item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment);
+                item.ColorFill = this.selectedColorFilterFunc.Invoke(item.CompartmentDetails, this.SelectedCompartment) ?? Application.Current.Resources["DefaultCompartmentColor"].ToString();
             }
         }
 
