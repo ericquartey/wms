@@ -139,7 +139,7 @@ namespace Ferretto.Common.BusinessProviders
                     FirstStoreDate = g.c.FirstStoreDate
                 }
                 )
-                .Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
+                .Where(x => x.ActualAvailability >= request.RequestedQuantity);
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
@@ -169,7 +169,7 @@ namespace Ferretto.Common.BusinessProviders
             if (orderedCompartmentSets != null)
             {
                 return await orderedCompartmentSets.Select(
-                    c => new SchedulerRequest(schedulerRequest)
+                    c => new SchedulerRequest(request)
                     {
                         Lot = c.Lot,
                         MaterialStatusId = c.MaterialStatusId,
