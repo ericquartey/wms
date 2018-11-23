@@ -91,7 +91,7 @@ namespace Ferretto.WMS.Scheduler.Core
             }
         }
 
-        private void DispatchWithdrawalRequest(SchedulerRequest request)
+        private async void DispatchWithdrawalRequest(SchedulerRequest request)
         {
             if (!request.IsInstant)
             {
@@ -103,29 +103,45 @@ namespace Ferretto.WMS.Scheduler.Core
             var item = this.itemProvider.GetById(request.ItemId);
 
             var orderedCompartments =
-                this.schedulerRequestProvider.OrderCompartmentsByManagementType(
-                compartments,
-                (ItemManagementType)item.ManagementType);
+                this.schedulerRequestProvider.OrderCompartmentsByManagementType(compartments, item.ManagementType);
 
-            var neededCompartmentsCount = orderedCompartments.Aggregate(0,
-                (total, compartment) =>
-                    total >= request.RequestedQuantity ? total : total + compartment.Availability
-                    );
+            var neededCompartmentsCount = orderedCompartments.Aggregate(
+                new Tuple<int, int>(0, 0),
+                (Tuple<int, int> total, IOrderableCompartment compartment) =>
+                    total.Item1 >= request.RequestedQuantity
+                    ?
+                    total
+                    : new Tuple<int, int>(total.Item1 + compartment.Availability, total.Item2 + 1)
+            );
 
             this.logger.LogDebug($"A total of {neededCompartmentsCount} is needed to complete the request for item id={request.ItemId}");
 
             var missions = orderedCompartments
                 .Cast<CompartmentCore>()
-                .Take(neededCompartmentsCount)
+                .Take(neededCompartmentsCount.Item2)
                 .Select(c => new Mission
                 {
-                    // TODO add field LoadingUnitsBufferUsage
-                    BayId = c.Bays.OrderByDescending(b => b.LoadingUnitsBufferSize/*b.LoadingUnitsBufferUsage*/).First().Id, //TODO fill bays
+                    BayId = c.Bays.OrderByDescending(b => b.LoadingUnitsBufferSize).First().Id, // TODO do proper selection of bay based on actual buffer status
                     ItemId = c.ItemId,
-                    Quantity = c.Availability,
-                    TypeId = "PK" // TODO convert table to enum
+                    CellId = c.CellId,
+                    CompartmentId = c.Id,
+                    ItemListId = request.ListId,
+                    ItemListRowId = request.ListRowId,
+                    MaterialStatusId = c.MaterialStatusId,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
+                    Quantity = c.Availability, // TODO: take only as much items as needed to satisfy the request
+                    MissionTypeId = "PK" // TODO convert table to enum
                 }
                 );
+
+            //
+            // TODO: select and save only the missions that can be queued, given the current buffer status of the bays
+            //
+            // TODO: update the request when all the quantity that still was not satisfied, or delete it if it was fully satisfied
+            //
+
+            await this.missionProvider.AddRange(missions);
         }
 
         #endregion Methods
