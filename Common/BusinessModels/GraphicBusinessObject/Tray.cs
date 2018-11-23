@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,183 +8,6 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public enum DimensionType
-    {
-        Width,
-        Height
-    }
-
-    public enum PositionType
-    {
-        X,
-        Y
-    }
-
-    public class BulkCompartment : INotifyPropertyChanged
-    {
-        #region Fields
-
-        //private CompartmentDetails compartmentDetails;
-        private int column;
-
-        private int height;
-        private int id;
-        private int row;
-        private int width;
-        private int xPosition;
-        private int yPosition;
-
-        #endregion Fields
-
-        #region Events
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion Events
-
-        #region Properties
-
-        [Display(Name = nameof(BusinessObjects.BulkCompartmentColumn), ResourceType = typeof(BusinessObjects))]
-        public int Column
-        {
-            get => this.column;
-            set
-            {
-                this.column = value;
-                this.NotifyPropertyChanged(nameof(this.Column));
-            }
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
-        public int Height
-        {
-            get => this.height;
-            set
-            {
-                this.height = value;
-                this.NotifyPropertyChanged(nameof(this.Height));
-            }
-        }
-
-        //[Display(Name = nameof(BusinessObjects.com), ResourceType = typeof(BusinessObjects))]
-        public int Id
-        {
-            get => this.id;
-            set
-            {
-                this.id = value;
-                this.NotifyPropertyChanged(nameof(this.Id));
-            }
-        }
-
-        [Display(Name = nameof(BusinessObjects.BulkCompartmentRow), ResourceType = typeof(BusinessObjects))]
-        public int Row
-        {
-            get => this.row;
-            set
-            {
-                this.row = value;
-                this.NotifyPropertyChanged(nameof(this.Row));
-            }
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
-        public int Width
-        {
-            get => this.width;
-            set
-            {
-                this.width = value;
-                //this.SetIfStrictlyPositive(ref this.width, value);
-                this.NotifyPropertyChanged(nameof(this.Width));
-            }
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
-        public int XPosition
-        {
-            get => this.xPosition;
-            set
-            {
-                this.xPosition = value;
-
-                this.NotifyPropertyChanged(nameof(this.XPosition));
-            }
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
-        public int YPosition
-        {
-            get => this.yPosition;
-            set
-            {
-                this.yPosition = value;
-                this.NotifyPropertyChanged(nameof(this.YPosition));
-            }
-        }
-
-        #endregion Properties
-
-        #region Methods
-
-        //public CompartmentDetails CompartmentDetails
-        //{
-        //    get => this.compartmentDetails; set
-        //    {
-        //        this.compartmentDetails = value;
-        //        this.NotifyPropertyChanged(nameof(this.CompartmentDetails));
-        //    }
-        //}
-        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
-        {
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion Methods
-    }
-
-    public class Dimension
-    {
-        #region Properties
-
-        public int Height { get; set; }
-        public int Width { get; set; }
-
-        #endregion Properties
-    }
-
-    public class DoublePosition
-    {
-        #region Properties
-
-        public double X { get; set; }
-        public double Y { get; set; }
-
-        #endregion Properties
-    }
-
-    public class Line
-    {
-        #region Properties
-
-        public double XEnd { get; set; }
-        public double XStart { get; set; }
-        public double YEnd { get; set; }
-        public double YStart { get; set; }
-
-        #endregion Properties
-    }
-
-    public class Position
-    {
-        #region Properties
-
-        public int X { get; set; }
-        public int Y { get; set; }
-
-        #endregion Properties
-    }
-
     public class Tray
     {
         #region Fields
@@ -330,16 +153,8 @@ namespace Ferretto.Common.BusinessModels
                 {
                     if (bulkCompartment != null && bulkCompartment.Row > 1 && bulkCompartment.Column > 1)
                     {
-                        //CompartmentDetails compartmentBulk = compartment.CompartmentDetails;
-                        //CompartmentDetails details = compartment.CompartmentDetails;
                         bulkCompartment.Width = bulkCompartment.Width * bulkCompartment.Row;
                         bulkCompartment.Height = bulkCompartment.Height * bulkCompartment.Column;
-                        //return this.CanAddCompartment(compartmentBulk);
-                    }
-                    else
-                    {
-                        //throw new ArgumentException();
-                        //return false;
                     }
                 }
             }
@@ -363,9 +178,6 @@ namespace Ferretto.Common.BusinessModels
 
         private string CanCreateNewCompartment(BulkCompartment bulkCompartment, Tray tray, bool isBulkAdd, bool edit = false)
         {
-            //var details = bulkCompartment.CompartmentDetails;
-            //if (details.XPosition != null)
-            //{
             var errors = "";
             foreach (var compartment in this.compartments)
             {
@@ -379,14 +191,8 @@ namespace Ferretto.Common.BusinessModels
                 {
                     return errors;
                 }
-                //if (areCollisions)
-                //{
-                //    return false;
-                //}
             }
             return errors;
-            //}
-            //return true;
         }
 
         private CompartmentDetails ConvertBulkCompartmentToCompartmentDetails(BulkCompartment bulk)
@@ -472,66 +278,42 @@ namespace Ferretto.Common.BusinessModels
             }
             if (compartmentA.Width <= 0)
             {
-                error = "La larghezza del nuovo Scomparto non può essere minore o uguale a 0.";
+                error = Errors.CompartmentWidthLess;
                 return error;
             }
             if (compartmentA.Height <= 0)
             {
-                error = "L'altezza del nuovo Scomparto non può essere minore o uguale a 0.";
+                error = Errors.CompartmentHeightLess;
                 return error;
             }
             if (compartmentA.XPosition < 0 || compartmentA.XPosition > tray.Dimension.Width)
             {
-                error = "XPosition non può essere maggiore della larghezza del cassetto.";
+                error = Errors.CompartmentXPosition;
                 return error;
             }
-            //}
-            //if (compartmentA.YPosition != null)
-            //{
             if (compartmentA.YPosition < 0 || compartmentA.YPosition > tray.Dimension.Height)
             {
-                error = "XPosition non può essere maggiore dell'altezza del cassetto.";
+                error = Errors.CompartmentYPosition;
                 return error;
             }
-            //}
-            //if (compartmentA.XPosition != null && compartmentA.YPosition != null)
-            //{
-            //if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.YPosition >= compartmentB.YPosition
-            //    )
-            //{
-            //    error = "XPosition e YPosition è in sovrapposizione con un altro Scomparto.";
-            //    return error;
-            //}
-            //}
-            //if (compartmentA.Width != null)
-            //{
             if (compartmentA.Width < 0 || compartmentA.Width > tray.Dimension.Width)
             {
-                error = "Width non può essere maggiore della larghezza del cassetto.";
+                error = Errors.CompartmentWidthMore;
                 return error;
             }
-            //}
-            //if (compartmentA.Height != null)
-            //{
             if (compartmentA.Height < 0 || compartmentA.Height > tray.Dimension.Height)
             {
-                error = "Height non può essere maggiore dell'altezza del cassetto.";
+                error = Errors.CompartmentHeightMore;
                 return error;
             }
-            //}
-            //if (compartmentA.XPosition != null && compartmentA.Width != null)
-            //{
             if (compartmentA.XPosition + compartmentA.Width > tray.Dimension.Width)
             {
-                error = "La dimensione del nuovo Scomparto non può essere maggiore della larghezza del cassetto.";
+                error = Errors.CompartmentSizeWMore;
                 return error;
             }
-            //}
-            //if (compartmentA.YPosition != null && compartmentA.Height != null)
-            //{
             if (compartmentA.YPosition + compartmentA.Height > tray.Dimension.Width)
             {
-                error = "La dimensione del nuovo Scomparto non può essere maggiore dell'altezza del cassetto.";
+                error = Errors.CompartmentSizeHMore;
                 return error;
             }
 
@@ -539,18 +321,18 @@ namespace Ferretto.Common.BusinessModels
             bool areCollision = this.HasCollision(compartmentDetailsA, compartmentB);
             if (areCollision)
             {
-                error = "Le dimensioni sono in sovrapposizione con un altro scomparto.";
+                error = Errors.CompartmentOverlaps;
                 return error;
             }
 
             if (compartmentA.Row == 0 && isBulkAdd)
             {
-                error = "Il numero di righe del nuovo Bulk Compartment non può essere minore o uguale a 0.";
+                error = Errors.BulkCompartmentRow;
                 return error;
             }
             if (compartmentA.Column == 0 && isBulkAdd)
             {
-                error = "Il numero di colonne del nuovo Bulk Compartment non può essere minore o uguale a 0.";
+                error = Errors.BulkCompartmentColumn;
                 return error;
             }
 

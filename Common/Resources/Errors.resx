@@ -123,8 +123,42 @@
   <data name="BulkAddNoPossible" xml:space="preserve">
     <value>Error: it is no possible to Add Bulk Compartments.</value>
   </data>
+  <data name="BulkCompartmentColumn" xml:space="preserve">
+    <value>Column's number of new Compartment cannot be equal or less than 0.</value>
+  </data>
+  <data name="BulkCompartmentRow" xml:space="preserve">
+    <value>Row's number of new Compartment cannot be equal or less than 0.</value>
+  </data>
   <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
     <value>Error retrieving document group from the Main Layout Manager.</value>
+  </data>
+  <data name="CompartmentHeightLess" xml:space="preserve">
+    <value>Compartment's Height cannot be equal or less than 0.</value>
+  </data>
+  <data name="CompartmentHeightMore" xml:space="preserve">
+    <value>Compartment's height cannot be more than Tray's height</value>
+  </data>
+  <data name="CompartmentOverlaps" xml:space="preserve">
+    <value>New Compartment's size are overlaps with another compartment.</value>
+    <comment>Err</comment>
+  </data>
+  <data name="CompartmentSizeHMore" xml:space="preserve">
+    <value>Compartment's size cannote be more than Tray's height.</value>
+  </data>
+  <data name="CompartmentSizeWMore" xml:space="preserve">
+    <value>Compartment's size cannote be more than Tray's width,</value>
+  </data>
+  <data name="CompartmentWidthLess" xml:space="preserve">
+    <value>Compartment's Width cannot be equal or less than 0.</value>
+  </data>
+  <data name="CompartmentWidthMore" xml:space="preserve">
+    <value>Compartment's width cannot be more than Tray's width.</value>
+  </data>
+  <data name="CompartmentXPosition" xml:space="preserve">
+    <value>XPosition cannot be more than Tray's width.</value>
+  </data>
+  <data name="CompartmentYPosition" xml:space="preserve">
+    <value>YPosition cannot be more than Tray's height</value>
   </data>
   <data name="ConverterCanConvertOnlyToNavigationStyleType" xml:space="preserve">
     <value>Converter can only convert to value of type GridViewNavigationStyle.</value>
@@ -137,6 +171,9 @@
   </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Converter can only convert to value of type Visibility.</value>
+  </data>
+  <data name="EditNoPossible" xml:space="preserve">
+    <value>Error: it is no possible to Edit this Compartment.</value>
   </data>
   <data name="ItemTypeWasNotSpecified" xml:space="preserve">
     <value>ItemType was not specified.</value>
