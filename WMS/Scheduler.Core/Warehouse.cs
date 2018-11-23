@@ -121,7 +121,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 .Take(neededCompartmentsCount.Item2)
                 .Select(c => new Mission
                 {
-                    BayId = c.Bays.OrderByDescending(b => b.LoadingUnitsBufferSize).First().Id, // TODO do proper selection of bay based on actual buffer status
+                    BayId = c.Bays.OrderByDescending(b => b.LoadingUnitsBufferSize).First().Id, // TODO: TASK-786 do proper selection of bay based on actual buffer status
                     ItemId = c.ItemId,
                     CellId = c.CellId,
                     CompartmentId = c.Id,
@@ -130,15 +130,15 @@ namespace Ferretto.WMS.Scheduler.Core
                     MaterialStatusId = c.MaterialStatusId,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
-                    Quantity = c.Availability, // TODO: take only as much items as needed to satisfy the request
-                    MissionTypeId = "PK" // TODO convert table to enum
+                    Quantity = c.Availability, // TODO: TASK-787 take only as much items as needed to satisfy the request
+                    MissionTypeId = "PK" // TODO: TASK-785 convert table to enum
                 }
-                );
+            );
 
             //
-            // TODO: select and save only the missions that can be queued, given the current buffer status of the bays
+            // TODO: TASK-788 select and save only the missions that can be queued, given the current buffer status of the bays
             //
-            // TODO: update the request when all the quantity that still was not satisfied, or delete it if it was fully satisfied
+            // TODO: TASK-789 update the request when all the quantity that still was not satisfied, or delete it if it was fully satisfied
             //
 
             await this.missionProvider.AddRange(missions);
