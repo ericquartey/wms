@@ -93,6 +93,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\CustomControlComboBoxThreeItems.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CustomControlHighlightableBullet.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -125,7 +129,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Skins\DarkSkinColors.xaml">
+    <Page Include="Skins\DarkSkinDisabled.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\DarkSkinGeneral.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,15 +141,59 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Skins\DarkSkinNormal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\DarkSkinPressed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Skins\LightSkin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Skins\LightSkinColors.xaml">
+    <Page Include="Skins\LightSkinDisabled.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\LightSkinGeneral.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skins\LightSkinImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\LightSkinNormal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\LightSkinPressed.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\MediumSkin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\MediumSkinDisabled.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\MediumSkinGeneral.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\MediumSkinImages.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\MediumSkinNormal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\MediumSkinPressed.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,6 +294,9 @@
     <Compile Include="Controls\CustomControlComboBox.xaml.cs">
       <DependentUpon>CustomControlComboBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomControlComboBoxThreeItems.xaml.cs">
+      <DependentUpon>CustomControlComboBoxThreeItems.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomControlHighlightableBullet.xaml.cs">
       <DependentUpon>CustomControlHighlightableBullet.xaml</DependentUpon>
     </Compile>
@@ -288,6 +343,9 @@
     <Resource Include="Assets\White_arrow_down.svg.png" />
     <Resource Include="Assets\brush_dark.png" />
     <Resource Include="Assets\brush_light.png" />
+    <Resource Include="Assets\ferretto_logo_light.png" />
+    <Resource Include="Assets\ferretto_logo_dark.png" />
+    <Resource Include="Assets\background_machine.png" />
     <Content Include="Fonts\HelveticaNeue-LightCond.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -299,18 +357,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\ferrettologo_768x162.jpg" />
-    <Resource Include="Assets\ferrettologo_768x162.png" />
-    <Resource Include="Assets\FGLogo.png" />
-    <Content Include="Assets\VertimagFronte.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Resource Include="Assets\VertimagTreQuartiDX.png" />
-    <Content Include="Assets\VertimagTreQuartiStretta.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">

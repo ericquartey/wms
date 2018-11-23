@@ -10,7 +10,6 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
@@ -22,10 +21,10 @@
             <RowDefinition Height="150" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Image Grid.Row="0"
-               Grid.Column="0"
-               Margin="50,0,0,0"
-               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/ferrettologo_768x162.jpg" />
+        <ContentPresenter Grid.Row="0"
+                          Grid.Column="0"
+                          Margin="50,0,0,0"
+                          Content="{DynamicResource Ferretto_Logo}" />
         <Button Grid.Row="1"
                 Grid.Column="1"
                 Background="Transparent"
@@ -34,7 +33,7 @@
             <Image Grid.Row="1"
                    Grid.Column="1"
                    Margin="0,0,0,50"
-                   Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/VertimagTreQuartiDX.png" />
+                   Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
         </Button>
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
