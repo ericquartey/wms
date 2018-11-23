@@ -14,6 +14,8 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<SchedulerRequest> GetNextRequest();
 
+        IQueryable<IOrderableCompartment> OrderCompartmentsByManagementType(IQueryable<IOrderableCompartment> compartments, ItemManagementType type);
+
         #endregion Methods
     }
 }

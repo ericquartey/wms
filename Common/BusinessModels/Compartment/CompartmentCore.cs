@@ -5,7 +5,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class CompartmentCore : BusinessObject
+    public class CompartmentCore : BusinessObject, IOrderableCompartment
     {
         #region Fields
 

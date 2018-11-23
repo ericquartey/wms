@@ -93,55 +93,39 @@ namespace Ferretto.WMS.Scheduler.Core
 
         private void DispatchWithdrawalRequest(SchedulerRequest request)
         {
+            if (!request.IsInstant)
+            {
+                throw new NotImplementedException(); //TODO extend this method to support normal (non-instant) withdrawal requests
+            }
+
             var compartments = this.schedulerRequestProvider.GetCandidateWithdrawalCompartments(request);
 
-            IOrderedQueryable<CompartmentCore> orderedCompartments;
-            if (request.IsInstant)
-            {
-                var item = this.itemProvider.GetById(request.ItemId);
+            var item = this.itemProvider.GetById(request.ItemId);
 
-                switch ((ItemManagementType)item.ManagementType)
-                {
-                    case ItemManagementType.FIFO:
-                        orderedCompartments = compartments
-                            .OrderBy(c => c.FirstStoreDate)
-                            .ThenBy(c => c.Availability);
-                        break;
+            var orderedCompartments =
+                this.schedulerRequestProvider.OrderCompartmentsByManagementType(
+                compartments,
+                (ItemManagementType)item.ManagementType);
 
-                    case ItemManagementType.Volume:
-                        orderedCompartments = compartments
-                            .OrderBy(c => c.Availability)
-                            .ThenBy(c => c.FirstStoreDate);
-                        break;
-
-                    default:
-                        orderedCompartments = null;
-                        break;
-                }
-
-                var neededCompartmentsCount = compartments.Aggregate(0,
-                    (total, compartment) =>
-                        total >= request.RequestedQuantity ? total : total + compartment.Availability
-                        );
-
-                this.logger.LogDebug($"A total of {neededCompartmentsCount} is needed to complete the request for item id={request.ItemId}");
-
-                var missions = compartments
-                    .Take(neededCompartmentsCount)
-                    .Select(c => new Mission
-                    {
-                        // TODO add field LoadingUnitsBufferUsage
-                        BayId = c.Bays.OrderByDescending(b => b.LoadingUnitsBufferSize/*b.LoadingUnitsBufferUsage*/).First().Id, //TODO fill bays
-                        ItemId = c.ItemId,
-                        Quantity = c.Availability,
-                        TypeId = "PK" // TODO convert table to enum
-                    }
+            var neededCompartmentsCount = orderedCompartments.Aggregate(0,
+                (total, compartment) =>
+                    total >= request.RequestedQuantity ? total : total + compartment.Availability
                     );
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
+
+            this.logger.LogDebug($"A total of {neededCompartmentsCount} is needed to complete the request for item id={request.ItemId}");
+
+            var missions = orderedCompartments
+                .Cast<CompartmentCore>()
+                .Take(neededCompartmentsCount)
+                .Select(c => new Mission
+                {
+                    // TODO add field LoadingUnitsBufferUsage
+                    BayId = c.Bays.OrderByDescending(b => b.LoadingUnitsBufferSize/*b.LoadingUnitsBufferUsage*/).First().Id, //TODO fill bays
+                    ItemId = c.ItemId,
+                    Quantity = c.Availability,
+                    TypeId = "PK" // TODO convert table to enum
+                }
+                );
         }
 
         #endregion Methods

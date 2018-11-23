@@ -129,7 +129,7 @@ namespace Ferretto.Common.BusinessProviders
                 )
                 .Select(g => new CompartmentSet
                 {
-                    ActualAvailability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity),
+                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity),
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -139,50 +139,32 @@ namespace Ferretto.Common.BusinessProviders
                     FirstStoreDate = g.c.FirstStoreDate
                 }
                 )
-                .Where(x => x.ActualAvailability >= request.RequestedQuantity);
+                .Where(x => x.Availability >= request.RequestedQuantity);
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
                 .SingleAsync(i => i.Id == request.ItemId);
 
-            IOrderedQueryable<CompartmentSet> orderedCompartmentSets;
-
-            switch ((ItemManagementType)item.ManagementType)
+            var orderedCompartmentSets = this.OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
+            if (orderedCompartmentSets == null)
             {
-                case ItemManagementType.FIFO:
-                    orderedCompartmentSets = compartmentSets
-                        .OrderBy(c => c.FirstStoreDate)
-                        .ThenBy(c => c.ActualAvailability);
-                    break;
-
-                case ItemManagementType.Volume:
-                    orderedCompartmentSets = compartmentSets
-                        .OrderBy(c => c.ActualAvailability)
-                        .ThenBy(c => c.FirstStoreDate);
-                    break;
-
-                default:
-                    orderedCompartmentSets = null;
-                    break;
+                return null;
             }
 
-            if (orderedCompartmentSets != null)
-            {
-                return await orderedCompartmentSets.Select(
-                    c => new SchedulerRequest(request)
-                    {
-                        Lot = c.Lot,
-                        MaterialStatusId = c.MaterialStatusId,
-                        PackageTypeId = c.PackageTypeId,
-                        RegistrationNumber = c.RegistrationNumber,
-                        Sub1 = c.Sub1,
-                        Sub2 = c.Sub2
-                    }
-                )
-                .FirstOrDefaultAsync();
-            }
-
-            return null;
+            return await orderedCompartmentSets
+                   .Cast<CompartmentSet>()
+                   .Select(
+                   c => new SchedulerRequest(request)
+                   {
+                       Lot = c.Lot,
+                       MaterialStatusId = c.MaterialStatusId,
+                       PackageTypeId = c.PackageTypeId,
+                       RegistrationNumber = c.RegistrationNumber,
+                       Sub1 = c.Sub1,
+                       Sub2 = c.Sub2
+                   }
+               )
+               .FirstOrDefaultAsync();
         }
 
         public IQueryable<SchedulerRequest> GetAll()
@@ -329,6 +311,25 @@ namespace Ferretto.Common.BusinessProviders
                 .FirstOrDefaultAsync();
         }
 
+        public IQueryable<IOrderableCompartment> OrderCompartmentsByManagementType(IQueryable<IOrderableCompartment> compartments, ItemManagementType type)
+        {
+            switch (type)
+            {
+                case ItemManagementType.FIFO:
+                    return compartments
+                        .OrderBy(c => c.FirstStoreDate)
+                        .ThenBy(c => c.Availability);
+
+                case ItemManagementType.Volume:
+                    return compartments
+                        .OrderBy(c => c.Availability)
+                        .ThenBy(c => c.FirstStoreDate);
+
+                default:
+                    return null;
+            }
+        }
+
         public int Save(SchedulerRequest model)
         {
             if (model == null)
@@ -350,20 +351,20 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Classes
 
-        private class CompartmentSet
+        private class CompartmentSet : IOrderableCompartment
         {
-            #region Fields
+            #region Properties
 
-            public int ActualAvailability;
-            public DateTime? FirstStoreDate;
-            public string Lot;
-            public int? MaterialStatusId;
-            public int? PackageTypeId;
-            public string RegistrationNumber;
-            public string Sub1;
-            public string Sub2;
+            public int Availability { get; set; }
+            public DateTime? FirstStoreDate { get; set; }
+            public string Lot { get; set; }
+            public int? MaterialStatusId { get; set; }
+            public int? PackageTypeId { get; set; }
+            public string RegistrationNumber { get; set; }
+            public string Sub1 { get; set; }
+            public string Sub2 { get; set; }
 
-            #endregion Fields
+            #endregion Properties
         };
 
         #endregion Classes
