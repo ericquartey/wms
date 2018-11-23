@@ -54,8 +54,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public bool EnableInputBulkAdd
         {
-            get { return this.enableInputBulkAdd; }
-            set { this.SetProperty(ref this.enableInputBulkAdd, value); }
+            get => this.enableInputBulkAdd;
+            set => this.SetProperty(ref this.enableInputBulkAdd, value);
         }
 
         public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
@@ -122,24 +122,9 @@ namespace Ferretto.WMS.Modules.MasterData
             return (this.Error == null || this.Error.Trim() == "");
         }
 
-        private void EnableCreation()
-        {
-            this.SetError();
-        }
-
-        private void ExecuteBulkAddCommand()
-        {
-            this.EnableCreation();
-        }
-
         private void ExecuteCancelCommand()
         {
             this.ResetView();
-        }
-
-        private void ExecuteFinishCommand()
-        {
-            //TO PARENT UPDATE
         }
 
         private async Task ExecuteSaveCommand()
@@ -200,10 +185,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnSelectedBulkCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.CanExecuteBulkAddCommand())
-            {
-                this.ExecuteBulkAddCommand();
-            }
+            this.CanExecuteBulkAddCommand();
             ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
         }
 

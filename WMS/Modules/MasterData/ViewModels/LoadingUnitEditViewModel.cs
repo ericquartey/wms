@@ -17,13 +17,6 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public enum commandCompartment
-    {
-        Add = 1,
-        BulkAdd = 2,
-        Edit = 3
-    }
-
     public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
     {
         #region Fields
@@ -34,9 +27,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand bulkAddCommand;
         private IDataSource<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
-        private bool enableInputBulkAdd;
-        private string error;
-        private string errorColor;
         private Func<CompartmentDetails, CompartmentDetails, string> filterColorFunc;
         private InputAddCompartmentViewModel inputAddVM;
         private InputBulkAddCompartmentViewModel inputBulkAddVM;
@@ -49,7 +39,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private bool readOnlyTray;
-        private object selectedCompartment;
         private CompartmentDetails selectedCompartmentTray;
         private Tray tray;
 
@@ -78,35 +67,9 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public CompartmentDetails CurrentCompartment
-        {
-            get
-            {
-                if (this.selectedCompartment == null)
-                {
-                    return default(CompartmentDetails);
-                }
-                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
-                {
-                    return default(CompartmentDetails);
-                }
-                return (CompartmentDetails)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
-            }
-        }
-
         public ICommand EditCommand => this.editCommand ??
           (this.editCommand = new DelegateCommand(this.ExecuteEditCompartmentCommand, this.CanExecuteEditCommand)
             .ObservesProperty(() => this.SelectedCompartmentTray));
-
-        public bool EnableInputBulkAdd
-        {
-            get => this.enableInputBulkAdd;
-            set => this.SetProperty(ref this.enableInputBulkAdd, value);
-        }
-
-        public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
-
-        public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
         public Func<CompartmentDetails, CompartmentDetails, string> FilterColorFunc
         {
@@ -187,18 +150,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
-        public object SelectedCompartment
-        {
-            get => this.selectedCompartment;
-            set
-            {
-                this.SetProperty(ref this.selectedCompartment, value);
-                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
-
-                this.SetSelectedCompartment(this.CurrentCompartment);
-            }
-        }
-
         public CompartmentDetails SelectedCompartmentTray
         {
             get => this.selectedCompartmentTray;
@@ -237,30 +188,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null);
         }
 
-        private void EnableCreation()
-        {
-            this.SetSelectedCompartment(new CompartmentDetails());
-            this.SelectedCompartment = null;
-        }
-
         private void ExecuteAddCompartmentCommand()
         {
-            this.EnableCreation();
-            this.HideMainViewAndShowLateralPanel();
             this.SelectedCompartmentTray = null;
-
-            //NEW
+            this.HideMainViewAndShowLateralPanel();
             this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
             this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
         }
 
         private void ExecuteBulkAddCommand()
         {
-            this.EnableCreation();
-            this.HideMainViewAndShowLateralPanel();
-            this.EnableInputBulkAdd = true;
             this.SelectedCompartmentTray = null;
-            //NEW
+            this.HideMainViewAndShowLateralPanel();
             this.InputBulkAddVM.Initialize(this.tray);
             this.InputBulkAddVM.FinishEvent += this.InputBulkAddVM_FinishEvent;
         }
@@ -268,7 +207,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCompartmentCommand()
         {
             this.HideMainViewAndShowLateralPanel();
-            //NEW
             this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray);
             this.InputEditVM.FinishEvent += this.InputEditVM_FinishEvent;
         }
@@ -317,7 +255,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void InputBulkAddVM_FinishEvent(Object sender, EventArgs e)
         {
             this.ResetInputView();
-            //TODO: select new comp
             this.InputBulkAddVM.FinishEvent -= this.InputBulkAddVM_FinishEvent;
         }
 
@@ -336,22 +273,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void OnSelectedCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            ((DelegateCommand)this.AddCommand)?.RaiseCanExecuteChanged();
-        }
-
         private void ResetInputView()
         {
             this.ShowMainViewAndHideLateralPanel();
-        }
-
-        private void SetSelectedCompartment(object value)
-        {
-            if (value is CompartmentDetails compartmentDetails)
-            {
-                this.SelectedCompartmentTray = compartmentDetails;
-            }
         }
 
         private void ShowMainViewAndHideLateralPanel()

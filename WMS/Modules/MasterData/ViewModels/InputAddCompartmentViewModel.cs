@@ -71,10 +71,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public CompartmentDetails SelectedCompartmentTray
         {
-            get
-            {
-                return this.selectedCompartmentTray;
-            }
+            get => this.selectedCompartmentTray;
             set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
 
@@ -116,7 +113,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.SetError(error);
                 return error != null && error.Trim() != "";
             }
-
             return true;
         }
 
@@ -129,24 +125,9 @@ namespace Ferretto.WMS.Modules.MasterData
             return (this.Error == null || this.Error.Trim() == "");
         }
 
-        private void EnableCreation()
-        {
-            this.SetError();
-        }
-
-        private void ExecuteAddCommand()
-        {
-            this.EnableCreation();
-        }
-
         private void ExecuteCancelCommand()
         {
             this.ResetView();
-        }
-
-        private void ExecuteFinishCommand()
-        {
-            //TO PARENT UPDATE
         }
 
         private async Task ExecuteSaveCommand()
@@ -174,10 +155,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnSelectedCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.CanExecuteAddCommand())
-            {
-                this.ExecuteAddCommand();
-            }
+            this.CanExecuteAddCommand();
             ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
         }
 
@@ -197,7 +175,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task<bool> SaveLoadingUnit()
         {
-            bool ok = false;
             if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
             {
                 this.SelectedCompartmentTray.LoadingUnitId = this.loadingUnitId;
@@ -207,16 +184,15 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (add == 1)
                 {
                     this.tray.AddCompartment(this.SelectedCompartmentTray);
-                    //this.SelectedCompartment = this.SelectedCompartmentTray;
                 }
-                ok = true;
+                return true;
             }
             else
             {
                 this.SetError(Errors.AddNoPossible);
             }
 
-            return ok;
+            return false;
         }
 
         private void SetError(string message = null)

@@ -59,8 +59,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public bool EnableInputEdit
         {
-            get { return this.enableInputEdit; }
-            set { this.SetProperty(ref this.enableInputEdit, value); }
+            get => this.enableInputEdit;
+            set => this.SetProperty(ref this.enableInputEdit, value);
         }
 
         public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
@@ -109,22 +109,16 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             string error = this.tray.CanBulkAddCompartment(this.SelectedCompartmentTray, this.tray, true, true);
             this.SetError(error);
-            bool goAhead = false;
             if (error == null || error == "")
             {
-                goAhead = true;
+                return true;
             }
-            return goAhead;
+            return false;
         }
 
         private bool CanExecuteSaveCommand()
         {
             return this.Error == null || this.Error.Trim() == "";
-        }
-
-        private void EnableCreation()
-        {
-            this.SetError();
         }
 
         private void ExecuteCancelCommand()
@@ -140,16 +134,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ResetView();
         }
 
-        private void ExecuteEditCommand()
-        {
-            this.EnableCreation();
-        }
-
-        private void ExecuteFinishCommand()
-        {
-            //TO PARENT UPDATE
-        }
-
         private void ExecuteSaveCommand()
         {
             this.SetError();
@@ -161,11 +145,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnSelectedCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.CanExecuteEditCommand())
-            {
-                this.ExecuteEditCommand();
-            }
-            this.CanExecuteSaveCommand();
+            this.CanExecuteEditCommand();
+            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
         }
 
         private void Reset()
@@ -183,7 +164,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool SaveLoadingUnit()
         {
-            bool ok = false;
             if (this.tray.CanAddCompartment(this.SelectedCompartmentTray, true))
             {
                 var modifiedRowCount = this.loadingUnitProvider.Save(this.loadingUnit);
@@ -196,16 +176,17 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    this.SetError("Errors");
+                    this.SetError(Errors.EditNoPossible);
+                    return false;
                 }
             }
             else
             {
                 this.SetError(Errors.AddNoPossible);
+                return false;
             }
-            ok = true;
             this.tray.Update(this.SelectedCompartmentTray);
-            return ok;
+            return true;
         }
 
         private void SetError(string message = null)
