@@ -79,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     dataContext.Database.ExecuteSqlCommand(File.ReadAllText(@"bin\Debug\net471\Seeds\Dev.Items.sql"));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SplashScreenService.SetMessage(Common.Resources.Errors.UnableToConnectToDatabase);
             }
