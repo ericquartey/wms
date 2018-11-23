@@ -54,14 +54,8 @@
                                 ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"                                
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
-                    <dxg:TableView AllowEditing="False"
-                                   AllowGrouping="False"
-                                   AllowMoveColumnToDropArea="False"
-                                   NavigationStyle="Row"
-                                   SearchPanelHorizontalAlignment="Right"
+                    <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                    ShowFilterPanelMode="ShowAlways"
-                                   ShowGroupPanel="False"
-                                   ShowIndicator="False"
                                    ShowSearchPanelMode="Always">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">

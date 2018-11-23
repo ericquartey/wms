@@ -252,13 +252,7 @@
                                             ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AllowedItemsDataSource, Mode=OneWay}"
                                             Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
-                                <dxg:TableView AllowEditing="False"
-                                               AllowGrouping="False"
-                                               AllowMoveColumnToDropArea="False"
-                                               NavigationStyle="Row"
-                                               ShowGroupPanel="False"
-                                               ShowIndicator="False"
-                                               ShowSearchPanelMode="Never">
+                                <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentAllowedItemInCompartment.Id, Mode=OneWay}"
