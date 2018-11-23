@@ -1,29 +1,13 @@
 ﻿namespace Ferretto.VW.InverterDriver
 {
-    /*
-    /// <summary>
-    /// Interface ICommandBase.
-    /// </summary>
-    public interface ICommandBase
-    {
-        /// <summary>
-        /// Gets the Command Id.
-        CommandId CmdId { get; }
-    }
-    */
-
+   
     /// <summary>
     /// Interface IDriver.
     /// </summary>
     public interface IDriver
     {
         #region Properties
-
-        /// <summary>
-        /// <c>True</c> if last request has been executed.
-        /// </summary>
-        bool GetLastRequestDone { get; }
-
+        
         /// <summary>
         /// Get main status.
         /// </summary>
@@ -50,24 +34,6 @@
         #region Methods
 
         /// <summary>
-        /// Get value of given parameter.
-        /// </summary>
-        InverterDriverExitStatus EnquiryTelegram(ParameterID paramID, out object value);
-
-        /// <summary>
-        /// Get the drawer weight
-        /// </summary>
-        /// <param name="ic"></param>
-        /// <returns></returns>
-        InverterDriverExitStatus GetDrawerWeight(float ic);
-
-        /// <summary>
-        /// Get IO emergency sensors state.
-        /// </summary>
-        /// <returns></returns>
-        InverterDriverExitStatus GetIOEmergencyState();
-
-        /// <summary>
         /// Get IO sensor state.
         /// </summary>
         /// <returns></returns>
@@ -78,11 +44,6 @@
         /// </summary>
         /// <returns></returns>
         bool Initialize();
-
-        /// <summary>
-        /// Get value of given parameter. It is a echo for SettingRequest.
-        /// </summary>
-        InverterDriverExitStatus SelectTelegram(ParameterID paramID, out object value);
 
         /// <summary>
         /// Send a request to inverter to read parameter value.

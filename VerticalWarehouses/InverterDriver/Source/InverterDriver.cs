@@ -21,25 +21,18 @@ namespace Ferretto.VW.InverterDriver
         #region Fields
 
         public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
-        public const int LONG_TIME_OUT = 250;
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
-
-        public const int SHORT_TIME_OUT = 50;
-        public const int TIME_OUT = 150;
 
         private static readonly object lockObj = new object();
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly InverterDriverState state;
-        private AutoResetEvent ackTerminateEvent;
         private Request currentRequest;
 
         private bool errorReceivedTelegram; // flag to identify if received telegram is correct
         private bool executeRequestOnRunning;
 
         private HardwareInverterStatus hwInverterState;
-
-        private Thread mainAutomationThread;
-
+        
         private AutoResetEvent makeRequestEvent;
 
         private long perfFrequency;
@@ -50,8 +43,9 @@ namespace Ferretto.VW.InverterDriver
         private Socket sckClient;
 
         private Int16 statusWordValue;  // it represents a shared memory where status information lived
-        private AutoResetEvent terminateEvent;
-        private int timeOut;
+        private AutoResetEvent eventToSendPacket;
+        private RegisteredWaitHandle regWaitForMainThread;
+        private long TimeSendingPacket;
 
         #endregion Fields
 
@@ -80,8 +74,6 @@ namespace Ferretto.VW.InverterDriver
         public event EnquiryTelegramDoneEventHandler EnquiryTelegramDone;
 
         public event ErrorEventHandler Error;
-
-        public event LastRequestDoneEventHandler LastRequestDone;
 
         public event SelectTelegramDoneEventHandler SelectTelegramDone;
 
@@ -222,6 +214,11 @@ namespace Ferretto.VW.InverterDriver
             this.executeRequestOnRunning = false;
 
             var bResult = this.connect_to_inverter();
+            if(bResult == true)
+            {
+                //Start the main thread
+                this.eventToSendPacket?.Set();
+            }
             return bResult;
         }
 
@@ -281,6 +278,8 @@ namespace Ferretto.VW.InverterDriver
                 {
                     this.executeRequestOnRunning = false;
                 }
+
+                this.eventToSendPacket?.Set();
 
                 // Prompt to receive a new message
                 this.waitForData();
@@ -364,7 +363,6 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public void Terminate()
         {
-            this.terminateEvent.Set();
             this.destroyThread();
             this.disconnect_from_inverter();
 
@@ -452,13 +450,8 @@ namespace Ferretto.VW.InverterDriver
         private void createThread()
         {
             logger.Log(LogLevel.Debug, String.Format("Create main Working thread."));
-
-            this.terminateEvent = new AutoResetEvent(false);
-            this.makeRequestEvent = new AutoResetEvent(false);
-            this.ackTerminateEvent = new AutoResetEvent(false);
-            this.mainAutomationThread = new Thread(this.mainWorkingThread);
-            this.mainAutomationThread.Name = "workingInverterThread";
-            this.mainAutomationThread.Start();
+            this.eventToSendPacket = new AutoResetEvent(false);
+            this.regWaitForMainThread = ThreadPool.RegisterWaitForSingleObject(this.eventToSendPacket, this.onMainWorkingThread, null, -1, false);
         }
 
         private object decode_ParameterValue<T>(T value, ValueDataType type)
@@ -472,30 +465,18 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         private void destroyThread()
         {
-            // Wait for the release of main working thread
-            var handles = new WaitHandle[1];
-            handles[0] = this.ackTerminateEvent;
-            WaitHandle.WaitAny(handles, -1);
-            this.mainAutomationThread = null;
-
-            this.terminateEvent?.Close();
-            this.terminateEvent = null;
-
-            this.makeRequestEvent?.Close();
-            this.makeRequestEvent = null;
-
-            this.ackTerminateEvent?.Close();
-            this.ackTerminateEvent = null;
-
+            this.regWaitForMainThread?.Unregister(this.eventToSendPacket);
             logger.Log(LogLevel.Debug, String.Format("Release main Working thread."));
         }
 
         private void disconnect_from_inverter()
         {
+            
             this.sckClient?.Close();
             this.sckClient = null;
 
             Connected?.Invoke(this, new ConnectedEventArgs(false));
+            
         }
 
         private Int32 encode_ParameterValue(object value, ValueDataType type)
@@ -533,69 +514,26 @@ namespace Ferretto.VW.InverterDriver
 
         /// <summary>
         /// Main working thread.
-        /// The thread monitors the [Terminate] event and the [MakeRequest] event.
-        ///   The [Terminate] event get signalled when the [this] class is disposed (release)
-        ///   The [MakeRequest] event get signalled when a new request shall be executed.
-        private void mainWorkingThread()
+        /// The thread monitors the [eventSendToPacket] event.
+        /// The [eventSendToPacket] event get signalled when a new request shall be executed.
+        private void onMainWorkingThread(object data, bool bTimeOut)
         {
-            const int N_EVENTS = 2;
-            const int TERMINATE = 0;
-            const int MAKEREQUEST = 1;
-
-            var handles = new WaitHandle[N_EVENTS];
-            handles[0] = this.terminateEvent;
-            handles[1] = this.makeRequestEvent;
-
-            this.timeOut = LONG_TIME_OUT;
-            var bExit = false;
-
-            while (!bExit)
+            lock (lockObj)
             {
-                var waitResult = WaitHandle.WaitAny(handles, this.timeOut);
-                switch (waitResult)
-                {
-                    case TERMINATE:
-                        {
-                            // event for terminate the thread has been signalled (it is fired when Core class is disposed)
-                            bExit = true;
-                            break;
-                        }
+                long t = 0;
+                QueryPerformanceCounter(out t);
+                var offsetTime_ms = (int)(((double)(t - this.TimeSendingPacket) * 1000) / this.perfFrequency);
+                this.TimeSendingPacket = t;
 
-                    case MAKEREQUEST:
-                        {
-                            logger.Log(LogLevel.Debug, String.Format("Execute request => TypeOf:{0}, ParamID:{1}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString()));
+                // Send a request
+                this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x05, ValueDataType.Int16, null);
 
-                            // build the telegram according to data of request to send to inverter
-                            this.send_request_to_inverter();
+                // execute the request
+                this.send_request_to_inverter();
+                logger.Log(LogLevel.Debug, String.Format("Send Read Request. Time elapsed: {0}", offsetTime_ms));
 
-                            //this.timeOut = SHORT_TIME_OUT;
-                            break;
-                        }
-
-                    case WaitHandle.WaitTimeout:
-                        {
-                            // Check if ACK from inverter is catched... and it handle the error if no response was not happened
-                            if (this.executeRequestOnRunning)
-                            {
-                                // A request was made, but no response has been collected
-                                // Handle it!
-
-                                this.LastError = InverterDriverErrors.IOError;
-                                Error?.Invoke(this, new ErrorEventArgs(this.LastError));
-                            }
-                            else
-                            {
-                                // Send a request to inverter about the status
-                                this.send_request_to_get_status_inverter();
-                            }
-                            break;
-                        }
-                }
             }
-
-            this.ackTerminateEvent.Set();
-            logger.Log(LogLevel.Debug, String.Format("Exit from main Working thread."));
-            return;
+            
         }
 
         private bool received_telegram(byte[] telegram, int offsetTime_ms, out ParameterID paramID, out object retValue)
@@ -609,28 +547,6 @@ namespace Ferretto.VW.InverterDriver
             retValue = t.RetValueFromParse;
 
             return error;
-        }
-
-        private void send_request_to_get_IOEmergency_state()
-        {
-            // TODO Add your implementation code here
-        }
-
-        /// <summary>
-        /// Send a request to inverter to get the status.
-        /// </summary>
-        private void send_request_to_get_status_inverter()
-        {
-            if (this.executeRequestOnRunning)
-            {
-                return;
-            }
-
-            var valueType = ParameterIDClass.Instance.GetDataValueType(ParameterID.STATUS_WORD_PARAM);
-
-            this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x06, valueType, null);
-            this.errorReceivedTelegram = false;
-            this.makeRequestEvent.Set();
         }
 
         private void send_request_to_inverter()
