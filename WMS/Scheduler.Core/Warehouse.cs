@@ -1,6 +1,7 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
@@ -8,7 +9,10 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Fields
 
+        private readonly IBayProvider bayProvider;
         private readonly IItemProvider itemProvider;
+        private readonly ILogger<Warehouse> logger;
+        private readonly IMissionProvider missionProvider;
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
         #endregion Fields
@@ -17,10 +21,15 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public Warehouse(
            IItemProvider itemProvider,
-           ISchedulerRequestProvider schedulerRequestProvider
-           )
+           IBayProvider bayProvider,
+           IMissionProvider missionProvider,
+           ISchedulerRequestProvider schedulerRequestProvider,
+           ILogger<Warehouse> logger)
         {
             this.itemProvider = itemProvider;
+            this.missionProvider = missionProvider;
+            this.bayProvider = bayProvider;
+            this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
         }
 
