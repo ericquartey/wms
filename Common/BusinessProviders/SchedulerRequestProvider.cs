@@ -179,7 +179,7 @@ namespace Ferretto.Common.BusinessProviders
                         Sub2 = c.Sub2
                     }
                 )
-                .FirstAsync();
+                .FirstOrDefaultAsync();
             }
 
             return null;
