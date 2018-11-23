@@ -291,7 +291,6 @@ namespace Ferretto.Common.Controls
                     this.items.Add(compartmentGraphic);
                 }
             }
-            //ListChangedType.ItemChanged
 
             this.NotifyPropertyChanged(nameof(this.Items));
         }
