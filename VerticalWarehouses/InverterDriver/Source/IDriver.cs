@@ -29,6 +29,31 @@
         /// </summary>
         int PortAddressToConnect { set; get; }
 
+        /// <summary>
+        /// Get brake resistance overtemperature-Digital value
+        /// </summary>
+        bool Brake_Resistance_Overtemperature { get; }
+
+        /// <summary>
+        /// Get Emergency Stop-Digital value
+        /// </summary>
+        bool Emergency_Stop { get; }
+
+        /// <summary>
+        /// Get Pawl Sensor Zero-Digital value
+        /// </summary>
+        bool Pawl_Sensor_Zero { get; }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Operator-Digital value
+        /// </summary>
+        bool Udc_Presence_Cradle_Operator { get; }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Machine-Digital value
+        /// </summary>
+        bool Udc_Presence_Cradle_Machine { get; }
+
         #endregion Properties
 
         #region Methods
