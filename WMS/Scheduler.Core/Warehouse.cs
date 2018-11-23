@@ -1,4 +1,7 @@
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Microsoft.Extensions.Logging;
@@ -37,19 +40,108 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public async Task<SchedulerRequest> Withdraw(SchedulerRequest schedulerRequest)
+        public async Task<SchedulerRequest> Withdraw(SchedulerRequest request)
         {
-            var qualifiedSchedulerRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(schedulerRequest);
-            if (qualifiedSchedulerRequest != null)
+            SchedulerRequest qualifiedRequest = null;
+            using (var scope = new TransactionScope())
             {
-                var addedRecordCount = await this.schedulerRequestProvider.Add(qualifiedSchedulerRequest);
-                if (addedRecordCount > 0)
+                qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
+                if (qualifiedRequest != null)
                 {
-                    return schedulerRequest;
+                    var addedRecordCount = await this.schedulerRequestProvider.Add(qualifiedRequest);
+                    if (addedRecordCount > 0)
+                    {
+                        scope.Complete();
+                        this.logger.LogDebug($"Withdrawal request for item={request.ItemId} was accepted and stored.");
+
+                        await this.DispatchRequests();
+                    }
                 }
             }
 
-            return null;
+            return qualifiedRequest;
+        }
+
+        private async Task DispatchRequests()
+        {
+            var request = await this.schedulerRequestProvider.GetNextRequest();
+            if (request == null)
+            {
+                return;
+            }
+
+            this.logger.LogDebug($"Request for item={request.ItemId} is the next in line to be processed.");
+            switch (request.Type)
+            {
+                case OperationType.Withdrawal:
+                    this.DispatchWithdrawalRequest(request);
+                    break;
+
+                case OperationType.Insertion:
+                    throw new NotImplementedException();
+
+                case OperationType.Replacement:
+                    throw new NotImplementedException();
+
+                case OperationType.Reorder:
+                    throw new NotImplementedException();
+
+                default:
+                    throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+            }
+        }
+
+        private void DispatchWithdrawalRequest(SchedulerRequest request)
+        {
+            var compartments = this.schedulerRequestProvider.GetCandidateWithdrawalCompartments(request);
+
+            IOrderedQueryable<CompartmentCore> orderedCompartments;
+            if (request.IsInstant)
+            {
+                var item = this.itemProvider.GetById(request.ItemId);
+
+                switch ((ItemManagementType)item.ManagementType)
+                {
+                    case ItemManagementType.FIFO:
+                        orderedCompartments = compartments
+                            .OrderBy(c => c.FirstStoreDate)
+                            .ThenBy(c => c.Availability);
+                        break;
+
+                    case ItemManagementType.Volume:
+                        orderedCompartments = compartments
+                            .OrderBy(c => c.Availability)
+                            .ThenBy(c => c.FirstStoreDate);
+                        break;
+
+                    default:
+                        orderedCompartments = null;
+                        break;
+                }
+
+                var neededCompartmentsCount = compartments.Aggregate(0,
+                    (total, compartment) =>
+                        total >= request.RequestedQuantity ? total : total + compartment.Availability
+                        );
+
+                this.logger.LogDebug($"A total of {neededCompartmentsCount} is needed to complete the request for item id={request.ItemId}");
+
+                var missions = compartments
+                    .Take(neededCompartmentsCount)
+                    .Select(c => new Mission
+                    {
+                        // TODO add field LoadingUnitsBufferUsage
+                        BayId = c.Bays.OrderByDescending(b => b.LoadingUnitsBufferSize/*b.LoadingUnitsBufferUsage*/).First().Id, //TODO fill bays
+                        ItemId = c.ItemId,
+                        Quantity = c.Availability,
+                        TypeId = "PK" // TODO convert table to enum
+                    }
+                    );
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
         }
 
         #endregion Methods
