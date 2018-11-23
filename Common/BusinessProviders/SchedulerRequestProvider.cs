@@ -243,6 +243,34 @@ namespace Ferretto.Common.BusinessProviders
                 .Single();
         }
 
+        public Task<SchedulerRequest> GetNextRequest()
+        {
+            return this.dataContext.SchedulerRequests
+                .OrderBy(s => new { s.IsInstant, s.CreationDate })
+                .Select(r => new SchedulerRequest
+                {
+                    Id = r.Id,
+                    AreaId = r.AreaId,
+                    BayId = r.BayId,
+                    CreationDate = r.CreationDate,
+                    IsInstant = r.IsInstant,
+                    ItemId = r.ItemId,
+                    ListId = r.ListId,
+                    ListRowId = r.LoadingUnitId,
+                    LoadingUnitId = r.LoadingUnitId,
+                    LoadingUnitTypeId = r.LoadingUnitTypeId,
+                    Lot = r.Lot,
+                    Type = (OperationType)r.OperationType,
+                    MaterialStatusId = r.MaterialStatusId,
+                    PackageTypeId = r.PackageTypeId,
+                    RegistrationNumber = r.RegistrationNumber,
+                    RequestedQuantity = r.RequestedQuantity,
+                    Sub1 = r.Sub1,
+                    Sub2 = r.Sub2
+                })
+                .FirstOrDefaultAsync();
+        }
+
         public int Save(SchedulerRequest model)
         {
             if (model == null)

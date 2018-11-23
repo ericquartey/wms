@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -8,6 +8,8 @@ namespace Ferretto.Common.BusinessProviders
         #region Methods
 
         Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest);
+
+        Task<SchedulerRequest> GetNextRequest();
 
         #endregion Methods
     }
