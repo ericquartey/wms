@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -61,16 +61,16 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public async Task<BusinessModels.SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest)
+        public async Task<BusinessModels.SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest request)
         {
-            if (schedulerRequest == null)
+            if (request == null)
             {
-                throw new ArgumentNullException(nameof(schedulerRequest));
+                throw new ArgumentNullException(nameof(request));
             }
 
-            if (schedulerRequest.Type != OperationType.Withdrawal)
+            if (request.Type != OperationType.Withdrawal)
             {
-                throw new ArgumentException("Only withdrawal requests are supported.", nameof(schedulerRequest));
+                throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
 
             var aggregatedCompartments = this.dataContext.Compartments
@@ -79,23 +79,23 @@ namespace Ferretto.Common.BusinessProviders
                .ThenInclude(c => c.Aisle)
                .ThenInclude(a => a.Area)
                .Where(c =>
-                   c.ItemId == schedulerRequest.ItemId
+                   c.ItemId == request.ItemId
                    &&
-                   c.LoadingUnit.Cell.Aisle.Area.Id == schedulerRequest.AreaId
+                   c.LoadingUnit.Cell.Aisle.Area.Id == request.AreaId
                    &&
-                   (schedulerRequest.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == schedulerRequest.BayId))
+                   (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
                    &&
-                   (schedulerRequest.Sub1 == null || c.Sub1 == schedulerRequest.Sub1)
+                   (request.Sub1 == null || c.Sub1 == request.Sub1)
                    &&
-                   (schedulerRequest.Sub2 == null || c.Sub2 == schedulerRequest.Sub2)
+                   (request.Sub2 == null || c.Sub2 == request.Sub2)
                    &&
-                   (schedulerRequest.Lot == null || c.Lot == schedulerRequest.Lot)
+                   (request.Lot == null || c.Lot == request.Lot)
                    &&
-                   (schedulerRequest.PackageTypeId.HasValue == false || c.PackageTypeId == schedulerRequest.PackageTypeId)
+                   (request.PackageTypeId.HasValue == false || c.PackageTypeId == request.PackageTypeId)
                    &&
-                   (schedulerRequest.MaterialStatusId.HasValue == false || c.MaterialStatusId == schedulerRequest.MaterialStatusId)
+                   (request.MaterialStatusId.HasValue == false || c.MaterialStatusId == request.MaterialStatusId)
                    &&
-                   (schedulerRequest.RegistrationNumber == null || c.RegistrationNumber == schedulerRequest.RegistrationNumber)
+                   (request.RegistrationNumber == null || c.RegistrationNumber == request.RegistrationNumber)
                )
                .GroupBy(
                    x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
@@ -114,7 +114,7 @@ namespace Ferretto.Common.BusinessProviders
                );
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
-                .Where(r => r.ItemId == schedulerRequest.ItemId);
+                .Where(r => r.ItemId == request.ItemId);
 
             var matches = aggregatedCompartments
                 .GroupJoin(
@@ -140,11 +140,11 @@ namespace Ferretto.Common.BusinessProviders
                 }
                 );
 
-            var matchesWithAvailability = matches.Where(x => x.ActualAvailability >= schedulerRequest.RequestedQuantity);
+            var matchesWithAvailability = matches.Where(x => x.ActualAvailability >= request.RequestedQuantity);
 
             var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
-                .SingleAsync(i => i.Id == schedulerRequest.ItemId);
+                .SingleAsync(i => i.Id == request.ItemId);
 
             switch ((ItemManagementType)item.ManagementType)
             {
@@ -152,7 +152,7 @@ namespace Ferretto.Common.BusinessProviders
                     return await matchesWithAvailability
                         .OrderBy(c => c.FirstStoreDate)
                         .ThenBy(c => c.ActualAvailability)
-                        .Select(c => new SchedulerRequest(schedulerRequest)
+                        .Select(c => new SchedulerRequest(request)
                         {
                             Lot = c.Lot,
                             MaterialStatusId = c.MaterialStatusId,
@@ -167,7 +167,7 @@ namespace Ferretto.Common.BusinessProviders
                     return await matchesWithAvailability
                         .OrderBy(c => c.ActualAvailability)
                         .ThenBy(c => c.FirstStoreDate)
-                        .Select(c => new SchedulerRequest(schedulerRequest)
+                        .Select(c => new SchedulerRequest(request)
                         {
                             Lot = c.Lot,
                             MaterialStatusId = c.MaterialStatusId,
