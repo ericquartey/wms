@@ -1,12 +1,9 @@
-using System;
 using System.IO;
 using System.Linq;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
@@ -61,7 +58,7 @@ namespace Ferretto.WMS.Modules.MasterData
 #if DEBUG
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.CheckingDatabaseStructure);
 
-            var dataContext  = ServiceLocator.Current.GetInstance<DatabaseContext>();
+            var dataContext = ServiceLocator.Current.GetInstance<DatabaseContext>();
             try
             {
                 var pendingMigrations = dataContext.Database.GetPendingMigrations();
@@ -75,7 +72,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     dataContext.Database.ExecuteSqlCommand(File.ReadAllText(@"bin\Debug\net471\Seeds\Dev.Items.sql"));
                 }
             }
-            catch (Exception e)
+            catch
             {
                 SplashScreenService.SetMessage(Common.Resources.Errors.UnableToConnectToDatabase);
             }
