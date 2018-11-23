@@ -143,19 +143,13 @@
                                                                 Grid.Row="1"
                                                                 ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputAddVM, Mode=TwoWay}" />
 
-                            <!--  Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AddVisibility, Converter={StaticResource BTVC}, Mode=TwoWay}" />  -->
-
                             <masterData:InputBulkAddCompartmentView x:Name="InputBulkAddCompartment"
                                                                     Grid.Row="1"
                                                                     ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputBulkAddVM, Mode=TwoWay}" />
 
-                            <!--  Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.BulkAddVisibility, Converter={StaticResource BTVC}, Mode=TwoWay}" />  -->
-
                             <masterData:InputEditCompartmentView x:Name="InputEditCompartment"
                                                                  Grid.Row="1"
                                                                  ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputEditVM, Mode=TwoWay}" />
-
-                            <!--  Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.EditVisibility, Converter={StaticResource BTVC}, Mode=TwoWay}" />  -->
 
                         </Grid>
                     </Border>

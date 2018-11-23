@@ -62,7 +62,6 @@
                            HorizontalAlignment="Left"
                            VerticalAlignment="Top"
                            Content="Compartment Details" />
-                    <!--  x:Name="ErrorText"  -->
                     <Label Grid.Row="2"
                            Grid.ColumnSpan="2"
                            Height="20"
@@ -75,27 +74,25 @@
                            Foreground="{Binding ErrorColor}"
                            Visibility="Visible" />
 
-
-                    <!--  x:Name="WidthText"  -->
                     <wms:SpinEdit Grid.Row="3"
                                   Grid.Column="0"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   EditValue="{Binding SelectedBulkCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                    <!--  x:Name="HeightText"  -->
+
                     <wms:SpinEdit Grid.Row="3"
                                   Grid.Column="1"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   EditValue="{Binding SelectedBulkCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                    <!--  x:Name="PositionXText"  -->
+
                     <wms:SpinEdit Grid.Row="4"
                                   Grid.Column="0"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   Background="White"
                                   EditValue="{Binding SelectedBulkCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                    <!--  x:Name="PositionYText"  -->
+
                     <wms:SpinEdit Grid.Row="4"
                                   Grid.Column="1"
                                   HorizontalAlignment="Left"
