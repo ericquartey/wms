@@ -37,7 +37,7 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            this.dataContext.Compartments.Add(new DataModels.Compartment
+            var entry = this.dataContext.Compartments.Add(new DataModels.Compartment
             {
                 Width = model.Width,
                 Height = model.Height,
@@ -52,7 +52,13 @@ namespace Ferretto.Common.BusinessProviders
                 CreationDate = DateTime.Now
             });
 
-            return await this.dataContext.SaveChangesAsync();
+            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            if (changedEntitiesCount > 0)
+            {
+                model.Id = entry.Entity.Id;
+            }
+
+            return changedEntitiesCount;
         }
 
         public int Delete(int id)

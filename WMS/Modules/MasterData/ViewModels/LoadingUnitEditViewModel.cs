@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,35 +17,20 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public enum commandCompartment
-    {
-        Add = 1,
-        BulkAdd = 2,
-        Edit = 3
-    }
-
     public class LoadingUnitEditViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
     {
         #region Fields
 
-        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private ICommand addBulkCommand;
         private ICommand addCommand;
-        private bool addVisibility;
-        private bool bulkAddVisibility;
-        private ICommand cancelCommand;
-        private int column;
+        private ICommand bulkAddCommand;
         private IDataSource<CompartmentDetails> compartmentsDataSource;
-        private bool createMode;
-        private ICommand deleteCommand;
         private ICommand editCommand;
-        private bool editMode;
-        private bool editVisibility;
-        private bool enableBulkAdd;
-        private string error;
-        private string errorColor;
+        private Func<CompartmentDetails, CompartmentDetails, string> filterColorFunc;
+        private InputAddCompartmentViewModel inputAddVM;
+        private InputBulkAddCompartmentViewModel inputBulkAddVM;
+        private InputEditCompartmentViewModel inputEditVM;
         private bool isEnabledGrid;
         private bool isExpand;
         private bool isReadOnlyTray;
@@ -52,11 +39,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
         private bool readOnlyTray;
-        private int row;
-        private ICommand saveCommand;
-        private object selectedCompartment;
         private CompartmentDetails selectedCompartmentTray;
-        private string title;
         private Tray tray;
 
         #endregion Fields
@@ -65,47 +48,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public LoadingUnitEditViewModel()
         {
-            this.IsSelectableTray = true;
-            this.ReadOnlyTray = false;
-            this.IsVisibleMainCommandBar = true;
-            this.SelectedCompartmentTray = null;
-            this.SelectedCompartment = null;
-            this.IsEnabledGrid = true;
+            this.ShowMainViewAndHideLateralPanel();
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public ICommand AddBulkCommand => this.addBulkCommand ??
-                  (this.addBulkCommand = new DelegateCommand(this.ExecuteAddBulkCommand, this.CanExecuteAddBulkCommand)
-            .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
-            .ObservesProperty(() => this.SelectedCompartmentTray.Width).ObservesProperty(() => this.SelectedCompartmentTray.Height)
-            .ObservesProperty(() => this.Row).ObservesProperty(() => this.Column));
-
         public ICommand AddCommand => this.addCommand ??
-                  (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand, this.CanExecuteAddCommand).ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode));
+                  (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand));
 
-        public bool AddVisibility
-        {
-            get => this.addVisibility;
-            set => this.SetProperty(ref this.addVisibility, value);
-        }
-
-        public bool BulkAddVisibility
-        {
-            get => this.bulkAddVisibility;
-            set => this.SetProperty(ref this.bulkAddVisibility, value);
-        }
-
-        public ICommand CancelCommand => this.cancelCommand ??
-          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand, this.CanExecuteCancelCommand).ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode));
-
-        public int Column
-        {
-            get => this.column;
-            set => this.SetProperty(ref this.column, value);
-        }
+        public ICommand BulkAddCommand => this.bulkAddCommand ??
+                                  (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
 
         public IDataSource<CompartmentDetails> CompartmentsDataSource
         {
@@ -113,54 +67,33 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.compartmentsDataSource, value);
         }
 
-        public bool CreateMode
-        {
-            get => this.createMode;
-            set => this.SetProperty(ref this.createMode, value);
-        }
-
-        public CompartmentDetails CurrentCompartment
-        {
-            get
-            {
-                if (this.selectedCompartment == null)
-                {
-                    return default(CompartmentDetails);
-                }
-                if ((this.selectedCompartment is DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread) == false)
-                {
-                    return default(CompartmentDetails);
-                }
-                return (CompartmentDetails)(((DevExpress.Data.Async.Helpers.ReadonlyThreadSafeProxyForObjectFromAnotherThread)this.selectedCompartment).OriginalRow);
-            }
-        }
-
-        public ICommand DeleteCommand => this.deleteCommand ??
-          (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand).ObservesProperty(() => this.SelectedCompartmentTray)
-            .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode));
-
         public ICommand EditCommand => this.editCommand ??
           (this.editCommand = new DelegateCommand(this.ExecuteEditCompartmentCommand, this.CanExecuteEditCommand)
-            .ObservesProperty(() => this.CreateMode).ObservesProperty(() => this.EditMode)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
-        public bool EditMode { get => this.editMode; set => this.SetProperty(ref this.editMode, value); }
-
-        public bool EditVisibility
+        public Func<CompartmentDetails, CompartmentDetails, string> FilterColorFunc
         {
-            get => this.editVisibility;
-            set => this.SetProperty(ref this.editVisibility, value);
+            get => this.filterColorFunc;
+            set => this.SetProperty(ref this.filterColorFunc, value);
         }
 
-        public bool EnableBulkAdd
+        public InputAddCompartmentViewModel InputAddVM
         {
-            get => this.enableBulkAdd;
-            set => this.SetProperty(ref this.enableBulkAdd, value);
+            get => this.inputAddVM;
+            set => this.SetProperty(ref this.inputAddVM, value);
         }
 
-        public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
+        public InputBulkAddCompartmentViewModel InputBulkAddVM
+        {
+            get => this.inputBulkAddVM;
+            set => this.SetProperty(ref this.inputBulkAddVM, value);
+        }
 
-        public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
+        public InputEditCompartmentViewModel InputEditVM
+        {
+            get => this.inputEditVM;
+            set => this.SetProperty(ref this.inputEditVM, value);
+        }
 
         public bool IsEnabledGrid
         {
@@ -217,38 +150,11 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
-        public int Row
-        {
-            get => this.row;
-            set => this.SetProperty(ref this.row, value);
-        }
-
-        public ICommand SaveCommand => this.saveCommand ??
-            (
-                this.saveCommand = new DelegateCommand(() => this.ExecuteSaveCommand().RunSynchronously(), this.CanExecuteSaveCommand)
-                    .ObservesProperty(() => this.CreateMode)
-                    .ObservesProperty(() => this.EditMode)
-            );
-
-        public object SelectedCompartment
-        {
-            get => this.selectedCompartment;
-            set
-            {
-                this.SetProperty(ref this.selectedCompartment, value);
-                this.RaisePropertyChanged(nameof(this.CurrentCompartment));
-
-                this.SetSelectedCompartment(this.CurrentCompartment);
-            }
-        }
-
         public CompartmentDetails SelectedCompartmentTray
         {
             get => this.selectedCompartmentTray;
             set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
-
-        public string Title { get => this.title; set => this.SetProperty(ref this.title, value); }
 
         public Tray Tray
         {
@@ -276,155 +182,43 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
-        private bool CanExecuteAddBulkCommand()
-        {
-            return !this.CreateMode && !this.EditMode;
-        }
-
-        private bool CanExecuteAddCommand()
-        {
-            return !this.CreateMode && !this.EditMode;
-        }
-
-        private bool CanExecuteCancelCommand()
-        {
-            return this.CreateMode || this.EditMode;
-        }
-
-        private bool CanExecuteDeleteCommand()
-        {
-            return this.selectedCompartmentTray != null && !this.CreateMode;
-        }
-
         private bool CanExecuteEditCommand()
         {
-            return !this.CreateMode && !this.EditMode && this.selectedCompartmentTray != null
-                && this.selectedCompartmentTray.Width != null && this.selectedCompartmentTray.Height != null
-                && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null;
-        }
-
-        private bool CanExecuteSaveCommand()
-        {
-            return this.EditMode || this.CreateMode;
-        }
-
-        private void EnableCreation()
-        {
-            this.SetError();
-            this.SetSelectedCompartment(new CompartmentDetails());
-            this.SelectedCompartment = null;
-            this.CreateMode = true;
-            this.IsExpand = true;
-            this.IsSelectableTray = false;
-            this.ReadOnlyTray = true;
-            this.IsEnabledGrid = false;
-            this.IsVisibleMainCommandBar = false;
-        }
-
-        private void EnableEdit()
-        {
-            this.SetError();
-            this.EditMode = true;
-            this.IsExpand = true;
-            this.IsSelectableTray = false;
-            this.ReadOnlyTray = true;
-            this.IsEnabledGrid = false;
-            this.IsVisibleMainCommandBar = false;
-        }
-
-        private void ExecuteAddBulkCommand()
-        {
-            this.EnableBulkAdd = true;
-            this.Row = 0;
-            this.Column = 0;
-            this.EnableCreation();
-            this.SetFunctionPanel((int)commandCompartment.BulkAdd);
+            return (this.selectedCompartmentTray != null && this.selectedCompartmentTray.Width != null && this.selectedCompartmentTray.Height != null
+                && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null);
         }
 
         private void ExecuteAddCompartmentCommand()
         {
-            this.EnableCreation();
-            this.SetFunctionPanel((int)commandCompartment.Add);
+            this.SelectedCompartmentTray = null;
+            this.HideMainViewAndShowLateralPanel();
+            this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
+            this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
         }
 
-        private void ExecuteCancelCommand()
+        private void ExecuteBulkAddCommand()
         {
-            this.SetError();
-            this.CreateMode = false;
-            this.EnableBulkAdd = false;
-            this.EditMode = false;
-            this.IsExpand = false;
-            this.IsSelectableTray = true;
-            this.ReadOnlyTray = false;
-            this.IsEnabledGrid = true;
-            this.IsVisibleMainCommandBar = true;
-            this.SetFunctionPanel();
-        }
-
-        private void ExecuteDeleteCommand()
-        {
-            this.SetError();
-            this.tray.Compartments.Remove(this.SelectedCompartmentTray);
-            this.compartmentProvider.Delete(this.SelectedCompartmentTray.Id);
-            this.ExecuteCancelCommand();
+            this.SelectedCompartmentTray = null;
+            this.HideMainViewAndShowLateralPanel();
+            this.InputBulkAddVM.Initialize(this.tray);
+            this.InputBulkAddVM.FinishEvent += this.InputBulkAddVM_FinishEvent;
         }
 
         private void ExecuteEditCompartmentCommand()
         {
-            this.EnableEdit();
-            this.SetFunctionPanel((int)commandCompartment.Edit);
+            this.HideMainViewAndShowLateralPanel();
+            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray);
+            this.InputEditVM.FinishEvent += this.InputEditVM_FinishEvent;
         }
 
-        private async Task ExecuteSaveCommand()
+        private void HideMainViewAndShowLateralPanel()
         {
-            this.SetError();
-            if (this.EnableBulkAdd)
-            {
-                if (await this.GenerateBulkCompartments())
-                {
-                    this.ExecuteCancelCommand();
-                }
-            }
-            else
-            {
-                if (await this.SaveLoadingUnit())
-                {
-                    this.ExecuteCancelCommand();
-                }
-            }
-        }
-
-        private async Task<bool> GenerateBulkCompartments()
-        {
-            var ok = false;
-            var tempTray = this.tray;
-            this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
-            this.SelectedCompartmentTray.CompartmentTypeId = 1;
-            try
-            {
-                var newCompartments = tempTray.AddBulkCompartments(this.SelectedCompartmentTray, this.Row, this.Column);
-
-                var addAll = true;
-                foreach (var compartment in newCompartments)
-                {
-                    var add = await this.compartmentProvider.Add(compartment);
-                    if (add != 1)
-                    {
-                        addAll = false;
-                    }
-                }
-                if (addAll)
-                {
-                    this.Tray = tempTray;
-                    ok = true;
-                }
-            }
-            catch (Exception)
-            {
-                //TODO: validation error
-                this.SetError(Errors.AddBulkNoPossible);
-            }
-            return ok;
+            this.IsExpand = true;
+            this.IsSelectableTray = false;
+            this.ReadOnlyTray = true;
+            this.IsEnabledGrid = false;
+            this.IsVisibleMainCommandBar = false;
+            this.FilterColorFunc = (new EditReadOnlyFilter()).ColorFunc;
         }
 
         private void InitializeTray()
@@ -435,13 +229,39 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     Height = this.LoadingUnit.Length,
                     Width = this.LoadingUnit.Width
-                }
+                },
+                LoadingUnitId = this.LoadingUnit.Id,
             };
             if (this.LoadingUnit.Compartments != null)
             {
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
+
+            this.FilterColorFunc = (new EditFilter()).ColorFunc;
+
             this.RaisePropertyChanged(nameof(this.Tray));
+        }
+
+        private void InputAddVM_FinishEvent(Object sender, EventArgs e)
+        {
+            this.ResetInputView();
+            if (sender is InputAddCompartmentViewModel model)
+            {
+                this.SelectedCompartmentTray = model.SelectedCompartmentTray;
+            }
+            this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
+        }
+
+        private void InputBulkAddVM_FinishEvent(Object sender, EventArgs e)
+        {
+            this.ResetInputView();
+            this.InputBulkAddVM.FinishEvent -= this.InputBulkAddVM_FinishEvent;
+        }
+
+        private void InputEditVM_FinishEvent(Object sender, EventArgs e)
+        {
+            this.ResetInputView();
+            this.InputEditVM.FinishEvent -= this.InputEditVM_FinishEvent;
         }
 
         private void LoadData()
@@ -449,104 +269,23 @@ namespace Ferretto.WMS.Modules.MasterData
             if (this.Data is int modelId)
             {
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
-
                 this.InitializeTray();
             }
         }
 
-        private async Task<bool> SaveLoadingUnit()
+        private void ResetInputView()
         {
-            var ok = false;
-            if (this.CreateMode)
-            {
-                if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
-                {
-                    this.SelectedCompartmentTray.LoadingUnitId = this.LoadingUnit.Id;
-                    this.SelectedCompartmentTray.CompartmentTypeId = 2;
-
-                    var add = await this.compartmentProvider.Add(this.SelectedCompartmentTray);
-                    if (add == 1)
-                    {
-                        this.tray.Compartments.Add(this.SelectedCompartmentTray);
-                        this.SelectedCompartment = this.SelectedCompartmentTray;
-                    }
-                    this.CreateMode = false;
-
-                    ok = true;
-                }
-                else
-                {
-                    this.SetError(Errors.AddNoPossible);
-                }
-            }
-            else
-            {
-                var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
-
-                if (modifiedRowCount > 0)
-                {
-                    this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
-
-                    this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
-                }
-            }
-            return ok;
+            this.ShowMainViewAndHideLateralPanel();
         }
 
-        private void SetError(string message = null)
+        private void ShowMainViewAndHideLateralPanel()
         {
-            if (message == null)
-            {
-                this.Error = "";
-                this.ErrorColor = Colors.Black.ToString();
-            }
-            else
-            {
-                this.Error = message;
-                this.ErrorColor = Colors.Red.ToString();
-            }
-        }
-
-        private void SetFunctionPanel(int? newCommand = null)
-        {
-            switch (newCommand)
-            {
-                case 1:
-                    this.AddVisibility = true;
-                    this.BulkAddVisibility = false;
-                    this.EditVisibility = false;
-                    this.Title = Common.Resources.MasterData.AddCompartment;
-                    break;
-
-                case 2:
-                    this.AddVisibility = false;
-                    this.BulkAddVisibility = true;
-                    this.EditVisibility = false;
-                    this.Title = Common.Resources.MasterData.AddBulkCompartment;
-                    break;
-
-                case 3:
-                    this.AddVisibility = false;
-                    this.BulkAddVisibility = false;
-                    this.EditVisibility = true;
-                    this.Title = Common.Resources.MasterData.EditCompartment;
-                    break;
-
-                default:
-                    this.AddVisibility = false;
-                    this.BulkAddVisibility = false;
-                    this.EditVisibility = false;
-                    this.Title = "";
-                    break;
-            }
-        }
-
-        private void SetSelectedCompartment(object value)
-        {
-            if (value is CompartmentDetails compartmentDetails)
-            {
-                this.SelectedCompartmentTray = compartmentDetails;
-            }
+            this.IsExpand = false;
+            this.IsSelectableTray = true;
+            this.ReadOnlyTray = false;
+            this.IsEnabledGrid = true;
+            this.IsVisibleMainCommandBar = true;
+            this.FilterColorFunc = (new EditFilter()).ColorFunc;
         }
 
         #endregion Methods
