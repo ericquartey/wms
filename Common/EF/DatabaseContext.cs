@@ -77,6 +77,7 @@ namespace Ferretto.Common.EF
         public virtual DbSet<MachineType> MachineTypes { get; set; }
         public virtual DbSet<MaterialStatus> MaterialStatuses { get; set; }
         public virtual DbSet<MeasureUnit> MeasureUnits { get; set; }
+        public virtual DbSet<Mission> Missions { get; set; }
         public virtual DbSet<PackageType> PackageTypes { get; set; }
         public virtual DbSet<SchedulerRequest> SchedulerRequests { get; set; }
 
