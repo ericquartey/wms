@@ -16,7 +16,8 @@
         POSITION_TARGET_POSITION_PARAM = 1455,
         POSITION_TARGET_SPEED_PARAM = 1456,
         SET_OPERATING_MODE_PARAM = 1454,
-        STATUS_WORD_PARAM = 411
+        STATUS_WORD_PARAM = 411,
+        STATUS_DIGITAL_SIGNALS = 250,
     }
 
     /// <summary>
@@ -59,6 +60,7 @@
                 case ParameterID.POSITION_TARGET_SPEED_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.SET_OPERATING_MODE_PARAM: type = ValueDataType.Int16; break;
                 case ParameterID.STATUS_WORD_PARAM: type = ValueDataType.Int16; break;
+                case ParameterID.STATUS_DIGITAL_SIGNALS: type = ValueDataType.Int16; break;
             }
 
             return type;
@@ -84,6 +86,7 @@
                 case 1456: paramID = ParameterID.POSITION_TARGET_SPEED_PARAM; break;
                 case 1454: paramID = ParameterID.SET_OPERATING_MODE_PARAM; break;
                 case 411: paramID = ParameterID.STATUS_WORD_PARAM; break;
+                case 250: paramID = ParameterID.STATUS_DIGITAL_SIGNALS; break;
             }
 
             return paramID;

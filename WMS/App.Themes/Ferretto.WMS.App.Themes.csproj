@@ -33,5 +33,4 @@
     <ProjectReference Include="$(SolutionDir)\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
  
-  
 </Project>

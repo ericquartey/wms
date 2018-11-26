@@ -95,7 +95,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected virtual void OnFinishEvent(EventArgs e)
         {
-            EventHandler handler = FinishEvent;
+            EventHandler handler = this.FinishEvent;
             if (handler != null)
             {
                 handler(this, e);

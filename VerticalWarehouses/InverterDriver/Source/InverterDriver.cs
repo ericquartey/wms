@@ -47,7 +47,17 @@ namespace Ferretto.VW.InverterDriver
         private RegisteredWaitHandle regWaitForMainThread;
         private long TimeSendingPacket;
 
+        #region Sensors Digital Signals
+        private bool BrakeResistanceOvertemperature;
+        private bool EmergencyStop;
+        private bool PawlSensorZero;
+        private bool UdcPresenceCradleOperator;
+        private bool UdcPresenceCradleMachine;
+
+        #endregion Sensors Digital Signals
+
         #endregion Fields
+
 
         #region Constructors
 
@@ -108,6 +118,76 @@ namespace Ferretto.VW.InverterDriver
         /// Specify the IPv4 address family.
         /// </summary>
         public int PortAddressToConnect { set; get; }
+
+        /// <summary>
+        /// Get brake resistance overtemperature-Digital value
+        /// </summary>
+        public bool Brake_Resistance_Overtemperature
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.BrakeResistanceOvertemperature;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Emergency Stop-Digital value
+        /// </summary>
+        public bool Emergency_Stop
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.EmergencyStop;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Pawl Sensor Zero-Digital value
+        /// </summary>
+        public bool Pawl_Sensor_Zero
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.PawlSensorZero;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Operator-Digital value
+        /// </summary>
+        public bool Udc_Presence_Cradle_Operator
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.UdcPresenceCradleOperator;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Machine-Digital value
+        /// </summary>
+        public  bool Udc_Presence_Cradle_Machine
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.UdcPresenceCradleMachine;
+                }
+            }
+        }
 
         #endregion Properties
 
@@ -245,7 +325,7 @@ namespace Ferretto.VW.InverterDriver
                 Array.Copy(theSockId.dataBuffer, 0, telegramRead, 0, iRx);
 
                 // Parse the received telegram
-                this.errorReceivedTelegram = !this.received_telegram(telegramRead, offsetTime_ms, out var paramID, out this.retParameterValue);
+                this.errorReceivedTelegram = this.received_telegram(telegramRead, out var paramID, out this.retParameterValue);
                 if (!this.errorReceivedTelegram)
                 {
                     if (this.currentRequest.Type == TypeOfRequest.SendRequest)
@@ -259,14 +339,41 @@ namespace Ferretto.VW.InverterDriver
                         SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
                     }
 
-                    // cache value of status word (in cache memory shared)
-                    if (this.currentRequest.ParameterID == ParameterID.STATUS_WORD_PARAM)
+                    switch (this.currentRequest.ParameterID)
                     {
-                        lock (lockObj)
-                        {
-                            this.statusWordValue = Convert.ToInt16(this.retParameterValue);
-                        }
+                        case ParameterID.STATUS_WORD_PARAM:
+                            {
+                                lock (lockObj)
+                                {
+                                    this.statusWordValue = Convert.ToInt16(this.retParameterValue);
+                                }
+                                break;
+                            }
+                        case ParameterID.STATUS_DIGITAL_SIGNALS:
+                            {
+
+                                lock (lockObj)
+                                {
+                                    var retValueShort = Convert.ToInt16(this.retParameterValue);
+                                
+                                    var arraybytes = BitConverter.GetBytes(retValueShort);
+                                    BitArray bit_array = new BitArray(arraybytes);
+                                    this.BrakeResistanceOvertemperature = bit_array.Get(2);
+                                    this.EmergencyStop = bit_array.Get(4);
+                                    this.PawlSensorZero = bit_array.Get(5);
+                                    this.UdcPresenceCradleOperator = bit_array.Get(10);
+                                    this.UdcPresenceCradleMachine = bit_array.Get(11);
+                                }
+
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                            
                     }
+                        
                 }
                 else
                 {
@@ -526,7 +633,7 @@ namespace Ferretto.VW.InverterDriver
                 this.TimeSendingPacket = t;
 
                 // Send a request
-                this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x05, ValueDataType.Int16, null);
+                this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_DIGITAL_SIGNALS, 0x00, 0x05, ValueDataType.Int16, null);
 
                 // execute the request
                 this.send_request_to_inverter();
@@ -536,7 +643,7 @@ namespace Ferretto.VW.InverterDriver
             
         }
 
-        private bool received_telegram(byte[] telegram, int offsetTime_ms, out ParameterID paramID, out object retValue)
+        private bool received_telegram(byte[] telegram, out ParameterID paramID, out object retValue)
         {
             // Parsing and check the information of telegram
 

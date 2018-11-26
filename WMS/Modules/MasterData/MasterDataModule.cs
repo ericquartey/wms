@@ -89,6 +89,7 @@ namespace Ferretto.WMS.Modules.MasterData
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingEntityFramework);
             ServiceLocator.Current.GetInstance<IItemProvider>().GetAll().ToList();
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
+
 #endif
         }
 
