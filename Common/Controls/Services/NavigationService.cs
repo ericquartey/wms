@@ -140,7 +140,8 @@ namespace Ferretto.Common.Controls.Services
             }
 
             var activeView = WmsMainDockLayoutManager.GetActiveView();
-            if (((WmsView)activeView).Content is IWmsHistoryView histView)
+            if (activeView != null &&
+                ((WmsView)activeView).Content is IWmsHistoryView histView)
             {
                 return histView.GetCurrentViewModel();
             }

@@ -247,10 +247,9 @@
                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVIC}}" />
                         <wms:WmsGridControl MinHeight="150"
                                             MaxHeight="1000"
-                                            CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedAllowedItem, Mode=TwoWay}"
-                                            ItemType="{x:Type models:AllowedItemInCompartment}"
-                                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AllowedItemsDataSource, Mode=OneWay}"
-                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
+                                            CurrentItem="{Binding SelectedAllowedItem, Mode=TwoWay}"                                            
+                                            ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}"
+                                            Visibility="{Binding CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
                                 <dxg:TableView AllowEditing="False"
                                                AllowGrouping="False"

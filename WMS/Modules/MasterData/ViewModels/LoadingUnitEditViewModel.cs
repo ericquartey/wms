@@ -51,6 +51,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool isVisibleMainCommandBar;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
+        private object modelChangedEventSubscription;
+        private object modelRefreshSubscription;
         private bool readOnlyTray;
         private int row;
         private ICommand saveCommand;
@@ -272,8 +274,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnAppear()
         {
-            this.LoadData();
+            this.Initialize();
             base.OnAppear();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<ModelChangedEvent<CompartmentDetails>>(this.modelChangedEventSubscription);
+            this.EventService.Unsubscribe<RefreshModelsEvent<CompartmentDetails>>(this.modelRefreshSubscription);
+            base.OnDispose();
         }
 
         private bool CanExecuteAddBulkCommand()
@@ -425,6 +434,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.SetError(Errors.AddBulkNoPossible);
             }
             return ok;
+        }
+
+        private void Initialize()
+        {
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<LoadingUnit>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<LoadingUnit>>(eventArgs => { this.LoadData(); });
+            this.LoadData();
         }
 
         private void InitializeTray()

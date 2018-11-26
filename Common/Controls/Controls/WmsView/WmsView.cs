@@ -88,6 +88,7 @@ namespace Ferretto.Common.Controls
                 this.DataContext =
                     this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
             }
+            ((INavigableViewModel)this.DataContext)?.Appear();
         }
 
         private void CheckToAddHistoryView()
@@ -162,8 +163,7 @@ namespace Ferretto.Common.Controls
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             this.CheckDataContext();
-            this.CheckToAddHistoryView();
-            ((INavigableViewModel)this.DataContext)?.Appear();
+            this.CheckToAddHistoryView();            
         }
 
         #endregion Methods
