@@ -19,7 +19,9 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.Property(m => m.MissionStatusId).HasColumnType("char(1)");
 
-            builder.Property(m => m.MissionType).HasColumnType("char(1)");
+            builder.Property(m => m.MissionType)
+                .HasColumnType("char(1)")
+                .HasConversion(x => (char)x, x => (MissionType)System.Enum.ToObject(typeof(MissionType), x));
 
             builder.HasOne(m => m.MissionStatus)
                 .WithMany(m => m.Missions)
