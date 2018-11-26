@@ -17,16 +17,14 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasKey(m => m.Id);
 
-            builder.Property(m => m.MissionStatusId).HasColumnType("char(1)");
+            builder.Property(m => m.Status)
+                .HasColumnType("char(1)")
+                .HasConversion(x => (char)x, x => (MissionStatus)System.Enum.ToObject(typeof(MissionStatus), x))
+                .HasDefaultValueSql(((char)MissionStatus.New).ToString());
 
-            builder.Property(m => m.MissionType)
+            builder.Property(m => m.Type)
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (MissionType)System.Enum.ToObject(typeof(MissionType), x));
-
-            builder.HasOne(m => m.MissionStatus)
-                .WithMany(m => m.Missions)
-                .HasForeignKey(m => m.MissionStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(m => m.SourceCell)
                 .WithMany(s => s.SourceMissions)

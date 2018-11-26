@@ -41,12 +41,6 @@
 
         public int? MaterialStatusId { get; set; }
 
-        public MissionStatus MissionStatus { get; set; }
-
-        public string MissionStatusId { get; set; }
-
-        public MissionType MissionType { get; set; }
-
         public PackageType PackageType { get; set; }
 
         public int? PackageTypeId { get; set; }
@@ -65,9 +59,13 @@
 
         public int? SourceCellId { get; set; }
 
+        public MissionStatus Status { get; set; }
+
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
+
+        public MissionType Type { get; set; }
 
         #endregion Properties
     }

@@ -669,12 +669,6 @@ INSERT INTO ItemListRowStatuses (Id, Description) VALUES (4, 'Incomplete');
 INSERT INTO ItemListRowStatuses (Id, Description) VALUES (5, 'Suspended');
 SET IDENTITY_INSERT ItemListRowStatuses OFF;
 
-
--- Missions
-INSERT INTO MissionStatuses (Id, Description) VALUES ('W', 'Waiting');
-INSERT INTO MissionStatuses (Id, Description) VALUES ('E', 'Executing');
-INSERT INTO MissionStatuses (Id, Description) VALUES ('C', 'Completed');
-
 -- Machines
 INSERT INTO MachineTypes (Id, Description) VALUES ('T', 'Traslo');
 INSERT INTO MachineTypes (Id, Description) VALUES ('S', 'Shuttle');

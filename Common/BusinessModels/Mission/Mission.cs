@@ -36,6 +36,8 @@
 
         public string RegistrationNumber { get; set; }
 
+        public MissionStatus Status { get; set; } = MissionStatus.New;
+
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
