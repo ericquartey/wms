@@ -25,6 +25,9 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
+            builder.Property(i => i.LastModificationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
+
             builder.HasOne(s => s.Area)
                 .WithMany(a => a.SchedulerRequests)
                 .HasForeignKey(s => s.AreaId)

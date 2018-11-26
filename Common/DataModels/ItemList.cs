@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Ferretto.Common.DataModels
 {
     // Lista Articoli
-    public sealed class ItemList
+    public sealed class ItemList : ITimestamped
     {
         #region Properties
 
