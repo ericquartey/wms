@@ -146,25 +146,20 @@ namespace Ferretto.Common.BusinessProviders
                 .SingleAsync(i => i.Id == request.ItemId);
 
             var orderedCompartmentSets = this.OrderCompartmentsByManagementType(compartmentSets, (ItemManagementType)item.ManagementType);
-            if (orderedCompartmentSets == null)
-            {
-                return null;
-            }
 
             return await orderedCompartmentSets
-                   .Cast<CompartmentSet>()
-                   .Select(
-                   c => new SchedulerRequest(request)
-                   {
-                       Lot = c.Lot,
-                       MaterialStatusId = c.MaterialStatusId,
-                       PackageTypeId = c.PackageTypeId,
-                       RegistrationNumber = c.RegistrationNumber,
-                       Sub1 = c.Sub1,
-                       Sub2 = c.Sub2
-                   }
-               )
-               .FirstOrDefaultAsync();
+                  .Select(
+                  c => new SchedulerRequest(request)
+                  {
+                      Lot = c.Lot,
+                      MaterialStatusId = c.MaterialStatusId,
+                      PackageTypeId = c.PackageTypeId,
+                      RegistrationNumber = c.RegistrationNumber,
+                      Sub1 = c.Sub1,
+                      Sub2 = c.Sub2
+                  }
+              )
+              .FirstOrDefaultAsync();
         }
 
         public IQueryable<SchedulerRequest> GetAll()
@@ -320,7 +315,8 @@ namespace Ferretto.Common.BusinessProviders
                 .FirstOrDefaultAsync();
         }
 
-        public IQueryable<IOrderableCompartment> OrderCompartmentsByManagementType(IQueryable<IOrderableCompartment> compartments, ItemManagementType type)
+        public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
+                where T : IOrderableCompartment
         {
             switch (type)
             {
@@ -335,7 +331,7 @@ namespace Ferretto.Common.BusinessProviders
                         .ThenBy(c => c.FirstStoreDate);
 
                 default:
-                    return null;
+                    throw new Exception($"Unable to interpret enumeration value for {nameof(ItemManagementType)}");
             }
         }
 
