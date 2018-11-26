@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.DataModels
 {
-    public sealed class SchedulerRequest
+    public sealed class SchedulerRequest : ITimestamped
     {
         #region Properties
 
@@ -13,6 +13,7 @@
         public bool IsInstant { get; set; }
         public Item Item { get; set; }
         public int ItemId { get; set; }
+        public System.DateTime LastModificationDate { get; set; }
         public ItemList List { get; set; }
         public int? ListId { get; set; }
         public ItemListRow ListRow { get; set; }

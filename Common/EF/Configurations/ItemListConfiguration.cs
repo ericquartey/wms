@@ -21,6 +21,8 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.Code).IsRequired();
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(i => i.LastModificationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
             builder.Property(i => i.Priority)
                 .HasDefaultValue(1);
 

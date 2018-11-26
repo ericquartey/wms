@@ -130,7 +130,7 @@ namespace Ferretto.Common.BusinessProviders
                         AbcClassId = a.Item.AbcClassId,
                         MeasureUnitId = a.Item.MeasureUnitId,
                         MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                        ManagementType = (int)a.Item.ManagementType,
+                        ManagementType = (ItemManagementType)a.Item.ManagementType,
                         FifoTimePick = a.Item.FifoTimePick,
                         FifoTimeStore = a.Item.FifoTimeStore,
                         ReorderPoint = a.Item.ReorderPoint,
@@ -217,7 +217,6 @@ namespace Ferretto.Common.BusinessProviders
                 var existingModel = this.dataContext.Items.Find(model.Id);
 
                 this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-                existingModel.LastModificationDate = DateTime.Now;
 
                 return this.dataContext.SaveChanges();
             }
