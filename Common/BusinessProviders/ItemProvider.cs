@@ -223,22 +223,32 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task WithdrawAsync(ItemWithdraw itemWithdraw)
+        public async Task<OperationResult> WithdrawAsync(ItemWithdraw itemWithdraw)
         {
-            await this.itemsClient.WithdrawAsync(
-                new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
-                {
-                    ItemId = itemWithdraw.ItemDetails.Id,
-                    BayId = itemWithdraw.BayId,
-                    AreaId = itemWithdraw.AreaId,
-                    Lot = itemWithdraw.Lot,
-                    RequestedQuantity = itemWithdraw.Quantity,
-                    RegistrationNumber = itemWithdraw.RegistrationNumber,
-                    Sub1 = itemWithdraw.Sub1,
-                    Sub2 = itemWithdraw.Sub2,
-                    Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal
-                }
-            );
+            try
+            {
+                await this.itemsClient.WithdrawAsync(
+                   new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
+                   {
+                       IsInstant = true,
+                       Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
+                       ItemId = itemWithdraw.ItemDetails.Id,
+                       BayId = itemWithdraw.BayId,
+                       AreaId = itemWithdraw.AreaId,
+                       Lot = itemWithdraw.Lot,
+                       RequestedQuantity = itemWithdraw.Quantity,
+                       RegistrationNumber = itemWithdraw.RegistrationNumber,
+                       Sub1 = itemWithdraw.Sub1,
+                       Sub2 = itemWithdraw.Sub2,
+                   }
+               );
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, ex.Message);
+            }
         }
 
         private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)
