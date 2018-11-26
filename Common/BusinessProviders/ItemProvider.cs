@@ -217,7 +217,6 @@ namespace Ferretto.Common.BusinessProviders
                 var existingModel = this.dataContext.Items.Find(model.Id);
 
                 this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-                existingModel.LastModificationDate = DateTime.Now;
 
                 return this.dataContext.SaveChanges();
             }

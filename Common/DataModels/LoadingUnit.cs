@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Ferretto.Common.DataModels
 {
     // Unità di Carico
-    public sealed class LoadingUnit
+    public sealed class LoadingUnit : ITimestamped
     {
         #region Properties
 
@@ -24,6 +24,7 @@ namespace Ferretto.Common.DataModels
         public int InCycleCount { get; set; }
         public DateTime? InventoryDate { get; set; }
         public DateTime? LastHandlingDate { get; set; }
+        public DateTime LastModificationDate { get; set; }
         public DateTime? LastPickDate { get; set; }
         public DateTime? LastStoreDate { get; set; }
         public LoadingUnitStatus LoadingUnitStatus { get; set; }
