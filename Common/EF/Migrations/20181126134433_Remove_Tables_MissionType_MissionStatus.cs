@@ -26,7 +26,7 @@ namespace Ferretto.Common.EF.Migrations
                 table: "Missions",
                 type: "char(1)",
                 nullable: false,
-                defaultValueSql: "N");
+                defaultValueSql: "'N'");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
