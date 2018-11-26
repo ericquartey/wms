@@ -49,7 +49,7 @@ namespace Ferretto.Common.BusinessProviders
                 ItemListRowId = m.ItemListRowId,
                 LoadingUnitId = m.LoadingUnitId,
                 MaterialStatusId = m.MaterialStatusId,
-                MissionTypeId = m.MissionTypeId,
+                MissionType = (DataModels.MissionType)m.Type,
                 PackageTypeId = m.PackageTypeId,
                 Sub1 = m.Sub1,
                 Sub2 = m.Sub2,
