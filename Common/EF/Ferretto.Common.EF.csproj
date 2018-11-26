@@ -25,9 +25,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Common\DataModels\Ferretto.Common.DataModels.csproj" />
-    <ProjectReference Include="$(SolutionDir)\Common\Resources\Ferretto.Common.Resources.csproj" />
-    <ProjectReference Include="$(SolutionDir)\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\DataModels\Ferretto.Common.DataModels.csproj" />
+    <ProjectReference Include="..\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\Common\Utils\Ferretto.Common.Utils.csproj" />
   </ItemGroup>
 
 </Project>
