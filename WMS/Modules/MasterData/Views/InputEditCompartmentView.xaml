@@ -22,23 +22,23 @@
 
         <wms:ActionBar Grid.Row="0"
                        Grid.Column="1"
+                       Margin="0,5,10,10"
                        HorizontalAlignment="Right"
                        Panel.ZIndex="9999"
+                       ShowBackground="False"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
-                               GlyphSize="Custom"
-                               Style="{DynamicResource BarItemBorderThemeKey2}" />
+                               GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding DeleteCommand}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_delete_black_24dp.png"
-                               GlyphSize="Custom"
-                               Style="{DynamicResource BarItemBorderThemeKey}" />
+                               GlyphSize="Custom" />
 
             <wms:ActionBarItem Command="{Binding CancelCommand}"
                                Content="{x:Static res:General.Cancel}"
@@ -61,6 +61,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -139,6 +140,15 @@
                                   VerticalAlignment="Top"
                                   EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Foreground="White" />
+
+                    <!--<wms:ComboBox x:Name="ItemPairingText"
+                                  Grid.Row="7"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Left"
+                                  EditValue="{Binding SelectedCompartmentTray.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Foreground="White"
+                                  ItemsSource="{Binding Path=SelectedCompartmentTray.ItemPairingChoices}" />-->
+
 
                 </Grid>
             </StackPanel>

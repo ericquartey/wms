@@ -83,7 +83,7 @@
                                    ShowSearchPanelMode="Never">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
-                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray.Id, Mode=OneWay}"
                                                           StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                           StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                             </i:EventTrigger>
@@ -120,40 +120,42 @@
 
 
         <wms:Expander x:Name="Expander"
+                      Grid.Row="0"
                       Grid.Column="1"
                       VerticalAlignment="Stretch"
                       VerticalContentAlignment="Stretch"
                       ExpandDirection="Right"
                       HideToggleButton="True"
                       IsExpanded="{Binding IsExpand}">
-            <Grid>
-                <ScrollViewer Grid.Column="1"
-                              Grid.ColumnSpan="1"
-                              HorizontalAlignment="Right"
-                              Focusable="False"
-                              IsTabStop="False">
+            <ScrollViewer x:Name="ScrollView"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="1"
+                          HorizontalAlignment="Right"
+                          BorderThickness="0"
+                          Focusable="False"
+                          IsTabStop="False">
 
-                    <Border Style="{StaticResource InfoBoxBorderStyle}">
+                <Border x:Name="BorderStyle"
+                        Style="{StaticResource InfoBoxBorderStyle}">
 
-                        <Grid x:Name="InputEdit"
-                              HorizontalAlignment="Left">
-                            <masterData:InputAddCompartmentView x:Name="InputAddCompartment"
-                                                                Grid.Row="1"
-                                                                ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputAddVM, Mode=TwoWay}" />
+                    <Grid x:Name="InputEdit"
+                          HorizontalAlignment="Left">
+                        <masterData:InputAddCompartmentView x:Name="InputAddCompartment"
+                                                            Grid.Row="0"
+                                                            ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputAddVM, Mode=TwoWay}" />
 
-                            <masterData:InputBulkAddCompartmentView x:Name="InputBulkAddCompartment"
-                                                                    Grid.Row="1"
-                                                                    ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputBulkAddVM, Mode=TwoWay}" />
+                        <masterData:InputBulkAddCompartmentView x:Name="InputBulkAddCompartment"
+                                                                Grid.Row="0"
+                                                                ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputBulkAddVM, Mode=TwoWay}" />
 
-                            <masterData:InputEditCompartmentView x:Name="InputEditCompartment"
-                                                                 Grid.Row="1"
-                                                                 ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputEditVM, Mode=TwoWay}" />
+                        <masterData:InputEditCompartmentView x:Name="InputEditCompartment"
+                                                             Grid.Row="0"
+                                                             ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputEditVM, Mode=TwoWay}" />
 
-                        </Grid>
-                    </Border>
-                </ScrollViewer>
+                    </Grid>
+                </Border>
+            </ScrollViewer>
 
-            </Grid>
         </wms:Expander>
 
     </Grid>

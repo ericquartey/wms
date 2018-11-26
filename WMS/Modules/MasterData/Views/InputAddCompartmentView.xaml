@@ -18,34 +18,16 @@
              Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
 
-    <!--<wms:WmsView.Resources>
-        <Style x:Key="ActionBarItemStyle"
-               BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.BarButtonItem,
-                                                                    ThemeName=Office2016White}}"
-               TargetType="{x:Type dxb:BarButtonItem}">
-            <Setter>
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type dxb:BarButtonItem}">
-
-                        <Border BorderBrush="Black"
-                                BorderThickness="1">
-                            <TextBlock>CIAO</TextBlock>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </wms:WmsView.Resources>-->
-
     <Grid x:Name="Add"
           MinWidth="300"
           Visibility="{Binding EnableInputAdd, Converter={StaticResource BTVC}, Mode=TwoWay}">
 
         <wms:ActionBar Grid.Row="0"
                        Grid.Column="1"
+                       Margin="0,5,10,10"
                        HorizontalAlignment="Right"
                        Panel.ZIndex="9999"
-                       Background="#00FFFFFF"
+                       ShowBackground="False"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
 
@@ -54,7 +36,6 @@
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
-            <dxb:BarItemLinkSeparator />
 
 
             <wms:ActionBarItem Command="{Binding CancelCommand}"
@@ -65,7 +46,7 @@
         </wms:ActionBar>
 
         <GroupBox Grid.Row="1"
-                  Margin="10,30"
+                  Margin="20,30,5,5"
                   Header="{Binding Title, Mode=OneWay}">
             <StackPanel Orientation="Vertical">
                 <Grid>
@@ -79,7 +60,6 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -157,6 +137,7 @@
                                   VerticalAlignment="Top"
                                   EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Foreground="White" />
+
                 </Grid>
             </StackPanel>
         </GroupBox>
