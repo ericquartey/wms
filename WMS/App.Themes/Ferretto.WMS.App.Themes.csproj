@@ -30,7 +30,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
+    <ProjectReference Include="$(SolutionDir)\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
  
 </Project>
