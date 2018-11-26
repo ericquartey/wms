@@ -1234,7 +1234,7 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
                         .HasColumnType("char(1)")
-                        .HasDefaultValueSql("N");
+                        .HasDefaultValueSql("'N'");
 
                     b.Property<string>("Sub1");
 
