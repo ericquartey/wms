@@ -13,11 +13,20 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
+        [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
+        public string AbcClassDescription { get; set; }
+
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
         public string Description { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.ItemImage), ResourceType = typeof(BusinessObjects))]
+        public string Image { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
+        public string ItemCategoryDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AllowedItemInCompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public int? MaxCapacity

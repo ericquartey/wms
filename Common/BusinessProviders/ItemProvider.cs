@@ -70,6 +70,11 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
                 .ThenInclude(ict => ict.Item)
+                .ThenInclude(i => i.AbcClass)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .ThenInclude(ict => ict.Item)
+                .ThenInclude(i => i.ItemCategory)
                 .SelectMany(
                     c => c.CompartmentType.ItemsCompartmentTypes,
                     (c, ict) => new AllowedItemInCompartment
@@ -78,6 +83,9 @@ namespace Ferretto.Common.BusinessProviders
                         Code = ict.Item.Code,
                         Description = ict.Item.Description,
                         MaxCapacity = ict.MaxCapacity,
+                        AbcClassDescription = ict.Item.AbcClass.Description,
+                        ItemCategoryDescription = ict.Item.ItemCategory.Description,
+                        Image = ict.Item.Image,
                     }
                 )
                 .AsNoTracking();

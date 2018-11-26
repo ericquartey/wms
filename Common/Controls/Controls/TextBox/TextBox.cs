@@ -1,8 +1,9 @@
 ﻿using System.Windows;
+using DevExpress.Xpf.Editors;
 
 namespace Ferretto.Common.Controls
 {
-    public partial class TextBox : System.Windows.Controls.TextBox
+    public partial class TextBox : TextEdit
     {
         #region Fields
 
