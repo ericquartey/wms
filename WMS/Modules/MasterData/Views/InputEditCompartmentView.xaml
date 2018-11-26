@@ -141,7 +141,7 @@
                                   EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Foreground="White" />
 
-                    <!--<wms:ComboBox x:Name="ItemPairingText"
+                    <!--TODO <wms:ComboBox x:Name="ItemPairingText"
                                   Grid.Row="7"
                                   Grid.Column="0"
                                   HorizontalAlignment="Left"
