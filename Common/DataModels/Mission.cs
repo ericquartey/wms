@@ -23,7 +23,6 @@
         public string Lot { get; set; }
         public MaterialStatus MaterialStatus { get; set; }
         public int? MaterialStatusId { get; set; }
-        public string MissionStatusId { get; set; }
         public string MissionTypeId { get; set; }
         public PackageType PackageType { get; set; }
         public int? PackageTypeId { get; set; }
