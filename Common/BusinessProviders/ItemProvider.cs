@@ -130,7 +130,7 @@ namespace Ferretto.Common.BusinessProviders
                         AbcClassId = a.Item.AbcClassId,
                         MeasureUnitId = a.Item.MeasureUnitId,
                         MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                        ManagementType = (int)a.Item.ManagementType,
+                        ManagementType = (ItemManagementType)a.Item.ManagementType,
                         FifoTimePick = a.Item.FifoTimePick,
                         FifoTimeStore = a.Item.FifoTimeStore,
                         ReorderPoint = a.Item.ReorderPoint,
@@ -228,6 +228,8 @@ namespace Ferretto.Common.BusinessProviders
             await this.itemsClient.WithdrawAsync(
                 new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
                 {
+                    IsInstant = true,
+                    Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
                     ItemId = itemWithdraw.ItemDetails.Id,
                     BayId = itemWithdraw.BayId,
                     AreaId = itemWithdraw.AreaId,
@@ -236,7 +238,6 @@ namespace Ferretto.Common.BusinessProviders
                     RegistrationNumber = itemWithdraw.RegistrationNumber,
                     Sub1 = itemWithdraw.Sub1,
                     Sub2 = itemWithdraw.Sub2,
-                    Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal
                 }
             );
         }
