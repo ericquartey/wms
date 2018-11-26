@@ -22,7 +22,7 @@ namespace Ferretto.Common.EF.Configurations
                 .HasConversion(x => (char)x, x => (MissionStatus)System.Enum.ToObject(typeof(MissionStatus), x))
                 .HasDefaultValueSql(((char)MissionStatus.New).ToString());
 
-            builder.Property(m => m.MissionType)
+            builder.Property(m => m.Type)
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (MissionType)System.Enum.ToObject(typeof(MissionType), x));
 
