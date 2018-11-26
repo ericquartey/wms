@@ -3,6 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:masterData="clr-namespace:Ferretto.WMS.Modules.MasterData"
@@ -15,6 +18,25 @@
              Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
 
+    <!--<wms:WmsView.Resources>
+        <Style x:Key="ActionBarItemStyle"
+               BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.BarButtonItem,
+                                                                    ThemeName=Office2016White}}"
+               TargetType="{x:Type dxb:BarButtonItem}">
+            <Setter>
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type dxb:BarButtonItem}">
+
+                        <Border BorderBrush="Black"
+                                BorderThickness="1">
+                            <TextBlock>CIAO</TextBlock>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </wms:WmsView.Resources>-->
+
     <Grid x:Name="Add"
           MinWidth="300"
           Visibility="{Binding EnableInputAdd, Converter={StaticResource BTVC}, Mode=TwoWay}">
@@ -23,13 +45,17 @@
                        Grid.Column="1"
                        HorizontalAlignment="Right"
                        Panel.ZIndex="9999"
+                       Background="#00FFFFFF"
                        Style="{DynamicResource ActionBarNotCustomizable}">
+
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
+            <dxb:BarItemLinkSeparator />
+
 
             <wms:ActionBarItem Command="{Binding CancelCommand}"
                                Content="{x:Static res:General.Cancel}"

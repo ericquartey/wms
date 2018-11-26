@@ -30,6 +30,10 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Remove="Themes\Light\ActionBarItem.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
  
