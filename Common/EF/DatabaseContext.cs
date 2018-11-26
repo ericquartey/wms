@@ -78,7 +78,6 @@ namespace Ferretto.Common.EF
         public virtual DbSet<MaterialStatus> MaterialStatuses { get; set; }
         public virtual DbSet<MeasureUnit> MeasureUnits { get; set; }
         public virtual DbSet<Mission> Missions { get; set; }
-        public virtual DbSet<MissionStatus> MissionStatuses { get; set; }
         public virtual DbSet<MissionType> MissionTypes { get; set; }
         public virtual DbSet<PackageType> PackageTypes { get; set; }
         public virtual DbSet<SchedulerRequest> SchedulerRequests { get; set; }
@@ -174,7 +173,6 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new MaterialStatusConfiguration());
             modelBuilder.ApplyConfiguration(new MeasureUnitConfiguration());
             modelBuilder.ApplyConfiguration(new MissionConfiguration());
-            modelBuilder.ApplyConfiguration(new MissionStatusConfiguration());
             modelBuilder.ApplyConfiguration(new MissionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SchedulerRequestConfiguration());
@@ -182,7 +180,7 @@ namespace Ferretto.Common.EF
 
         private void AddTimestamps()
         {
-            var entities = this.ChangeTracker.Entries()
+            var entries = this.ChangeTracker.Entries()
                 .Where(x =>
                     x.Entity is ITimestamped
                     &&
@@ -191,11 +189,11 @@ namespace Ferretto.Common.EF
 
             var timeNow = System.DateTime.UtcNow;
 
-            foreach (var entity in entities)
+            foreach (var entry in entries)
             {
-                var timestampedEntity = (ITimestamped)entity.Entity;
+                var timestampedEntity = (ITimestamped)entry.Entity;
 
-                if (entity.State == EntityState.Added)
+                if (entry.State == EntityState.Added)
                 {
                     timestampedEntity.CreationDate = timeNow;
                 }
