@@ -85,16 +85,20 @@ namespace Ferretto.Common.BusinessModels
             var tempList = new List<CompartmentDetails>();
             int startX = (int)bulkCompartment.XPosition;
             int startY = (int)bulkCompartment.YPosition;
+
+            int widthNewCompartment = bulkCompartment.Width / bulkCompartment.Column;
+            int heightNewCompartment = bulkCompartment.Height / bulkCompartment.Row;
+
             for (int i = 0; i < bulkCompartment.Row; i++)
             {
                 for (int j = 0; j < bulkCompartment.Column; j++)
                 {
                     var newCompartment = new CompartmentDetails()
                     {
-                        Width = bulkCompartment.Width,
-                        Height = bulkCompartment.Height,
-                        XPosition = startX + (i * bulkCompartment.Width),
-                        YPosition = startY + (j * bulkCompartment.Height),
+                        Width = widthNewCompartment,
+                        Height = heightNewCompartment,
+                        XPosition = startX + (i * widthNewCompartment),
+                        YPosition = startY + (j * heightNewCompartment),
                     };
                     if (this.CanAddCompartment(newCompartment))
                     {
@@ -106,6 +110,7 @@ namespace Ferretto.Common.BusinessModels
                     }
                 }
             }
+
             this.AddCompartmentsRange(tempList);
             return tempList;
         }

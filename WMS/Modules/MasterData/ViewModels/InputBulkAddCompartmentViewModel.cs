@@ -165,7 +165,7 @@ namespace Ferretto.WMS.Modules.MasterData
             catch (Exception ex)
             {
                 //TODO: validation error
-                this.SetError(Errors.BulkAddNoPossible + " " + ex.InnerException);
+                this.SetError(Errors.BulkAddNoPossible + " \n" + ex.InnerException);
             }
             return false;
         }
