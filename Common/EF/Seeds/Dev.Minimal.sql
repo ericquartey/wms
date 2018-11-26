@@ -671,10 +671,6 @@ SET IDENTITY_INSERT ItemListRowStatuses OFF;
 
 
 -- Missions
-INSERT INTO MissionStatuses (Id, Description) VALUES ('W', 'Waiting');
-INSERT INTO MissionStatuses (Id, Description) VALUES ('E', 'Executing');
-INSERT INTO MissionStatuses (Id, Description) VALUES ('C', 'Completed');
-
 INSERT INTO MissionTypes (Id, Description) VALUES ('PK', 'Pick');
 INSERT INTO MissionTypes (Id, Description) VALUES ('PT', 'Put');
 INSERT INTO MissionTypes (Id, Description) VALUES ('RO', 'Reorder');

@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace Ferretto.Common.DataModels
+﻿namespace Ferretto.Common.DataModels
 {
     // Stato Missione
-    public sealed class MissionStatus
+    public enum MissionStatus
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
-
-        public List<Mission> Missions { get; set; }
+        Waiting = 'W',
+        Executing = 'E',
+        Completed = 'C',
+        Faulted = 'F'
     }
 }
