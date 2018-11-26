@@ -131,7 +131,7 @@ namespace Ferretto.WMS.Scheduler.Core
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
                     Quantity = c.Availability, // TODO: TASK-787 take only as much items as needed to satisfy the request
-                    MissionTypeId = "PK" // TODO: TASK-785 convert table to enum
+                    Type = MissionType.Pick
                 }
             );
 
