@@ -414,6 +414,10 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("LastHandlingDate");
 
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
+
                     b.Property<DateTime?>("LastPickDate");
 
                     b.Property<DateTime?>("LastStoreDate");
@@ -591,7 +595,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("ItemCategoryId");
 
-                    b.Property<DateTime?>("LastModificationDate");
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime?>("LastPickDate");
 
@@ -601,6 +607,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("ManagementType")
                         .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
                         .HasColumnType("char(1)");
 
                     b.Property<string>("MeasureUnitId");
@@ -705,7 +712,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("Job");
 
-                    b.Property<DateTime?>("LastModificationDate");
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<int>("Priority")
                         .ValueGeneratedOnAdd()
@@ -756,7 +765,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("LastExecutionDate");
 
-                    b.Property<DateTime?>("LastModificationDate");
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<string>("Lot");
 
@@ -870,6 +881,10 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<DateTime?>("InventoryDate");
 
                     b.Property<DateTime?>("LastHandlingDate");
+
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<DateTime?>("LastPickDate");
 
@@ -1199,9 +1214,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("MaterialStatusId");
 
-                    b.Property<string>("MissionStatusId")
-                        .HasColumnType("char(1)");
-
                     b.Property<string>("MissionTypeId")
                         .HasColumnType("char(2)");
 
@@ -1216,6 +1228,13 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<int?>("SourceBayId");
 
                     b.Property<int?>("SourceCellId");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasColumnType("char(1)")
+                        .HasDefaultValueSql("N");
 
                     b.Property<string>("Sub1");
 
@@ -1239,8 +1258,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.HasIndex("MaterialStatusId");
 
-                    b.HasIndex("MissionStatusId");
-
                     b.HasIndex("MissionTypeId");
 
                     b.HasIndex("PackageTypeId");
@@ -1250,20 +1267,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasIndex("SourceCellId");
 
                     b.ToTable("Missions");
-                });
-
-            modelBuilder.Entity("Ferretto.Common.DataModels.MissionStatus", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(1)");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MissionStatuses");
                 });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.MissionType", b =>
@@ -1312,6 +1315,10 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("ItemId");
 
+                    b.Property<DateTime>("LastModificationDate")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValueSql("GETUTCDATE()");
+
                     b.Property<int?>("ListId");
 
                     b.Property<int?>("ListRowId");
@@ -1326,6 +1333,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("OperationType")
                         .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
                         .HasColumnType("char(1)");
 
                     b.Property<int?>("PackageTypeId");
@@ -1690,11 +1698,7 @@ namespace Ferretto.Common.EF.Migrations
                         .WithMany("Missions")
                         .HasForeignKey("MaterialStatusId");
 
-                    b.HasOne("Ferretto.Common.DataModels.MissionStatus", "MissionStatus")
-                        .WithMany("Missions")
-                        .HasForeignKey("MissionStatusId");
-
-                    b.HasOne("Ferretto.Common.DataModels.MissionType", "MissionType")
+                    b.HasOne("Ferretto.Common.DataModels.MissionType", "Type")
                         .WithMany("Missions")
                         .HasForeignKey("MissionTypeId");
 

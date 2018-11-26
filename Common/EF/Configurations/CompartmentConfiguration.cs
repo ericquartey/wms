@@ -28,6 +28,8 @@ namespace Ferretto.Common.EF.Configurations
                 .HasDefaultValue(0);
             builder.Property(c => c.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(c => c.LastModificationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
             builder.Property(c => c.ItemPairing)
                 .HasColumnType("NVARCHAR(MAX)")
                 .HasConversion(

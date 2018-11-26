@@ -169,7 +169,7 @@ namespace Ferretto.Common.BusinessModels
 
         protected virtual void OnCompartmentChanged(CompartmentDetails compartment)
         {
-            var handler = CompartmentChangedEvent;
+            var handler = this.CompartmentChangedEvent;
             if (handler != null)
             {
                 handler(this, new CompartmentEventArgs(compartment));

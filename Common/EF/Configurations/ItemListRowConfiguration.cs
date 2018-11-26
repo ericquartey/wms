@@ -19,7 +19,11 @@ namespace Ferretto.Common.EF.Configurations
 
             builder.HasIndex(i => i.Code).IsUnique();
             builder.Property(i => i.Code).IsRequired();
+
             builder.Property(i => i.CreationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
+
+            builder.Property(i => i.LastModificationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
             builder.HasOne(i => i.ItemList)

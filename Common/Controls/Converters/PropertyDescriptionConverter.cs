@@ -31,7 +31,7 @@ namespace Ferretto.Common.Controls
             }
 
             var editControl = LayoutTreeHelper.GetVisualParents(control).FirstOrDefault(c => c.GetType() == this.Control);
-            if (((FrameworkElement)control).DataContext == null)
+            if (control.DataContext == null)
             {
                 return null;
             }
@@ -41,8 +41,7 @@ namespace Ferretto.Common.Controls
 
             if (bindingExpression != null)
             {
-                var propertyName = bindingExpression.ParentBinding.Path.Path;
-                var type = ((FrameworkElement)control).DataContext.GetType();
+                var type = control.DataContext.GetType();
                 var path = bindingExpression.ParentBinding.Path.Path;
                 return FormControl.RetrieveLocalizedFieldName(type, path);
             }
