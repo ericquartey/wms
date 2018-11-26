@@ -61,15 +61,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: it is no possible to Add Bulk Compartments..
-        /// </summary>
-        public static string AddBulkNoPossible {
-            get {
-                return ResourceManager.GetString("AddBulkNoPossible", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Error: it is no possible to Add new Compartment..
         /// </summary>
         public static string AddNoPossible {
@@ -79,11 +70,119 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: it is no possible to Add Bulk Compartments..
+        /// </summary>
+        public static string BulkAddNoPossible {
+            get {
+                return ResourceManager.GetString("BulkAddNoPossible", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Column&apos;s number of new Compartment cannot be equal or less than 0..
+        /// </summary>
+        public static string BulkCompartmentColumn {
+            get {
+                return ResourceManager.GetString("BulkCompartmentColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Row&apos;s number of new Compartment cannot be equal or less than 0..
+        /// </summary>
+        public static string BulkCompartmentRow {
+            get {
+                return ResourceManager.GetString("BulkCompartmentRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {
             get {
                 return ResourceManager.GetString("CannotRetrieveDocumentGroupFromLayoutManager", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s Height cannot be equal or less than 0..
+        /// </summary>
+        public static string CompartmentHeightLess {
+            get {
+                return ResourceManager.GetString("CompartmentHeightLess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s height cannot be more than Tray&apos;s height.
+        /// </summary>
+        public static string CompartmentHeightMore {
+            get {
+                return ResourceManager.GetString("CompartmentHeightMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Compartment&apos;s size are overlaps with another compartment..
+        /// </summary>
+        public static string CompartmentOverlaps {
+            get {
+                return ResourceManager.GetString("CompartmentOverlaps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s size cannote be more than Tray&apos;s height..
+        /// </summary>
+        public static string CompartmentSizeHMore {
+            get {
+                return ResourceManager.GetString("CompartmentSizeHMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s size cannote be more than Tray&apos;s width,.
+        /// </summary>
+        public static string CompartmentSizeWMore {
+            get {
+                return ResourceManager.GetString("CompartmentSizeWMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s Width cannot be equal or less than 0..
+        /// </summary>
+        public static string CompartmentWidthLess {
+            get {
+                return ResourceManager.GetString("CompartmentWidthLess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s width cannot be more than Tray&apos;s width..
+        /// </summary>
+        public static string CompartmentWidthMore {
+            get {
+                return ResourceManager.GetString("CompartmentWidthMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XPosition cannot be more than Tray&apos;s width..
+        /// </summary>
+        public static string CompartmentXPosition {
+            get {
+                return ResourceManager.GetString("CompartmentXPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to YPosition cannot be more than Tray&apos;s height.
+        /// </summary>
+        public static string CompartmentYPosition {
+            get {
+                return ResourceManager.GetString("CompartmentYPosition", resourceCulture);
             }
         }
         
@@ -120,6 +219,15 @@ namespace Ferretto.Common.Resources {
         public static string ConverterCanConvertOnlyToVisibilityType {
             get {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: it is no possible to Edit this Compartment..
+        /// </summary>
+        public static string EditNoPossible {
+            get {
+                return ResourceManager.GetString("EditNoPossible", resourceCulture);
             }
         }
         

@@ -8,7 +8,7 @@ using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.Controls
 {
-    public class WmsCanvasListBoxControl : System.Windows.Controls.ListBox
+    public class WmsCanvasListBoxControl : ListBox
     {
         #region Fields
 
@@ -125,7 +125,7 @@ namespace Ferretto.Common.Controls
 
         private void WmsCanvasItemsControl_Loaded(Object sender, RoutedEventArgs e)
         {
-            if (!( this.DataContext is WmsTrayControlViewModel ))
+            if (!(this.DataContext is WmsTrayControlViewModel))
             {
                 return;
             }

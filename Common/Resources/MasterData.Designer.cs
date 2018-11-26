@@ -61,15 +61,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bulk Add.
-        /// </summary>
-        public static string AddBulkCompartment {
-            get {
-                return ResourceManager.GetString("AddBulkCompartment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add Compartment.
         /// </summary>
         public static string AddCompartment {
@@ -93,6 +84,15 @@ namespace Ferretto.Common.Resources {
         public static string AllowedItems {
             get {
                 return ResourceManager.GetString("AllowedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Add.
+        /// </summary>
+        public static string BulkAddCompartment {
+            get {
+                return ResourceManager.GetString("BulkAddCompartment", resourceCulture);
             }
         }
         

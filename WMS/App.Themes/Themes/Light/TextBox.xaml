@@ -11,9 +11,9 @@
     <wms:BoolToTextWrappingConverter x:Key="BTTWC" />
     <wms:PropertyDescriptionConverter x:Key="DNC"
                                       Control="{x:Type wms:TextBox}"
-                                      Property="{x:Static TextBox.TextProperty}" />
+                                      Property="{x:Static wms:TextBox.TextProperty}" />
 
-    <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.TextBox,
+    <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=DevExpress.Xpf.Editors.TextEdit,
                                                                 ThemeName=Office2016White}}"
            TargetType="{x:Type wms:TextBox}">
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
@@ -36,49 +36,13 @@
                             </Label.Content>
                         </Label>
 
-                        <TextBox x:Name="InnerTextBox"
+                        <dxe:TextEdit x:Name="InnerTextBox"
                                  Grid.Row="1"
                                  AcceptsReturn="{TemplateBinding IsMultiline}"
-                                 Style="{DynamicResource TextBoxStyleHover}"
                                  Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  TextWrapping="{TemplateBinding IsMultiline,
                                                                 Converter={StaticResource BTTWC}}" />
                     </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-
-    <Style x:Key="TextBoxStyleHover"
-           TargetType="TextBox">
-        <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Padding" Value="1" />
-        <Setter Property="AllowDrop" Value="true" />
-        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type TextBox}">
-                    <Border x:Name="bg"
-                            BorderBrush="{DynamicResource CommonSecondaryLight}"
-                            BorderThickness="1">
-                        <ScrollViewer x:Name="PART_ContentHost"
-                                      SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" TargetName="bg" Value="0.56"/>
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="bg" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
-                            <Setter TargetName="bg" Property="BorderThickness" Value="1" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="bg" Property="BorderBrush" Value="{DynamicResource CommonSecondaryDark}" />
-                            <Setter TargetName="bg" Property="BorderThickness" Value="1" />
-                        </Trigger>
-
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

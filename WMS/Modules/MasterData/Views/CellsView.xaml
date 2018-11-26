@@ -45,6 +45,10 @@
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
+                <wms:ActionBarItem Content="{x:Static res:General.Edit}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
@@ -59,14 +63,8 @@
                                 ItemsSource="{Binding SelectedDataSource, Mode=OneWay}"                    
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
-                    <dxg:TableView AllowEditing="False"
-                                   AllowGrouping="False"
-                                   AllowMoveColumnToDropArea="False"
-                                   NavigationStyle="Row"
-                                   SearchPanelHorizontalAlignment="Right"
+                    <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                    ShowFilterPanelMode="ShowAlways"
-                                   ShowGroupPanel="False"
-                                   ShowIndicator="False"
                                    ShowSearchPanelMode="Always">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">

@@ -701,4 +701,18 @@
     <value>ItemDetails Invalid</value>
     <comment>Item Withdraw - ItemDetails Invalid Error</comment>
   </data>
+  <data name="CompartmentItem" xml:space="preserve">
+    <value>Item</value>
+    <comment>Compartment - Item</comment>
+  </data>
+  <data name="ItemImage" xml:space="preserve">
+    <value>Image</value>
+    <comment>Item - Image</comment>
+  </data>
+  <data name="BulkCompartmentColumn" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="BulkCompartmentRow" xml:space="preserve">
+    <value>Row</value>
+  </data>
 </root>

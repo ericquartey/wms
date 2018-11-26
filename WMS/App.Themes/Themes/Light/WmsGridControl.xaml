@@ -206,9 +206,13 @@
                    StrokeThickness="2" />
     </ControlTemplate>
 
-    <Style TargetType="{x:Type dxg:RowControl}">
-        <Setter Property="Height" Value="30" />
+    <Style x:Key="AutoHeightRowControlStyle" TargetType="{x:Type dxg:RowControl}">
+        <Setter Property="Height" Value="Auto" />
         <Setter Property="FontSize" Value="{DynamicResource GridFontSize}" />
+    </Style>
+
+    <Style TargetType="{x:Type dxg:RowControl}" BasedOn="{StaticResource AutoHeightRowControlStyle}">
+        <Setter Property="Height" Value="30" />
     </Style>
 
     <!--  row style  -->
@@ -236,10 +240,17 @@
     </ControlTemplate>
 
     <Style TargetType="dxg:TableView">
+        <Setter Property="AllowEditing" Value="False" />
+        <Setter Property="AllowGrouping" Value="False" />
+        <Setter Property="AllowMoveColumnToDropArea" Value="False" />
         <Setter Property="AlternateRowBackground" Value="{DynamicResource CommonSecondaryUltralight}" />
         <Setter Property="FadeSelectionOnLostFocus" Value="False" />
+        <Setter Property="NavigationStyle" Value="Row" />
         <Setter Property="ShowFocusedRectangle" Value="True" />
+        <Setter Property="ShowGroupPanel" Value="False" />
+        <Setter Property="ShowIndicator" Value="False" />
         <Setter Property="ShowHorizontalLines" Value="False" />
+        <Setter Property="ShowSearchPanelMode" Value="Never" />
         <Setter Property="ShowVerticalLines" Value="False" />
         <Setter Property="SearchPanelNullText" Value="{x:Static res:General.Search}" />
     </Style>

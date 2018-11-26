@@ -555,4 +555,16 @@
   <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
   </data>
+  <data name="CompartmentItem" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="ItemImage" xml:space="preserve">
+    <value>Immagine</value>
+  </data>
+  <data name="BulkCompartmentColumn" xml:space="preserve">
+    <value>Colonna</value>
+  </data>
+  <data name="BulkCompartmentRow" xml:space="preserve">
+    <value>Riga</value>
+  </data>
 </root>

@@ -92,13 +92,11 @@
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
                                       ItemsSource="{Binding Path=CompartmentTypeChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
                                       ItemsSource="{Binding Path=ItemPairingChoices}" />
                         <wms:ComboBox Grid.Row="3"
                                       Margin="0,0,20,0"
@@ -161,43 +159,70 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox Grid.Row="0"
-                                     Grid.Column="0"
-                                     Grid.ColumnSpan="2"
-                                     IsEnabled="False"
-                                     Text="{Binding ItemDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:LookUpEdit Grid.Row="0"
+                                        Grid.Column="0"
+                                        Grid.ColumnSpan="2"
+                                        DisplayMember="Description"
+                                        EditValue="{Binding ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AllowedItemsDataSource, Mode=OneWay}"
+                                        ValueMember="Id">
+                            <wms:LookUpEdit.PopupContentTemplate>
+                                <ControlTemplate>
+                                    <wms:WmsGridControl x:Name="PART_GridControl">
+                                        <wms:WmsGridControl.Columns>
+                                            <dxg:GridColumn FieldName="Code" Width="10*" />
+                                            <dxg:GridColumn FieldName="Description" Width="20*" />
+                                            <dxg:GridColumn FieldName="ItemCategoryDescription" Width="10*" />
+                                            <dxg:GridColumn FieldName="AbcClassDescription" Width="10*" />
+                                            <dxg:GridColumn FieldName="Image" Width="10*">
+                                                <dxg:GridColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel HorizontalAlignment="Center" Margin="2">
+                                                            <wms:WmsImage MaxWidth="100"
+                                                                          MaxHeight="100"
+                                                                          BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                                                          BorderThickness="1"
+                                                                          Path="{Binding Data.Image}"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </dxg:GridColumn.CellTemplate>
+                                            </dxg:GridColumn>
+                                        </wms:WmsGridControl.Columns>
+                                        <wms:WmsGridControl.View>
+                                            <dxg:TableView RowStyle="{DynamicResource AutoHeightRowControlStyle}" />
+                                        </wms:WmsGridControl.View>
+                                        <wms:WmsGridControl.SortInfo>
+                                            <dxg:GridSortInfo FieldName="Code" SortOrder="Ascending" />
+                                        </wms:WmsGridControl.SortInfo>
+                                    </wms:WmsGridControl>
+                                </ControlTemplate>
+                            </wms:LookUpEdit.PopupContentTemplate>
+                        </wms:LookUpEdit>
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     IsEnabled="False"
                                      Text="{Binding Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
-                                     IsEnabled="False"
                                      Text="{Binding Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
                                       ItemsSource="{Binding Path=MaterialStatusChoices}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
-                                      EditValue="{Binding FifoTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      EditValue="{Binding FifoTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  />
                         <wms:TextBox Grid.Row="3"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     IsEnabled="False"
                                      Text="{Binding Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       EditValue="{Binding PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False"
                                       ItemsSource="{Binding Path=PackageTypeChoices}" />
                         <wms:TextBox Grid.Row="4"
                                      Grid.Column="0"
                                      Grid.ColumnSpan="2"
-                                     IsEnabled="False"
                                      Text="{Binding RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
@@ -218,8 +243,7 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      EditValue="{Binding MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -228,8 +252,7 @@
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      EditValue="{Binding Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -251,13 +274,7 @@
                                             ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}"
                                             Visibility="{Binding CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
-                                <dxg:TableView AllowEditing="False"
-                                               AllowGrouping="False"
-                                               AllowMoveColumnToDropArea="False"
-                                               NavigationStyle="Row"
-                                               ShowGroupPanel="False"
-                                               ShowIndicator="False"
-                                               ShowSearchPanelMode="Never">
+                                <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentAllowedItemInCompartment.Id, Mode=OneWay}"

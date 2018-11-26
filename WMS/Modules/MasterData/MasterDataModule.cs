@@ -58,6 +58,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.NavigationService.Register<WithdrawDialogView, WithdrawDialogViewModel>();
 
+            this.NavigationService.Register<InputAddCompartmentView, InputAddCompartmentViewModel>();
+            this.NavigationService.Register<InputBulkAddCompartmentView, InputBulkAddCompartmentViewModel>();
+            this.NavigationService.Register<InputEditCompartmentView, InputEditCompartmentViewModel>();
+
 #if DEBUG
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.CheckingDatabaseStructure);
 
@@ -75,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     dataContext.Database.ExecuteSqlCommand(File.ReadAllText(@"bin\Debug\net471\Seeds\Dev.Items.sql"));
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 SplashScreenService.SetMessage(Common.Resources.Errors.UnableToConnectToDatabase);
             }

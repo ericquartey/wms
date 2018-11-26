@@ -13,7 +13,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
-             Style="{DynamicResource SlideInRightToLeft}"             
+             Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 
     <Grid Margin="20"
@@ -165,13 +165,7 @@
                                             ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}"
                                             Visibility="{Binding CellHasLoadingUnits, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
-                                <dxg:TableView AllowEditing="False"
-                                               AllowGrouping="False"
-                                               AllowMoveColumnToDropArea="False"
-                                               NavigationStyle="Row"
-                                               ShowGroupPanel="False"
-                                               ShowIndicator="False"
-                                               ShowSearchPanelMode="Never">
+                                <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentLoadingUnit.Id, Mode=OneWay}"

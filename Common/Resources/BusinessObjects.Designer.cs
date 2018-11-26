@@ -135,6 +135,24 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Column.
         /// </summary>
+        public static string BulkCompartmentColumn {
+            get {
+                return ResourceManager.GetString("BulkCompartmentColumn", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Row.
+        /// </summary>
+        public static string BulkCompartmentRow {
+            get {
+                return ResourceManager.GetString("BulkCompartmentRow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Column.
+        /// </summary>
         public static string CellColumn {
             get {
                 return ResourceManager.GetString("CellColumn", resourceCulture);
@@ -327,6 +345,15 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentHeight {
             get {
                 return ResourceManager.GetString("CompartmentHeight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string CompartmentItem {
+            get {
+                return ResourceManager.GetString("CompartmentItem", resourceCulture);
             }
         }
 
@@ -588,6 +615,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemHeight {
             get {
                 return ResourceManager.GetString("ItemHeight", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        public static string ItemImage {
+            get {
+                return ResourceManager.GetString("ItemImage", resourceCulture);
             }
         }
 
@@ -889,7 +925,7 @@ namespace Ferretto.Common.Resources {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Handling Parameters Correction.
+        ///   Looks up a localized string similar to Speed Correction.
         /// </summary>
         public static string LoadingUnitHandlingParametersCorrection {
             get {

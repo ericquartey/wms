@@ -215,6 +215,12 @@ namespace Ferretto.Common.BusinessProviders
 
                 this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
+                foreach (var compartment in model.Compartments)
+                {
+                    var existingCompartment = this.dataContext.Compartments.Find(compartment.Id);
+                    this.dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
+                }
+
                 return this.dataContext.SaveChanges();
             }
         }
