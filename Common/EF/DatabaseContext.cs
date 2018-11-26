@@ -77,8 +77,6 @@ namespace Ferretto.Common.EF
         public virtual DbSet<MachineType> MachineTypes { get; set; }
         public virtual DbSet<MaterialStatus> MaterialStatuses { get; set; }
         public virtual DbSet<MeasureUnit> MeasureUnits { get; set; }
-        public virtual DbSet<Mission> Missions { get; set; }
-        public virtual DbSet<MissionType> MissionTypes { get; set; }
         public virtual DbSet<PackageType> PackageTypes { get; set; }
         public virtual DbSet<SchedulerRequest> SchedulerRequests { get; set; }
 
@@ -173,7 +171,6 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new MaterialStatusConfiguration());
             modelBuilder.ApplyConfiguration(new MeasureUnitConfiguration());
             modelBuilder.ApplyConfiguration(new MissionConfiguration());
-            modelBuilder.ApplyConfiguration(new MissionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SchedulerRequestConfiguration());
         }
