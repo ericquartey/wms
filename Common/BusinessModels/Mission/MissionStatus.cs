@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.DataModels
+﻿namespace Ferretto.Common.BusinessModels
 {
     public enum MissionStatus
     {
