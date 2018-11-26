@@ -28,6 +28,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool isCompartmentSelectableTray;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
+        private object modelChangedEventSubscription;
+        private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private bool readOnlyTray;
         private ICommand revertCommand;
@@ -136,6 +138,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
+            this.EventService.Unsubscribe<RefreshModelsEvent<LoadingUnit>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedEvent<LoadingUnit>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedEvent<LoadingUnit>>(
                 this.modelSelectionChangedSubscription);
             base.OnDispose();
@@ -162,6 +166,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<LoadingUnit>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<LoadingUnit>>(eventArgs => { this.LoadData(); });
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
                     eventArgs =>

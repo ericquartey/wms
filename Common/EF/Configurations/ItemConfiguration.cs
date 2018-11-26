@@ -35,6 +35,9 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
 
+            builder.Property(i => i.LastModificationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
+
             builder.HasOne(i => i.AbcClass)
                 .WithMany(a => a.Items)
                 .HasForeignKey(i => i.AbcClassId)

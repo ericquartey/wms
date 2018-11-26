@@ -21,6 +21,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private IDataSource<Compartment> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
+        private object modelChangedEventSubscription;
+        private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private ICommand revertCommand;
         private ICommand saveCommand;
@@ -133,6 +135,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
+            this.EventService.Unsubscribe<RefreshModelsEvent<Item>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedEvent<Item>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedEvent<Item>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -180,6 +184,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Item>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Item>>(eventArgs => { this.LoadData(); });
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Item>>(
                 eventArgs =>
                 {

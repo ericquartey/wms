@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Ferretto.Common.DataModels
 {
     // Riga di Lista Articoli
-    public sealed class ItemListRow
+    public sealed class ItemListRow : ITimestamped
     {
         #region Properties
 
@@ -20,7 +20,7 @@ namespace Ferretto.Common.DataModels
         public ItemListRowStatus ItemListRowStatus { get; set; }
         public int ItemListRowStatusId { get; set; }
         public DateTime? LastExecutionDate { get; set; }
-        public DateTime? LastModificationDate { get; set; }
+        public DateTime LastModificationDate { get; set; }
         public string Lot { get; set; }
         public MaterialStatus MaterialStatus { get; set; }
         public int MaterialStatusId { get; set; }

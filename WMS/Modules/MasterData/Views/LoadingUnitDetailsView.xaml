@@ -194,11 +194,10 @@
                                        Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVIC}}" />
                             <wms:WmsGridControl MinHeight="200"
                                                 MaxWidth="2000"
-                                                MaxHeight="200"
-                                                SelectedBusinessObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
-                                                ItemType="{x:Type businessModels:CompartmentDetails}"
-                                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
-                                                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
+                                                MaxHeight="200"                                                
+                                                SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"                                                                                                
+                                                ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
+                                                Visibility="{Binding LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
                                 <wms:WmsGridControl.View>
                                     <dxg:TableView>
                                         <i:Interaction.Triggers>

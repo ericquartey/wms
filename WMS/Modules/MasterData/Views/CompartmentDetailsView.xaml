@@ -168,8 +168,7 @@
                                         ValueMember="Id">
                             <wms:LookUpEdit.PopupContentTemplate>
                                 <ControlTemplate>
-                                    <wms:WmsGridControl x:Name="PART_GridControl"
-                                                        ItemType="{x:Type models:AllowedItemInCompartment}">
+                                    <wms:WmsGridControl x:Name="PART_GridControl">
                                         <wms:WmsGridControl.Columns>
                                             <dxg:GridColumn FieldName="Code" Width="10*" />
                                             <dxg:GridColumn FieldName="Description" Width="20*" />
@@ -271,10 +270,9 @@
                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVIC}}" />
                         <wms:WmsGridControl MinHeight="150"
                                             MaxHeight="1000"
-                                            CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedAllowedItem, Mode=TwoWay}"
-                                            ItemType="{x:Type models:AllowedItemInCompartment}"
-                                            ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AllowedItemsDataSource, Mode=OneWay}"
-                                            Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
+                                            CurrentItem="{Binding SelectedAllowedItem, Mode=TwoWay}"                                            
+                                            ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}"
+                                            Visibility="{Binding CompartmentHasAllowedItems, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>

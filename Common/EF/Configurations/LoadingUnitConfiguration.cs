@@ -32,6 +32,8 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("text");
             builder.Property(l => l.CreationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
+            builder.Property(i => i.LastModificationDate)
+                .HasDefaultValueSql("GETUTCDATE()");
             builder.Property(l => l.InCycleCount)
                 .HasDefaultValue(0);
             builder.Property(l => l.OutCycleCount)

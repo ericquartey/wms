@@ -1,4 +1,7 @@
 ﻿using System.Configuration;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.Common.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -83,6 +86,18 @@ namespace Ferretto.Common.EF
 
         #region Methods
 
+        public override int SaveChanges()
+        {
+            this.AddTimestamps();
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.AddTimestamps();
+            return await base.SaveChangesAsync();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (optionsBuilder == null)
@@ -161,6 +176,30 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new MissionStatusConfiguration());
             modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SchedulerRequestConfiguration());
+        }
+
+        private void AddTimestamps()
+        {
+            var entities = this.ChangeTracker.Entries()
+                .Where(x =>
+                    x.Entity is ITimestamped
+                    &&
+                    (x.State == EntityState.Added || x.State == EntityState.Modified)
+                );
+
+            var timeNow = System.DateTime.UtcNow;
+
+            foreach (var entity in entities)
+            {
+                var timestampedEntity = (ITimestamped)entity.Entity;
+
+                if (entity.State == EntityState.Added)
+                {
+                    timestampedEntity.CreationDate = timeNow;
+                }
+
+                timestampedEntity.LastModificationDate = timeNow;
+            }
         }
 
         #endregion Methods
