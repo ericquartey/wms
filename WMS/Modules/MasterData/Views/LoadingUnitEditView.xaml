@@ -68,10 +68,9 @@
                                 MaxWidth="5000"
                                 MaxHeight="500"
                                 HorizontalAlignment="Left"
-                                IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsEnabledGrid, Mode=TwoWay}"
-                                ItemType="{x:Type businessModels:CompartmentDetails}"
-                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
-                                SelectedBusinessObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
+                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}"
+                                IsEnabled="{Binding IsEnabledGrid}"                                
+                                ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
                                 SelectionMode="Row">
                 <wms:WmsGridControl.View>
                     <dxg:TableView NavigationStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsEnabledGrid, Converter={StaticResource BTNSC}}">
