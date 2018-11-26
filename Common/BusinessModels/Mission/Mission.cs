@@ -15,10 +15,15 @@
         public int CellId { get; set; }
 
         public int CompartmentId { get; set; }
+
         public int ItemId { get; set; }
+
         public int? ItemListId { get; set; }
+
         public int? ItemListRowId { get; set; }
+
         public int LoadingUnitId { get; set; }
+
         public int? MaterialStatusId { get; set; }
 
         public int? PackageTypeId { get; set; }

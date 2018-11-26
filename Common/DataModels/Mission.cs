@@ -39,6 +39,8 @@
 
         public MaterialStatus MaterialStatus { get; set; }
 
+        public int? MaterialStatusId { get; set; }
+
         public MissionStatus MissionStatus { get; set; }
 
         public string MissionStatusId { get; set; }
