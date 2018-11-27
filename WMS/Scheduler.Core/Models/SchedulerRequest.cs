@@ -1,4 +1,6 @@
-﻿namespace Ferretto.Common.BusinessModels
+﻿using Ferretto.Common.BusinessModels;
+
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class SchedulerRequest : BusinessObject
     {

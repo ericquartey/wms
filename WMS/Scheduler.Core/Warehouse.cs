@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Scheduler.Core
             this.logger.LogDebug($"A total of {neededCompartmentsCount} is needed to complete the request for item id={request.ItemId}");
 
             var missions = orderedCompartments
-                .Cast<CompartmentCore>()
+                .Cast<Compartment>()
                 .Take(neededCompartmentsCount.Item2)
                 .Select(c => new Mission
                 {

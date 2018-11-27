@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.DataModels;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -73,13 +73,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     BayId = this.bay1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);

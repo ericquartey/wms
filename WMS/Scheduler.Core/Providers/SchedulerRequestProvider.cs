@@ -5,7 +5,7 @@ using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class SchedulerRequestProvider : ISchedulerRequestProvider
     {
@@ -33,7 +33,7 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            this.dataContext.SchedulerRequests.Add(new DataModels.SchedulerRequest
+            this.dataContext.SchedulerRequests.Add(new Common.DataModels.SchedulerRequest
             {
                 AreaId = model.AreaId,
                 BayId = model.BayId,
@@ -47,7 +47,7 @@ namespace Ferretto.Common.BusinessProviders
                 MaterialStatusId = model.MaterialStatusId,
                 PackageTypeId = model.PackageTypeId,
                 RegistrationNumber = model.RegistrationNumber,
-                OperationType = (DataModels.OperationType)(int)model.Type,
+                OperationType = (Common.DataModels.OperationType)(int)model.Type,
                 RequestedQuantity = model.RequestedQuantity,
                 Sub1 = model.Sub1,
                 Sub2 = model.Sub2
@@ -222,7 +222,7 @@ namespace Ferretto.Common.BusinessProviders
                 .Single();
         }
 
-        public IQueryable<CompartmentCore> GetCandidateWithdrawalCompartments(SchedulerRequest request)
+        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest request)
         {
             if (request == null)
             {
@@ -259,7 +259,7 @@ namespace Ferretto.Common.BusinessProviders
                     &&
                     (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
                     )
-                .Select(c => new CompartmentCore
+                .Select(c => new Compartment
                 {
                     Id = c.Id,
                     ItemId = c.ItemId.Value,

@@ -1,8 +1,9 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BusinessProviders;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.Scheduler.Core
 {
     public interface ISchedulerRequestProvider : IBusinessProvider<SchedulerRequest, SchedulerRequest>
     {
@@ -10,7 +11,7 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest);
 
-        IQueryable<CompartmentCore> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest);
+        IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest);
 
         Task<SchedulerRequest> GetNextRequest();
 

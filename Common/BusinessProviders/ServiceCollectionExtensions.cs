@@ -17,7 +17,6 @@ namespace Ferretto.Common.BusinessProviders
             serviceCollection.AddTransient<ILoadingUnitProvider, LoadingUnitProvider>();
             serviceCollection.AddTransient<IMissionProvider, MissionProvider>();
             serviceCollection.AddTransient<IMachineProvider, MachineProvider>();
-            serviceCollection.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
             serviceCollection.AddTransient<EnumerationProvider, EnumerationProvider>();
 
             return serviceCollection;
