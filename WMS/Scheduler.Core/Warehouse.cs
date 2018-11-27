@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.WMS.Scheduler.Core
@@ -12,8 +11,6 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Fields
 
-        private readonly IBayProvider bayProvider;
-        private readonly IItemProvider itemProvider;
         private readonly ILogger<Warehouse> logger;
         private readonly IMissionProvider missionProvider;
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
@@ -23,15 +20,11 @@ namespace Ferretto.WMS.Scheduler.Core
         #region Constructors
 
         public Warehouse(
-           IItemProvider itemProvider,
-           IBayProvider bayProvider,
            IMissionProvider missionProvider,
            ISchedulerRequestProvider schedulerRequestProvider,
            ILogger<Warehouse> logger)
         {
-            this.itemProvider = itemProvider;
             this.missionProvider = missionProvider;
-            this.bayProvider = bayProvider;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
         }
@@ -100,7 +93,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
             var compartments = this.schedulerRequestProvider.GetCandidateWithdrawalCompartments(request);
 
-            var item = this.itemProvider.GetById(request.ItemId);
+            var item = await this.missionProvider.GetItemByIdAsync(request.ItemId);
 
             var orderedCompartments =
                 this.schedulerRequestProvider.OrderCompartmentsByManagementType(compartments, item.ManagementType);

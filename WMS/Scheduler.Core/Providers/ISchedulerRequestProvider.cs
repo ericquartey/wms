@@ -1,13 +1,14 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.BusinessProviders;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
-    public interface ISchedulerRequestProvider : IBusinessProvider<SchedulerRequest, SchedulerRequest>
+    public interface ISchedulerRequestProvider
     {
         #region Methods
+
+        Task<int> Add(SchedulerRequest model);
 
         Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest);
 

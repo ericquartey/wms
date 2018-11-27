@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class Compartment : BusinessObject, IOrderableCompartment
     {

@@ -41,7 +41,6 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IItemProvider, ItemProvider>();
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
-            this.Container.RegisterType<IMissionProvider, MissionProvider>();
 
             this.Container.RegisterType<IItemsClient, ItemsClient>(new InjectionConstructor(ConfigurationManager.AppSettings["SchedulerEndpoint"]));
 

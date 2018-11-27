@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.Scheduler.Core
 {
-    public interface IMissionProvider : IBusinessProvider<Mission, Mission>
+    public interface IMissionProvider
     {
         #region Methods
 
         Task<int> AddRange(IEnumerable<Mission> missions);
+
+        Task<Item> GetItemByIdAsync(int itemId);
 
         #endregion Methods
     }

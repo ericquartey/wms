@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class MissionProvider : IMissionProvider
     {
@@ -39,7 +38,7 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(missions));
             }
 
-            this.dataContext.AddRange(missions.Select(m => new DataModels.Mission
+            this.dataContext.AddRange(missions.Select(m => new Common.DataModels.Mission
             {
                 CompartmentId = m.CompartmentId,
                 // BayId = m.BayId,  // TODO: remove destination/source bay id
@@ -49,7 +48,7 @@ namespace Ferretto.Common.BusinessProviders
                 ItemListRowId = m.ItemListRowId,
                 LoadingUnitId = m.LoadingUnitId,
                 MaterialStatusId = m.MaterialStatusId,
-                Type = (DataModels.MissionType)m.Type,
+                Type = (Common.DataModels.MissionType)m.Type,
                 PackageTypeId = m.PackageTypeId,
                 Sub1 = m.Sub1,
                 Sub2 = m.Sub2,
@@ -79,6 +78,17 @@ namespace Ferretto.Common.BusinessProviders
         public Mission GetById(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Item> GetItemByIdAsync(int itemId)
+        {
+            return await this.dataContext.Items
+                .Select(i => new Item
+                {
+                    Id = i.Id,
+                }
+                )
+                .SingleAsync(i => i.Id == itemId);
         }
 
         public int Save(Mission model)
