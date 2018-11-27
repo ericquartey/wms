@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <ctrls:BoolToVisibilityConverter x:Key="BTVIHC" Hide="True" Invert="True" />
+    <ctrls:BoolToVisibilityConverter x:Key="BTVIHC"
+                                     Hide="True"
+                                     Invert="True" />
 
     <system:Double x:Key="ExpanderArrowHeight">30</system:Double>
     <system:Double x:Key="ExpanderArrowWidth">13</system:Double>
@@ -137,7 +139,7 @@
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
         <Setter Property="VerticalContentAlignment" Value="Stretch" />
         <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Expander}">
