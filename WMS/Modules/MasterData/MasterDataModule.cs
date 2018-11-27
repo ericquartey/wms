@@ -63,8 +63,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<InputBulkAddCompartmentView, InputBulkAddCompartmentViewModel>();
             this.NavigationService.Register<InputEditCompartmentView, InputEditCompartmentViewModel>();
 
-            this.NavigationService.Register<ListsView, ListsViewModel>();
-            //this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
+            this.NavigationService.Register<ItemListsView, ItemListsViewModel>();
+            this.NavigationService.Register<ItemListDetailsView, ItemListDetailsViewModel>();
 
 #if DEBUG
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.CheckingDatabaseStructure);
