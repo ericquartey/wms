@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -11,8 +12,8 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Fields
 
+        private readonly IDataProvider dataProvider;
         private readonly ILogger<Warehouse> logger;
-        private readonly IMissionProvider missionProvider;
         private readonly ISchedulerRequestProvider schedulerRequestProvider;
 
         #endregion Fields
@@ -20,11 +21,11 @@ namespace Ferretto.WMS.Scheduler.Core
         #region Constructors
 
         public Warehouse(
-           IMissionProvider missionProvider,
+           IDataProvider dataProvider,
            ISchedulerRequestProvider schedulerRequestProvider,
            ILogger<Warehouse> logger)
         {
-            this.missionProvider = missionProvider;
+            this.dataProvider = dataProvider;
             this.logger = logger;
             this.schedulerRequestProvider = schedulerRequestProvider;
         }
@@ -33,42 +34,19 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public async Task<SchedulerRequest> Withdraw(SchedulerRequest request)
+        public async Task<IEnumerable<Mission>> DispatchRequests()
         {
-            SchedulerRequest qualifiedRequest = null;
-            using (var scope = new TransactionScope())
-            {
-                qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
-                if (qualifiedRequest != null)
-                {
-                    var addedRecordCount = await this.schedulerRequestProvider.Add(qualifiedRequest);
-                    if (addedRecordCount > 0)
-                    {
-                        scope.Complete();
-                        this.logger.LogDebug($"Withdrawal request for item={request.ItemId} was accepted and stored.");
-
-                        await this.DispatchRequests();
-                    }
-                }
-            }
-
-            return qualifiedRequest;
-        }
-
-        private async Task DispatchRequests()
-        {
-            var request = await this.schedulerRequestProvider.GetNextRequest();
+            var request = await this.dataProvider.GetNextRequestToProcessAsync();
             if (request == null)
             {
-                return;
+                return null;
             }
 
             this.logger.LogDebug($"Request for item={request.ItemId} is the next in line to be processed.");
             switch (request.Type)
             {
                 case OperationType.Withdrawal:
-                    this.DispatchWithdrawalRequest(request);
-                    break;
+                    return await this.DispatchWithdrawalRequest(request);
 
                 case OperationType.Insertion:
                     throw new NotImplementedException();
@@ -84,7 +62,29 @@ namespace Ferretto.WMS.Scheduler.Core
             }
         }
 
-        private async void DispatchWithdrawalRequest(SchedulerRequest request)
+        public async Task<SchedulerRequest> Withdraw(SchedulerRequest request)
+        {
+            SchedulerRequest qualifiedRequest = null;
+            using (var scope = new TransactionScope())
+            {
+                qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
+                if (qualifiedRequest != null)
+                {
+                    var addedRecordCount = await this.dataProvider.AddAsync(qualifiedRequest);
+                    if (addedRecordCount > 0)
+                    {
+                        scope.Complete();
+                        this.logger.LogDebug($"Withdrawal request for item={request.ItemId} was accepted and stored.");
+
+                        await this.DispatchRequests();
+                    }
+                }
+            }
+
+            return qualifiedRequest;
+        }
+
+        private async Task<IEnumerable<Mission>> DispatchWithdrawalRequest(SchedulerRequest request)
         {
             if (!request.IsInstant)
             {
@@ -93,7 +93,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
             var compartments = this.schedulerRequestProvider.GetCandidateWithdrawalCompartments(request);
 
-            var item = await this.missionProvider.GetItemByIdAsync(request.ItemId);
+            var item = await this.dataProvider.GetItemByIdAsync(request.ItemId);
 
             var orderedCompartments =
                 this.schedulerRequestProvider.OrderCompartmentsByManagementType(compartments, item.ManagementType);
@@ -134,7 +134,9 @@ namespace Ferretto.WMS.Scheduler.Core
             // TODO: TASK-789 update the request when all the quantity that still was not satisfied, or delete it if it was fully satisfied
             //
 
-            await this.missionProvider.AddRange(missions);
+            await this.dataProvider.AddRangeAsync(missions);
+
+            return missions;
         }
 
         #endregion Methods

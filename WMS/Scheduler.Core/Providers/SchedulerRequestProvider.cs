@@ -26,36 +26,6 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public async Task<int> Add(SchedulerRequest model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            this.dataContext.SchedulerRequests.Add(new Common.DataModels.SchedulerRequest
-            {
-                AreaId = model.AreaId,
-                BayId = model.BayId,
-                IsInstant = model.IsInstant,
-                ItemId = model.ItemId,
-                ListId = model.ListId,
-                ListRowId = model.ListRowId,
-                LoadingUnitId = model.LoadingUnitId,
-                LoadingUnitTypeId = model.LoadingUnitTypeId,
-                Lot = model.Lot,
-                MaterialStatusId = model.MaterialStatusId,
-                PackageTypeId = model.PackageTypeId,
-                RegistrationNumber = model.RegistrationNumber,
-                OperationType = (Common.DataModels.OperationType)(int)model.Type,
-                RequestedQuantity = model.RequestedQuantity,
-                Sub1 = model.Sub1,
-                Sub2 = model.Sub2
-            });
-
-            return await this.dataContext.SaveChangesAsync();
-        }
-
         public async Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest request)
         {
             if (request == null)
@@ -157,66 +127,6 @@ namespace Ferretto.WMS.Scheduler.Core
               .FirstOrDefaultAsync();
         }
 
-        public IQueryable<SchedulerRequest> GetAll()
-        {
-            return this.dataContext.SchedulerRequests
-                .Select(s =>
-                    new SchedulerRequest
-                    {
-                        Id = s.Id,
-                        AreaId = s.AreaId,
-                        BayId = s.BayId,
-                        CreationDate = s.CreationDate,
-                        ItemId = s.ItemId,
-                        IsInstant = s.IsInstant,
-                        LoadingUnitId = s.LoadingUnitId,
-                        LoadingUnitTypeId = s.LoadingUnitTypeId,
-                        MaterialStatusId = s.MaterialStatusId,
-                        Lot = s.Lot,
-                        Type = (OperationType)s.OperationType,
-                        PackageTypeId = s.PackageTypeId,
-                        RegistrationNumber = s.RegistrationNumber,
-                        RequestedQuantity = s.RequestedQuantity,
-                        Sub1 = s.Sub1,
-                        Sub2 = s.Sub2
-                    });
-        }
-
-        public int GetAllCount()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SchedulerRequests.Count();
-            }
-        }
-
-        public SchedulerRequest GetById(int id)
-        {
-            return this.dataContext.SchedulerRequests
-                .Where(s => s.Id == id)
-                .Select(s =>
-                    new SchedulerRequest
-                    {
-                        Id = s.Id,
-                        IsInstant = s.IsInstant,
-                        AreaId = s.AreaId,
-                        BayId = s.BayId,
-                        CreationDate = s.CreationDate,
-                        ItemId = s.ItemId,
-                        LoadingUnitId = s.LoadingUnitId,
-                        LoadingUnitTypeId = s.LoadingUnitTypeId,
-                        MaterialStatusId = s.MaterialStatusId,
-                        Lot = s.Lot,
-                        Type = (OperationType)s.OperationType,
-                        PackageTypeId = s.PackageTypeId,
-                        RegistrationNumber = s.RegistrationNumber,
-                        RequestedQuantity = s.RequestedQuantity,
-                        Sub1 = s.Sub1,
-                        Sub2 = s.Sub2
-                    })
-                .Single();
-        }
-
         public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest request)
         {
             if (request == null)
@@ -280,34 +190,6 @@ namespace Ferretto.WMS.Scheduler.Core
                         ),
                     Availability = c.Stock - c.ReservedForPick + c.ReservedToStore
                 });
-        }
-
-        public Task<SchedulerRequest> GetNextRequest()
-        {
-            return this.dataContext.SchedulerRequests
-                .OrderBy(s => new { s.IsInstant, s.CreationDate })
-                .Select(r => new SchedulerRequest
-                {
-                    Id = r.Id,
-                    AreaId = r.AreaId,
-                    BayId = r.BayId,
-                    CreationDate = r.CreationDate,
-                    IsInstant = r.IsInstant,
-                    ItemId = r.ItemId,
-                    ListId = r.ListId,
-                    ListRowId = r.LoadingUnitId,
-                    LoadingUnitId = r.LoadingUnitId,
-                    LoadingUnitTypeId = r.LoadingUnitTypeId,
-                    Lot = r.Lot,
-                    Type = (OperationType)r.OperationType,
-                    MaterialStatusId = r.MaterialStatusId,
-                    PackageTypeId = r.PackageTypeId,
-                    RegistrationNumber = r.RegistrationNumber,
-                    RequestedQuantity = r.RequestedQuantity,
-                    Sub1 = r.Sub1,
-                    Sub2 = r.Sub2
-                })
-                .FirstOrDefaultAsync();
         }
 
         public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)

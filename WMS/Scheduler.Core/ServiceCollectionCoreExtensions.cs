@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Scheduler.Core
         public static IServiceCollection AddCoreBusinessProviders(
                  this IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<IMissionProvider, MissionProvider>();
+            serviceCollection.AddTransient<IDataProvider, DataProvider>();
             serviceCollection.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
 
             return serviceCollection;

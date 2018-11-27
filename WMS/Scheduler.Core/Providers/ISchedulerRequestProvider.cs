@@ -8,13 +8,9 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Methods
 
-        Task<int> Add(SchedulerRequest model);
-
         Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest schedulerRequest);
 
         IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest schedulerRequest);
-
-        Task<SchedulerRequest> GetNextRequest();
 
         IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)
             where T : IOrderableCompartment;
