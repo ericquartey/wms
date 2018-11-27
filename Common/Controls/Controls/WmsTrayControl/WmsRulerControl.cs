@@ -147,35 +147,35 @@ namespace Ferretto.Common.Controls
             switch (this.InfoRuler.OrientationRuler)
             {
                 case Orientation.Horizontal:
-                {
-                    this.MarkLength = (int)this.ActualHeight;
-
-                    if (this.ActualWidth > 0 && this.MajorIntervalPixel > 0)
                     {
-                        ratio = this.WidthMmForConvert / this.MajorInterval;
-                        if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
-                        {
-                            ratio = 0;
-                        }
-                    }
+                        this.MarkLength = (int)this.ActualHeight;
 
-                    break;
-                }
+                        if (this.ActualWidth > 0 && this.MajorIntervalPixel > 0)
+                        {
+                            ratio = this.WidthMmForConvert / this.MajorInterval;
+                            if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                            {
+                                ratio = 0;
+                            }
+                        }
+
+                        break;
+                    }
                 case Orientation.Vertical:
-                {
-                    this.MarkLength = (int)this.ActualWidth;
-
-                    if (this.ActualHeight > 0 && this.MajorIntervalPixel > 0)
                     {
-                        ratio = this.HeightMmForRatio / this.MajorInterval;
-                        if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
-                        {
-                            ratio = 0;
-                        }
-                    }
+                        this.MarkLength = (int)this.ActualWidth;
 
-                    break;
-                }
+                        if (this.ActualHeight > 0 && this.MajorIntervalPixel > 0)
+                        {
+                            ratio = this.HeightMmForRatio / this.MajorInterval;
+                            if (double.IsNegativeInfinity(ratio) || double.IsPositiveInfinity(ratio))
+                            {
+                                ratio = 0;
+                            }
+                        }
+
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -318,6 +318,7 @@ namespace Ferretto.Common.Controls
         private void DrawMark(ref DrawingContext drawingContext, int i)
         {
             var mark = new Line();
+            bool toDraw = true;
 
             if (this.InfoRuler.OrientationRuler == Orientation.Horizontal)
             {
@@ -328,10 +329,18 @@ namespace Ferretto.Common.Controls
                 if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Left)
                 {
                     mark.XStart += this.startFrom;
+                    if (mark.XStart >= this.ActualWidth)
+                    {
+                        toDraw = false;
+                    }
                 }
                 else if (this.InfoRuler.OriginHorizontal == OriginHorizontal.Right)
                 {
                     mark.XStart = (this.ActualWidth - this.startFrom) - mark.XStart;
+                    if (mark.XStart <= 0)
+                    {
+                        toDraw = false;
+                    }
                 }
 
                 mark.XEnd = mark.XStart;
@@ -347,19 +356,29 @@ namespace Ferretto.Common.Controls
                 if (this.InfoRuler.OriginVertical == OriginVertical.Top)
                 {
                     mark.YStart += this.startFrom;
+                    if (mark.YStart >= this.ActualHeight)
+                    {
+                        toDraw = false;
+                    }
                 }
                 else if (this.InfoRuler.OriginVertical == OriginVertical.Bottom)
                 {
                     mark.YStart = (this.ActualHeight - this.startFrom) - mark.YStart;
+                    if (mark.YStart <= 0)
+                    {
+                        toDraw = false;
+                    }
                 }
 
                 mark.YEnd = mark.YStart;
             }
-
-            drawingContext.DrawLine(
+            if (toDraw)
+            {
+                drawingContext.DrawLine(
                 new Pen(new SolidColorBrush(Colors.Black), this.WIDTH_MARK),
                 new Point(Math.Round(mark.XStart), Math.Round(mark.YStart)),
                 new Point(Math.Round(mark.XEnd), Math.Round(mark.YEnd)));
+            }
         }
 
         private void DrawMiddleMark(ref DrawingContext drawingContext, int i)
