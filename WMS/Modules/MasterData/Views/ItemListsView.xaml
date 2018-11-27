@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.ListsView"
+﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.ItemListsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -74,7 +74,7 @@
                             <i:EventTrigger EventName="RowDoubleClick">
                                 <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
                                                           StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                          StartViewName="{x:Static modules:MasterData.LISTDETAILS}" />
+                                                          StartViewName="{x:Static modules:MasterData.ITEMLISTDETAILS}" />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </dxg:TableView>
@@ -82,22 +82,25 @@
                 </wms:WmsGridControl.View>
 
                 <wms:WmsGridControl.Columns>
-                    <dxg:GridColumn Width="100*"
+                    <dxg:GridColumn Width="180*"
                                     FieldName="Code" />
+                    <dxg:GridColumn Width="200*"
+                                    FieldName="ItemListTypeDescription" />
                     <dxg:GridColumn Width="400*"
                                     FieldName="Description" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="ItemCategoryDescription" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="AbcClassDescription" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="TotalStock" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="TotalReservedForPick" />
-                    <dxg:GridColumn Width="100*"
-                                    FieldName="TotalReservedToStore" />
-                    <dxg:GridColumn Width="50*"
-                                    FieldName="TotalAvailable" />
+                    <dxg:GridColumn Width="300*"
+                                    FieldName="AreaName" />
+                    <dxg:GridColumn Width="140*"
+                                    FieldName="Priority" />
+                    <dxg:GridColumn Width="200*"
+                                    FieldName="ItemListStatusDescription" />
+                    <dxg:GridColumn Width="200*"
+                                    FieldName="CreationDate" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="ItemListRowsCount" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="ItemListItemsCount" />
+
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>

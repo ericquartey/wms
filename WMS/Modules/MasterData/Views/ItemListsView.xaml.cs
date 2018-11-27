@@ -19,11 +19,11 @@ namespace Ferretto.WMS.Modules.MasterData
     /// <summary>
     /// Interaction logic for ListsView.xaml
     /// </summary>
-    public partial class ListsView : WmsView
+    public partial class ItemListsView : WmsView
     {
         #region Constructors
 
-        public ListsView()
+        public ItemListsView()
         {
             this.InitializeComponent();
         }
