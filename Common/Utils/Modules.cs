@@ -44,6 +44,8 @@
         public const string COMPARTMENTS = "CompartmentsViewModel";
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMS = "ItemsViewModel";
+        public const string LISTDETAILS = "ListDetailsViewModel";
+        public const string LISTS = "ListsViewModel";
         public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
         public const string LOADINGUNITEDIT = "LoadingUnitEditViewModel";
         public const string LOADINGUNITS = "LoadingUnitsViewModel";

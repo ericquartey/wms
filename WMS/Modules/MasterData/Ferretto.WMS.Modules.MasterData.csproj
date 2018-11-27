@@ -33,6 +33,10 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Remove="Views\ListsView.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <None Update="Views\InputAddCompartmentView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
