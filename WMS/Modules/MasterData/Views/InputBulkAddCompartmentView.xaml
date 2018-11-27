@@ -21,8 +21,10 @@
 
         <wms:ActionBar Grid.Row="0"
                        Grid.Column="1"
+                       Margin="0,5,10,10"
                        HorizontalAlignment="Right"
                        Panel.ZIndex="9999"
+                       ShowBackground="False"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand, Mode=OneWay}"
@@ -74,26 +76,30 @@
                            Foreground="{Binding ErrorColor}"
                            Visibility="Visible" />
 
-                    <wms:SpinEdit Grid.Row="3"
+                    <wms:SpinEdit x:Name="WidthText"
+                                  Grid.Row="3"
                                   Grid.Column="0"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   EditValue="{Binding SelectedBulkCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                    <wms:SpinEdit Grid.Row="3"
+                    <wms:SpinEdit x:Name="HeightText"
+                                  Grid.Row="3"
                                   Grid.Column="1"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   EditValue="{Binding SelectedBulkCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                    <wms:SpinEdit Grid.Row="4"
+                    <wms:SpinEdit x:Name="PositionXText"
+                                  Grid.Row="4"
                                   Grid.Column="0"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   Background="White"
                                   EditValue="{Binding SelectedBulkCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                    <wms:SpinEdit Grid.Row="4"
+                    <wms:SpinEdit x:Name="PositionYText"
+                                  Grid.Row="4"
                                   Grid.Column="1"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
