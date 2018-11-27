@@ -210,4 +210,7 @@
   <data name="LoadingUnitEdit" xml:space="preserve">
     <value>Modifica Unità di Carico</value>
   </data>
+  <data name="ListDetails" xml:space="preserve">
+    <value>Dettaglio delle liste</value>
+  </data>
 </root>

@@ -151,6 +151,37 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => loadingUnitDetailsProvider.GetByLoadingUnitId((int)parameter))
                     }.Cast<IDataSource<TModel>>();
 
+                case MasterData.ITEMLISTS:
+                    var itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+                    var itemListCountProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+
+                    return new List<DataSource<ItemList>>
+                    {
+                        new DataSource<ItemList>(
+                            "ItemListViewAll",
+                            Resources.MasterData.ItemListAll,
+                            () => itemListProvider.GetAll(),
+                            () => itemListCountProvider.GetAllCount()),
+
+                        new DataSource<ItemList>(
+                            "ItemListViewStatusWaiting",
+                            Resources.MasterData.ItemListStatusWaiting,
+                            () => itemListProvider.GetWithStatusWaiting(),
+                            () => itemListCountProvider.GetWithStatusWaitingCount()),
+
+                        new DataSource<ItemList>(
+                            "ItemListViewStatusCompleted",
+                            Resources.MasterData.ItemListStatusCompleted,
+                            () => itemListProvider.GetWithStatusCompleted(),
+                            () => itemListCountProvider.GetWithStatusCompletedCount()),
+
+                        new DataSource<ItemList>(
+                            "ItemListViewTypePick",
+                            Resources.MasterData.ItemListsTypePick,
+                            () => itemListProvider.GetWithTypePick(),
+                            () => itemListCountProvider.GetWithTypePickCount()),
+                    }.Cast<IDataSource<TModel>>();
+
                 default:
                     return new List<IDataSource<TModel>>();
             }
