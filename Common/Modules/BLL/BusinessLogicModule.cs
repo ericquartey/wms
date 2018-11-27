@@ -39,6 +39,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IEventService, EventService>();
             this.Container.RegisterType<IImageProvider, ImageProvider>();
             this.Container.RegisterType<IItemProvider, ItemProvider>();
+            this.Container.RegisterType<IItemListProvider, ItemListProvider>();
             this.Container.RegisterType<ILoadingUnitProvider, LoadingUnitProvider>();
             this.Container.RegisterType<IMachineProvider, MachineProvider>();
             this.Container.RegisterType<IMissionProvider, MissionProvider>();
