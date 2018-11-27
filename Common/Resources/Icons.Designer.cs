@@ -214,6 +214,42 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
+        /// </summary>
+        public static string ItemListViewAll {
+            get {
+                return ResourceManager.GetString("ItemListViewAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_assignment_turned_in_black_48dp.png.
+        /// </summary>
+        public static string ItemListViewStatusCompleted {
+            get {
+                return ResourceManager.GetString("ItemListViewStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_query_builder_black_48dp.png.
+        /// </summary>
+        public static string ItemListViewStatusWaiting {
+            get {
+                return ResourceManager.GetString("ItemListViewStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/file/ic_file_upload_black_48dp.png.
+        /// </summary>
+        public static string ItemListViewTypePick {
+            get {
+                return ResourceManager.GetString("ItemListViewTypePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/items.png.
         /// </summary>
         public static string Items {
