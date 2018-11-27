@@ -33,7 +33,14 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Remove="Views\ListsView.xaml" />
+    <None Remove="Views\ItemListDetailsView.xaml" />
+    <None Remove="Views\ItemListsView.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Views\ItemListsView.xaml.cs">
+      <DependentUpon>ItemListsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   
   <ItemGroup>
