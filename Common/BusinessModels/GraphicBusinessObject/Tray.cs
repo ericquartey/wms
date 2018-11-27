@@ -83,8 +83,6 @@ namespace Ferretto.Common.BusinessModels
         public List<CompartmentDetails> BulkAddCompartments(BulkCompartment bulkCompartment)
         {
             var tempList = new List<CompartmentDetails>();
-            //int startX = (int)bulkCompartment.XPosition;
-            //int startY = (int)bulkCompartment.YPosition;
 
             int widthNewCompartment = bulkCompartment.Width / bulkCompartment.Column;
             int heightNewCompartment = bulkCompartment.Height / bulkCompartment.Row;
@@ -97,8 +95,8 @@ namespace Ferretto.Common.BusinessModels
                     {
                         Width = widthNewCompartment,
                         Height = heightNewCompartment,
-                        XPosition = bulkCompartment.XPosition,//(i * widthNewCompartment),//XPosition = startX + (i * widthNewCompartment),
-                        YPosition = bulkCompartment.YPosition,//(j * heightNewCompartment),//YPosition = startY + (j * heightNewCompartment),
+                        XPosition = bulkCompartment.XPosition + (j * widthNewCompartment),
+                        YPosition = bulkCompartment.YPosition + (i * heightNewCompartment),
                     };
                     if (this.CanAddCompartment(newCompartment))
                     {
@@ -106,7 +104,7 @@ namespace Ferretto.Common.BusinessModels
                     }
                     else
                     {
-                        throw new ArgumentException();
+                        throw new Exception(Errors.BulkAddNoPossible);
                     }
                 }
             }
@@ -154,14 +152,6 @@ namespace Ferretto.Common.BusinessModels
                 {
                     return this.CanCreateNewCompartment(bulkCompartment, tray, isBulkAdd, edit);
                 }
-                //else
-                //{
-                //    if (bulkCompartment != null && bulkCompartment.Row > 1 && bulkCompartment.Column > 1)
-                //    {
-                //        bulkCompartment.Width = bulkCompartment.Width * bulkCompartment.Row;
-                //        bulkCompartment.Height = bulkCompartment.Height * bulkCompartment.Column;
-                //    }
-                //}
             }
 
             return null;
