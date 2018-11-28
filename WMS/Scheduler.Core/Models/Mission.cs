@@ -1,6 +1,4 @@
-﻿using Ferretto.Common.BusinessModels;
-
-namespace Ferretto.WMS.Scheduler.Core
+﻿namespace Ferretto.WMS.Scheduler.Core
 {
     public class Mission : BusinessObject
     {

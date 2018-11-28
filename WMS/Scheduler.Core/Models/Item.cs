@@ -1,5 +1,3 @@
-using Ferretto.Common.BusinessModels;
-
 namespace Ferretto.WMS.Scheduler.Core
 {
     public sealed class Item : BusinessObject
