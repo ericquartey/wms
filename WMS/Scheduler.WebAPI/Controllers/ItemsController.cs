@@ -54,26 +54,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         [HttpGet]
         public IEnumerable<Item> GetAll(int skip = 0, int take = int.MaxValue, string orderBy = DEFAULT_ORDERBY_FIELD)
         {
-            using (var databaseContext = (DatabaseContext)this.serviceProvider.GetService(typeof(DatabaseContext)))
-            {
-                var orderByField = string.IsNullOrWhiteSpace(orderBy) ? DEFAULT_ORDERBY_FIELD : orderBy;
-                var skipValue = skip < 0 ? 0 : skip;
-                var takeValue = take < 0 ? int.MaxValue : take;
+            this.hubContext.Clients.All.NotifyNewMission(new Mission { Id = 1 });
 
-                var expression = CreateSelectorExpression<Common.DataModels.Item, object>(orderByField);
-
-                return databaseContext.Items
-                    .Skip(skipValue)
-                    .Take(takeValue)
-                    .OrderBy(expression)
-                    .Select(i => new Item
-                    {
-                        Id = i.Id,
-                        Code = i.Code
-                    }
-                    )
-                    .ToList();
-            }
+            return null;
         }
 
         [HttpPost("withdraw")]

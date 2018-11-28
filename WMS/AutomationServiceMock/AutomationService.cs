@@ -79,7 +79,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private async void NewMissionReceived(Object sender, MissionEventArgs e)
         {
-            this.logger.LogInformation($"New mission received from Scheduler.");
+            this.logger.LogInformation($"New mission received from Scheduler id={e.Mission.Id}.");
 
             await this.ExecuteMission(e.Mission);
         }

@@ -59,7 +59,7 @@ namespace Ferretto.VW.RemoteIODriver.Source
             {
                 this.Inputs.Clear();
                 this.Inputs = this.remoteIO.ReadData();
-                this.remoteIO.WriteData();
+                //this.remoteIO.WriteData();
                 await Task.Delay(20);
                 this.RaiseSensorsSyncronizedEvent();
             }
