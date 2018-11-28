@@ -36,10 +36,13 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-            @"GIVEN a compartment in a specific area, associated to a specific item \
-                AND a withdrawal request for the given item on a bay of the specified area \
-               WHEN a new request for the same item and area is made \
-               THEN the new request should be accepted")]
+            @"GIVEN a request for an item on a bay \
+                AND two compartments that together can satisfy the request \
+               WHEN the missions for the request are created \
+               THEN the total dispatched quantity recorded in the request should be equal to the originally requested \
+                AND two missions should be generated \
+                AND the total quantity of the two missions should be as much as the requested quantity \
+                AND the mission associated to the compartment with older items should be the one from which all the stocked quantity is taken")]
         public async Task CompartmentsInBay()
         {
             #region Arrange
@@ -68,8 +71,10 @@ namespace Ferretto.Common.BLL.Tests
             {
                 Id = 1,
                 ItemId = this.itemFifo.Id,
+                AreaId = this.area1.Id,
+                BayId = this.bay1.Id,
                 IsInstant = true,
-                RequestedQuantity = 20,
+                RequestedQuantity = 15,
                 OperationType = DataModels.OperationType.Withdrawal
             };
 
@@ -102,10 +107,11 @@ namespace Ferretto.Common.BLL.Tests
                 Assert.IsNotNull(missions);
                 Assert.AreEqual(2, missions.Count());
 
-                var missionsArray = missions.ToArray();
-                Assert.AreEqual(compartment2.Id, missionsArray[0].CompartmentId);
-                Assert.AreEqual(compartment1.Stock, missionsArray[0].Quantity);
-                Assert.AreEqual(compartment2.Stock, missionsArray[1].Quantity);
+                var updatedRequest = context.SchedulerRequests.Single(r => r.Id == request1.Id);
+                Assert.AreEqual(updatedRequest.RequestedQuantity, missions.Sum(m => m.Quantity));
+                Assert.AreEqual(updatedRequest.RequestedQuantity, updatedRequest.DispatchedQuantity);
+                Assert.AreEqual(compartment2.Id, missions.First().CompartmentId);
+                Assert.AreEqual(compartment2.Stock, missions.First().Quantity);
 
                 #endregion Assert
             }
