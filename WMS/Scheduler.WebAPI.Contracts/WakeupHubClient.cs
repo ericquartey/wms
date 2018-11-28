@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-#if NET4
-using Microsoft.AspNet.SignalR.Client;
-#else
 using Microsoft.AspNetCore.SignalR.Client;
-#endif
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 {
@@ -12,13 +8,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     {
         #region Fields
 
-        private const string WakeUpMessageName = "WakeUp";
         private const string NotifyNewMissionMessageName = "NotifyNewMission";
-
+        private const string WakeUpMessageName = "WakeUp";
         private readonly HubConnection connection;
-#if NET4
-        private IHubProxy proxy;
-#endif
 
         #endregion Fields
 
@@ -26,14 +18,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         public WakeupHubClient(string url, string wakeUpPath)
         {
-#if NET4
-            this.connection = new HubConnection(url);
-            this.proxy = this.connection.CreateHubProxy(wakeUpPath);
-
-            this.proxy.On<string, string>(WakeUpMessageName, (a, b) => this.OnWakeUp_MessageReceived(a, b));
-
-            this.connection.StateChanged += this.OnConnectionStateChanged;
-#else
             this.connection = new HubConnectionBuilder()
               .WithUrl(new Uri(new Uri(url), wakeUpPath).AbsoluteUri)
               .Build();
@@ -49,34 +33,23 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 System.Diagnostics.Debug.WriteLine("Retrying connection to hub ...");
                 await this.connection.StartAsync();
             };
-#endif
         }
 
         #endregion Constructors
 
         #region Events
 
-        public event EventHandler<WakeUpEventArgs> WakeupReceived;
-
         public event EventHandler<MissionEventArgs> NewMissionReceived;
+
+        public event EventHandler<WakeUpEventArgs> WakeupReceived;
 
         #endregion Events
 
         #region Methods
 
-#if NET4
-        private void OnConnectionStateChanged(StateChange state)
+        public async Task ConnectAsync()
         {
-            if (state.NewState == ConnectionState.Disconnected)
-            {
-                this.ConnectAsync();
-            }
-        }
-#endif
-
-        private void OnWakeUp_MessageReceived(string user, string message)
-        {
-            this.WakeupReceived?.Invoke(this, new WakeUpEventArgs(user, message));
+            await this.connection.StartAsync();
         }
 
         private void OnNotifyNewMission_MessageReceived(Mission mission)
@@ -84,13 +57,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             this.NewMissionReceived?.Invoke(this, new MissionEventArgs(mission));
         }
 
-        public async Task ConnectAsync()
+        private void OnWakeUp_MessageReceived(string user, string message)
         {
-#if NET4
-            await this.connection.Start();
-#else
-            await this.connection.StartAsync();
-#endif
+            this.WakeupReceived?.Invoke(this, new WakeUpEventArgs(user, message));
         }
 
         #endregion Methods

@@ -131,15 +131,21 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            try
-            {
-                await this.itemProvider.WithdrawAsync(this.itemWithdraw);
+            // TODO: TASK-795 set wait indicator
 
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemWithdrawCommenced));
-            }
-            catch (Exception ex)
+            var result = await this.itemProvider.WithdrawAsync(this.itemWithdraw);
+
+            // TODO: TASK-795 remove wait indicator
+
+            if (result.Success)
             {
-                this.EventService.Invoke(new StatusEventArgs(ex.Message));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemWithdrawCommenced));
+                // TODO: TASK-795 close dialog
+            }
+            else
+            {
+                // TODO: TASK-795 show error
+                this.EventService.Invoke(new StatusEventArgs(result.Description));
             }
         }
 
@@ -162,9 +168,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.ItemWithdraw.AreaId))
+            if (e.PropertyName == nameof(this.ItemWithdraw.AreaId) &&
+                this.ItemWithdraw.AreaId.HasValue)
             {
-                this.ItemWithdraw.BayChoices = this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId);
+                this.ItemWithdraw.BayChoices = this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value);
             }
         }
 

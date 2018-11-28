@@ -14,6 +14,8 @@
                      Color="{StaticResource MediumBlue}" />
     <SolidColorBrush x:Key="BackgroundGridBrush"
                      Color="{DynamicResource WhiteGrey}" />
+    <SolidColorBrush x:Key="EditCompartment"
+                     Color="{DynamicResource Green}" />
 
     <!--  colors - filter compartment  -->
     <Color x:Key="DarkRed">#D50000</Color>
@@ -63,6 +65,12 @@
                                      Value="True">
                             <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
                         </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsReadOnly}"
+                                     Value="False">
+                            <Setter TargetName="BorderOfRectangle" Property="BorderBrush" Value="{StaticResource CanvasItemBorder}" />
+                        </DataTrigger>
+
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding IsSelectable}" Value="True" />
@@ -96,6 +104,11 @@
                         <DataTrigger Binding="{Binding IsSelectable}"
                                      Value="False">
                             <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsSelectable}"
+                                     Value="True">
+                            <Setter Property="IsEnabled" Value="True" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

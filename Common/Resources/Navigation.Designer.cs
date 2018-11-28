@@ -232,6 +232,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Details of List.
+        /// </summary>
+        public static string ListDetails {
+            get {
+                return ResourceManager.GetString("ListDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Row Statuses.
         /// </summary>
         public static string ListRowStatuses {
@@ -268,20 +277,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit Edit.
-        /// </summary>
-        public static string LoadingUnitEdit {
-            get {
-                return ResourceManager.GetString("LoadingUnitEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Loading Unit Details.
         /// </summary>
         public static string LoadingUnitDetails {
             get {
                 return ResourceManager.GetString("LoadingUnitDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Edit.
+        /// </summary>
+        public static string LoadingUnitEdit {
+            get {
+                return ResourceManager.GetString("LoadingUnitEdit", resourceCulture);
             }
         }
         

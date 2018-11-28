@@ -12,6 +12,7 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty EnableHistoryViewProperty = DependencyProperty.Register(nameof(EnableHistoryView), typeof(bool), typeof(WmsView));
+        public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(nameof(ViewModel), typeof(INavigableViewModel), typeof(WmsView));
 
         private readonly INavigationService
             navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
@@ -48,6 +49,12 @@ namespace Ferretto.Common.Controls
         public string Title { get; set; }
 
         public string Token { get; set; }
+
+        public INavigableViewModel ViewModel
+        {
+            get { return (INavigableViewModel)this.GetValue(ViewModelProperty); }
+            set { this.SetValue(ViewModelProperty, value); }
+        }
 
         public WmsViewType ViewType => this.viewType;
 
@@ -88,6 +95,8 @@ namespace Ferretto.Common.Controls
                 this.DataContext =
                     this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
             }
+            this.ViewModel = (INavigableViewModel)this.DataContext;
+            ((INavigableViewModel)this.DataContext)?.Appear();
         }
 
         private void CheckToAddHistoryView()
@@ -162,8 +171,7 @@ namespace Ferretto.Common.Controls
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             this.CheckDataContext();
-            this.CheckToAddHistoryView();
-            ((INavigableViewModel)this.DataContext)?.Appear();
+            this.CheckToAddHistoryView();            
         }
 
         #endregion Methods

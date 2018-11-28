@@ -1,4 +1,7 @@
 ﻿using System.Configuration;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.Common.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
@@ -75,14 +78,24 @@ namespace Ferretto.Common.EF
         public virtual DbSet<MaterialStatus> MaterialStatuses { get; set; }
         public virtual DbSet<MeasureUnit> MeasureUnits { get; set; }
         public virtual DbSet<Mission> Missions { get; set; }
-        public virtual DbSet<MissionStatus> MissionStatuses { get; set; }
-        public virtual DbSet<MissionType> MissionTypes { get; set; }
         public virtual DbSet<PackageType> PackageTypes { get; set; }
         public virtual DbSet<SchedulerRequest> SchedulerRequests { get; set; }
 
         #endregion Properties
 
         #region Methods
+
+        public override int SaveChanges()
+        {
+            this.AddTimestamps();
+            return base.SaveChanges();
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.AddTimestamps();
+            return await base.SaveChangesAsync();
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -159,10 +172,32 @@ namespace Ferretto.Common.EF
             modelBuilder.ApplyConfiguration(new MaterialStatusConfiguration());
             modelBuilder.ApplyConfiguration(new MeasureUnitConfiguration());
             modelBuilder.ApplyConfiguration(new MissionConfiguration());
-            modelBuilder.ApplyConfiguration(new MissionStatusConfiguration());
-            modelBuilder.ApplyConfiguration(new MissionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new PackageTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SchedulerRequestConfiguration());
+        }
+
+        private void AddTimestamps()
+        {
+            var entries = this.ChangeTracker.Entries()
+                .Where(x =>
+                    x.Entity is ITimestamped
+                    &&
+                    (x.State == EntityState.Added || x.State == EntityState.Modified)
+                );
+
+            var timeNow = System.DateTime.UtcNow;
+
+            foreach (var entry in entries)
+            {
+                var timestampedEntity = (ITimestamped)entry.Entity;
+
+                if (entry.State == EntityState.Added)
+                {
+                    timestampedEntity.CreationDate = timeNow;
+                }
+
+                timestampedEntity.LastModificationDate = timeNow;
+            }
         }
 
         #endregion Methods

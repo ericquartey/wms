@@ -225,4 +225,7 @@
   <data name="LoadingUnitEdit" xml:space="preserve">
     <value>Loading Unit Edit</value>
   </data>
+  <data name="ListDetails" xml:space="preserve">
+    <value>Details of List</value>
+  </data>
 </root>

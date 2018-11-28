@@ -39,6 +39,11 @@
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
+                <wms:ActionBarItem Command="{Binding EditCommand}"
+                                   Content="{x:Static res:General.Edit}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Add}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
@@ -58,19 +63,12 @@
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"
-                                CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItem, Mode=TwoWay}"
-                                ItemType="{x:Type models:Item}"
-                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedDataSource, Mode=OneWay}"
+                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"                                
+                                ItemsSource="{Binding SelectedDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
-                    <dxg:TableView AllowEditing="False"
-                                   AllowGrouping="False"
-                                   AllowMoveColumnToDropArea="False"
-                                   NavigationStyle="Row"
-                                   SearchPanelHorizontalAlignment="Right"
+                    <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                    ShowFilterPanelMode="ShowAlways"
-                                   ShowGroupPanel="False"
-                                   ShowIndicator="False"
                                    ShowSearchPanelMode="Always">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">

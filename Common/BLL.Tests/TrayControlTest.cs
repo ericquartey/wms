@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
+﻿using Ferretto.Common.BusinessModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Feretto.Common.BLL.Tests
 {
     [TestClass]
-    internal class TrayControlTest
+    public class TrayControlTest
     {
         #region Methods
 
@@ -18,7 +13,7 @@ namespace Feretto.Common.BLL.Tests
         [TestMethod]
         public void TestControlSize100()
         {
-            Tray tray = new Tray
+            var tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
                 //IsReadOnly = false
@@ -83,7 +78,7 @@ namespace Feretto.Common.BLL.Tests
         [TestMethod]
         public void TestControlSize200()
         {
-            Tray tray = new Tray
+            var tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
                 //IsReadOnly = false
@@ -235,7 +230,7 @@ namespace Feretto.Common.BLL.Tests
         [TestMethod]
         public void TestControlSize50()
         {
-            Tray tray = new Tray
+            var tray = new Tray
             {
                 Dimension = new Dimension { Height = 400, Width = 1000 },
             };

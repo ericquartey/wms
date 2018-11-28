@@ -61,15 +61,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bulk Add.
-        /// </summary>
-        public static string AddBulkCompartment {
-            get {
-                return ResourceManager.GetString("AddBulkCompartment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add Compartment.
         /// </summary>
         public static string AddCompartment {
@@ -93,6 +84,15 @@ namespace Ferretto.Common.Resources {
         public static string AllowedItems {
             get {
                 return ResourceManager.GetString("AllowedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Add.
+        /// </summary>
+        public static string BulkAddCompartment {
+            get {
+                return ResourceManager.GetString("BulkAddCompartment", resourceCulture);
             }
         }
         
@@ -273,6 +273,42 @@ namespace Ferretto.Common.Resources {
         public static string ItemIsAllocatedInNoCompartment {
             get {
                 return ResourceManager.GetString("ItemIsAllocatedInNoCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string ItemListAll {
+            get {
+                return ResourceManager.GetString("ItemListAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed Status.
+        /// </summary>
+        public static string ItemListStatusCompleted {
+            get {
+                return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting Status.
+        /// </summary>
+        public static string ItemListStatusWaiting {
+            get {
+                return ResourceManager.GetString("ItemListStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Type.
+        /// </summary>
+        public static string ItemListsTypePick {
+            get {
+                return ResourceManager.GetString("ItemListsTypePick", resourceCulture);
             }
         }
         

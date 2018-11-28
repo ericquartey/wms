@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -44,19 +43,29 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         #region Methods
 
-        public static Expression<Func<T, TResult>> CreateSelectorExpression<T, TResult>(string propertyName)
-        {
-            var parameterExpression = Expression.Parameter(typeof(T));
-            return (Expression<Func<T, TResult>>)Expression.Lambda(Expression.PropertyOrField(parameterExpression, propertyName),
-                                                                    parameterExpression);
-        }
-
         [HttpGet]
         public IEnumerable<Item> GetAll(int skip = 0, int take = int.MaxValue, string orderBy = DEFAULT_ORDERBY_FIELD)
         {
-            this.hubContext.Clients.All.NotifyNewMission(new Mission { Id = 1 });
+            using (var databaseContext = (DatabaseContext)this.serviceProvider.GetService(typeof(DatabaseContext)))
+            {
+                var orderByField = string.IsNullOrWhiteSpace(orderBy) ? DEFAULT_ORDERBY_FIELD : orderBy;
+                var skipValue = skip < 0 ? 0 : skip;
+                var takeValue = take < 0 ? int.MaxValue : take;
 
-            return null;
+                var expression = this.CreateSelectorExpression<Common.DataModels.Item, object>(orderByField);
+
+                return databaseContext.Items
+                    .Skip(skipValue)
+                    .Take(takeValue)
+                    .OrderBy(expression)
+                    .Select(i => new Item
+                    {
+                        Id = i.Id,
+                        Code = i.Code
+                    }
+                    )
+                    .ToList();
+            }
         }
 
         [HttpPost("withdraw")]
