@@ -30,8 +30,8 @@ namespace Ferretto.Common.Controls
                 return null;
             }
 
-            var editControl = LayoutTreeHelper.GetVisualParents(control).FirstOrDefault(c => c.GetType() == this.Control);
-            if (control.DataContext == null)
+            var editControl = LayoutTreeHelper.GetVisualParents(control).OfType<FrameworkElement>().FirstOrDefault(c => c.GetType() == this.Control);
+            if (editControl == null || editControl.DataContext == null)
             {
                 return null;
             }
