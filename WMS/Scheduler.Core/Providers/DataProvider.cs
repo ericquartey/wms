@@ -102,6 +102,17 @@ namespace Ferretto.WMS.Scheduler.Core
                 })
                 .SingleAsync(a => a.Id == areaId);
         }
+
+        public async Task<Bay> GetBayByIdAsync(int bayId)
+        {
+            return await this.dataContext.Bays
+                .Select(b => new Bay
+                {
+                    Id = b.Id,
+                    LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                    LoadingUnitsBufferUsage = 0
+                })
+                .SingleAsync(b => b.Id == bayId);
         }
 
         public async Task<Item> GetItemByIdAsync(int itemId)

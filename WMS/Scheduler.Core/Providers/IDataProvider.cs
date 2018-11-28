@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Scheduler.Core
@@ -13,7 +13,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         Task<Area> GetAreaByIdAsync(int areaId);
 
-        Task<int> AddRangeAsync(IEnumerable<Mission> missions);
+        Task<Bay> GetBayByIdAsync(int bayId);
 
         Task<Item> GetItemByIdAsync(int itemId);
 
