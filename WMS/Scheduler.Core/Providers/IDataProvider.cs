@@ -11,6 +11,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         void AddRange(IEnumerable<Mission> missions);
 
+        Task<Area> GetAreaByIdAsync(int areaId);
 
         Task<int> AddRangeAsync(IEnumerable<Mission> missions);
 

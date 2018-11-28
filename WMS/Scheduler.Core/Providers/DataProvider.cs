@@ -86,7 +86,22 @@ namespace Ferretto.WMS.Scheduler.Core
             this.dataContext.SaveChanges();
         }
 
-            return await this.dataContext.SaveChangesAsync();
+        public async Task<Area> GetAreaByIdAsync(int areaId)
+        {
+            return await this.dataContext.Areas
+                .Include(a => a.Bays)
+                .Select(a => new Area
+                {
+                    Id = a.Id,
+                    Bays = a.Bays.Select(b => new Bay
+                    {
+                        Id = b.Id,
+                        LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
+                        LoadingUnitsBufferUsage = 0
+                    })
+                })
+                .SingleAsync(a => a.Id == areaId);
+        }
         }
 
         public async Task<Item> GetItemByIdAsync(int itemId)
