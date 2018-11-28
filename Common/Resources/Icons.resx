@@ -301,4 +301,16 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/hardware/ic_cast_connected_black_24dp.png</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="ItemListViewAll" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+  </data>
+  <data name="ItemListViewStatusCompleted" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_assignment_turned_in_black_48dp.png</value>
+  </data>
+  <data name="ItemListViewStatusWaiting" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_query_builder_black_48dp.png</value>
+  </data>
+  <data name="ItemListViewTypePick" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/file/ic_file_upload_black_48dp.png</value>
+  </data>
 </root>

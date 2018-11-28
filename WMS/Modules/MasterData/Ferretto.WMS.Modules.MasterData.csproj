@@ -31,21 +31,5 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="Views\InputAddCompartmentView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\InputBulkAddCompartmentView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\InputCompartmentView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\InputEditCompartmentView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-
 
 </Project>

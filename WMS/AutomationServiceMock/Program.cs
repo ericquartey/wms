@@ -33,6 +33,8 @@ namespace Ferretto.WMS.AutomationServiceMock
         {
             try
             {
+                Console.WriteLine("Press <ENTER> to start the automation service.");
+                Console.ReadLine();
                 var configuration = SetupConfiguration(args);
 
                 var serviceProvider = ConfigureServices(configuration);

@@ -266,4 +266,17 @@
   <data name="EditCompartment" xml:space="preserve">
     <value>Edit Compartment</value>
   </data>
+  <data name="ItemListAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All ItemLists</comment>
+  </data>
+  <data name="ItemListStatusCompleted" xml:space="preserve">
+    <value>Completed Status</value>
+  </data>
+  <data name="ItemListStatusWaiting" xml:space="preserve">
+    <value>Waiting Status</value>
+  </data>
+  <data name="ItemListsTypePick" xml:space="preserve">
+    <value>Pick Type</value>
+  </data>
 </root>

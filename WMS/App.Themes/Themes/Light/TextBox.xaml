@@ -38,6 +38,9 @@
 
                         <dxe:TextEdit x:Name="InnerTextBox"
                                  Grid.Row="1"
+                                 dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
+                                 VerticalContentAlignment="Top"
+                                 VerticalScrollBarVisibility="Auto"                                 
                                  AcceptsReturn="{TemplateBinding IsMultiline}"
                                  Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  TextWrapping="{TemplateBinding IsMultiline,

@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using System.IO;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
-using System.Diagnostics;
 using Ferretto.VW.RemoteIODriver.Source;
 
 namespace Ferretto.VW.VWApp

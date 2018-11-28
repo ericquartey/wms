@@ -68,9 +68,9 @@
                                 MaxWidth="5000"
                                 MaxHeight="500"
                                 HorizontalAlignment="Left"
-                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}"
-                                IsEnabled="{Binding IsEnabledGrid}"                                
+                                IsEnabled="{Binding IsEnabledGrid}"
                                 ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
+                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                 SelectionMode="Row">
                 <wms:WmsGridControl.View>
                     <dxg:TableView NavigationStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsEnabledGrid, Converter={StaticResource BTNSC}}">
