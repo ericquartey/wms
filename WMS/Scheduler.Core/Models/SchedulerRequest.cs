@@ -1,11 +1,10 @@
-﻿using Ferretto.Common.BusinessModels;
-
-namespace Ferretto.WMS.Scheduler.Core
+﻿namespace Ferretto.WMS.Scheduler.Core
 {
     public class SchedulerRequest : BusinessObject
     {
         #region Fields
 
+        private int dispatchedQuantity;
         private int requestedQuantity;
 
         #endregion Fields
@@ -43,6 +42,13 @@ namespace Ferretto.WMS.Scheduler.Core
         public int AreaId { get; set; }
         public int? BayId { get; set; }
         public System.DateTime? CreationDate { get; set; }
+
+        public int DispatchedQuantity
+        {
+            get => this.dispatchedQuantity;
+            set => SetIfPositive(ref this.dispatchedQuantity, value);
+        }
+
         public bool IsInstant { get; set; }
         public int ItemId { get; set; }
         public int? ListId { get; set; }

@@ -9,6 +9,7 @@
         public Bay Bay { get; set; }
         public int? BayId { get; set; }
         public System.DateTime CreationDate { get; set; }
+        public int DispatchedQuantity { get; set; }
         public int Id { get; set; }
         public bool IsInstant { get; set; }
         public Item Item { get; set; }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
@@ -94,7 +93,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 )
                 .Select(g => new CompartmentSet
                 {
-                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity),
+                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity - r.DispatchedQuantity),
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -163,6 +162,8 @@ namespace Ferretto.WMS.Scheduler.Core
                     (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
                     &&
                     (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
+                    &&
+                    (c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                     )
                 .Select(c => new Compartment
                 {
@@ -188,7 +189,6 @@ namespace Ferretto.WMS.Scheduler.Core
                             LoadingUnitsBufferSize = b.LoadingUnitsBufferSize
                         }
                         ),
-                    Availability = c.Stock - c.ReservedForPick + c.ReservedToStore
                 });
         }
 
