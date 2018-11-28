@@ -128,11 +128,18 @@ namespace Ferretto.WMS.Scheduler.Core
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+        public void Update(Compartment compartment)
+        {
+            if (compartment == null)
             {
-                var existingModel = this.dataContext.Cells.Find(model.Id);
+                throw new ArgumentNullException(nameof(compartment));
+            }
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            var existingModel = this.dataContext.Compartments.Find(compartment.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(compartment);
+
+            this.dataContext.SaveChanges();
+        }
 
         public void Update(SchedulerRequest request)
         {

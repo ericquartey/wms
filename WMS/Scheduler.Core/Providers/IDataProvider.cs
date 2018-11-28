@@ -15,6 +15,8 @@ namespace Ferretto.WMS.Scheduler.Core
 
         Task<SchedulerRequest> GetNextRequestToProcessAsync();
 
+        void Update(Compartment compartment);
+
         void Update(SchedulerRequest request);
 
         #endregion Methods
