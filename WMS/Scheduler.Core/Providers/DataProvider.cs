@@ -121,12 +121,18 @@ namespace Ferretto.WMS.Scheduler.Core
                 .FirstOrDefaultAsync();
         }
 
-        public int Save(Mission model)
+        public void Update(Mission mission)
         {
-            if (model == null)
+            if (mission == null)
             {
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException(nameof(mission));
             }
+
+            var existingModel = this.dataContext.Missions.Find(mission.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(mission);
+
+            this.dataContext.SaveChanges();
+        }
 
         public void Update(Compartment compartment)
         {
