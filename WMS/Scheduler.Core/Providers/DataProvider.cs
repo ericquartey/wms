@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -121,6 +121,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 .Select(i => new Item
                 {
                     Id = i.Id,
+                    ManagementType = (ItemManagementType)i.ManagementType
                 }
                 )
                 .SingleAsync(i => i.Id == itemId);
@@ -148,10 +149,11 @@ namespace Ferretto.WMS.Scheduler.Core
                     PackageTypeId = r.PackageTypeId,
                     RegistrationNumber = r.RegistrationNumber,
                     RequestedQuantity = r.RequestedQuantity,
+                    DispatchedQuantity = r.DispatchedQuantity,
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2
                 })
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(r => r.RequestedQuantity > r.DispatchedQuantity);
         }
 
         public void Update(Mission mission)
