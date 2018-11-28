@@ -26,58 +26,65 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public async Task<int> AddAsync(SchedulerRequest model)
+        public void Add(SchedulerRequest model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            this.dataContext.SchedulerRequests.Add(new Common.DataModels.SchedulerRequest
-            {
-                AreaId = model.AreaId,
-                BayId = model.BayId,
-                IsInstant = model.IsInstant,
-                ItemId = model.ItemId,
-                ListId = model.ListId,
-                ListRowId = model.ListRowId,
-                LoadingUnitId = model.LoadingUnitId,
-                LoadingUnitTypeId = model.LoadingUnitTypeId,
-                Lot = model.Lot,
-                MaterialStatusId = model.MaterialStatusId,
-                PackageTypeId = model.PackageTypeId,
-                RegistrationNumber = model.RegistrationNumber,
-                OperationType = (Common.DataModels.OperationType)(int)model.Type,
-                RequestedQuantity = model.RequestedQuantity,
-                Sub1 = model.Sub1,
-                Sub2 = model.Sub2
-            });
+            this.dataContext.SchedulerRequests.Add(
+                new Common.DataModels.SchedulerRequest
+                {
+                    AreaId = model.AreaId,
+                    BayId = model.BayId,
+                    IsInstant = model.IsInstant,
+                    ItemId = model.ItemId,
+                    ListId = model.ListId,
+                    ListRowId = model.ListRowId,
+                    LoadingUnitId = model.LoadingUnitId,
+                    LoadingUnitTypeId = model.LoadingUnitTypeId,
+                    Lot = model.Lot,
+                    MaterialStatusId = model.MaterialStatusId,
+                    PackageTypeId = model.PackageTypeId,
+                    RegistrationNumber = model.RegistrationNumber,
+                    OperationType = (Common.DataModels.OperationType)(int)model.Type,
+                    RequestedQuantity = model.RequestedQuantity,
+                    Sub1 = model.Sub1,
+                    Sub2 = model.Sub2
+                }
+            );
 
-            return await this.dataContext.SaveChangesAsync();
+            this.dataContext.SaveChanges();
         }
 
-        public async Task<int> AddRangeAsync(IEnumerable<Mission> missions)
+        public void AddRange(IEnumerable<Mission> missions)
         {
             if (missions == null)
             {
                 throw new ArgumentNullException(nameof(missions));
             }
 
-            this.dataContext.AddRange(missions.Select(m => new Common.DataModels.Mission
-            {
-                CompartmentId = m.CompartmentId,
-                // BayId = m.BayId,  // TODO: remove destination/source bay id
-                // CellId = m.CellId,        // TODO: remove destination/source cell id
-                ItemId = m.ItemId,
-                ItemListId = m.ItemListId,
-                ItemListRowId = m.ItemListRowId,
-                LoadingUnitId = m.LoadingUnitId,
-                MaterialStatusId = m.MaterialStatusId,
-                Type = (Common.DataModels.MissionType)m.Type,
-                PackageTypeId = m.PackageTypeId,
-                Sub1 = m.Sub1,
-                Sub2 = m.Sub2,
-            }));
+            this.dataContext.AddRange(missions
+                .Select(m => new Common.DataModels.Mission
+                {
+                    CompartmentId = m.CompartmentId,
+                    // BayId = m.BayId,  // TODO: remove destination/source bay id
+                    // CellId = m.CellId,        // TODO: remove destination/source cell id
+                    ItemId = m.ItemId,
+                    ItemListId = m.ItemListId,
+                    ItemListRowId = m.ItemListRowId,
+                    LoadingUnitId = m.LoadingUnitId,
+                    MaterialStatusId = m.MaterialStatusId,
+                    Type = (Common.DataModels.MissionType)m.Type,
+                    PackageTypeId = m.PackageTypeId,
+                    Sub1 = m.Sub1,
+                    Sub2 = m.Sub2,
+                })
+            );
+
+            this.dataContext.SaveChanges();
+        }
 
             return await this.dataContext.SaveChangesAsync();
         }

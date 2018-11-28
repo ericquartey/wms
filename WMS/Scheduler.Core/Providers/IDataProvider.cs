@@ -7,7 +7,10 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Methods
 
-        Task<int> AddAsync(SchedulerRequest model);
+        void Add(SchedulerRequest model);
+
+        void AddRange(IEnumerable<Mission> missions);
+
 
         Task<int> AddRangeAsync(IEnumerable<Mission> missions);
 
