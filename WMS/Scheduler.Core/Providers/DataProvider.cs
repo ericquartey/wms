@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -134,8 +134,17 @@ namespace Ferretto.WMS.Scheduler.Core
 
                 this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+        public void Update(SchedulerRequest request)
+        {
+            if (request == null)
+            {
+                throw new ArgumentNullException(nameof(request));
             }
+
+            var existingModel = this.dataContext.SchedulerRequests.Find(request.Id);
+            this.dataContext.Entry(existingModel).CurrentValues.SetValues(request);
+
+            this.dataContext.SaveChanges();
         }
 
         #endregion Methods

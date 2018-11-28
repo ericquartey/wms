@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Scheduler.Core
@@ -14,6 +14,8 @@ namespace Ferretto.WMS.Scheduler.Core
         Task<Item> GetItemByIdAsync(int itemId);
 
         Task<SchedulerRequest> GetNextRequestToProcessAsync();
+
+        void Update(SchedulerRequest request);
 
         #endregion Methods
     }
