@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -70,15 +70,17 @@ namespace Ferretto.WMS.Scheduler.Core
                 qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
                 if (qualifiedRequest != null)
                 {
-                    var addedRecordCount = await this.dataProvider.AddAsync(qualifiedRequest);
-                    if (addedRecordCount > 0)
-                    {
-                        scope.Complete();
-                        this.logger.LogDebug($"Withdrawal request for item={request.ItemId} was accepted and stored.");
+                    this.dataProvider.Add(qualifiedRequest);
 
-                        await this.DispatchRequests();
-                    }
+                    scope.Complete();
+                    this.logger.LogDebug($"Withdrawal request for item={request.ItemId} was accepted and stored.");
                 }
+            }
+
+            using (var scope = new TransactionScope())
+            {
+                await this.DispatchRequests();
+                scope.Complete();
             }
 
             return qualifiedRequest;
