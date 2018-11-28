@@ -38,7 +38,7 @@ namespace Ferretto.Common.BLL.Tests
         [TestProperty("Description",
             @"GIVEN a request for an item on a bay \
                 AND two compartments that together can satisfy the request \
-               WHEN the missions for the request are created \
+               WHEN the request is processed \
                THEN the total dispatched quantity recorded in the request should be equal to the originally requested \
                 AND two missions should be generated \
                 AND the total quantity of the two missions should be as much as the requested quantity \
