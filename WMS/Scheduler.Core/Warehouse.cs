@@ -141,6 +141,30 @@ namespace Ferretto.WMS.Scheduler.Core
             return missions;
         }
 
+        private async Task<Bay> GetNextEmptyBay(int areaId, int? bayId)
+        {
+            if (bayId.HasValue)
+            {
+                var bay = await this.dataProvider.GetBayByIdAsync(bayId.Value);
+
+                if (bay.LoadingUnitsBufferSize > bay.LoadingUnitsBufferUsage)
+                {
+                    return bay;
+                }
+            }
+            else
+            {
+                var area = await this.dataProvider.GetAreaByIdAsync(areaId);
+
+                return area.Bays
+                    .Where(b => b.LoadingUnitsBufferSize > b.LoadingUnitsBufferUsage)
+                    .OrderBy(b => b.LoadingUnitsBufferUsage)
+                    .FirstOrDefault();
+            }
+
+            return null;
+        }
+
         #endregion Methods
     }
 }
