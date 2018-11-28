@@ -48,7 +48,7 @@ namespace Ferretto.VW.RemoteIODriver.Source
         #region Properties
 
         public List<bool> Inputs { get; set; }
-        public string IPAddress { get; set; } = "192.168.1.4";
+        public string IPAddress { get; set; } = "169.254.231.10";
         public List<bool> Outputs { get; set; }
         public int Port { get; set; } = 502;
 
