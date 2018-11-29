@@ -42,6 +42,7 @@
         public const string CELLS = "CellsViewModel";
         public const string COMPARTMENTDETAILS = "CompartmentDetailsViewModel";
         public const string COMPARTMENTS = "CompartmentsViewModel";
+        public const string EXECUTELISTDIALOG = "ExecuteListDialogViewModel";
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMLISTDETAILS = "ItemListDetailsViewModel";
         public const string ITEMLISTS = "ItemListsViewModel";
