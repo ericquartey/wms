@@ -17,6 +17,7 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
