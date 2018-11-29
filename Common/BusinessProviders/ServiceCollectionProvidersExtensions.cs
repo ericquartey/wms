@@ -2,7 +2,7 @@
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public static class ServiceCollectionExtensions
+    public static class ServiceCollectionProvidersExtensions
     {
         #region Methods
 
@@ -16,9 +16,7 @@ namespace Ferretto.Common.BusinessProviders
             serviceCollection.AddTransient<IItemProvider, ItemProvider>();
             serviceCollection.AddTransient<IItemListProvider, ItemListProvider>();
             serviceCollection.AddTransient<ILoadingUnitProvider, LoadingUnitProvider>();
-            serviceCollection.AddTransient<IMissionProvider, MissionProvider>();
             serviceCollection.AddTransient<IMachineProvider, MachineProvider>();
-            serviceCollection.AddTransient<ISchedulerRequestProvider, SchedulerRequestProvider>();
             serviceCollection.AddTransient<EnumerationProvider, EnumerationProvider>();
 
             return serviceCollection;
