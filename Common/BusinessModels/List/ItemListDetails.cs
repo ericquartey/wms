@@ -71,7 +71,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListStatusDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemListStatusDescription { get => this.itemListStatusDescription; set => this.SetProperty(ref this.itemListStatusDescription, value); }
 
-        public int ItemListStatusId { get; set; }
+        public ItemListStatus ItemListStatusId { get; set; }
 
         public IEnumerable<Enumeration> ItemListTypeChoices { get; set; }
 

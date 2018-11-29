@@ -117,23 +117,23 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 switch (this.ItemList.ItemListStatusId)
                 {
-                    case 1://Waiting
+                    case ItemListStatus.Waiting:
                         this.StatusColor = "#00BCD4";//cyan
                         break;
 
-                    case 2://Executing
+                    case ItemListStatus.Executing:
                         this.StatusColor = "#0D47A1";//blu
                         break;
 
-                    case 3://Completed
+                    case ItemListStatus.Completed:
                         this.StatusColor = "#00C853";//green
                         break;
 
-                    case 4://Incomplete
+                    case ItemListStatus.Incomplete:
                         this.StatusColor = "#D50000";//red
                         break;
 
-                    case 5://Suspende
+                    case ItemListStatus.Suspended:
                         this.StatusColor = "#FFB300";//orange
                         break;
                 }
