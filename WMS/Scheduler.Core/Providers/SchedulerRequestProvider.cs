@@ -62,17 +62,17 @@ namespace Ferretto.WMS.Scheduler.Core
                    (request.RegistrationNumber == null || c.RegistrationNumber == request.RegistrationNumber)
                )
                .GroupBy(
-                   x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
+                   x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
                    (key, group) => new
                    {
                        Key = key,
                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
-                       Sub1 = key.Item1,
-                       Sub2 = key.Item2,
-                       Lot = key.Item3,
-                       PackageTypeId = key.Item4,
-                       MaterialStatusId = key.Item5,
-                       RegistrationNumber = key.Item6,
+                       Sub1 = key.Sub1,
+                       Sub2 = key.Sub2,
+                       Lot = key.Lot,
+                       PackageTypeId = key.PackageTypeId,
+                       MaterialStatusId = key.MaterialStatusId,
+                       RegistrationNumber = key.RegistrationNumber,
                        FirstStoreDate = group.Min(c => c.FirstStoreDate)
                    }
                );
@@ -83,8 +83,8 @@ namespace Ferretto.WMS.Scheduler.Core
             var compartmentSets = aggregatedCompartments
                 .GroupJoin(
                     aggregatedRequests,
-                    c => new Tuple<string, string, string, int?, int?, string>(c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber),
-                    r => new Tuple<string, string, string, int?, int?, string>(r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber),
+                    c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
+                    r => new { r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber },
                     (c, r) => new
                     {
                         c = c,
@@ -238,12 +238,19 @@ namespace Ferretto.WMS.Scheduler.Core
             #region Properties
 
             public int Availability { get; set; }
+
             public DateTime? FirstStoreDate { get; set; }
+
             public string Lot { get; set; }
+
             public int? MaterialStatusId { get; set; }
+
             public int? PackageTypeId { get; set; }
+
             public string RegistrationNumber { get; set; }
+
             public string Sub1 { get; set; }
+
             public string Sub2 { get; set; }
 
             #endregion Properties
