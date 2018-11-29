@@ -721,18 +721,23 @@ SET IDENTITY_INSERT SchedulerRequests OFF;
 
 
 --List
+DECLARE
+    @ItemList1_Id int = 1,
+    @ItemList2_Id int = 2;
+
 SET IDENTITY_INSERT ItemLists ON;
-INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (1, 1, 'Prima Lista', 1, 1, 1, 1);
-INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (2, 1, 'Seconda Lista', 1, 1, 3, 1);
-INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (3, 2, 'Terza Lista', 1, 1, 1, 1);
-INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (4, 2, 'Quarta Lista', 1, 1, 3, 1);
+INSERT INTO ItemLists (Id, Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (@ItemList1_Id, 'C1', 1, 'Prima Lista', 1, 1, 1, 1);
+INSERT INTO ItemLists (Id, Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (@ItemList2_Id, 'C2', 1, 'Seconda Lista', 1, 1, 3, 1);
+INSERT INTO ItemLists (Id, Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (3, 'C3', 2, 'Terza Lista', 1, 1, 1, 1);
+INSERT INTO ItemLists (Id, Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (4, 'C4', 2, 'Quarta Lista', 1, 1, 3, 1);
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Row
 SET IDENTITY_INSERT ItemListRows ON;
-INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (7, 'Code 1', 1, 1, 1, 1, 'Primo Item', 5, 10, 1);
-INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (7, 'Code 2', 1, 1, 1, 1, 'Secondo Item', 8, 20, 1);
-INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (8, 'Code 3', 1, 1, 1, 1, 'Terzo Item', 2, 10, 1);
+INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (1, @ItemList1_Id, 'Code 1', 1, 1, 1, 1, 'Primo Item', 5, 10, 1);
+INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (2, @ItemList1_Id, 'Code 2', 1, 1, 1, 1, 'Secondo Item', 8, 20, 1);
+INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (3, @ItemList1_Id, 'Code 3', 1, 1, 1, 1, 'Terzo Item', 2, 10, 1);
+INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (4, @ItemList2_Id, 'Code 4', 1, 1, 1, 1, 'Terzo Item', 2, 10, 1);
 SET IDENTITY_INSERT ItemListRows OFF;
 
 
