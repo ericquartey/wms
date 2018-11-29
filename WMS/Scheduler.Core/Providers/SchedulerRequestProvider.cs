@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.Common.BusinessProviders
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class SchedulerRequestProvider : ISchedulerRequestProvider
     {
@@ -25,41 +24,6 @@ namespace Ferretto.Common.BusinessProviders
         #endregion Constructors
 
         #region Methods
-
-        public async Task<int> Add(SchedulerRequest model)
-        {
-            if (model == null)
-            {
-                throw new ArgumentNullException(nameof(model));
-            }
-
-            this.dataContext.SchedulerRequests.Add(new DataModels.SchedulerRequest
-            {
-                AreaId = model.AreaId,
-                BayId = model.BayId,
-                IsInstant = model.IsInstant,
-                ItemId = model.ItemId,
-                ListId = model.ListId,
-                ListRowId = model.ListRowId,
-                LoadingUnitId = model.LoadingUnitId,
-                LoadingUnitTypeId = model.LoadingUnitTypeId,
-                Lot = model.Lot,
-                MaterialStatusId = model.MaterialStatusId,
-                PackageTypeId = model.PackageTypeId,
-                RegistrationNumber = model.RegistrationNumber,
-                OperationType = (DataModels.OperationType)(int)model.Type,
-                RequestedQuantity = model.RequestedQuantity,
-                Sub1 = model.Sub1,
-                Sub2 = model.Sub2
-            });
-
-            return await this.dataContext.SaveChangesAsync();
-        }
-
-        public int Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<SchedulerRequest> FullyQualifyWithdrawalRequest(SchedulerRequest request)
         {
@@ -129,7 +93,7 @@ namespace Ferretto.Common.BusinessProviders
                 )
                 .Select(g => new CompartmentSet
                 {
-                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity),
+                    Availability = g.c.Availability - g.r.Sum(r => r.RequestedQuantity - r.DispatchedQuantity),
                     Sub1 = g.c.Sub1,
                     Sub2 = g.c.Sub2,
                     Lot = g.c.Lot,
@@ -162,67 +126,7 @@ namespace Ferretto.Common.BusinessProviders
               .FirstOrDefaultAsync();
         }
 
-        public IQueryable<SchedulerRequest> GetAll()
-        {
-            return this.dataContext.SchedulerRequests
-                .Select(s =>
-                    new SchedulerRequest
-                    {
-                        Id = s.Id,
-                        AreaId = s.AreaId,
-                        BayId = s.BayId,
-                        CreationDate = s.CreationDate,
-                        ItemId = s.ItemId,
-                        IsInstant = s.IsInstant,
-                        LoadingUnitId = s.LoadingUnitId,
-                        LoadingUnitTypeId = s.LoadingUnitTypeId,
-                        MaterialStatusId = s.MaterialStatusId,
-                        Lot = s.Lot,
-                        Type = (OperationType)s.OperationType,
-                        PackageTypeId = s.PackageTypeId,
-                        RegistrationNumber = s.RegistrationNumber,
-                        RequestedQuantity = s.RequestedQuantity,
-                        Sub1 = s.Sub1,
-                        Sub2 = s.Sub2
-                    });
-        }
-
-        public int GetAllCount()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SchedulerRequests.Count();
-            }
-        }
-
-        public SchedulerRequest GetById(int id)
-        {
-            return this.dataContext.SchedulerRequests
-                .Where(s => s.Id == id)
-                .Select(s =>
-                    new SchedulerRequest
-                    {
-                        Id = s.Id,
-                        IsInstant = s.IsInstant,
-                        AreaId = s.AreaId,
-                        BayId = s.BayId,
-                        CreationDate = s.CreationDate,
-                        ItemId = s.ItemId,
-                        LoadingUnitId = s.LoadingUnitId,
-                        LoadingUnitTypeId = s.LoadingUnitTypeId,
-                        MaterialStatusId = s.MaterialStatusId,
-                        Lot = s.Lot,
-                        Type = (OperationType)s.OperationType,
-                        PackageTypeId = s.PackageTypeId,
-                        RegistrationNumber = s.RegistrationNumber,
-                        RequestedQuantity = s.RequestedQuantity,
-                        Sub1 = s.Sub1,
-                        Sub2 = s.Sub2
-                    })
-                .Single();
-        }
-
-        public IQueryable<CompartmentCore> GetCandidateWithdrawalCompartments(SchedulerRequest request)
+        public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest request)
         {
             if (request == null)
             {
@@ -258,8 +162,10 @@ namespace Ferretto.Common.BusinessProviders
                     (c.Stock - c.ReservedForPick + c.ReservedToStore) > 0
                     &&
                     (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
+                    &&
+                    (c.LoadingUnit.Cell.Aisle.AreaId == request.AreaId)
                     )
-                .Select(c => new CompartmentCore
+                .Select(c => new Compartment
                 {
                     Id = c.Id,
                     ItemId = c.ItemId.Value,
@@ -283,36 +189,7 @@ namespace Ferretto.Common.BusinessProviders
                             LoadingUnitsBufferSize = b.LoadingUnitsBufferSize
                         }
                         ),
-                    Availability = c.Stock - c.ReservedForPick + c.ReservedToStore
                 });
-        }
-
-        public Task<SchedulerRequest> GetNextRequest()
-        {
-            return this.dataContext.SchedulerRequests
-                .OrderBy(s => new { s.IsInstant, s.CreationDate })
-                .Select(r => new SchedulerRequest
-                {
-                    Id = r.Id,
-                    AreaId = r.AreaId,
-                    BayId = r.BayId,
-                    CreationDate = r.CreationDate,
-                    IsInstant = r.IsInstant,
-                    ItemId = r.ItemId,
-                    ListId = r.ListId,
-                    ListRowId = r.LoadingUnitId,
-                    LoadingUnitId = r.LoadingUnitId,
-                    LoadingUnitTypeId = r.LoadingUnitTypeId,
-                    Lot = r.Lot,
-                    Type = (OperationType)r.OperationType,
-                    MaterialStatusId = r.MaterialStatusId,
-                    PackageTypeId = r.PackageTypeId,
-                    RegistrationNumber = r.RegistrationNumber,
-                    RequestedQuantity = r.RequestedQuantity,
-                    Sub1 = r.Sub1,
-                    Sub2 = r.Sub2
-                })
-                .FirstOrDefaultAsync();
         }
 
         public IQueryable<T> OrderCompartmentsByManagementType<T>(IQueryable<T> compartments, ItemManagementType type)

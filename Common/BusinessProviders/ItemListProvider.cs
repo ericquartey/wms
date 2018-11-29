@@ -25,6 +25,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
+        private readonly ItemListRowProvider itemListRowProvider;
 
         #endregion Fields
 
@@ -32,17 +33,19 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemListProvider(
             DatabaseContext dataContext,
-            EnumerationProvider enumerationProvider)
+            EnumerationProvider enumerationProvider,
+            ItemListRowProvider itemListRowProvider)
         {
             this.dataContext = dataContext;
             this.enumerationProvider = enumerationProvider;
+            this.itemListRowProvider = itemListRowProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Task<Int32> Add(ItemListRow model)
+        public Task<Int32> Add(ItemListDetails model)
         {
             throw new NotImplementedException();
         }
@@ -69,8 +72,7 @@ namespace Ferretto.Common.BusinessProviders
                    ItemListTypeDescription = l.ItemListType.Description,
                    ItemListRowsCount = l.ItemListRows.Count(),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
-                   CreationDate = l.CreationDate,
-                   //TODO: n oggetti
+                   CreationDate = l.CreationDate
                }).AsNoTracking();
         }
 
@@ -82,9 +84,61 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public ItemListRow GetById(Int32 id)
+        public ItemListDetails GetById(Int32 id)
         {
-            throw new NotImplementedException();
+            lock (this.dataContext)
+            {
+                var itemListDetails = this.dataContext.ItemLists
+               .Include(l => l.ItemListStatus)
+               .Include(l => l.ItemListType)
+               .Include(l => l.ItemListRows)
+               .Where(l => l.Id == id)
+               .Select(l => new ItemListDetails
+               {
+                   Id = l.Id,
+                   Code = l.Code,
+                   Description = l.Description,
+                   AreaName = l.Area.Name,
+                   Priority = l.Priority,
+                   ItemListStatusDescription = l.ItemListStatus.Description,
+                   ItemListTypeDescription = l.ItemListType.Description,
+                   ItemListRowsCount = l.ItemListRows.Count(),
+                   ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
+                   CreationDate = l.CreationDate,
+                   ItemListStatusId = l.ItemListStatusId,
+                   ItemListTypeId = l.ItemListTypeId,
+                   Job = l.Job,
+                   CustomerOrderCode = l.CustomerOrderCode,
+                   CustomerOrderDescription = l.CustomerOrderDescription,
+                   ShipmentUnitAssociated = l.ShipmentUnitAssociated,
+                   ShipmentUnitCode = l.ShipmentUnitCode,
+                   ShipmentUnitDescription = l.ShipmentUnitDescription,
+                   LastModificationDate = l.LastModificationDate,
+                   FireExecutionDate = l.FirstExecutionDate,
+                   ExecutionEndDate = l.ExecutionEndDate,
+               }).Single();
+
+                itemListDetails.ItemListStatusChoices = this.enumerationProvider.GetAllItemListStatuses();
+                itemListDetails.ItemListTypeChoices = this.enumerationProvider.GetAllItemListTypes();
+
+                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListById(id);
+
+                //loadingUnitDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+                //foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
+                //{
+                //    loadingUnitDetails.AddCompartment(compartment);
+                //}
+
+                //loadingUnitDetails.CellPairingChoices =
+                //    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                //    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                //loadingUnitDetails.ReferenceTypeChoices =
+                //    ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
+                //    .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
+                //loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
+
+                return itemListDetails;
+            }
         }
 
         public IQueryable<ItemList> GetWithStatusCompleted()
@@ -126,7 +180,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Int32 Save(ItemListRow model)
+        public Int32 Save(ItemListDetails model)
         {
             throw new NotImplementedException();
         }

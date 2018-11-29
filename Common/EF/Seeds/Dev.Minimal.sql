@@ -726,6 +726,9 @@ INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, Item
 INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (2, 1, 'Seconda Lista', 1, 1, 3, 1);
 INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (3, 2, 'Terza Lista', 1, 1, 1, 1);
 INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (4, 2, 'Quarta Lista', 1, 1, 3, 1);
+INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (5, 2, 'Quinta Lista', 1, 1, 2, 1);
+INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (6, 2, 'Sesta Lista', 1, 1, 4, 1);
+INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (7, 2, 'Settima Lista', 1, 1, 5, 1);
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Row

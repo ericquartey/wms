@@ -66,7 +66,7 @@
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"
-                                CurrentItem="{Binding SelectedList, Mode=TwoWay}"
+                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
                                 ItemsSource="{Binding SelectedDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>

@@ -95,6 +95,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
             services.AddBusinessProviders();
+            services.AddCoreBusinessProviders();
 
             var schedulerUrl = this.Configuration["Scheduler:Url"];
             services.AddWebAPIClients(schedulerUrl);

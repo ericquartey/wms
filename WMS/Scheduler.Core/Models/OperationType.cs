@@ -1,4 +1,4 @@
-﻿namespace Ferretto.Common.BusinessModels
+﻿namespace Ferretto.WMS.Scheduler.Core
 {
     public enum OperationType
     {

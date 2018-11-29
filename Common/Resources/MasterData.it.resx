@@ -247,4 +247,19 @@
   <data name="ItemListsTypePick" xml:space="preserve">
     <value>Tipo Picking</value>
   </data>
+  <data name="CustomerOrderInformation" xml:space="preserve">
+    <value>Informazioni sull'Ordine del Cliente</value>
+  </data>
+  <data name="ExecutionDetails" xml:space="preserve">
+    <value>Dettagli sull'Esecuzione</value>
+  </data>
+  <data name="ItemListInformation" xml:space="preserve">
+    <value>Informazione sulle Liste</value>
+  </data>
+  <data name="ShipmentUnitInformation" xml:space="preserve">
+    <value>Informazioni su Unità di Spedizione</value>
+  </data>
+  <data name="ItemListRowInformation" xml:space="preserve">
+    <value>Informazioni sulle righe della Lista</value>
+  </data>
 </root>

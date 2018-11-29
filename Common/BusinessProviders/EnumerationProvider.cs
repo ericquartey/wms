@@ -88,6 +88,20 @@ namespace Ferretto.Common.BusinessProviders
                 .Select(x => new Enumeration(x.Id, x.Description));
         }
 
+        public IQueryable<Enumeration> GetAllItemListStatuses()
+        {
+            return this.dataContext.ItemListStatuses
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
+        }
+
+        public IQueryable<Enumeration> GetAllItemListTypes()
+        {
+            return this.dataContext.ItemListTypes
+                .AsNoTracking()
+                .Select(x => new Enumeration(x.Id, x.Description));
+        }
+
         public IEnumerable<Enumeration> GetAllItemManagementTypes()
         {
             var values = System.Enum.GetValues(typeof(ItemManagementType));

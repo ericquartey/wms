@@ -5,17 +5,17 @@
     {
         #region Properties
 
+        public Bay Bay { get; set; }
+
+        public int? BayId { get; set; }
+
+        public Cell Cell { get; set; }
+
+        public int? CellId { get; set; }
+
         public Compartment Compartment { get; set; }
 
         public int? CompartmentId { get; set; }
-
-        public Bay DestinationBay { get; set; }
-
-        public int? DestinationBayId { get; set; }
-
-        public Cell DestinationCell { get; set; }
-
-        public int? DestinationCellId { get; set; }
 
         public int Id { get; set; }
 
@@ -50,14 +50,6 @@
         public string RegistrationNumber { get; set; }
 
         public int RequiredQuantity { get; set; }
-
-        public Bay SourceBay { get; set; }
-
-        public int? SourceBayId { get; set; }
-
-        public Cell SourceCell { get; set; }
-
-        public int? SourceCellId { get; set; }
 
         public MissionStatus Status { get; set; }
 
