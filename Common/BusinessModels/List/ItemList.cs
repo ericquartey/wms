@@ -27,13 +27,13 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListAreaName), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get => this.areaName; set => this.SetProperty(ref this.areaName, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListCreationDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
         public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListItemsCount), ResourceType = typeof(BusinessObjects))]

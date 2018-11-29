@@ -61,7 +61,7 @@
     <SolidColorBrush x:Key="HoverCommonSecondaryDark"
                      Color="{StaticResource WhiteGrey}" />
 
-    <!-- messages -->
+    <!--  messages  -->
     <SolidColorBrush x:Key="ErrorMessageColorBrush"
                      Color="{StaticResource Red}" />
     <SolidColorBrush x:Key="ErrorMessageBackgroundColor"
@@ -83,5 +83,24 @@
     <!--  menu layout  -->
     <system:Double x:Key="MenuTileHeight">55</system:Double>
     <system:Double x:Key="MenuTileWidth">140</system:Double>
+
+
+    <!--  List Status  -->
+    <Color x:Key="Cyan">#00BCD4</Color>
+    <Color x:Key="Blue">#0D47A1</Color>
+    <Color x:Key="CompletedGreen">#00C853</Color>
+    <Color x:Key="DarkRed">#D50000</Color>
+    <Color x:Key="Orange">#FFB300</Color>
+    <SolidColorBrush x:Key="WaitingStatus"
+                     Color="{DynamicResource Cyan}" />
+    <SolidColorBrush x:Key="ExecutingStatus"
+                     Color="{DynamicResource Blue}" />
+    <SolidColorBrush x:Key="CompletedStatus"
+                     Color="{DynamicResource CompletedGreen}" />
+    <SolidColorBrush x:Key="IncompleteStatus"
+                     Color="{DynamicResource DarkRed}" />
+    <SolidColorBrush x:Key="SuspendedStatus"
+                     Color="{DynamicResource Orange}" />
+
 
 </ResourceDictionary>

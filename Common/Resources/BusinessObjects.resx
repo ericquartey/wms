@@ -718,15 +718,6 @@
   <data name="ItemListAreaName" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemListCode" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="ItemListCreationDate" xml:space="preserve">
-    <value>Creation Date</value>
-  </data>
-  <data name="ItemListDescription" xml:space="preserve">
-    <value>Description</value>
-  </data>
   <data name="ItemListItemsCount" xml:space="preserve">
     <value>Items Count</value>
   </data>
@@ -745,14 +736,6 @@
     <value>Type</value>
     <comment>ItemList - Type</comment>
   </data>
-  <data name="ItemListCustomerOrderCode" xml:space="preserve">
-    <value>Code</value>
-    <comment>Item List - Code Customer Order</comment>
-  </data>
-  <data name="ItemListCustomerOrderDescription" xml:space="preserve">
-    <value>Description</value>
-    <comment>Item List - Description Customer Order</comment>
-  </data>
   <data name="ItemListExecutionEndDate" xml:space="preserve">
     <value>End Execution</value>
     <comment>Item List - End Execution</comment>
@@ -764,18 +747,6 @@
   <data name="ItemListJob" xml:space="preserve">
     <value>Job</value>
     <comment>Item List - Job</comment>
-  </data>
-  <data name="ItemListLastModificationDate" xml:space="preserve">
-    <value>Last Modified</value>
-    <comment>Item List - Last Modification</comment>
-  </data>
-  <data name="ItemListRowCode" xml:space="preserve">
-    <value>Code</value>
-    <comment>List Row - Code</comment>
-  </data>
-  <data name="ItemListRowCreationDate" xml:space="preserve">
-    <value>Creation Date</value>
-    <comment>List Row - Creation Date</comment>
   </data>
   <data name="ItemListRowItemDescription" xml:space="preserve">
     <value>Item</value>
@@ -800,10 +771,6 @@
   <data name="ItemListShipmentUnitCode" xml:space="preserve">
     <value>Code</value>
     <comment>Item List - Code</comment>
-  </data>
-  <data name="ItemListShipmentUnitDescription" xml:space="preserve">
-    <value>Description</value>
-    <comment>Item List - Description</comment>
   </data>
   <data name="ItemListTypeId" xml:space="preserve">
     <value>Type</value>

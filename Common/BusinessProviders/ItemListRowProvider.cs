@@ -58,7 +58,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ItemListRow> GetByItemListById(Int32 id)
+        public IQueryable<ItemListRow> GetByItemListId(Int32 id)
         {
             lock (this.dataContext)
             {

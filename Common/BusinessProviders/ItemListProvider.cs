@@ -100,7 +100,6 @@ namespace Ferretto.Common.BusinessProviders
                    Priority = l.Priority,
                    ItemListStatusDescription = l.ItemListStatus.Description,
                    ItemListTypeDescription = l.ItemListType.Description,
-                   ItemListRowsCount = l.ItemListRows.Count(),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate,
                    ItemListStatusId = (ItemListStatus)l.ItemListStatusId,
@@ -123,7 +122,7 @@ namespace Ferretto.Common.BusinessProviders
                     Enum.GetValues(typeof(ItemListType)))
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListById(id);
+                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
 
                 return itemListDetails;
             }

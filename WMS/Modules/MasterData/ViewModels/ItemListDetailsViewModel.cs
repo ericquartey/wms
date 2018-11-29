@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using DevExpress.Xpf.Layout.Core;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -45,8 +46,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
-
-        public string GreenLight { get => "StatusListRun1.png"; }
 
         public ItemListDetails ItemList
         {
@@ -118,23 +117,23 @@ namespace Ferretto.WMS.Modules.MasterData
                 switch (this.ItemList.ItemListStatusId)
                 {
                     case ItemListStatus.Waiting:
-                        this.StatusColor = "#00BCD4";//cyan
+                        this.StatusColor = Application.Current.Resources["WaitingStatus"].ToString();//cyan
                         break;
 
                     case ItemListStatus.Executing:
-                        this.StatusColor = "#0D47A1";//blu
+                        this.StatusColor = Application.Current.Resources["ExecutingStatus"].ToString();//blue
                         break;
 
                     case ItemListStatus.Completed:
-                        this.StatusColor = "#00C853";//green
+                        this.StatusColor = Application.Current.Resources["CompletedStatus"].ToString();//green
                         break;
 
                     case ItemListStatus.Incomplete:
-                        this.StatusColor = "#D50000";//red
+                        this.StatusColor = Application.Current.Resources["IncompleteStatus"].ToString();//red
                         break;
 
                     case ItemListStatus.Suspended:
-                        this.StatusColor = "#FFB300";//orange
+                        this.StatusColor = Application.Current.Resources["SuspendedStatus"].ToString();//orange
                         break;
                 }
             }

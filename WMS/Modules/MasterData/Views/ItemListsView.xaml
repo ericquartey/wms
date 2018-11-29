@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
@@ -40,22 +41,19 @@
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
                 <wms:ActionBarItem Command="{Binding EditCommand}"
-                                   Content="{x:Static res:General.Edit}"
+                                   Content="{x:Static res:General.ShowDetails}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsEnabled="False" />
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Add}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsEnabled="False" />
-                <wms:ActionBarItem Command="{Binding WithdrawCommand}"
-                                   Content="{x:Static res:MasterData.Withdraw}"
+                                   GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding ExecuteCommand}"
+                                   Content="{x:Static res:General.Execute}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsEnabled="False" />
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
