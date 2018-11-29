@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessProviders
             list => list.ItemListStatusId == (int)ItemListStatus.Waiting;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
-            list => list.ItemListTypeId == 1;
+            list => list.ItemListTypeId == (int)ItemListType.Pick;
 
         private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
@@ -58,7 +58,6 @@ namespace Ferretto.Common.BusinessProviders
         public IQueryable<ItemList> GetAll()
         {
             var itemLists = this.dataContext.ItemLists
-               .Include(l => l.ItemListType)
                .Include(l => l.ItemListRows)
                .Select(l => new ItemList
                {
@@ -68,7 +67,7 @@ namespace Ferretto.Common.BusinessProviders
                    AreaName = l.Area.Name,
                    Priority = l.Priority,
                    ItemListStatusDescription = ((ItemListStatus)l.ItemListStatusId).ToString(),
-                   ItemListTypeDescription = l.ItemListType.Description,
+                   ItemListTypeDescription = ((ItemListType)l.ItemListTypeId).ToString(),
                    ItemListRowsCount = l.ItemListRows.Count(),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate
@@ -90,7 +89,6 @@ namespace Ferretto.Common.BusinessProviders
             lock (this.dataContext)
             {
                 var itemListDetails = this.dataContext.ItemLists
-               .Include(l => l.ItemListType)
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)
                .Select(l => new ItemListDetails
@@ -121,7 +119,9 @@ namespace Ferretto.Common.BusinessProviders
                 itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
                     Enum.GetValues(typeof(ItemListStatus)))
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                itemListDetails.ItemListTypeChoices = this.enumerationProvider.GetAllItemListTypes();
+                itemListDetails.ItemListTypeChoices = ((ItemListType[])
+                    Enum.GetValues(typeof(ItemListType)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
                 itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListById(id);
 
@@ -178,7 +178,6 @@ namespace Ferretto.Common.BusinessProviders
             var actualWhereFunc = whereFunc ?? ((i) => true);
 
             return context.ItemLists
-             .Include(l => l.ItemListType)
              .Include(l => l.ItemListRows)
              .Where(actualWhereFunc)
              .Select(l => new ItemList
@@ -189,7 +188,7 @@ namespace Ferretto.Common.BusinessProviders
                  AreaName = l.Area.Name,
                  Priority = l.Priority,
                  ItemListStatusDescription = ((ItemListStatus)l.ItemListStatusId).ToString(),
-                 ItemListTypeDescription = l.ItemListType.Description,
+                 ItemListTypeDescription = ((ItemListType)l.ItemListTypeId).ToString(),
                  ItemListRowsCount = l.ItemListRows.Count(),
                  ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                  CreationDate = l.CreationDate,
