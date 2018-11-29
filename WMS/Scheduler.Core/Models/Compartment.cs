@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Ferretto.Common.Resources;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.Scheduler.Core
 {
-    public class CompartmentCore : BusinessObject, IOrderableCompartment
+    public class Compartment : BusinessObject, IOrderableCompartment
     {
         #region Fields
 
@@ -29,39 +27,29 @@ namespace Ferretto.Common.BusinessModels
         public int AreaId
         {
             get => this.areaId;
-            set => this.SetIfPositive(ref this.areaId, value);
+            set => this.areaId = value;
         }
 
-        public int Availability
-        {
-            get => this.availability;
-            set => this.SetIfPositive(ref this.availability, value);
-        }
+        public int Availability => this.stock - this.reservedForPick + this.reservedToStore;
 
         public IEnumerable<Bay> Bays { get; set; }
 
         public int CellId { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public int? CompartmentStatusId { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
         public int CompartmentTypeId { get; set; }
 
-        [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTime
         {
             get => this.fifoTime;
             set => this.SetIfStrictlyPositive(ref this.fifoTime, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? FirstStoreDate { get; set; }
 
         public int? Height
@@ -101,19 +89,19 @@ namespace Ferretto.Common.BusinessModels
         public int ReservedForPick
         {
             get => this.reservedForPick;
-            set => this.SetIfPositive(ref this.reservedForPick, value);
+            set => SetIfPositive(ref this.reservedForPick, value);
         }
 
         public int ReservedToStore
         {
             get => this.reservedToStore;
-            set => this.SetIfPositive(ref this.reservedToStore, value);
+            set => SetIfPositive(ref this.reservedToStore, value);
         }
 
         public int Stock
         {
             get => this.stock;
-            set => this.SetIfPositive(ref this.stock, value);
+            set => SetIfPositive(ref this.stock, value);
         }
 
         public string Sub1 { get; set; }

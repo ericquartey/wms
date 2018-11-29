@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace Ferretto.Common.BusinessModels
+namespace Ferretto.WMS.Scheduler.Core
 {
     public interface IOrderableCompartment
     {
         #region Properties
 
-        int Availability { get; set; }
-        DateTime? FirstStoreDate { get; set; }
+        int Availability { get; }
+        DateTime? FirstStoreDate { get; }
 
         #endregion Properties
     }

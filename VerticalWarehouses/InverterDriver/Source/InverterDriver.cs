@@ -4,7 +4,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.Utils;
 using NLog;
 
@@ -22,7 +24,9 @@ namespace Ferretto.VW.InverterDriver
 
         public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
-
+        public const int HEARTBEAT_TIMEOUT = 300;
+        public const int BITS_16 = 16;
+        public const int HEARTBIT = 14;
         private static readonly object lockObj = new object();
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private readonly InverterDriverState state;
@@ -46,6 +50,11 @@ namespace Ferretto.VW.InverterDriver
         private AutoResetEvent eventToSendPacket;
         private RegisteredWaitHandle regWaitForMainThread;
         private long TimeSendingPacket;
+        private long TimeSendingHeartBeatPacket;
+        private readonly BitArray CtrlWord;
+        private bool HeartBeat;
+        private Thread thrdHeartBeat;
+        private AutoResetEvent Terminate_HeartBeat;
 
         #region Sensors Digital Signals
         private bool BrakeResistanceOvertemperature;
@@ -71,7 +80,8 @@ namespace Ferretto.VW.InverterDriver
             this.IPAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
             this.PortAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
             this.hwInverterState = HardwareInverterStatus.NotOperative;
-
+            this.CtrlWord = new BitArray(BITS_16);
+            
             logger.Log(LogLevel.Debug, String.Format("InverterDriver in a new incarnation..."));
         }
 
@@ -189,6 +199,7 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
+       
         #endregion Properties
 
         #region Methods
@@ -302,105 +313,7 @@ namespace Ferretto.VW.InverterDriver
             return bResult;
         }
 
-        /// <summary>
-        /// Call back function which will be invoked when the socket detects the incoming data on the stream.
-        /// </summary>
-        public void OnDataReceived(IAsyncResult asyn)
-        {
-            try
-            {
-                QueryPerformanceCounter(out this.perfTimeOnReceivingTelegram);
-                var offsetTime_ms = (int)(((double)(this.perfTimeOnReceivingTelegram - this.perfTimeOnSendingTelegram) * 1000) / this.perfFrequency);
-
-                // Socket' stuff
-                var theSockId = (SocketPacket)asyn.AsyncState;
-                var iRx = theSockId.thisSocket.EndReceive(asyn);
-                var nBytes = theSockId.dataBuffer[0];
-
-                // ------
-                // The class Telegram performs the parsing of incoming data buffer and extract the information from it
-                // ------
-
-                var telegramRead = new byte[iRx];
-                Array.Copy(theSockId.dataBuffer, 0, telegramRead, 0, iRx);
-
-                // Parse the received telegram
-                this.errorReceivedTelegram = this.received_telegram(telegramRead, out var paramID, out this.retParameterValue);
-                if (!this.errorReceivedTelegram)
-                {
-                    if (this.currentRequest.Type == TypeOfRequest.SendRequest)
-                    {
-                        // Notify the <EnquiryTelegram> via Event firing
-                        EnquiryTelegramDone?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
-                    }
-                    else
-                    {
-                        // Notify the <SelectTelegram> via Event firing
-                        SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
-                    }
-
-                    switch (this.currentRequest.ParameterID)
-                    {
-                        case ParameterID.STATUS_WORD_PARAM:
-                            {
-                                lock (lockObj)
-                                {
-                                    this.statusWordValue = Convert.ToInt16(this.retParameterValue);
-                                }
-                                break;
-                            }
-                        case ParameterID.STATUS_DIGITAL_SIGNALS:
-                            {
-
-                                lock (lockObj)
-                                {
-                                    var retValueShort = Convert.ToInt16(this.retParameterValue);
-                                
-                                    var arraybytes = BitConverter.GetBytes(retValueShort);
-                                    BitArray bit_array = new BitArray(arraybytes);
-                                    this.BrakeResistanceOvertemperature = bit_array.Get(2);
-                                    this.EmergencyStop = bit_array.Get(4);
-                                    this.PawlSensorZero = bit_array.Get(5);
-                                    this.UdcPresenceCradleOperator = bit_array.Get(10);
-                                    this.UdcPresenceCradleMachine = bit_array.Get(11);
-                                }
-
-                                break;
-                            }
-                        default:
-                            {
-                                break;
-                            }
-                            
-                    }
-                        
-                }
-                else
-                {
-                    // if we are here, an error occurs
-                    // and so we have to manage it
-                }
-
-                lock (lockObj)
-                {
-                    this.executeRequestOnRunning = false;
-                }
-
-                this.eventToSendPacket?.Set();
-
-                // Prompt to receive a new message
-                this.waitForData();
-            }
-            catch (ObjectDisposedException)
-            {
-                logger.Log(LogLevel.Debug, String.Format("On Data Received: the Socket has been closed"));
-            }
-            catch (SocketException)
-            {
-                logger.Log(LogLevel.Debug, String.Format("On Data Received: Socket critical failure"));
-            }
-        }
-
+       
         /// <summary>
         /// Get value of given parameter. It is a echo for SettingRequest.
         /// </summary>
@@ -470,6 +383,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public void Terminate()
         {
+            this.Terminate_HeartBeat.Set();  //Terminate the heartbeat thread
             this.destroyThread();
             this.disconnect_from_inverter();
 
@@ -487,6 +401,7 @@ namespace Ferretto.VW.InverterDriver
             {
                 // TODO: Add here methods to tear down unmanaged resources...
             }
+
         }
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -499,7 +414,7 @@ namespace Ferretto.VW.InverterDriver
         {
             this.LastError = InverterDriverErrors.NoError;
             var bSuccess = true;
-
+            
             if (this.IPAddressToConnect == "" || this.PortAddressToConnect <= 0)
             {
                 logger.Log(LogLevel.Debug, String.Format("Invalid IP address [IP:{0}, port:{1}]", this.IPAddressToConnect, this.PortAddressToConnect));
@@ -530,8 +445,7 @@ namespace Ferretto.VW.InverterDriver
                     logger.Log(LogLevel.Debug, String.Format("Connection to inverter [IP:{0}] established", this.IPAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(true));
 
-                    this.createThread();
-
+                    this.createThreads();
                     this.waitForData();
                 }
                 else
@@ -552,19 +466,19 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <summary>
-        /// Create working thread.
+        /// Create main working thread and heartbeat thread.
         /// </summary>
-        private void createThread()
+        private void createThreads()
         {
             logger.Log(LogLevel.Debug, String.Format("Create main Working thread."));
             this.eventToSendPacket = new AutoResetEvent(false);
             this.regWaitForMainThread = ThreadPool.RegisterWaitForSingleObject(this.eventToSendPacket, this.onMainWorkingThread, null, -1, false);
-        }
 
-        private object decode_ParameterValue<T>(T value, ValueDataType type)
-        {
-            // ADD your implementation code here
-            return value;
+            this.Terminate_HeartBeat = new AutoResetEvent(false);
+            this.thrdHeartBeat = new Thread(this.HeartBeat_Thread);
+            this.thrdHeartBeat.Name = "HeartBeat_Thread";
+            this.thrdHeartBeat.Priority = ThreadPriority.Highest;
+            this.thrdHeartBeat.Start();
         }
 
         /// <summary>
@@ -584,12 +498,6 @@ namespace Ferretto.VW.InverterDriver
 
             Connected?.Invoke(this, new ConnectedEventArgs(false));
             
-        }
-
-        private Int32 encode_ParameterValue(object value, ValueDataType type)
-        {
-            // ADD your implementation code here
-            return Convert.ToInt32(value);
         }
 
         /// <summary>
@@ -619,12 +527,20 @@ namespace Ferretto.VW.InverterDriver
             return IP;
         }
 
+        internal static byte[] BitArrayToByteArray(BitArray bits)
+        {
+            byte[] ret = new byte[(bits.Length - 1) / 8 + 1];
+            bits.CopyTo(ret, 0);
+            return ret;
+        }
+
         /// <summary>
         /// Main working thread.
         /// The thread monitors the [eventSendToPacket] event.
         /// The [eventSendToPacket] event get signalled when a new request shall be executed.
         private void onMainWorkingThread(object data, bool bTimeOut)
         {
+
             lock (lockObj)
             {
                 long t = 0;
@@ -632,16 +548,173 @@ namespace Ferretto.VW.InverterDriver
                 var offsetTime_ms = (int)(((double)(t - this.TimeSendingPacket) * 1000) / this.perfFrequency);
                 this.TimeSendingPacket = t;
 
-                // Send a request
-                this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_DIGITAL_SIGNALS, 0x00, 0x05, ValueDataType.Int16, null);
+                // Send a request        
+                if (this.HeartBeat)
+                {
+                    var offsetTime_HeartBeat = (int)(((double)(t - this.TimeSendingHeartBeatPacket) * 1000) / this.perfFrequency);
+                    this.TimeSendingHeartBeatPacket = t;
+                   
+                    var bytes = BitArrayToByteArray(this.CtrlWord);
+                    var value = BitConverter.ToInt16(bytes, 0);
+                    this.currentRequest = new Request(TypeOfRequest.SettingRequest, ParameterID.CONTROL_WORD_PARAM, 0x00, 0x05, ValueDataType.Int16, value);
+                    this.CtrlWord.Set(HEARTBIT, !this.CtrlWord.Get(HEARTBIT));
+                    logger.Log(LogLevel.Debug, String.Format("Send HeartBeat. Time elapsed: {0}", offsetTime_HeartBeat));
+                }
+                else
+                {
+                    this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_DIGITAL_SIGNALS, 0x00, 0x05, ValueDataType.Int16, null);
+                    //logger.Log(LogLevel.Debug, String.Format("Send Read Request. Time elapsed: {0}", offsetTime_ms));
+                }
 
                 // execute the request
                 this.send_request_to_inverter();
-                logger.Log(LogLevel.Debug, String.Format("Send Read Request. Time elapsed: {0}", offsetTime_ms));
-
+               
             }
             
         }
+
+        /// <summary>
+        /// HeartBeat Thread. This thread prompts the driver
+        /// to send a defined packet to inverter for heartbeat routine.
+        /// </summary>
+        private void HeartBeat_Thread()
+        {
+            const int TERMINATE = 0;
+            var exit = false;
+            var handles = new WaitHandle[1];
+            handles[0] = this.Terminate_HeartBeat;
+            while (!exit)
+            {
+
+                var WaitResult = WaitHandle.WaitAny(handles, HEARTBEAT_TIMEOUT);
+                switch (WaitResult)
+                {
+                    case TERMINATE:
+                        {
+                            exit = true;
+                            break;
+                        }
+
+                    case WaitHandle.WaitTimeout:
+                        {
+                            lock (lockObj)
+                            {
+                                this.HeartBeat = true;
+                            }
+                            break;
+                        }
+
+                    default:
+                        break;
+                }
+
+            }
+        }
+        
+        /// <summary>
+        /// Call back function which will be invoked when the socket detects the incoming data on the stream.
+        /// </summary>
+        public void OnDataReceived(IAsyncResult asyn)
+        {
+            try
+            {
+                QueryPerformanceCounter(out this.perfTimeOnReceivingTelegram);
+                var offsetTime_ms = (int)(((double)(this.perfTimeOnReceivingTelegram - this.perfTimeOnSendingTelegram) * 1000) / this.perfFrequency);
+
+                // Socket' stuf
+                var theSockId = (SocketPacket)asyn.AsyncState;
+                var iRx = theSockId.thisSocket.EndReceive(asyn);
+                var nBytes = theSockId.dataBuffer[0];
+
+                // ------
+                // The class Telegram performs the parsing of incoming data buffer and extract the information from it
+                // ------
+
+                var telegramRead = new byte[iRx];
+                Array.Copy(theSockId.dataBuffer, 0, telegramRead, 0, iRx);
+
+                // Parse the received telegram
+                this.errorReceivedTelegram = this.received_telegram(telegramRead, out var paramID, out this.retParameterValue);
+                if (!this.errorReceivedTelegram)
+                {
+                    if (this.currentRequest.Type == TypeOfRequest.SendRequest)
+                    {
+                        // Notify the <EnquiryTelegram> via Event firing
+                        EnquiryTelegramDone?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                    }
+                    else
+                    {
+                        // Notify the <SelectTelegram> via Event firing
+                        SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                    }
+
+                    switch (this.currentRequest.ParameterID)
+                    {
+                        case ParameterID.STATUS_WORD_PARAM:
+                            {
+                                lock (lockObj)
+                                {
+                                    this.statusWordValue = Convert.ToInt16(this.retParameterValue);
+                                }
+                                break;
+                            }
+                        case ParameterID.STATUS_DIGITAL_SIGNALS:
+                            {
+
+                                lock (lockObj)
+                                {
+                                    var retValueShort = Convert.ToInt16(this.retParameterValue);
+
+                                    var arraybytes = BitConverter.GetBytes(retValueShort);
+                                    BitArray bit_array = new BitArray(arraybytes);
+                                    this.BrakeResistanceOvertemperature = bit_array.Get(2);
+                                    this.EmergencyStop = bit_array.Get(4);
+                                    this.PawlSensorZero = bit_array.Get(5);
+                                    this.UdcPresenceCradleOperator = bit_array.Get(10);
+                                    this.UdcPresenceCradleMachine = bit_array.Get(11);
+                                }
+
+                                break;
+                            }
+
+                        case ParameterID.CONTROL_WORD_PARAM:
+                            {
+                                lock (lockObj)
+                                {
+                                    this.HeartBeat = false;
+                                }
+                                break;
+                            }
+
+                    }
+
+                }
+                else
+                {
+                    // if we are here, an error occurs
+                    // and so we have to manage it
+                }
+
+                lock (lockObj)
+                {
+                    this.executeRequestOnRunning = false;
+                }
+
+                this.eventToSendPacket?.Set();
+
+                // Prompt to receive a new message
+                this.waitForData();
+            }
+            catch (ObjectDisposedException)
+            {
+                logger.Log(LogLevel.Debug, String.Format("On Data Received: the Socket has been closed"));
+            }
+            catch (SocketException)
+            {
+                logger.Log(LogLevel.Debug, String.Format("On Data Received: Socket critical failure"));
+            }
+        }
+
 
         private bool received_telegram(byte[] telegram, out ParameterID paramID, out object retValue)
         {
@@ -710,8 +783,8 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
-        /// <summary>
-        /// Start waiting data from the inverter (via socket).
+        ///<summary>
+        /// Start waiting data from the inverter(via socket).
         /// </summary>
         private void waitForData()
         {
