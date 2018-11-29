@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,8 +69,8 @@ namespace Ferretto.WMS.Scheduler.Core
                 .Select(m => new Common.DataModels.Mission
                 {
                     CompartmentId = m.CompartmentId,
-                    // BayId = m.BayId,  // TODO: remove destination/source bay id
-                    // CellId = m.CellId,        // TODO: remove destination/source cell id
+                    BayId = m.BayId,
+                    CellId = m.CellId,
                     ItemId = m.ItemId,
                     ItemListId = m.ItemListId,
                     ItemListRowId = m.ItemListRowId,

@@ -26,24 +26,14 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (MissionType)System.Enum.ToObject(typeof(MissionType), x));
 
-            builder.HasOne(m => m.SourceCell)
-                .WithMany(s => s.SourceMissions)
-                .HasForeignKey(m => m.SourceCellId)
+            builder.HasOne(m => m.Cell)
+                .WithMany(s => s.Missions)
+                .HasForeignKey(m => m.CellId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.HasOne(m => m.DestinationCell)
-                .WithMany(s => s.DestinationMissions)
-                .HasForeignKey(m => m.DestinationCellId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            builder.HasOne(m => m.SourceBay)
-                .WithMany(b => b.SourceMissions)
-                .HasForeignKey(m => m.SourceBayId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-
-            builder.HasOne(m => m.DestinationBay)
-                .WithMany(b => b.DestinationMissions)
-                .HasForeignKey(m => m.DestinationBayId)
+            builder.HasOne(m => m.Bay)
+                .WithMany(b => b.Missions)
+                .HasForeignKey(m => m.BayId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.HasOne(m => m.LoadingUnit)
