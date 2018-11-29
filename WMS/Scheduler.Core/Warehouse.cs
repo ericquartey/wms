@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,7 +64,7 @@ namespace Ferretto.WMS.Scheduler.Core
         public async Task<SchedulerRequest> Withdraw(SchedulerRequest request)
         {
             SchedulerRequest qualifiedRequest = null;
-            using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 qualifiedRequest = await this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
                 if (qualifiedRequest != null)
@@ -76,7 +76,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 }
             }
 
-            using (var scope = new TransactionScope())
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await this.DispatchRequests();
                 scope.Complete();
