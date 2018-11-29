@@ -68,11 +68,11 @@
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />
-            <Button Height="80"
+            <Button Height="50"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Command="{Binding ChangeSkin}" />
-            <Button Height="80"
+            <Button Height="50"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Command="{Binding SwitchOffCommand}" />
