@@ -577,7 +577,7 @@
     <value>Numero Righe</value>
     <comment>Righe di Lista - Numero</comment>
   </data>
-  <data name="ItemListStatusDescription" xml:space="preserve">
+  <data name="ItemListStatus" xml:space="preserve">
     <value>Stato</value>
     <comment>Lista - Stato</comment>
   </data>

@@ -792,9 +792,9 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
-        public static string ItemListStatusDescription {
+        public static string ItemListStatus {
             get {
-                return ResourceManager.GetString("ItemListStatusDescription", resourceCulture);
+                return ResourceManager.GetString("ItemListStatus", resourceCulture);
             }
         }
         

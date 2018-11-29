@@ -20,7 +20,6 @@ namespace Ferretto.Common.DataModels
         public int Id { get; set; }
         public IEnumerable<ItemListRow> ItemListRows { get; set; }
         public ItemListStatus ItemListStatus { get; set; }
-        public int ItemListStatusId { get; set; }
         public ItemListType ItemListType { get; set; }
         public int ItemListTypeId { get; set; }
         public string Job { get; set; }

@@ -112,9 +112,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void SetColorStatus()
         {
-            if (this.ItemList != null && this.ItemList.ItemListStatusId > 0)
+            if (this.ItemList != null && this.ItemList.ItemListStatus > 0)
             {
-                switch (this.ItemList.ItemListStatusId)
+                switch (this.ItemList.ItemListStatus)
                 {
                     case ItemListStatus.Waiting:
                         this.StatusColor = Application.Current.Resources["WaitingStatus"].ToString();//cyan

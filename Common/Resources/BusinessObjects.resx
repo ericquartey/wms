@@ -728,7 +728,7 @@
     <value>Rows Count</value>
     <comment>ItemListRow - Count</comment>
   </data>
-  <data name="ItemListStatusDescription" xml:space="preserve">
+  <data name="ItemListStatus" xml:space="preserve">
     <value>Status</value>
     <comment>ItemList - Status</comment>
   </data>

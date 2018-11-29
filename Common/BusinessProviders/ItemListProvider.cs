@@ -15,10 +15,10 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusCompletedFilter =
-            list => list.ItemListStatusId == (int)ItemListStatus.Completed;
+            list => list.ItemListStatus.Equals(ItemListStatus.Completed);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusWaitingFilter =
-            list => list.ItemListStatusId == (int)ItemListStatus.Waiting;
+            list => list.ItemListStatus.Equals(ItemListStatus.Waiting);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
             list => list.ItemListTypeId == (int)ItemListType.Pick;
@@ -66,7 +66,7 @@ namespace Ferretto.Common.BusinessProviders
                    Description = l.Description,
                    AreaName = l.Area.Name,
                    Priority = l.Priority,
-                   ItemListStatusDescription = ((ItemListStatus)l.ItemListStatusId).ToString(),
+                   ItemListStatusDescription = l.ItemListStatus.ToString(),
                    ItemListTypeDescription = ((ItemListType)l.ItemListTypeId).ToString(),
                    ItemListRowsCount = l.ItemListRows.Count(),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
@@ -98,11 +98,10 @@ namespace Ferretto.Common.BusinessProviders
                    Description = l.Description,
                    AreaName = l.Area.Name,
                    Priority = l.Priority,
-                   ItemListStatusDescription = l.ItemListStatus.Description,
+                   ItemListStatus = (ItemListStatus)l.ItemListStatus,
                    ItemListTypeDescription = l.ItemListType.Description,
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate,
-                   ItemListStatusId = (ItemListStatus)l.ItemListStatusId,
                    ItemListTypeId = l.ItemListTypeId,
                    Job = l.Job,
                    CustomerOrderCode = l.CustomerOrderCode,
@@ -186,7 +185,7 @@ namespace Ferretto.Common.BusinessProviders
                  Description = l.Description,
                  AreaName = l.Area.Name,
                  Priority = l.Priority,
-                 ItemListStatusDescription = ((ItemListStatus)l.ItemListStatusId).ToString(),
+                 ItemListStatusDescription = l.ItemListStatus.ToString(),
                  ItemListTypeDescription = ((ItemListType)l.ItemListTypeId).ToString(),
                  ItemListRowsCount = l.ItemListRows.Count(),
                  ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
