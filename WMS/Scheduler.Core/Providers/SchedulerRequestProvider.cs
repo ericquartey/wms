@@ -167,28 +167,24 @@ namespace Ferretto.WMS.Scheduler.Core
                     )
                 .Select(c => new Compartment
                 {
-                    Id = c.Id,
-                    ItemId = c.ItemId.Value,
-                    LoadingUnitId = c.LoadingUnit.Id,
-                    CellId = c.LoadingUnit.Cell.Id,
-                    AreaId = c.LoadingUnit.Cell.Aisle.Area.Id,
+                    AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
+                    CellId = c.LoadingUnit.CellId,
                     Code = c.Code,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
                     FifoTime = c.FifoTime,
                     FirstStoreDate = c.FirstStoreDate,
-                    Stock = c.Stock,
-                    ReservedToStore = c.ReservedToStore,
-                    ReservedForPick = c.ReservedForPick,
-                    PackageTypeId = c.PackageTypeId,
+                    Id = c.Id,
+                    ItemId = c.ItemId.Value,
+                    LoadingUnitId = c.LoadingUnitId,
                     Lot = c.Lot,
-                    Bays = c.LoadingUnit.Cell.Aisle.Area.Bays.Select(
-                        b => new Bay
-                        {
-                            Id = b.Id,
-                            LoadingUnitsBufferSize = b.LoadingUnitsBufferSize
-                        }
-                        ),
+                    MaterialStatusId = c.MaterialStatusId,
+                    MaxCapacity = c.MaxCapacity,
+                    PackageTypeId = c.PackageTypeId,
+                    RegistrationNumber = c.RegistrationNumber,
+                    ReservedForPick = c.ReservedForPick,
+                    ReservedToStore = c.ReservedToStore,
+                    Stock = c.Stock,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
                 });
         }
 
