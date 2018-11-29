@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -90,6 +90,7 @@ namespace Ferretto.WMS.Scheduler.Core
         {
             return await this.dataContext.Areas
                 .Include(a => a.Bays)
+                .ThenInclude(b => b.Missions)
                 .Select(a => new Area
                 {
                     Id = a.Id,
@@ -97,7 +98,7 @@ namespace Ferretto.WMS.Scheduler.Core
                     {
                         Id = b.Id,
                         LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
-                        LoadingUnitsBufferUsage = 0
+                        LoadingUnitsBufferUsage = b.Missions.Where(m => m.Status != Common.DataModels.MissionStatus.Completed).Count()
                     })
                 })
                 .SingleAsync(a => a.Id == areaId);
@@ -106,11 +107,12 @@ namespace Ferretto.WMS.Scheduler.Core
         public async Task<Bay> GetBayByIdAsync(int bayId)
         {
             return await this.dataContext.Bays
+                .Include(b => b.Missions)
                 .Select(b => new Bay
                 {
                     Id = b.Id,
                     LoadingUnitsBufferSize = b.LoadingUnitsBufferSize,
-                    LoadingUnitsBufferUsage = 0
+                    LoadingUnitsBufferUsage = b.Missions.Where(m => m.Status != Common.DataModels.MissionStatus.Completed).Count()
                 })
                 .SingleAsync(b => b.Id == bayId);
         }
@@ -121,7 +123,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 .Select(i => new Item
                 {
                     Id = i.Id,
-                    ManagementType = (ItemManagementType)i.ManagementType
+                    ManagementType = (ItemManagementType)i.ManagementType,
                 }
                 )
                 .SingleAsync(i => i.Id == itemId);
