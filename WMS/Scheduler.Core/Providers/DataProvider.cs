@@ -132,7 +132,9 @@ namespace Ferretto.WMS.Scheduler.Core
         public async Task<SchedulerRequest> GetNextRequestToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-                .OrderBy(s => new { s.IsInstant, s.CreationDate })
+                .Where(r => r.RequestedQuantity > r.DispatchedQuantity)
+                .OrderBy(s => s.IsInstant)
+                .OrderBy(s => s.CreationDate)
                 .Select(r => new SchedulerRequest
                 {
                     Id = r.Id,
@@ -155,7 +157,7 @@ namespace Ferretto.WMS.Scheduler.Core
                     Sub1 = r.Sub1,
                     Sub2 = r.Sub2
                 })
-                .FirstOrDefaultAsync(r => r.RequestedQuantity > r.DispatchedQuantity);
+                .FirstOrDefaultAsync();
         }
 
         public void Update(Mission mission)
