@@ -22,7 +22,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <!--<RowDefinition Height="*" />-->
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -121,9 +120,6 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <!--<wms:ComboBox Grid.Row="0"
-                                      EditValue="{Binding Path=ItemList.ItemListStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=ItemList.ItemListStatusChoices}" />-->
                         <wms:TextBox Grid.Row="1"
                                      Text="{Binding Path=ItemList.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="3"
@@ -148,9 +144,6 @@
                         <CheckBox Grid.Row="0"
                                   Content="Associated"
                                   IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <!--<wms:SpinEdit Grid.Row="0"
-                                      Grid.Column="0"
-                                      EditValue="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
                         <wms:TextBox Grid.Row="1"
                                      IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -265,32 +258,6 @@
                                           Content="{Binding Path=ItemList.AreaName}" />
 
                         </Grid>
-
-                        <!--wms:WmsIcon Width="48"
-                                         Height="48"
-                                         Margin="5"
-                                         ColorizeBrush="Gray"
-                                         SymbolName="ListStatusWaiting" />
-                            <wms:WmsIcon Width="48"
-                                         Height="48"
-                                         Margin="5"
-                                         ColorizeBrush="Blue"
-                                         SymbolName="ListStatusExecuting" />
-                            <wms:WmsIcon Width="48"
-                                         Height="48"
-                                         Margin="5"
-                                         ColorizeBrush="Green"
-                                         SymbolName="ListStatusCompleted" />
-                            <wms:WmsIcon Width="48"
-                                         Height="48"
-                                         Margin="5"
-                                         ColorizeBrush="Red"
-                                         SymbolName="ListStatusIncomplete" />
-                            <wms:WmsIcon Width="48"
-                                         Height="48"
-                                         Margin="5"
-                                         ColorizeBrush="Orange"
-                                         SymbolName="ListStatusSuspende" />-->
                     </GroupBox>
                     <GroupBox Grid.Row="1"
                               Margin="20,0"
