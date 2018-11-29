@@ -12,13 +12,13 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
 
         #endregion Fields
 
         #region Constructors
 
-        public MissionProvider(DatabaseContext context)
+        public MissionProvider(IDatabaseContextService context)
         {
             this.dataContext = context;
         }
@@ -39,7 +39,8 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(missions));
             }
 
-            this.dataContext.AddRange(missions.Select(m => new DataModels.Mission
+            var dataContext = this.dataContext.Current;
+            dataContext.AddRange(missions.Select(m => new DataModels.Mission
             {
                 CompartmentId = m.CompartmentId,
                 // BayId = m.BayId,  // TODO: remove destination/source bay id
@@ -55,7 +56,7 @@ namespace Ferretto.Common.BusinessProviders
                 Sub2 = m.Sub2,
             }));
 
-            return await this.dataContext.SaveChangesAsync();
+            return await dataContext.SaveChangesAsync();
         }
 
         public int Delete(int id)
@@ -70,9 +71,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Cells.AsNoTracking().Count();
+                return dataContext.Cells.AsNoTracking().Count();
             }
         }
 
@@ -88,13 +90,14 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Cells.Find(model.Id);
+                var existingModel = dataContext.Cells.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 

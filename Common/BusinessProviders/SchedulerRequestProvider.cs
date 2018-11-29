@@ -11,13 +11,13 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
 
         #endregion Fields
 
         #region Constructors
 
-        public SchedulerRequestProvider(DatabaseContext dataContext)
+        public SchedulerRequestProvider(IDatabaseContextService dataContext)
         {
             this.dataContext = dataContext;
         }
@@ -33,7 +33,8 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            this.dataContext.SchedulerRequests.Add(new DataModels.SchedulerRequest
+            var dataContext = this.dataContext.Current;
+            dataContext.SchedulerRequests.Add(new DataModels.SchedulerRequest
             {
                 AreaId = model.AreaId,
                 BayId = model.BayId,
@@ -53,7 +54,7 @@ namespace Ferretto.Common.BusinessProviders
                 Sub2 = model.Sub2
             });
 
-            return await this.dataContext.SaveChangesAsync();
+            return await dataContext.SaveChangesAsync();
         }
 
         public int Delete(int id)
@@ -73,7 +74,8 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
 
-            var aggregatedCompartments = this.dataContext.Compartments
+            var dataContext = this.dataContext.Current;
+            var aggregatedCompartments = dataContext.Compartments
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.Cell)
                .ThenInclude(c => c.Aisle)
@@ -113,7 +115,7 @@ namespace Ferretto.Common.BusinessProviders
                    }
                );
 
-            var aggregatedRequests = this.dataContext.SchedulerRequests
+            var aggregatedRequests = dataContext.SchedulerRequests
                 .Where(r => r.ItemId == request.ItemId);
 
             var compartmentSets = aggregatedCompartments
@@ -141,7 +143,7 @@ namespace Ferretto.Common.BusinessProviders
                 )
                 .Where(x => x.Availability >= request.RequestedQuantity);
 
-            var item = await this.dataContext.Items
+            var item = await dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
                 .SingleAsync(i => i.Id == request.ItemId);
 
@@ -164,7 +166,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<SchedulerRequest> GetAll()
         {
-            return this.dataContext.SchedulerRequests
+            return this.dataContext.Current.SchedulerRequests
                 .Select(s =>
                     new SchedulerRequest
                     {
@@ -189,15 +191,16 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.SchedulerRequests.Count();
+                return dataContext.SchedulerRequests.Count();
             }
         }
 
         public SchedulerRequest GetById(int id)
         {
-            return this.dataContext.SchedulerRequests
+            return this.dataContext.Current.SchedulerRequests
                 .Where(s => s.Id == id)
                 .Select(s =>
                     new SchedulerRequest
@@ -234,7 +237,7 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
 
-            return this.dataContext.Compartments
+            return this.dataContext.Current.Compartments
                 .Include(c => c.LoadingUnit)
                 .ThenInclude(l => l.Cell)
                 .ThenInclude(c => c.Aisle)
@@ -289,7 +292,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<SchedulerRequest> GetNextRequest()
         {
-            return this.dataContext.SchedulerRequests
+            return this.dataContext.Current.SchedulerRequests
                 .OrderBy(s => new { s.IsInstant, s.CreationDate })
                 .Select(r => new SchedulerRequest
                 {
@@ -342,13 +345,14 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Areas.Find(model.Id);
+                var existingModel = dataContext.Areas.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 

@@ -23,7 +23,7 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
             list => list.ItemListTypeId == 1;
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -31,7 +31,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemListProvider(
-            DatabaseContext dataContext,
+            IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider)
         {
             this.dataContext = dataContext;
@@ -54,7 +54,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<ItemList> GetAll()
         {
-            return this.dataContext.ItemLists
+            return this.dataContext.Current.ItemLists
                .Include(l => l.ItemListStatus)
                .Include(l => l.ItemListType)
                .Include(l => l.ItemListRows)
@@ -76,9 +76,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public Int32 GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.Count();
+                return dataContext.ItemLists.Count();
             }
         }
 
@@ -89,40 +90,43 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<ItemList> GetWithStatusCompleted()
         {
-            return GetAllListsWithAggregations(this.dataContext, StatusCompletedFilter);
+            return GetAllListsWithAggregations(this.dataContext.Current, StatusCompletedFilter);
         }
 
         public Int32 GetWithStatusCompletedCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
+                return dataContext.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
             }
         }
 
         public IQueryable<ItemList> GetWithStatusWaiting()
         {
-            return GetAllListsWithAggregations(this.dataContext, StatusWaitingFilter);
+            return GetAllListsWithAggregations(this.dataContext.Current, StatusWaitingFilter);
         }
 
         public Int32 GetWithStatusWaitingCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.AsNoTracking().Count(StatusWaitingFilter);
+                return dataContext.ItemLists.AsNoTracking().Count(StatusWaitingFilter);
             }
         }
 
         public IQueryable<ItemList> GetWithTypePick()
         {
-            return GetAllListsWithAggregations(this.dataContext, TypePickFilter);
+            return GetAllListsWithAggregations(this.dataContext.Current, TypePickFilter);
         }
 
         public Int32 GetWithTypePickCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.AsNoTracking().Count(TypePickFilter);
+                return dataContext.ItemLists.AsNoTracking().Count(TypePickFilter);
             }
         }
 

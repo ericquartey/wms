@@ -4,6 +4,7 @@ using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.EF;
 using Ferretto.Common.Modules.BLL.Services;
 using Ferretto.WMS.Scheduler.WebAPI.Contracts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
@@ -45,6 +46,7 @@ namespace Ferretto.Common.Modules.BLL
             this.Container.RegisterType<IMissionProvider, MissionProvider>();
 
             this.Container.RegisterType<IItemsClient, ItemsClient>(new InjectionConstructor(ConfigurationManager.AppSettings["SchedulerEndpoint"]));
+            this.Container.RegisterType<IDatabaseContextService, DatabaseContextService>();
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
             this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));

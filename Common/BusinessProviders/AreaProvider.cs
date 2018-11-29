@@ -12,13 +12,13 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
 
         #endregion Fields
 
         #region Constructors
 
-        public AreaProvider(DatabaseContext dataContext)
+        public AreaProvider(IDatabaseContextService dataContext)
         {
             this.dataContext = dataContext;
         }
@@ -39,20 +39,21 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Area> GetAll()
         {
-            return GetAllAreasWithFilter(this.dataContext);
+            return GetAllAreasWithFilter(this.dataContext.Current);
         }
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Areas.AsNoTracking().Count();
+                return dataContext.Areas.AsNoTracking().Count();
             }
         }
 
         public Area GetById(int id)
         {
-            return this.dataContext.Areas
+            return this.dataContext.Current.Areas
                 .Where(a => a.Id == id)
                 .Select(a => new Area
                 {
@@ -64,7 +65,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Area> GetByItemIdAvailability(int id)
         {
-            return this.dataContext.Compartments
+            return this.dataContext.Current.Compartments
                 .Include(c => c.LoadingUnit)
                     .ThenInclude(l => l.Cell)
                     .ThenInclude(c => c.Aisle)
@@ -85,14 +86,14 @@ namespace Ferretto.Common.BusinessProviders
             {
                 throw new ArgumentNullException(nameof(model));
             }
-
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Areas.Find(model.Id);
+                var existingModel = dataContext.Areas.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 
