@@ -97,8 +97,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"Withdrawal request of item {request.ItemId} could not be processed.");
-                return this.BadRequest(this.ModelState);
+                this.logger.LogError(ex, $"An error occurrew while processing the withdrawal request of item {request.ItemId}.");
+                return this.BadRequest(ex.Message);
             }
         }
 
