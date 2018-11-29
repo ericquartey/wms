@@ -70,6 +70,11 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
                 .ThenInclude(ict => ict.Item)
+                .ThenInclude(i => i.AbcClass)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .ThenInclude(ict => ict.Item)
+                .ThenInclude(i => i.ItemCategory)
                 .SelectMany(
                     c => c.CompartmentType.ItemsCompartmentTypes,
                     (c, ict) => new AllowedItemInCompartment
@@ -78,6 +83,9 @@ namespace Ferretto.Common.BusinessProviders
                         Code = ict.Item.Code,
                         Description = ict.Item.Description,
                         MaxCapacity = ict.MaxCapacity,
+                        AbcClassDescription = ict.Item.AbcClass.Description,
+                        ItemCategoryDescription = ict.Item.ItemCategory.Description,
+                        Image = ict.Item.Image,
                     }
                 )
                 .AsNoTracking();
@@ -122,7 +130,7 @@ namespace Ferretto.Common.BusinessProviders
                         AbcClassId = a.Item.AbcClassId,
                         MeasureUnitId = a.Item.MeasureUnitId,
                         MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                        ManagementType = (int)a.Item.ManagementType,
+                        ManagementType = (ItemManagementType)a.Item.ManagementType,
                         FifoTimePick = a.Item.FifoTimePick,
                         FifoTimeStore = a.Item.FifoTimeStore,
                         ReorderPoint = a.Item.ReorderPoint,
@@ -209,28 +217,37 @@ namespace Ferretto.Common.BusinessProviders
                 var existingModel = this.dataContext.Items.Find(model.Id);
 
                 this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-                existingModel.LastModificationDate = DateTime.Now;
 
                 return this.dataContext.SaveChanges();
             }
         }
 
-        public async Task WithdrawAsync(ItemWithdraw itemWithdraw)
+        public async Task<OperationResult> WithdrawAsync(ItemWithdraw itemWithdraw)
         {
-            await this.itemsClient.WithdrawAsync(
-                new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
-                {
-                    ItemId = itemWithdraw.ItemDetails.Id,
-                    BayId = itemWithdraw.BayId,
-                    AreaId = itemWithdraw.AreaId,
-                    Lot = itemWithdraw.Lot,
-                    RequestedQuantity = itemWithdraw.Quantity,
-                    RegistrationNumber = itemWithdraw.RegistrationNumber,
-                    Sub1 = itemWithdraw.Sub1,
-                    Sub2 = itemWithdraw.Sub2,
-                    Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal
-                }
-            );
+            try
+            {
+                await this.itemsClient.WithdrawAsync(
+                   new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
+                   {
+                       IsInstant = true,
+                       Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
+                       ItemId = itemWithdraw.ItemDetails.Id,
+                       BayId = itemWithdraw.BayId,
+                       AreaId = itemWithdraw.AreaId,
+                       Lot = itemWithdraw.Lot,
+                       RequestedQuantity = itemWithdraw.Quantity,
+                       RegistrationNumber = itemWithdraw.RegistrationNumber,
+                       Sub1 = itemWithdraw.Sub1,
+                       Sub2 = itemWithdraw.Sub2,
+                   }
+               );
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, ex.Message);
+            }
         }
 
         private static IQueryable<Item> GetAllItemsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Item, bool>> whereFunc = null)

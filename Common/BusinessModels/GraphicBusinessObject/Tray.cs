@@ -83,18 +83,20 @@ namespace Ferretto.Common.BusinessModels
         public List<CompartmentDetails> BulkAddCompartments(BulkCompartment bulkCompartment)
         {
             var tempList = new List<CompartmentDetails>();
-            int startX = (int)bulkCompartment.XPosition;
-            int startY = (int)bulkCompartment.YPosition;
+
+            int widthNewCompartment = bulkCompartment.Width / bulkCompartment.Column;
+            int heightNewCompartment = bulkCompartment.Height / bulkCompartment.Row;
+
             for (int i = 0; i < bulkCompartment.Row; i++)
             {
                 for (int j = 0; j < bulkCompartment.Column; j++)
                 {
                     var newCompartment = new CompartmentDetails()
                     {
-                        Width = bulkCompartment.Width,
-                        Height = bulkCompartment.Height,
-                        XPosition = startX + (i * bulkCompartment.Width),
-                        YPosition = startY + (j * bulkCompartment.Height),
+                        Width = widthNewCompartment,
+                        Height = heightNewCompartment,
+                        XPosition = bulkCompartment.XPosition + (j * widthNewCompartment),
+                        YPosition = bulkCompartment.YPosition + (i * heightNewCompartment),
                     };
                     if (this.CanAddCompartment(newCompartment))
                     {
@@ -102,10 +104,11 @@ namespace Ferretto.Common.BusinessModels
                     }
                     else
                     {
-                        throw new ArgumentException();
+                        throw new Exception(Errors.BulkAddNoPossible);
                     }
                 }
             }
+
             this.AddCompartmentsRange(tempList);
             return tempList;
         }
@@ -149,14 +152,6 @@ namespace Ferretto.Common.BusinessModels
                 {
                     return this.CanCreateNewCompartment(bulkCompartment, tray, isBulkAdd, edit);
                 }
-                else
-                {
-                    if (bulkCompartment != null && bulkCompartment.Row > 1 && bulkCompartment.Column > 1)
-                    {
-                        bulkCompartment.Width = bulkCompartment.Width * bulkCompartment.Row;
-                        bulkCompartment.Height = bulkCompartment.Height * bulkCompartment.Column;
-                    }
-                }
             }
 
             return null;
@@ -169,7 +164,7 @@ namespace Ferretto.Common.BusinessModels
 
         protected virtual void OnCompartmentChanged(CompartmentDetails compartment)
         {
-            var handler = CompartmentChangedEvent;
+            var handler = this.CompartmentChangedEvent;
             if (handler != null)
             {
                 handler(this, new CompartmentEventArgs(compartment));

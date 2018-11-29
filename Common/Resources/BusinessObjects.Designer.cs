@@ -349,6 +349,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string CompartmentItem {
+            get {
+                return ResourceManager.GetString("CompartmentItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Handling Date.
         /// </summary>
         public static string CompartmentLastHandlingDate {
@@ -610,6 +619,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Image.
+        /// </summary>
+        public static string ItemImage {
+            get {
+                return ResourceManager.GetString("ItemImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inventory Tolerance.
         /// </summary>
         public static string ItemInventoryTolerance {
@@ -651,6 +669,231 @@ namespace Ferretto.Common.Resources {
         public static string ItemLength {
             get {
                 return ResourceManager.GetString("ItemLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ItemListAreaName {
+            get {
+                return ResourceManager.GetString("ItemListAreaName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string ItemListCode {
+            get {
+                return ResourceManager.GetString("ItemListCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creation Date.
+        /// </summary>
+        public static string ItemListCreationDate {
+            get {
+                return ResourceManager.GetString("ItemListCreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string ItemListCustomerOrderCode {
+            get {
+                return ResourceManager.GetString("ItemListCustomerOrderCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string ItemListCustomerOrderDescription {
+            get {
+                return ResourceManager.GetString("ItemListCustomerOrderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string ItemListDescription {
+            get {
+                return ResourceManager.GetString("ItemListDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to End Execution.
+        /// </summary>
+        public static string ItemListExecutionEndDate {
+            get {
+                return ResourceManager.GetString("ItemListExecutionEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fire Execution.
+        /// </summary>
+        public static string ItemListFireExecutionDate {
+            get {
+                return ResourceManager.GetString("ItemListFireExecutionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items Count.
+        /// </summary>
+        public static string ItemListItemsCount {
+            get {
+                return ResourceManager.GetString("ItemListItemsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Job.
+        /// </summary>
+        public static string ItemListJob {
+            get {
+                return ResourceManager.GetString("ItemListJob", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Modified.
+        /// </summary>
+        public static string ItemListLastModificationDate {
+            get {
+                return ResourceManager.GetString("ItemListLastModificationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string ItemListPriority {
+            get {
+                return ResourceManager.GetString("ItemListPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string ItemListRowCode {
+            get {
+                return ResourceManager.GetString("ItemListRowCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Creation Date.
+        /// </summary>
+        public static string ItemListRowCreationDate {
+            get {
+                return ResourceManager.GetString("ItemListRowCreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string ItemListRowItemDescription {
+            get {
+                return ResourceManager.GetString("ItemListRowItemDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Priority.
+        /// </summary>
+        public static string ItemListRowPriority {
+            get {
+                return ResourceManager.GetString("ItemListRowPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required Quantity.
+        /// </summary>
+        public static string ItemListRowRequiredQuantity {
+            get {
+                return ResourceManager.GetString("ItemListRowRequiredQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rows Count.
+        /// </summary>
+        public static string ItemListRowsCount {
+            get {
+                return ResourceManager.GetString("ItemListRowsCount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string ItemListRowStatusDescription {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipment Unit Associated.
+        /// </summary>
+        public static string ItemListShipmentUnitAssociated {
+            get {
+                return ResourceManager.GetString("ItemListShipmentUnitAssociated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string ItemListShipmentUnitCode {
+            get {
+                return ResourceManager.GetString("ItemListShipmentUnitCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string ItemListShipmentUnitDescription {
+            get {
+                return ResourceManager.GetString("ItemListShipmentUnitDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string ItemListStatusDescription {
+            get {
+                return ResourceManager.GetString("ItemListStatusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string ItemListTypeDescription {
+            get {
+                return ResourceManager.GetString("ItemListTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string ItemListTypeId {
+            get {
+                return ResourceManager.GetString("ItemListTypeId", resourceCulture);
             }
         }
         

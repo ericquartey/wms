@@ -30,8 +30,8 @@ namespace Ferretto.Common.Controls
                 return null;
             }
 
-            var editControl = LayoutTreeHelper.GetVisualParents(control).FirstOrDefault(c => c.GetType() == this.Control);
-            if (((FrameworkElement)control).DataContext == null)
+            var editControl = LayoutTreeHelper.GetVisualParents(control).OfType<FrameworkElement>().FirstOrDefault(c => c.GetType() == this.Control);
+            if (editControl == null || editControl.DataContext == null)
             {
                 return null;
             }
@@ -41,8 +41,7 @@ namespace Ferretto.Common.Controls
 
             if (bindingExpression != null)
             {
-                var propertyName = bindingExpression.ParentBinding.Path.Path;
-                var type = ((FrameworkElement)control).DataContext.GetType();
+                var type = control.DataContext.GetType();
                 var path = bindingExpression.ParentBinding.Path.Path;
                 return FormControl.RetrieveLocalizedFieldName(type, path);
             }

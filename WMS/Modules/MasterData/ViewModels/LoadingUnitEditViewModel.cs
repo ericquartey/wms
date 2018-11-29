@@ -153,7 +153,13 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentDetails SelectedCompartmentTray
         {
             get => this.selectedCompartmentTray;
-            set => this.SetProperty(ref this.selectedCompartmentTray, value);
+            set
+            {
+                if (value != null)
+                {
+                    this.SetProperty(ref this.selectedCompartmentTray, value);
+                }
+            }
         }
 
         public Tray Tray

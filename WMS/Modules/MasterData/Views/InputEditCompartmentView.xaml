@@ -22,8 +22,10 @@
 
         <wms:ActionBar Grid.Row="0"
                        Grid.Column="1"
+                       Margin="0,5,10,10"
                        HorizontalAlignment="Right"
                        Panel.ZIndex="9999"
+                       ShowBackground="False"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
@@ -59,6 +61,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
@@ -137,6 +140,15 @@
                                   VerticalAlignment="Top"
                                   EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Foreground="White" />
+
+                    <!--TODO <wms:ComboBox x:Name="ItemPairingText"
+                                  Grid.Row="7"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Left"
+                                  EditValue="{Binding SelectedCompartmentTray.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Foreground="White"
+                                  ItemsSource="{Binding Path=SelectedCompartmentTray.ItemPairingChoices}" />-->
+
 
                 </Grid>
             </StackPanel>

@@ -20,7 +20,7 @@ namespace Ferretto.Common.BusinessProviders
 
         bool HasAnyCompartments(int itemId);
 
-        Task WithdrawAsync(ItemWithdraw itemWithdraw);
+        Task<OperationResult> WithdrawAsync(ItemWithdraw itemWithdraw);
 
         #endregion Methods
     }

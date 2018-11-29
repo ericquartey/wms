@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Ferretto.Common.DataModels
 {
     // Lista Articoli
-    public sealed class ItemList
+    public sealed class ItemList : ITimestamped
     {
         #region Properties
 
@@ -24,7 +24,7 @@ namespace Ferretto.Common.DataModels
         public ItemListType ItemListType { get; set; }
         public int ItemListTypeId { get; set; }
         public string Job { get; set; }
-        public DateTime? LastModificationDate { get; set; }
+        public DateTime LastModificationDate { get; set; }
         public IEnumerable<Mission> Missions { get; set; }
         public int Priority { get; set; }
         public IEnumerable<SchedulerRequest> SchedulerRequests { get; set; }

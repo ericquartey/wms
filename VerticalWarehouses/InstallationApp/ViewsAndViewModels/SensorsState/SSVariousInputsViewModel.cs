@@ -45,18 +45,18 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         {
             var tmp = new List<bool>();
 
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
             {
                 tmp.Add(RemoteIOManager.Current.Inputs[i]);
             }
 
-            this.AntiIntrusionGate = tmp[0];
-            this.CradleEngineSelected = tmp[1];
-            this.ElevatorEngineSelected = tmp[2];
-            this.MicroCarterLeftSide = tmp[3];
-            this.MicroCarterRightSide = tmp[4];
-            this.MushroomHeadButton = tmp[5];
-            this.SecurityFunctionActive = tmp[6];
+            this.AntiIntrusionGate = tmp[4];
+            this.CradleEngineSelected = tmp[7];
+            this.ElevatorEngineSelected = tmp[6];
+            this.MicroCarterLeftSide = tmp[2];
+            this.MicroCarterRightSide = tmp[3];
+            this.MushroomHeadButton = tmp[1];
+            this.SecurityFunctionActive = tmp[0];
         }
 
         #endregion Methods

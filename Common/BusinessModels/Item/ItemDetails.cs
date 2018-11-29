@@ -21,12 +21,11 @@ namespace Ferretto.Common.BusinessModels
         private DateTime? inventoryDate;
         private int? inventoryTolerance;
         private int? itemCategoryId;
-        private Int32? itemManagementTypeId;
         private DateTime? lastModificationDate;
         private DateTime? lastPickDate;
         private DateTime? lastStoreDate;
         private int? length;
-        private int managementType;
+        private ItemManagementType managementType;
         private string measureUnitId;
         private string note;
         private int? pickTolerance;
@@ -158,7 +157,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public int ManagementType
+        public ItemManagementType ManagementType
         {
             get => this.managementType;
             set => this.SetProperty(ref this.managementType, value);
@@ -170,10 +169,14 @@ namespace Ferretto.Common.BusinessModels
         public string ManagementTypeDescription => this.ManagementType.ToString();
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public int? ManagementTypeId
+        public int ManagementTypeId
         {
-            get => this.itemManagementTypeId;
-            set => this.SetProperty(ref this.itemManagementTypeId, value);
+            get => (int)this.managementType;
+            set
+            {
+                var enumValue = (ItemManagementType)Enum.ToObject(typeof(ItemManagementType), value);
+                this.SetProperty(ref this.managementType, enumValue);
+            }
         }
 
         public IEnumerable<EnumerationString> MeasureUnitChoices { get; set; }

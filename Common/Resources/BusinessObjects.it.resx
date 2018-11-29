@@ -555,10 +555,103 @@
   <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
     <value>ItemDetails non valido</value>
   </data>
+  <data name="CompartmentItem" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="ItemImage" xml:space="preserve">
+    <value>Immagine</value>
+  </data>
   <data name="BulkCompartmentColumn" xml:space="preserve">
     <value>Colonna</value>
   </data>
   <data name="BulkCompartmentRow" xml:space="preserve">
     <value>Riga</value>
+  </data>
+  <data name="ItemListAreaName" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemListCode" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="ItemListCreationDate" xml:space="preserve">
+    <value>Data Creazione</value>
+  </data>
+  <data name="ItemListDescription" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
+  <data name="ItemListPriority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="ItemListRowsCount" xml:space="preserve">
+    <value>Numero Righe</value>
+    <comment>Righe di Lista - Numero</comment>
+  </data>
+  <data name="ItemListStatusDescription" xml:space="preserve">
+    <value>Stato</value>
+    <comment>Lista - Stato</comment>
+  </data>
+  <data name="ItemListTypeDescription" xml:space="preserve">
+    <value>Tipo</value>
+    <comment>Lista - Tipo</comment>
+  </data>
+  <data name="ItemListItemsCount" xml:space="preserve">
+    <value>Numero di oggetti</value>
+  </data>
+  <data name="ItemListCustomerOrderCode" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="ItemListCustomerOrderDescription" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
+  <data name="ItemListExecutionEndDate" xml:space="preserve">
+    <value>Fine esecuzione</value>
+  </data>
+  <data name="ItemListFireExecutionDate" xml:space="preserve">
+    <value>Esecuzione</value>
+  </data>
+  <data name="ItemListJob" xml:space="preserve">
+    <value>Commessa</value>
+  </data>
+  <data name="ItemListLastModificationDate" xml:space="preserve">
+    <value>Ultima Modifica</value>
+  </data>
+  <data name="ItemListRowCode" xml:space="preserve">
+    <value>Codice</value>
+    <comment>List Row - Code</comment>
+  </data>
+  <data name="ItemListRowCreationDate" xml:space="preserve">
+    <value>Data di Creazione</value>
+    <comment>List Row - Creation Date</comment>
+  </data>
+  <data name="ItemListRowItemDescription" xml:space="preserve">
+    <value>Articolo</value>
+    <comment>List Row - Articolo</comment>
+  </data>
+  <data name="ItemListRowPriority" xml:space="preserve">
+    <value>Priorità</value>
+    <comment>List Row - Priority</comment>
+  </data>
+  <data name="ItemListRowRequiredQuantity" xml:space="preserve">
+    <value>Quantità Richiesta</value>
+    <comment>List Row - Required Quantity</comment>
+  </data>
+  <data name="ItemListRowStatusDescription" xml:space="preserve">
+    <value>Stato</value>
+    <comment>List Row - Status</comment>
+  </data>
+  <data name="ItemListShipmentUnitAssociated" xml:space="preserve">
+    <value>Unità di Spedizione associata</value>
+  </data>
+  <data name="ItemListShipmentUnitCode" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="ItemListShipmentUnitDescription" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
+  <data name="ItemListStatusId" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ItemListTypeId" xml:space="preserve">
+    <value>Tipo</value>
   </data>
 </root>

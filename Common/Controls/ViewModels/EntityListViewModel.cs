@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -18,6 +19,8 @@ namespace Ferretto.Common.Controls
         private readonly IEnumerable<IDataSource<TModel>> dataSources;
         private IEnumerable<Tile> filterTiles;
         private bool flattenDataSource;
+        private object modelChangedEventSubscription;
+        private object modelRefreshSubscription;
         private object selectedDataSource;
         private Tile selectedFilterTile;
         private object selectedItem;
@@ -30,7 +33,7 @@ namespace Ferretto.Common.Controls
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
             this.dataSources = dataSourceService.GetAll<TModel>(this.GetType().Name);
-
+            this.InitializeEvent();
             this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
             {
                 Key = dataSource.Key,
@@ -130,8 +133,25 @@ namespace Ferretto.Common.Controls
         protected override async void OnAppear()
         {
             base.OnAppear();
-
             await this.UpdateFilterTilesCountsAsync();
+        }
+
+        protected override void OnDisappear()
+        {
+            base.OnDisappear();
+        }
+
+        protected override void OnDispose()
+        {
+            this.EventService.Unsubscribe<RefreshModelsEvent<TModel>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedEvent<TModel>>(this.modelChangedEventSubscription);
+            base.OnDispose();
+        }
+
+        private void InitializeEvent()
+        {
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<TModel>>(eventArgs => { this.RefreshData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<TModel>>(eventArgs => { this.RefreshData(); });
         }
 
         #endregion Methods
