@@ -13,30 +13,31 @@ using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Utils.Source;
 using System.Net;
 using System.IO;
-using System.Threading.Tasks;
 
 namespace Ferretto.VW.InstallationApp
 {
     public class MainWindowViewModel : BindableBase
     {
-        #region Constants, Statics and Others
+        #region Constants, Statics & Others
 
         private const string SENSOR_INITIALIZER_URL = "http://localhost:5000/api/sensorsstates/get-sensors";
         private const string SERVICE_PATH = "/sensors-endpoint";
         private const string URL = "http://localhost:5000";
+
         public static string Log = "";
         public static SensorsStates States;
+
         private SensorsStatesHubClient client;
         private BindableBase contentRegionCurrentViewModel;
+        private BindableBase navigationRegionCurrentViewModel;
         private bool machineModeSelectionBool = true;
-        private int machineModeSelectionInt = 0;
         private bool machineOnMarchSelectionBool = false;
         private int machineOnMarchSelectionInt = 0;
-        private BindableBase navigationRegionCurrentViewModel;
+        private int machineModeSelectionInt = 0;
 
-        #endregion Constants&Statics
+        #endregion Constants, Statics & Others
 
-        #region Constants, Statics and Others
+        #region ViewModels & Commands Fields
 
         private readonly BeltBurnishingViewModel BeltBurnishingVMInstance = new BeltBurnishingViewModel();
         private readonly CellsControlViewModel CellsControlVMInstance = new CellsControlViewModel();
@@ -79,6 +80,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand gates3ControlNavigationButtonCommand;
         private ICommand gatesControlButtonCommand;
         private ICommand installationStateButtonCommand;
+        private ICommand lowSpeedMovementsTestButtonCommand;
         private ICommand lsmtGateEngineButtonCommand;
         private ICommand lsmtHorizontalEngineButtonCommand;
         private ICommand lsmtVerticalEngineButtonCommand;
@@ -92,9 +94,8 @@ namespace Ferretto.VW.InstallationApp
         private ICommand verticalAxisCalibrationButtonCommand;
         private ICommand verticalOffsetCalibrationButtonCommand;
         private ICommand weightControlButtonCommand;
-        private ICommand lowSpeedMovementsTestButtonCommand;
 
-        #endregion ViewModels & Commands
+        #endregion ViewModels & Commands Fields
 
         #region Constructors
 
@@ -156,26 +157,10 @@ namespace Ferretto.VW.InstallationApp
 
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
         public Boolean MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
-        public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
+        public Int32 MachineModeSelectionInt { get => this.machineModeSelectionInt; set { this.SetProperty(ref this.machineModeSelectionInt, value); this.MachineModeSelectionBool = this.machineModeSelectionInt == 0 ? true : false; } }
         public Boolean MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
-        public Int32 MachineModeSelectionInt
-        {
-            get => this.machineModeSelectionInt;
-            set
-            {
-                this.SetProperty(ref this.machineModeSelectionInt, value);
-                this.MachineModeSelectionBool = this.machineModeSelectionInt == 0 ? true : false;
-            }
-        }
-        public Int32 MachineOnMarchSelectionInt
-        {
-            get => this.machineOnMarchSelectionInt;
-            set
-            {
-                this.SetProperty(ref this.machineOnMarchSelectionInt, value);
-                this.MachineOnMarchSelectionBool = this.machineOnMarchSelectionInt == 0 ? false : true;
-            }
-        }
+        public Int32 MachineOnMarchSelectionInt { get => this.machineOnMarchSelectionInt; set { this.SetProperty(ref this.machineOnMarchSelectionInt, value); this.MachineOnMarchSelectionBool = this.machineOnMarchSelectionInt == 0 ? false : true; } }
+        public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
         #endregion Other Properties
 
@@ -193,13 +178,11 @@ namespace Ferretto.VW.InstallationApp
                 return reader.ReadToEnd();
             }
         }
-
         private void Client_SensorsStatesChanged(object sender, SensorsStatesEventArgs e)
         {
             States = e.SensorsStates;
             this.RaiseSensorsStatesChangedEvent();
         }
-
         private async void ConnectMethod()
         {
             try
@@ -215,11 +198,7 @@ namespace Ferretto.VW.InstallationApp
                 Log = "Connection fail, wrong url and/or path";
             }
         }
-
-        private void EventInitializer()
-        {
-        }
-
+        private void EventInitializer() { }
         private void RaiseSensorsStatesChangedEvent() => SensorsStatesChangedEventHandler();
 
         #endregion Methods
