@@ -313,4 +313,24 @@
   <data name="ItemListViewTypePick" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/file/ic_file_upload_black_48dp.png</value>
   </data>
+  <data name="ListStatusCompleted" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ListStatusExecuting" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_filled_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ListStatusIncomplete" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_white_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ListStatusSuspended" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_pause_circle_filled_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ListStatusWaiting" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_watch_later_white_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>
