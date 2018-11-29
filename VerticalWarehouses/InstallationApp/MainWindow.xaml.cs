@@ -11,7 +11,7 @@ namespace Ferretto.VW.InstallationApp
         public MainWindow()
         {
             this.InitializeComponent();
-            NavigationService.BackToVWAppEventHandler += () => this.Hide();
+            NavigationService.BackToVWAppEventHandler += () => this.Close();
             this.DataContext = new MainWindowViewModel();
         }
 

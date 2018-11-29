@@ -25,7 +25,7 @@ namespace Ferretto.VW.RemoteIODriver.Source
         {
             this.remoteIO = new RemoteIO();
             this.SensorsSyncronizedEventHandler += this.Initializer;
-            this.SyncDevice();
+            //this.SyncDevice();
         }
 
         #endregion Constructors
@@ -44,6 +44,13 @@ namespace Ferretto.VW.RemoteIODriver.Source
 
         #region Methods
 
+        public SensorsStates GetFieldSensorsStates()
+        {
+            //this.RaiseSensorsSyncronizedEvent();
+            //Console.WriteLine("GetFieldSensorsStates: " + this.remoteIO.ReadData().ToArray());
+            return new SensorsStates(this.remoteIO.ReadData().ToArray());
+        }
+
         private void Initializer()
         {
         }
@@ -58,7 +65,7 @@ namespace Ferretto.VW.RemoteIODriver.Source
             while (true)
             {
                 this.Inputs.Clear();
-                this.Inputs = this.remoteIO.ReadData();
+                lock (this.Inputs = this.remoteIO.ReadData()) ;
                 //this.remoteIO.WriteData();
                 await Task.Delay(20);
                 this.RaiseSensorsSyncronizedEvent();
