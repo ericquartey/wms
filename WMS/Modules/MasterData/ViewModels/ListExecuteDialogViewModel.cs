@@ -67,7 +67,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.ListToExecute.ItemListDetails = this.itemListProvider.GetById(modelId.Value);
-            this.ListToExecute.AreaChoices = this.areaProvider.GetByItemIdAvailability(modelId.Value);
+            this.ListToExecute.AreaChoices = this.areaProvider.GetAll();
             this.listToExecute.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
         }
 
