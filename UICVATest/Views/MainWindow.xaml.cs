@@ -12,8 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Reflection;
-using log4net;
+using Ferretto.VW.InverterDriver;
+using Ferretto.VW.ActionBlocks;
 
 
 namespace UICVATest.Views
@@ -23,25 +23,66 @@ namespace UICVATest.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private InverterDriver inverterDriver;
+        private CalibrateVerticalAxis calibrateVA;
 
         public MainWindow()
         {
-            InitializeComponent();
-            this.Closing += MainView_Closing;
+            this.InitializeComponent();
+            this.inverterDriver = new InverterDriver();
+            this.inverterDriver.Connected += this.InverterDriver_Connected;
+
         }
 
-        private void MainView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void InverterDriver_Connected(Object sender, ConnectedEventArgs eventArgs)
         {
-            /*
-                if (((MainViewModel)(this.DataContext)).Data.IsModified)
-                if (!((MainViewModel)(this.DataContext)).PromptSaveBeforeExit())
-                {
-                    e.Cancel = true;
-                    return;
-                }
-            */
-            Log.Info("Closing App");
+            var bConnected = eventArgs.State;
+            if (bConnected)
+            {
+                this.lbStateConnection.Content = "State: connected to inverter";
+            }
+            else
+            {
+                this.lbStateConnection.Content = "State: not connected to inverter";
+            }
+        }
+
+        private void Button_Click(Object sender, RoutedEventArgs e)
+        {
+            // At this time 1 is the default value for each variable
+            int m = 5;
+            short ofs = 1;
+            short vFast = 1;
+            short vCreep = 1;
+
+            bool bResult = false;
+        }
+            // BResult is true only when the Server is started, we can't run Initialize in the MainWindow
+            //bResult = this.inverterDriver.Initialize();
+
+            //if (bResult)
+            
+
+        //private void ConnectionDone(bool connectionDone)
+        //{
+        //    if (connectionDone)
+        //    {
+        //        this.btnSend.IsEnabled = true;
+        //    }
+        //} 
+
+        private void btnCreateVerticalAxisClass_Click(Object sender, RoutedEventArgs e)
+        {
+            this.calibrateVA = new CalibrateVerticalAxis();
+            this.calibrateVA.SetInverterDriverInterface = this.inverterDriver;
+            this.calibrateVA.Initialize();
+
+            this.calibrateVA.ThrowErrorEvent += new CalibrateVerticalAxis.ErrorEventHandler(this.CatchError);
+        }
+
+        private void btnConnectInverter_Click(Object sender, RoutedEventArgs e)
+        {
+            var success = this.inverterDriver.Initialize();
         }
     }
 }

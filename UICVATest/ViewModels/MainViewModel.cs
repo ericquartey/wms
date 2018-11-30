@@ -1,5 +1,4 @@
 ﻿using MvvmDialogs;
-using log4net;
 using MvvmDialogs.FrameworkDialogs.OpenFile;
 using MvvmDialogs.FrameworkDialogs.SaveFile;
 using System;
@@ -45,14 +44,14 @@ namespace UICVATest.ViewModels
         #endregion
 
         #region Commands
-        public RelayCommand<object> SampleCmdWithArgument { get { return new RelayCommand<object>(OnSampleCmdWithArgument); } }
+        public RelayCommand<object> SampleCmdWithArgument { get { return new RelayCommand<object>(this.OnSampleCmdWithArgument); } }
 
-        public ICommand SaveAsCmd { get { return new RelayCommand(OnSaveAsTest, AlwaysFalse); } }
-        public ICommand SaveCmd { get { return new RelayCommand(OnSaveTest, AlwaysFalse); } }
-        public ICommand NewCmd { get { return new RelayCommand(OnNewTest, AlwaysFalse); } }
-        public ICommand OpenCmd { get { return new RelayCommand(OnOpenTest, AlwaysFalse); } }
-        public ICommand ShowAboutDialogCmd { get { return new RelayCommand(OnShowAboutDialog, AlwaysTrue); } }
-        public ICommand ExitCmd { get { return new RelayCommand(OnExitApp, AlwaysTrue); } }
+        public ICommand SaveAsCmd { get { return new RelayCommand(this.OnSaveAsTest, this.AlwaysFalse); } }
+        public ICommand SaveCmd { get { return new RelayCommand(this.OnSaveTest, this.AlwaysFalse); } }
+        public ICommand NewCmd { get { return new RelayCommand(this.OnNewTest, this.AlwaysFalse); } }
+        public ICommand OpenCmd { get { return new RelayCommand(this.OnOpenTest, this.AlwaysFalse); } }
+        public ICommand ShowAboutDialogCmd { get { return new RelayCommand(this.OnShowAboutDialog, this.AlwaysTrue); } }
+        public ICommand ExitCmd { get { return new RelayCommand(this.OnExitApp, this.AlwaysTrue); } }
 
         private bool AlwaysTrue() { return true; }
         private bool AlwaysFalse() { return false; }
@@ -72,11 +71,11 @@ namespace UICVATest.ViewModels
                 OverwritePrompt = true
             };
 
-            bool? success = DialogService.ShowSaveFileDialog(this, settings);
+            bool? success = this.DialogService.ShowSaveFileDialog(this, settings);
             if (success == true)
             {
                 // Do something
-                Log.Info("Saving file: " + settings.FileName);
+                // Log.Info("Saving file: " + settings.FileName);
             }
         }
         private void OnSaveTest()
@@ -96,18 +95,18 @@ namespace UICVATest.ViewModels
                 CheckFileExists = false
             };
 
-            bool? success = DialogService.ShowOpenFileDialog(this, settings);
+            bool? success = this.DialogService.ShowOpenFileDialog(this, settings);
             if (success == true)
             {
                 // Do something
-                Log.Info("Opening file: " + settings.FileName);
+                // Log.Info("Opening file: " + settings.FileName);
             }
         }
         private void OnShowAboutDialog()
         {
-            Log.Info("Opening About dialog");
+            // Log.Info("Opening About dialog");
             AboutViewModel dialog = new AboutViewModel();
-            var result = DialogService.ShowDialog<About>(this, dialog);
+            var result = this.DialogService.ShowDialog<About>(this, dialog);
         }
         private void OnExitApp()
         {

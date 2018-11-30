@@ -54,7 +54,7 @@ namespace WpfApp1
             short vFast = 1;
             short vCreep = 1;
 
-            // bool bResult = false;
+            bool bResult = false;
 
             // BResult is true only when the Server is started, we can't run Initialize in the MainWindow
             //bResult = this.inverterDriver.Initialize();
@@ -91,11 +91,6 @@ namespace WpfApp1
         private void btnConnectInverter_Click(Object sender, RoutedEventArgs e)
         {
             var success = this.inverterDriver.Initialize();
-        }
-
-        private void btnStop_Click(Object sender, RoutedEventArgs e)
-        {
-            this.calibrateVA.Stop();
         }
     }
 }

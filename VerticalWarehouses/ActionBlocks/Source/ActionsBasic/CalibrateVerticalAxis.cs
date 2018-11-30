@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
 using Ferretto.VW.InverterDriver;
 using NLog;
 
@@ -61,8 +61,8 @@ namespace Ferretto.VW.ActionBlocks
         {
             sw = new Stopwatch();
 
-            //inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(SelectTelegram);
-            //inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(EnquiryTelegram);
+            inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(SelectTelegram);
+            inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(EnquiryTelegram);
         }
 
         #endregion Constructors
@@ -109,6 +109,8 @@ namespace Ferretto.VW.ActionBlocks
             this.vFast = vFast;
             this.vCreed = vCreed;
 
+            // Inizio parte di test
+            //this.dataSetIndex = 0x05;
             //this.paramID = ParameterID.CONTROL_WORD_PARAM;
             //this.valParam = (short)0x00; // 0000 0000
             //InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
@@ -154,13 +156,9 @@ namespace Ferretto.VW.ActionBlocks
             //inverterDriver.EnableGetStatusWord(true);
 
             //return;
+            // Fine parte di test
 
             sw.Start();
-
-            //logger.Log(LogLevel.Debug, "mode = " + m);
-            //logger.Log(LogLevel.Debug, "ofs = " + ofs);
-            //logger.Log(LogLevel.Debug, "vFast = " + vFast);
-            //logger.Log(LogLevel.Debug, "vCreed = " + vCreed);
 
             // Polling Thread Creation to check the Inverter Driver Status
             //checkError = false; //CreateThread();
@@ -214,7 +212,6 @@ namespace Ferretto.VW.ActionBlocks
                 // 2) Homing mode sequence
                 case "1":
                     dataSetIndex = 0x05;
-                    // int value = i;
                     paramID = ParameterID.CONTROL_WORD_PARAM;
                     valParam = (short) 0x00; // 0000 0000
 
@@ -226,21 +223,28 @@ namespace Ferretto.VW.ActionBlocks
 
                     break;
                 case "3":
+                    dataSetIndex = 0x05;
                     paramID = ParameterID.CONTROL_WORD_PARAM;
                     valParam = (short) 0x06; // 0000 0110
 
                     break;
                 case "4":
+                    dataSetIndex = 0x05;
                     paramID = ParameterID.CONTROL_WORD_PARAM;
                     valParam = (short) 0x07; // 0000 0111
 
                     break;
                 case "5":
+                    dataSetIndex = 0x05;
                     paramID = ParameterID.CONTROL_WORD_PARAM;
                     valParam = (short) 0x0F; // 0000 1111
 
                     break;
                 case "6a":
+
+                    Thread.Sleep(500);
+
+                    dataSetIndex = 0x05;
                     paramID = ParameterID.CONTROL_WORD_PARAM;
                     valParam = (short) 0x1F; // 0001 1111
 
@@ -300,6 +304,13 @@ namespace Ferretto.VW.ActionBlocks
             }
         }
 
+        public void StopInverter()
+        {
+            this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            this.valParam = (short)0x00; // 0000 0000
+            InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+        }
+
         private void InvDriverConnected(object sender, ConnectedEventArgs eventArgs)
         {
             //ThrowConnectedEvent?.Invoke(true);
@@ -310,7 +321,9 @@ namespace Ferretto.VW.ActionBlocks
             ValueDataType type = eventArgs.Type;
 
             byte[] statusWord;
-            byte[] valueBytes;
+            byte[] statusWord01;
+
+            BitArray statusWordBA01;
 
             // Variable to keep the right or wrong value of the status word
             bool statusWordValue = false;
@@ -344,10 +357,14 @@ namespace Ferretto.VW.ActionBlocks
                     }
             }
 
+            statusWord01 = new byte[] { statusWord[0], statusWord[1] };
+            statusWordBA01 = new BitArray(statusWord01);
+
             switch (calibrateOperation)
             {
                 case "1":
-                    if (statusWord[0] == 0x50 && statusWord[1] == 0x00) // 80 Dec = 50 Hex - 0x0050
+                    // 0x0050
+                    if (statusWordBA01[4] && statusWordBA01[6])
                     {
                         statusWordValue = true;
                     }
@@ -357,30 +374,33 @@ namespace Ferretto.VW.ActionBlocks
 
                     break;
                 case "3":
-                    if (statusWord[0] == 0x31 && statusWord[1] == 0x00) // 0x0031
+                    // 0x0031
+                    if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
                     {
                         statusWordValue = true;
                     }
 
                     break;
                 case "4":
-                    if (statusWord[0] == 0x33 && statusWord[1] == 0x00) // 0x0033
+                    // 51 Dec = 0x0033
+                    if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5])
                     {
                         statusWordValue = true;
                     }
 
                     break;
                 case "5":
-                    if (statusWord[0] == 0x37) // 0xnn37 - statusWord[1] is not matter
+                    // Filter: 0xnn37
+                    if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5]) 
                     {
                         statusWordValue = true;
                     }
 
                     break;
                 case "6a":
-                    int ctrStatusWord = statusWord[1] & 0x1F; // 1F to filter 1n
-
-                    if (statusWord[0] == 0x37 && ctrStatusWord == 16) // 0X1n37
+                    // 0x1n37
+                    // Filter
+                    if(statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[12])
                     {
                         statusWordValue = true;
                     }

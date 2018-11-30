@@ -12,7 +12,7 @@
         <Button Name="btnSend"
                 Width="92"
                 Height="30"
-                Margin="45,217,0,0"
+                Margin="104,271,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="Button_Click"
@@ -28,7 +28,7 @@
         <Button x:Name="btnCreateVerticalAxisClass"
                 Width="210"
                 Height="30"
-                Margin="45,160,0,0"
+                Margin="42,197,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Click="btnCreateVerticalAxisClass_Click"
@@ -48,14 +48,6 @@
                 VerticalAlignment="Top"
                 Click="btnConnectInverter_Click"
                 Content="Connect inverter" />
-        <Button x:Name="btnStop"
-            Width="92"
-            Height="30"
-            Margin="163,217,0,0"
-            HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Click="btnStop_Click"
-            Content="Stop" />
 
     </Grid>
 </Window>

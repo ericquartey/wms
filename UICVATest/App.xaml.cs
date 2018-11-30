@@ -1,5 +1,4 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -16,19 +15,19 @@ namespace UICVATest
 {
     public partial class App : Application
     {
-        private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        // private static readonly ILog Log = log4net.LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private static MainWindow app;
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Log.Info("Application Startup");
+            // Log.Info("Application Startup");
 
             // For catching Global uncaught exception
             AppDomain currentDomain = AppDomain.CurrentDomain;
             currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionOccured);
 
-            Log.Info("Starting App");
-            LogMachineDetails();
+            // Log.Info("Starting App");
+            this.LogMachineDetails();
             app = new MainWindow();
             var context = new MainViewModel();
             app.DataContext = context;
@@ -36,7 +35,7 @@ namespace UICVATest
 
             if (e.Args.Length == 1) //make sure an argument is passed
             {
-                Log.Info("File type association: " + e.Args[0]);
+                // Log.Info("File type association: " + e.Args[0]);
                 FileInfo file = new FileInfo(e.Args[0]);
                 if (file.Exists) //make sure it's actually a file
                 {
@@ -62,7 +61,7 @@ namespace UICVATest
                 MessageBoxButton.OK);
 
             Exception e = (Exception)args.ExceptionObject;
-            Log.Fatal("Application has crashed", e);
+            // Log.Fatal("Application has crashed", e);
         }
 
         private void LogMachineDetails()
@@ -73,7 +72,7 @@ namespace UICVATest
                           computer.OSFullName + Environment.NewLine +
                           "RAM: " + computer.TotalPhysicalMemory.ToString() + Environment.NewLine +
                           "Language: " + computer.InstalledUICulture.EnglishName;
-            Log.Info(text);
+            // Log.Info(text);
         }
     }
 }
