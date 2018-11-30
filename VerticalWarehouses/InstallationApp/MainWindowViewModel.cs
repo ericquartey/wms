@@ -13,6 +13,7 @@ using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Utils.Source;
 using System.Net;
 using System.IO;
+using System.Configuration;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -20,9 +21,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Constants, Statics & Others
 
-        private const string SENSOR_INITIALIZER_URL = "http://localhost:5000/api/sensorsstates/get-sensors";
-        private const string SERVICE_PATH = "/sensors-endpoint";
-        private const string URL = "http://localhost:5000";
+        private static readonly string SENSOR_INITIALIZER_URL = ConfigurationManager.AppSettings["SensorsStatesInitializer"];
+        private static readonly string SERVICE_PATH = ConfigurationManager.AppSettings["/sensors-endpoint"];
+        private static readonly string URL = ConfigurationManager.AppSettings["ServiceURL"];
 
         public static string Log = "";
         public static SensorsStates States;
