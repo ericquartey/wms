@@ -38,7 +38,7 @@ namespace BackgroundService
 
         #region Methods
 
-        [HttpGet("get-sensors")]
+        [HttpGet]
         public async Task<ActionResult<SensorsStates>> Get()
         {
             var remoteIO = new RemoteIO();
