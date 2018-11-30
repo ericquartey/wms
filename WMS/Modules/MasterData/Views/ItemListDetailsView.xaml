@@ -101,7 +101,8 @@
                                      Text="{Binding Path=ItemList.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       EditValue="{Binding Path=ItemList.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=ItemList.ItemListTypeChoices}" />
+                                      ItemsSource="{Binding Path=ItemList.ItemListTypeChoices}"
+                                      SelectedItem="Pick" />
 
                     </Grid>
                 </GroupBox>
