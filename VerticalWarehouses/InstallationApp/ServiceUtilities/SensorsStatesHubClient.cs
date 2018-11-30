@@ -24,7 +24,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
               .WithUrl(new Uri(new Uri(url), sensorStatePath).AbsoluteUri)
               .Build();
 
-            this.connection.On<SensorsStates>("SensorsChanged", this.SensorsChanged);
+            this.connection.On<SensorsStates>("OnSensorsChanged", this.OnSensorsChanged);
 
             this.connection.Closed += async (error) =>
             {
@@ -48,7 +48,7 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
             await this.connection.StartAsync();
         }
 
-        private void SensorsChanged(SensorsStates sensors)
+        private void OnSensorsChanged(SensorsStates sensors)
         {
             this.SensorsStatesChanged?.Invoke(this, new SensorsStatesEventArgs(sensors));
         }
