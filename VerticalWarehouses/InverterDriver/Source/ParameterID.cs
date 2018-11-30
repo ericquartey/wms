@@ -17,6 +17,7 @@
         POSITION_TARGET_SPEED_PARAM = 1456,
         SET_OPERATING_MODE_PARAM = 1454,
         STATUS_WORD_PARAM = 411,
+        ACTUAL_POSITION_SHAFT = 1108,
         STATUS_DIGITAL_SIGNALS = 250,
     }
 
@@ -61,6 +62,7 @@
                 case ParameterID.SET_OPERATING_MODE_PARAM: type = ValueDataType.Int16; break;
                 case ParameterID.STATUS_WORD_PARAM: type = ValueDataType.Int16; break;
                 case ParameterID.STATUS_DIGITAL_SIGNALS: type = ValueDataType.Int16; break;
+                case ParameterID.ACTUAL_POSITION_SHAFT: type = ValueDataType.Int32; break;
             }
 
             return type;
@@ -87,6 +89,7 @@
                 case 1454: paramID = ParameterID.SET_OPERATING_MODE_PARAM; break;
                 case 411: paramID = ParameterID.STATUS_WORD_PARAM; break;
                 case 250: paramID = ParameterID.STATUS_DIGITAL_SIGNALS; break;
+                case 1108: paramID = ParameterID.ACTUAL_POSITION_SHAFT; break;
             }
 
             return paramID;
