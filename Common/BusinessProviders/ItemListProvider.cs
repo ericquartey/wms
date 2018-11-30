@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessProviders
             list => list.ItemListStatus.Equals(ItemListStatus.Waiting);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
-            list => list.ItemListTypeId == (int)ItemListType.Pick;
+            list => list.ItemListType.Equals(ItemListType.Pick);
 
         private readonly DatabaseContext dataContext;
         private readonly EnumerationProvider enumerationProvider;
@@ -67,7 +67,7 @@ namespace Ferretto.Common.BusinessProviders
                    AreaName = l.Area.Name,
                    Priority = l.Priority,
                    ItemListStatusDescription = l.ItemListStatus.ToString(),
-                   ItemListTypeDescription = ((ItemListType)l.ItemListTypeId).ToString(),
+                   ItemListTypeDescription = ((ItemListType)l.ItemListType).ToString(),
                    ItemListRowsCount = l.ItemListRows.Count(),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate
@@ -185,7 +185,7 @@ namespace Ferretto.Common.BusinessProviders
                  AreaName = l.Area.Name,
                  Priority = l.Priority,
                  ItemListStatusDescription = l.ItemListStatus.ToString(),
-                 ItemListTypeDescription = ((ItemListType)l.ItemListTypeId).ToString(),
+                 ItemListTypeDescription = ((ItemListType)l.ItemListType).ToString(),
                  ItemListRowsCount = l.ItemListRows.Count(),
                  ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                  CreationDate = l.CreationDate,
