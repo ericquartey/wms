@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -57,7 +55,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<ItemList> GetAll()
         {
-            var itemLists = this.dataContext.ItemLists
+            var itemLists = this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Select(l => new ItemList
                {
@@ -90,7 +88,7 @@ namespace Ferretto.Common.BusinessProviders
             var dataContext = this.dataContext.Current;
             lock (dataContext)
             {
-                var itemListDetails = this.dataContext.ItemLists
+                var itemListDetails = this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)
                .Select(l => new ItemListDetails
@@ -176,14 +174,15 @@ namespace Ferretto.Common.BusinessProviders
             {
                 throw new ArgumentNullException(nameof(model));
             }
+            var dataContext = this.dataContext.Current;
 
             lock (this.dataContext)
             {
-                var existingModel = this.dataContext.ItemLists.Find(model.Id);
+                var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 
