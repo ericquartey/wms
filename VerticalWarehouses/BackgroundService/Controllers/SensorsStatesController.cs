@@ -24,7 +24,7 @@ namespace BackgroundService
         public SensorsStatesController(IHubContext<SensorsStatesHub, ISensorsStatesHub> hub)
         {
             this.hub = hub;
-            RemoteIOManager.Current = new RemoteIOManager();
+            //RemoteIOManager.Current = new RemoteIOManager();
             //Console.WriteLine("RemoteIOManager created.");
         }
 
