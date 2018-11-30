@@ -1,4 +1,5 @@
 ﻿using Prism.Mvvm;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 {

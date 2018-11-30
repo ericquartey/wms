@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Ferretto.VW.Utils;
 using NLog;
 
@@ -20,42 +23,66 @@ namespace Ferretto.VW.InverterDriver
     {
         #region Fields
 
-        public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248"; // Bender
-        // public const string IP_ADDR_INVERTER_DEFAULT = "172.16.199.200";
-        public const int LONG_TIME_OUT = 250;
+        public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
-
-        public const int SHORT_TIME_OUT = 50;
-        public const int TIME_OUT = 150;
+        public const int HEARTBEAT_TIMEOUT = 300;
+        public const int BITS_16 = 16;
+        public const int HEARTBIT = 14;
 
         private static readonly object lockObj = new object();
+        private static readonly object lockFlags = new object();
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly InverterDriverState state;
-        private AutoResetEvent ackTerminateEvent;
         private Request currentRequest;
+        private List<Request> RequestList;
 
         private bool errorReceivedTelegram; // flag to identify if received telegram is correct
         private bool executeRequestOnRunning;
-
+        private bool getStatusWordValue;
+        private bool getActualPositionShaftValue;
+        private int ActualPositionShaft;
+        
         private HardwareInverterStatus hwInverterState;
-
-        private Thread mainAutomationThread;
-
-        private AutoResetEvent makeRequestEvent;
 
         private long perfFrequency;
         private long perfTimeOnReceivingTelegram;
         private long perfTimeOnSendingTelegram;
-        private object retParameterValue; // it is the returned parameter value
+        private object retParameterValue; 
 
         private Socket sckClient;
 
-        private Int16 statusWordValue;  // it represents a shared memory where status information lived
-        private AutoResetEvent terminateEvent;
-        private int timeOut;
-        private Boolean enableGetStatusWord;
+        #region Motion Control
+
+        private BitArray StatusWord;           // it represents a shared memory where status information lived
+        private BitArray CtrlWord;
+
+        #endregion
+        
+        private AutoResetEvent eventToSendPacket;
+        private RegisteredWaitHandle regWaitForMainThread;
+        private long TimeSendingPacket;
+        private long TimeSendingHeartBeatPacket;
+        
+        private bool HeartBeat;
+        private Thread thrdHeartBeat;
+        private AutoResetEvent Terminate_HeartBeat;
+
+        private Request[] BaseRequestArray;
+        private int IndexOfBaseRequest;
+
+        #region Sensors Digital Signals
+
+        private bool BrakeResistanceOvertemperature;
+        private bool EmergencyStop;
+        private bool PawlSensorZero;
+        private bool UdcPresenceCradleOperator;
+        private bool UdcPresenceCradleMachine;
+
+        #endregion Sensors Digital Signals
 
         #endregion Fields
+
 
         #region Constructors
 
@@ -69,7 +96,9 @@ namespace Ferretto.VW.InverterDriver
             this.IPAddressToConnect = IP_ADDR_INVERTER_DEFAULT;
             this.PortAddressToConnect = PORT_ADDR_INVERTER_DEFAULT;
             this.hwInverterState = HardwareInverterStatus.NotOperative;
-
+            this.CtrlWord = new BitArray(BITS_16);
+            this.StatusWord = new BitArray(BITS_16);
+            
             logger.Log(LogLevel.Debug, String.Format("InverterDriver in a new incarnation..."));
         }
 
@@ -83,18 +112,13 @@ namespace Ferretto.VW.InverterDriver
 
         public event ErrorEventHandler Error;
 
-        public event LastRequestDoneEventHandler LastRequestDone;
-
         public event SelectTelegramDoneEventHandler SelectTelegramDone;
 
         #endregion Events
 
         #region Properties
 
-        /// <summary>
-        /// <c>True</c> if last request has been done.
-        /// </summary>
-        public bool GetLastRequestDone { get; private set; }
+        public BitArray Status_Word => this.StatusWord;
 
         /// <summary>
         /// Get the main state of inverter driver.
@@ -119,6 +143,117 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public int PortAddressToConnect { set; get; }
 
+        public int Actual_Position_Shaft => this.ActualPositionShaft;
+
+        public bool Get_Status_Word_Enable
+        {
+            set
+            {
+                lock (lockFlags)
+                {
+                    this.getStatusWordValue = value;
+                }
+            }
+
+            get
+            {
+                lock (lockFlags)
+                {
+                    return this.getStatusWordValue;
+                }
+            }
+        }
+
+        public bool Get_Actual_Position_Shaft_Enable
+        {
+            set
+            {
+                lock (lockFlags)
+                {
+                    this.getActualPositionShaftValue = value;
+                }
+            }
+
+            get
+            {
+                lock (lockFlags)
+                {
+                    return this.getActualPositionShaftValue;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get brake resistance overtemperature-Digital value
+        /// </summary>
+        public bool Brake_Resistance_Overtemperature
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.BrakeResistanceOvertemperature;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Emergency Stop-Digital value
+        /// </summary>
+        public bool Emergency_Stop
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.EmergencyStop;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Pawl Sensor Zero-Digital value
+        /// </summary>
+        public bool Pawl_Sensor_Zero
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.PawlSensorZero;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Operator-Digital value
+        /// </summary>
+        public bool Udc_Presence_Cradle_Operator
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.UdcPresenceCradleOperator;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Machine-Digital value
+        /// </summary>
+        public  bool Udc_Presence_Cradle_Machine
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.UdcPresenceCradleMachine;
+                }
+            }
+        }
+
+       
         #endregion Properties
 
         #region Methods
@@ -183,33 +318,35 @@ namespace Ferretto.VW.InverterDriver
 
         public InverterDriverExitStatus GetIOState(int index, out bool retValue)
         {
-            logger.Log(LogLevel.Debug, String.Format("> Execute GetIOState operation."));
+            //logger.Log(LogLevel.Debug, String.Format("> Execute GetIOState operation."));
 
-            const int N_BITS_16 = 16;
-            const int N_BITS_8 = 8;
+            //const int N_BITS_16 = 16;
+            //const int N_BITS_8 = 8;
 
-            retValue = false;
-            if (index < 0)
-            {
-                return InverterDriverExitStatus.InvalidArgument;
-            }
-            if (index >= N_BITS_16 - 1)
-            {
-                return InverterDriverExitStatus.InvalidArgument;
-            }
+            //retValue = false;
+            //if (index < 0)
+            //{
+            //    return InverterDriverExitStatus.InvalidArgument;
+            //}
+            //if (index >= N_BITS_16 - 1)
+            //{
+            //    return InverterDriverExitStatus.InvalidArgument;
+            //}
 
-            byte[] ibytes = null;
-            lock (lockObj)
-            {
-                ibytes = BitConverter.GetBytes(this.statusWordValue);
-            }
-            var t = new BitArray(new byte[] { ibytes[0] });  // convert more than one byte, but for simplicity I'm doing one at a time
-            var bits = new bool[N_BITS_16];
-            t.CopyTo(bits, 0);
-            var t1 = new BitArray(new byte[] { ibytes[1] });
-            t1.CopyTo(bits, N_BITS_8);
+            //byte[] ibytes = null;
+            //lock (lockObj)
+            //{
+            //    ibytes = BitConverter.GetBytes(this.statusWordValue);
+            //}
+            //var t = new BitArray(new byte[] { ibytes[0] });  // convert more than one byte, but for simplicity I'm doing one at a time
+            //var bits = new bool[N_BITS_16];
+            //t.CopyTo(bits, 0);
+            //var t1 = new BitArray(new byte[] { ibytes[1] });
+            //t1.CopyTo(bits, N_BITS_8);
 
-            retValue = bits[index];
+            //retValue = bits[index];
+
+            retValue = true;
             return InverterDriverExitStatus.Success;
         }
 
@@ -218,98 +355,36 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public bool Initialize()
         {
-            logger.Log(LogLevel.Debug, String.Format("InverterDriver initialization"));
+            logger.Log(LogLevel.Debug, String.Format("InverterDriver initializing..."));
 
             QueryPerformanceFrequency(out this.perfFrequency);
             this.executeRequestOnRunning = false;
-            this.enableGetStatusWord = false;
 
+            // Create the base requests array (for internal requests)
+            this.BaseRequestArray = new Request[3];
+            this.BaseRequestArray[0] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_DIGITAL_SIGNALS, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
+            this.BaseRequestArray[1] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
+            this.BaseRequestArray[2] = new Request(TypeOfRequest.SendRequest, ParameterID.ACTUAL_POSITION_SHAFT, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
+
+            this.getStatusWordValue = false;
+            this.getActualPositionShaftValue = false;
+            this.IndexOfBaseRequest = -1;
+
+            // Create the requests list (for external requests)
+            this.RequestList = new List<Request>();
+
+            // Connect to inverter
             var bResult = this.connect_to_inverter();
+            if(bResult)
+            {
+                // Start the main thread
+                this.eventToSendPacket?.Set();
+            }
+
             return bResult;
         }
 
-        /// <summary>
-        /// Call back function which will be invoked when the socket detects the incoming data on the stream.
-        /// </summary>
-        public void OnDataReceived(IAsyncResult asyn)
-        {
-            try
-            {
-                QueryPerformanceCounter(out this.perfTimeOnReceivingTelegram);
-                var offsetTime_ms = (int)(((double)(this.perfTimeOnReceivingTelegram - this.perfTimeOnSendingTelegram) * 1000) / this.perfFrequency);
-
-                // Socket' stuff
-                var theSockId = (SocketPacket)asyn.AsyncState;
-                var iRx = theSockId.thisSocket.EndReceive(asyn);
-
-                if (iRx > 0)
-                {
-
-                    var nBytes = theSockId.dataBuffer[0];
-
-                    // ------
-                    // The class Telegram performs the parsing of incoming data buffer and extract the information from it
-                    // ------
-
-                    var telegramRead = new byte[iRx];
-                    Array.Copy(theSockId.dataBuffer, 0, telegramRead, 0, iRx);
-
-                    lock (lockObj)
-                    {
-                        this.executeRequestOnRunning = false;
-                    }
-
-                    // Parse the received telegram
-                    this.errorReceivedTelegram = this.received_telegram(telegramRead, offsetTime_ms, out var paramID, out this.retParameterValue);
-                    if (!this.errorReceivedTelegram)
-                    {
-                        if (this.currentRequest.Type == TypeOfRequest.SendRequest)
-                        {
-                            // Notify the <EnquiryTelegram> via Event firing
-                            EnquiryTelegramDone?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
-                        }
-                        else
-                        {
-                            // Notify the <SelectTelegram> via Event firing
-                            SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
-                        }
-
-                        // cache value of status word (in cache memory shared)
-                        if (this.currentRequest.ParameterID == ParameterID.STATUS_WORD_PARAM)
-                        {
-                            lock (lockObj)
-                            {
-                                this.statusWordValue = Convert.ToInt16(this.retParameterValue);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        int y = 0;
-                        // if we are here, an error occurs
-                        // and so we have to manage it
-                    }
-
-                }
-
-                //lock (lockObj)
-                //{
-                //    this.executeRequestOnRunning = false;
-                //}
-
-                // Prompt to receive a new message
-                this.waitForData();
-            }
-            catch (ObjectDisposedException)
-            {
-                logger.Log(LogLevel.Debug, String.Format("On Data Received: the Socket has been closed"));
-            }
-            catch (SocketException)
-            {
-                logger.Log(LogLevel.Debug, String.Format("On Data Received: Socket critical failure"));
-            }
-        }
-
+       
         /// <summary>
         /// Get value of given parameter. It is a echo for SettingRequest.
         /// </summary>
@@ -343,17 +418,17 @@ namespace Ferretto.VW.InverterDriver
         /// <returns></returns>
         public InverterDriverExitStatus SendRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex)
         {
-            if (this.executeRequestOnRunning)
-            {
-                return InverterDriverExitStatus.InvalidOperation;
-            }
-
             var valueType = ParameterIDClass.Instance.GetDataValueType(paramID);
 
-            this.currentRequest = new Request(TypeOfRequest.SendRequest, paramID, systemIndex, dataSetIndex, valueType, null);
-            this.errorReceivedTelegram = false;
-            this.makeRequestEvent.Set();
+            //Store the request into the list.
+            var Rq = new Request(TypeOfRequest.SendRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, valueType, null);
+            lock (lockObj)
+            {
+                this.RequestList.Add(Rq);
+            }
 
+            this.errorReceivedTelegram = false;
+    
             return InverterDriverExitStatus.Success;
         }
 
@@ -361,32 +436,17 @@ namespace Ferretto.VW.InverterDriver
         /// Send a request to inverter to read a parameter value.
         /// </summary>
         public InverterDriverExitStatus SettingRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex, object value)
-        {
-            if (this.executeRequestOnRunning)
+        {   
+            //Store the request into the list.
+            var Rq = new Request(TypeOfRequest.SettingRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, ValueDataType.Int16, value);
+            lock (lockObj)
             {
-                return InverterDriverExitStatus.InvalidOperation;
+                this.RequestList.Add(Rq);
             }
 
-            ValueDataType dataType = ValueDataType.Int16;
-
-            if (paramID == ParameterID.HOMING_OFFSET_PARAM ||
-                paramID == ParameterID.HOMING_FAST_SPEED_PARAM ||
-                paramID == ParameterID.HOMING_CREEP_SPEED_PARAM)
-            {
-                dataType = ValueDataType.Int32;
-            }
-
-
-            this.currentRequest = new Request(TypeOfRequest.SettingRequest, paramID, systemIndex, dataSetIndex, dataType, value);
             this.errorReceivedTelegram = false;
-            this.makeRequestEvent.Set();
 
             return InverterDriverExitStatus.Success;
-        }
-
-        public void EnableGetStatusWord(bool enable)
-        {
-            this.enableGetStatusWord = enable;
         }
 
         /// <summary>
@@ -394,7 +454,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public void Terminate()
         {
-            this.terminateEvent.Set();
+            this.Terminate_HeartBeat.Set();  //Terminate the heartbeat thread
             this.destroyThread();
             this.disconnect_from_inverter();
 
@@ -412,7 +472,10 @@ namespace Ferretto.VW.InverterDriver
             {
                 // TODO: Add here methods to tear down unmanaged resources...
             }
+
         }
+
+        #region Win32
 
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
@@ -420,11 +483,16 @@ namespace Ferretto.VW.InverterDriver
         [DllImport("kernel32.dll", SetLastError = true)]
         private static extern bool QueryPerformanceFrequency(out long lpPerformanceFrequency);
 
+        #endregion
+
+        /// <summary>
+        /// Connect to inverter device.
+        /// </summary>
         private bool connect_to_inverter()
         {
             this.LastError = InverterDriverErrors.NoError;
             var bSuccess = true;
-
+            
             if (this.IPAddressToConnect == "" || this.PortAddressToConnect <= 0)
             {
                 logger.Log(LogLevel.Debug, String.Format("Invalid IP address [IP:{0}, port:{1}]", this.IPAddressToConnect, this.PortAddressToConnect));
@@ -455,8 +523,7 @@ namespace Ferretto.VW.InverterDriver
                     logger.Log(LogLevel.Debug, String.Format("Connection to inverter [IP:{0}] established", this.IPAddressToConnect));
                     Connected?.Invoke(this, new ConnectedEventArgs(true));
 
-                    this.createThread();
-
+                    this.createThreads();
                     this.waitForData();
                 }
                 else
@@ -477,24 +544,19 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <summary>
-        /// Create working thread.
+        /// Create main working thread and heartbeat thread.
         /// </summary>
-        private void createThread()
+        private void createThreads()
         {
             logger.Log(LogLevel.Debug, String.Format("Create main Working thread."));
+            this.eventToSendPacket = new AutoResetEvent(false);
+            this.regWaitForMainThread = ThreadPool.RegisterWaitForSingleObject(this.eventToSendPacket, this.onMainWorkingThread, null, -1, false);
 
-            this.terminateEvent = new AutoResetEvent(false);
-            this.makeRequestEvent = new AutoResetEvent(false);
-            this.ackTerminateEvent = new AutoResetEvent(false);
-            this.mainAutomationThread = new Thread(this.mainWorkingThread);
-            this.mainAutomationThread.Name = "workingInverterThread";
-            this.mainAutomationThread.Start();
-        }
-
-        private object decode_ParameterValue<T>(T value, ValueDataType type)
-        {
-            // ADD your implementation code here
-            return value;
+            this.Terminate_HeartBeat = new AutoResetEvent(false);
+            this.thrdHeartBeat = new Thread(this.HeartBeat_Thread);
+            this.thrdHeartBeat.Name = "HeartBeat_Thread";
+            this.thrdHeartBeat.Priority = ThreadPriority.Highest;
+            this.thrdHeartBeat.Start();
         }
 
         /// <summary>
@@ -502,36 +564,19 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         private void destroyThread()
         {
-            // Wait for the release of main working thread
-            var handles = new WaitHandle[1];
-            handles[0] = this.ackTerminateEvent;
-            WaitHandle.WaitAny(handles, -1);
-            this.mainAutomationThread = null;
-
-            this.terminateEvent?.Close();
-            this.terminateEvent = null;
-
-            this.makeRequestEvent?.Close();
-            this.makeRequestEvent = null;
-
-            this.ackTerminateEvent?.Close();
-            this.ackTerminateEvent = null;
-
+            this.regWaitForMainThread?.Unregister(this.eventToSendPacket);
             logger.Log(LogLevel.Debug, String.Format("Release main Working thread."));
         }
 
+        /// <summary>
+        /// Disconnect from inverter device.
+        /// </summary>
         private void disconnect_from_inverter()
         {
             this.sckClient?.Close();
             this.sckClient = null;
 
-            Connected?.Invoke(this, new ConnectedEventArgs(false));
-        }
-
-        private Int32 encode_ParameterValue(object value, ValueDataType type)
-        {
-            // ADD your implementation code here
-            return Convert.ToInt32(value);
+            Connected?.Invoke(this, new ConnectedEventArgs(false));          
         }
 
         /// <summary>
@@ -562,76 +607,275 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <summary>
-        /// Main working thread.
-        /// The thread monitors the [Terminate] event and the [MakeRequest] event.
-        ///   The [Terminate] event get signalled when the [this] class is disposed (release)
-        ///   The [MakeRequest] event get signalled when a new request shall be executed.
-        private void mainWorkingThread()
+        /// Convert BitArray structure to Bytes array.
+        /// </summary>
+        internal static byte[] BitArrayToByteArray(BitArray bits)
         {
-            const int N_EVENTS = 2;
-            const int TERMINATE = 0;
-            const int MAKEREQUEST = 1;
+            byte[] ret = new byte[(bits.Length - 1) / 8 + 1];
+            bits.CopyTo(ret, 0);
+            return ret;
+        }
 
-            var handles = new WaitHandle[N_EVENTS];
-            handles[0] = this.terminateEvent;
-            handles[1] = this.makeRequestEvent;
+        /// <summary>
+        /// Main working thread.
+        /// The thread monitors the [eventSendToPacket] event.
+        /// The [eventSendToPacket] event get signalled when a new request shall be executed.
+        private void onMainWorkingThread(object data, bool bTimeOut)
+        {
+            long t = 0;
+            QueryPerformanceCounter(out t);
+            var offsetTime_ms = (int)(((double)(t - this.TimeSendingPacket) * 1000) / this.perfFrequency);
+            this.TimeSendingPacket = t;
 
-            this.timeOut = /*LONG_TIME_OUT*/1000;
-            var bExit = false;
-
-            while (!bExit)
+            var isHeartBeat = false;
+            lock(lockObj)
             {
-                var waitResult = WaitHandle.WaitAny(handles, this.timeOut);
-                switch (waitResult)
+                isHeartBeat = this.HeartBeat;
+            }
+
+            // Send a request        
+            if (isHeartBeat)
+            {
+                var offsetTime_HeartBeat = (int)(((double)(t - this.TimeSendingHeartBeatPacket) * 1000) / this.perfFrequency);
+                this.TimeSendingHeartBeatPacket = t;
+
+                var bytes = BitArrayToByteArray(this.CtrlWord);
+                var value = BitConverter.ToInt16(bytes, 0);
+                this.currentRequest = new Request(TypeOfRequest.SettingRequest, ParameterID.CONTROL_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, value);
+                this.CtrlWord.Set(HEARTBIT, !this.CtrlWord.Get(HEARTBIT));
+                //logger.Log(LogLevel.Debug, String.Format("Send HeartBeat. Time elapsed: {0}", offsetTime_HeartBeat));
+            }
+            else
+            {
+                if (this.RequestList.Count > 0)
                 {
-                    case TERMINATE:
+                    // Select the first item in the list.
+                    this.currentRequest = this.RequestList[0];
+                    // Remove the first item in the list.
+                    lock (lockObj)
+                    {
+                        this.RequestList.RemoveAt(0);
+                    }
+
+                    //logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
+                }
+                else
+                {
+                    // Select the next index of request for base request array
+                    this.IndexOfBaseRequest = getNextIndexOfRequest(this.IndexOfBaseRequest + 1);
+                    this.currentRequest = this.BaseRequestArray[this.IndexOfBaseRequest];
+
+                    //logger.Log(LogLevel.Debug, String.Format("Send Base Request Indext of Request: {0} Time elapsed: {1}", this.IndexOfBaseRequest, offsetTime_ms));
+                }
+
+            }
+
+            // execute the request
+            this.send_request_to_inverter();
+        }
+
+        /// <summary>
+        /// Retrieve the index of next request belonging to the base requests array. 
+        /// </summary>
+        private int getNextIndexOfRequest(int nextIndexCandidate)
+        {
+            int k = 0;
+            bool exit = false;
+            int nextIndex = 0;
+
+            while (k < this.BaseRequestArray.Length && !exit)
+            {
+                nextIndex = (nextIndexCandidate + k) % this.BaseRequestArray.Length;
+                switch (nextIndex)
+                {
+                  case 0:
                         {
-                            // event for terminate the thread has been signalled (it is fired when Core class is disposed)
-                            bExit = true;
+                            exit = true;
+                            break;
+                        }
+                  case 1:
+                        {
+                            lock(lockFlags)
+                            { 
+                              exit = this.getStatusWordValue;
+                            }
+
+                            break;
+                        
+                        }
+
+                  case 2:
+                        {
+                            lock (lockFlags)
+                            {
+                                exit = this.getActualPositionShaftValue;
+                            }
+
                             break;
                         }
 
-                    case MAKEREQUEST:
+                  default:
+                        break;
+                }
+
+                k++;
+            }
+
+            return nextIndex;
+        }
+
+        /// <summary>
+        /// HeartBeat Thread. This thread prompts the driver
+        /// to send a defined packet to inverter for heartbeat routine.
+        /// </summary>
+        private void HeartBeat_Thread()
+        {
+            const int TERMINATE = 0;
+            var exit = false;
+            var handles = new WaitHandle[1];
+            handles[0] = this.Terminate_HeartBeat;
+            while (!exit)
+            {
+
+                var WaitResult = WaitHandle.WaitAny(handles, HEARTBEAT_TIMEOUT);
+                switch (WaitResult)
+                {
+                    case TERMINATE:
                         {
-                            logger.Log(LogLevel.Debug, String.Format("Execute request => TypeOf:{0}, ParamID:{1}", this.currentRequest.Type.ToString(), this.currentRequest.ParameterID.ToString()));
-
-                            // build the telegram according to data of request to send to inverter
-                            this.send_request_to_inverter();
-
-                            //this.timeOut = SHORT_TIME_OUT;
+                            exit = true;
                             break;
                         }
 
                     case WaitHandle.WaitTimeout:
                         {
-                            // Check if ACK from inverter is catched... and it handle the error if no response was not happened
-                            if (this.executeRequestOnRunning)
+                            lock (lockObj)
                             {
-                                // A request was made, but no response has been collected
-                                // Handle it!
-
-                                this.LastError = InverterDriverErrors.IOError;
-                                //Error?.Invoke(this, new ErrorEventArgs(this.LastError));
-                            }
-                            else
-                            {
-                                if (this.enableGetStatusWord)
-                                {
-                                    // Send a request to inverter about the status
-                                    this.send_request_to_inverter_about_statusWord();
-                                }
+                                this.HeartBeat = true;
                             }
                             break;
                         }
-                }
-            }
 
-            this.ackTerminateEvent.Set();
-            logger.Log(LogLevel.Debug, String.Format("Exit from main Working thread."));
-            return;
+                    default:
+                        break;
+                }
+
+            }
+        }
+        
+        /// <summary>
+        /// Call back function which will be invoked when the socket detects the incoming data on the stream.
+        /// </summary>
+        public void OnDataReceived(IAsyncResult asyn)
+        {
+            try
+            {
+                QueryPerformanceCounter(out this.perfTimeOnReceivingTelegram);
+                var offsetTime_ms = (int)(((double)(this.perfTimeOnReceivingTelegram - this.perfTimeOnSendingTelegram) * 1000) / this.perfFrequency);
+
+                // Socket' stuf
+                var theSockId = (SocketPacket)asyn.AsyncState;
+                var iRx = theSockId.thisSocket.EndReceive(asyn);
+                var nBytes = theSockId.dataBuffer[0];
+
+                // ------
+                // The class Telegram performs the parsing of incoming data buffer and extract the information from it
+                // ------
+
+                var telegramRead = new byte[iRx];
+                Array.Copy(theSockId.dataBuffer, 0, telegramRead, 0, iRx);
+
+                // Parse the received telegram
+                this.errorReceivedTelegram = this.received_telegram(telegramRead, out var paramID, out this.retParameterValue);
+                if (!this.errorReceivedTelegram)
+                {
+                    if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External)
+                    {
+                        // Notify the <EnquiryTelegram> via Event firing
+                        EnquiryTelegramDone?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                    }
+
+                    if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External)
+                    {
+                        // Notify the <SelectTelegram> via Event firing
+                        SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                    }
+
+                    // Update internal class members
+                    switch (this.currentRequest.ParameterID)
+                    {
+                        case ParameterID.STATUS_WORD_PARAM:
+                            {
+                                lock (lockObj)
+                                {
+                                    var retValueShort = Convert.ToInt16(this.retParameterValue);
+                                    var arraybytes = BitConverter.GetBytes(retValueShort);
+                                    this.StatusWord = new BitArray(arraybytes);
+                                }
+                                break;
+                            }
+                        case ParameterID.STATUS_DIGITAL_SIGNALS:
+                            {
+                                lock (lockObj)
+                                {
+                                    var retValueShort = Convert.ToInt16(this.retParameterValue);
+
+                                    var arraybytes = BitConverter.GetBytes(retValueShort);
+                                    BitArray bit_array = new BitArray(arraybytes);
+                                    this.BrakeResistanceOvertemperature = bit_array.Get(2);
+                                    this.EmergencyStop = bit_array.Get(4);
+                                    this.PawlSensorZero = bit_array.Get(5);
+                                    this.UdcPresenceCradleOperator = bit_array.Get(10);
+                                    this.UdcPresenceCradleMachine = bit_array.Get(11);
+                                }
+
+                                break;
+                            }
+
+                        case ParameterID.CONTROL_WORD_PARAM:
+                            {
+                                if (this.currentRequest.Source == RequestSource.Internal)
+                                {
+                                    lock (lockObj)
+                                    {
+                                        this.HeartBeat = false;
+                                    }
+                                }
+                                break;
+                            }
+
+                    }
+
+                }
+                else
+                {
+                    // if we are here, an error occurs
+                    // and so we have to manage it
+                }
+
+                lock (lockObj)
+                {
+                    this.executeRequestOnRunning = false;
+                }
+
+                this.eventToSendPacket?.Set();
+
+                // Prompt to receive a new message
+                this.waitForData();
+            }
+            catch (ObjectDisposedException)
+            {
+                logger.Log(LogLevel.Debug, String.Format("On Data Received: the Socket has been closed"));
+            }
+            catch (SocketException)
+            {
+                logger.Log(LogLevel.Debug, String.Format("On Data Received: Socket critical failure"));
+            }
         }
 
-        private bool received_telegram(byte[] telegram, int offsetTime_ms, out ParameterID paramID, out object retValue)
+        /// <summary>
+        /// Parse the receiving telegram from inverter device.
+        /// </summary>
+        private bool received_telegram(byte[] telegram, out ParameterID paramID, out object retValue)
         {
             // Parsing and check the information of telegram
 
@@ -644,28 +888,9 @@ namespace Ferretto.VW.InverterDriver
             return error;
         }
 
-        //private void send_request_to_get_IOEmergency_state()
-        //{
-        //    // TODO Add your implementation code here
-        //}
-
-        ///// <summary>
-        ///// Send a request to inverter to get the status.
-        ///// </summary>
-        //private void send_request_to_get_status_inverter()
-        //{
-        //    if (this.executeRequestOnRunning)
-        //    {
-        //        return;
-        //    }
-
-        //    var valueType = ParameterIDClass.Instance.GetDataValueType(ParameterID.STATUS_WORD_PARAM);
-
-        //    this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x06, valueType, null);
-        //    this.errorReceivedTelegram = false;
-        //    this.makeRequestEvent.Set();
-        //}
-
+        /// <summary>
+        /// Send a chosen request to inverter.
+        /// </summary>
         private void send_request_to_inverter()
         {
             // the currentRequest object contains the definition of request need to send to inverter
@@ -700,24 +925,6 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
-        private void send_request_to_inverter_about_statusWord()
-        {
-            this.currentRequest = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, 0x00, 0x05, ValueDataType.Int16, null);
-          
-            byte[] telegramToSend = null;
-            var telegram = new Telegram();
-            telegramToSend = telegram.BuildReadPacket(0x00, 0x05, Convert.ToInt16(ParameterID.STATUS_WORD_PARAM));
-
-            // Send the telegram related to the current request to inverter
-            this.sendDataToInverter(telegramToSend);
-
-            // Update the flag
-            lock (lockObj)
-            {
-                this.executeRequestOnRunning = true;
-            }
-        }
-
         /// <summary>
         /// Send a given telegram data to inverter.
         /// </summary>
@@ -738,8 +945,8 @@ namespace Ferretto.VW.InverterDriver
             }
         }
 
-        /// <summary>
-        /// Start waiting data from the inverter (via socket).
+        ///<summary>
+        /// Start waiting data from the inverter(via socket).
         /// </summary>
         private void waitForData()
         {

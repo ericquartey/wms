@@ -34,7 +34,7 @@
                            Margin="10,10,10,0"
                            HorizontalAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}"
-                           Visibility="{Binding IsVisibleMainCommandBar, Converter={StaticResource BTVC}}">
+                           Visibility="{Binding IsVisibleMainCommandBar, Converter={StaticResource BTVHC}}">
                 <wms:ActionBarItem Command="{Binding EditCommand}"
                                    Content="{x:Static res:MasterData.EditCompartment}"
                                    CustomGlyphSize="24,24"
@@ -45,8 +45,8 @@
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
                                    GlyphSize="Custom" />
-                <wms:ActionBarItem Command="{Binding AddBulkCommand}"
-                                   Content="{x:Static res:MasterData.AddBulkCompartment}"
+                <wms:ActionBarItem Command="{Binding BulkAddCommand}"
+                                   Content="{x:Static res:MasterData.BulkAddCompartment}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_photo_size_select_small_black_24dp.png"
                                    GlyphSize="Custom" />
@@ -55,10 +55,11 @@
             <wms:WmsTrayControl x:Name="TrayControl"
                                 Grid.Row="1"
                                 Margin="0,10,0,0"
-                                HorizontalAlignment="Center"
                                 IsCompartmentSelectable="{Binding IsSelectableTray}"
                                 IsReadOnly="{Binding ReadOnlyTray}"
+                                SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                 SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
+                                ShowBackground="True"
                                 ShowRuler="True"
                                 Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
 
@@ -67,22 +68,15 @@
                                 MaxWidth="5000"
                                 MaxHeight="500"
                                 HorizontalAlignment="Left"
-                                CurrentItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
                                 IsEnabled="{Binding IsEnabledGrid}"
-                                ItemType="{x:Type businessModels:CompartmentDetails}"
-                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
+                                ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
+                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                 SelectionMode="Row">
                 <wms:WmsGridControl.View>
-                    <dxg:TableView AllowEditing="False"
-                                   AllowGrouping="False"
-                                   AllowMoveColumnToDropArea="False"
-                                   NavigationStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsEnabledGrid, Converter={StaticResource BTNSC}}"
-                                   ShowGroupPanel="False"
-                                   ShowIndicator="False"
-                                   ShowSearchPanelMode="Never">
+                    <dxg:TableView NavigationStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsEnabledGrid, Converter={StaticResource BTNSC}}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
-                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray.Id, Mode=OneWay}"
                                                           StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                           StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                             </i:EventTrigger>
@@ -119,49 +113,42 @@
 
 
         <wms:Expander x:Name="Expander"
+                      Grid.Row="0"
                       Grid.Column="1"
                       VerticalAlignment="Stretch"
                       VerticalContentAlignment="Stretch"
                       ExpandDirection="Right"
                       HideToggleButton="True"
                       IsExpanded="{Binding IsExpand}">
-            <Grid>
-                <ScrollViewer Grid.Column="1"
-                              Grid.ColumnSpan="1"
-                              Margin="10,10,10,0"
-                              HorizontalAlignment="Right"
-                              Focusable="False"
-                              IsTabStop="False">
+            <ScrollViewer x:Name="ScrollView"
+                          Grid.Column="1"
+                          Grid.ColumnSpan="1"
+                          HorizontalAlignment="Right"
+                          BorderThickness="0"
+                          Focusable="False"
+                          IsTabStop="False">
 
-                    <Border Style="{StaticResource InfoBoxBorderStyle}">
+                <Border x:Name="BorderStyle"
+                        Style="{StaticResource InfoBoxBorderStyle}">
 
-                        <GroupBox Margin="20,0"
-                                  Header="{Binding Title}">
-                            <StackPanel Orientation="Vertical">
-                                <masterData:InputAddCompartmentView x:Name="InputAddCompartment"
-                                                                    Grid.Row="1"
-                                                                    HorizontalAlignment="Left"
-                                                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.AddVisibility, Converter={StaticResource BTVC}, Mode=TwoWay}" />
+                    <Grid x:Name="InputEdit"
+                          HorizontalAlignment="Left">
+                        <masterData:InputAddCompartmentView x:Name="InputAddCompartment"
+                                                            Grid.Row="0"
+                                                            ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputAddVM, Mode=TwoWay}" />
 
-                                <masterData:InputBulkAddCompartmentView x:Name="InputBulkAddCompartment"
-                                                                        Grid.Row="1"
-                                                                        HorizontalAlignment="Left"
-                                                                        Column="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Column, Mode=TwoWay}"
-                                                                        EnableBulkAdd="{Binding EnableBulkAdd}"
-                                                                        Row="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Row, Mode=TwoWay}"
-                                                                        Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.BulkAddVisibility, Converter={StaticResource BTVC}, Mode=TwoWay}" />
+                        <masterData:InputBulkAddCompartmentView x:Name="InputBulkAddCompartment"
+                                                                Grid.Row="0"
+                                                                ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputBulkAddVM, Mode=TwoWay}" />
 
-                                <masterData:InputEditCompartmentView x:Name="InputEditCompartment"
-                                                                     Grid.Row="1"
-                                                                     HorizontalAlignment="Left"
-                                                                     Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.EditVisibility, Converter={StaticResource BTVC}, Mode=TwoWay}" />
+                        <masterData:InputEditCompartmentView x:Name="InputEditCompartment"
+                                                             Grid.Row="0"
+                                                             ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputEditVM, Mode=TwoWay}" />
 
-                            </StackPanel>
-                        </GroupBox>
-                    </Border>
-                </ScrollViewer>
+                    </Grid>
+                </Border>
+            </ScrollViewer>
 
-            </Grid>
         </wms:Expander>
 
     </Grid>

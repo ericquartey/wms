@@ -6,6 +6,8 @@
     <ctrls:BoolToVisibilityConverter x:Key="BTVC" />
     <ctrls:BoolToVisibilityConverter x:Key="BTVIC"
                                      Invert="True" />
+    <ctrls:BoolToVisibilityConverter x:Key="BTVHC"
+                                     Hide="True" />
 
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVC" />
     <ctrls:ReferenceToVisibilityConverter x:Key="RTVHC"

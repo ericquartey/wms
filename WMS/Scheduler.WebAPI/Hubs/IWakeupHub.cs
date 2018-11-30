@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.Common.BusinessModels;
+using Ferretto.WMS.Scheduler.Core;
 
 namespace Ferretto.WMS.Scheduler.WebAPI.Hubs
 {

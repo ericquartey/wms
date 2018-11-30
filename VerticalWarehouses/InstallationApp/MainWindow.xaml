@@ -17,6 +17,7 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -82,7 +83,7 @@
                 <Border Width="140"
                         Height="60"
                         Margin="2,10,2,2"
-                        BorderBrush="{StaticResource FerrettoDarkGray}"
+                        BorderBrush="{DynamicResource FerrettoDarkGray}"
                         BorderThickness="2">
                     <custom:CustomControlComboBox Width="140"
                                                   Height="60"
@@ -91,7 +92,7 @@
                                                   CustomComboBoxState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   FontFamily="{DynamicResource IAPP_BodyFont}"
                                                   FontSize="25"
-                                                  Foreground="{StaticResource FerrettoPureWhite}"
+                                                  Foreground="{DynamicResource FerrettoPureWhite}"
                                                   Item1Text="Off"
                                                   Item2Text="On"
                                                   Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineOnMarch}" />
@@ -99,7 +100,7 @@
                 <Border Width="140"
                         Height="60"
                         Margin="2,10,2,2"
-                        BorderBrush="{StaticResource FerrettoDarkGray}"
+                        BorderBrush="{DynamicResource FerrettoDarkGray}"
                         BorderThickness="2">
                     <custom:CustomControlComboBox Width="140"
                                                   Height="60"
@@ -108,12 +109,12 @@
                                                   CustomComboBoxState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   FontFamily="{DynamicResource IAPP_BodyFont}"
                                                   FontSize="25"
-                                                  Foreground="{StaticResource FerrettoPureWhite}"
+                                                  Foreground="{DynamicResource FerrettoPureWhite}"
                                                   Item1Text="Manual"
                                                   Item2Text="Auto"
                                                   Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineMode}" />
                 </Border>
-                <ComboBox Width="150"
+                <!--<ComboBox Width="150"
                           Margin="10,15,2,5"
                           HorizontalContentAlignment="Right"
                           VerticalContentAlignment="Center"
@@ -165,7 +166,7 @@
                             </Style>
                         </ComboBoxItem.Style>
                     </ComboBoxItem>
-                </ComboBox>
+                </ComboBox>-->
             </StackPanel>
         </Border>
         <ContentControl x:Name="InstallationPageRegionContentControl"

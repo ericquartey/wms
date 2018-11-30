@@ -20,6 +20,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private CellDetails cell;
         private bool cellHasLoadingUnits;
         private IDataSource<LoadingUnitDetails> loadingUnitsDataSource;
+        private object modelChangedEventSubscription;
+        private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private ICommand revertCommand;
         private ICommand saveCommand;
@@ -117,6 +119,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void OnDispose()
         {
+            this.EventService.Unsubscribe<RefreshModelsEvent<Cell>>(this.modelRefreshSubscription);
+            this.EventService.Unsubscribe<ModelChangedEvent<Cell>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedEvent<Cell>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
         }
@@ -135,6 +139,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Cell>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Cell>>(eventArgs => { this.LoadData(); });
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Cell>>(
                 eventArgs =>
                 {

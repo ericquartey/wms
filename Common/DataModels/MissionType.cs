@@ -1,13 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace Ferretto.Common.DataModels
+﻿namespace Ferretto.Common.DataModels
 {
-    // Tipo Missione
-    public sealed class MissionType
+    public enum MissionType
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
-
-        public List<Mission> Missions { get; set; }
+        Bypass = 'B',
+        Inventory = 'I',
+        Pick = 'P',
+        Put = 'T',
+        Reorder = 'O',
+        Replace = 'R'
     }
 }

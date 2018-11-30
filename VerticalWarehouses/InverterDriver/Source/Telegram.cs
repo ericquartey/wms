@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -148,7 +148,6 @@ namespace Ferretto.VW.InverterDriver
         #region -ParseDataBuffer Method-
         public void ParseDataBuffer(byte[] telegram, int nBytes, out bool error)
         {
-
             error = false;
             byte header = telegram[0];
 
@@ -159,11 +158,6 @@ namespace Ferretto.VW.InverterDriver
             var bits = new bool[N_BITS_8];
             t.CopyTo(bits, 0);
             error = bits[6];
-
-            if (error)
-            {
-                int y = 0;
-            }
             
             byte noBytes = telegram[1];
             byte sys = telegram[2];
@@ -212,7 +206,7 @@ namespace Ferretto.VW.InverterDriver
                 RetValueFromParse = BitConverter.ToString(telegram, 6);
             }
 
-            // return;
+            return;
         }
         #endregion
     }

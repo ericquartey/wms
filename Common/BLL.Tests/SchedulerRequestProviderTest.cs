@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.DataModels;
 using Ferretto.Common.EF;
+using Ferretto.WMS.Scheduler.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -14,14 +13,14 @@ namespace Ferretto.Common.BLL.Tests
 
         private const int OtherBayId = 1000;
         private const int OtherLoadingUnitId = 1000;
-        private Aisle aisle1;
-        private Area area1;
-        private Bay bay1;
-        private Cell cell1;
-        private Item item1;
-        private Item itemFifo;
-        private Item itemVolume;
-        private LoadingUnit loadingUnit1;
+        private DataModels.Aisle aisle1;
+        private DataModels.Area area1;
+        private DataModels.Bay bay1;
+        private DataModels.Cell cell1;
+        private DataModels.Item item1;
+        private DataModels.Item itemFifo;
+        private DataModels.Item itemVolume;
+        private DataModels.LoadingUnit loadingUnit1;
 
         #endregion Fields
 
@@ -38,9 +37,9 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-            @"GIVEN a compartment in a specific area and aisle  \
-                AND a requests allocated to a bay of the specified area \
-               WHEN a new request for the first area is made \
+            @"GIVEN a compartment in a specific area, associated to a specific item \
+                AND a withdrawal request for the given item on a bay of the specified area \
+               WHEN a new request for the same item and area is made \
                THEN the new request should be accepted")]
         public async Task CompartmentsInBay()
         {
@@ -48,7 +47,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -73,13 +72,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     BayId = this.bay1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -107,7 +106,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -117,7 +116,7 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var compartment2 = new Compartment
+            var compartment2 = new DataModels.Compartment
             {
                 Id = 2,
                 Code = "Compartment #2",
@@ -127,13 +126,13 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new SchedulerRequest
+            var request1 = new DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -153,12 +152,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -184,7 +183,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -209,13 +208,13 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     BayId = OtherBayId,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -232,6 +231,73 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
+            @"GIVEN a compartment associated to an item \
+               WHEN a new request for that item is made, without specific selection parameters (eg. Sub1, Lot, etc.) \
+               THEN the new request should be accepted and all the request parameters should be populated")]
+        public async Task FullRequestQualificationTest()
+        {
+            #region Arrange
+
+            var compartment1 = new DataModels.Compartment
+            {
+                Id = 1,
+                Code = "Compartment #1",
+                ItemId = this.item1.Id,
+                Sub1 = "S1",
+                Sub2 = "S2",
+                Lot = "Lot1",
+                PackageTypeId = 1,
+                RegistrationNumber = "RegistrationNumber1",
+                MaterialStatusId = 1,
+                LoadingUnitId = this.loadingUnit1.Id,
+                Stock = 10,
+            };
+
+            using (var context = this.CreateContext())
+            {
+                context.Compartments.Add(compartment1);
+
+                context.SaveChanges();
+            }
+
+            #endregion Arrange
+
+            using (var context = this.CreateContext())
+            {
+                #region Act
+
+                var provider = new SchedulerRequestProvider(context);
+
+                var schedulerRequest = new SchedulerRequest
+                {
+                    ItemId = this.item1.Id,
+                    AreaId = this.area1.Id,
+                    RequestedQuantity = 1,
+                    IsInstant = true,
+                    Type = OperationType.Withdrawal
+                };
+
+                var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
+
+                #endregion Act
+
+                #region Assert
+
+                Assert.IsNotNull(acceptedRequest);
+                Assert.IsTrue(acceptedRequest.IsInstant);
+                Assert.AreSame(compartment1.Sub1, acceptedRequest.Sub1);
+                Assert.AreSame(compartment1.Sub2, acceptedRequest.Sub2);
+                Assert.AreSame(compartment1.Lot, acceptedRequest.Lot);
+                Assert.AreEqual(compartment1.PackageTypeId.Value, acceptedRequest.PackageTypeId.Value);
+                Assert.AreEqual(compartment1.MaterialStatusId.Value, acceptedRequest.MaterialStatusId.Value);
+                Assert.AreSame(compartment1.RegistrationNumber, acceptedRequest.RegistrationNumber);
+
+                #endregion Assert
+            }
+        }
+
+        [TestMethod]
+        [TestProperty("Description",
             @"GIVEN that a non-withdrawal request is created \
                WHEN the FullyQualifyWithdrawalRequest method is called with the invalid request\
                THEN the method should throw an exception")]
@@ -239,9 +305,9 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var request = new BusinessModels.SchedulerRequest
+            var request = new SchedulerRequest
             {
-                Type = BusinessModels.OperationType.Insertion
+                Type = OperationType.Insertion
             };
 
             #endregion Arrange
@@ -267,7 +333,7 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            BusinessModels.SchedulerRequest request = null;
+            SchedulerRequest request = null;
 
             #endregion Arrange
 
@@ -286,14 +352,14 @@ namespace Ferretto.Common.BLL.Tests
         [TestInitialize]
         public void Initialize()
         {
-            this.area1 = new Area { Id = 1, Name = "Area #1" };
-            this.aisle1 = new Aisle { Id = 1, AreaId = this.area1.Id, Name = "Aisle #1" };
-            this.cell1 = new Cell { Id = 1, AisleId = this.aisle1.Id };
-            this.loadingUnit1 = new LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.cell1.Id };
-            this.bay1 = new Bay { Id = 1, Description = "Bay #1", AreaId = this.area1.Id };
-            this.item1 = new Item { Id = 1, Code = "Item #1", ManagementType = ItemManagementType.FIFO };
-            this.itemFifo = new Item { Id = 2, Code = "Item #2", ManagementType = ItemManagementType.FIFO };
-            this.itemVolume = new Item { Id = 3, Code = "Item #3", ManagementType = ItemManagementType.Volume };
+            this.area1 = new DataModels.Area { Id = 1, Name = "Area #1" };
+            this.aisle1 = new DataModels.Aisle { Id = 1, AreaId = this.area1.Id, Name = "Aisle #1" };
+            this.cell1 = new DataModels.Cell { Id = 1, AisleId = this.aisle1.Id };
+            this.loadingUnit1 = new DataModels.LoadingUnit { Id = 1, Code = "Loading Unit #1", CellId = this.cell1.Id };
+            this.bay1 = new DataModels.Bay { Id = 1, Description = "Bay #1", AreaId = this.area1.Id };
+            this.item1 = new DataModels.Item { Id = 1, Code = "Item #1", ManagementType = DataModels.ItemManagementType.FIFO };
+            this.itemFifo = new DataModels.Item { Id = 2, Code = "Item #2", ManagementType = DataModels.ItemManagementType.FIFO };
+            this.itemVolume = new DataModels.Item { Id = 3, Code = "Item #3", ManagementType = DataModels.ItemManagementType.Volume };
 
             using (var context = this.CreateContext())
             {
@@ -324,9 +390,9 @@ namespace Ferretto.Common.BLL.Tests
             var subX = "Sx";
             var subZ = "Sz";
 
-            var compartments = new Compartment[]
+            var compartments = new DataModels.Compartment[]
             {
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 1,
                     Code = "Compartment #1",
@@ -336,7 +402,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 10,
                     FirstStoreDate = System.DateTime.Now.AddHours(-1)
                 },
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 2,
                     Code = "Compartment #2",
@@ -346,7 +412,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 10,
                     FirstStoreDate = System.DateTime.Now.AddHours(-3)
                 },
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 3,
                     Code = "Compartment #3",
@@ -356,7 +422,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 10,
                     FirstStoreDate = System.DateTime.Now.AddHours(-2)
                 },
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 4,
                     Code = "Compartment #4",
@@ -383,12 +449,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.itemFifo.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -414,7 +480,7 @@ namespace Ferretto.Common.BLL.Tests
         {
             #region Arrange
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -439,12 +505,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -472,7 +538,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -482,13 +548,13 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new SchedulerRequest
+            var request1 = new DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 3,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -507,12 +573,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -540,7 +606,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -550,22 +616,22 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new SchedulerRequest
+            var request1 = new DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
-            var request2 = new SchedulerRequest
+            var request2 = new DataModels.SchedulerRequest
             {
                 Id = 2,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = 5,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -585,12 +651,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -621,9 +687,9 @@ namespace Ferretto.Common.BLL.Tests
             var subY = "Sy";
             var now = System.DateTime.Now;
 
-            var compartments = new Compartment[]
+            var compartments = new DataModels.Compartment[]
             {
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 1,
                     Code = "Compartment #1",
@@ -633,7 +699,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 2,
                     FirstStoreDate = now.AddHours(-1)
                 },
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 2,
                     Code = "Compartment #2",
@@ -643,7 +709,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 2,
                     FirstStoreDate = now.AddHours(-3)
                 },
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 3,
                     Code = "Compartment #3",
@@ -653,7 +719,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 2,
                     FirstStoreDate = now.AddHours(-1)
                 },
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 4,
                     Code = "Compartment #4",
@@ -663,7 +729,7 @@ namespace Ferretto.Common.BLL.Tests
                     Stock = 1,
                     FirstStoreDate = now.AddHours(-1)
                 },
-                new Compartment
+                new DataModels.Compartment
                 {
                     Id = 5,
                     Code = "Compartment #5",
@@ -690,12 +756,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.itemVolume.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 1,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -725,7 +791,7 @@ namespace Ferretto.Common.BLL.Tests
             var subX = "SX";
             var subZ = "SZ";
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -735,7 +801,7 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var compartment2 = new Compartment
+            var compartment2 = new DataModels.Compartment
             {
                 Id = 2,
                 Code = "Compartment #2",
@@ -745,22 +811,22 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new SchedulerRequest
+            var request1 = new DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.item1.Id,
                 Sub1 = subX,
                 RequestedQuantity = 9,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
-            var request2 = new SchedulerRequest
+            var request2 = new DataModels.SchedulerRequest
             {
                 Id = 2,
                 ItemId = this.item1.Id,
                 Sub1 = subZ,
                 RequestedQuantity = 9,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -781,12 +847,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = 2,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);
@@ -813,7 +879,7 @@ namespace Ferretto.Common.BLL.Tests
 
             var sub1 = "S1";
 
-            var compartment1 = new Compartment
+            var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
                 Code = "Compartment #1",
@@ -823,7 +889,7 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var compartment2 = new Compartment
+            var compartment2 = new DataModels.Compartment
             {
                 Id = 2,
                 Code = "Compartment #2",
@@ -833,22 +899,22 @@ namespace Ferretto.Common.BLL.Tests
                 Stock = 10,
             };
 
-            var request1 = new SchedulerRequest
+            var request1 = new DataModels.SchedulerRequest
             {
                 Id = 1,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment1.Stock,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
-            var request2 = new SchedulerRequest
+            var request2 = new DataModels.SchedulerRequest
             {
                 Id = 2,
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 RequestedQuantity = compartment2.Stock / 2,
-                OperationType = OperationType.Withdrawal
+                OperationType = DataModels.OperationType.Withdrawal
             };
 
             using (var context = this.CreateContext())
@@ -869,12 +935,12 @@ namespace Ferretto.Common.BLL.Tests
 
                 var provider = new SchedulerRequestProvider(context);
 
-                var schedulerRequest = new BusinessModels.SchedulerRequest
+                var schedulerRequest = new SchedulerRequest
                 {
                     ItemId = this.item1.Id,
                     AreaId = this.area1.Id,
                     RequestedQuantity = compartment2.Stock - request2.RequestedQuantity,
-                    Type = BusinessModels.OperationType.Withdrawal
+                    Type = OperationType.Withdrawal
                 };
 
                 var acceptedRequest = await provider.FullyQualifyWithdrawalRequest(schedulerRequest);

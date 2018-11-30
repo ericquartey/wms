@@ -61,15 +61,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bulk Add.
-        /// </summary>
-        public static string AddBulkCompartment {
-            get {
-                return ResourceManager.GetString("AddBulkCompartment", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Add Compartment.
         /// </summary>
         public static string AddCompartment {
@@ -93,6 +84,15 @@ namespace Ferretto.Common.Resources {
         public static string AllowedItems {
             get {
                 return ResourceManager.GetString("AllowedItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bulk Add.
+        /// </summary>
+        public static string BulkAddCompartment {
+            get {
+                return ResourceManager.GetString("BulkAddCompartment", resourceCulture);
             }
         }
         
@@ -223,11 +223,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer Order Information.
+        /// </summary>
+        public static string CustomerOrderInformation {
+            get {
+                return ResourceManager.GetString("CustomerOrderInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Compartment.
         /// </summary>
         public static string EditCompartment {
             get {
                 return ResourceManager.GetString("EditCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execution Details.
+        /// </summary>
+        public static string ExecutionDetails {
+            get {
+                return ResourceManager.GetString("ExecutionDetails", resourceCulture);
             }
         }
         
@@ -273,6 +291,60 @@ namespace Ferretto.Common.Resources {
         public static string ItemIsAllocatedInNoCompartment {
             get {
                 return ResourceManager.GetString("ItemIsAllocatedInNoCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All.
+        /// </summary>
+        public static string ItemListAll {
+            get {
+                return ResourceManager.GetString("ItemListAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Information.
+        /// </summary>
+        public static string ItemListInformation {
+            get {
+                return ResourceManager.GetString("ItemListInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Rows Information.
+        /// </summary>
+        public static string ItemListRowInformation {
+            get {
+                return ResourceManager.GetString("ItemListRowInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completed Status.
+        /// </summary>
+        public static string ItemListStatusCompleted {
+            get {
+                return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting Status.
+        /// </summary>
+        public static string ItemListStatusWaiting {
+            get {
+                return ResourceManager.GetString("ItemListStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Type.
+        /// </summary>
+        public static string ItemListsTypePick {
+            get {
+                return ResourceManager.GetString("ItemListsTypePick", resourceCulture);
             }
         }
         
@@ -372,6 +444,15 @@ namespace Ferretto.Common.Resources {
         public static string RunItemWithdraw {
             get {
                 return ResourceManager.GetString("RunItemWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipment Unit Information.
+        /// </summary>
+        public static string ShipmentUnitInformation {
+            get {
+                return ResourceManager.GetString("ShipmentUnitInformation", resourceCulture);
             }
         }
         

@@ -52,7 +52,6 @@
 
         <ScrollViewer Grid.Row="1"
                       Margin="10,0,10,10"
-                      DataContext="{Binding LoadingUnit}"
                       Focusable="False"
                       IsTabStop="True">
             <Grid Margin="0,0,5,0">
@@ -86,32 +85,32 @@
                         </Grid.ColumnDefinitions>
                         <wms:TextBox Grid.ColumnSpan="3"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     Text="{Binding LoadingUnit.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnitTypeId}"
-                                      ItemsSource="{Binding Path=LoadingUnitTypeChoices}" />
+                                      EditValue="{Binding LoadingUnit.LoadingUnitTypeId}"
+                                      ItemsSource="{Binding LoadingUnit.LoadingUnitTypeChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnitStatusId}"
-                                      ItemsSource="{Binding Path=LoadingUnitStatusChoices}" />
+                                      EditValue="{Binding LoadingUnit.LoadingUnitStatusId}"
+                                      ItemsSource="{Binding LoadingUnit.LoadingUnitStatusChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding AbcClassId}"
-                                      ItemsSource="{Binding Path=AbcClassChoices}" />
+                                      EditValue="{Binding LoadingUnit.AbcClassId}"
+                                      ItemsSource="{Binding LoadingUnit.AbcClassChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding ReferenceType}"
-                                      ItemsSource="{Binding Path=ReferenceTypeChoices}" />
+                                      EditValue="{Binding LoadingUnit.ReferenceType}"
+                                      ItemsSource="{Binding LoadingUnit.ReferenceTypeChoices}" />
                         <wms:TextBox Grid.Row="3"
                                      Grid.ColumnSpan="3"
                                      Height="100"
                                      Margin="0,0,20,0"
                                      IsMultiline="True"
-                                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     Text="{Binding LoadingUnit.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 
@@ -130,17 +129,17 @@
                         </Grid.ColumnDefinitions>
                         <wms:ComboBox Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding CellId}"
-                                      ItemsSource="{Binding Path=CellChoices}" />
+                                      EditValue="{Binding LoadingUnit.CellId}"
+                                      ItemsSource="{Binding LoadingUnit.CellChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding CellPositionId}"
-                                      ItemsSource="{Binding Path=CellPositionChoices}" />
+                                      EditValue="{Binding LoadingUnit.CellPositionId}"
+                                      ItemsSource="{Binding LoadingUnit.CellPositionChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding CellPairing}"
-                                      ItemsSource="{Binding Path=CellPairingChoices}" />
+                                      EditValue="{Binding LoadingUnit.CellPairing}"
+                                      ItemsSource="{Binding LoadingUnit.CellPairingChoices}" />
 
                     </Grid>
                 </GroupBox>
@@ -156,13 +155,13 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
-                                      EditValue="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding LoadingUnit.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding LoadingUnit.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -181,36 +180,28 @@
                         <wms:WmsTrayControl Grid.Row="0"
                                             Margin="0"
                                             CanvasMinHeight="150"
-                                            IsCompartmentSelectable="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsCompartmentSelectableTray, Mode=OneWay}"
-                                            IsReadOnly="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ReadOnlyTray, Mode=OneWay}"
-                                            SelectedColorFilterFunc="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.TrayColoringFunc, Mode=OneWay}"
-                                            SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"
-                                            ShowBackground="True"                                           
-                                            Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
+                                            IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
+                                            IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
+                                            SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
+                                            SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                                            ShowBackground="True"
+                                            Tray="{Binding Tray, Mode=OneWay}" />
 
                         <StackPanel Grid.Row="1"
                                     Margin="0,5,0,0">
                             <TextBlock Text="{x:Static res:MasterData.LoadingUnitWithNoCompartment}"
-                                       Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVIC}}" />
+                                       Visibility="{Binding LoadingUnitHasCompartments, Converter={StaticResource BTVIC}}" />
                             <wms:WmsGridControl MinHeight="200"
                                                 MaxWidth="2000"
                                                 MaxHeight="200"                                                
-                                                SelectedBusinessObject="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment, Mode=TwoWay}"                                                
-                                                ItemType="{x:Type businessModels:CompartmentDetails}"
-                                                ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CompartmentsDataSource, Mode=OneWay}"
-                                                Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
+                                                SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"                                                                                                
+                                                ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
+                                                Visibility="{Binding LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
                                 <wms:WmsGridControl.View>
-                                    <dxg:TableView
-                                                   AllowEditing="False"
-                                                   AllowGrouping="False"
-                                                   AllowMoveColumnToDropArea="False"
-                                                   NavigationStyle="Row"
-                                                   ShowGroupPanel="False"
-                                                   ShowIndicator="False"
-                                                   ShowSearchPanelMode="Never">
+                                    <dxg:TableView>
                                         <i:Interaction.Triggers>
                                             <i:EventTrigger EventName="RowDoubleClick">
-                                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartment.Id, Mode=OneWay}"
+                                                <wms:WmsHistoryViewAppear Id="{Binding SelectedCompartment.Id, Mode=OneWay}"
                                                                           StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                                           StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                             </i:EventTrigger>
@@ -258,45 +249,43 @@
                       Grid.Column="1"
                       Focusable="False"
                       IsTabStop="False">
-
-            <Border DataContext="{Binding LoadingUnit}"
-                    Style="{StaticResource InfoBoxBorderStyle}">
-
+            
+            <Border Style="{StaticResource InfoBoxBorderStyle}">
                 <GroupBox Margin="20,0"
                           Header="{x:Static res:MasterData.OtherInformation}">
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding CreationDate}"
-                                      Visibility="{Binding Path=CreationDate, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.CreationDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding LastHandlingDate}"
-                                      Visibility="{Binding Path=LastHandlingDate, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.LastHandlingDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding InventoryDate}"
-                                      Visibility="{Binding Path=InventoryDate, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.InventoryDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding LastPickDate}"
-                                      Visibility="{Binding Path=LastPickDate, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.LastPickDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding LastStoreDate}"
-                                      Visibility="{Binding Path=LastStoreDate, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.LastStoreDate, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding InCycleCount}"
-                                      Visibility="{Binding Path=InCycleCount, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.InCycleCount, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding OutCycleCount}"
-                                      Visibility="{Binding Path=OutCycleCount, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.OutCycleCount, Converter={StaticResource RTVC}}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
                                       Content="{Binding OtherCycleCount}"
-                                      Visibility="{Binding Path=OtherCycleCount, Converter={StaticResource RTVC}}" />
+                                      Visibility="{Binding Path=LoadingUnit.OtherCycleCount, Converter={StaticResource RTVC}}" />
                     </StackPanel>
                 </GroupBox>
 
