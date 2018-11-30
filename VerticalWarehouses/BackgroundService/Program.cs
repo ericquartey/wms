@@ -23,7 +23,7 @@ namespace BackgroundService
         {
             var config = new ConfigurationBuilder()
                .SetBasePath(Directory.GetCurrentDirectory())
-               .AddJsonFile("hostconfig.json", optional: false)
+               .AddJsonFile("hostconfig.json", optional: true)
                .Build();
             var host = CreateWebHostBuilder(args)
                     .UseConfiguration(config)
