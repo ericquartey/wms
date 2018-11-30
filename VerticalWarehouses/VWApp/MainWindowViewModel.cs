@@ -23,6 +23,7 @@ namespace Ferretto.VW.VWApp
         private string serialNumber;
         private ICommand switchOffCommand;
         private string userLogin = "Installer";
+        private ICommand changeSkin;
 
         #endregion Fields
 
@@ -70,18 +71,13 @@ namespace Ferretto.VW.VWApp
         public String SerialNumber { get => this.serialNumber; set => this.SetProperty(ref this.serialNumber, value); }
         public ICommand SwitchOffCommand => this.switchOffCommand ?? (this.switchOffCommand = new DelegateCommand(() => { Application.Current.Shutdown(); }));
         public String UserLogin { get => this.userLogin; set => this.SetProperty(ref this.userLogin, value); }
+        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(()=> (Application.Current as App).ChangeSkin()));
 
         #endregion Properties
 
         #region Indexers
 
-        public string this[string columnName]
-        {
-            get
-            {
-                return this.Validate(columnName);
-            }
-        }
+        public string this[string columnName] => this.Validate(columnName);
 
         #endregion Indexers
 
@@ -129,7 +125,7 @@ namespace Ferretto.VW.VWApp
 
         private string Validate(string propertyName)
         {
-            string validationMessage = string.Empty;
+            var validationMessage = string.Empty;
             switch (propertyName)
             {
                 case "UserLogin":

@@ -40,7 +40,7 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <ComboBox Name="CBox"
+            <!--<ComboBox Name="CBox"
                       Grid.Row="1"
                       Width="170"
                       Height="60"
@@ -48,14 +48,14 @@
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
                       FontSize="25"
-                      Foreground="{StaticResource FerrettoPureWhite}"
+                      Foreground="{DynamicResource FerrettoPureWhite}"
                       Template="{StaticResource IAPP_ViewComboBoxTemplate}">
                 <ComboBoxItem Height="{Binding ActualHeight, ElementName=CBox}"
                               HorizontalContentAlignment="Center"
                               VerticalContentAlignment="Center"
                               Content="{x:Static res:InstallationApp.Back}"
                               FontSize="25"
-                              Foreground="{StaticResource FerrettoPureWhite}"
+                              Foreground="{DynamicResource FerrettoPureWhite}"
                               IsSelected="True"
                               Template="{StaticResource IAPP_ViewComboBoxItemTemplate}" />
                 <ComboBoxItem Height="{Binding ActualHeight, ElementName=CBox}"
@@ -63,9 +63,9 @@
                               VerticalContentAlignment="Center"
                               Content="{x:Static res:InstallationApp.Front}"
                               FontSize="25"
-                              Foreground="{StaticResource FerrettoPureWhite}"
+                              Foreground="{DynamicResource FerrettoPureWhite}"
                               Template="{StaticResource IAPP_ViewComboBoxItemTemplate}" />
-            </ComboBox>
+            </ComboBox>-->
             <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                 Margin="0,0,100,0"
                                                 ContentText="{Binding TotalPanels, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
