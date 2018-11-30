@@ -49,7 +49,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
         public string ItemListStatusDescription { get => this.itemListStatusDescription; set => this.SetProperty(ref this.itemListStatusDescription, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListTypeDescription), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public string ItemListTypeDescription { get => this.itemListTypeDescription; set => this.SetProperty(ref this.itemListTypeDescription, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]

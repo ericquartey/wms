@@ -31,10 +31,10 @@ namespace Ferretto.Common.EF.Configurations
                 .HasColumnType("char(1)")
                 .HasConversion(x => (char)x, x => (ItemListStatus)Enum.ToObject(typeof(ItemListStatus), x));
 
-            builder.HasOne(i => i.ItemListType)
-                .WithMany(i => i.ItemLists)
-                .HasForeignKey(i => i.ItemListTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(i => i.ItemListType).IsRequired()
+                 .HasColumnType("char(1)")
+                 .HasConversion(x => (char)x, x => (ItemListType)Enum.ToObject(typeof(ItemListType), x));
+
             builder.HasOne(i => i.Area)
                 .WithMany(a => a.ItemLists)
                 .HasForeignKey(i => i.AreaId)

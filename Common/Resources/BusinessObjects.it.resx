@@ -581,10 +581,6 @@
     <value>Stato</value>
     <comment>Lista - Stato</comment>
   </data>
-  <data name="ItemListTypeDescription" xml:space="preserve">
-    <value>Tipo</value>
-    <comment>Lista - Tipo</comment>
-  </data>
   <data name="ItemListItemsCount" xml:space="preserve">
     <value>Numero di oggetti</value>
   </data>
@@ -618,11 +614,5 @@
   </data>
   <data name="ItemListShipmentUnitCode" xml:space="preserve">
     <value>Codice</value>
-  </data>
-  <data name="ItemListStatusId" xml:space="preserve">
-    <value>Status</value>
-  </data>
-  <data name="ItemListTypeId" xml:space="preserve">
-    <value>Tipo</value>
   </data>
 </root>

@@ -732,10 +732,6 @@
     <value>Status</value>
     <comment>ItemList - Status</comment>
   </data>
-  <data name="ItemListTypeDescription" xml:space="preserve">
-    <value>Type</value>
-    <comment>ItemList - Type</comment>
-  </data>
   <data name="ItemListExecutionEndDate" xml:space="preserve">
     <value>End Execution</value>
     <comment>Item List - End Execution</comment>
@@ -771,8 +767,5 @@
   <data name="ItemListShipmentUnitCode" xml:space="preserve">
     <value>Code</value>
     <comment>Item List - Code</comment>
-  </data>
-  <data name="ItemListTypeId" xml:space="preserve">
-    <value>Type</value>
   </data>
 </root>

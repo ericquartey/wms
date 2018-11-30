@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessModels
         private int itemListItemsCount;
         private IEnumerable<ItemListRow> itemListRows;
         private ItemListStatus itemListStatus;
-        private string itemListTypeDescription;
+        private ItemListType itemListType;
         private string job;
         private int priority;
         private bool shipmentUnitAssociated;
@@ -77,13 +77,11 @@ namespace Ferretto.Common.BusinessModels
         public ItemListStatus ItemListStatus { get => this.itemListStatus; set => this.SetProperty(ref this.itemListStatus, value); }
 
         public IEnumerable<Enumeration> ItemListStatusChoices { get; set; }
+
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+
         public IEnumerable<Enumeration> ItemListTypeChoices { get; set; }
-
-        [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
-        public string ItemListTypeDescription { get => this.itemListTypeDescription; set => this.SetProperty(ref this.itemListTypeDescription, value); }
-
-        [Display(Name = nameof(BusinessObjects.ItemListTypeId), ResourceType = typeof(BusinessObjects))]
-        public int ItemListTypeId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListJob), ResourceType = typeof(BusinessObjects))]
         public string Job { get => this.job; set => this.SetProperty(ref this.job, value); }

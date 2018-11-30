@@ -799,24 +799,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        public static string ItemListTypeDescription {
-            get {
-                return ResourceManager.GetString("ItemListTypeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        public static string ItemListTypeId {
-            get {
-                return ResourceManager.GetString("ItemListTypeId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Management Type.
         /// </summary>
         public static string ItemManagementType {

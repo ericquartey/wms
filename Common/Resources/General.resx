@@ -215,6 +215,9 @@
     <value>Top</value>
     <comment>Button text</comment>
   </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
   <data name="UnitOfMeasurement" xml:space="preserve">
     <value>Unit of measurement</value>
   </data>
