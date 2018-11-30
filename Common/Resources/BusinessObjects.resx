@@ -768,4 +768,16 @@
     <value>Code</value>
     <comment>Item List - Code</comment>
   </data>
+  <data name="ListToExecuteArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
+    <value>Area not valid</value>
+  </data>
+  <data name="ListToExecuteBayInvalidError" xml:space="preserve">
+    <value>Bay not valid</value>
+  </data>
+  <data name="ListToExecuteBayOptional" xml:space="preserve">
+    <value>Bay [Optional]</value>
+  </data>
 </root>

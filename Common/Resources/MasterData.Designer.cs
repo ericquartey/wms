@@ -322,6 +322,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item list saved sucessfully.
+        /// </summary>
+        public static string ItemListSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemListSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Completed Status.
         /// </summary>
         public static string ItemListStatusCompleted {
@@ -372,6 +381,24 @@ namespace Ferretto.Common.Resources {
         public static string ItemWithdrawCommenced {
             get {
                 return ResourceManager.GetString("ItemWithdrawCommenced", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute List.
+        /// </summary>
+        public static string ListExecute {
+            get {
+                return ResourceManager.GetString("ListExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute List Options.
+        /// </summary>
+        public static string ListExecuteOptions {
+            get {
+                return ResourceManager.GetString("ListExecuteOptions", resourceCulture);
             }
         }
         
@@ -435,6 +462,15 @@ namespace Ferretto.Common.Resources {
         public static string PhysicalInformation {
             get {
                 return ResourceManager.GetString("PhysicalInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute List.
+        /// </summary>
+        public static string RunItemList {
+            get {
+                return ResourceManager.GetString("RunItemList", resourceCulture);
             }
         }
         

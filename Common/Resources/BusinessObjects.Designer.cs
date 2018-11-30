@@ -997,6 +997,42 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ListToExecuteArea {
+            get {
+                return ResourceManager.GetString("ListToExecuteArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area not valid.
+        /// </summary>
+        public static string ListToExecuteAreaInvalidError {
+            get {
+                return ResourceManager.GetString("ListToExecuteAreaInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay not valid.
+        /// </summary>
+        public static string ListToExecuteBayInvalidError {
+            get {
+                return ResourceManager.GetString("ListToExecuteBayInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay [Optional].
+        /// </summary>
+        public static string ListToExecuteBayOptional {
+            get {
+                return ResourceManager.GetString("ListToExecuteBayOptional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit.
         /// </summary>
         public static string LoadingUnit {

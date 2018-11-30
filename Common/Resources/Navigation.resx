@@ -228,4 +228,7 @@
   <data name="ListDetails" xml:space="preserve">
     <value>Details of List</value>
   </data>
+  <data name="ListExecution" xml:space="preserve">
+    <value>Execution List</value>
+  </data>
 </root>

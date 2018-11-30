@@ -262,4 +262,16 @@
   <data name="ItemListRowInformation" xml:space="preserve">
     <value>Informazioni sulle righe della Lista</value>
   </data>
+  <data name="ItemListSavedSuccessfully" xml:space="preserve">
+    <value>Lista salvata con successo</value>
+  </data>
+  <data name="ListExecute" xml:space="preserve">
+    <value>Esegui Lista</value>
+  </data>
+  <data name="ListExecuteOptions" xml:space="preserve">
+    <value>Opzioni di Esecuzione Lista</value>
+  </data>
+  <data name="RunItemList" xml:space="preserve">
+    <value>Esegui Lista</value>
+  </data>
 </root>
