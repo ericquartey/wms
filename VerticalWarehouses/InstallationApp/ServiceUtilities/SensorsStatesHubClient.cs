@@ -26,11 +26,11 @@ namespace Ferretto.VW.InstallationApp.ServiceUtilities
 
             this.connection.On<SensorsStates>("SensorsChanged", this.SensorsChanged);
 
-            //this.connection.Closed += async (error) =>
-            //{
-            //    await Task.Delay(new Random().Next(0, 5) * 1000);
-            //    await this.connection.StartAsync();
-            //};
+            this.connection.Closed += async (error) =>
+            {
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await this.connection.StartAsync();
+            };
         }
 
         #endregion Constructors
