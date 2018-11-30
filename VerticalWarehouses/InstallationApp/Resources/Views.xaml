@@ -62,9 +62,6 @@
     <DataTemplate DataType="{x:Type singleViews:CellsControlViewModel}">
         <singleViews:CellsControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type singleViews:GetLocalIPViewModel}">
-        <singleViews:GetLocalIpView />
-    </DataTemplate>
     <DataTemplate DataType="{x:Type gatesControl:GatesControlNavigationButtonsViewModel}">
         <gatesControl:GatesControlNavigationButtonsView />
     </DataTemplate>

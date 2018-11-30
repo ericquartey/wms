@@ -7,7 +7,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml" />
+                <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

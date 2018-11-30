@@ -96,6 +96,7 @@
     <Compile Include="Source\Configuration\General_Info.cs" />
     <Compile Include="Source\Configuration\Installation_Info.cs" />
     <Compile Include="Source\DataManager.cs" />
+    <Compile Include="Source\SensorsStates.cs" />
     <Compile Include="Source\Utils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
