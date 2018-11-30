@@ -1,6 +1,4 @@
-﻿using Ferretto.Common.EF;
-
-namespace Ferretto.Common.BusinessProviders
+﻿namespace Ferretto.Common.EF
 {
     public interface IDatabaseContextService
     {
