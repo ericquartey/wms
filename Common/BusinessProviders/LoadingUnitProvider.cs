@@ -13,7 +13,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly ICellProvider cellProvider;
         private readonly ICompartmentProvider compartmentProvider;
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -23,7 +23,7 @@ namespace Ferretto.Common.BusinessProviders
         public LoadingUnitProvider(
             ICellProvider cellProvider,
             ICompartmentProvider compartmentProvider,
-            DatabaseContext dataContext,
+            IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider)
         {
             this.cellProvider = cellProvider;
@@ -48,7 +48,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<LoadingUnit> GetAll()
         {
-            return this.dataContext.LoadingUnits
+            return this.dataContext.Current.LoadingUnits
                 .Include(l => l.LoadingUnitType)
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
@@ -72,15 +72,16 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.LoadingUnits.Count();
+                return dataContext.LoadingUnits.Count();
             }
         }
 
         public IQueryable<LoadingUnitDetails> GetByCellId(int id)
         {
-            return this.dataContext.LoadingUnits
+            return this.dataContext.Current.LoadingUnits
                 .Where(l => l.CellId == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -127,9 +128,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public LoadingUnitDetails GetById(int id)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var loadingUnitDetails = this.dataContext.LoadingUnits
+                var loadingUnitDetails = dataContext.LoadingUnits
                 .Where(l => l.Id == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -196,9 +198,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyCompartments(int loadingUnitId)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
+                return dataContext.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
             }
         }
 
@@ -209,19 +212,20 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.LoadingUnits.Find(model.Id);
+                var existingModel = dataContext.LoadingUnits.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
                 foreach (var compartment in model.Compartments)
                 {
-                    var existingCompartment = this.dataContext.Compartments.Find(compartment.Id);
-                    this.dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
+                    var existingCompartment = dataContext.Compartments.Find(compartment.Id);
+                    dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
                 }
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 
