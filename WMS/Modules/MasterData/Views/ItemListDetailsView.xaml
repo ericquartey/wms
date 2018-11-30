@@ -40,8 +40,8 @@
                                GlyphSize="Custom"
                                IsEnabled="False" />
 
-            <wms:ActionBarItem Command="{Binding ExecuteCommand}"
-                               Content="{x:Static res:General.Execute}"
+            <wms:ActionBarItem Command="{Binding ListExecuteCommand}"
+                               Content="{x:Static res:MasterData.ListExecute}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom" />
@@ -49,14 +49,12 @@
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
-                               GlyphSize="Custom"
-                               IsEnabled="False" />
+                               GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding RevertCommand}"
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
-                               GlyphSize="Custom"
-                               IsEnabled="False" />
+                               GlyphSize="Custom" />
 
         </wms:ActionBar>
 

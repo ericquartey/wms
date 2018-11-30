@@ -10,7 +10,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private ICommand editCommand;
-        private ICommand executeCommand;
+        private ICommand listExecuteCommand;
 
         #endregion Fields
 
@@ -19,8 +19,8 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand EditCommand => this.editCommand ??
                   (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
 
-        public ICommand ExecuteCommand => this.executeCommand ??
-                  (this.executeCommand = new DelegateCommand(this.ExecuteListCommand,
+        public ICommand ListExecuteCommand => this.listExecuteCommand ??
+                  (this.listExecuteCommand = new DelegateCommand(this.ExecuteListCommand,
                       this.CanExecuteListCommand)
             .ObservesProperty(() => this.CurrentItem));
 
