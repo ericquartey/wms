@@ -16,7 +16,8 @@
     <Color x:Key="Black">#0A0A0A</Color>
     <Color x:Key="Green">#57A639</Color>
     <Color x:Key="PureWhite">#ffffff</Color>
-
+    <Color x:Key="PersonStatus_Happy">#00ff00</Color>
+    <Color x:Key="PersonStatus_Sad">#ff0000</Color>
     <!--  primary color brush  -->
     <SolidColorBrush x:Key="CommonPrimary"
                      Color="{StaticResource Red}" />

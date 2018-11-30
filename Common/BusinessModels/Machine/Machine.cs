@@ -13,7 +13,7 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.MachineAisle), ResourceType = typeof(BusinessObjects))]
         public string AisleName { get; set; }
-
+        public PersonStatus PersonStatus { get; set; } = PersonStatus.Happy;
         [Display(Name = nameof(BusinessObjects.MachineArea), ResourceType = typeof(BusinessObjects))]
         public string AreaName { get; set; }
 
