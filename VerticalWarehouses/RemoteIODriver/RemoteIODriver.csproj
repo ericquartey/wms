@@ -76,7 +76,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\RemoteIO.cs" />
-    <Compile Include="Source\RemoteIOManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
