@@ -10,13 +10,13 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContext;
+        private readonly DatabaseContext dataContext;
 
         #endregion Fields
 
         #region Constructors
 
-        public SchedulerRequestProvider(IDatabaseContextService dataContext)
+        public SchedulerRequestProvider(DatabaseContext dataContext)
         {
             this.dataContext = dataContext;
         }
@@ -36,9 +36,8 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
-
-            var dataContext = this.dataContext.Current;
-            var aggregatedCompartments = dataContext.Compartments
+            
+            var aggregatedCompartments = this.dataContext.Compartments
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.Cell)
                .ThenInclude(c => c.Aisle)
@@ -78,7 +77,7 @@ namespace Ferretto.WMS.Scheduler.Core
                    }
                );
 
-            var aggregatedRequests = dataContext.SchedulerRequests
+            var aggregatedRequests = this.dataContext.SchedulerRequests
                 .Where(r => r.ItemId == request.ItemId);
 
             var compartmentSets = aggregatedCompartments
@@ -106,7 +105,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 )
                 .Where(x => x.Availability >= request.RequestedQuantity);
 
-            var item = await dataContext.Items
+            var item = await this.dataContext.Items
                 .Select(i => new { i.Id, i.ManagementType })
                 .SingleAsync(i => i.Id == request.ItemId);
 
@@ -139,7 +138,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
 
-            return this.dataContext.Current.Compartments
+            return this.dataContext.Compartments
                 .Include(c => c.LoadingUnit)
                 .ThenInclude(l => l.Cell)
                 .ThenInclude(c => c.Aisle)
@@ -219,15 +218,14 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentNullException(nameof(model));
             }
-
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            
+            lock (this.dataContext)
             {
-                var existingModel = dataContext.Areas.Find(model.Id);
+                var existingModel = this.dataContext.Areas.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                return this.dataContext.SaveChanges();
             }
         }
 
