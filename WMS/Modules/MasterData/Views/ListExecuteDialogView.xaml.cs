@@ -17,13 +17,13 @@ using Ferretto.Common.Controls;
 namespace Ferretto.WMS.Modules.MasterData
 {
     /// <summary>
-    /// Interaction logic for ExecuteListDialogView.xaml
+    /// Interaction logic for ListExecuteDialogView.xaml
     /// </summary>
-    public partial class ExecuteListDialogView : WmsDialogView
+    public partial class ListExecuteDialogView : WmsDialogView
     {
         #region Constructors
 
-        public ExecuteListDialogView()
+        public ListExecuteDialogView()
         {
             this.InitializeComponent();
         }
