@@ -733,9 +733,9 @@ SET IDENTITY_INSERT ItemLists OFF;
 
 --List Row
 SET IDENTITY_INSERT ItemListRows ON;
-INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (7, 'Code 1', 1, 1, 1, 1, 'Primo Item', 5, 10, 1);
-INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (7, 'Code 2', 1, 1, 1, 1, 'Secondo Item', 8, 20, 1);
-INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (8, 'Code 3', 1, 1, 1, 1, 'Terzo Item', 2, 10, 1);
+INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatus) VALUES (7, 'Code 1', 1, 1, 1, 1, 'Primo Item', 5, 10, 'W');
+INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatus) VALUES (7, 'Code 2', 1, 1, 1, 1, 'Secondo Item', 8, 20, 'W');
+INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatus) VALUES (8, 'Code 3', 1, 1, 1, 1, 'Terzo Item', 2, 10, 'C');
 SET IDENTITY_INSERT ItemListRows OFF;
 
 

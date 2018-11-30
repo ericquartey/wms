@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.DataModels;
+﻿using System;
+using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -42,10 +43,10 @@ namespace Ferretto.Common.EF.Configurations
                 .WithMany(p => p.ItemListRows)
                 .HasForeignKey(i => i.PackageTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(i => i.ItemListRowStatus)
-                .WithMany(i => i.ItemListRows)
-                .HasForeignKey(i => i.ItemListRowStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+
+            builder.Property(i => i.ItemListRowStatus).IsRequired()
+               .HasColumnType("char(1)")
+               .HasConversion(x => (char)x, x => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), x));
         }
 
         #endregion Methods

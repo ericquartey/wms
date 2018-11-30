@@ -63,7 +63,6 @@ namespace Ferretto.Common.BusinessProviders
             lock (this.dataContext)
             {
                 var itemListRows = this.dataContext.ItemListRows
-               .Include(l => l.ItemListRowStatus)
                .Include(l => l.MaterialStatus)
                .Include(l => l.Item)
                .Where(l => l.ItemListId == id)
@@ -74,7 +73,7 @@ namespace Ferretto.Common.BusinessProviders
                    RowPriority = l.RowPriority,
                    ItemDescription = l.Item.Description,
                    RequiredQuantity = l.RequiredQuantity,
-                   ItemListRowStatusDescription = l.ItemListRowStatus.Description,
+                   ItemListRowStatusDescription = l.ItemListRowStatus.ToString(),
                    CreationDate = l.CreationDate
                }).AsNoTracking();
 
