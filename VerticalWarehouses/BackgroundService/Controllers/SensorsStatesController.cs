@@ -50,7 +50,7 @@ namespace BackgroundService
             return new SensorsStates();
         }
 
-        private async void ReadSensors(RemoteIO rm)
+        private async Task ReadSensors(RemoteIO rm)
         {
             while (true)
             {
