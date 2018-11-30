@@ -279,4 +279,19 @@
   <data name="ItemListsTypePick" xml:space="preserve">
     <value>Pick Type</value>
   </data>
+  <data name="CustomerOrderInformation" xml:space="preserve">
+    <value>Customer Order Information</value>
+  </data>
+  <data name="ExecutionDetails" xml:space="preserve">
+    <value>Execution Details</value>
+  </data>
+  <data name="ItemListInformation" xml:space="preserve">
+    <value>List Information</value>
+  </data>
+  <data name="ShipmentUnitInformation" xml:space="preserve">
+    <value>Shipment Unit Information</value>
+  </data>
+  <data name="ItemListRowInformation" xml:space="preserve">
+    <value>List Rows Information</value>
+  </data>
 </root>

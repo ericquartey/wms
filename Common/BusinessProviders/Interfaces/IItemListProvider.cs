@@ -1,10 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
 {
-    public interface IItemListProvider : IBusinessProvider<ItemList, ItemListRow>
+    public interface IItemListProvider : IBusinessProvider<ItemList, ItemListDetails>
     {
         #region Methods
 

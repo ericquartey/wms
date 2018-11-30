@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
+﻿using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -14,7 +9,6 @@ namespace Ferretto.Common.BusinessModels
 
         private int column;
         private int height;
-        private int id;
         private int row;
         private int width;
         private int xPosition;
@@ -36,12 +30,6 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.height;
             set => this.SetProperty(ref this.height, value);
-        }
-
-        public int Id
-        {
-            get => this.id;
-            set => this.SetProperty(ref this.id, value);
         }
 
         [Display(Name = nameof(BusinessObjects.BulkCompartmentRow), ResourceType = typeof(BusinessObjects))]

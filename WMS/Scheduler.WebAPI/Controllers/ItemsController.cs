@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -69,10 +69,10 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
         }
 
         [HttpPost("withdraw")]
-        [ProducesResponseType(201, Type = typeof(SchedulerRequest))]
+        [ProducesResponseType(201, Type = typeof(Core.SchedulerRequest))]
         [ProducesResponseType(400)]
         [ProducesResponseType(422)]
-        public async Task<IActionResult> Withdraw([FromBody] SchedulerRequest request)
+        public async Task<IActionResult> Withdraw([FromBody] Core.SchedulerRequest request)
         {
             if (!this.ModelState.IsValid)
             {
