@@ -40,12 +40,11 @@
                                GlyphSize="Custom"
                                IsEnabled="False" />
 
-            <wms:ActionBarItem Command="{Binding WithdrawCommand}"
-                               Content="{x:Static res:MasterData.Withdraw}"
+            <wms:ActionBarItem Command="{Binding ExecuteCommand}"
+                               Content="{x:Static res:General.Execute}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
-                               GlyphSize="Custom"
-                               IsEnabled="False" />
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                               GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
