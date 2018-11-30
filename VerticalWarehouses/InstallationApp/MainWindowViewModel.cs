@@ -20,7 +20,7 @@ using System.Diagnostics;
 namespace Ferretto.VW.InstallationApp
 {
     public class MainWindowViewModel : BindableBase
-    {
+    {   
         #region Constants, Statics & Others
 
         private static readonly string SENSOR_INITIALIZER_URL = ConfigurationManager.AppSettings["SensorsStatesInitializer"];

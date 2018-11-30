@@ -2,6 +2,13 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
 
+    <SolidColorBrush x:Key="VWAPP_NavigationButton_Background_Pressed"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="VWAPP_NavigationButton_BorderBrush_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+    <SolidColorBrush x:Key="VWAPP_NavigationButton_Foreground_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+
     <SolidColorBrush x:Key="IAPP_NavigationButton_Background_Pressed"
                      Color="Transparent" />
     <SolidColorBrush x:Key="IAPP_NavigationButton_Foreground_Pressed"

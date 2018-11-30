@@ -1,6 +1,7 @@
 ﻿<myType:BaseView x:Class="Ferretto.VW.InstallationApp.ViewsAndViewModels.MainWindowNavigationButtonsView"
                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
                  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                  xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -160,6 +161,7 @@
                                TextAlignment="Center"
                                TextWrapping="Wrap" />
                 </Button>
+                <Button Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}">ECCOLOQUA CHICCE'DILLA</Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

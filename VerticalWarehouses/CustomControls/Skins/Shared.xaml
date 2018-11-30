@@ -23,5 +23,6 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTToggleButtonTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/NavigationButtonControlTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
