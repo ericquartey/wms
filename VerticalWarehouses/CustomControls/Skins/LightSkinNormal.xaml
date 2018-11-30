@@ -10,11 +10,11 @@
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
 
     <SolidColorBrush x:Key="IAPP_ViewButton_Background_Normal"
-                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+                     Color="Transparent" />
     <SolidColorBrush x:Key="IAPP_ViewButton_Foreground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+                     Color="{DynamicResource EDBGrayC}" />
     <SolidColorBrush x:Key="IAPP_ViewButton_BorderBrush_Normal"
-                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
 
     <SolidColorBrush x:Key="IAPP_ViewMachineStateComboBox_Background_Normal"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />

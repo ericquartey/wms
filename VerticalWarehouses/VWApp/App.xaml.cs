@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using System.IO;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
-using Ferretto.VW.RemoteIODriver.Source;
 
 namespace Ferretto.VW.VWApp
 {
@@ -28,10 +27,10 @@ namespace Ferretto.VW.VWApp
             this.InitializeComponent();
             NavigationService.InitializeEvents();
             DataManager.CurrentData = new DataManager();
-            NavigationService.ChangeSkinToLightEventHandler += (Current as App).ChangeSkinToLight;
-            NavigationService.ChangeSkinToMediumEventHandler += (Current as App).ChangeSkinToMedium;
-            NavigationService.ChangeSkinToDarkEventHandler += (Current as App).ChangeSkinToDark;
-            RemoteIOManager.Current = new RemoteIOManager();
+            //NavigationService.ChangeSkinToLightEventHandler += (Current as App).ChangeSkinToLight;
+            //NavigationService.ChangeSkinToMediumEventHandler += (Current as App).ChangeSkinToMedium;
+            //NavigationService.ChangeSkinToDarkEventHandler += (Current as App).ChangeSkinToDark;
+            NavigationService.ChangeSkinToDarkEventHandler += (Current as App).ChangeSkin;
         }
 
         #endregion Constructors
@@ -42,7 +41,7 @@ namespace Ferretto.VW.VWApp
         public InstallationApp.MainWindowViewModel InstallationAppMainWindowViewModel { get; set; }
         public Boolean MachineOk { get => this.machineOk; set => this.machineOk = value; }
         public OperatorApp.MainWindow OperatorMainWindowInstance { get; set; }
-        public Skin Skin { get; set; } = Skin.Light;
+        public Skin Skin { get; set; } = Skin.Dark;
 
         #endregion Properties
 
@@ -70,6 +69,23 @@ namespace Ferretto.VW.VWApp
                 default:
                     skinDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml", UriKind.Relative);
                     break;
+            }
+            (Current as App).Resources.MergedDictionaries.Add(skinDictionary);
+        }
+
+        public void ChangeSkin()
+        {
+            (Current as App).Resources.MergedDictionaries.Clear();
+            var skinDictionary = new ResourceDictionary();
+            if ((Current as App).Skin == Skin.Light)
+            {
+                (Current as App).Skin = Skin.Dark;
+                skinDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/DarkSkin.xaml", UriKind.Relative);
+            }
+            else
+            {
+                (Current as App).Skin = Skin.Light;
+                skinDictionary.Source = new Uri("/Ferretto.VW.CustomControls;Component/Skins/LightSkin.xaml", UriKind.Relative);
             }
             (Current as App).Resources.MergedDictionaries.Add(skinDictionary);
         }

@@ -18,7 +18,7 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.Item, bool>> FifoFilter =
             item => item.ManagementType == DataModels.ItemManagementType.FIFO;
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemsClient itemsClient;
 
@@ -27,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemProvider(
-            DatabaseContext dataContext,
+            IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
             WMS.Scheduler.WebAPI.Contracts.IItemsClient itemsClient)
         {
@@ -52,20 +52,21 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Item> GetAll()
         {
-            return GetAllItemsWithAggregations(this.dataContext);
+            return GetAllItemsWithAggregations(this.dataContext.Current);
         }
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Items.AsNoTracking().Count();
+                return dataContext.Items.AsNoTracking().Count();
             }
         }
 
         public IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId)
         {
-            return this.dataContext.Compartments
+            return this.dataContext.Current.Compartments
                 .Where(c => c.Id == compartmentId)
                 .Include(c => c.CompartmentType)
                 .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -93,13 +94,14 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemDetails GetById(int id)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var itemDetails = this.dataContext.Items
+                var itemDetails = dataContext.Items
                 .Include(i => i.MeasureUnit)
                 .Where(i => i.Id == id)
                 .GroupJoin(
-                    this.dataContext.Compartments
+                    dataContext.Compartments
                         .AsNoTracking()
                         .Where(c => c.ItemId != null)
                         .GroupBy(c => c.ItemId)
@@ -171,27 +173,29 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Item> GetWithAClass()
         {
-            return GetAllItemsWithAggregations(this.dataContext, AClassFilter);
+            return GetAllItemsWithAggregations(this.dataContext.Current, AClassFilter);
         }
 
         public int GetWithAClassCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Items.AsNoTracking().Count(AClassFilter);
+                return dataContext.Items.AsNoTracking().Count(AClassFilter);
             }
         }
 
         public IQueryable<Item> GetWithFifo()
         {
-            return GetAllItemsWithAggregations(this.dataContext, FifoFilter);
+            return GetAllItemsWithAggregations(this.dataContext.Current, FifoFilter);
         }
 
         public int GetWithFifoCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Items
+                return dataContext.Items
                     .AsNoTracking()
                     .Count(FifoFilter);
             }
@@ -199,9 +203,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyCompartments(int itemId)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
+                return dataContext.Compartments.AsNoTracking().Any(c => c.ItemId == itemId);
             }
         }
 
@@ -212,13 +217,14 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Items.Find(model.Id);
+                var existingModel = dataContext.Items.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 

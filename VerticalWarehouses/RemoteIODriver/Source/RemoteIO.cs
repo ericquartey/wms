@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using Modbus.Data;
 using Modbus.Device;
 using Modbus.Utility;
+using System;
 
 namespace Ferretto.VW.RemoteIODriver.Source
 {
@@ -58,17 +59,19 @@ namespace Ferretto.VW.RemoteIODriver.Source
 
         public List<bool> ReadData()
         {
+            this.Inputs.Clear();
             var tmp = this.master.ReadInputs(INPUT_ORIGIN, INPUT_QUANTITY);
             for (int i = 0; i < tmp.Length; i++)
             {
                 this.Inputs.Add(tmp[i]);
             }
+            //Console.WriteLine("RemoteIOReadData: " + this.Inputs[0] + ", " + this.Inputs[1] + ", " + this.Inputs[2] + ", " + this.Inputs[3] + ", " + this.Inputs[4] + ", " + this.Inputs[5] + ", " + this.Inputs[6] + ", " + this.Inputs[7] + ", ");
             return this.Inputs;
         }
 
         public void WriteData()
         {
-            bool[] tmp = new bool[] { false, false, false, false, false };
+            var tmp = new bool[] { false, false, false, false, false };
             if (tmp.Length != 0)
             {
                 this.master.WriteMultipleCoils(OUTPUT_ORIGIN, tmp);

@@ -17,6 +17,15 @@
     }
 
     /// <summary>
+    /// the Source of request
+    /// </summary>
+    public enum RequestSource
+    {
+        Internal,
+        External
+    }
+
+    /// <summary>
     /// Data type of the payload parameter for a request.
     /// </summary>
     public enum ValueDataType
@@ -63,6 +72,7 @@
     {
         // The request class contains description fields:
         //  - ParameterID
+        //  - The source of request (internal or external)
         //  - Type of request (send request, or setting request)
         //  - The system index
         //  - The dataSet index
@@ -70,10 +80,11 @@
 
         #region Constructors
 
-        public Request(TypeOfRequest t, ParameterID paramID, byte systemIndex, byte dataSetIndex, ValueDataType dataType, object value)
+        public Request(TypeOfRequest t, ParameterID paramID, RequestSource source, byte systemIndex, byte dataSetIndex, ValueDataType dataType, object value)
         {
             this.Type = t;
             this.ParameterID = paramID;
+            this.Source = source;
             this.SystemIndex = systemIndex;
             this.DataSetIndex = dataSetIndex;
             this.DataType = dataType;
@@ -95,6 +106,8 @@
         public TypeOfRequest Type { get; private set; }
 
         public object Value { get; set; }
+
+        public RequestSource Source { get; private set; }
 
         #endregion Properties
     }
