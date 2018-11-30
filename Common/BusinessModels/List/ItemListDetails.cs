@@ -90,7 +90,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListJob), ResourceType = typeof(BusinessObjects))]
         public string Job { get => this.job; set => this.SetProperty(ref this.job, value); }
 
-        [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]

@@ -167,7 +167,25 @@ namespace Ferretto.Common.BusinessProviders
 
         public Int32 Save(ItemListDetails model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            lock (this.dataContext)
+            {
+                var existingModel = this.dataContext.ItemLists.Find(model.Id);
+
+                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+                //foreach (var compartment in model.Compartments)
+                //{
+                //    var existingCompartment = this.dataContext.Compartments.Find(compartment.Id);
+                //    this.dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
+                //}
+
+                return this.dataContext.SaveChanges();
+            }
         }
 
         private static IQueryable<ItemList> GetAllListsWithAggregations(DatabaseContext context, Expression<Func<DataModels.ItemList, bool>> whereFunc = null)
