@@ -58,37 +58,5 @@ namespace Ferretto.VW.Utils.Source
         public bool Sensor8 { get; set; }
 
         #endregion Properties
-
-        #region Methods
-
-        public override Boolean Equals(Object obj)
-        {
-            SensorsStates tmp;
-            try
-            {
-                tmp = (SensorsStates)obj;
-            }
-            catch
-            {
-                return false;
-            }
-            if (this.Sensor1 == tmp.Sensor1 &&
-                this.Sensor2 == tmp.Sensor2 &&
-                this.Sensor3 == tmp.Sensor3 &&
-                this.Sensor4 == tmp.Sensor4 &&
-                this.Sensor5 == tmp.Sensor5 &&
-                this.Sensor6 == tmp.Sensor6 &&
-                this.Sensor7 == tmp.Sensor7 &&
-                this.Sensor8 == tmp.Sensor8)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        #endregion Methods
     }
 }

@@ -10,7 +10,7 @@ namespace BackgroundService
     {
         #region Methods
 
-        Task SensorsChanged(SensorsStates sensors);
+        Task OnSensorsChanged(SensorsStates sensors);
 
         #endregion Methods
     }

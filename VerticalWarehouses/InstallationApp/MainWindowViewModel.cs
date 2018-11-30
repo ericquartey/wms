@@ -14,6 +14,8 @@ using Ferretto.VW.Utils.Source;
 using System.Net;
 using System.IO;
 using System.Configuration;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -22,12 +24,9 @@ namespace Ferretto.VW.InstallationApp
         #region Constants, Statics & Others
 
         private static readonly string SENSOR_INITIALIZER_URL = ConfigurationManager.AppSettings["SensorsStatesInitializer"];
-        private static readonly string SERVICE_PATH = ConfigurationManager.AppSettings["/sensors-endpoint"];
+        private static readonly string SERVICE_PATH = ConfigurationManager.AppSettings["SensorsStatesHubPath"];
         private static readonly string URL = ConfigurationManager.AppSettings["ServiceURL"];
-
-        public static string Log = "";
         public static SensorsStates States;
-
         private SensorsStatesHubClient client;
         private BindableBase contentRegionCurrentViewModel;
         private BindableBase navigationRegionCurrentViewModel;
@@ -192,11 +191,10 @@ namespace Ferretto.VW.InstallationApp
                 await this.client.ConnectAsync();
 
                 this.client.SensorsStatesChanged += this.Client_SensorsStatesChanged;
-                Log = this.Get(SENSOR_INITIALIZER_URL);
+                this.Get(SENSOR_INITIALIZER_URL);
             }
             catch
             {
-                Log = "Connection fail, wrong url and/or path";
             }
         }
         private void EventInitializer() { }

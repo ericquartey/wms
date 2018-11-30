@@ -24,8 +24,6 @@ namespace BackgroundService
         public SensorsStatesController(IHubContext<SensorsStatesHub, ISensorsStatesHub> hub)
         {
             this.hub = hub;
-            //RemoteIOManager.Current = new RemoteIOManager();
-            //Console.WriteLine("RemoteIOManager created.");
         }
 
         #endregion Constructors
@@ -42,7 +40,7 @@ namespace BackgroundService
         public async Task<ActionResult<SensorsStates>> Get()
         {
             var remoteIO = new RemoteIO();
-            this.DoThings(remoteIO);
+            this.ReadSensors(remoteIO);
             return null;
         }
 
@@ -52,7 +50,7 @@ namespace BackgroundService
             return new SensorsStates();
         }
 
-        private async Task DoThings(RemoteIO rm)
+        private async void ReadSensors(RemoteIO rm)
         {
             while (true)
             {
@@ -71,9 +69,9 @@ namespace BackgroundService
                 else
                 {
                     //Console.WriteLine("Sensors changed: TMP: " + tmp.Sensor1 + ", " + tmp.Sensor2 + ", " + tmp.Sensor3 + ", " + tmp.Sensor4 + ", " + tmp.Sensor5 + ", " + tmp.Sensor6 + ", " + tmp.Sensor7 + ", " + tmp.Sensor8);
-                    //Console.WriteLine("   LastSensorsStates: " + LastSensorsStates.Sensor1 + ", " + LastSensorsStates.Sensor2 + ", " + LastSensorsStates.Sensor3 + ", " + LastSensorsStates.Sensor4 + ", " + LastSensorsStates.Sensor5 + ", " + LastSensorsStates.Sensor6 + ", " + LastSensorsStates.Sensor7 + ", " + LastSensorsStates.Sensor8);
+                    //Console.WriteLine("   LastSensorsStates: " + this.LastSensorsStates.Sensor1 + ", " + this.LastSensorsStates.Sensor2 + ", " + this.LastSensorsStates.Sensor3 + ", " + this.LastSensorsStates.Sensor4 + ", " + this.LastSensorsStates.Sensor5 + ", " + this.LastSensorsStates.Sensor6 + ", " + this.LastSensorsStates.Sensor7 + ", " + this.LastSensorsStates.Sensor8);
                     this.LastSensorsStates = tmp;
-                    await this.hub.Clients.All.SensorsChanged(tmp);
+                    await this.hub.Clients.All.OnSensorsChanged(tmp);
                 }
                 await Task.Delay(20);
             }

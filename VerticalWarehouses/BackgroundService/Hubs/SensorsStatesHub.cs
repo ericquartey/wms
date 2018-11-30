@@ -18,7 +18,7 @@ namespace BackgroundService
 
         public async Task SensorChangedMethod(SensorsStates sensor)
         {
-            await this.Clients.All.SensorsChanged(sensor);
+            await this.Clients.All.OnSensorsChanged(sensor);
         }
 
         #endregion Methods
