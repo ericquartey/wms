@@ -24,7 +24,7 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.Machine, bool>> VertimagModelXSFilter =
             m => m.Model.Contains("VARIANT-XS");
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -32,7 +32,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public MachineProvider(
-            DatabaseContext dataContext,
+            IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider)
         {
             this.dataContext = dataContext;
@@ -55,66 +55,71 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Machine> GetAll()
         {
-            return GetAllMachinesWithFilter(this.dataContext);
+            return GetAllMachinesWithFilter(this.dataContext.Current);
         }
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Machines.AsNoTracking().Count();
+                return dataContext.Machines.AsNoTracking().Count();
             }
         }
 
         public IQueryable<Machine> GetAllTraslo()
         {
-            return GetAllMachinesWithFilter(this.dataContext, TrasloFilter);
+            return GetAllMachinesWithFilter(this.dataContext.Current, TrasloFilter);
         }
 
         public int GetAllTrasloCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Machines.AsNoTracking().Where(TrasloFilter).Count();
+                return dataContext.Machines.AsNoTracking().Where(TrasloFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimag()
         {
-            return GetAllMachinesWithFilter(this.dataContext, VertimagFilter);
+            return GetAllMachinesWithFilter(this.dataContext.Current, VertimagFilter);
         }
 
         public int GetAllVertimagCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Machines.AsNoTracking().Where(VertimagFilter).Count();
+                return dataContext.Machines.AsNoTracking().Where(VertimagFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimagModelM()
         {
-            return GetAllMachinesWithFilter(this.dataContext, VertimagModelMFilter);
+            return GetAllMachinesWithFilter(this.dataContext.Current, VertimagModelMFilter);
         }
 
         public int GetAllVertimagModelMCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
+                return dataContext.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
             }
         }
 
         public IQueryable<Machine> GetAllVertimagModelXS()
         {
-            return GetAllMachinesWithFilter(this.dataContext, VertimagModelXSFilter);
+            return GetAllMachinesWithFilter(this.dataContext.Current, VertimagModelXSFilter);
         }
 
         public int GetAllVertimagModelXSCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
+                return dataContext.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
             }
         }
 
@@ -130,13 +135,14 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Machines.Find(model.Id);
+                var existingModel = dataContext.Machines.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 

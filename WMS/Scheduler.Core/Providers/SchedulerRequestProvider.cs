@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
-
+            
             var aggregatedCompartments = this.dataContext.Compartments
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.Cell)
@@ -218,7 +218,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentNullException(nameof(model));
             }
-
+            
             lock (this.dataContext)
             {
                 var existingModel = this.dataContext.Areas.Find(model.Id);
@@ -238,12 +238,19 @@ namespace Ferretto.WMS.Scheduler.Core
             #region Properties
 
             public int Availability { get; set; }
+
             public DateTime? FirstStoreDate { get; set; }
+
             public string Lot { get; set; }
+
             public int? MaterialStatusId { get; set; }
+
             public int? PackageTypeId { get; set; }
+
             public string RegistrationNumber { get; set; }
+
             public string Sub1 { get; set; }
+
             public string Sub2 { get; set; }
 
             #endregion Properties
