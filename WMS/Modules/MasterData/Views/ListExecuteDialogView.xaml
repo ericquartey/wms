@@ -32,14 +32,6 @@
                     <ColumnDefinition Width="4*" />
                     <ColumnDefinition Width="6*" />
                 </Grid.ColumnDefinitions>
-                <!--<wms:InfoText Content="{Binding ItemWithdraw.ItemCode}" />
-                <wms:InfoText Grid.Column="1"
-                              Content="{Binding ItemWithdraw.ItemDescription}" />
-                <wms:InfoText Grid.Row="1"
-                              Content="{Binding ItemWithdraw.MeasureUnitDescription}" />
-                <wms:InfoText Grid.Row="1"
-                              Grid.Column="1"
-                              Content="{Binding ItemWithdraw.ItemManagementTypeDescription}" />-->
             </Grid>
         </GroupBox>
 
@@ -88,18 +80,6 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-                <!--<wms:ActionBarItem Command="{Binding SimpleWithdrawCommand}"
-                                   Content="{x:Static res:MasterData.SimpleWithdraw}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/editor/ic_drag_handle_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsVisible="{Binding AdvancedWithdraw}" />
-                <wms:ActionBarItem Command="{Binding AdvancedWithdrawCommand}"
-                                   Content="{x:Static res:MasterData.AdvancedWithdraw}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/editor/ic_format_align_justify_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsVisible="{Binding SimpleWithdraw}" />-->
                 <wms:ActionBarItem Command="{Binding RunWithdrawCommand}"
                                    Content="{x:Static res:MasterData.RunItemList}"
                                    CustomGlyphSize="24,24"

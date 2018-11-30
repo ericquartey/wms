@@ -69,6 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.ItemList.TakeSnapshot();
                 this.ItemList.PropertyChanged += this.OnItemListPropertyChanged;
 
+                //TODO
                 //this.RefreshData();
             }
         }
@@ -194,11 +195,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnItemListPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //if (e.PropertyName == nameof(this.ItemList.TotalAvailable))
-            //{
-            //    ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
-            //}
-            //else
             if (e.PropertyName == nameof(this.ItemList.IsModified))
             {
                 ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
