@@ -19,6 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private bool advancedWithdraw;
         private ICommand advancedWithdrawCommand;
+        private bool isBusy;
         private ItemWithdraw itemWithdraw;
         private ICommand runWithdrawCommand;
         private ICommand simpleWithdrawCommand;
@@ -51,6 +52,12 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand AdvancedWithdrawCommand => this.advancedWithdrawCommand ??
                                                    (this.advancedWithdrawCommand = new DelegateCommand(
                                                        this.ExecuteAdvancedWithdrawCommand));
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
 
         public ItemWithdraw ItemWithdraw
         {
@@ -131,21 +138,22 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            // TODO: TASK-795 set wait indicator
+            this.IsBusy = true;
 
             var result = await this.itemProvider.WithdrawAsync(this.itemWithdraw);
 
-            // TODO: TASK-795 remove wait indicator
+            this.IsBusy = false;
 
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemWithdrawCommenced));
-                // TODO: TASK-795 close dialog
+
+                this.Disappear();
             }
             else
             {
-                // TODO: TASK-795 show error
-                this.EventService.Invoke(new StatusEventArgs(result.Description));
+                this.validationError = result.Description;
+                this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
             }
         }
 
