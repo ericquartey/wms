@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,29 +35,33 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public async Task<IEnumerable<Mission>> DispatchRequests()
         {
-            var request = await this.dataProvider.GetNextRequestToProcessAsync();
-            if (request == null)
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                return null;
-            }
+                var request = await this.dataProvider.GetNextRequestToProcessAsync();
+                if (request == null)
+                {
+                    return null;
+                }
 
-            this.logger.LogDebug($"Request for item={request.ItemId} is the next in line to be processed.");
-            switch (request.Type)
-            {
-                case OperationType.Withdrawal:
-                    return await this.DispatchWithdrawalRequest(request);
+                this.logger.LogDebug($"Request for item={request.ItemId} is the next in line to be processed.");
+                switch (request.Type)
+                {
+                    case OperationType.Withdrawal:
+                        return await this.DispatchWithdrawalRequest(request);
 
-                case OperationType.Insertion:
-                    throw new NotImplementedException();
+                    case OperationType.Insertion:
+                        throw new NotImplementedException();
 
-                case OperationType.Replacement:
-                    throw new NotImplementedException();
+                    case OperationType.Replacement:
+                        throw new NotImplementedException();
 
-                case OperationType.Reorder:
-                    throw new NotImplementedException();
+                    case OperationType.Reorder:
+                        throw new NotImplementedException();
 
-                default:
-                    throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+                    default:
+                        throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+                }
+                scope.Complete();
             }
         }
 
@@ -76,11 +80,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 }
             }
 
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-            {
-                await this.DispatchRequests();
-                scope.Complete();
-            }
+            await this.DispatchRequests();
 
             return qualifiedRequest;
         }
