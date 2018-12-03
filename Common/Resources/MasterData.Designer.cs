@@ -223,11 +223,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Customer Order Information.
+        /// </summary>
+        public static string CustomerOrderInformation {
+            get {
+                return ResourceManager.GetString("CustomerOrderInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Compartment.
         /// </summary>
         public static string EditCompartment {
             get {
                 return ResourceManager.GetString("EditCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execution Details.
+        /// </summary>
+        public static string ExecutionDetails {
+            get {
+                return ResourceManager.GetString("ExecutionDetails", resourceCulture);
             }
         }
         
@@ -282,6 +300,24 @@ namespace Ferretto.Common.Resources {
         public static string ItemListAll {
             get {
                 return ResourceManager.GetString("ItemListAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Information.
+        /// </summary>
+        public static string ItemListInformation {
+            get {
+                return ResourceManager.GetString("ItemListInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Rows Information.
+        /// </summary>
+        public static string ItemListRowInformation {
+            get {
+                return ResourceManager.GetString("ItemListRowInformation", resourceCulture);
             }
         }
         
@@ -408,6 +444,15 @@ namespace Ferretto.Common.Resources {
         public static string RunItemWithdraw {
             get {
                 return ResourceManager.GetString("RunItemWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shipment Unit Information.
+        /// </summary>
+        public static string ShipmentUnitInformation {
+            get {
+                return ResourceManager.GetString("ShipmentUnitInformation", resourceCulture);
             }
         }
         

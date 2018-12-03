@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.InverterDriver
+﻿using System.Collections;
+
+namespace Ferretto.VW.InverterDriver
 {
    
     /// <summary>
@@ -7,7 +9,18 @@
     public interface IDriver
     {
         #region Properties
-        
+
+        /// <summary>
+        /// BitArray for StatusWord
+        /// </summary>
+        BitArray Status_Word { get; }
+
+        bool Get_Status_Word_Enable { get; set; }
+
+        bool Get_Actual_Position_Shaft_Enable { get; set; }
+
+        int Actual_Position_Shaft { get; }
+
         /// <summary>
         /// Get main status.
         /// </summary>

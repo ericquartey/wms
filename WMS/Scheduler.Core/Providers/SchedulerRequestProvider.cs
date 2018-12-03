@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
-
+            
             var aggregatedCompartments = this.dataContext.Compartments
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.Cell)
@@ -214,7 +214,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentNullException(nameof(model));
             }
-
+            
             lock (this.dataContext)
             {
                 var existingModel = this.dataContext.Areas.Find(model.Id);

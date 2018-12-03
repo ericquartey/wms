@@ -23,26 +23,29 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
             list => list.ItemListTypeId == 1;
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
+        private readonly ItemListRowProvider itemListRowProvider;
 
         #endregion Fields
 
         #region Constructors
 
         public ItemListProvider(
-            DatabaseContext dataContext,
-            EnumerationProvider enumerationProvider)
+            IDatabaseContextService dataContext,
+            EnumerationProvider enumerationProvider,
+            ItemListRowProvider itemListRowProvider)
         {
             this.dataContext = dataContext;
             this.enumerationProvider = enumerationProvider;
+            this.itemListRowProvider = itemListRowProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public Task<Int32> Add(ItemListRow model)
+        public Task<Int32> Add(ItemListDetails model)
         {
             throw new NotImplementedException();
         }
@@ -54,7 +57,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<ItemList> GetAll()
         {
-            return this.dataContext.ItemLists
+            return this.dataContext.Current.ItemLists
                .Include(l => l.ItemListStatus)
                .Include(l => l.ItemListType)
                .Include(l => l.ItemListRows)
@@ -69,64 +72,120 @@ namespace Ferretto.Common.BusinessProviders
                    ItemListTypeDescription = l.ItemListType.Description,
                    ItemListRowsCount = l.ItemListRows.Count(),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
-                   CreationDate = l.CreationDate,
-                   //TODO: n oggetti
+                   CreationDate = l.CreationDate
                }).AsNoTracking();
         }
 
         public Int32 GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.Count();
+                return dataContext.ItemLists.Count();
             }
         }
 
-        public ItemListRow GetById(Int32 id)
+        public ItemListDetails GetById(Int32 id)
         {
-            throw new NotImplementedException();
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                var itemListDetails = dataContext.ItemLists
+               .Include(l => l.ItemListStatus)
+               .Include(l => l.ItemListType)
+               .Include(l => l.ItemListRows)
+               .Where(l => l.Id == id)
+               .Select(l => new ItemListDetails
+               {
+                   Id = l.Id,
+                   Code = l.Code,
+                   Description = l.Description,
+                   AreaName = l.Area.Name,
+                   Priority = l.Priority,
+                   ItemListStatusDescription = l.ItemListStatus.Description,
+                   ItemListTypeDescription = l.ItemListType.Description,
+                   ItemListRowsCount = l.ItemListRows.Count(),
+                   ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
+                   CreationDate = l.CreationDate,
+                   ItemListStatusId = l.ItemListStatusId,
+                   ItemListTypeId = l.ItemListTypeId,
+                   Job = l.Job,
+                   CustomerOrderCode = l.CustomerOrderCode,
+                   CustomerOrderDescription = l.CustomerOrderDescription,
+                   ShipmentUnitAssociated = l.ShipmentUnitAssociated,
+                   ShipmentUnitCode = l.ShipmentUnitCode,
+                   ShipmentUnitDescription = l.ShipmentUnitDescription,
+                   LastModificationDate = l.LastModificationDate,
+                   FireExecutionDate = l.FirstExecutionDate,
+                   ExecutionEndDate = l.ExecutionEndDate,
+               }).Single();
+
+                itemListDetails.ItemListStatusChoices = this.enumerationProvider.GetAllItemListStatuses();
+                itemListDetails.ItemListTypeChoices = this.enumerationProvider.GetAllItemListTypes();
+
+                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListById(id);
+
+                //loadingUnitDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+                //foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
+                //{
+                //    loadingUnitDetails.AddCompartment(compartment);
+                //}
+
+                //loadingUnitDetails.CellPairingChoices =
+                //    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                //    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                //loadingUnitDetails.ReferenceTypeChoices =
+                //    ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
+                //    .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
+                //loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
+
+                return itemListDetails;
+            }
         }
 
         public IQueryable<ItemList> GetWithStatusCompleted()
         {
-            return GetAllListsWithAggregations(this.dataContext, StatusCompletedFilter);
+            return GetAllListsWithAggregations(this.dataContext.Current, StatusCompletedFilter);
         }
 
         public Int32 GetWithStatusCompletedCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
+                return dataContext.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
             }
         }
 
         public IQueryable<ItemList> GetWithStatusWaiting()
         {
-            return GetAllListsWithAggregations(this.dataContext, StatusWaitingFilter);
+            return GetAllListsWithAggregations(this.dataContext.Current, StatusWaitingFilter);
         }
 
         public Int32 GetWithStatusWaitingCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.AsNoTracking().Count(StatusWaitingFilter);
+                return dataContext.ItemLists.AsNoTracking().Count(StatusWaitingFilter);
             }
         }
 
         public IQueryable<ItemList> GetWithTypePick()
         {
-            return GetAllListsWithAggregations(this.dataContext, TypePickFilter);
+            return GetAllListsWithAggregations(this.dataContext.Current, TypePickFilter);
         }
 
         public Int32 GetWithTypePickCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.ItemLists.AsNoTracking().Count(TypePickFilter);
+                return dataContext.ItemLists.AsNoTracking().Count(TypePickFilter);
             }
         }
 
-        public Int32 Save(ItemListRow model)
+        public Int32 Save(ItemListDetails model)
         {
             throw new NotImplementedException();
         }
