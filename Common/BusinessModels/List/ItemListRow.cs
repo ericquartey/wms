@@ -21,10 +21,10 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowCode), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowCreationDate), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]

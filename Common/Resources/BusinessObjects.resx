@@ -718,15 +718,6 @@
   <data name="ItemListAreaName" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemListCode" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="ItemListCreationDate" xml:space="preserve">
-    <value>Creation Date</value>
-  </data>
-  <data name="ItemListDescription" xml:space="preserve">
-    <value>Description</value>
-  </data>
   <data name="ItemListItemsCount" xml:space="preserve">
     <value>Items Count</value>
   </data>
@@ -737,21 +728,9 @@
     <value>Rows Count</value>
     <comment>ItemListRow - Count</comment>
   </data>
-  <data name="ItemListStatusDescription" xml:space="preserve">
+  <data name="ItemListStatus" xml:space="preserve">
     <value>Status</value>
     <comment>ItemList - Status</comment>
-  </data>
-  <data name="ItemListTypeDescription" xml:space="preserve">
-    <value>Type</value>
-    <comment>ItemList - Type</comment>
-  </data>
-  <data name="ItemListCustomerOrderCode" xml:space="preserve">
-    <value>Code</value>
-    <comment>Item List - Code Customer Order</comment>
-  </data>
-  <data name="ItemListCustomerOrderDescription" xml:space="preserve">
-    <value>Description</value>
-    <comment>Item List - Description Customer Order</comment>
   </data>
   <data name="ItemListExecutionEndDate" xml:space="preserve">
     <value>End Execution</value>
@@ -764,18 +743,6 @@
   <data name="ItemListJob" xml:space="preserve">
     <value>Job</value>
     <comment>Item List - Job</comment>
-  </data>
-  <data name="ItemListLastModificationDate" xml:space="preserve">
-    <value>Last Modified</value>
-    <comment>Item List - Last Modification</comment>
-  </data>
-  <data name="ItemListRowCode" xml:space="preserve">
-    <value>Code</value>
-    <comment>List Row - Code</comment>
-  </data>
-  <data name="ItemListRowCreationDate" xml:space="preserve">
-    <value>Creation Date</value>
-    <comment>List Row - Creation Date</comment>
   </data>
   <data name="ItemListRowItemDescription" xml:space="preserve">
     <value>Item</value>
@@ -801,11 +768,16 @@
     <value>Code</value>
     <comment>Item List - Code</comment>
   </data>
-  <data name="ItemListShipmentUnitDescription" xml:space="preserve">
-    <value>Description</value>
-    <comment>Item List - Description</comment>
+  <data name="ListToExecuteArea" xml:space="preserve">
+    <value>Area</value>
   </data>
-  <data name="ItemListTypeId" xml:space="preserve">
-    <value>Type</value>
+  <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
+    <value>Area not valid</value>
+  </data>
+  <data name="ListToExecuteBayInvalidError" xml:space="preserve">
+    <value>Bay not valid</value>
+  </data>
+  <data name="ListToExecuteBayOptional" xml:space="preserve">
+    <value>Bay [Optional]</value>
   </data>
 </root>

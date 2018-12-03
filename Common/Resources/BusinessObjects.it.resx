@@ -570,15 +570,6 @@
   <data name="ItemListAreaName" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemListCode" xml:space="preserve">
-    <value>Codice</value>
-  </data>
-  <data name="ItemListCreationDate" xml:space="preserve">
-    <value>Data Creazione</value>
-  </data>
-  <data name="ItemListDescription" xml:space="preserve">
-    <value>Descrizione</value>
-  </data>
   <data name="ItemListPriority" xml:space="preserve">
     <value>Priorità</value>
   </data>
@@ -586,22 +577,12 @@
     <value>Numero Righe</value>
     <comment>Righe di Lista - Numero</comment>
   </data>
-  <data name="ItemListStatusDescription" xml:space="preserve">
+  <data name="ItemListStatus" xml:space="preserve">
     <value>Stato</value>
     <comment>Lista - Stato</comment>
   </data>
-  <data name="ItemListTypeDescription" xml:space="preserve">
-    <value>Tipo</value>
-    <comment>Lista - Tipo</comment>
-  </data>
   <data name="ItemListItemsCount" xml:space="preserve">
     <value>Numero di oggetti</value>
-  </data>
-  <data name="ItemListCustomerOrderCode" xml:space="preserve">
-    <value>Codice</value>
-  </data>
-  <data name="ItemListCustomerOrderDescription" xml:space="preserve">
-    <value>Descrizione</value>
   </data>
   <data name="ItemListExecutionEndDate" xml:space="preserve">
     <value>Fine esecuzione</value>
@@ -611,17 +592,6 @@
   </data>
   <data name="ItemListJob" xml:space="preserve">
     <value>Commessa</value>
-  </data>
-  <data name="ItemListLastModificationDate" xml:space="preserve">
-    <value>Ultima Modifica</value>
-  </data>
-  <data name="ItemListRowCode" xml:space="preserve">
-    <value>Codice</value>
-    <comment>List Row - Code</comment>
-  </data>
-  <data name="ItemListRowCreationDate" xml:space="preserve">
-    <value>Data di Creazione</value>
-    <comment>List Row - Creation Date</comment>
   </data>
   <data name="ItemListRowItemDescription" xml:space="preserve">
     <value>Articolo</value>
@@ -645,13 +615,16 @@
   <data name="ItemListShipmentUnitCode" xml:space="preserve">
     <value>Codice</value>
   </data>
-  <data name="ItemListShipmentUnitDescription" xml:space="preserve">
-    <value>Descrizione</value>
+  <data name="ListToExecuteArea" xml:space="preserve">
+    <value>Area</value>
   </data>
-  <data name="ItemListStatusId" xml:space="preserve">
-    <value>Status</value>
+  <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
+    <value>Area non valida</value>
   </data>
-  <data name="ItemListTypeId" xml:space="preserve">
-    <value>Tipo</value>
+  <data name="ListToExecuteBayInvalidError" xml:space="preserve">
+    <value>Baia non valida</value>
+  </data>
+  <data name="ListToExecuteBayOptional" xml:space="preserve">
+    <value>Baia [Opzionale]</value>
   </data>
 </root>

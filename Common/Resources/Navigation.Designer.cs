@@ -241,6 +241,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List Execution.
+        /// </summary>
+        public static string ListExecution {
+            get {
+                return ResourceManager.GetString("ListExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Row Statuses.
         /// </summary>
         public static string ListRowStatuses {

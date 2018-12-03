@@ -682,51 +682,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        public static string ItemListCode {
-            get {
-                return ResourceManager.GetString("ItemListCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creation Date.
-        /// </summary>
-        public static string ItemListCreationDate {
-            get {
-                return ResourceManager.GetString("ItemListCreationDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        public static string ItemListCustomerOrderCode {
-            get {
-                return ResourceManager.GetString("ItemListCustomerOrderCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        public static string ItemListCustomerOrderDescription {
-            get {
-                return ResourceManager.GetString("ItemListCustomerOrderDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        public static string ItemListDescription {
-            get {
-                return ResourceManager.GetString("ItemListDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to End Execution.
         /// </summary>
         public static string ItemListExecutionEndDate {
@@ -763,38 +718,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last Modified.
-        /// </summary>
-        public static string ItemListLastModificationDate {
-            get {
-                return ResourceManager.GetString("ItemListLastModificationDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Priority.
         /// </summary>
         public static string ItemListPriority {
             get {
                 return ResourceManager.GetString("ItemListPriority", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Code.
-        /// </summary>
-        public static string ItemListRowCode {
-            get {
-                return ResourceManager.GetString("ItemListRowCode", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Creation Date.
-        /// </summary>
-        public static string ItemListRowCreationDate {
-            get {
-                return ResourceManager.GetString("ItemListRowCreationDate", resourceCulture);
             }
         }
         
@@ -862,38 +790,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description.
-        /// </summary>
-        public static string ItemListShipmentUnitDescription {
-            get {
-                return ResourceManager.GetString("ItemListShipmentUnitDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Status.
         /// </summary>
-        public static string ItemListStatusDescription {
+        public static string ItemListStatus {
             get {
-                return ResourceManager.GetString("ItemListStatusDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        public static string ItemListTypeDescription {
-            get {
-                return ResourceManager.GetString("ItemListTypeDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Type.
-        /// </summary>
-        public static string ItemListTypeId {
-            get {
-                return ResourceManager.GetString("ItemListTypeId", resourceCulture);
+                return ResourceManager.GetString("ItemListStatus", resourceCulture);
             }
         }
         
@@ -1092,6 +993,42 @@ namespace Ferretto.Common.Resources {
         public static string ItemWithdrawSub2 {
             get {
                 return ResourceManager.GetString("ItemWithdrawSub2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ListToExecuteArea {
+            get {
+                return ResourceManager.GetString("ListToExecuteArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Area not valid.
+        /// </summary>
+        public static string ListToExecuteAreaInvalidError {
+            get {
+                return ResourceManager.GetString("ListToExecuteAreaInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay not valid.
+        /// </summary>
+        public static string ListToExecuteBayInvalidError {
+            get {
+                return ResourceManager.GetString("ListToExecuteBayInvalidError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay [Optional].
+        /// </summary>
+        public static string ListToExecuteBayOptional {
+            get {
+                return ResourceManager.GetString("ListToExecuteBayOptional", resourceCulture);
             }
         }
         
