@@ -90,7 +90,7 @@ namespace Ferretto.WMS.Scheduler.Core
             if (!request.IsInstant)
             // TODO: extend this method to support normal (non-instant) withdrawal requests
             {
-                throw new NotImplementedException();
+                throw new NotImplementedException("Only instant requests are supported.");
             }
 
             var item = await this.dataProvider.GetItemByIdAsync(request.ItemId);
@@ -109,7 +109,12 @@ namespace Ferretto.WMS.Scheduler.Core
                 var orderedCompartments =
                     this.schedulerRequestProvider.OrderCompartmentsByManagementType(compartments, item.ManagementType);
 
-                var compartment = orderedCompartments.First();
+                var compartment = orderedCompartments.FirstOrDefault();
+                if (compartment == null)
+                {
+                    this.logger.LogWarning($"Request id={request.Id} cannot be satisfied because no matching compartments were found.");
+                    break;
+                }
 
                 var quantityLeftToDispatch = request.RequestedQuantity - request.DispatchedQuantity;
                 var quantityToExtractFromCompartment = Math.Min(compartment.Availability, quantityLeftToDispatch);
@@ -135,10 +140,11 @@ namespace Ferretto.WMS.Scheduler.Core
                     Type = MissionType.Pick
                 };
 
+                this.logger.LogWarning($"Generating withdrawal mission from request id={request.Id}.");
+
                 missions.Add(mission);
             }
 
-            
             this.dataProvider.AddRange(missions);
 
             return missions;
