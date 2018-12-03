@@ -13,13 +13,13 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusCompletedFilter =
-            list => list.ItemListStatus.Equals(ItemListStatus.Completed);
+            list => (char)list.ItemListStatus == (char)ItemListStatus.Completed;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusWaitingFilter =
-            list => list.ItemListStatus.Equals(ItemListStatus.Waiting);
+            list => (char)list.ItemListStatus == (char)(ItemListStatus.Waiting);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
-            list => list.ItemListType.Equals(ItemListType.Pick);
+            list => (char)list.ItemListType == (char)(ItemListType.Pick);
 
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
