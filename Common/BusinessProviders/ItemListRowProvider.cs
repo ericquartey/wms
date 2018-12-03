@@ -58,12 +58,11 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public IEnumerable<ItemListRow> GetByItemListById(Int32 id)
+        public IQueryable<ItemListRow> GetByItemListId(Int32 id)
         {
             lock (this.dataContext)
             {
                 var itemListRows = this.dataContext.ItemListRows
-               .Include(l => l.ItemListRowStatus)
                .Include(l => l.MaterialStatus)
                .Include(l => l.Item)
                .Where(l => l.ItemListId == id)
@@ -74,7 +73,7 @@ namespace Ferretto.Common.BusinessProviders
                    RowPriority = l.RowPriority,
                    ItemDescription = l.Item.Description,
                    RequiredQuantity = l.RequiredQuantity,
-                   ItemListRowStatusDescription = l.ItemListRowStatus.Description,
+                   ItemListRowStatusDescription = l.ItemListRowStatus.ToString(),
                    CreationDate = l.CreationDate
                }).AsNoTracking();
 

@@ -3,11 +3,10 @@
 namespace Ferretto.Common.DataModels
 {
     // Tipo Lista Articoli
-    public sealed class ItemListType
+    public enum ItemListType
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-
-        public IEnumerable<ItemList> ItemLists { get; set; }
+        Pick = 'P',
+        Put = 'U',
+        Inventory = 'I'
     }
 }

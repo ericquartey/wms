@@ -192,4 +192,16 @@
   <data name="Delete" xml:space="preserve">
     <value>Elimina</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="Execute" xml:space="preserve">
+    <value>Esegui</value>
+  </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>Mostra Dettagli</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
 </root>

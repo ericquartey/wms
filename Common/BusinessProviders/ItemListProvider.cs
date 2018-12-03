@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -15,13 +13,13 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusCompletedFilter =
-            list => list.ItemListStatusId == 3;
+            list => (char)list.ItemListStatus == (char)ItemListStatus.Completed;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusWaitingFilter =
-            list => list.ItemListStatusId == 1;
+            list => (char)list.ItemListStatus == (char)(ItemListStatus.Waiting);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
-            list => list.ItemListTypeId == 1;
+            list => (char)list.ItemListType == (char)(ItemListType.Pick);
 
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
@@ -57,9 +55,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<ItemList> GetAll()
         {
-            return this.dataContext.Current.ItemLists
-               .Include(l => l.ItemListStatus)
-               .Include(l => l.ItemListType)
+            var itemLists = this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Select(l => new ItemList
                {
@@ -68,12 +64,14 @@ namespace Ferretto.Common.BusinessProviders
                    Description = l.Description,
                    AreaName = l.Area.Name,
                    Priority = l.Priority,
-                   ItemListStatusDescription = l.ItemListStatus.Description,
-                   ItemListTypeDescription = l.ItemListType.Description,
+                   ItemListStatusDescription = l.ItemListStatus.ToString(),
+                   ItemListTypeDescription = ((ItemListType)l.ItemListType).ToString(),
                    ItemListRowsCount = l.ItemListRows.Count(),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate
                }).AsNoTracking();
+
+            return itemLists;
         }
 
         public Int32 GetAllCount()
@@ -90,9 +88,7 @@ namespace Ferretto.Common.BusinessProviders
             var dataContext = this.dataContext.Current;
             lock (dataContext)
             {
-                var itemListDetails = dataContext.ItemLists
-               .Include(l => l.ItemListStatus)
-               .Include(l => l.ItemListType)
+                var itemListDetails = this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)
                .Select(l => new ItemListDetails
@@ -102,13 +98,10 @@ namespace Ferretto.Common.BusinessProviders
                    Description = l.Description,
                    AreaName = l.Area.Name,
                    Priority = l.Priority,
-                   ItemListStatusDescription = l.ItemListStatus.Description,
-                   ItemListTypeDescription = l.ItemListType.Description,
-                   ItemListRowsCount = l.ItemListRows.Count(),
+                   ItemListStatus = (ItemListStatus)l.ItemListStatus,
+                   ItemListType = (int)((ItemListType)l.ItemListType),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate,
-                   ItemListStatusId = l.ItemListStatusId,
-                   ItemListTypeId = l.ItemListTypeId,
                    Job = l.Job,
                    CustomerOrderCode = l.CustomerOrderCode,
                    CustomerOrderDescription = l.CustomerOrderDescription,
@@ -120,24 +113,14 @@ namespace Ferretto.Common.BusinessProviders
                    ExecutionEndDate = l.ExecutionEndDate,
                }).Single();
 
-                itemListDetails.ItemListStatusChoices = this.enumerationProvider.GetAllItemListStatuses();
-                itemListDetails.ItemListTypeChoices = this.enumerationProvider.GetAllItemListTypes();
+                itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
+                    Enum.GetValues(typeof(ItemListStatus)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+                itemListDetails.ItemListTypeChoices = ((ItemListType[])
+                    Enum.GetValues(typeof(ItemListType)))
+                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListById(id);
-
-                //loadingUnitDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-                //foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
-                //{
-                //    loadingUnitDetails.AddCompartment(compartment);
-                //}
-
-                //loadingUnitDetails.CellPairingChoices =
-                //    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
-                //    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                //loadingUnitDetails.ReferenceTypeChoices =
-                //    ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
-                //    .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
-                //loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
+                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
 
                 return itemListDetails;
             }
@@ -187,7 +170,20 @@ namespace Ferretto.Common.BusinessProviders
 
         public Int32 Save(ItemListDetails model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            var dataContext = this.dataContext.Current;
+
+            lock (this.dataContext)
+            {
+                var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
+
+                this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
+
+                return dataContext.SaveChanges();
+            }
         }
 
         private static IQueryable<ItemList> GetAllListsWithAggregations(DatabaseContext context, Expression<Func<DataModels.ItemList, bool>> whereFunc = null)
@@ -195,8 +191,6 @@ namespace Ferretto.Common.BusinessProviders
             var actualWhereFunc = whereFunc ?? ((i) => true);
 
             return context.ItemLists
-             .Include(l => l.ItemListStatus)
-             .Include(l => l.ItemListType)
              .Include(l => l.ItemListRows)
              .Where(actualWhereFunc)
              .Select(l => new ItemList
@@ -206,8 +200,8 @@ namespace Ferretto.Common.BusinessProviders
                  Description = l.Description,
                  AreaName = l.Area.Name,
                  Priority = l.Priority,
-                 ItemListStatusDescription = l.ItemListStatus.Description,
-                 ItemListTypeDescription = l.ItemListType.Description,
+                 ItemListStatusDescription = l.ItemListStatus.ToString(),
+                 ItemListTypeDescription = ((ItemListType)l.ItemListType).ToString(),
                  ItemListRowsCount = l.ItemListRows.Count(),
                  ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                  CreationDate = l.CreationDate,

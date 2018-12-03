@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Ferretto.Common.DataModels
+namespace Ferretto.Common.BusinessModels
 {
-    // Stato di Riga di Lista Articoli
     public enum ItemListRowStatus
     {
         Waiting = 'W',
