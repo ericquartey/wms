@@ -10,33 +10,52 @@ using System.Collections;
 
 namespace Ferretto.VW.ActionBlocks
 {
-    public class PositioningDrawer
+    // On [EndedEventHandler] delegate for Positioning Drawer routine
+    public delegate void PositioningDrawerEndEventHandler(bool result);
+
+    // On [ErrorEventHandler] delegate for Positioning Drawer routine
+    public delegate void PositioningDrawerErrorEventHandler(string error_Message);
+
+    // On [ReadeEventHandler] delegate for Positioning Drawer routine
+    public delegate void PositioningDrawerReadEventHandler(string currentPosition);
+
+    public class PositioningDrawer : IPositioningDrawer
     {
         #region Fields
 
-        private bool currentPositionRequested; // Da rimuovere prima del rilascio
-        private const int TimeOut_StatusWord = 250;
-        private short X;
-        private float VMax;
-        private float Acc;
-        private float Dec;
-        // private float W;
+        private const int DELAY_TIME = 500;             // Delay time: 250 msec
+
+        private short x;
+
+        private float vMax;
+
+        private float acc;
+
+        private float dec;
+
+        private bool currentPositionRequested;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private Thread PositioningDrawer_Thread;
+
         private InverterDriver.InverterDriver inverterDriver;
+
         public InverterDriver.InverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
         }
 
-        // private readonly string[] PositioningDrawerSteps = new string[] { "1.1", "1.2", "1.3", "1.4", "2.1", "3.0", "3.1", "3.2", "3.3", "3.4", "3.5" };
-        private readonly string[] PositioningDrawerSteps = new string[] { /*"1.1", "1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4" , "5", "6a" /*, "7" */ }; // Test with code 6a
+        private readonly string[] positioningDrawerSteps = new string[] { /*"1.1", "1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4" , "5", "6a" }; // At this time we take into account only the code code 6a
 
-        int index_Steps = 0;
-        string BonfiglioliSteps;
+        int i = 0;
+
+        string positioningStep;
+
         private byte systemIndex = 0x00;
+
         private byte dataSetIndex = 0x00;
+
         private object valParam = "";
+
         ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
         #endregion Fields
@@ -47,33 +66,24 @@ namespace Ferretto.VW.ActionBlocks
         {
             if (this.inverterDriver != null)
             {
-                //this.inverterDriver.EnquiryTelegramDone += this.DriverEnquiryTelegramDone;
-                //this.inverterDriver.SelectTelegramDone += this.DriverSelectTelegramDone;
-                inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(DriverEnquiryTelegramDone);
-                inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(DriverSelectTelegramDone);
+                inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(EnquiryTelegram);
+                inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(SelectTelegram);
                 this.inverterDriver.Error += this.DriverError;
             }
         }
 
         #endregion Constructor
 
-        #region Delegates
-
-        public delegate void MoveAlongVerticalAxisToPointDoneEventHandler(bool result);
-
-        public delegate void ErrorEventHandler(string error_Message);
-
-        public delegate void ReadCurrentPositionEventHandler(float currentPosition); // Da rimuovere prima del rilascio
-
-        #endregion Delegates
-
         #region Events
 
-        public event MoveAlongVerticalAxisToPointDoneEventHandler MoveAlongVerticalAxisToPointDone_Event;
+        // [Ended] event
+        public event PositioningDrawerEndEventHandler ThrowEndEvent;
 
-        public event ErrorEventHandler Error_Event;
+        // [Error] event
+        public event PositioningDrawerErrorEventHandler ThrowErrorEvent;
 
-        public event ReadCurrentPositionEventHandler ReadCurrentPosition_Event; // Da rimuovere prima del rilascio
+        // [Read] event
+        public event PositioningDrawerReadEventHandler ThrowCurrentPositionEvent;
 
         #endregion Events
 
@@ -81,65 +91,52 @@ namespace Ferretto.VW.ActionBlocks
 
         public void MoveAlongVerticalAxisToPoint(short x, float vMax, float acc, float dec, float w, short offset)
         {
-            //bool CheckError = false;
+            // Assign the parameters
+            this.x = x;
+            this.vMax = vMax;
+            this.acc = acc;
+            this.dec = dec;
 
-            this.X = x;
-            this.VMax = vMax;
-            this.Acc = acc;
-            this.Dec = dec;
-
-            //logger.Log(LogLevel.Debug, "Target Position = " + x);
-            //logger.Log(LogLevel.Debug, "Target Speed = " + vMax);
-            //logger.Log(LogLevel.Debug, "Acceleration = " + acc);
-            //logger.Log(LogLevel.Debug, "Deceleration = " + dec);
-            //logger.Log(LogLevel.Debug, "Weight of Drawer = " + w);
-
-            //CheckError = false;
-
-            //logger.Log(LogLevel.Debug, "Thread creation error = " + CheckError);
-
-            //if (!CheckError)
-            //{
-                Execution_BonfiglioliSteps();
-            //}
+            // Start the routine
+            stepExecution();
         }
 
-        private void Execution_BonfiglioliSteps()
+        private void stepExecution()
         {
             InverterDriverExitStatus idExitStatus;
 
-            logger.Log(LogLevel.Debug, "Index of Steps  = " + index_Steps.ToString());
+            // logger.Log(LogLevel.Debug, "Index of Step  = " + i.ToString());
 
-            BonfiglioliSteps = PositioningDrawerSteps[index_Steps];
+            positioningStep = positioningDrawerSteps[i];
 
-            logger.Log(LogLevel.Debug, "Bonfiglioli Steps = " + BonfiglioliSteps);
+            // logger.Log(LogLevel.Debug, "Positioning Step = " + positioningStep);
 
             var error_Message = "";
-            switch (BonfiglioliSteps)
+            switch (positioningStep)
             {
                 // 1) Set Parameters
                 case "1.1":
                     paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
                     dataSetIndex = 0x05;
-                    valParam = (int)X;
+                    valParam = (int)x;
                     break;
 
                 case "1.2":
                     paramID = ParameterID.POSITION_TARGET_SPEED_PARAM;
                     dataSetIndex = 0x05;
-                    valParam = (int)VMax;
+                    valParam = (int)vMax;
                     break;
 
                 case "1.3":
                     paramID = ParameterID.POSITION_ACCELERATION_PARAM;
                     dataSetIndex = 0x05;
-                    valParam = (int)Acc;
+                    valParam = (int)acc;
                     break;
 
                 case "1.4":
                     paramID = ParameterID.POSITION_DECELERATION_PARAM;
                     dataSetIndex = 0x05;
-                    valParam = (int)Dec;
+                    valParam = (int)dec;
                     break;
 
                 // 2) Set operating mode
@@ -214,24 +211,12 @@ namespace Ferretto.VW.ActionBlocks
                     valParam = (short)0x7F;
                     break;
 
-                // Operation Enabled
-                case "7":
-                    dataSetIndex = 0x05;
-                    paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = (short)0x010F; // 0x01nF - Al momento ipotizzo n = 0
-                    break;
-
                 default:
                     // Send the error description to the UI
                     error_Message = "Unknown Operation";
-                    Error_Event?.Invoke(error_Message);
+                    ThrowErrorEvent?.Invoke(error_Message);
                     break;
             }
-
-            //logger.Log(LogLevel.Debug, "paramID      = " + paramID.ToString());
-            //logger.Log(LogLevel.Debug, "systemIndex  = " + systemIndex.ToString());
-            //logger.Log(LogLevel.Debug, "dataSetIndex = " + dataSetIndex.ToString());
-            //logger.Log(LogLevel.Debug, "valParam     = " + valParam.ToString());
 
             idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
 
@@ -239,33 +224,33 @@ namespace Ferretto.VW.ActionBlocks
 
         }
 
-        private void DriverEnquiryTelegramDone(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
+        private void EnquiryTelegram(Object sender, EnquiryTelegramDoneEventArgs eventArgs)
         {
             ValueDataType type = eventArgs.Type;
 
             byte[] statusWord;
+
             bool statusWordValue = false;
 
             byte[] statusWord01;
 
             BitArray statusWordBA01;
 
-            // Inizio parte da rimuovere
-            if (currentPositionRequested)
+            // Inizio parte ricezione current position
+            if (this.currentPositionRequested)
             {
-                currentPositionRequested = false;
-                float value;
+                this.currentPositionRequested = false;
 
-                bool tryConversion = float.TryParse(eventArgs.Value.ToString(), out value);
+                var tryConversion = float.TryParse(eventArgs.Value.ToString(), out var value);
 
                 if (tryConversion)
                 {
-                    ReadCurrentPosition_Event?.Invoke(value);
+                    ThrowCurrentPositionEvent?.Invoke(value.ToString());
                 }
             }
+            // Fine parte ricezione current position
             else
             {
-            // Fine parte da rimuovere
                 switch (type)
                 {
                     case ValueDataType.Int16:
@@ -299,7 +284,7 @@ namespace Ferretto.VW.ActionBlocks
                 statusWordBA01 = new BitArray(statusWord01);
 
                 var error_Message = "";
-                switch (BonfiglioliSteps)
+                switch (positioningStep)
                 {
                     // 0x0050
                     case "1":
@@ -335,6 +320,7 @@ namespace Ferretto.VW.ActionBlocks
                             statusWordValue = true;
                         }
                         break;
+
                     case "6a":
                     case "6b":
                     case "6c":
@@ -348,40 +334,40 @@ namespace Ferretto.VW.ActionBlocks
 
                     default:
                         error_Message = "Unknown Operation";
-                        Error_Event?.Invoke(error_Message);
+                        ThrowErrorEvent?.Invoke(error_Message);
                         break;
                 }
 
                 if (statusWordValue)
                 {
-                    index_Steps++;
+                    i++;
 
-                    if (index_Steps < PositioningDrawerSteps.Length)
-                        Execution_BonfiglioliSteps();
+                    if (i < positioningDrawerSteps.Length)
+                        stepExecution();
                     else // The execution ended
-                        MoveAlongVerticalAxisToPointDone_Event?.Invoke(true);
+                        ThrowEndEvent?.Invoke(true);
                 }
                 else
                 {
                     // Insert a delay
-                    Thread.Sleep(TimeOut_StatusWord);
+                    Thread.Sleep(DELAY_TIME);
                     // A new request to read the StatusWord
                     InverterDriverExitStatus idExitStatus = inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
 
                     CtrExistStatus(idExitStatus);
                 }
-            } // Da rimuovere
+            }
         }
-        private void DriverSelectTelegramDone(Object sender, SelectTelegramDoneEventArgs eventArgs)
+        private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
         {
-            logger.Log(LogLevel.Debug, "Condition = " + (PositioningDrawerSteps.Length < index_Steps).ToString());
+            logger.Log(LogLevel.Debug, "Condition = " + (positioningDrawerSteps.Length < i).ToString());
 
-            if (PositioningDrawerSteps.Length > index_Steps)
+            if (positioningDrawerSteps.Length > i)
             {
-                logger.Log(LogLevel.Debug, "Bonfiglioli Steps = " + BonfiglioliSteps);
+                logger.Log(LogLevel.Debug, "Positioning Step = " + positioningStep);
 
                 // In the case of Command Engine we have to check the StatusWord
-                if (BonfiglioliSteps == "1" || BonfiglioliSteps == "3" || BonfiglioliSteps == "4" || BonfiglioliSteps == "5" || BonfiglioliSteps == "6a" || BonfiglioliSteps == "6b" || BonfiglioliSteps == "6c" || BonfiglioliSteps == "6d" || BonfiglioliSteps == "7")
+                if (positioningStep == "1" || positioningStep == "3" || positioningStep == "4" || positioningStep == "5" || positioningStep == "6a" || positioningStep == "6b" || positioningStep == "6c" || positioningStep == "6d")
                     {
                     paramID = ParameterID.STATUS_WORD_PARAM;
                     // Insert a delay
@@ -389,18 +375,18 @@ namespace Ferretto.VW.ActionBlocks
                 }
                 else // There is not the need to check the Status Word value
                 {
-                    index_Steps++;
-                    Execution_BonfiglioliSteps();
+                    i++;
+                    stepExecution();
                 }
             }
             else
             {
-                if (PositioningDrawer_Thread != null)
-                {
-                    PositioningDrawer_Thread.Abort();
-                }
+                //if (positioningDrawer_Thread != null)
+                //{
+                //    positioningDrawer_Thread.Abort();
+                //}
 
-                MoveAlongVerticalAxisToPointDone_Event?.Invoke(true);
+                ThrowEndEvent?.Invoke(true);
             }
         }
 
@@ -435,7 +421,7 @@ namespace Ferretto.VW.ActionBlocks
             logger.Log(LogLevel.Debug, "Error Message = " + error_Message.ToString());
 
             // Send the error description to the UI
-            Error_Event?.Invoke(error_Message);
+            ThrowErrorEvent?.Invoke(error_Message);
         }
 
         private void CtrExistStatus(InverterDriverExitStatus idStatus)
@@ -445,44 +431,52 @@ namespace Ferretto.VW.ActionBlocks
             if (idStatus != InverterDriverExitStatus.Success)
             {
                 error_Message = "No Error";
-                Error_Event?.Invoke(error_Message);
+                ThrowErrorEvent?.Invoke(error_Message);
 
                 switch (idStatus)
                 {
                     case (InverterDriverExitStatus.InvalidArgument):
                         error_Message = "Invalid Arguments";
-                        Error_Event?.Invoke(error_Message);
+                        ThrowErrorEvent?.Invoke(error_Message);
                         break;
 
                     case (InverterDriverExitStatus.InvalidOperation):
                         error_Message = "Invalid Operation";
-                        Error_Event?.Invoke(error_Message);
+                        ThrowErrorEvent?.Invoke(error_Message);
                         break;
 
                     case (InverterDriverExitStatus.Failure):
                         error_Message = "Operation Failed";
-                        Error_Event?.Invoke(error_Message);
+                        ThrowErrorEvent?.Invoke(error_Message);
                         break;
 
                     default:
                         error_Message = "Unknown Operation";
-                        Error_Event?.Invoke(error_Message);
+                        ThrowErrorEvent?.Invoke(error_Message);
                         break;
                 }
 
                 logger.Log(LogLevel.Debug, "Error Message = " + error_Message.ToString());
 
                 // Send the error description to the UI
-                Error_Event?.Invoke(error_Message);
+                ThrowErrorEvent?.Invoke(error_Message);
             }
         }
 
-        public void HaltInverter()
+        public void Halt()
         {
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
             this.valParam = (short)0x010F; // 0x01nF
             InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
         }
+
+        public void ReStart()
+        {
+            this.paramID = ParameterID.CONTROL_WORD_PARAM;
+            this.valParam = (short)0x001F; // 0x01nF
+            InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+        }
+
         public void StopInverter()
         {
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -490,31 +484,12 @@ namespace Ferretto.VW.ActionBlocks
             InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
         }
 
-        // Inizio parte da rimuovere
-        public void CurrentPosition()
+        public void TargetPosition()
         {
-            inverterDriver.SendRequest(ParameterID.POSITION_TARGET_POSITION_PARAM, systemIndex, 5);
+            this.inverterDriver.SendRequest(ParameterID.POSITION_TARGET_POSITION_PARAM, this.systemIndex, 5);
 
-            currentPositionRequested = true;
+            this.currentPositionRequested = true;
         }
-
-        public void SetNewPosition(string newPosition)
-        {
-            float value = 0;
-            bool tryConversion = float.TryParse(newPosition, out value);
-
-            if (tryConversion)
-            { 
-                InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(ParameterID.POSITION_TARGET_POSITION_PARAM, systemIndex, 0x05, value);
-
-                CtrExistStatus(idExitStatus);
-            }
-            else
-            {
-                Error_Event?.Invoke("New position conversion impossible!");
-            }
-        }
-        // Fine parte da rimuovere
 
         #endregion Method
     }
