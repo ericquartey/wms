@@ -646,29 +646,6 @@ INSERT INTO Compartments (Id, Code, LoadingUnitId, CompartmentTypeId, ItemPairin
 SET IDENTITY_INSERT Compartments OFF;
 
 
--- ItemLists
-SET IDENTITY_INSERT ItemListTypes ON;
-INSERT INTO ItemListTypes (Id, Description) VALUES (1, 'Pick');
-INSERT INTO ItemListTypes (Id, Description) VALUES (2, 'Put');
-INSERT INTO ItemListTypes (Id, Description) VALUES (3, 'Inventory');
-SET IDENTITY_INSERT ItemListTypes OFF;
-
-SET IDENTITY_INSERT ItemListStatuses ON;
-INSERT INTO ItemListStatuses (Id, Description) VALUES (1, 'Waiting');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (2, 'Executing');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (3, 'Completed');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (4, 'Incomplete');
-INSERT INTO ItemListStatuses (Id, Description) VALUES (5, 'Suspended');
-SET IDENTITY_INSERT ItemListStatuses OFF;
-
-SET IDENTITY_INSERT ItemListRowStatuses ON;
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (1, 'Waiting');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (2, 'Executing');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (3, 'Completed');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (4, 'Incomplete');
-INSERT INTO ItemListRowStatuses (Id, Description) VALUES (5, 'Suspended');
-SET IDENTITY_INSERT ItemListRowStatuses OFF;
-
 -- Machines
 INSERT INTO MachineTypes (Id, Description) VALUES ('T', 'Traslo');
 INSERT INTO MachineTypes (Id, Description) VALUES ('S', 'Shuttle');
@@ -749,7 +726,7 @@ SET IDENTITY_INSERT ItemLists OFF;
 
 --List Row
 SET IDENTITY_INSERT ItemListRows ON;
-INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatus) VALUES (1, @ItemList1_Id, 'Code 1', 1, 1, 1, 1, 'Primo Item'  , 5, 10, @ItemListStatus_Wait;
+INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatus) VALUES (1, @ItemList1_Id, 'Code 1', 1, 1, 1, 1, 'Primo Item'  , 5, 10, @ItemListStatus_Wait);
 INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatus) VALUES (2, @ItemList1_Id, 'Code 2', 1, 1, 1, 1, 'Secondo Item', 8, 20, @ItemListStatus_Wait);
 INSERT INTO ItemListRows (Id, ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatus) VALUES (3, @ItemList1_Id, 'Code 3', 1, 1, 1, 1, 'Terzo Item'  , 2, 10, @ItemListStatus_Comp);
 SET IDENTITY_INSERT ItemListRows OFF;
