@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Templates">
+
+    <ControlTemplate x:Key="VWAPP_ToggleButton_ControlTemplate"
+                     TargetType="{x:Type ToggleButton}">
+        <Border x:Name="border"
+                Background="{DynamicResource VWAPP_ToggleButton_Background_Normal}"
+                BorderBrush="{DynamicResource VWAPP_ToggleButton_BorderBrush_Normal}"
+                BorderThickness="{DynamicResource VWAPP_ToggleButton_BorderThickness_Normal}"
+                SnapsToDevicePixels="true">
+            <ContentPresenter x:Name="contentPresenter"
+                              Margin="1"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              Focusable="False"
+                              RecognizesAccessKey="True"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter TargetName="border" Property="Background" Value="{DynamicResource VWAPP_ToggleButton_Background_Pressed}" />
+                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource VWAPP_ToggleButton_BorderBrush_Pressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="border" Property="Background" Value="{DynamicResource VWAPP_ToggleButton_Background_Disabled}" />
+                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource VWAPP_ToggleButton_BorderBrush_Disabled}" />
+                <Setter TargetName="contentPresenter" Property="TextElement.Foreground" Value="{DynamicResource VWAPP_ToggleButton_Foreground_Disabled}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+</ResourceDictionary>

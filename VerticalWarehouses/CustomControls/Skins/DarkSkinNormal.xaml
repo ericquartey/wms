@@ -15,62 +15,73 @@
     <sys:Double x:Key="VWAPP_NavigationButton_FontSize_Normal">14</sys:Double>
     <FontFamily x:Key="VWAPP_NavigationButton_FontFamily_Normal">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
-    <SolidColorBrush x:Key="IAPP_NavigationButton_Background_Normal"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="IAPP_NavigationButton_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_NavigationRepeatButton_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_NavigationButton_BorderBrush_Normal"
-                     Color="{DynamicResource ColorFerrettoLightGray}" />
+    <sys:Double x:Key="VWAPP_NavigationRepeatButton_Width_Normal">200</sys:Double>
+    <sys:Double x:Key="VWAPP_NavigationRepeatButton_Height_Normal">60</sys:Double>
 
-    <SolidColorBrush x:Key="IAPP_ViewButton_Background_Normal"
+    <SolidColorBrush x:Key="VWAPP_ActionButton_Background_Normal"
                      Color="Transparent" />
-    <SolidColorBrush x:Key="IAPP_ViewButton_Foreground_Normal"
-                     Color="#fafafa" />
-    <SolidColorBrush x:Key="IAPP_ViewButton_BorderBrush_Normal"
-                     Color="#505050" />
+    <SolidColorBrush x:Key="VWAPP_ActionButton_BorderBrush_Normal"
+                     Color="{DynamicResource EDBGrayE}" />
+    <SolidColorBrush x:Key="VWAPP_ActionButton_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <sys:Double x:Key="VWAPP_ActionButton_Width_Normal">160</sys:Double>
+    <sys:Double x:Key="VWAPP_ActionButton_Height_Normal">60</sys:Double>
+    <Thickness x:Key="VWAPP_ActionButton_BorderThickness_Normal">1</Thickness>
+    <sys:Double x:Key="VWAPP_ActionButton_FontSize_Normal">14</sys:Double>
+    <FontFamily x:Key="VWAPP_ActionButton_FontFamily_Normal">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
-    <SolidColorBrush x:Key="IAPP_ViewMachineStateComboBox_Background_Normal"
+    <SolidColorBrush x:Key="VWAPP_ToggleButton_Background_Normal"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="VWAPP_ToggleButton_BorderBrush_Normal"
+                     Color="{DynamicResource EDBGrayE}" />
+    <SolidColorBrush x:Key="VWAPP_ToggleButton_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <Thickness x:Key="VWAPP_ToggleButton_BorderThickness_Normal">1</Thickness>
+
+    <SolidColorBrush x:Key="VWAPP_ViewMachineStateComboBox_Background_Normal"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
-    <SolidColorBrush x:Key="IAPP_ViewMachineStateComboBox_BorderBrush_Normal"
+    <SolidColorBrush x:Key="VWAPP_ViewMachineStateComboBox_BorderBrush_Normal"
                      Color="{StaticResource ColorFerrettoMediumGray}" />
 
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_Background_Normal"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_Background_Normal"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_BorderBrush_Normal"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_BorderBrush_Normal"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
 
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_Background_Normal"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Background_Normal"
                      Color="{DynamicResource ColorFerrettoBlack}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_BorderBrush_Normal"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_BorderBrush_Normal"
                      Color="{DynamicResource ColorFerrettoBlack}" />
 
-    <SolidColorBrush x:Key="IAPP_ErrorTextBlock_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_ErrorTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoRed}" />
-    <SolidColorBrush x:Key="IAPP_ViewBodyTextBlock_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_ViewBodyTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_CCLabelTextBlock_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_CCLabelTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_SSTitleViewTextBlock_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_SSTitleViewTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_SSSubtitleTextBlock_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_SSSubtitleTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_ViewTitleViewTextBlock_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_ViewTitleViewTextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
 
-    <SolidColorBrush x:Key="IAPP_CCInput_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_CCInput_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_CCInput_Highlighted_Normal"
+    <SolidColorBrush x:Key="VWAPP_CCInput_Highlighted_Normal"
                      Color="{DynamicResource ColorFerrettoRed}" />
     <SolidColorBrush x:Key="IAPP_CCInput_NotHighlighted_Normal"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
-    <SolidColorBrush x:Key="IAPP_SensorState_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_SensorState_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_SensorState_BulletBackground_Normal"
+    <SolidColorBrush x:Key="VWAPP_SensorState_BulletBackground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
 
 </ResourceDictionary>

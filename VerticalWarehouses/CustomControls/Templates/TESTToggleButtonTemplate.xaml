@@ -6,12 +6,12 @@
         <Grid>
             <Border x:Name="Border"
                     Grid.ColumnSpan="2"
-                    Background="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}"
-                    BorderBrush="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}"
+                    Background="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}"
+                    BorderBrush="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}"
                     BorderThickness="1" />
             <Border Grid.Column="0"
                     Margin="1"
-                    Background="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+                    Background="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />

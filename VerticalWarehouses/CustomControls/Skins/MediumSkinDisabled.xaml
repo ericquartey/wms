@@ -16,18 +16,18 @@
     <SolidColorBrush x:Key="IAPP_ViewButton_BorderBrush_Inactive"
                      Color="Transparent" />
 
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_Background_Inactive"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_Background_Inactive"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_Foreground_Inactive"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_Foreground_Inactive"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_BorderBrush_Inactive"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_BorderBrush_Inactive"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_Background_Inactive"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Background_Inactive"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_Foreground_Inactive"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Foreground_Inactive"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_BorderBrush_Inactive"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_BorderBrush_Inactive"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
 
 </ResourceDictionary>

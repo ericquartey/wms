@@ -18,7 +18,7 @@
                           Template="{StaticResource TESTCBoxItemTemplate}">
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontFamily="{DynamicResource IAPP_BodyFont}"
+                           FontFamily="{DynamicResource VWAPP_BodyFont}"
                            FontSize="25"
                            Foreground="{StaticResource FerrettoPureWhite}"
                            Text="{Binding Item1Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -28,7 +28,7 @@
                           Template="{StaticResource TESTCBoxItemTemplate}">
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontFamily="{DynamicResource IAPP_BodyFont}"
+                           FontFamily="{DynamicResource VWAPP_BodyFont}"
                            FontSize="25"
                            Foreground="{StaticResource FerrettoPureWhite}"
                            Text="{Binding Item2Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -38,7 +38,7 @@
                           Template="{StaticResource TESTCBoxItemTemplate}">
                 <TextBlock HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           FontFamily="{DynamicResource IAPP_BodyFont}"
+                           FontFamily="{DynamicResource VWAPP_BodyFont}"
                            FontSize="25"
                            Foreground="{StaticResource FerrettoPureWhite}"
                            Text="{Binding Item3Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

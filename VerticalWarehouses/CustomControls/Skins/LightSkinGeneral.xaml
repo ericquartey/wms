@@ -52,7 +52,7 @@
     <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
-    <FontFamily x:Key="IAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
-    <FontFamily x:Key="IAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
+    <FontFamily x:Key="VWAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
 </ResourceDictionary>

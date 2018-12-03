@@ -6,7 +6,7 @@
         <Border x:Name="Bd"
                 Width="{TemplateBinding Width}"
                 Padding="{TemplateBinding Padding}"
-                Background="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}"
+                Background="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
                 SnapsToDevicePixels="True">
@@ -28,8 +28,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
@@ -37,8 +37,8 @@
                     <Condition Property="IsMouseOver" Value="True" />
                     <Condition Property="IsKeyboardFocused" Value="False" />
                 </MultiTrigger.Conditions>
-                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
-                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+                <Setter TargetName="Bd" Property="BorderBrush" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

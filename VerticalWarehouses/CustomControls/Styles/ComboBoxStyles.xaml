@@ -4,9 +4,9 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
     <Style x:Key="IAPP_MainWindowMachineStateComboBoxStyle"
            TargetType="{x:Type ComboBox}">
-        <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
-        <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -14,35 +14,35 @@
     <Style x:Key="IAPP_MainWindowUserComboBoxStyle"
            TargetType="{x:Type ComboBox}">
         <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="IAPP_MainWindowMachineStateComboBoxItemStyle"
            TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
-        <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="IAPP_ViewsComboBoxItemStyle"
            TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
-        <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
     <Style x:Key="IAPP_MainWindowUserComboBoxItemStyle"
            TargetType="{x:Type ComboBoxItem}">
-        <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
-        <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />

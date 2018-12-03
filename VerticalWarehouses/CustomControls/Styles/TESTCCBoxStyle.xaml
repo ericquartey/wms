@@ -3,14 +3,14 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
     <Style x:Key="TESTCBoxStyle"
            TargetType="{x:Type ComboBox}">
-        <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Normal}" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Normal}" />
         <Style.Triggers>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="IsEnabled" Value="true" />
                     <Condition Property="IsMouseOver" Value="true" />
                 </MultiTrigger.Conditions>
-                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowMachineStateComboBox_Background_Inactive}" />
+                <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowMachineStateComboBox_Background_Inactive}" />
             </MultiTrigger>
         </Style.Triggers>
     </Style>

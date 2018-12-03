@@ -20,7 +20,7 @@
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.WeightControl}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -70,10 +70,10 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Button Content="{x:Static res:InstallationApp.Start}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Column="2"
                     Content="{x:Static res:InstallationApp.Stop}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
 </UserControl>

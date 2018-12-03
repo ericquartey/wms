@@ -9,32 +9,33 @@
     <SolidColorBrush x:Key="VWAPP_NavigationButton_Foreground_Pressed"
                      Color="{DynamicResource EDBGrayA}" />
 
-    <SolidColorBrush x:Key="IAPP_NavigationButton_Background_Pressed"
+    <SolidColorBrush x:Key="VWAPP_ActionButton_Background_Pressed"
                      Color="Transparent" />
-    <SolidColorBrush x:Key="IAPP_NavigationButton_Foreground_Pressed"
+    <SolidColorBrush x:Key="VWAPP_ActionButton_BorderBrush_Pressed"
                      Color="{DynamicResource EDBGrayA}" />
-    <SolidColorBrush x:Key="IAPP_NavigationButton_BorderBrush_Pressed"
+    <SolidColorBrush x:Key="VWAPP_ActionButton_Foreground_Pressed"
                      Color="{DynamicResource EDBGrayA}" />
 
-    <SolidColorBrush x:Key="IAPP_ViewButton_Background_Pressed"
+    <SolidColorBrush x:Key="VWAPP_NavigationRepeatButton_Foreground_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="VWAPP_ToggleButton_Background_Pressed"
+                     Color="Transparent" />
+    <SolidColorBrush x:Key="VWAPP_ToggleButton_BorderBrush_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_Background_Pressed"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
-    <SolidColorBrush x:Key="IAPP_ViewButton_Foreground_Pressed"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_Foreground_Pressed"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_ViewButton_BorderBrush_Pressed"
+    <SolidColorBrush x:Key="VWAPP_MainWindowMachineStateComboBox_BorderBrush_Pressed"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
 
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_Background_Pressed"
-                     Color="{DynamicResource ColorFerrettoDarkGray}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_Foreground_Pressed"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Background_Pressed"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowMachineStateComboBox_BorderBrush_Pressed"
-                     Color="{DynamicResource ColorFerrettoDarkGray}" />
-
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_Background_Pressed"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_Foreground_Pressed"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Foreground_Pressed"
                      Color="{DynamicResource ColorFerrettoBlack}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowUserComboBox_BorderBrush_Pressed"
+    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_BorderBrush_Pressed"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
 
 </ResourceDictionary>

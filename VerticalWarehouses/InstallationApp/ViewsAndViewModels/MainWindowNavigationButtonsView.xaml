@@ -18,33 +18,17 @@
         </Grid.RowDefinitions>
         <RepeatButton Name="UpScroll"
                       Grid.Row="0"
-                      Width="200"
-                      Height="60"
-                      Click="ScrollUpButtonClick"
-                      IsEnabled="{Binding IsUpScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Style="{StaticResource IAPP_NavigationViewRepeatButtonStyle}">
+                      Click="UpScroll_Click"
+                      IsEnabled="False"
+                      Template="{StaticResource VWAPP_NavigationRepeatButton_ControlTemplate}">
             <RepeatButton.LayoutTransform>
                 <RotateTransform Angle="180" />
             </RepeatButton.LayoutTransform>
-            <Path Width="180"
-                  Height="17"
-                  Data="M 0, 50 50,100 100,50"
-                  Fill="{StaticResource FerrettoPureWhite}"
-                  Stretch="Fill" />
         </RepeatButton>
         <RepeatButton Name="DownScroll"
                       Grid.Row="4"
-                      Width="200"
-                      Height="60"
-                      Click="ScrollDownButtonClick"
-                      IsEnabled="{Binding IsDownScrollButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      Style="{StaticResource IAPP_NavigationViewRepeatButtonStyle}">
-            <Path Width="180"
-                  Height="17"
-                  Data="M 0, 50 50,100 100,50"
-                  Fill="{StaticResource FerrettoPureWhite}"
-                  Stretch="Fill" />
-        </RepeatButton>
+                      Click="DownScroll_Click"
+                      Template="{StaticResource VWAPP_NavigationRepeatButton_ControlTemplate}" />
 
         <ScrollViewer Name="NavigationButtonScrollViewer"
                       Grid.Row="2"
@@ -101,7 +85,6 @@
                         Content="{x:Static res:InstallationApp.CellsControl}"
                         IsEnabled="{Binding IsCellsControlButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-                <Button Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}">ECCOLOQUA CHICCE'DILLA</Button>
             </StackPanel>
         </ScrollViewer>
     </Grid>

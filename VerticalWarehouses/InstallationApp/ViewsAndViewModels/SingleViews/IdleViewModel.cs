@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
-    internal class GatesControlNavigationButtonsViewModel : BindableBase
+    internal class IdleViewModel : BindableBase
     {
     }
 }

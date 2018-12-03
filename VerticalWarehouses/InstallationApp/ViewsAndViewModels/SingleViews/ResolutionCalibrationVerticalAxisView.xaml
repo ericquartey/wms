@@ -22,7 +22,7 @@
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -100,14 +100,14 @@
                     Command="{Binding SetPositionButtonCommand}"
                     Content="{x:Static res:InstallationApp.SetPosition}"
                     IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="2"
                     Grid.Column="2"
                     HorizontalAlignment="Left"
                     Command="{Binding MoveButtonCommand}"
                     Content="{x:Static res:InstallationApp.Move}"
                     IsEnabled="{Binding IsMoveButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
             <Button Grid.Row="3"
                     Grid.Column="2"
@@ -115,7 +115,7 @@
                     Command="{Binding AcceptButtonCommand}"
                     Content="{x:Static res:General.Accept}"
                     IsEnabled="{Binding IsAcceptButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         </Grid>
         <custom:CustomLabelTextBlockControl Grid.Row="2"
@@ -134,12 +134,12 @@
                     HorizontalAlignment="Left"
                     Command="{Binding CancelButtonCommand}"
                     Content="{x:Static res:General.Cancel}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Column="0"
                     HorizontalAlignment="Left"
                     Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     Content="{x:Static res:General.Back}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
 </UserControl>

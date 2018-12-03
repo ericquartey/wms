@@ -44,7 +44,7 @@
                           HorizontalContentAlignment="Right"
                           VerticalContentAlignment="Center"
                           FontSize="25"
-                          Foreground="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}"
+                          Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
                           Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
                     <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
                                   Content="Operator"
@@ -55,9 +55,9 @@
                                   Content="Log Off">
                         <ComboBoxItem.Style>
                             <Style TargetType="ComboBoxItem">
-                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
-                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
-                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+                                <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
+                                <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
+                                <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
                                 <Setter Property="FontSize" Value="20" />
                                 <Setter Property="HorizontalContentAlignment" Value="Center" />
                                 <Setter Property="VerticalContentAlignment" Value="Center" />
@@ -75,7 +75,7 @@
                                               BorderThickness="4"
                                               CurrentSelection="{Binding MachineOnMarchSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               CustomComboBoxState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              FontFamily="{DynamicResource IAPP_BodyFont}"
+                                              FontFamily="{DynamicResource VWAPP_BodyFont}"
                                               FontSize="25"
                                               Foreground="{StaticResource FerrettoPureWhite}"
                                               Item1Text="Off"
@@ -86,7 +86,7 @@
                                               BorderThickness="4"
                                               CurrentSelection="{Binding MachineModeSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               CustomComboBoxState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              FontFamily="{DynamicResource IAPP_BodyFont}"
+                                              FontFamily="{DynamicResource VWAPP_BodyFont}"
                                               FontSize="25"
                                               Foreground="{StaticResource FerrettoPureWhite}"
                                               Item1Text="Manual"

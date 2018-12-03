@@ -22,7 +22,7 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -72,12 +72,12 @@
                     Command="{Binding StartButtonCommand}"
                     Content="{x:Static res:InstallationApp.Start}"
                     IsEnabled="{Binding EnableStartButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Column="2"
                     Command="{Binding StopButtonCommand}"
                     Content="{x:Static res:InstallationApp.Stop}"
                     IsEnabled="{Binding IsStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
 </myType:BaseView>
