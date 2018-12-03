@@ -82,20 +82,20 @@
 
                 <wms:ComboBox x:Name="SelectedArea"
                               Grid.Row="3"
-                              Grid.ColumnSpan="2"
+                              Margin="0,0,20,0"
                               DisplayMember="Name"
                               EditValue="{Binding ItemWithdraw.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding ItemWithdraw.AreaChoices}" />
                 <wms:ComboBox x:Name="SelectedBay"
-                              Grid.Row="4"
-                              Grid.ColumnSpan="2"
+                              Grid.Row="3"
+                              Grid.Column="1"
                               EditValue="{Binding ItemWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding ItemWithdraw.BayChoices}"
                               Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}" />
-                <wms:InfoText Grid.Row="5"
+                <wms:InfoText Grid.Row="4"
                               Content="{Binding ItemWithdraw.TotalAvailable}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
-                <wms:SpinEdit Grid.Row="5"
+                <wms:SpinEdit Grid.Row="4"
                               Grid.Column="1"
                               EditValue="{Binding ItemWithdraw.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
