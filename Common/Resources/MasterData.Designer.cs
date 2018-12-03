@@ -304,11 +304,56 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute List Options.
+        /// </summary>
+        public static string ItemListExecuteOptions {
+            get {
+                return ResourceManager.GetString("ItemListExecuteOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Information.
         /// </summary>
         public static string ItemListInformation {
             get {
                 return ResourceManager.GetString("ItemListInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add New Row List.
+        /// </summary>
+        public static string ItemListRowAdd {
+            get {
+                return ResourceManager.GetString("ItemListRowAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Row List.
+        /// </summary>
+        public static string ItemListRowEdit {
+            get {
+                return ResourceManager.GetString("ItemListRowEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute Row List.
+        /// </summary>
+        public static string ItemListRowExecute {
+            get {
+                return ResourceManager.GetString("ItemListRowExecute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute List Row Options.
+        /// </summary>
+        public static string ItemListRowExecuteOptions {
+            get {
+                return ResourceManager.GetString("ItemListRowExecuteOptions", resourceCulture);
             }
         }
         
@@ -394,15 +439,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execute List Options.
-        /// </summary>
-        public static string ListExecuteOptions {
-            get {
-                return ResourceManager.GetString("ListExecuteOptions", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
@@ -471,6 +507,15 @@ namespace Ferretto.Common.Resources {
         public static string RunItemList {
             get {
                 return ResourceManager.GetString("RunItemList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute Row List.
+        /// </summary>
+        public static string RunItemListRow {
+            get {
+                return ResourceManager.GetString("RunItemListRow", resourceCulture);
             }
         }
         
