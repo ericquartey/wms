@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.Common.Controls.Interfaces;
@@ -295,27 +296,31 @@ namespace Ferretto.Common.Controls.Services
                     .OfType<DXWindow>()
                     .FirstOrDefault();
 
-            FrameworkElement mainHost = dialogFound;
-            if (dialogFound == null)
-            {
-                mainHost = Application.Current.MainWindow;
-            }
+            Application.Current.Dispatcher.BeginInvoke(
+                        DispatcherPriority.Normal,
+                        new Action(() =>
+                        {
+                            FrameworkElement mainHost = dialogFound;
+                            if (dialogFound == null)
+                            {
+                                mainHost = Application.Current.MainWindow;
+                            }
+                            if (mainHost != this.currentHost)
+                            {
+                                if (this.currentHost != null)
+                                {
+                                    this.currentHost.PreviewMouseDown -= this.DxWindow_PreviewMouseDown;
+                                    this.currentHost.PreviewKeyDown -= this.DxWindow_PreviewKeyDown;
+                                }
 
-            if (mainHost != this.currentHost)
-            {
-                if (this.currentHost != null)
-                {
-                    this.currentHost.PreviewMouseDown -= this.DxWindow_PreviewMouseDown;
-                    this.currentHost.PreviewKeyDown -= this.DxWindow_PreviewKeyDown;
-                }
-
-                if (mainHost != null)
-                {
-                    this.currentHost = mainHost;
-                    this.currentHost.PreviewMouseDown += this.DxWindow_PreviewMouseDown;
-                    this.currentHost.PreviewKeyDown += this.DxWindow_PreviewKeyDown;
-                }
-            }
+                                if (mainHost != null)
+                                {
+                                    this.currentHost = mainHost;
+                                    this.currentHost.PreviewMouseDown += this.DxWindow_PreviewMouseDown;
+                                    this.currentHost.PreviewKeyDown += this.DxWindow_PreviewKeyDown;
+                                }
+                            }
+                        }));
         }
 
         private bool TryExecuteShortkey(INavigableViewModel viewModel, ShortKeyInfo shortKeyInfo, ShortKey handledShortKey, bool isMain)
