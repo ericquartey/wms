@@ -5,9 +5,9 @@
     <SolidColorBrush x:Key="VWAPP_NavigationButton_Background_Pressed"
                      Color="Transparent" />
     <SolidColorBrush x:Key="VWAPP_NavigationButton_BorderBrush_Pressed"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource EDBGrayC}" />
     <SolidColorBrush x:Key="VWAPP_NavigationButton_Foreground_Pressed"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource EDBGrayC}" />
 
     <SolidColorBrush x:Key="IAPP_NavigationButton_Background_Pressed"
                      Color="Transparent" />

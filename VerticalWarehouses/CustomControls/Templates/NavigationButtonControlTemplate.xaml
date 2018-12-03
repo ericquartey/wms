@@ -7,6 +7,7 @@
         <Border Name="Root_NavigationButtonBorder"
                 Width="{DynamicResource VWAPP_NavigationButton_Width_Normal}"
                 Height="{DynamicResource VWAPP_NavigationButton_Height_Normal}"
+                Margin="0,3"
                 Background="{DynamicResource VWAPP_NavigationButton_Background_Normal}"
                 BorderBrush="{DynamicResource VWAPP_NavigationButton_BorderBrush_Normal}"
                 BorderThickness="{DynamicResource VWAPP_NavigationButton_BorderThickness_Normal}">
