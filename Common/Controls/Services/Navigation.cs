@@ -2,7 +2,14 @@
 
 namespace Ferretto.Common.Controls.Services
 {
-    public enum StatusType { Info, Error, Warning, Success }
+    public enum StatusType
+    {
+        None,
+        Info,
+        Error,
+        Warning,
+        Success
+    }
 
     public class ModelChangedEvent<TModel> : Prism.Events.PubSubEvent, IEventArgs where TModel : IBusinessObject
     {
@@ -90,7 +97,7 @@ namespace Ferretto.Common.Controls.Services
 
         public StatusEventArgs(string message = null, StatusType type = StatusType.Info)
         {
-            this.Message = message.Split(new char[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+            this.Message = message?.Split(new char[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
             this.Type = type;
         }
 

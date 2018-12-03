@@ -132,12 +132,12 @@
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Top"
                                                                ColorizeBrush="White"
-                                                               SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.SymbolName, Mode=OneWay}" />
+                                                               SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.IconName, Mode=OneWay}" />
                                                 <TextBlock Margin="5,0,0,0"
                                                            FontFamily="{DynamicResource FontSmall}"
                                                            FontSize="{DynamicResource FontSizeSmall}"
                                                            Foreground="{DynamicResource OnCommonPrimary}"
-                                                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.Info}"
+                                                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.Message}"
                                                            TextAlignment="Left" />
                                             </StackPanel>
                                         </DataTemplate>
