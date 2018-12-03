@@ -19,11 +19,11 @@ namespace Ferretto.WMS.Modules.MasterData
     /// <summary>
     /// Interaction logic for ListExecuteDialogView.xaml
     /// </summary>
-    public partial class ListExecuteDialogView : WmsDialogView
+    public partial class ItemListExecuteDialogView : WmsDialogView
     {
         #region Constructors
 
-        public ListExecuteDialogView()
+        public ItemListExecuteDialogView()
         {
             this.InitializeComponent();
         }
