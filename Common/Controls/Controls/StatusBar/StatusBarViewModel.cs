@@ -14,6 +14,7 @@ namespace Ferretto.Common.Controls
         private string info;
         private System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
         private string schedulerStatus;
+        private StatusType symbolName;
 
         #endregion Fields
 
@@ -29,7 +30,8 @@ namespace Ferretto.Common.Controls
                .Subscribe((StatusEventArgs eventArgs) =>
                {
                    this.keepInfoTimer.Stop();
-                   this.Info = eventArgs.Info;
+                   this.Info = eventArgs.Message;
+                   this.SymbolName = eventArgs.Type;
                    this.SchedulerStatus = eventArgs.IsSchedulerOnline ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
                    this.keepInfoTimer.Start();
                });
@@ -51,6 +53,12 @@ namespace Ferretto.Common.Controls
             set => this.SetProperty(ref this.schedulerStatus, value);
         }
 
+        public StatusType SymbolName
+        {
+            get => this.symbolName;
+            set => this.SetProperty(ref this.symbolName, value);
+        }
+
         #endregion Properties
 
         #region Methods
@@ -58,6 +66,7 @@ namespace Ferretto.Common.Controls
         private void keepInfoTimer_Tick(Object sender, EventArgs e)
         {
             this.Info = string.Empty;
+            this.symbolName = string.Empty;
             this.keepInfoTimer.Stop();
         }
 

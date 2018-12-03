@@ -303,14 +303,30 @@
   </data>
   <data name="ItemListViewAll" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ItemListViewStatusCompleted" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_assignment_turned_in_black_48dp.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ItemListViewStatusWaiting" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_query_builder_black_48dp.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ItemListViewTypePick" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/file/ic_file_upload_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_black_18dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_info_black_18dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="Warning" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_warning_black_18dp.png</value>
+    <comment>@Invariant</comment>
   </data>
 </root>

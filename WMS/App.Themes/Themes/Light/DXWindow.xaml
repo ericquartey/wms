@@ -26,8 +26,10 @@
     </DataTemplate>
 
 
-    
-    <ControlTemplate x:Key="{dxbt:BarControlThemeKey ResourceKey=StatusBarTemplate, ThemeName=Office2016White}" TargetType="{x:Type ContentControl}">
+
+    <ControlTemplate x:Key="{dxbt:BarControlThemeKey ResourceKey=StatusBarTemplate,
+                                                     ThemeName=Office2016White}"
+                     TargetType="{x:Type ContentControl}">
         <ContentControl>
             <ContentPresenter />
         </ContentControl>
@@ -120,16 +122,24 @@
                             </StackPanel>
                             <ctrls:WmsStatusBar x:Name="sbMain"
                                                 Grid.Row="1">
-                                <dxb:BarStaticItem x:Name="biRow"                                                  
+                                <dxb:BarStaticItem x:Name="biRow"
                                                    ShowBorder="False">
                                     <dxb:BarStaticItem.ContentTemplate>
                                         <DataTemplate>
-                                            <TextBlock Margin="5,0,0,0"
-                                                       FontFamily="{DynamicResource FontSmall}"
-                                                       FontSize="{DynamicResource FontSizeSmall}"
-                                                       Foreground="{DynamicResource OnCommonPrimary}"
-                                                       Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.Info}"
-                                                       TextAlignment="Left" />
+                                            <StackPanel Orientation="Horizontal">
+                                                <ctrls:WmsIcon Width="16"
+                                                               Height="16"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Top"
+                                                               ColorizeBrush="White"
+                                                               SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.SymbolName, Mode=OneWay}" />
+                                                <TextBlock Margin="5,0,0,0"
+                                                           FontFamily="{DynamicResource FontSmall}"
+                                                           FontSize="{DynamicResource FontSizeSmall}"
+                                                           Foreground="{DynamicResource OnCommonPrimary}"
+                                                           Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.Info}"
+                                                           TextAlignment="Left" />
+                                            </StackPanel>
                                         </DataTemplate>
                                     </dxb:BarStaticItem.ContentTemplate>
                                 </dxb:BarStaticItem>
@@ -142,7 +152,7 @@
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Top"
                                                            ColorizeBrush="White"
-                                                           SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.SchedulerStatus, Mode=TwoWay}" />
+                                                           SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.SchedulerStatus, Mode=OneWay}" />
                                         </DataTemplate>
                                     </dxb:BarButtonItem.ContentTemplate>
                                 </dxb:BarButtonItem>
