@@ -75,11 +75,14 @@ namespace Ferretto.WMS.Scheduler.Core
                     ItemListId = m.ItemListId,
                     ItemListRowId = m.ItemListRowId,
                     LoadingUnitId = m.LoadingUnitId,
+                    RequiredQuantity = m.Quantity,
+                    Lot = m.Lot,
                     MaterialStatusId = m.MaterialStatusId,
                     Type = (Common.DataModels.MissionType)m.Type,
                     PackageTypeId = m.PackageTypeId,
                     Sub1 = m.Sub1,
                     Sub2 = m.Sub2,
+                    RegistrationNumber = m.RegistrationNumber
                 })
             );
 
