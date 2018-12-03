@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 throw new ArgumentNullException(nameof(model));
             }
 
-            this.dataContext.SchedulerRequests.Add(
+            var entry = this.dataContext.SchedulerRequests.Add(
                 new Common.DataModels.SchedulerRequest
                 {
                     AreaId = model.AreaId,
@@ -55,7 +55,10 @@ namespace Ferretto.WMS.Scheduler.Core
                 }
             );
 
-            this.dataContext.SaveChanges();
+            if (this.dataContext.SaveChanges() > 0)
+            {
+                model.Id = entry.Entity.Id;
+            }
         }
 
         public void AddRange(IEnumerable<Mission> missions)
