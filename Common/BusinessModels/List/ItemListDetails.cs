@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 using Ferretto.Common.Resources;
 
@@ -70,7 +71,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemListRowsCount
         {
-            get => ((List<ItemListRow>)this.itemListRows).Count;
+            get => this.itemListRows.Count();
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
