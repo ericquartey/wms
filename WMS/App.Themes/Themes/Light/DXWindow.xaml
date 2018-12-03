@@ -127,16 +127,15 @@
                                     <dxb:BarStaticItem.ContentTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <ctrls:WmsIcon Width="16"
-                                                               Height="16"
-                                                               HorizontalAlignment="Left"
-                                                               VerticalAlignment="Top"
+                                                <ctrls:WmsIcon Width="18"
+                                                               Height="18"
                                                                ColorizeBrush="White"
                                                                SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.IconName, Mode=OneWay}" />
                                                 <TextBlock Margin="5,0,0,0"
                                                            FontFamily="{DynamicResource FontSmall}"
                                                            FontSize="{DynamicResource FontSizeSmall}"
                                                            Foreground="{DynamicResource OnCommonPrimary}"
+                                                           VerticalAlignment="Center"
                                                            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.Message}"
                                                            TextAlignment="Left" />
                                             </StackPanel>
@@ -147,8 +146,8 @@
                                                    Alignment="Far">
                                     <dxb:BarButtonItem.ContentTemplate>
                                         <DataTemplate>
-                                            <ctrls:WmsIcon Width="16"
-                                                           Height="16"
+                                            <ctrls:WmsIcon Width="18"
+                                                           Height="18"
                                                            HorizontalAlignment="Left"
                                                            VerticalAlignment="Top"
                                                            ColorizeBrush="White"
