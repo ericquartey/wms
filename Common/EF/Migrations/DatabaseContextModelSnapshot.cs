@@ -1196,11 +1196,11 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("BayId");
-
-                    b.Property<int?>("CellId");
-
                     b.Property<int?>("CompartmentId");
+
+                    b.Property<int?>("DestinationBayId");
+
+                    b.Property<int?>("DestinationCellId");
 
                     b.Property<int?>("ItemId");
 
@@ -1214,6 +1214,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("MaterialStatusId");
 
+                    b.Property<string>("MissionTypeId")
+                        .HasColumnType("char(2)");
+
                     b.Property<int?>("PackageTypeId");
 
                     b.Property<int>("Priority");
@@ -1222,29 +1225,28 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("RequiredQuantity");
 
+                    b.Property<int?>("SourceBayId");
+
+                    b.Property<int?>("SourceCellId");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
                         .HasColumnType("char(1)")
-                        .HasDefaultValueSql("'N'");
+                        .HasDefaultValueSql("N");
 
                     b.Property<string>("Sub1");
 
                     b.Property<string>("Sub2");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("BayId");
-
-                    b.HasIndex("CellId");
-
                     b.HasIndex("CompartmentId");
+
+                    b.HasIndex("DestinationBayId");
+
+                    b.HasIndex("DestinationCellId");
 
                     b.HasIndex("ItemId");
 
@@ -1256,9 +1258,29 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.HasIndex("MaterialStatusId");
 
+                    b.HasIndex("MissionTypeId");
+
                     b.HasIndex("PackageTypeId");
 
+                    b.HasIndex("SourceBayId");
+
+                    b.HasIndex("SourceCellId");
+
                     b.ToTable("Missions");
+                });
+
+            modelBuilder.Entity("Ferretto.Common.DataModels.MissionType", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(2)");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MissionTypes");
                 });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.PackageType", b =>
@@ -1288,8 +1310,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<DateTime>("CreationDate")
                         .ValueGeneratedOnAdd()
                         .HasDefaultValueSql("GETUTCDATE()");
-
-                    b.Property<int>("DispatchedQuantity");
 
                     b.Property<bool>("IsInstant");
 
@@ -1646,17 +1666,17 @@ namespace Ferretto.Common.EF.Migrations
 
             modelBuilder.Entity("Ferretto.Common.DataModels.Mission", b =>
                 {
-                    b.HasOne("Ferretto.Common.DataModels.Bay", "Bay")
-                        .WithMany("Missions")
-                        .HasForeignKey("BayId");
-
-                    b.HasOne("Ferretto.Common.DataModels.Cell", "Cell")
-                        .WithMany("Missions")
-                        .HasForeignKey("CellId");
-
                     b.HasOne("Ferretto.Common.DataModels.Compartment", "Compartment")
                         .WithMany("Missions")
                         .HasForeignKey("CompartmentId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Bay", "DestinationBay")
+                        .WithMany("DestinationMissions")
+                        .HasForeignKey("DestinationBayId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Cell", "DestinationCell")
+                        .WithMany("DestinationMissions")
+                        .HasForeignKey("DestinationCellId");
 
                     b.HasOne("Ferretto.Common.DataModels.Item", "Item")
                         .WithMany("Missions")
@@ -1678,9 +1698,21 @@ namespace Ferretto.Common.EF.Migrations
                         .WithMany("Missions")
                         .HasForeignKey("MaterialStatusId");
 
+                    b.HasOne("Ferretto.Common.DataModels.MissionType", "Type")
+                        .WithMany("Missions")
+                        .HasForeignKey("MissionTypeId");
+
                     b.HasOne("Ferretto.Common.DataModels.PackageType", "PackageType")
                         .WithMany("Missions")
                         .HasForeignKey("PackageTypeId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Bay", "SourceBay")
+                        .WithMany("SourceMissions")
+                        .HasForeignKey("SourceBayId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Cell", "SourceCell")
+                        .WithMany("SourceMissions")
+                        .HasForeignKey("SourceCellId");
                 });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.SchedulerRequest", b =>
