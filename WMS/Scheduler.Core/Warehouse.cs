@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -96,7 +96,7 @@ namespace Ferretto.WMS.Scheduler.Core
             var item = await this.dataProvider.GetItemByIdAsync(request.ItemId);
 
             var missions = new List<Mission>();
-            while (request.RequestedQuantity > request.DispatchedQuantity)
+            while (request.QuantityLeftToDispatch > 0)
             {
                 var bay = await this.GetNextEmptyBay(request.AreaId, request.BayId);
                 if (bay == null)
@@ -116,7 +116,7 @@ namespace Ferretto.WMS.Scheduler.Core
                     break;
                 }
 
-                var quantityLeftToDispatch = request.RequestedQuantity - request.DispatchedQuantity;
+                var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToDispatch);
                 var quantityToExtractFromCompartment = Math.Min(compartment.Availability, quantityLeftToDispatch);
                 compartment.ReservedForPick += quantityToExtractFromCompartment;
                 request.DispatchedQuantity += quantityToExtractFromCompartment;
