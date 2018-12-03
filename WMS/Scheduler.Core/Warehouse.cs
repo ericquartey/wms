@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -40,14 +40,17 @@ namespace Ferretto.WMS.Scheduler.Core
                 var request = await this.dataProvider.GetNextRequestToProcessAsync();
                 if (request == null)
                 {
+                    this.logger.LogDebug($"No more scheduler requests are available for processing at the moment.");
                     return null;
                 }
 
-                this.logger.LogDebug($"Request for item={request.ItemId} is the next in line to be processed.");
+                this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
+                IEnumerable<Mission> missions = null;
                 switch (request.Type)
                 {
                     case OperationType.Withdrawal:
-                        return await this.DispatchWithdrawalRequest(request);
+                        missions = await this.DispatchWithdrawalRequest(request);
+                        break;
 
                     case OperationType.Insertion:
                         throw new NotImplementedException();
@@ -62,6 +65,8 @@ namespace Ferretto.WMS.Scheduler.Core
                         throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
                 }
                 scope.Complete();
+
+                return missions;
             }
         }
 
@@ -76,7 +81,7 @@ namespace Ferretto.WMS.Scheduler.Core
                     this.dataProvider.Add(qualifiedRequest);
 
                     scope.Complete();
-                    this.logger.LogDebug($"Withdrawal request for item={request.ItemId} was accepted and stored.");
+                    this.logger.LogDebug($"Scheduler Request (id={qualifiedRequest.Id}): Withdrawal for item={qualifiedRequest.ItemId} was accepted and stored.");
                 }
             }
 
@@ -101,6 +106,7 @@ namespace Ferretto.WMS.Scheduler.Core
                 var bay = await this.GetNextEmptyBay(request.AreaId, request.BayId);
                 if (bay == null)
                 {
+                    this.logger.LogDebug($"Scheduler Request (id={request.Id}): no more bays can completely fulfill the request at the moment.");
                     break;
                 }
 
@@ -112,12 +118,11 @@ namespace Ferretto.WMS.Scheduler.Core
                 var compartment = orderedCompartments.FirstOrDefault();
                 if (compartment == null)
                 {
-                    this.logger.LogWarning($"Request id={request.Id} cannot be satisfied because no matching compartments were found.");
+                    this.logger.LogWarning($"Scheduler Request (id={request.Id}): no more compartments can fulfill the request at the moment.");
                     break;
                 }
 
                 var quantityToExtractFromCompartment = Math.Min(compartment.Availability, request.QuantityLeftToDispatch);
-                var quantityToExtractFromCompartment = Math.Min(compartment.Availability, quantityLeftToDispatch);
                 compartment.ReservedForPick += quantityToExtractFromCompartment;
                 request.DispatchedQuantity += quantityToExtractFromCompartment;
 
@@ -140,12 +145,14 @@ namespace Ferretto.WMS.Scheduler.Core
                     Type = MissionType.Pick
                 };
 
-                this.logger.LogWarning($"Generating withdrawal mission from request id={request.Id}.");
+                this.logger.LogWarning(
+                    $"Scheduler Request (id={request.Id}): generating withdrawal mission (CompartmentId={mission.CompartmentId}, BayId={mission.BayId}, Quantity={mission.Quantity}). A total quantity of {request.QuantityLeftToDispatch} still needs to be dispatched.");
 
                 missions.Add(mission);
             }
 
             this.dataProvider.AddRange(missions);
+            this.logger.LogDebug($"Scheduler Request (id={request.Id}): a total of {missions.Count} mission(s) were created.");
 
             return missions;
         }
