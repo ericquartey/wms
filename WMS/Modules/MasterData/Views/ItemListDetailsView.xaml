@@ -93,10 +93,13 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox Text="{Binding Path=ItemList.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:TextBox Margin="0,0,20,0"
+                                     Text="{Binding Path=ItemList.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
+                                     Margin="0,0,20,0"
                                      Text="{Binding Path=ItemList.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
+                                      Margin="0,0,20,0"
                                       EditValue="{Binding Path=ItemList.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=ItemList.ItemListTypeChoices}"
                                       SelectedItem="Pick" />
@@ -119,8 +122,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:TextBox Grid.Row="1"
+                                     Margin="0,0,20,0"
                                      Text="{Binding Path=ItemList.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="3"
+                                      Margin="0,0,20,0"
                                       EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
@@ -140,12 +145,15 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <CheckBox Grid.Row="0"
+                                  Margin="0,0,20,0"
                                   Content="Associated"
                                   IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
+                                     Margin="0,0,20,0"
                                      IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="2"
+                                     Margin="0,0,20,0"
                                      IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      Text="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -166,8 +174,10 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <wms:TextBox Grid.Row="0"
+                                     Margin="0,0,20,0"
                                      Text="{Binding Path=ItemList.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
+                                     Margin="0,0,20,0"
                                      Text="{Binding Path=ItemList.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
