@@ -241,7 +241,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execution List.
+        ///   Looks up a localized string similar to List Execution.
         /// </summary>
         public static string ListExecution {
             get {
