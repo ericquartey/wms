@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
@@ -79,7 +78,14 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            this.RemoveRegion(viewModel.MapId);
+            if (this.dialogs.ContainsKey(viewModel.MapId))
+            {
+                this.dialogs[viewModel.MapId].Disappear();
+            }
+            else
+            {
+                this.RemoveRegion(viewModel.MapId);
+            }
         }
 
         public string GetNewViewModelName(string fullViewName)
@@ -220,7 +226,7 @@ namespace Ferretto.Common.Controls.Services
             }
             else
             {
-                WmsDialogView.ShowDialog(registeredView);
+                this.RegisterDialog(moduleViewName, registeredView);
             }
         }
 
@@ -313,9 +319,8 @@ namespace Ferretto.Common.Controls.Services
             return ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
         }
 
-        private void RegisterDialog(string moduleViewName, string title)
+        private void RegisterDialog(string moduleViewName, INavigableView registeredView)
         {
-            var registeredView = ServiceLocator.Current.GetInstance<INavigableView>(moduleViewName);
             this.dialogs.Add(moduleViewName, registeredView);
             WmsDialogView.ShowDialog(registeredView);
         }
@@ -335,6 +340,7 @@ namespace Ferretto.Common.Controls.Services
 
             var region = this.regionManager.Regions[moduleRegionName];
             var viewActive = this.regionManager.Regions[moduleRegionName].ActiveViews.First();
+            (viewActive as INavigableView)?.Disappear();
             region.Deactivate(viewActive);
             this.regionManager.Regions[moduleRegionName].Remove(viewActive);
             this.regionManager.Regions.Remove(moduleRegionName);
@@ -360,7 +366,9 @@ namespace Ferretto.Common.Controls.Services
             #region Properties
 
             public List<string> Ids { get; set; }
+
             public Type View { get; set; }
+
             public Type ViewModel { get; set; }
 
             #endregion Properties

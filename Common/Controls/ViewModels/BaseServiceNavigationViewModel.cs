@@ -17,9 +17,22 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public IEventService EventService => this.eventService;
+
         public IHistoryViewService HistoryViewService => this.historyViewService;
+
         public INavigationService NavigationService => this.navigationService;
 
         #endregion Properties
+
+        #region Methods
+
+        public override void Disappear()
+        {
+            this.navigationService.Disappear(this);
+
+            base.Disappear();
+        }
+
+        #endregion Methods
     }
 }
