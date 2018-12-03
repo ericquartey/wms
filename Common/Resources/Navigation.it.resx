@@ -213,4 +213,7 @@
   <data name="ListDetails" xml:space="preserve">
     <value>Dettaglio delle liste</value>
   </data>
+  <data name="ListExecution" xml:space="preserve">
+    <value>Esecuzione della Lista</value>
+  </data>
 </root>

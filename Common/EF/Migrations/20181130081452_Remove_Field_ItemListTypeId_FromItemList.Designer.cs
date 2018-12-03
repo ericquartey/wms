@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181130081452_Remove_Field_ItemListTypeId_FromItemList")]
+    partial class Remove_Field_ItemListTypeId_FromItemList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -763,10 +765,7 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("ItemListId");
 
-                    b.Property<string>("ItemListRowStatus")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
+                    b.Property<int>("ItemListRowStatusId");
 
                     b.Property<DateTime?>("LastExecutionDate");
 
@@ -799,11 +798,27 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.HasIndex("ItemListId");
 
+                    b.HasIndex("ItemListRowStatusId");
+
                     b.HasIndex("MaterialStatusId");
 
                     b.HasIndex("PackageTypeId");
 
                     b.ToTable("ItemListRows");
+                });
+
+            modelBuilder.Entity("Ferretto.Common.DataModels.ItemListRowStatus", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ItemListRowStatuses");
                 });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.LoadingUnit", b =>
@@ -1520,6 +1535,10 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasOne("Ferretto.Common.DataModels.ItemList", "ItemList")
                         .WithMany("ItemListRows")
                         .HasForeignKey("ItemListId");
+
+                    b.HasOne("Ferretto.Common.DataModels.ItemListRowStatus", "ItemListRowStatus")
+                        .WithMany("ItemListRows")
+                        .HasForeignKey("ItemListRowStatusId");
 
                     b.HasOne("Ferretto.Common.DataModels.MaterialStatus", "MaterialStatus")
                         .WithMany("ItemListRows")

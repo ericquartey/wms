@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Ferretto.Common.DataModels
+namespace Ferretto.Common.BusinessModels
 {
-    // Stato di Lista Articoli
     public enum ItemListStatus
     {
         Waiting = 'W',
