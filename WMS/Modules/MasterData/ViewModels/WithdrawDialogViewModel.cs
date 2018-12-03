@@ -146,7 +146,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (result.Success)
             {
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemWithdrawCommenced));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemWithdrawCommenced, StatusType.Success));
 
                 this.Disappear();
             }
