@@ -2,7 +2,6 @@
 
 namespace Ferretto.VW.InverterDriver
 {
-   
     /// <summary>
     /// Interface IDriver.
     /// </summary>
@@ -11,15 +10,29 @@ namespace Ferretto.VW.InverterDriver
         #region Properties
 
         /// <summary>
-        /// BitArray for StatusWord
+        /// Get the Actual Position of controlled Shaft.
         /// </summary>
-        BitArray Status_Word { get; }
+        int Actual_Position_Shaft { get; }
 
-        bool Get_Status_Word_Enable { get; set; }
+        /// <summary>
+        /// Get brake resistance overtemperature-Digital value.
+        /// </summary>
+        bool Brake_Resistance_Overtemperature { get; }
 
+        /// <summary>
+        /// Get Emergency Stop-Digital value.
+        /// </summary>
+        bool Emergency_Stop { get; }
+
+        /// <summary>
+        /// Enable the retrieve of Actual_Position_Shaft parameter.
+        /// </summary>
         bool Get_Actual_Position_Shaft_Enable { get; set; }
 
-        int Actual_Position_Shaft { get; }
+        /// <summary>
+        /// Enable the retrieve of StatusWord parameter value.
+        /// </summary>
+        bool Get_Status_Word_Enable { get; set; }
 
         /// <summary>
         /// Get main status.
@@ -28,7 +41,7 @@ namespace Ferretto.VW.InverterDriver
         InverterDriverState GetMainState { get; }
 
         /// <summary>
-        ///  Set/Get IP address to connect
+        ///  Set/Get IP address to connect.
         /// </summary>
         string IPAddressToConnect { set; get; }
 
@@ -38,44 +51,33 @@ namespace Ferretto.VW.InverterDriver
         InverterDriverErrors LastError { get; }
 
         /// <summary>
-        /// Set/Get port address to connect
-        /// </summary>
-        int PortAddressToConnect { set; get; }
-
-        /// <summary>
-        /// Get brake resistance overtemperature-Digital value
-        /// </summary>
-        bool Brake_Resistance_Overtemperature { get; }
-
-        /// <summary>
-        /// Get Emergency Stop-Digital value
-        /// </summary>
-        bool Emergency_Stop { get; }
-
-        /// <summary>
-        /// Get Pawl Sensor Zero-Digital value
+        /// Get Pawl Sensor Zero-Digital value.
         /// </summary>
         bool Pawl_Sensor_Zero { get; }
 
         /// <summary>
-        /// Get Udc Presence Cradle Operator-Digital value
+        /// Set/Get port address to connect.
         /// </summary>
-        bool Udc_Presence_Cradle_Operator { get; }
+        int PortAddressToConnect { set; get; }
 
         /// <summary>
-        /// Get Udc Presence Cradle Machine-Digital value
+        /// Get the BitArray for StatusWord parameter value.
+        /// </summary>
+        BitArray Status_Word { get; }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Machine-Digital value.
         /// </summary>
         bool Udc_Presence_Cradle_Machine { get; }
+
+        /// <summary>
+        /// Get Udc Presence Cradle Operator-Digital value.
+        /// </summary>
+        bool Udc_Presence_Cradle_Operator { get; }
 
         #endregion Properties
 
         #region Methods
-
-        /// <summary>
-        /// Get IO sensor state.
-        /// </summary>
-        /// <returns></returns>
-        InverterDriverExitStatus GetIOState(int index, out bool retValue);
 
         /// <summary>
         /// Initialize the driver.

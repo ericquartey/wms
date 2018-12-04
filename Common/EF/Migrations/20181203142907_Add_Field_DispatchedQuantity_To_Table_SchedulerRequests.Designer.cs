@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181203142907_Add_Field_DispatchedQuantity_To_Table_SchedulerRequests")]
+    partial class Add_Field_DispatchedQuantity_To_Table_SchedulerRequests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -687,6 +689,8 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("AreaId");
+
                     b.Property<string>("Code")
                         .IsRequired();
 
@@ -731,6 +735,8 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("ShipmentUnitDescription");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AreaId");
 
                     b.HasIndex("Code")
                         .IsUnique();
@@ -1494,6 +1500,13 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasOne("Ferretto.Common.DataModels.Item", "Item")
                         .WithMany("ItemsCompartmentTypes")
                         .HasForeignKey("ItemId");
+                });
+
+            modelBuilder.Entity("Ferretto.Common.DataModels.ItemList", b =>
+                {
+                    b.HasOne("Ferretto.Common.DataModels.Area", "Area")
+                        .WithMany("ItemLists")
+                        .HasForeignKey("AreaId");
                 });
 
             modelBuilder.Entity("Ferretto.Common.DataModels.ItemListRow", b =>

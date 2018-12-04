@@ -37,7 +37,9 @@ namespace Ferretto.Common.Controls
         }
 
         public string MapId { get; set; }
+
         public string StateId { get; set; }
+
         public string Token { get; set; }
 
         #endregion Properties
@@ -49,7 +51,7 @@ namespace Ferretto.Common.Controls
             this.OnAppear();
         }
 
-        public void Disappear()
+        public virtual void Disappear()
         {
             this.OnDisappear();
         }
