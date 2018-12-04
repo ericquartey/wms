@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
@@ -17,12 +16,8 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService
-            dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-
-        private readonly ILoadingUnitProvider loadingUnitProvider =
-            ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
         private bool isCompartmentSelectableTray;
@@ -122,11 +117,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void RefreshData()
         {
-            this.CompartmentsDataSource = null;
             this.CompartmentsDataSource = this.loadingUnit != null
-                ? this.dataSourceService
-                    .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
-                    .Single().GetData().ToList()
+                ? this.compartmentProvider.GetByLoadingUnitId(this.loadingUnit.Id).ToList()
                 : null;
         }
 

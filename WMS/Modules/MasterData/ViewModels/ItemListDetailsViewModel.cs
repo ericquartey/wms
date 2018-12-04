@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DevExpress.Xpf.Layout.Core;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
@@ -21,12 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService
-                    dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-
-        private readonly IItemListProvider itemListProvider =
-                    ServiceLocator.Current.GetInstance<IItemListProvider>();
-
+        private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
         private ICommand addListRowCommand;
         private ICommand editListRowCommand;
         private ItemListDetails itemList;

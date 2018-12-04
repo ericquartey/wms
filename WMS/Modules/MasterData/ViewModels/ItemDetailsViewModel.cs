@@ -1,5 +1,4 @@
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -7,6 +6,7 @@ using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -16,8 +16,8 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
@@ -119,11 +119,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void RefreshData()
         {
-            this.CompartmentsDataSource = null;
             this.CompartmentsDataSource = this.item != null
-                ? this.dataSourceService
-                    .GetAll<Compartment>(nameof(ItemDetailsViewModel), this.item.Id)
-                    .Single()
+                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.item.Id))
                 : null;
         }
 
