@@ -40,24 +40,45 @@
         #region Properties
 
         public int AreaId { get; set; }
+
         public int? BayId { get; set; }
+
         public System.DateTime? CreationDate { get; set; }
 
         public int DispatchedQuantity
         {
             get => this.dispatchedQuantity;
-            set => SetIfPositive(ref this.dispatchedQuantity, value);
+            set
+            {
+                if (value > this.requestedQuantity)
+                {
+                    throw new System.ArgumentOutOfRangeException($"The {nameof(this.DispatchedQuantity)} cannot be greater than {nameof(this.RequestedQuantity)}");
+                }
+
+                this.dispatchedQuantity = value;
+            }
         }
 
         public bool IsInstant { get; set; }
+
         public int ItemId { get; set; }
+
         public int? ListId { get; set; }
+
         public int? ListRowId { get; set; }
+
         public int? LoadingUnitId { get; set; }
+
         public int? LoadingUnitTypeId { get; set; }
+
         public string Lot { get; set; }
+
         public int? MaterialStatusId { get; set; }
+
         public int? PackageTypeId { get; set; }
+
+        public int QuantityLeftToDispatch => this.requestedQuantity - this.dispatchedQuantity;
+
         public string RegistrationNumber { get; set; }
 
         public int RequestedQuantity
@@ -67,7 +88,9 @@
         }
 
         public string Sub1 { get; set; }
+
         public string Sub2 { get; set; }
+
         public OperationType Type { get; set; }
 
         #endregion Properties

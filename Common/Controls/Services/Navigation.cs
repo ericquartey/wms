@@ -2,6 +2,15 @@
 
 namespace Ferretto.Common.Controls.Services
 {
+    public enum StatusType
+    {
+        None,
+        Info,
+        Error,
+        Warning,
+        Success
+    }
+
     public class ModelChangedEvent<TModel> : Prism.Events.PubSubEvent, IEventArgs where TModel : IBusinessObject
     {
         #region Fields
@@ -22,6 +31,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public object ModelId => this.modelId;
+
         public string Token { get; }
 
         #endregion Properties
@@ -49,6 +59,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public int? ModelId => this.modelId;
+
         public string Token => this.token;
 
         #endregion Properties
@@ -74,6 +85,7 @@ namespace Ferretto.Common.Controls.Services
         #region Properties
 
         public object ModelId => this.modelId;
+
         public string Token { get; }
 
         #endregion Properties
@@ -83,18 +95,23 @@ namespace Ferretto.Common.Controls.Services
     {
         #region Constructors
 
-        public StatusEventArgs(string info = null)
+        public StatusEventArgs(string message = null, StatusType type = StatusType.Info)
         {
-            this.Info = info;
+            this.Message = message?.Split(new char[] { '\r', '\n' }, System.StringSplitOptions.RemoveEmptyEntries)[0];
+            this.Type = type;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public string Info { get; set; }
         public bool IsSchedulerOnline { get; set; }
+
+        public string Message { get; set; }
+
         public string Token { get; }
+
+        public StatusType Type { get; set; }
 
         #endregion Properties
     }

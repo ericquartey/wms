@@ -11,8 +11,9 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private const int timeToKeepText = 15;
-        private string info;
+        private string iconName;
         private System.Windows.Threading.DispatcherTimer keepInfoTimer = new System.Windows.Threading.DispatcherTimer();
+        private string message;
         private string schedulerStatus;
 
         #endregion Fields
@@ -22,14 +23,15 @@ namespace Ferretto.Common.Controls
         public StatusBarViewModel()
         {
             this.SchedulerStatus = nameof(Icons.SchedulerOffLine);
-            this.keepInfoTimer.Tick += new EventHandler(this.keepInfoTimer_Tick);
+            this.keepInfoTimer.Tick += new EventHandler(this.KeepInfoTimer_Tick);
             this.keepInfoTimer.Interval = new TimeSpan(0, 0, timeToKeepText);
 
             ServiceLocator.Current.GetInstance<IEventService>()
                .Subscribe((StatusEventArgs eventArgs) =>
                {
                    this.keepInfoTimer.Stop();
-                   this.Info = eventArgs.Info;
+                   this.Message = eventArgs.Message;
+                   this.IconName = this.GetIconNameFromStatusType(eventArgs.Type);
                    this.SchedulerStatus = eventArgs.IsSchedulerOnline ? nameof(Icons.SchedulerOnLine) : nameof(Icons.SchedulerOffLine);
                    this.keepInfoTimer.Start();
                });
@@ -39,10 +41,16 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public string Info
+        public string IconName
         {
-            get => this.info;
-            set => this.SetProperty(ref this.info, value);
+            get => this.iconName;
+            set => this.SetProperty(ref this.iconName, value);
+        }
+
+        public string Message
+        {
+            get => this.message;
+            set => this.SetProperty(ref this.message, value);
         }
 
         public string SchedulerStatus
@@ -55,9 +63,15 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        private void keepInfoTimer_Tick(Object sender, EventArgs e)
+        private string GetIconNameFromStatusType(StatusType status)
         {
-            this.Info = string.Empty;
+            return $"{nameof(StatusType)}{status}";
+        }
+
+        private void KeepInfoTimer_Tick(Object sender, EventArgs e)
+        {
+            this.Message = string.Empty;
+            this.IconName = string.Empty;
             this.keepInfoTimer.Stop();
         }
 
