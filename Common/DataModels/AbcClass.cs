@@ -3,7 +3,7 @@
 namespace Ferretto.Common.DataModels
 {
     // Classe ABC
-    public sealed class AbcClass : IDataModel
+    public sealed class AbcClass
     {
         #region Properties
 
