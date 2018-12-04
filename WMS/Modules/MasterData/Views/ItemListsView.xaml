@@ -40,7 +40,7 @@
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
-                <wms:ActionBarItem Command="{Binding EditCommand}"
+                <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
                                    Content="{x:Static res:General.ShowDetails}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
@@ -86,13 +86,13 @@
                     <dxg:GridColumn Width="180*"
                                     FieldName="Code" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemListTypeDescription" />
+                                    FieldName="ItemListType" />
                     <dxg:GridColumn Width="400*"
                                     FieldName="Description" />
                     <dxg:GridColumn Width="140*"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemListStatusDescription" />
+                                    FieldName="ItemListStatus" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="CreationDate" />
                     <dxg:GridColumn Width="190*"
