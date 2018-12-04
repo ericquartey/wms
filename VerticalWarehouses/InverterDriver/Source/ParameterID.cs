@@ -19,6 +19,7 @@
         STATUS_WORD_PARAM = 411,
         ACTUAL_POSITION_SHAFT = 1108,
         STATUS_DIGITAL_SIGNALS = 250,
+        CONTROL_MODE_PARAM = 412   // Local/Remote: 1-State Machine
     }
 
     /// <summary>
@@ -63,6 +64,7 @@
                 case ParameterID.STATUS_WORD_PARAM: type = ValueDataType.Int16; break;
                 case ParameterID.STATUS_DIGITAL_SIGNALS: type = ValueDataType.Int16; break;
                 case ParameterID.ACTUAL_POSITION_SHAFT: type = ValueDataType.Int32; break;
+                case ParameterID.CONTROL_MODE_PARAM: type = ValueDataType.Int16; break;
             }
 
             return type;
@@ -90,6 +92,7 @@
                 case 411: paramID = ParameterID.STATUS_WORD_PARAM; break;
                 case 250: paramID = ParameterID.STATUS_DIGITAL_SIGNALS; break;
                 case 1108: paramID = ParameterID.ACTUAL_POSITION_SHAFT; break;
+                case 412: paramID = ParameterID.CONTROL_MODE_PARAM; break;
             }
 
             return paramID;

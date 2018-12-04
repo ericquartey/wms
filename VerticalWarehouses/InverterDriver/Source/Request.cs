@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.InverterDriver
 {
     /// <summary>
     /// Type of request for the inverter.
