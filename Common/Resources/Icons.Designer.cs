@@ -403,6 +403,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_black_18dp.png.
+        /// </summary>
+        public static string MachineStatusFaulted {
+            get {
+                return ResourceManager.GetString("MachineStatusFaulted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png.
         /// </summary>
         public static string MachinesViewAll {

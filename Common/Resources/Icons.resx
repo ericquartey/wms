@@ -333,4 +333,8 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_watch_later_white_48dp.png</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="MachineStatusFaulted" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_black_18dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

@@ -1,21 +1,21 @@
 ﻿<UserControl x:Class="Ferretto.Common.Controls.WmsEnumIndicator"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Ferretto.Common.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
-             x:Name="indicator">
-
-    
-    <StackPanel Orientation="Horizontal" >
-   
-        <Border Width="10"
-                Height="10"
-                BorderThickness="0"
-                Background="{Binding Path=CircleBackgroundColor}"
-                DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:WmsEnumIndicator}}}"></Border>
-        <TextBlock Text="{Binding Path=EnumValue}"></TextBlock>
-    </StackPanel>
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:wms="clr-namespace:Ferretto.Common.Controls"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
+    <UserControl.Template>
+        <ControlTemplate>
+            <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsEnumIndicator}}}">
+                <!--  <Border Background="{Binding Path=BackgroundBrush}"
+                        BorderThickness="0"
+                        CornerRadius="{Binding Width}" />-->
+                <wms:WmsIcon ColorizeBrush="{Binding Path=BackgroundBrush}"
+                             SymbolName="{Binding Path=SymbolName}" />
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Template>
 </UserControl>

@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Ferretto.Common.Controls
 {
@@ -20,14 +10,50 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
-                    nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata());
+            nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata());
 
         public static readonly DependencyProperty EnumValueProperty = DependencyProperty.Register(
-                  nameof(EnumValue), typeof(object), typeof(WmsEnumIndicator), new PropertyMetadata());
+            nameof(EnumValue), typeof(object), typeof(WmsEnumIndicator), new PropertyMetadata());
 
         #endregion Fields
 
+        #region Constructors
+
+        public WmsEnumIndicator()
+        {
+            this.InitializeComponent();
+        }
+
+        #endregion Constructors
+
         #region Properties
+
+        public Brush BackgroundBrush
+        {
+            get
+            {
+                var resourceName = this.SymbolName;
+                if (resourceName == null)
+                {
+                    return Brushes.Transparent;
+                }
+
+                var resource = this.FindResource(resourceName);
+                if (resource is Brush brushResource)
+                {
+                    return brushResource;
+                }
+                else if (resource is Color colorResource)
+                {
+                    return new SolidColorBrush(colorResource);
+                }
+                else
+                {
+                    throw new Exception(
+                        $"Expected resource {resourceName} to be of type {nameof(Brush)} or {nameof(Color)}, but it has type {resource.GetType().Name} instead.");
+                }
+            }
+        }
 
         public Type EnumType
         {
@@ -41,27 +67,20 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(EnumValueProperty, value);
         }
 
-        public Color CircleBackgroundColor
+        public string SymbolName
         {
-            get 
+            get
             {
-                if(this.EnumValue == null || this.EnumType == null)
+                if (this.EnumValue == null || this.EnumType == null)
                 {
-                    return Colors.Transparent;
+                    return null;
                 }
-                var enumName = this.EnumType.Name;
+
                 var enumValue = Enum.GetName(this.EnumType, this.EnumValue);
-                return (Color)this.FindResource($"{enumName}_{enumValue}");
+                return $"{this.EnumType.Name}{enumValue}";
             }
         }
 
         #endregion Properties
-
-        public WmsEnumIndicator()
-        {
-            this.InitializeComponent();
-
-          //  this.DataContext = this;
-        }
     }
 }

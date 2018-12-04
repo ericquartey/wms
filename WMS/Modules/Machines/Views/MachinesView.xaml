@@ -36,7 +36,24 @@
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
-                        <wms:WmsEnumIndicator EnumType="{x:Type models:PersonStatus}" EnumValue="{Binding PersonStatus}"></wms:WmsEnumIndicator>
+                        <StackPanel Orientation="Horizontal">
+
+                            <wms:WmsEnumIndicator Width="10"
+                                                  Height="10"
+                                                  EnumType="{x:Type models:MachineStatus}"
+                                                  EnumValue="{Binding Status}" />
+                            <TextBlock Margin="5,0,0,0"
+                                       Text="{Binding Path=Status}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+
+                            <wms:WmsEnumIndicator Width="18"
+                                                  Height="18"
+                                                  EnumType="{x:Type models:MachineStatus}"
+                                                  EnumValue="{Binding Status}" />
+                            <TextBlock Margin="5,0,0,0"
+                                       Text="{Binding Path=Status}" />
+                        </StackPanel>
                         <wms:InfoText Content="{Binding MovedLoadingUnitsCount}" />
                         <wms:InfoText Content="{Binding AreaName}" />
                         <wms:InfoText Content="{Binding RegistrationNumber}" />
@@ -84,7 +101,7 @@
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"
-                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"                                
+                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
                                 ItemsSource="{Binding SelectedDataSource, Mode=OneWay}"
                                 SelectionMode="Row"
                                 ShowBorder="False">
