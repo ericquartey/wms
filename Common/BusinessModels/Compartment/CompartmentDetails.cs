@@ -11,6 +11,7 @@ namespace Ferretto.Common.BusinessModels
 
         private int? fifoTime;
         private int? height;
+        private int? itemPairing;
         private int? maxCapacity;
         private int reservedForPick;
         private int reservedToStore;
@@ -72,7 +73,11 @@ namespace Ferretto.Common.BusinessModels
         public int? ItemId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public int ItemPairing { get; set; }
+        public int? ItemPairing
+        {
+            get => this.itemPairing;
+            set => this.SetIfPositive(ref this.itemPairing, value);
+        }
 
         public IEnumerable<Enumeration> ItemPairingChoices { get; set; }
 

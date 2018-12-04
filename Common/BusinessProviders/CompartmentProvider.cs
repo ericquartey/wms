@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public CompartmentProvider(
-            IDatabaseContextService context,
+                    IDatabaseContextService context,
             EnumerationProvider enumerationProvider)
         {
             this.dataContext = context;
@@ -46,14 +46,14 @@ namespace Ferretto.Common.BusinessProviders
                 YPosition = model.YPosition,
                 LoadingUnitId = model.LoadingUnitId,
                 CompartmentTypeId = model.CompartmentTypeId,
-                ItemPairing = DataModels.Pairing.Free,
+                ItemPairing = (DataModels.Pairing)((int)model.ItemPairing), //Enum.Parse(typeof(Pairing),
                 Stock = model.Stock,
                 ReservedForPick = model.ReservedForPick,
                 ReservedToStore = model.ReservedToStore,
                 CreationDate = DateTime.Now
             });
-
             var changedEntitiesCount = await dataContext.SaveChangesAsync();
+
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
@@ -165,8 +165,8 @@ namespace Ferretto.Common.BusinessProviders
                 compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
                 compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
                 compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-                compartmentDetails.ItemPairingChoices =
-                    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                compartmentDetails.ItemPairingChoices = ((Pairing[])
+                    Enum.GetValues(typeof(Pairing)))
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
                 return compartmentDetails;

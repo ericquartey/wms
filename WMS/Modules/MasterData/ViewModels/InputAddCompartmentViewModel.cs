@@ -87,10 +87,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void Initialize(Tray tray, int loadingUnitId)
+        public void Initialize(Tray tray, int loadingUnitId, CompartmentDetails compartmentDetails)
         {
             this.Tray = tray;
-            this.SelectedCompartmentTray = new CompartmentDetails();
+            this.SelectedCompartmentTray = compartmentDetails;
             this.EnableInputAdd = true;
             this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
             this.loadingUnitId = loadingUnitId;

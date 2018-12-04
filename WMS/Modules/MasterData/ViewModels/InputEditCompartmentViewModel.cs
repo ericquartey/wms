@@ -166,6 +166,8 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.tray.CanAddCompartment(this.SelectedCompartmentTray, true))
             {
+                var compartment = this.loadingUnit.Compartments.Single(c => c.Id == this.SelectedCompartmentTray.Id);
+                this.UpdateCompartment(compartment);
                 var modifiedRowCount = this.loadingUnitProvider.Save(this.loadingUnit);
 
                 if (modifiedRowCount > 0)
@@ -176,13 +178,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    this.SetError(Errors.EditNoPossible);
+                    this.SetError(Errors.NoChangesFound);
                     return false;
                 }
             }
             else
             {
-                this.SetError(Errors.AddNoPossible);
+                this.SetError(Errors.EditNoPossible);
                 return false;
             }
             this.tray.Update(this.SelectedCompartmentTray);
@@ -201,6 +203,18 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Error = message;
                 this.ErrorColor = Colors.Red.ToString();
             }
+        }
+
+        private void UpdateCompartment(CompartmentDetails compartment)
+        {
+            compartment.XPosition = this.SelectedCompartmentTray.XPosition;
+            compartment.YPosition = this.SelectedCompartmentTray.YPosition;
+            compartment.Width = this.SelectedCompartmentTray.Width;
+            compartment.Height = this.SelectedCompartmentTray.Height;
+            compartment.ItemCode = this.SelectedCompartmentTray.ItemCode;
+            compartment.Stock = this.SelectedCompartmentTray.Stock;
+            compartment.MaxCapacity = this.SelectedCompartmentTray.MaxCapacity;
+            compartment.ItemPairing = this.SelectedCompartmentTray.ItemPairing;
         }
 
         #endregion Methods
