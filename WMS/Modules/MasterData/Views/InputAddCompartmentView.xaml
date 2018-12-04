@@ -51,8 +51,10 @@
             <StackPanel Orientation="Vertical">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="auto"
+                                          MinWidth="150" />
+                        <ColumnDefinition Width="*"
+                                          MinWidth="150" />
 
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
@@ -88,28 +90,23 @@
                     <wms:SpinEdit x:Name="WidthText"
                                   Grid.Row="3"
                                   Grid.Column="0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                                  Margin="0,0,5,0"
                                   EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     <wms:SpinEdit x:Name="HeightText"
                                   Grid.Row="3"
                                   Grid.Column="1"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                                  Margin="5,0,0,0"
                                   EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                     <wms:SpinEdit x:Name="PositionXText"
                                   Grid.Row="4"
                                   Grid.Column="0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
                                   Background="White"
                                   EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="4"
                                   Grid.Column="1"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                                  Margin="5,0,0,0"
                                   EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                                   Foreground="White" />
 
@@ -117,24 +114,19 @@
                                  Grid.Row="5"
                                  Grid.Column="0"
                                  Grid.ColumnSpan="2"
-                                 Width="250"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
                                  Foreground="White"
                                  Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit x:Name="QuantityText"
                                   Grid.Row="6"
                                   Grid.Column="0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                                  Margin="0,0,5,0"
                                   EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Foreground="White" />
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="6"
                                   Grid.Column="1"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                                  Margin="5,0,0,0"
                                   EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Foreground="White" />
 
