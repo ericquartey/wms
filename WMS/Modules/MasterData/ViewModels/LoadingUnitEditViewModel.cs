@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand addCommand;
         private ICommand bulkAddCommand;
-        private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private IEnumerable<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
         private Func<CompartmentDetails, CompartmentDetails, string> filterColorFunc;
         private InputAddCompartmentViewModel inputAddVM;
@@ -61,7 +62,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand BulkAddCommand => this.bulkAddCommand ??
                                   (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
 
-        public IDataSource<CompartmentDetails> CompartmentsDataSource
+        public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -178,7 +179,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = this.loadingUnit != null
                 ? this.dataSourceService
                     .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
-                    .Single()
+                    .Single().GetData().ToList()
                 : null;
         }
 
