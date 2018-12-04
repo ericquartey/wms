@@ -3,13 +3,20 @@
 namespace Ferretto.Common.DataModels
 {
     // Classe ABC
-    public sealed class AbcClass
+    public sealed class AbcClass : IDataModel
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        #region Properties
 
         public List<Cell> Cells { get; set; }
+
+        public string Description { get; set; }
+
+        public string Id { get; set; }
+
         public List<Item> Items { get; set; }
+
         public List<LoadingUnit> LoadingUnits { get; set; }
+
+        #endregion Properties
     }
 }

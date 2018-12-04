@@ -3,11 +3,16 @@
 namespace Ferretto.Common.DataModels
 {
     // Tipo Baia
-    public sealed class BayType
+    public sealed class BayType : IDataModel
     {
-        public string Id { get; set; }
-        public string Description { get; set; }
+        #region Properties
 
         public List<Bay> Bays { get; set; }
+
+        public string Description { get; set; }
+
+        public string Id { get; set; }
+
+        #endregion Properties
     }
 }

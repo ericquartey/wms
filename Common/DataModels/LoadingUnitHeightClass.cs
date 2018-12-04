@@ -3,13 +3,20 @@
 namespace Ferretto.Common.DataModels
 {
     // Classe Altezza Udc
-    public sealed class LoadingUnitHeightClass
+    public sealed class LoadingUnitHeightClass : IDataModel
     {
-        public int Id { get; set; }
+        #region Properties
+
         public string Description { get; set; }
-        public int MinHeight { get; set; }
-        public int MaxHeight { get; set; }
+
+        public int Id { get; set; }
 
         public IEnumerable<LoadingUnitType> LoadingUnitTypes { get; set; }
+
+        public int MaxHeight { get; set; }
+
+        public int MinHeight { get; set; }
+
+        #endregion Properties
     }
 }
