@@ -34,11 +34,6 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.ItemListType).IsRequired()
                  .HasColumnType("char(1)")
                  .HasConversion(x => (char)x, x => (ItemListType)Enum.ToObject(typeof(ItemListType), x));
-
-            builder.HasOne(i => i.Area)
-                .WithMany(a => a.ItemLists)
-                .HasForeignKey(i => i.AreaId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
         }
 
         #endregion Methods

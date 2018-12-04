@@ -214,6 +214,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List Execution.
+        /// </summary>
+        public static string ItemListExecution {
+            get {
+                return ResourceManager.GetString("ItemListExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Row Execution.
+        /// </summary>
+        public static string ItemListRowExecution {
+            get {
+                return ResourceManager.GetString("ItemListRowExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Items.
         /// </summary>
         public static string Items {
@@ -237,15 +255,6 @@ namespace Ferretto.Common.Resources {
         public static string ListDetails {
             get {
                 return ResourceManager.GetString("ListDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List Execution.
-        /// </summary>
-        public static string ListExecution {
-            get {
-                return ResourceManager.GetString("ListExecution", resourceCulture);
             }
         }
         

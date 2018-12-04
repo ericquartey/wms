@@ -213,7 +213,10 @@
   <data name="ListDetails" xml:space="preserve">
     <value>Dettaglio delle liste</value>
   </data>
-  <data name="ListExecution" xml:space="preserve">
+  <data name="ItemListExecution" xml:space="preserve">
     <value>Esecuzione della Lista</value>
+  </data>
+  <data name="ItemListRowExecution" xml:space="preserve">
+    <value>Esecuzione della Riga della Lista</value>
   </data>
 </root>

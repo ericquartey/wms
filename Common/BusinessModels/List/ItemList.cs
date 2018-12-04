@@ -10,7 +10,6 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private string areaName;
         private string code;
         private DateTime creationDate;
         private string description;
@@ -23,9 +22,6 @@ namespace Ferretto.Common.BusinessModels
         #endregion Fields
 
         #region Properties
-
-        [Display(Name = nameof(BusinessObjects.ItemListAreaName), ResourceType = typeof(BusinessObjects))]
-        public string AreaName { get => this.areaName; set => this.SetProperty(ref this.areaName, value); }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }

@@ -228,7 +228,10 @@
   <data name="ListDetails" xml:space="preserve">
     <value>Details of List</value>
   </data>
-  <data name="ListExecution" xml:space="preserve">
+  <data name="ItemListExecution" xml:space="preserve">
     <value>List Execution</value>
+  </data>
+  <data name="ItemListRowExecution" xml:space="preserve">
+    <value>List Row Execution</value>
   </data>
 </root>

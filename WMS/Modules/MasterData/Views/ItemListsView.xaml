@@ -89,8 +89,6 @@
                                     FieldName="ItemListTypeDescription" />
                     <dxg:GridColumn Width="400*"
                                     FieldName="Description" />
-                    <dxg:GridColumn Width="300*"
-                                    FieldName="AreaName" />
                     <dxg:GridColumn Width="140*"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="200*"
