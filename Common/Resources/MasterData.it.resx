@@ -268,10 +268,25 @@
   <data name="ListExecute" xml:space="preserve">
     <value>Esegui Lista</value>
   </data>
-  <data name="ListExecuteOptions" xml:space="preserve">
+  <data name="ItemListExecuteOptions" xml:space="preserve">
     <value>Opzioni di Esecuzione Lista</value>
   </data>
   <data name="RunItemList" xml:space="preserve">
     <value>Esegui Lista</value>
+  </data>
+  <data name="ItemListRowAdd" xml:space="preserve">
+    <value>Aggiungi Nuova Riga Lista</value>
+  </data>
+  <data name="ItemListRowEdit" xml:space="preserve">
+    <value>Modifica Riga della Lista</value>
+  </data>
+  <data name="ItemListRowExecute" xml:space="preserve">
+    <value>Esegui Riga della Lista</value>
+  </data>
+  <data name="ItemListRowExecuteOptions" xml:space="preserve">
+    <value>Opzioni di Esecuzione Riga della Lista</value>
+  </data>
+  <data name="RunItemListRow" xml:space="preserve">
+    <value>Esegui Riga della Lista</value>
   </data>
 </root>

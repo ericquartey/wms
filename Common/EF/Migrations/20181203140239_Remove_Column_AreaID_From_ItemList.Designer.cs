@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181203140239_Remove_Column_AreaID_From_ItemList")]
+    partial class Remove_Column_AreaID_From_ItemList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1155,6 +1157,8 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int?>("BayId");
 
+                    b.Property<int?>("BayId1");
+
                     b.Property<int?>("CellId");
 
                     b.Property<int?>("CompartmentId");
@@ -1198,6 +1202,8 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
+
+                    b.HasIndex("BayId1");
 
                     b.HasIndex("CellId");
 
@@ -1587,6 +1593,10 @@ namespace Ferretto.Common.EF.Migrations
                     b.HasOne("Ferretto.Common.DataModels.Bay", "Bay")
                         .WithMany("Missions")
                         .HasForeignKey("BayId");
+
+                    b.HasOne("Ferretto.Common.DataModels.Bay")
+                        .WithMany("DestinationMissions")
+                        .HasForeignKey("BayId1");
 
                     b.HasOne("Ferretto.Common.DataModels.Cell", "Cell")
                         .WithMany("Missions")
