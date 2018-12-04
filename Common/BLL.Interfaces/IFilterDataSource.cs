@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Ferretto.Common.BLL.Interfaces
 {
-    public interface ITileDataSource<TModel> where TModel : IBusinessObject
+    public interface IFilterDataSource<TModel> where TModel : IBusinessObject
     {
         #region Properties
 

@@ -5,16 +5,16 @@ using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.Modules.BLL.Models
 {
-    public class TileDataSource<TModel> : EntityInstantFeedbackSource, ITileDataSource<TModel>
+    public class FilterDataSource<TModel> : EntityInstantFeedbackSource, IFilterDataSource<TModel>
         where TModel : IBusinessObject
     {
         #region Constructors
 
-        public TileDataSource(string key, string name, Func<IQueryable<TModel>> getData)
+        public FilterDataSource(string key, string name, Func<IQueryable<TModel>> getData)
                           : this(key, name, getData, () => getData().Count())
         { }
 
-        public TileDataSource(string key, string name, Func<IQueryable<TModel>> getData, Func<int> getDataCount)
+        public FilterDataSource(string key, string name, Func<IQueryable<TModel>> getData, Func<int> getDataCount)
                 : base((a) => a.QueryableSource = getData())
         {
             if (key == null)

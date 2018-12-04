@@ -63,7 +63,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
-                                ItemsSource="{Binding SelectedTileDataSource, Mode=OneWay}"
+                                ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
                     <dxg:TableView SearchPanelHorizontalAlignment="Right"
