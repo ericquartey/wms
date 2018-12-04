@@ -15,8 +15,8 @@ namespace Ferretto.Common.BusinessModels
         private string description;
         private int itemListItemsCount;
         private int itemListRowsCount;
-        private string itemListStatusDescription;
-        private string itemListTypeDescription;
+        private ItemListStatus itemListStatus;
+        private ItemListType itemListType;
         private int priority;
 
         #endregion Fields
@@ -43,10 +43,10 @@ namespace Ferretto.Common.BusinessModels
         public int ItemListRowsCount { get => this.itemListRowsCount; set => this.SetProperty(ref this.itemListRowsCount, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public string ItemListStatusDescription { get => this.itemListStatusDescription; set => this.SetProperty(ref this.itemListStatusDescription, value); }
+        public ItemListStatus ItemListStatus { get => this.itemListStatus; set => this.SetProperty(ref this.itemListStatus, value); }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public string ItemListTypeDescription { get => this.itemListTypeDescription; set => this.SetProperty(ref this.itemListTypeDescription, value); }
+        public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
         public int Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }

@@ -10,15 +10,40 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private ICommand showDetailsCommand;
         private ICommand listExecuteCommand;
+        private ICommand showDetailsCommand;
 
         #endregion Fields
 
         #region Properties
 
+        public ICommand ListExecuteCommand => this.listExecuteCommand ??
+                  (this.listExecuteCommand = new DelegateCommand(this.ExecuteListCommand,
+                      this.CanExecuteListCommand)
+            .ObservesProperty(() => this.CurrentItem));
+
         public ICommand ShowDetailsCommand => this.showDetailsCommand ??
-                  (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand));
+                          (this.showDetailsCommand = new DelegateCommand(this.ExecuteShowDetailsCommand, this.CanShowDetailsCommand)
+            .ObservesProperty(() => this.CurrentItem));
+
+        #endregion Properties
+
+        #region Methods
+
+        private bool CanExecuteListCommand()
+        {
+            if (this.CurrentItem != null)
+            {
+                var status = this.CurrentItem.ItemListStatus;
+                if (status == ItemListStatus.Incomplete
+                    || status == ItemListStatus.Suspended
+                    || status == ItemListStatus.Waiting)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private Boolean CanShowDetailsCommand()
         {
@@ -32,35 +57,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ICommand ListExecuteCommand => this.listExecuteCommand ??
-                  (this.listExecuteCommand = new DelegateCommand(this.ExecuteListCommand,
-                      this.CanExecuteListCommand)
-            .ObservesProperty(() => this.CurrentItem));
-
-        #endregion Properties
-
-        #region Methods
-
-        private bool CanExecuteListCommand()
-        {
-            if (this.CurrentItem != null)
-            {
-                var status = this.CurrentItem.ItemListStatusDescription;
-                if (status == ItemListStatus.Incomplete.ToString()
-                    || status == ItemListStatus.Suspended.ToString()
-                    || status == ItemListStatus.Waiting.ToString())
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private void ExecuteShowDetailsCommand()
-        {
-            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
-        }
-
         private void ExecuteListCommand()
         {
             this.NavigationService.Appear(
@@ -71,6 +67,11 @@ namespace Ferretto.WMS.Modules.MasterData
                     Id = this.CurrentItem.Id
                 }
             );
+        }
+
+        private void ExecuteShowDetailsCommand()
+        {
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTDETAILS, this.CurrentItem.Id);
         }
 
         #endregion Methods

@@ -86,13 +86,13 @@
                     <dxg:GridColumn Width="180*"
                                     FieldName="Code" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemListTypeDescription" />
+                                    FieldName="ItemListType" />
                     <dxg:GridColumn Width="400*"
                                     FieldName="Description" />
                     <dxg:GridColumn Width="140*"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemListStatusDescription" />
+                                    FieldName="ItemListStatus" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="CreationDate" />
                     <dxg:GridColumn Width="190*"

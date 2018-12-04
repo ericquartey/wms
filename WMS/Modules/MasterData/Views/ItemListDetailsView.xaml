@@ -242,7 +242,7 @@
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="RequiredQuantity" />
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="ItemListRowStatusDescription" />
+                                                FieldName="ItemListRowStatus" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>

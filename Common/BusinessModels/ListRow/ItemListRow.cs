@@ -13,7 +13,7 @@ namespace Ferretto.Common.BusinessModels
         private string code;
         private DateTime creationDate;
         private string itemDescription;
-        private string itemListRowStatusDescription;
+        private ItemListRowStatus itemListRowStatus;
         private int requiredQUantity;
         private int rowPriority;
 
@@ -31,7 +31,7 @@ namespace Ferretto.Common.BusinessModels
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public string ItemListRowStatusDescription { get => this.itemListRowStatusDescription; set => this.SetProperty(ref this.itemListRowStatusDescription, value); }
+        public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRequiredQuantity), ResourceType = typeof(BusinessObjects))]
         public int RequiredQuantity { get => this.requiredQUantity; set => this.SetProperty(ref this.requiredQUantity, value); }

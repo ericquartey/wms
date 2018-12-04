@@ -156,10 +156,10 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.selectedItemListRow != null)
             {
-                var status = this.selectedItemListRow.ItemListRowStatusDescription;
-                if (status == ItemListStatus.Incomplete.ToString()
-                    || status == ItemListStatus.Suspended.ToString()
-                    || status == ItemListStatus.Waiting.ToString())
+                var status = this.selectedItemListRow.ItemListRowStatus;
+                if (status == ItemListRowStatus.Incomplete
+                    || status == ItemListRowStatus.Suspended
+                    || status == ItemListRowStatus.Waiting)
                 {
                     return true;
                 }
