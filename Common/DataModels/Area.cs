@@ -14,9 +14,6 @@ namespace Ferretto.Common.DataModels
         public IEnumerable<Bay> Bays { get; set; }
 
         public int Id { get; set; }
-
-        public IEnumerable<ItemList> ItemLists { get; set; }
-
         public IEnumerable<LoadingUnitRange> LoadingUnitRanges { get; set; }
 
         public string Name { get; set; }

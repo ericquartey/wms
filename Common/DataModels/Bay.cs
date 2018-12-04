@@ -17,8 +17,6 @@ namespace Ferretto.Common.DataModels
 
         public string Description { get; set; }
 
-        public List<Mission> DestinationMissions { get; set; }
-
         public int Id { get; set; }
 
         public int? LoadingUnitsBufferSize { get; set; }

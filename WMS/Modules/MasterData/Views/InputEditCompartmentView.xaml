@@ -50,108 +50,94 @@
         <GroupBox Grid.Row="1"
                   Margin="10,30"
                   Header="{Binding Title, Mode=OneWay}">
-            <StackPanel Orientation="Vertical">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="2*" />
+            <Grid VerticalAlignment="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="10"  />
+                    <ColumnDefinition Width="155" />
 
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                    </Grid.RowDefinitions>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" MinHeight="16" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
 
-                    <Label Grid.Row="1"
+                <Label                    
                            Grid.Column="0"
+                           Grid.ColumnSpan="3"
                            HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
                            Content="Compartment Details" />
 
-                    <TextBlock x:Name="ErrorText"
-                               Grid.Row="2"
-                               Grid.ColumnSpan="2"
-                               Height="20"
-                               MinWidth="100"
+                <TextBlock x:Name="ErrorText"                               
+                               Grid.Row="1"                               
+                               Grid.ColumnSpan="3"                        
+                               MinWidth="270"                               
                                HorizontalAlignment="Left"
-                               VerticalAlignment="Bottom"
+                           
                                FontStyle="Italic"
                                FontWeight="Bold"
                                Foreground="{Binding ErrorColor}"
                                Text="{Binding Error}"
                                TextWrapping="WrapWithOverflow"
-                               Visibility="Visible" />
+                               />
 
-                    <wms:SpinEdit x:Name="WidthText"
-                                  Grid.Row="3"
+                <wms:SpinEdit x:Name="WidthText"
+                                  Grid.Row="2"
                                   Grid.Column="0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                                  HorizontalAlignment="Stretch"
                                   EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                    <wms:SpinEdit x:Name="HeightText"
-                                  Grid.Row="3"
-                                  Grid.Column="1"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                <wms:SpinEdit x:Name="HeightText"
+                                  Grid.Row="2"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
                                   EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                    <wms:SpinEdit x:Name="PositionXText"
-                                  Grid.Row="4"
+                <wms:SpinEdit x:Name="PositionXText"
+                                  Grid.Row="3"
                                   Grid.Column="0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
-                                  Background="White"
+                                  HorizontalAlignment="Stretch"                                
                                   EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                    <wms:SpinEdit x:Name="PositionYText"
-                                  Grid.Row="4"
-                                  Grid.Column="1"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                <wms:SpinEdit x:Name="PositionYText"
+                                  Grid.Row="3"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Right"
                                   EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                                  Foreground="White" />
+                                  />
 
-                    <wms:TextBox x:Name="ArticleText"
-                                 Grid.Row="5"
+                <wms:TextBox x:Name="ArticleText"
+                                 Grid.Row="4"
                                  Grid.Column="0"
-                                 Grid.ColumnSpan="2"
-                                 Width="250"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 Foreground="White"
+                                 Grid.ColumnSpan="3"                                 
+                                 HorizontalAlignment="Stretch"                                 
                                  Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                    <wms:SpinEdit x:Name="QuantityText"
-                                  Grid.Row="6"
-                                  Grid.Column="0"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
+                <wms:SpinEdit x:Name="QuantityText"
+                                  Grid.Row="5"
+                                  Grid.Column="0"                              
+                                  MinWidth="90"
+                                  HorizontalAlignment="Stretch"
                                   EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Foreground="White" />
-                    <wms:SpinEdit x:Name="CapacityText"
-                                  Grid.Row="6"
-                                  Grid.Column="1"
-                                  HorizontalAlignment="Left"
-                                  VerticalAlignment="Top"
-                                  EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Foreground="White" />
+                                  />
+                <wms:SpinEdit x:Name="CapacityText"
+                                  Grid.Row="5"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
+                                  EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <!--TODO <wms:ComboBox x:Name="ItemPairingText"
+                <!--TODO <wms:ComboBox x:Name="ItemPairingText"
                                   Grid.Row="7"
                                   Grid.Column="0"
                                   HorizontalAlignment="Left"
                                   EditValue="{Binding SelectedCompartmentTray.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Foreground="White"
                                   ItemsSource="{Binding Path=SelectedCompartmentTray.ItemPairingChoices}" />-->
 
 
-                </Grid>
-            </StackPanel>
+            </Grid>
         </GroupBox>
     </Grid>
 </wms:WmsView>
