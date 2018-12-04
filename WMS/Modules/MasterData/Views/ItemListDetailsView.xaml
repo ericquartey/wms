@@ -131,7 +131,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="0"
+                <!--<GroupBox Grid.Row="0"
                           Grid.Column="2"
                           Header="{x:Static res:MasterData.ShipmentUnitInformation}">
                     <Grid>
@@ -159,7 +159,11 @@
 
 
                     </Grid>
-                </GroupBox>
+                </GroupBox>-->
+
+                <wms:GroupBoxToggle Title="GroupBoxToggle"
+                                    Grid.Row="0"
+                                    Grid.Column="2" />
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="3"
