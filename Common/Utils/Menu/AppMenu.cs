@@ -68,7 +68,6 @@ namespace Ferretto.Common.Utils.Menu
                     Children = new List<MainMenuItem>
                     {
                         new MainMenuItem(Navigation.UnderStockItems, bgColor, nameof(Navigation.UnderStockItems), string.Empty, string.Empty),
-                        new MainMenuItem(Navigation.CompartmentsMapping, bgColor, nameof(Navigation.CompartmentsMapping), nameof(Modules.MasterData), Modules.MasterData.LOADINGUNITEDIT),
                         new MainMenuItem(Navigation.Inventory, bgColor, nameof(Navigation.Inventory), string.Empty, string.Empty)
                     }
                 }
