@@ -2,12 +2,10 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
@@ -16,12 +14,12 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly IEnumerable<IDataSource<TModel>> dataSources;
+        private readonly IEnumerable<ITileDataSource<TModel>> tileDataSources;
         private IEnumerable<Tile> filterTiles;
         private bool flattenDataSource;
         private object modelChangedEventSubscription;
         private object modelRefreshSubscription;
-        private object selectedDataSource;
+        private object selectedTileDataSource;
         private Tile selectedFilterTile;
         private object selectedItem;
 
@@ -32,12 +30,12 @@ namespace Ferretto.Common.Controls
         protected EntityListViewModel()
         {
             var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.dataSources = dataSourceService.GetAll<TModel>(this.GetType().Name);
+            this.tileDataSources = dataSourceService.GetAllTiles<TModel>(this.GetType().Name);
             this.InitializeEvent();
-            this.filterTiles = new BindingList<Tile>(this.dataSources.Select(dataSource => new Tile
+            this.filterTiles = new BindingList<Tile>(this.tileDataSources.Select(tileDataSource => new Tile
             {
-                Key = dataSource.Key,
-                Name = dataSource.Name
+                Key = tileDataSource.Key,
+                Name = tileDataSource.Name
             }).ToList());
         }
 
@@ -77,10 +75,10 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
-        public object SelectedDataSource
+        public object SelectedTileDataSource
         {
-            get => this.selectedDataSource;
-            protected set => this.SetProperty(ref this.selectedDataSource, value);
+            get => this.selectedTileDataSource;
+            protected set => this.SetProperty(ref this.selectedTileDataSource, value);
         }
 
         public Tile SelectedFilter
@@ -90,8 +88,8 @@ namespace Ferretto.Common.Controls
             {
                 if (this.SetProperty(ref this.selectedFilterTile, value))
                 {
-                    var dataSource = this.dataSources.Single(d => d.Key == value.Key);
-                    this.SelectedDataSource = this.flattenDataSource ? dataSource.GetData() : (object)dataSource;
+                    var tileDataSource = this.tileDataSources.Single(d => d.Key == value.Key);
+                    this.SelectedTileDataSource = this.flattenDataSource ? tileDataSource.GetData() : (object)tileDataSource;
                 }
             }
         }
@@ -114,9 +112,9 @@ namespace Ferretto.Common.Controls
 
         public void RefreshData()
         {
-            var oldDataSource = this.selectedDataSource;
-            this.SelectedDataSource = null;
-            this.SelectedDataSource = oldDataSource;
+            var oldTileDataSource = this.selectedTileDataSource;
+            this.SelectedTileDataSource = null;
+            this.SelectedTileDataSource = oldTileDataSource;
         }
 
         public async Task UpdateFilterTilesCountsAsync()
@@ -125,7 +123,7 @@ namespace Ferretto.Common.Controls
             {
                 foreach (var filterTile in this.filterTiles)
                 {
-                    filterTile.Count = this.dataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
+                    filterTile.Count = this.tileDataSources.Single(d => d.Key == filterTile.Key).GetDataCount();
                 }
             }).ConfigureAwait(true);
         }

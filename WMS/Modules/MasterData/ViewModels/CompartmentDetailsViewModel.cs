@@ -1,4 +1,3 @@
-﻿using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -16,8 +15,8 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
         private CompartmentDetails compartment;
         private bool compartmentHasAllowedItems;
@@ -140,9 +139,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.AllowedItemsDataSource = null;
             this.AllowedItemsDataSource = this.compartment != null
-                ? this.dataSourceService
-                    .GetAll<AllowedItemInCompartment>(nameof(CompartmentDetailsViewModel), this.compartment.Id)
-                    .Single()
+                ? new DataSource<AllowedItemInCompartment>(() => this.itemProvider.GetAllowedByCompartmentId(this.compartment.Id))
                 : null;
         }
 
