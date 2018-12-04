@@ -192,4 +192,7 @@
   <data name="UnableToConnectToDatabase" xml:space="preserve">
     <value>Impossibile connettersi al database</value>
   </data>
+  <data name="NoChangesFound" xml:space="preserve">
+    <value>Non ho trovato modifiche da apportare.</value>
+  </data>
 </root>
