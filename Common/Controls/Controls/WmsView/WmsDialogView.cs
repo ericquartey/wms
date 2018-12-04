@@ -36,9 +36,13 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public object Data { get; set; }
+
         public bool IsClosed { get; set; }
+
         public string MapId { get; set; }
+
         public string Token { get; set; }
+
         public WmsViewType ViewType => this.viewType;
 
         #endregion Properties
@@ -70,6 +74,8 @@ namespace Ferretto.Common.Controls
                 ((INavigableViewModel)this.DataContext).Disappear();
                 this.navigationService.Disappear(this);
                 ((INavigableViewModel)this.DataContext).Dispose();
+
+                this.Close();
             }
         }
 

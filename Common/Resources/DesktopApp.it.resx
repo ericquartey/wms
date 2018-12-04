@@ -162,4 +162,7 @@
   <data name="CheckingDatabaseStructure" xml:space="preserve">
     <value>Controllo struttura database ...</value>
   </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Caricamento ...</value>
+  </data>
 </root>
