@@ -47,14 +47,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Boolean CanShowDetailsCommand()
         {
-            if (this.CurrentItem == null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            return this.CurrentItem != null;
         }
 
         private void ExecuteListCommand()
