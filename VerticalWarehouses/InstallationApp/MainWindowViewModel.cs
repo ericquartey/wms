@@ -95,6 +95,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand verticalAxisCalibrationButtonCommand;
         private ICommand verticalOffsetCalibrationButtonCommand;
         private ICommand weightControlButtonCommand;
+        private ICommand machineModeCustomCommand;
 
         #endregion ViewModels & Commands Fields
 
@@ -152,6 +153,7 @@ namespace Ferretto.VW.InstallationApp
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.VerticalAxisCalibrationVMInstance; }));
         public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.VerticalOffsetCalibrationVMInstance; }));
         public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.WeightControlVMInstance; }));
+        public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.MachineModeSelectionBool = !this.MachineModeSelectionBool));
 
         #endregion Commands Properties
 

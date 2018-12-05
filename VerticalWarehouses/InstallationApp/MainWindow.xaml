@@ -80,6 +80,9 @@
                     <Image Height="30"
                            Margin="0,10,30,2"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
+                    <custom:CustomMachineModeToggleButton CustomCommand="{Binding MachineModeCustomCommand}"
+                                                          MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
                 </StackPanel>
             </Border>
         </Grid>
