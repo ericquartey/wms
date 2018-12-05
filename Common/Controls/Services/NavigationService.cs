@@ -78,7 +78,8 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            if (this.dialogs.ContainsKey(viewModel.MapId))
+            if (viewModel.MapId != null &&
+                this.dialogs.ContainsKey(viewModel.MapId))
             {
                 this.dialogs[viewModel.MapId].Disappear();
             }

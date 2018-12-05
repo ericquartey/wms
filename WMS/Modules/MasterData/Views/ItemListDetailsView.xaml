@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
@@ -121,34 +123,46 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="0"
-                          Grid.Column="1"
-                          Header="{x:Static res:MasterData.ShipmentUnitInformation}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"
-                                              MinWidth="100" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0"
-                                  Margin="0,0,20,0"
-                                  Content="Associated"
-                                  IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:TextBox Grid.Row="1"
-                                     Margin="0,0,20,0"
-                                     IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:TextBox Grid.Row="2"
-                                     Margin="0,0,20,0"
-                                     IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Text="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                          Grid.Column="1">
+                    <GroupBox.Header>
+                        <Grid>
+                            <dxe:ToggleSwitch x:Name="toggleSwitch"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              dxt:ThemeManager.ThemeName="Office2016ColorfulSE"
+                                              IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox x:Name="TitleLabel"
+                                     Margin="60,0,0,0"
+                                     BorderThickness="0"
+                                     FontSize="14.666"
+                                     FontWeight="SemiBold"
+                                     Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+                        </Grid>
+                    </GroupBox.Header>
+                    <StackPanel IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"
+                                                  MinWidth="100" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-
-                    </Grid>
+                            <wms:TextBox Grid.Row="1"
+                                         Margin="0,0,20,0"
+                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:TextBox Grid.Row="2"
+                                         Margin="0,0,20,0"
+                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                    </StackPanel>
                 </GroupBox>
+
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="2"
@@ -228,7 +242,7 @@
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="RequiredQuantity" />
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="ItemListRowStatusDescription" />
+                                                FieldName="ItemListRowStatus" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>
