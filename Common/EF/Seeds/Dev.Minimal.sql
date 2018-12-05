@@ -730,6 +730,7 @@ INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, Item
 INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (6, 2, 'Sesta Lista', 1, 1, 4, 1);
 INSERT INTO ItemLists (Code, ItemListTypeId, Description, AreaId, Priority, ItemListStatusId, ShipmentUnitAssociated) VALUES (7, 2, 'Settima Lista', 1, 1, 5, 1);
 SET IDENTITY_INSERT ItemLists OFF;
+
 --List Row
 SET IDENTITY_INSERT ItemListRows ON;
 INSERT INTO ItemListRows (ItemListId, Code, RowPriority, ItemId, MaterialStatusId, PackageTypeId, Lot, RequiredQuantity, EvadedQuantity, ItemListRowStatusId) VALUES (7, 'Code 1', 1, 1, 1, 1, 'Primo Item', 5, 10, 1);
