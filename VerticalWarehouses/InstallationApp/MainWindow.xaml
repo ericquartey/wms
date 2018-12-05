@@ -80,44 +80,6 @@
                     <Image Height="30"
                            Margin="0,10,30,2"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
-                    <Border Width="140"
-                            Height="60"
-                            Margin="2,10,2,2"
-                            BorderBrush="{DynamicResource FerrettoDarkGray}"
-                            BorderThickness="2">
-                        <custom:CustomControlComboBox Width="140"
-                                                      Height="60"
-                                                      BorderThickness="0,0,40,0"
-                                                      CurrentSelection="{Binding MachineOnMarchSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      CustomComboBoxState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      FontFamily="{DynamicResource VWAPP_BodyFont}"
-                                                      FontSize="25"
-                                                      Foreground="{DynamicResource FerrettoPureWhite}"
-                                                      Item1Text="Off"
-                                                      Item2Text="On"
-                                                      Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineOnMarch}" />
-                    </Border>
-                    <Border Width="140"
-                            Height="60"
-                            Margin="2,10,2,2"
-                            BorderBrush="{DynamicResource FerrettoDarkGray}"
-                            BorderThickness="2">
-                        <custom:CustomControlComboBox Width="140"
-                                                      Height="60"
-                                                      BorderThickness="0,0,40,0"
-                                                      CurrentSelection="{Binding MachineModeSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      CustomComboBoxState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                      FontFamily="{DynamicResource VWAPP_BodyFont}"
-                                                      FontSize="25"
-                                                      Foreground="{DynamicResource FerrettoPureWhite}"
-                                                      Item1Text="Manual"
-                                                      Item2Text="Auto"
-                                                      Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineMode}" />
-                    </Border>
-                    <ToggleButton Width="120"
-                                  Content="{Binding MachineModeString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  IsChecked="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  Template="{StaticResource VWAPP_ToggleButton_ControlTemplate}" />
                 </StackPanel>
             </Border>
         </Grid>
