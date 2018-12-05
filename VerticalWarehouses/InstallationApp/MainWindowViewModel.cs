@@ -91,6 +91,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand verticalOffsetCalibrationButtonCommand;
         private ICommand weightControlButtonCommand;
         private ICommand machineModeCustomCommand;
+        private ICommand machineOnMarchCustomCommand;
 
         #endregion ViewModels & Commands Fields
 
@@ -158,6 +159,7 @@ namespace Ferretto.VW.InstallationApp
         public Boolean MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
         public Boolean MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
+        public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(()=> this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool));
 
         #endregion Other Properties
 

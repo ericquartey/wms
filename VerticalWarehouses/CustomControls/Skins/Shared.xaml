@@ -10,11 +10,13 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBlockStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMachineModeToggleButtonStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMachineOnMarchToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/NavigationButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ActionButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/RepeatButtonControlTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/CustomMachineModeToggleButton_Template.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/CustomMachineOnMarchToggleButton_Template.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -83,6 +83,9 @@
                     <custom:CustomMachineModeToggleButton CustomCommand="{Binding MachineModeCustomCommand}"
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
+                    <custom:CustomMachineOnMarchToggleButton CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                                                             MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
                 </StackPanel>
             </Border>
         </Grid>
