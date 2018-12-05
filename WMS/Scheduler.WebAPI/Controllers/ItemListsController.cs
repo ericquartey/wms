@@ -141,7 +141,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                                Code = r.Code,
                                CreationDate = r.CreationDate,
                                ItemDescription = r.Item.Description,
-                               ItemListRowStatusDescription = r.ItemListRowStatus.ToString(),
                                RequiredQuantity = r.RequiredQuantity,
                                RowPriority = r.RowPriority
                            })
