@@ -31,8 +31,6 @@
     <SolidColorBrush x:Key="CommonSecondaryDark"
                      Color="{StaticResource DarkGrey}" />
 
-
-
     <!--  background color brush  -->
     <SolidColorBrush x:Key="CommonBackground"
                      Color="{StaticResource PureWhite}" />

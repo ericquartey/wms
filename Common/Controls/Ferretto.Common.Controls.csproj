@@ -37,8 +37,4 @@
     </Page>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Remove="Controls\EnumIndicator\WmsEnumIndicator.xaml" />
-  </ItemGroup>
-
 </Project>
