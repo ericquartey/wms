@@ -98,7 +98,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get; set; }
 
-        public MachineStatus Status { get; set; } = MachineStatus.Faulted;
+        public MachineStatus Status { get; set; }
 
         [Display(Name = nameof(BusinessObjects.MachineTestDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? TestDate { get; set; }
