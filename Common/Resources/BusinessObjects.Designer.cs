@@ -880,6 +880,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string ItemListStatusId {
+            get {
+                return ResourceManager.GetString("ItemListStatusId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
         public static string ItemListTypeDescription {
@@ -1569,6 +1578,42 @@ namespace Ferretto.Common.Resources {
         public static string MachineRegistrationNumber {
             get {
                 return ResourceManager.GetString("MachineRegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        public static string MachineStatusAutomatic {
+            get {
+                return ResourceManager.GetString("MachineStatusAutomatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Faulted.
+        /// </summary>
+        public static string MachineStatusFaulted {
+            get {
+                return ResourceManager.GetString("MachineStatusFaulted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual.
+        /// </summary>
+        public static string MachineStatusManual {
+            get {
+                return ResourceManager.GetString("MachineStatusManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        public static string MachineStatusOffline {
+            get {
+                return ResourceManager.GetString("MachineStatusOffline", resourceCulture);
             }
         }
         

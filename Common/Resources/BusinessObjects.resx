@@ -808,4 +808,23 @@
   <data name="ItemListTypeId" xml:space="preserve">
     <value>Type</value>
   </data>
+  <data name="MachineStatusAutomatic" xml:space="preserve">
+    <value>Automatic</value>
+    <comment>Material Status - Automatic</comment>
+  </data>
+  <data name="MachineStatusFaulted" xml:space="preserve">
+    <value>Faulted</value>
+    <comment>Material Status - Faulted</comment>
+  </data>
+  <data name="MachineStatusManual" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Material Status - Manual</comment>
+  </data>
+  <data name="MachineStatusOffline" xml:space="preserve">
+    <value>Offline</value>
+    <comment>Material Status - Offline</comment>
+  </data>
+  <data name="ItemListStatusId" xml:space="preserve">
+    <value>Status</value>
+  </data>
 </root>

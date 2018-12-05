@@ -649,9 +649,21 @@
     <value>Descrizione</value>
   </data>
   <data name="ItemListStatusId" xml:space="preserve">
-    <value>Status</value>
+    <value>Stato</value>
   </data>
   <data name="ItemListTypeId" xml:space="preserve">
     <value>Tipo</value>
+  </data>
+  <data name="MachineStatusAutomatic" xml:space="preserve">
+    <value>Automatico</value>
+  </data>
+  <data name="MachineStatusFaulted" xml:space="preserve">
+    <value>In Errore</value>
+  </data>
+  <data name="MachineStatusManual" xml:space="preserve">
+    <value>Manuale</value>
+  </data>
+  <data name="MachineStatusOffline" xml:space="preserve">
+    <value>Non In Linea</value>
   </data>
 </root>
