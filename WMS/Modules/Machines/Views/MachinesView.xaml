@@ -37,10 +37,10 @@
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
 
-                        <wms:WmsEnumIndicator Width="18"
-                                              Height="18"
-                                              EnumType="{x:Type models:MachineStatus}"
-                                              EnumValue="{Binding Status}" />
+                        <wms:WmsEnumIndicator EnumType="{x:Type models:MachineStatus}"
+                                              EnumValue="{Binding Status}"
+                                              IconSize="18"
+                                              ShowText="True" />
 
                         <wms:InfoText Content="{Binding MovedLoadingUnitsCount}" />
                         <wms:InfoText Content="{Binding AreaName}" />
