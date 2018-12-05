@@ -36,24 +36,12 @@
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
-                        <StackPanel Orientation="Horizontal">
 
-                            <wms:WmsEnumIndicator Width="10"
-                                                  Height="10"
-                                                  EnumType="{x:Type models:MachineStatus}"
-                                                  EnumValue="{Binding Status}" />
-                            <TextBlock Margin="5,0,0,0"
-                                       Text="{Binding Path=Status}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
+                        <wms:WmsEnumIndicator Width="18"
+                                              Height="18"
+                                              EnumType="{x:Type models:MachineStatus}"
+                                              EnumValue="{Binding Status}" />
 
-                            <wms:WmsEnumIndicator Width="18"
-                                                  Height="18"
-                                                  EnumType="{x:Type models:MachineStatus}"
-                                                  EnumValue="{Binding Status}" />
-                            <TextBlock Margin="5,0,0,0"
-                                       Text="{Binding Path=Status}" />
-                        </StackPanel>
                         <wms:InfoText Content="{Binding MovedLoadingUnitsCount}" />
                         <wms:InfoText Content="{Binding AreaName}" />
                         <wms:InfoText Content="{Binding RegistrationNumber}" />
