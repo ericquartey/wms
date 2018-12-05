@@ -10,6 +10,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>BusinessObjects.resx</DependentUpon>
     </Compile>
+    <Compile Update="EnumColors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EnumColors.resx</DependentUpon>
+    </Compile>
     <Compile Update="DesktopApp.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -66,6 +71,10 @@
     <EmbeddedResource Update="BusinessObjects.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>BusinessObjects.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="EnumColors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnumColors.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="DesktopApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

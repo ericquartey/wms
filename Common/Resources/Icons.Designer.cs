@@ -403,11 +403,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_filled_black_18dp.png.
+        /// </summary>
+        public static string MachineStatusAutomatic {
+            get {
+                return ResourceManager.GetString("MachineStatusAutomatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/alert/ic_error_black_18dp.png.
         /// </summary>
         public static string MachineStatusFaulted {
             get {
                 return ResourceManager.GetString("MachineStatusFaulted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_check_circle_black_18dp.png.
+        /// </summary>
+        public static string MachineStatusManual {
+            get {
+                return ResourceManager.GetString("MachineStatusManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_remove_circle_black_18dp.png.
+        /// </summary>
+        public static string MachineStatusOffline {
+            get {
+                return ResourceManager.GetString("MachineStatusOffline", resourceCulture);
             }
         }
         

@@ -16,10 +16,7 @@
     <Color x:Key="Black">#0A0A0A</Color>
     <Color x:Key="Green">#57A639</Color>
     <Color x:Key="PureWhite">#ffffff</Color>
-    <Color x:Key="MachineStatusManual">#00ff00</Color>
-    <Color x:Key="MachineStatusAutomatic">#0000ff</Color>
-    <Color x:Key="MachineStatusOffline">#777777</Color>
-    <Color x:Key="MachineStatusFaulted">#ff0000</Color>
+
     <!--  primary color brush  -->
     <SolidColorBrush x:Key="CommonPrimary"
                      Color="{StaticResource Red}" />
@@ -33,6 +30,8 @@
                      Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="CommonSecondaryDark"
                      Color="{StaticResource DarkGrey}" />
+
+
 
     <!--  background color brush  -->
     <SolidColorBrush x:Key="CommonBackground"
