@@ -57,6 +57,7 @@
                                        BorderThickness="0"
                                        ItemContainerStyle="{DynamicResource CanvasItemStyle}"
                                        ItemsSource="{Binding Items, Mode=TwoWay}"
+                                       SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
                                        Style="{DynamicResource CanvasListBox}" />
 
     </Grid>
