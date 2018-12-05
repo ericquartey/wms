@@ -14,8 +14,6 @@ using Ferretto.VW.Utils.Source;
 using System.Net;
 using System.IO;
 using System.Configuration;
-using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -30,11 +28,8 @@ namespace Ferretto.VW.InstallationApp
         private SensorsStatesHubClient client;
         private BindableBase contentRegionCurrentViewModel;
         private BindableBase navigationRegionCurrentViewModel;
-        private bool machineModeSelectionBool = true;
-        private string machineModeString = "Manu";
+        private bool machineModeSelectionBool = false;
         private bool machineOnMarchSelectionBool = false;
-        private string machineOnMarchString = "Off";
-
 
         #endregion Constants, Statics & Others
 
@@ -160,27 +155,9 @@ namespace Ferretto.VW.InstallationApp
         #region Other Properties
 
         public BindableBase ContentRegionCurrentViewModel { get => this.contentRegionCurrentViewModel; set => this.SetProperty(ref this.contentRegionCurrentViewModel, value); }
-        public Boolean MachineModeSelectionBool { get => this.machineModeSelectionBool; set { this.SetProperty(ref this.machineModeSelectionBool, value);
-                if (this.MachineModeSelectionBool == false)
-                {
-                    this.MachineModeString = "Manu";
-                } else
-                {
-                    this.MachineModeString = "Auto";
-                }
-            } }
-        public Boolean MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set { this.SetProperty(ref this.machineOnMarchSelectionBool, value);
-                if (this.MachineOnMarchSelectionBool == false)
-                {
-                    this.MachineOnMarchString = "Off";
-                } else
-                {
-                    this.MachineOnMarchString = "On";
-                }
-            } }
+        public Boolean MachineModeSelectionBool { get => this.machineModeSelectionBool; set => this.SetProperty(ref this.machineModeSelectionBool, value); }
+        public Boolean MachineOnMarchSelectionBool { get => this.machineOnMarchSelectionBool; set => this.SetProperty(ref this.machineOnMarchSelectionBool, value); }
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
-        public String MachineModeString { get => this.machineModeString; set => this.SetProperty(ref this.machineModeString, value); }
-        public String MachineOnMarchString { get => this.machineOnMarchString; set => this.SetProperty(ref this.machineOnMarchString, value); }
 
         #endregion Other Properties
 
