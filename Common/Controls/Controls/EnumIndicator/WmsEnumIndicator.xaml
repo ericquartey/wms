@@ -7,15 +7,16 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              mc:Ignorable="d">
-    <UserControl.Template>
-        <ControlTemplate>
-            <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsEnumIndicator}}}">
-                <!--  <Border Background="{Binding Path=BackgroundBrush}"
-                        BorderThickness="0"
-                        CornerRadius="{Binding Width}" />-->
-                <wms:WmsIcon ColorizeBrush="{Binding Path=BackgroundBrush}"
-                             SymbolName="{Binding Path=SymbolName}" />
-            </Grid>
-        </ControlTemplate>
-    </UserControl.Template>
+
+    <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsEnumIndicator}}}"
+                Orientation="Horizontal">
+        <wms:WmsIcon x:Name="icon"
+                     Width="{Binding Path=IconSize}"
+                     Height="{Binding Path=IconSize}"
+                     Margin="5"
+                     ColorizeBrush="{Binding Path=BackgroundBrush, Mode=OneWay}"
+                     SymbolName="{Binding Path=SymbolName, Mode=OneWay}" />
+        <TextBlock x:Name="textBlock"
+                   VerticalAlignment="Center" />
+    </StackPanel>
 </UserControl>

@@ -2,6 +2,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Ferretto.Common.Resources;
+using Ferretto.Common.Utils;
 
 namespace Ferretto.Common.Controls
 {
@@ -10,10 +12,16 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
-            nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata());
+            nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));
 
         public static readonly DependencyProperty EnumValueProperty = DependencyProperty.Register(
-            nameof(EnumValue), typeof(object), typeof(WmsEnumIndicator), new PropertyMetadata());
+            nameof(EnumValue), typeof(Enum), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));
+
+        public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register(
+            nameof(IconSize), typeof(int), typeof(WmsEnumIndicator));
+
+        public static readonly DependencyProperty ShowTextProperty = DependencyProperty.Register(
+            nameof(ShowText), typeof(bool), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(ShowTextChanged)));
 
         #endregion Fields
 
@@ -38,20 +46,9 @@ namespace Ferretto.Common.Controls
                     return Brushes.Transparent;
                 }
 
-                var resource = this.FindResource(resourceName);
-                if (resource is Brush brushResource)
-                {
-                    return brushResource;
-                }
-                else if (resource is Color colorResource)
-                {
-                    return new SolidColorBrush(colorResource);
-                }
-                else
-                {
-                    throw new Exception(
-                        $"Expected resource {resourceName} to be of type {nameof(Brush)} or {nameof(Color)}, but it has type {resource.GetType().Name} instead.");
-                }
+                var resourceValue = EnumColors.ResourceManager.GetString(resourceName);
+
+                return new SolidColorBrush((Color)ColorConverter.ConvertFromString(resourceValue));
             }
         }
 
@@ -61,10 +58,22 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(EnumTypeProperty, value);
         }
 
-        public object EnumValue
+        public Enum EnumValue
         {
-            get => this.GetValue(EnumValueProperty);
+            get => (Enum)this.GetValue(EnumValueProperty);
             set => this.SetValue(EnumValueProperty, value);
+        }
+
+        public int IconSize
+        {
+            get => (int)this.GetValue(IconSizeProperty);
+            set => this.SetValue(IconSizeProperty, value);
+        }
+
+        public bool ShowText
+        {
+            get => (bool)this.GetValue(ShowTextProperty);
+            set => this.SetValue(ShowTextProperty, value);
         }
 
         public string SymbolName
@@ -82,5 +91,36 @@ namespace Ferretto.Common.Controls
         }
 
         #endregion Properties
+
+        #region Methods
+
+        private static void EnumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            UpdateText(d as WmsEnumIndicator);
+        }
+
+        private static void ShowTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            UpdateText(d as WmsEnumIndicator);
+        }
+
+        private static void UpdateText(WmsEnumIndicator control)
+        {
+            if (control == null)
+            {
+                return;
+            }
+
+            if (control.EnumValue != null && control.EnumType != null && control.ShowText)
+            {
+                control.textBlock.Text = control.EnumValue.GetDisplayName(control.EnumType);
+            }
+            else
+            {
+                control.textBlock.Text = null;
+            }
+        }
+
+        #endregion Methods
     }
 }
