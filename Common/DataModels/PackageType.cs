@@ -3,7 +3,8 @@
 namespace Ferretto.Common.DataModels
 {
     // Tipo Confezione
-    public sealed class PackageType
+    public sealed class PackageType : IDataModel
+
     {
         #region Properties
 

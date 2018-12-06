@@ -3,11 +3,16 @@
 namespace Ferretto.Common.DataModels
 {
     // Stato Scomparto
-    public sealed class CompartmentStatus
+    public sealed class CompartmentStatus : IDataModel
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
+        #region Properties
 
         public IEnumerable<Compartment> Compartments { get; set; }
+
+        public string Description { get; set; }
+
+        public int Id { get; set; }
+
+        #endregion Properties
     }
 }

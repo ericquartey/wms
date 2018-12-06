@@ -3,7 +3,7 @@
 namespace Ferretto.Common.DataModels
 {
     // Baia
-    public sealed class Bay
+    public sealed class Bay : IDataModel
     {
         #region Properties
 

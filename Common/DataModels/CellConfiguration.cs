@@ -3,10 +3,9 @@
 namespace Ferretto.Common.DataModels
 {
     // Configurazione Cella
-    public sealed class CellConfiguration
+    public sealed class CellConfiguration : IDataModel
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
+        #region Properties
 
         public IEnumerable<CellConfigurationCellPositionLoadingUnitType> CellConfigurationCellPositionLoadingUnitTypes
         {
@@ -15,5 +14,11 @@ namespace Ferretto.Common.DataModels
         }
 
         public IEnumerable<CellConfigurationCellType> CellConfigurationCellTypes { get; set; }
+
+        public string Description { get; set; }
+
+        public int Id { get; set; }
+
+        #endregion Properties
     }
 }

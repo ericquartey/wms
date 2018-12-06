@@ -59,7 +59,7 @@ namespace Ferretto.WMS.AutomationServiceMock
 
         private async Task ExecuteMission(Mission mission)
         {
-            this.logger.LogInformation($"Executing mission '{mission.TypeId}' on item {mission.ItemId}, quantity {mission.Quantity}");
+            this.logger.LogInformation($"Executing mission '{mission.Type}' on item {mission.ItemId}, quantity {mission.Quantity}");
 
             // simulate mission execution
             await Task.Delay(1000);
