@@ -181,7 +181,7 @@ namespace Ferretto.WMS.Scheduler.Core
                    Sub1 = r.Sub1,
                    Sub2 = r.Sub2
                })
-               .Where(r => r.ListRowStatus == ListRowStatus.Executing)
+               .Where(r => r.ListRowStatus == ListRowStatus.Executing || r.ListRowStatus == ListRowStatus.NotSpecified)
                .ToListAsync();
         }
 
