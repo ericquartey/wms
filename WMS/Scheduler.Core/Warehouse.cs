@@ -37,32 +37,43 @@ namespace Ferretto.WMS.Scheduler.Core
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var request = await this.dataProvider.GetNextRequestToProcessAsync();
-                if (request == null)
+                IEnumerable<Mission> missions = new List<Mission>();
+
+                var requests = this.dataProvider.GetRequestsToProcess().ToList();
+                if (requests.Any() == false)
                 {
                     this.logger.LogDebug($"No more scheduler requests are available for processing at the moment.");
-                    return null;
+                    return missions;
                 }
 
-                this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
-                IEnumerable<Mission> missions = null;
-                switch (request.Type)
+                this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
+
+                var orderedRequests = requests
+                    .OrderBy(r => r.ListStatus, new ItemListStatusComparer())
+                    .ThenBy(r => r.ListRowStatus, new ItemListRowStatusComparer());
+
+                foreach (var request in orderedRequests)
                 {
-                    case OperationType.Withdrawal:
-                        missions = await this.DispatchWithdrawalRequest(request);
-                        break;
+                    this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
 
-                    case OperationType.Insertion:
-                        throw new NotImplementedException();
+                    switch (request.Type)
+                    {
+                        case OperationType.Withdrawal:
+                            missions = await this.DispatchWithdrawalRequest(request);
+                            break;
 
-                    case OperationType.Replacement:
-                        throw new NotImplementedException();
+                        case OperationType.Insertion:
+                            throw new NotImplementedException();
 
-                    case OperationType.Reorder:
-                        throw new NotImplementedException();
+                        case OperationType.Replacement:
+                            throw new NotImplementedException();
 
-                    default:
-                        throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+                        case OperationType.Reorder:
+                            throw new NotImplementedException();
+
+                        default:
+                            throw new InvalidOperationException($"Cannot process scheduler request id={request.Id} because operation type cannot be understood.");
+                    }
                 }
                 scope.Complete();
 
@@ -103,13 +114,6 @@ namespace Ferretto.WMS.Scheduler.Core
             var missions = new List<Mission>();
             while (request.QuantityLeftToDispatch > 0)
             {
-                var bay = await this.GetNextEmptyBay(request.AreaId, request.BayId);
-                if (bay == null)
-                {
-                    this.logger.LogDebug($"Scheduler Request (id={request.Id}): no more bays can completely fulfill the request at the moment.");
-                    break;
-                }
-
                 var compartments = this.schedulerRequestProvider.GetCandidateWithdrawalCompartments(request);
 
                 var orderedCompartments =
@@ -132,12 +136,12 @@ namespace Ferretto.WMS.Scheduler.Core
                 var mission = new Mission
                 {
                     ItemId = item.Id,
-                    BayId = bay.Id,
+                    BayId = request.BayId.Value,
                     CellId = compartment.CellId,
                     CompartmentId = compartment.Id,
                     LoadingUnitId = compartment.LoadingUnitId,
-                    // ItemListId = request.ListId, // TODO: extend this method to support normal (non-instant) withdrawal requests
-                    // ItemListRowId = request.ListRowId, // TODO: extend this method to support normal (non-instant) withdrawal requests
+                    ItemListId = request.ListId,
+                    ItemListRowId = request.ListRowId,
                     MaterialStatusId = compartment.MaterialStatusId,
                     Sub1 = compartment.Sub1,
                     Sub2 = compartment.Sub2,
