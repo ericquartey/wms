@@ -38,9 +38,9 @@
                Right="1"
                Top="1" />
 
-    <SolidColorBrush x:Key="IAPP_SensorStateBrush_Fill_Up"
+    <SolidColorBrush x:Key="VWAPP_SensorStateBrush_Fill_Up"
                      Color="{DynamicResource ColorFerrettoGreen}" />
-    <SolidColorBrush x:Key="IAPP_SensorStateBrush_Fill_Down"
+    <SolidColorBrush x:Key="VWAPP_SensorStateBrush_Fill_Down"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
 
     <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineMode_Auto"

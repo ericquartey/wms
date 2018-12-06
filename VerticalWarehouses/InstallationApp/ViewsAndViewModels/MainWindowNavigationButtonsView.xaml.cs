@@ -42,7 +42,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
             else
             {
                 this.UpScroll.IsEnabled = true;
-                Debug.Print("Scroll pos != 0: " + this.NavigationButtonScrollViewer.VerticalOffset);
             }
             if (e.VerticalOffset == 322)
             {
@@ -51,7 +50,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
             else
             {
                 this.DownScroll.IsEnabled = true;
-                Debug.Print("Scroll pos != 0: " + this.NavigationButtonScrollViewer.VerticalOffset);
             }
         }
 

@@ -11,6 +11,7 @@
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
@@ -47,7 +48,7 @@
                                             HorizontalAlignment="Left"
                                             InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             LabelText="{x:Static res:General.UserLogin}"
-                                            Style="{StaticResource SS_MainWindowCustomControlInputField_ValidationTest}" />
+                                            Style="{StaticResource VWAPP_SplashScreenMainWindowCustomControlInputField_ValidationTest}" />
             <custom:CustomInputFieldControl Width="200"
                                             HorizontalAlignment="Left"
                                             InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

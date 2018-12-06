@@ -18,6 +18,7 @@
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -59,7 +60,7 @@
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.Installer}"
                                       IsSelected="True"
-                                      Style="{StaticResource IAPP_MainWindowUserComboBoxItemStyle}"
+                                      Style="{StaticResource VWAPP_MainWindowUserComboBoxItemStyle}"
                                       Template="{StaticResource IAPP_MainWindowUserComboBoxItemTemplate}" />
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
                                       Content="{x:Static res:InstallationApp.LogOff}">
@@ -86,6 +87,7 @@
                     <custom:CustomMachineOnMarchToggleButton CustomCommand="{Binding MachineOnMarchCustomCommand}"
                                                              MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+                    <custom:CustomInputText LabelText="Inserire Ciaone" />
                 </StackPanel>
             </Border>
         </Grid>
