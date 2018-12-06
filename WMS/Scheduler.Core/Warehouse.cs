@@ -48,11 +48,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
                 this.logger.LogDebug($"A total of {requests.Count()} requests need to be processed.");
 
-                var orderedRequests = requests
-                    .OrderBy(r => r.ListStatus, new ItemListStatusComparer())
-                    .ThenBy(r => r.ListRowStatus, new ItemListRowStatusComparer());
-
-                foreach (var request in orderedRequests)
+                foreach (var request in requests)
                 {
                     this.logger.LogDebug($"Scheduler Request (id={request.Id}) for item (id={request.ItemId}) is the next in line to be processed.");
 

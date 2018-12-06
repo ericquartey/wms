@@ -151,7 +151,11 @@ namespace Ferretto.WMS.Scheduler.Core
         public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-               .Where(r => r.BayId.HasValue && r.RequestedQuantity > r.DispatchedQuantity && r.BayId.HasValue)
+               .Where(r =>
+                    r.BayId.HasValue
+                    &&
+                    r.RequestedQuantity > r.DispatchedQuantity
+                )
                .Include(r => r.List)
                .Include(r => r.ListRow)
                .Include(r => r.Bay)
@@ -181,7 +185,19 @@ namespace Ferretto.WMS.Scheduler.Core
                    Sub1 = r.Sub1,
                    Sub2 = r.Sub2
                })
-               .Where(r => r.ListRowStatus == ListRowStatus.Executing || r.ListRowStatus == ListRowStatus.NotSpecified)
+               .Where(r =>
+                    (
+                        r.ListRowStatus == ListRowStatus.Executing
+                        ||
+                        r.ListRowStatus == ListRowStatus.NotSpecified
+                    )
+                    &&
+                    (
+                        r.ListStatus == ListStatus.Executing
+                        ||
+                        r.ListStatus == ListStatus.NotSpecified
+                    )
+                )
                .ToListAsync();
         }
 
