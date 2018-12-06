@@ -1,7 +1,5 @@
-﻿using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core;
-using Ferretto.WMS.Scheduler.WebAPI.Contracts;
 using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -94,11 +92,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
             services.AddDbContext<DatabaseContext>(
                 options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Ferretto.Common.EF")));
 
-            services.AddBusinessProviders();
             services.AddCoreBusinessProviders();
-
-            var schedulerUrl = this.Configuration["Scheduler:Url"];
-            services.AddWebAPIClients(schedulerUrl);
 
             services.AddTransient<IWarehouse, Warehouse>();
 
