@@ -70,7 +70,7 @@ namespace Ferretto.Common.BusinessProviders
                    RowPriority = l.Priority,
                    ItemDescription = l.Item.Description,
                    RequiredQuantity = l.RequiredQuantity,
-                   ItemListRowStatus = (ItemListRowStatus)l.ItemListRowStatus,
+                   ItemListRowStatus = (ItemListRowStatus)l.Status,
                    CreationDate = l.CreationDate
                }).AsNoTracking();
 
