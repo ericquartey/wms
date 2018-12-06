@@ -1,4 +1,4 @@
-using Ferretto.Common.EF;
+﻿using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core;
 using Ferretto.WMS.Scheduler.WebAPI.Hubs;
 using Microsoft.AspNetCore.Builder;
@@ -51,6 +51,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI
                     };
                     settings.GeneratorSettings.DefaultPropertyNameHandling =
                         PropertyNameHandling.CamelCase;
+
+                    settings.GeneratorSettings.DefaultEnumHandling = EnumHandling.String;
                 });
             }
             else
