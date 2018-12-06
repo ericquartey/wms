@@ -100,12 +100,13 @@
                             Width="730"
                             Height="610"
                             Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Expander>
+            <Expander Grid.Column="0"
+                      Width="210"
+                      Height="610"
+                      VerticalAlignment="Center"
+                      IsExpanded="{Binding IsNavigationButtonRegionExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource WmsExpanderStyle}">
                 <ContentControl Name="InstallationPageNavigationButtonsRegionContentControl"
-                                Grid.Column="0"
-                                Width="210"
-                                Height="610"
-                                VerticalAlignment="Center"
                                 Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Expander>
         </Grid>

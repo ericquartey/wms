@@ -34,6 +34,7 @@ namespace Ferretto.VW.InstallationApp
         private BindableBase navigationRegionCurrentViewModel;
         private bool machineModeSelectionBool = false;
         private bool machineOnMarchSelectionBool = false;
+        private bool isNavigationButtonRegionExpanded = true;
 
         #endregion Constants, Statics & Others
 
@@ -106,6 +107,8 @@ namespace Ferretto.VW.InstallationApp
             this.NavigationRegionCurrentViewModel = this.MainWindowNavigationButtonsVMInstance;
             this.ContentRegionCurrentViewModel = this.IdleVMInstance;
             this.ConnectMethod();
+            NavigationService.GoToViewEventHandler += this.HideNavigationButtonRegion;
+            NavigationService.ExitViewEventHandler += this.ShowNavigationButtonRegion;
             SensorsStatesChangedEventHandler += this.EventInitializer;
         }
 
@@ -197,6 +200,8 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool));
 
+        public Boolean IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
+
         #endregion Other Properties
 
         #region Methods
@@ -237,6 +242,16 @@ namespace Ferretto.VW.InstallationApp
 
         private void EventInitializer()
         {
+        }
+
+        private void HideNavigationButtonRegion()
+        {
+            this.IsNavigationButtonRegionExpanded = false;
+        }
+
+        private void ShowNavigationButtonRegion()
+        {
+            this.IsNavigationButtonRegionExpanded = true;
         }
 
         private void RaiseSensorsStatesChangedEvent() => SensorsStatesChangedEventHandler();

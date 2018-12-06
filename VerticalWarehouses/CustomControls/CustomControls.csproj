@@ -69,6 +69,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Mvvm, Version=18.2.0.0, Culture=neutral, PublicKeyToken=382ad28f6ae31f30, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DevExpressMvvm.18.2.3\lib\net452\DevExpress.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Mvvm.UI, Version=18.2.0.0, Culture=neutral, PublicKeyToken=382ad28f6ae31f30, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DevExpressMvvm.18.2.3\lib\net452\DevExpress.Mvvm.UI.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="Prism, Version=6.3.0.0, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Prism.Core.6.3.0\lib\net45\Prism.dll</HintPath>
@@ -320,6 +326,8 @@
     <Compile Include="Controls\CustomSensorControl.xaml.cs">
       <DependentUpon>CustomSensorControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Expander.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="Models\InputCompartment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -366,10 +374,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj">
-      <Project>{45265ab8-f227-436c-baf6-2d7602271d6a}</Project>
-      <Name>Ferretto.Common.Controls</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
       <Name>Ferretto.Common.Resources</Name>

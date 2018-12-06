@@ -1,11 +1,12 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    xmlns:converter="clr-namespace:Ferretto.VW.CustomControls.Converters"
+                    xmlns:ctrls="clr-namespace:Ferretto.VW.CustomControls.Controls"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <ctrls:BoolToVisibilityConverter x:Key="BTVIHC"
-                                     Hide="True"
-                                     Invert="True" />
+    <converter:BoolToVisibilityConverter x:Key="BTVIHC"
+                                         Hide="True"
+                                         Invert="True" />
 
     <system:Double x:Key="ExpanderArrowHeight">30</system:Double>
     <system:Double x:Key="ExpanderArrowWidth">13</system:Double>

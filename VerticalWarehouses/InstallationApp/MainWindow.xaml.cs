@@ -9,20 +9,12 @@ namespace Ferretto.VW.InstallationApp
 {
     public partial class MainWindow : Window
     {
-        #region Fields
-
-        private double navigationButtonViewTargetWidth = 210;
-
-        #endregion Fields
-
         #region Constructors
 
         public MainWindow()
         {
             this.InitializeComponent();
             NavigationService.BackToVWAppEventHandler += () => this.Close();
-            NavigationService.ExitViewEventHandler += this.ShowPanelAnimation;
-            NavigationService.GoToViewEventHandler += this.HidePanelAnimation;
             this.DataContext = new MainWindowViewModel();
         }
 
@@ -48,24 +40,6 @@ namespace Ferretto.VW.InstallationApp
         public void ChangeSkinToMedium(object sender, MouseButtonEventArgs e)
         {
             NavigationService.RaiseChangeSkinToMediumEvent();
-        }
-
-        private void HidePanelAnimation()
-        {
-            var doubleAnimation = new DoubleAnimation();
-            doubleAnimation.From = this.InstallationPageNavigationButtonsRegionContentControl.ActualWidth;
-            doubleAnimation.To = 0;
-            doubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
-            this.InstallationPageNavigationButtonsRegionContentControl.BeginAnimation(ContentPresenter.WidthProperty, doubleAnimation);
-        }
-
-        private void ShowPanelAnimation()
-        {
-            var doubleAnimation = new DoubleAnimation();
-            doubleAnimation.From = 0;
-            doubleAnimation.To = this.navigationButtonViewTargetWidth;
-            doubleAnimation.Duration = new Duration(TimeSpan.FromSeconds(1));
-            this.InstallationPageNavigationButtonsRegionContentControl.BeginAnimation(ContentPresenter.WidthProperty, doubleAnimation);
         }
 
         #endregion Methods
