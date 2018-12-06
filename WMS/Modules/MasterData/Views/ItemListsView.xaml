@@ -5,7 +5,6 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
@@ -39,23 +38,20 @@
 
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
-                <wms:ActionBarItem Command="{Binding EditCommand}"
-                                   Content="{x:Static res:General.Edit}"
+                <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
+                                   Content="{x:Static res:General.ShowDetails}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsEnabled="False" />
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Add}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsEnabled="False" />
-                <wms:ActionBarItem Command="{Binding WithdrawCommand}"
-                                   Content="{x:Static res:MasterData.Withdraw}"
+                                   GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding ListExecuteCommand}"
+                                   Content="{x:Static res:MasterData.ListExecute}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
-                                   GlyphSize="Custom"
-                                   IsEnabled="False" />
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                                   GlyphSize="Custom" />
                 <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
@@ -67,7 +63,7 @@
                                 MaxHeight="5000"
                                 Margin="3"
                                 CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
-                                ItemsSource="{Binding SelectedDataSource, Mode=OneWay}"
+                                ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
                     <dxg:TableView SearchPanelHorizontalAlignment="Right"
@@ -88,15 +84,13 @@
                     <dxg:GridColumn Width="180*"
                                     FieldName="Code" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemListTypeDescription" />
+                                    FieldName="ItemListType" />
                     <dxg:GridColumn Width="400*"
                                     FieldName="Description" />
-                    <dxg:GridColumn Width="300*"
-                                    FieldName="AreaName" />
                     <dxg:GridColumn Width="140*"
                                     FieldName="Priority" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemListStatusDescription" />
+                                    FieldName="ItemListStatus" />
                     <dxg:GridColumn Width="200*"
                                     FieldName="CreationDate" />
                     <dxg:GridColumn Width="190*"

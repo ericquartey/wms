@@ -48,6 +48,7 @@
                                         FindMode="Always"
                                         ImmediatePopup="True"
                                         IncrementalFiltering="True"
+                                        IsPopupAutoWidth="False"
                                         IsTextEditable="{TemplateBinding IsTextEditable}"
                                         ItemsSource="{Binding Path=ItemsSource,RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         PopupContentTemplate="{TemplateBinding PopupContentTemplate}"

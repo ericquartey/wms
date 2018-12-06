@@ -33,7 +33,9 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public IUnityContainer Container { get; private set; }
+
         public INavigationService NavigationService { get; private set; }
+
         public IRegionManager RegionManager { get; private set; }
 
         #endregion Properties
@@ -58,6 +60,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<LoadingUnitEditView, LoadingUnitEditViewModel>();
 
             this.NavigationService.Register<WithdrawDialogView, WithdrawDialogViewModel>();
+            this.NavigationService.Register<ItemListExecuteDialogView, ItemListExecuteDialogViewModel>();
+            this.NavigationService.Register<ItemListRowExecuteDialogView, ItemListRowExecuteDialogViewModel>();
 
             this.NavigationService.Register<InputAddCompartmentView, InputAddCompartmentViewModel>();
             this.NavigationService.Register<InputBulkAddCompartmentView, InputBulkAddCompartmentViewModel>();

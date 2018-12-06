@@ -5,7 +5,6 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
@@ -63,8 +62,8 @@
                                 MaxWidth="2000"
                                 MaxHeight="5000"
                                 Margin="3"
-                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"                                
-                                ItemsSource="{Binding SelectedDataSource, Mode=OneWay}"
+                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
+                                ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
                                 ShowBorder="False">
                 <wms:WmsGridControl.View>
                     <dxg:TableView SearchPanelHorizontalAlignment="Right"

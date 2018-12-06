@@ -3,11 +3,12 @@
 namespace Ferretto.Common.DataModels
 {
     // Stato di Lista Articoli
-    public sealed class ItemListStatus
+    public enum ItemListStatus
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-
-        public IEnumerable<ItemList> ItemLists { get; set; }
+        Waiting = 'W',
+        Executing = 'E',
+        Completed = 'C',
+        Incomplete = 'I',
+        Suspended = 'S'
     }
 }

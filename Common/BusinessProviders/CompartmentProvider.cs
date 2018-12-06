@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public CompartmentProvider(
-            DatabaseContext context,
+            IDatabaseContextService context,
             EnumerationProvider enumerationProvider)
         {
             this.dataContext = context;
@@ -37,7 +37,8 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entry = this.dataContext.Compartments.Add(new DataModels.Compartment
+            var dataContext = this.dataContext.Current;
+            var entry = dataContext.Compartments.Add(new DataModels.Compartment
             {
                 Width = model.Width,
                 Height = model.Height,
@@ -52,7 +53,7 @@ namespace Ferretto.Common.BusinessProviders
                 CreationDate = DateTime.Now
             });
 
-            var changedEntitiesCount = await this.dataContext.SaveChangesAsync();
+            var changedEntitiesCount = await dataContext.SaveChangesAsync();
             if (changedEntitiesCount > 0)
             {
                 model.Id = entry.Entity.Id;
@@ -63,20 +64,21 @@ namespace Ferretto.Common.BusinessProviders
 
         public int Delete(int id)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Compartments.Find(id);
+                var existingModel = dataContext.Compartments.Find(id);
                 if (existingModel != null)
                 {
-                    this.dataContext.Remove(existingModel);
+                    dataContext.Remove(existingModel);
                 }
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 
         public IQueryable<Compartment> GetAll()
         {
-            return this.dataContext.Compartments
+            return this.dataContext.Current.Compartments
                .Include(c => c.LoadingUnit)
                .Include(c => c.MaterialStatus)
                .Include(c => c.Item)
@@ -104,17 +106,19 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Compartments.Count();
+                return dataContext.Compartments.Count();
             }
         }
 
         public CompartmentDetails GetById(int id)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var compartmentDetails = this.dataContext.Compartments
+                var compartmentDetails = dataContext.Compartments
                    .Where(c => c.Id == id)
                    .Include(c => c.LoadingUnit)
                    .Include(c => c.Item)
@@ -171,7 +175,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Compartment> GetByItemId(int id)
         {
-            return this.dataContext.Compartments
+            return this.dataContext.Current.Compartments
                 .Where(c => c.ItemId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.CompartmentStatus)
@@ -198,7 +202,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<CompartmentDetails> GetByLoadingUnitId(int id)
         {
-            return this.dataContext.Compartments
+            return this.dataContext.Current.Compartments
                 .Where(c => c.LoadingUnitId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.Item)
@@ -244,9 +248,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyAllowedItem(int modelId)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Compartments
+                return dataContext.Compartments
                     .Where(c => c.Id == modelId)
                     .Include(c => c.CompartmentType)
                     .ThenInclude(ct => ct.ItemsCompartmentTypes)
@@ -263,13 +268,14 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Compartments.Find(model.Id);
+                var existingModel = dataContext.Compartments.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 

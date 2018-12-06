@@ -58,10 +58,10 @@
                                 IsCompartmentSelectable="{Binding IsSelectableTray}"
                                 IsReadOnly="{Binding ReadOnlyTray}"
                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
-                                SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                 ShowBackground="True"
                                 ShowRuler="True"
-                                Tray="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Tray, Mode=OneWay}" />
+                                Tray="{Binding Tray, Mode=OneWay}" />
 
             <wms:WmsGridControl Grid.Row="2"
                                 MinHeight="50"
@@ -70,8 +70,7 @@
                                 HorizontalAlignment="Left"
                                 IsEnabled="{Binding IsEnabledGrid}"
                                 ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
-                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}"
-                                SelectionMode="Row">
+                                SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}">
                 <wms:WmsGridControl.View>
                     <dxg:TableView NavigationStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsEnabledGrid, Converter={StaticResource BTNSC}}">
                         <i:Interaction.Triggers>

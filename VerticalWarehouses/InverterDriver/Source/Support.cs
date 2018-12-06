@@ -1,4 +1,4 @@
-﻿// -----------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 // This class contains the definition of enumeratives, structures, constants used by the Inverter driver.
 
 namespace Ferretto.VW.InverterDriver

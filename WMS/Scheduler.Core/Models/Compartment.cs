@@ -32,17 +32,9 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public int Availability => this.stock - this.reservedForPick + this.reservedToStore;
 
-        public IEnumerable<Bay> Bays { get; set; }
-
         public int CellId { get; set; }
 
         public string Code { get; set; }
-
-        public int? CompartmentStatusId { get; set; }
-
-        public int CompartmentTypeId { get; set; }
-
-        public DateTime CreationDate { get; set; }
 
         public int? FifoTime
         {
@@ -52,23 +44,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public DateTime? FirstStoreDate { get; set; }
 
-        public int? Height
-        {
-            get => this.height;
-            set => this.SetIfStrictlyPositive(ref this.height, value);
-        }
-
-        public DateTime? InventoryDate { get; set; }
-
         public int ItemId { get; set; }
-
-        public int ItemPairing { get; set; }
-
-        public DateTime? LastHandlingDate { get; set; }
-
-        public DateTime? LastPickDate { get; set; }
-
-        public DateTime? LastStoreDate { get; set; }
 
         public int LoadingUnitId { get; set; }
 

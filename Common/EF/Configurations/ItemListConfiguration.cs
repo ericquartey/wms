@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.DataModels;
+﻿using System;
+using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -26,18 +27,13 @@ namespace Ferretto.Common.EF.Configurations
             builder.Property(i => i.Priority)
                 .HasDefaultValue(1);
 
-            builder.HasOne(i => i.ItemListType)
-                .WithMany(i => i.ItemLists)
-                .HasForeignKey(i => i.ItemListTypeId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(i => i.ItemListStatus)
-                .WithMany(i => i.ItemLists)
-                .HasForeignKey(i => i.ItemListStatusId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
-            builder.HasOne(i => i.Area)
-                .WithMany(a => a.ItemLists)
-                .HasForeignKey(i => i.AreaId)
-                .OnDelete(DeleteBehavior.ClientSetNull);
+            builder.Property(i => i.ItemListStatus).IsRequired()
+                .HasColumnType("char(1)")
+                .HasConversion(x => (char)x, x => (ItemListStatus)Enum.ToObject(typeof(ItemListStatus), x));
+
+            builder.Property(i => i.ItemListType).IsRequired()
+                 .HasColumnType("char(1)")
+                 .HasConversion(x => (char)x, x => (ItemListType)Enum.ToObject(typeof(ItemListType), x));
         }
 
         #endregion Methods
