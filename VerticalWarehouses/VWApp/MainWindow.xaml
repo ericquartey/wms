@@ -10,6 +10,7 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
@@ -22,20 +23,14 @@
             <RowDefinition Height="150" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ContentPresenter Grid.Row="0"
-                          Grid.Column="0"
-                          Margin="50,10,0,0"
-                          Content="{DynamicResource Ferretto_Logo}" />
-        <Button Grid.Row="1"
-                Grid.Column="1"
-                Background="Transparent"
-                BorderThickness="0"
-                Command="">
-            <Image Grid.Row="1"
-                   Grid.Column="1"
-                   Margin="0,0,0,50"
-                   Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
-        </Button>
+        <Image Grid.Row="0"
+               Grid.Column="0"
+               Margin="50,10,0,0"
+               Source="{DynamicResource Ferretto_Logo}" />
+        <Image Grid.Row="1"
+               Grid.Column="1"
+               Margin="0,0,0,50"
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
                     HorizontalAlignment="Center">
@@ -53,21 +48,21 @@
                                             HorizontalAlignment="Left"
                                             InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                             LabelText="{x:Static res:General.UserLogin}"
-                                            Style="{StaticResource SS_MainWindowCustomControlInputField_ValidationTest}" />
+                                            Style="{StaticResource VWAPP_SplashScreenMainWindowCustomControlInputField_ValidationTest}" />
             <custom:CustomInputFieldControl Width="200"
                                             HorizontalAlignment="Left"
                                             InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             LabelText="{x:Static res:General.PasswordLogin}" />
             <TextBlock Height="60"
                        HorizontalAlignment="Left"
-                       Style="{StaticResource IAPP_ViewErrorTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
                        Text="{Binding LoginErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextWrapping="WrapWithOverflow" />
             <Button Width="200"
                     HorizontalAlignment="Left"
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Height="50"
                     Background="Transparent"
                     BorderBrush="Transparent"

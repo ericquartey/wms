@@ -70,6 +70,11 @@ namespace Ferretto.WMS.Scheduler.Core
             }
         }
 
+        public async Task<SchedulerRequest> ExecuteListAsync(int listId, int bayId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<SchedulerRequest> Withdraw(SchedulerRequest request)
         {
             SchedulerRequest qualifiedRequest = null;

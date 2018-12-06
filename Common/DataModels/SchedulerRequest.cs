@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.Common.DataModels
 {
-    public sealed class SchedulerRequest : ITimestamped
+    public sealed class SchedulerRequest : ITimestamped, IDataModel
     {
         #region Properties
 

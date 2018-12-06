@@ -22,7 +22,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
-                       Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.LSMTHorizontalEngineTitle}" />
             <Grid Grid.Row="1"
                   Grid.Column="1">
@@ -51,11 +51,11 @@
                 <Button Grid.Row="1"
                         Grid.Column="2"
                         Content="{x:Static res:InstallationApp.Forward}"
-                        Style="{StaticResource IAPP_ViewButtonStyle}" />
+                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
                 <Button Grid.Row="3"
                         Grid.Column="2"
                         Content="{x:Static res:InstallationApp.Backward}"
-                        Style="{StaticResource IAPP_ViewButtonStyle}" />
+                        Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             </Grid>
         </Grid>
     </DockPanel>

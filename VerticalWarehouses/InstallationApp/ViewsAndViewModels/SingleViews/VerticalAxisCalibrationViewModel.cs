@@ -7,6 +7,9 @@ using Ferretto.VW.Utils.Source;
 using System.Threading;
 using Ferretto.VW.Utils.Source.Configuration;
 using System.Threading.Tasks;
+using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.InverterDriver;
+using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -24,6 +27,8 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private ICommand startButtonCommand;
         private ICommand stopButtonCommand;
         private string upperBound;
+
+        private InverterDriver.InverterDriver inverter;
 
         #endregion Fields
 
@@ -88,34 +93,43 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         private async void ExecuteStartButtonCommand()
         {
-            //TODO: implement start button functionality
-            //Temporary stuff to check DataManager behaviour
-            this.originProcedureCanceled = false;
+            // Temporary the variables have a fixed value,
+            // they will be variables when there'll be new functions
+            int m = 5;
+            short ofs = 1;
+            short vFast = 1;
+            short vCreep = 1;
+
+            CalibrateVerticalAxis calibrateVA;
             this.EnableStartButton = false;
-            this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
             this.IsStopButtonActive = true;
-            await Task.Delay(2000);
-            if (!this.originProcedureCanceled)
-            {
-                this.IsStopButtonActive = false;
-                this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
-                this.EnableStartButton = true;
-                var ii = DataManager.CurrentData.InstallationInfo;
-                ii.Set_Y_Resolution = true;
-                DataManager.CurrentData.InstallationInfo = ii;
-            }
-            else
-            {
-                this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
-                this.IsStopButtonActive = false;
-                this.EnableStartButton = true;
-            }
+            this.noteString = "Connecting...";
+            this.inverter = new InverterDriver.InverterDriver();
+            this.inverter.Initialize();
+            this.noteString = "Connected!";
+            await Task.Delay(1000);
+
+            calibrateVA = new CalibrateVerticalAxis();
+            calibrateVA.SetInverterDriverInterface = this.inverter;
+
+            calibrateVA.Initialize();
+            calibrateVA.ThrowEndEvent += new CalibrateVerticalAixsEndedEventHandler(this.Calibration);
+            this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
+            calibrateVA.SetVAxisOrigin(m, ofs, vFast, vCreep);
+            this.NoteString = "Homing Done.";
         }
 
         private void StopButtonMethod()
         {
             this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             this.originProcedureCanceled = true;
+        }
+
+        private void Calibration(bool result)
+        {
+            this.EnableStartButton = true;
+            this.IsStopButtonActive = false;
+            this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
         }
 
         #endregion Methods

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace Ferretto.VW.VWApp
 {
@@ -13,5 +14,16 @@ namespace Ferretto.VW.VWApp
         }
 
         #endregion Constructors
+
+        #region Methods
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+
+            Application.Current.Shutdown();
+        }
+
+        #endregion Methods
     }
 }

@@ -193,10 +193,6 @@
       <DependentUpon>Gate3ControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\GatesControl\Gate3ControlViewModel.cs" />
-    <Compile Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml.cs">
-      <DependentUpon>GatesControlNavigationButtonsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlView.xaml.cs">
       <DependentUpon>Gate1HeightControlView.xaml</DependentUpon>
     </Compile>
@@ -209,10 +205,6 @@
       <DependentUpon>Gate3HeightControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\GatesHeightControl\Gate3HeightControlViewModel.cs" />
-    <Compile Include="ViewsAndViewModels\GatesHeightControl\GatesHeightControlNavigationButtonsView.xaml.cs">
-      <DependentUpon>GatesHeightControlNavigationButtonsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewsAndViewModels\GatesHeightControl\GatesHeightControlNavigationButtonsViewModel.cs" />
     <Compile Include="ViewsAndViewModels\LowSpeedMovements\LSMTGateEngineView.xaml.cs">
       <DependentUpon>LSMTGateEngineView.xaml</DependentUpon>
     </Compile>
@@ -269,6 +261,10 @@
       <DependentUpon>CellsPanelsControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\CellsPanelsControlViewModel.cs" />
+    <Compile Include="ViewsAndViewModels\SingleViews\IdleView.xaml.cs">
+      <DependentUpon>IdleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewsAndViewModels\SingleViews\IdleViewModel.cs" />
     <Compile Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml.cs">
       <DependentUpon>InstallationStateView.xaml</DependentUpon>
     </Compile>
@@ -313,10 +309,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewsAndViewModels\GatesControl\GatesControlNavigationButtonsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ViewsAndViewModels\GatesHeightControl\Gate1HeightControlView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -326,10 +318,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ViewsAndViewModels\GatesHeightControl\Gate3HeightControlView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewsAndViewModels\GatesHeightControl\GatesHeightControlNavigationButtonsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -389,6 +377,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewsAndViewModels\SingleViews\IdleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ViewsAndViewModels\SingleViews\InstallationStateView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -440,9 +432,17 @@
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
       <Name>Ferretto.Common.Resources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
+      <Project>{ecdc6d6c-e5d2-4ec3-9aac-6336c2048fff}</Project>
+      <Name>ActionBlocks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomControls\CustomControls.csproj">
       <Project>{3c8a3855-897a-4395-bf65-d9d597896a3e}</Project>
       <Name>CustomControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\InverterDriver\InverterDriver.csproj">
+      <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
+      <Name>InverterDriver</Name>
     </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>

@@ -1,10 +1,18 @@
-﻿using System.Configuration;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.Common.DataModels;
 using Ferretto.Common.EF.Configurations;
 using Microsoft.EntityFrameworkCore;
+
+#if NET4
+using System.Configuration;
+#else
+using System;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using System.Reflection;
+#endif
 
 namespace Ferretto.Common.EF
 {
@@ -14,6 +22,9 @@ namespace Ferretto.Common.EF
         Justification = "Class Designed as part of the Entity Framework")]
     public partial class DatabaseContext : DbContext
     {
+        private const string ConnectionStringName = "WmsConnectionString";
+        private const string DefaultApplicationSettingsFile = "appsettings.json";
+
         #region Constructors
 
         public DatabaseContext()
@@ -141,17 +152,31 @@ namespace Ferretto.Common.EF
                 throw new System.ArgumentNullException(nameof(optionsBuilder));
             }
 
-            if (!optionsBuilder.IsConfigured)
+            if (optionsBuilder.IsConfigured)
             {
-                var configuration = ConfigurationManager.ConnectionStrings["WmsConnectionString"];
-
-                if (configuration == null)
-                {
-                    throw new ConfigurationErrorsException("Setting 'WmsConnectionString' not found.");
-                }
-
-                optionsBuilder.UseSqlServer(configuration.ConnectionString);
+                return;
             }
+
+#if NET4
+            var configuration = ConfigurationManager.ConnectionStrings[ConnectionStringName];
+
+            if (configuration == null)
+            {
+                throw new ConfigurationErrorsException($"Connection string '{ConnectionStringName}' not found.");
+            }
+
+            optionsBuilder.UseSqlServer(configuration.ConnectionString);
+#else
+
+            var configurationBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+                .Build();
+
+            var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
+
+            optionsBuilder.UseSqlServer(connectionString);
+#endif
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage(

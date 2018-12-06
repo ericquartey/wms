@@ -239,7 +239,7 @@ namespace Ferretto.Common.BusinessProviders
                        Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
                        ItemId = itemWithdraw.ItemDetails.Id,
                        BayId = itemWithdraw.BayId,
-                       AreaId = itemWithdraw.AreaId,
+                       AreaId = itemWithdraw.AreaId.Value,
                        Lot = itemWithdraw.Lot,
                        RequestedQuantity = itemWithdraw.Quantity,
                        RegistrationNumber = itemWithdraw.RegistrationNumber,

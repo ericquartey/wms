@@ -3,15 +3,24 @@
 namespace Ferretto.Common.DataModels
 {
     // Tipo Scomparto
-    public sealed class CompartmentType
+    public sealed class CompartmentType : IDataModel
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public int? Width { get; set; }
-        public int? Height { get; set; }
-        public IEnumerable<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
+        #region Properties
 
         public IEnumerable<Compartment> Compartments { get; set; }
+
         public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }
+
+        public string Description { get; set; }
+
+        public int? Height { get; set; }
+
+        public int Id { get; set; }
+
+        public IEnumerable<ItemCompartmentType> ItemsCompartmentTypes { get; set; }
+
+        public int? Width { get; set; }
+
+        #endregion Properties
     }
 }

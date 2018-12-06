@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
+    <Style x:Key="VWAPP_CustomMachineOnMarchToggleButtonStyle"
+           TargetType="{x:Type custom:CustomMachineOnMarchToggleButton}">
+        <Style.Triggers>
+            <Trigger Property="MachineOnMarchState" Value="true">
+                <Setter Property="RectangleBrush" Value="Green" />
+                <Setter Property="MachineOnMarchString" Value="On" />
+            </Trigger>
+            <Trigger Property="MachineOnMarchState" Value="false">
+                <Setter Property="RectangleBrush" Value="{DynamicResource FerrettoMediumGray}" />
+                <Setter Property="MachineOnMarchString" Value="Off" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -2,10 +2,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
-    <Style x:Key="IAPP_ViewCustomControlInputTextBoxStyle"
+    <Style x:Key="VWAPP_ViewCustomControlInputTextBoxStyle"
            TargetType="{x:Type TextBox}">
-        <Setter Property="Foreground" Value="{DynamicResource IAPP_CCLabelTextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_CCLabelTextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="Template">
             <Setter.Value>

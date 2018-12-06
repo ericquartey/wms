@@ -19,7 +19,7 @@
             <RowDefinition Height="530" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.InstallationState}" />
         <Grid Grid.Row="1"
               Grid.Column="1">

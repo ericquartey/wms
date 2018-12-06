@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DevExpress.Xpf.Layout.Core;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
@@ -21,12 +16,9 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService
-                    dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-
-        private readonly IItemListProvider itemListProvider =
-                    ServiceLocator.Current.GetInstance<IItemListProvider>();
-
+        private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+        private ICommand addListRowCommand;
+        private ICommand editListRowCommand;
         private ItemListDetails itemList;
         private IEnumerable<ItemListRow> itemListRowDataSource;
         private ICommand listExecuteCommand;
@@ -36,8 +28,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelSelectionChangedSubscription;
         private ICommand revertCommand;
         private ICommand saveCommand;
-        private ICommand editListRowCommand;
-        private ICommand addListRowCommand;
         private ItemListRow selectedItemListRow;
 
         #endregion Fields
@@ -52,6 +42,16 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
+
+        public ICommand AddListRowCommand => this.addListRowCommand ??
+                                   (this.addListRowCommand = new DelegateCommand(this.ExecuteAddListRowCommand,
+                       this.CanExecuteAddListRowCommand)
+             .ObservesProperty(() => this.SelectedItemListRow));
+
+        public ICommand EditListRowCommand => this.editListRowCommand ??
+                                   (this.editListRowCommand = new DelegateCommand(this.ExecuteEditListRowCommand,
+                       this.CanExecuteEditListRowCommand)
+             .ObservesProperty(() => this.SelectedItemListRow));
 
         public ItemListDetails ItemList
         {
@@ -92,43 +92,6 @@ namespace Ferretto.WMS.Modules.MasterData
                                    (this.listRowExecuteCommand = new DelegateCommand(this.ExecuteListRowCommand,
                        this.CanExecuteListRowCommand)
              .ObservesProperty(() => this.SelectedItemListRow));
-        public ICommand AddListRowCommand => this.addListRowCommand ??
-                                   (this.addListRowCommand = new DelegateCommand(this.ExecuteAddListRowCommand,
-                       this.CanExecuteAddListRowCommand)
-             .ObservesProperty(() => this.SelectedItemListRow));
-
-        private void ExecuteAddListRowCommand()
-        {
-            //TODO
-        }
-
-        private Boolean CanExecuteAddListRowCommand()
-        {
-            if (this.selectedItemListRow != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public ICommand EditListRowCommand => this.editListRowCommand ??
-                                   (this.editListRowCommand = new DelegateCommand(this.ExecuteEditListRowCommand,
-                       this.CanExecuteEditListRowCommand)
-             .ObservesProperty(() => this.SelectedItemListRow));
-
-        private void ExecuteEditListRowCommand()
-        {
-            //TODO
-        }
-
-        private Boolean CanExecuteEditListRowCommand()
-        {
-            if (this.selectedItemListRow != null)
-            {
-                return true;
-            }
-            return false;
-        }
 
         public ICommand RevertCommand => this.revertCommand ??
                                           (this.revertCommand = new DelegateCommand(this.LoadData, this.CanExecuteRevert));
@@ -154,6 +117,16 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
+        private Boolean CanExecuteAddListRowCommand()
+        {
+            return this.selectedItemListRow != null;
+        }
+
+        private Boolean CanExecuteEditListRowCommand()
+        {
+            return this.selectedItemListRow != null;
+        }
+
         private bool CanExecuteListCommand()
         {
             if (this.ItemList != null)
@@ -171,20 +144,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteListRowCommand()
         {
-            if(this.selectedItemListRow != null)
+            if (this.selectedItemListRow != null)
             {
-                var status = this.selectedItemListRow.ItemListRowStatusDescription;
-                if (status == ItemListStatus.Incomplete.ToString()
-                    || status == ItemListStatus.Suspended.ToString()
-                    || status == ItemListStatus.Waiting.ToString())
+                var status = this.selectedItemListRow.ItemListRowStatus;
+                if (status == ItemListRowStatus.Incomplete
+                    || status == ItemListRowStatus.Suspended
+                    || status == ItemListRowStatus.Waiting)
                 {
                     return true;
                 }
             }
             return false;
         }
-        
-    
 
         private bool CanExecuteRevert()
         {
@@ -194,6 +165,16 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool CanExecuteSave()
         {
             return this.ItemList?.IsModified == true;
+        }
+
+        private void ExecuteAddListRowCommand()
+        {
+            //TODO
+        }
+
+        private void ExecuteEditListRowCommand()
+        {
+            //TODO
         }
 
         private void ExecuteListCommand()
@@ -207,6 +188,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
             );
         }
+
         private void ExecuteListRowCommand()
         {
             this.NavigationService.Appear(
