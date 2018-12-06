@@ -215,8 +215,8 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsTrayControl trayControl)
             {
-                trayControl.HorizontalRulerControl.MajorInterval = 2 * (int) e.NewValue;
-                trayControl.VerticalRulerControl.MajorInterval = 2 * (int) e.NewValue;
+                trayControl.HorizontalRulerControl.MajorInterval = 2 * (int)e.NewValue;
+                trayControl.VerticalRulerControl.MajorInterval = 2 * (int)e.NewValue;
             }
         }
 
@@ -240,25 +240,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var newCompartment = (CompartmentDetails)e.NewValue;
-            if (viewModel.Items != null && newCompartment != null)
-            {
-                var foundCompartment =
-                    viewModel.Items.FirstOrDefault(c => c.CompartmentDetails.Id == newCompartment.Id);
-
-                if (foundCompartment == null)
-                {
-                    return;
-                }
-
-                wmsTrayControl.CanvasListBoxControl.SelectedItem = foundCompartment;
-                viewModel.SelectedCompartment = foundCompartment.CompartmentDetails;
-            }
-            else
-            {
-                wmsTrayControl.CanvasListBoxControl.SelectedItem = newCompartment;
-                viewModel.SelectedCompartment = newCompartment;
-            }
+            viewModel.SelectedCompartment = (CompartmentDetails)e.NewValue;
         }
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
