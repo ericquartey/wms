@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
-    <Style x:Key="SS_MainWindowCustomControlInputField_Validation"
+    <Style x:Key="VWAPP_SplashScreenMainWindowCustomControlInputField_Validation"
            TargetType="{x:Type custom:CustomInputFieldControl}">
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="true">
@@ -27,7 +27,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <Style x:Key="SS_MainWindowCustomControlInputField_ValidationTest"
+    <Style x:Key="VWAPP_SplashScreenMainWindowCustomControlInputField_ValidationTest"
            TargetType="{x:Type custom:CustomInputFieldControl}">
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="true">

@@ -18,6 +18,7 @@
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -26,161 +27,86 @@
     </Window.Resources>
 
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Name="upperRow"
                            Height="80" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border Grid.Row="0"
-                Grid.Column="0"
-                Background="{DynamicResource VWAPP_BACKGROUND}"
-                BorderThickness="0">
-            <ContentPresenter Margin="15,10,0,0"
-                              Content="{DynamicResource Ferretto_Logo}" />
-        </Border>
-        <Border Grid.Row="0"
-                Grid.Column="1"
-                Background="{DynamicResource VWAPP_BACKGROUND}"
-                BorderThickness="0">
-            <StackPanel FlowDirection="RightToLeft"
-                        Orientation="Horizontal">
-                <ComboBox Name="userComboBox"
-                          Width="150"
-                          Margin="10,15,2,5"
-                          HorizontalContentAlignment="Right"
-                          VerticalContentAlignment="Center"
-                          FontSize="25"
-                          Foreground="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}"
-                          Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
-                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                  Content="{x:Static res:InstallationApp.Installer}"
-                                  IsSelected="True"
-                                  Style="{StaticResource IAPP_MainWindowUserComboBoxItemStyle}"
-                                  Template="{StaticResource IAPP_MainWindowUserComboBoxItemTemplate}" />
-                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                  Content="{x:Static res:InstallationApp.LogOff}">
-                        <ComboBoxItem.Style>
-                            <Style TargetType="ComboBoxItem">
-                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
-                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
-                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
-                                <Setter Property="FontSize" Value="20" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <EventSetter Event="PreviewMouseDown"
-                                             Handler="BackToVWAppButtonMethod" />
-                            </Style>
-                        </ComboBoxItem.Style>
-                    </ComboBoxItem>
-                </ComboBox>
-                <Image Height="30"
-                       Margin="0,10,30,2"
-                       Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
-                <Border Width="140"
-                        Height="60"
-                        Margin="2,10,2,2"
-                        BorderBrush="{DynamicResource FerrettoDarkGray}"
-                        BorderThickness="2">
-                    <custom:CustomControlComboBox Width="140"
-                                                  Height="60"
-                                                  BorderThickness="0,0,40,0"
-                                                  CurrentSelection="{Binding MachineOnMarchSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  CustomComboBoxState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  FontFamily="{DynamicResource IAPP_BodyFont}"
-                                                  FontSize="25"
-                                                  Foreground="{DynamicResource FerrettoPureWhite}"
-                                                  Item1Text="Off"
-                                                  Item2Text="On"
-                                                  Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineOnMarch}" />
-                </Border>
-                <Border Width="140"
-                        Height="60"
-                        Margin="2,10,2,2"
-                        BorderBrush="{DynamicResource FerrettoDarkGray}"
-                        BorderThickness="2">
-                    <custom:CustomControlComboBox Width="140"
-                                                  Height="60"
-                                                  BorderThickness="0,0,40,0"
-                                                  CurrentSelection="{Binding MachineModeSelectionInt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  CustomComboBoxState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  FontFamily="{DynamicResource IAPP_BodyFont}"
-                                                  FontSize="25"
-                                                  Foreground="{DynamicResource FerrettoPureWhite}"
-                                                  Item1Text="Manual"
-                                                  Item2Text="Auto"
-                                                  Style="{StaticResource IAPP_ViewCustomComboBoxStyle_MachineMode}" />
-                </Border>
-                <!--<ComboBox Width="150"
-                          Margin="10,15,2,5"
-                          HorizontalContentAlignment="Right"
-                          VerticalContentAlignment="Center"
-                          FontSize="25"
-                          Foreground="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}"
-                          Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
-                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                  Content="Light">
-                        <ComboBoxItem.Style>
-                            <Style TargetType="ComboBoxItem">
-                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
-                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
-                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
-                                <Setter Property="FontSize" Value="20" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <EventSetter Event="PreviewMouseDown"
-                                             Handler="ChangeSkinToLight" />
-                            </Style>
-                        </ComboBoxItem.Style>
-                    </ComboBoxItem>
-                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                  Content="Medium">
-                        <ComboBoxItem.Style>
-                            <Style TargetType="ComboBoxItem">
-                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
-                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
-                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
-                                <Setter Property="FontSize" Value="20" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <EventSetter Event="PreviewMouseDown"
-                                             Handler="ChangeSkinToMedium" />
-                            </Style>
-                        </ComboBoxItem.Style>
-                    </ComboBoxItem>
-                    <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                  Content="Dark">
-                        <ComboBoxItem.Style>
-                            <Style TargetType="ComboBoxItem">
-                                <Setter Property="Background" Value="{DynamicResource IAPP_MainWindowUserComboBox_Background_Normal}" />
-                                <Setter Property="Foreground" Value="{DynamicResource IAPP_MainWindowUserComboBox_Foreground_Normal}" />
-                                <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
-                                <Setter Property="FontSize" Value="20" />
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="VerticalContentAlignment" Value="Center" />
-                                <EventSetter Event="PreviewMouseDown"
-                                             Handler="ChangeSkinToDark" />
-                            </Style>
-                        </ComboBoxItem.Style>
-                    </ComboBoxItem>
-                </ComboBox>-->
-            </StackPanel>
-        </Border>
-        <ContentControl x:Name="InstallationPageRegionContentControl"
-                        Grid.Row="1"
-                        Grid.Column="1"
-                        Width="730"
-                        Height="610"
-                        Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
-                        Grid.Row="1"
-                        Grid.Column="0"
-                        Width="210"
-                        Height="610"
-                        VerticalAlignment="Center"
-                        Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0"
+                    Background="{DynamicResource VWAPP_BACKGROUND}"
+                    BorderThickness="0">
+                <Image Margin="5,10,0,0"
+                       Source="{DynamicResource Ferretto_Logo}"
+                       Stretch="Uniform" />
+            </Border>
+            <Border Grid.Column="1"
+                    Background="{DynamicResource VWAPP_BACKGROUND}"
+                    BorderThickness="0">
+                <StackPanel FlowDirection="RightToLeft"
+                            Orientation="Horizontal">
+                    <ComboBox Name="userComboBox"
+                              Width="150"
+                              Margin="10,15,2,5"
+                              HorizontalContentAlignment="Right"
+                              VerticalContentAlignment="Center"
+                              FontSize="25"
+                              Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
+                              Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
+                        <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.Installer}"
+                                      IsSelected="True"
+                                      Style="{StaticResource VWAPP_MainWindowUserComboBoxItemStyle}"
+                                      Template="{StaticResource IAPP_MainWindowUserComboBoxItemTemplate}" />
+                        <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                      Content="{x:Static res:InstallationApp.LogOff}">
+                            <ComboBoxItem.Style>
+                                <Style TargetType="ComboBoxItem">
+                                    <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
+                                    <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
+                                    <Setter Property="FontSize" Value="20" />
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                    <EventSetter Event="PreviewMouseDown"
+                                                 Handler="BackToVWAppButtonMethod" />
+                                </Style>
+                            </ComboBoxItem.Style>
+                        </ComboBoxItem>
+                    </ComboBox>
+                    <Image Height="30"
+                           Margin="0,10,30,2"
+                           Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
+                    <custom:CustomMachineModeToggleButton CustomCommand="{Binding MachineModeCustomCommand}"
+                                                          MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                          Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
+                    <custom:CustomMachineOnMarchToggleButton CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                                                             MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                             Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
+                    <custom:CustomInputText LabelText="Inserire Ciaone" />
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ContentControl x:Name="InstallationPageRegionContentControl"
+                            Grid.Column="1"
+                            Width="730"
+                            Height="610"
+                            Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
+                            Grid.Column="0"
+                            Width="210"
+                            Height="610"
+                            VerticalAlignment="Center"
+                            Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Grid>
     </Grid>
 </Window>
