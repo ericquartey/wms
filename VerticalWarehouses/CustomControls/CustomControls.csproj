@@ -241,6 +241,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Styles\ExpanderStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Styles\TextBlockStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -362,6 +366,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Common\Controls\Ferretto.Common.Controls.csproj">
+      <Project>{45265ab8-f227-436c-baf6-2d7602271d6a}</Project>
+      <Name>Ferretto.Common.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
       <Name>Ferretto.Common.Resources</Name>

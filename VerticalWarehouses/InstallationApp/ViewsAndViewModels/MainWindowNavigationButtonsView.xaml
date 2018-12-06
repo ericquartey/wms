@@ -8,7 +8,8 @@
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                  mc:Ignorable="d">
-    <Grid Height="610">
+    <Grid Name="NavigationButtonViewRoot"
+          Height="610">
         <Grid.RowDefinitions>
             <RowDefinition Height="60" />
             <RowDefinition Height="10" />

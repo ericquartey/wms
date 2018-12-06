@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)\Common\Modules\BLL\Ferretto.Common.Modules.BLL.csproj" />
     <ProjectReference Include="$(SolutionDir)\Common\Resources\Ferretto.Common.Resources.csproj" />
   </ItemGroup>
 

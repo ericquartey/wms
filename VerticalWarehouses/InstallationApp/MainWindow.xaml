@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
@@ -87,7 +87,6 @@
                     <custom:CustomMachineOnMarchToggleButton CustomCommand="{Binding MachineOnMarchCustomCommand}"
                                                              MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
-                    <custom:CustomInputText LabelText="Inserire Ciaone" />
                 </StackPanel>
             </Border>
         </Grid>
@@ -96,17 +95,19 @@
                 <ColumnDefinition Width="220" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <ContentControl x:Name="InstallationPageRegionContentControl"
+            <ContentControl Name="InstallationPageRegionContentControl"
                             Grid.Column="1"
                             Width="730"
                             Height="610"
                             Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
-                            Grid.Column="0"
-                            Width="210"
-                            Height="610"
-                            VerticalAlignment="Center"
-                            Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Expander>
+                <ContentControl Name="InstallationPageNavigationButtonsRegionContentControl"
+                                Grid.Column="0"
+                                Width="210"
+                                Height="610"
+                                VerticalAlignment="Center"
+                                Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Expander>
         </Grid>
     </Grid>
 </Window>
