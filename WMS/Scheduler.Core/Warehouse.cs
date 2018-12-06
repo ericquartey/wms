@@ -39,7 +39,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 IEnumerable<Mission> missions = new List<Mission>();
 
-                var requests = this.dataProvider.GetRequestsToProcess().ToList();
+                var requests = await this.dataProvider.GetRequestsToProcessAsync();
                 if (requests.Any() == false)
                 {
                     this.logger.LogDebug($"No more scheduler requests are available for processing at the moment.");

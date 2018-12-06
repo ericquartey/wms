@@ -140,6 +140,7 @@ namespace Ferretto.WMS.Scheduler.Core
         /// - are not completed (dispatched qty is not equal to requested qty)
         /// - are already allocated to a bay
         /// - the allocated bay has buffer to accept new missions
+        /// - are associated to a list that is in execution
         ///
         /// Requests are sorted by:
         /// - Instant first
@@ -180,6 +181,7 @@ namespace Ferretto.WMS.Scheduler.Core
                    Sub1 = r.Sub1,
                    Sub2 = r.Sub2
                })
+               .Where(r => r.ListRowStatus == ListRowStatus.Executing)
                .ToListAsync();
         }
 
