@@ -11,8 +11,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.MachineStatusManual), ResourceType = typeof(BusinessObjects))]
         Manual,
 
-        [Display(Name = nameof(BusinessObjects.MachineStatusFaulted), ResourceType = typeof(BusinessObjects))]
-        Faulted,
+        [Display(Name = nameof(BusinessObjects.MachineStatusError), ResourceType = typeof(BusinessObjects))]
+        Error,
 
         [Display(Name = nameof(BusinessObjects.MachineStatusOffline), ResourceType = typeof(BusinessObjects))]
         Offline
