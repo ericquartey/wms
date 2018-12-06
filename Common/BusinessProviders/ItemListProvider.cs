@@ -13,10 +13,10 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusCompletedFilter =
-            list => (char)list.ItemListStatus == (char)ItemListStatus.Completed;
+            list => (char)list.Status == (char)ItemListStatus.Completed;
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusWaitingFilter =
-            list => (char)list.ItemListStatus == (char)(ItemListStatus.Waiting);
+            list => (char)list.Status == (char)(ItemListStatus.Waiting);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
             list => (char)list.ItemListType == (char)(ItemListType.Pick);
@@ -96,7 +96,7 @@ namespace Ferretto.Common.BusinessProviders
                    Code = l.Code,
                    Description = l.Description,
                    Priority = l.Priority,
-                   ItemListStatus = (ItemListStatus)l.ItemListStatus,
+                   ItemListStatus = (ItemListStatus)l.Status,
                    ItemListType = (int)((ItemListType)l.ItemListType),
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate,

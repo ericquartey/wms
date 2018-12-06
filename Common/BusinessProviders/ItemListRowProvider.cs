@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -70,7 +67,7 @@ namespace Ferretto.Common.BusinessProviders
                {
                    Id = l.Id,
                    Code = l.Code,
-                   RowPriority = l.RowPriority,
+                   RowPriority = l.Priority,
                    ItemDescription = l.Item.Description,
                    RequiredQuantity = l.RequiredQuantity,
                    ItemListRowStatus = (ItemListRowStatus)l.ItemListRowStatus,

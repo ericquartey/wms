@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Ferretto.Common.DataModels
+﻿namespace Ferretto.Common.DataModels
 {
     // Stato di Lista Articoli
     public enum ItemListStatus
