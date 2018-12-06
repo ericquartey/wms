@@ -1,54 +1,14 @@
 ﻿using System;
+using System.Linq;
+using Ferretto.Common.DataModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.Common.EF.Migrations
 {
     public partial class Add_Timestamping_To_Tables_Items_SchedulerRequests : Migration
     {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastModificationDate",
-                table: "SchedulerRequests",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()");
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastModificationDate",
-                table: "LoadingUnits",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "LastModificationDate",
-                table: "Items",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()",
-                oldClrType: typeof(DateTime),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "LastModificationDate",
-                table: "ItemLists",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()",
-                oldClrType: typeof(DateTime),
-                oldNullable: true);
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "LastModificationDate",
-                table: "ItemListRows",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()",
-                oldClrType: typeof(DateTime),
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "LastModificationDate",
-                table: "Compartments",
-                nullable: false,
-                defaultValueSql: "GETUTCDATE()");
-        }
+        #region Methods
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
@@ -85,5 +45,101 @@ namespace Ferretto.Common.EF.Migrations
                 oldClrType: typeof(DateTime),
                 oldDefaultValueSql: "GETUTCDATE()");
         }
+
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            using (var db = new DatabaseContext())
+            {
+                var now = DateTime.UtcNow;
+
+                migrationBuilder.AddColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "SchedulerRequests",
+                    nullable: true,
+                    defaultValueSql: "GETUTCDATE()");
+
+                this.AddDates(migrationBuilder, now, db.SchedulerRequests, nameof(db.SchedulerRequests));
+
+                migrationBuilder.AlterColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "SchedulerRequests",
+                    nullable: false);
+
+                migrationBuilder.AddColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "LoadingUnits",
+                    nullable: true,
+                    defaultValueSql: "GETUTCDATE()");
+
+                this.AddDates(migrationBuilder, now, db.LoadingUnits, nameof(db.LoadingUnits));
+
+                migrationBuilder.AlterColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "LoadingUnits",
+                    nullable: false);
+
+                this.AddDates(migrationBuilder, now, db.Items, nameof(db.Items));
+                migrationBuilder.AlterColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "Items",
+                    nullable: false,
+                    defaultValueSql: "GETUTCDATE()",
+                    oldClrType: typeof(DateTime),
+                    oldNullable: true);
+
+                this.AddDates(migrationBuilder, now, db.ItemLists, nameof(db.ItemLists));
+                migrationBuilder.AlterColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "ItemLists",
+                    nullable: false,
+                    defaultValueSql: "GETUTCDATE()",
+                    oldClrType: typeof(DateTime),
+                    oldNullable: true);
+
+                this.AddDates(migrationBuilder, now, db.ItemListRows, nameof(db.ItemListRows));
+                migrationBuilder.AlterColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "ItemListRows",
+                    nullable: false,
+                    defaultValueSql: "GETUTCDATE()",
+                    oldClrType: typeof(DateTime),
+                    oldNullable: true);
+
+                migrationBuilder.AddColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "Compartments",
+                    nullable: true,
+                    defaultValueSql: "GETUTCDATE()");
+
+                this.AddDates(migrationBuilder, now, db.Compartments, nameof(db.Compartments));
+
+                migrationBuilder.AlterColumn<DateTime>(
+                    name: "LastModificationDate",
+                    table: "Compartments",
+                    nullable: false);
+            }
+        }
+
+        private void AddDates<T>(MigrationBuilder migrationBuilder, DateTime now, DbSet<T> dbSet, string tableName)
+            where T : class, IDataModel
+        {
+            var ids = dbSet.Select(r => (object)r.Id).ToArray();
+            var dates = new object[ids.Length, 1];
+
+            for (var i = 0; i < ids.Length; i++)
+            {
+                dates[i, 0] = now;
+            }
+
+            migrationBuilder.UpdateData(
+                table: tableName,
+                keyColumn: "Id",
+                keyValues: ids,
+                columns: new[] { "LastModificationDate" },
+                values: dates
+                );
+        }
+
+        #endregion Methods
     }
 }
