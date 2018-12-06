@@ -135,35 +135,52 @@ namespace Ferretto.WMS.Scheduler.Core
                 .SingleAsync(i => i.Id == itemId);
         }
 
-        public async Task<SchedulerRequest> GetNextRequestToProcessAsync()
+        /// <summary>
+        /// Gets all the pending requests that:
+        /// - are not completed (dispatched qty is not equal to requested qty)
+        /// - are already allocated to a bay
+        /// - the allocated bay has buffer to accept new missions
+        ///
+        /// Requests are sorted by:
+        /// - Instant first
+        /// - All others after, giving priority to the lists ones that are already started
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-                .Where(r => r.RequestedQuantity > r.DispatchedQuantity)
-                .OrderBy(s => s.IsInstant)
-                .OrderBy(s => s.CreationDate)
-                .Select(r => new SchedulerRequest
-                {
-                    Id = r.Id,
-                    AreaId = r.AreaId,
-                    BayId = r.BayId,
-                    CreationDate = r.CreationDate,
-                    IsInstant = r.IsInstant,
-                    ItemId = r.ItemId,
-                    ListId = r.ListId,
-                    ListRowId = r.LoadingUnitId,
-                    LoadingUnitId = r.LoadingUnitId,
-                    LoadingUnitTypeId = r.LoadingUnitTypeId,
-                    Lot = r.Lot,
-                    Type = (OperationType)r.OperationType,
-                    MaterialStatusId = r.MaterialStatusId,
-                    PackageTypeId = r.PackageTypeId,
-                    RegistrationNumber = r.RegistrationNumber,
-                    RequestedQuantity = r.RequestedQuantity,
-                    DispatchedQuantity = r.DispatchedQuantity,
-                    Sub1 = r.Sub1,
-                    Sub2 = r.Sub2
-                })
-                .FirstOrDefaultAsync();
+               .Where(r => r.BayId.HasValue && r.RequestedQuantity > r.DispatchedQuantity && r.BayId.HasValue)
+               .Include(r => r.List)
+               .Include(r => r.ListRow)
+               .Include(r => r.Bay)
+               .ThenInclude(b => b.Missions)
+               .Where(r => r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count())
+               .Select(r => new SchedulerRequest
+               {
+                   Id = r.Id,
+                   AreaId = r.AreaId,
+                   BayId = r.BayId,
+                   CreationDate = r.CreationDate,
+                   IsInstant = r.IsInstant,
+                   ListStatus = r.List != null ? (ListStatus)r.List.Status : ListStatus.NotSpecified,
+                   ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
+                   ItemId = r.ItemId,
+                   ListId = r.ListId,
+                   ListRowId = r.LoadingUnitId,
+                   LoadingUnitId = r.LoadingUnitId,
+                   LoadingUnitTypeId = r.LoadingUnitTypeId,
+                   Lot = r.Lot,
+                   Type = (OperationType)r.OperationType,
+                   MaterialStatusId = r.MaterialStatusId,
+                   PackageTypeId = r.PackageTypeId,
+                   RegistrationNumber = r.RegistrationNumber,
+                   RequestedQuantity = r.RequestedQuantity,
+                   DispatchedQuantity = r.DispatchedQuantity,
+                   Sub1 = r.Sub1,
+                   Sub2 = r.Sub2
+               })
+               .ToListAsync();
         }
 
         public void Update(Mission mission)
