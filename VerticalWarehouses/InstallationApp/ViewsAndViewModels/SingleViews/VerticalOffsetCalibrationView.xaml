@@ -19,7 +19,7 @@
             <RowDefinition Height="530" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.VerticalOffsetCalibration}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -66,19 +66,19 @@
             <Button Grid.Row="1"
                     Grid.Column="2"
                     Content="{x:Static res:InstallationApp.SetPosition}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="3"
                     Grid.Column="2"
                     Content="{x:Static res:InstallationApp.StepUp}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="4"
                     Grid.Column="2"
                     Content="{x:Static res:InstallationApp.StepDown}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="6"
                     Grid.Column="2"
                     Content="{x:Static res:InstallationApp.DoCorrectOffset}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
 </UserControl>

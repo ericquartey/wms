@@ -3,10 +3,12 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinGeneral.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinNormal.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinPressed.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinDisabled.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightVarious.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinImages.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightActionButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightNavigationButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightNavigationRepeatButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightMainWindowUserComboBox.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

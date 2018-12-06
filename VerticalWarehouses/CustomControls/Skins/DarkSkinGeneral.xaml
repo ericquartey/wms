@@ -38,9 +38,9 @@
                Right="1"
                Top="1" />
 
-    <SolidColorBrush x:Key="IAPP_SensorStateBrush_Fill_Up"
+    <SolidColorBrush x:Key="VWAPP_SensorStateBrush_Fill_Up"
                      Color="{DynamicResource ColorFerrettoGreen}" />
-    <SolidColorBrush x:Key="IAPP_SensorStateBrush_Fill_Down"
+    <SolidColorBrush x:Key="VWAPP_SensorStateBrush_Fill_Down"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
 
     <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineMode_Auto"
@@ -52,7 +52,7 @@
     <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
-    <FontFamily x:Key="IAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
-    <FontFamily x:Key="IAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>
+    <FontFamily x:Key="VWAPP_BodyFont">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
 </ResourceDictionary>
