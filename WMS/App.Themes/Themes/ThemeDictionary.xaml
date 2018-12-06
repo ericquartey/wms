@@ -28,6 +28,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/InfoBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Messages.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/LookUpEdit.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ProgressBarEdit.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

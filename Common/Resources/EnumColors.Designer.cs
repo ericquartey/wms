@@ -10,8 +10,8 @@
 
 namespace Ferretto.Common.Resources {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.Common.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class EnumColors {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal EnumColors() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.Common.Resources {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,40 +59,67 @@ namespace Ferretto.Common.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to #0000ff.
+        ///   Looks up a localized string similar to #FF0072C6.
         /// </summary>
         public static string MachineStatusAutomatic {
             get {
                 return ResourceManager.GetString("MachineStatusAutomatic", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to #ff0000.
+        ///   Looks up a localized string similar to #e2001a.
         /// </summary>
-        public static string MachineStatusFaulted {
+        public static string MachineStatusError {
             get {
-                return ResourceManager.GetString("MachineStatusFaulted", resourceCulture);
+                return ResourceManager.GetString("MachineStatusError", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to #00ff00.
+        ///   Looks up a localized string similar to #57A639.
         /// </summary>
         public static string MachineStatusManual {
             get {
                 return ResourceManager.GetString("MachineStatusManual", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to #777777.
         /// </summary>
         public static string MachineStatusOffline {
             get {
                 return ResourceManager.GetString("MachineStatusOffline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to #e2001a.
+        /// </summary>
+        public static string MaintenanceStatusExpired {
+            get {
+                return ResourceManager.GetString("MaintenanceStatusExpired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to #FFB100.
+        /// </summary>
+        public static string MaintenanceStatusExpiring {
+            get {
+                return ResourceManager.GetString("MaintenanceStatusExpiring", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to #57A639.
+        /// </summary>
+        public static string MaintenanceStatusValid {
+            get {
+                return ResourceManager.GetString("MaintenanceStatusValid", resourceCulture);
             }
         }
     }

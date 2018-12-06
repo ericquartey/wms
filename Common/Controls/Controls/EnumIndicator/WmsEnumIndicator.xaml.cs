@@ -36,19 +36,17 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public Brush BackgroundBrush
+        public SolidColorBrush BackgroundBrush
         {
             get
             {
-                var resourceName = this.SymbolName;
-                if (resourceName == null)
-                {
-                    return Brushes.Transparent;
-                }
+                var resourceValue = this.SymbolName != null
+                    ? EnumColors.ResourceManager.GetString(this.SymbolName)
+                    : null;
 
-                var resourceValue = EnumColors.ResourceManager.GetString(resourceName);
-
-                return new SolidColorBrush((Color)ColorConverter.ConvertFromString(resourceValue));
+                return resourceValue != null
+                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString(resourceValue))
+                    : Brushes.Transparent;
             }
         }
 

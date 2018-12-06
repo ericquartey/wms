@@ -37,6 +37,9 @@
     <None Update="Themes\Light\ActionBarItem.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+    <None Update="Themes\Light\ProgressBarEdit.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
  
 </Project>
