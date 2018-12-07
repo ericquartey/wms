@@ -70,6 +70,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account access error.
+        /// </summary>
+        public static string AccountAccessError {
+            get {
+                return ResourceManager.GetString("AccountAccessError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aisle.
         /// </summary>
         public static string Aisle {
@@ -1240,6 +1249,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
@@ -1560,6 +1578,15 @@ namespace Ferretto.Common.Resources {
         public static string PackageType {
             get {
                 return ResourceManager.GetString("PackageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
