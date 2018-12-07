@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         Task<Item> GetItemByIdAsync(int itemId);
 
-        Task<SchedulerRequest> GetNextRequestToProcessAsync();
+        Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync();
 
         void Update(Compartment compartment);
 

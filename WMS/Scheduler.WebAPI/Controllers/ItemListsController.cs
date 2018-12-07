@@ -122,7 +122,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                            Code = l.Code,
                            Description = l.Description,
                            Priority = l.Priority,
-                           ItemListStatus = (ItemListStatus)l.ItemListStatus,
+                           ItemListStatus = (ItemListStatus)l.Status,
                            ItemListType = (int)((ItemListType)l.ItemListType),
                            ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                            CreationDate = l.CreationDate,
@@ -142,7 +142,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                                CreationDate = r.CreationDate,
                                ItemDescription = r.Item.Description,
                                RequiredQuantity = r.RequiredQuantity,
-                               RowPriority = r.RowPriority
+                               RowPriority = r.Priority
                            })
                        })
                        .SingleOrDefaultAsync();
