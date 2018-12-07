@@ -31,14 +31,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion Fields
 
-        #region Constructors
-
-        public InputBulkAddCompartmentViewModel()
-        {
-        }
-
-        #endregion Constructors
-
         #region Events
 
         public event EventHandler FinishEvent;

@@ -87,29 +87,29 @@
                                   Grid.Row="2"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Compartment.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     <wms:SpinEdit x:Name="HeightText"
                                   Grid.Row="2"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Compartment.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                     <wms:SpinEdit x:Name="PositionXText"
                                   Grid.Row="3"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Compartment.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="3"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Compartment.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                     <wms:LookUpEdit Grid.Row="4"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="3"
                                     DisplayMember="Description"
-                                    EditValue="{Binding SelectedCompartmentTray.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    EditValue="{Binding Compartment.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                     PopupWidth="500"
                                     ValueMember="Id">
@@ -154,69 +154,24 @@
                                   Grid.Row="5"
                                   Grid.Column="0"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Compartment.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="5"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Compartment.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:ComboBox x:Name="MaterialStatus"
                                   Grid.Row="6"
                                   Grid.Column="0"
-                                  EditValue="{Binding Path=SelectedCompartmentTray.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ItemsSource="{Binding Path=SelectedCompartmentTray.MaterialStatusChoices}" />
+                                  EditValue="{Binding Path=Compartment.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding Path=Compartment.MaterialStatusChoices}" />
 
                     <wms:ComboBox x:Name="Pairing"
                                   Grid.Row="6"
                                   Grid.Column="2"
-                                  EditValue="{Binding Path=SelectedCompartmentTray.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ItemsSource="{Binding Path=SelectedCompartmentTray.ItemPairingChoices}" />
-
-
-
-                    <!--<dxa:AccordionItem Grid.Row="6"
-                                       Header="Transmission type">
-                    -->
-                    <!--  ItemContainerStyle="{StaticResource editorItemStyle}"  -->
-                    <!--
-                        <dxe:ListBoxEdit DisplayMember="Name"
-                                         EditValue="{Binding Path=TransmissionTypeID.Values, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         ItemsSource="{Binding Path=TransmissionTypes}"
-                                         ShowBorder="False"
-                                         ShowCustomItems="False"
-                                         ValueMember="ID">
-                            <dxe:ListBoxEdit.StyleSettings>
-                                <dxe:CheckedListBoxEditStyleSettings />
-                            </dxe:ListBoxEdit.StyleSettings>
-                            <wms:TextBox x:Name="Sub1"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:TextBox x:Name="Sub2"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:TextBox x:Name="Sub3"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
-                        </dxe:ListBoxEdit>
-                    </dxa:AccordionItem>-->
-
-                    <!--dxa:AccordionControl Grid.Row="7"
-                                          Margin="0,20,0,0"
-                                          Background="#00FFFFFF">
-                        <dxa:AccordionItem FontSize="12"
-                                           Header="Transmission type">
-                            <wms:TextBox x:Name="Sub4"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </dxa:AccordionItem>
-                        <dxa:AccordionItem Header="Transmission type">
-                            <wms:TextBox x:Name="Sub5"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </dxa:AccordionItem>
-                    </-->
+                                  EditValue="{Binding Path=Compartment.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding Path=Compartment.ItemPairingChoices}" />
 
                     <dxa:AccordionControl Grid.Row="7"
                                           Grid.ColumnSpan="3"
@@ -244,29 +199,25 @@
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="0"
                                              HorizontalAlignment="Stretch"
-                                             Text="{Binding SelectedCompartmentTray.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{Binding Compartment.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="2"
                                              HorizontalAlignment="Stretch"
-                                             Text="{Binding SelectedCompartmentTray.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{Binding Compartment.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <wms:ComboBox x:Name="PackageType"
                                               Grid.Row="1"
                                               Grid.Column="0"
-                                              EditValue="{Binding Path=SelectedCompartmentTray.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                              ItemsSource="{Binding Path=SelectedCompartmentTray.PackageTypeChoices}" />
+                                              EditValue="{Binding Path=Compartment.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding Path=Compartment.PackageTypeChoices}" />
 
                                 <wms:TextBox Grid.Row="1"
                                              Grid.Column="2"
                                              HorizontalAlignment="Stretch"
-                                             Text="{Binding SelectedCompartmentTray.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             Text="{Binding Compartment.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 
                         </wms:AccordionItem>
                     </dxa:AccordionControl>
-
-
-
-
                 </Grid>
             </StackPanel>
         </GroupBox>

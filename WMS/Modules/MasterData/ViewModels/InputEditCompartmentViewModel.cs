@@ -27,7 +27,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand cancelCommand;
-        private CompartmentDetails compartmentWithEnumeration;
         private ICommand deleteCommand;
         private bool enableInputEdit;
         private string error;
@@ -39,14 +38,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private string title = Common.Resources.MasterData.EditCompartment;
 
         #endregion Fields
-
-        #region Constructors
-
-        public InputEditCompartmentViewModel()
-        {
-        }
-
-        #endregion Constructors
 
         #region Events
 
@@ -99,9 +90,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.tray = tray;
             this.EnableInputEdit = true;
             this.SelectedCompartmentTray = selectedCompartmentTray;
-            this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
             this.loadingUnit = loadingUnit;
-            this.LoadData();
+            this.InitializeData();
         }
 
         protected virtual void OnFinishEvent(EventArgs e)
@@ -156,17 +146,12 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void LoadData()
+        private void InitializeData()
         {
-            this.compartmentWithEnumeration = new CompartmentDetails();
-            this.compartmentProvider.GetEnumerationDetails(this.compartmentWithEnumeration);
+            this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
+            this.compartmentProvider.GetNewCompartmentDetails(this.selectedCompartmentTray, false);
 
             this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
-
-            this.selectedCompartmentTray.MaterialStatusChoices = this.compartmentWithEnumeration.MaterialStatusChoices;
-            this.selectedCompartmentTray.CompartmentTypeChoices = this.compartmentWithEnumeration.CompartmentTypeChoices;
-            this.selectedCompartmentTray.ItemPairingChoices = this.compartmentWithEnumeration.ItemPairingChoices;
-            this.selectedCompartmentTray.PackageTypeChoices = this.compartmentWithEnumeration.PackageTypeChoices;
         }
 
         private void OnSelectedCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)
