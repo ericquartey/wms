@@ -84,6 +84,10 @@ namespace Ferretto.Common.Controls
                 ((INavigableViewModel)this.DataContext).Dispose();
 
                 this.Close();
+                if (this.Owner == null)
+                {
+                    Application.Current.Shutdown();
+                }
             }
         }
 
