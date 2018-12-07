@@ -63,8 +63,6 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                Application current = Application.Current;
-                Window mainWindow = current.MainWindow;
                 wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             }
 
