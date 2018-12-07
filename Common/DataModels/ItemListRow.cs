@@ -34,13 +34,13 @@ namespace Ferretto.Common.DataModels
 
         public MaterialStatus MaterialStatus { get; set; }
 
-        public int MaterialStatusId { get; set; }
+        public int? MaterialStatusId { get; set; }
 
         public List<Mission> Missions { get; set; }
 
         public PackageType PackageType { get; set; }
 
-        public int PackageTypeId { get; set; }
+        public int? PackageTypeId { get; set; }
 
         public int Priority { get; set; }
 
