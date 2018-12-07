@@ -33,53 +33,28 @@
             </MultiTrigger>
             <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
                          Value="Focused">
-                <Setter cs:Name="Setter_0025" TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
-                <Setter cs:Name="Setter_0026" TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
                          Value="Selected">
-                <Setter cs:Name="Setter_0027" TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
-                <Setter cs:Name="Setter_0028" TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
+                <Setter TargetName="Border" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
+                <Setter TargetName="Border" Property="Background" Value="{DynamicResource CommonBackground}" />
             </DataTrigger>
             <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True" />
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
     <ControlTemplate x:Key="{dxgt:GridCardThemeKey ThemeName=Office2016White,
+                                                   ResourceKey=HeaderContentTemplate}"
+                     TargetType="{x:Type ContentControl}">
+        <ContentPresenter x:Name="ContentPresenter1" Margin="0" />
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="{dxgt:GridCardThemeKey ThemeName=Office2016White,
                                                    ResourceKey=HeaderPanelTemplate}"
                      TargetType="{x:Type ContentControl}">
-        <Border x:Name="Root"
-                cs:Name="Border_0006"
-                Background="{DynamicResource CommonSecondaryUltralight}">
-            <Border x:Name="Border"
-                    cs:Name="Border_0007"
-                    BorderBrush="{DynamicResource CommonBackground}"
-                    BorderThickness="0,0,0,1">
-                <ContentPresenter />
-            </Border>
-        </Border>
-        <ControlTemplate.Triggers>
-            <Trigger Property="dxg:GridViewBase.IsFocusedRow" Value="True" />
-            <MultiTrigger>
-                <MultiTrigger.Conditions>
-                    <Condition Property="IsMouseOver" Value="True" />
-                    <Condition Property="dxg:GridViewBase.IsFocusedRow" Value="False" />
-                </MultiTrigger.Conditions>
-                <Setter cs:Name="Setter_0022" TargetName="Root" Property="Background" Value="{DynamicResource CommonSecondaryUltralight}" />
-            </MultiTrigger>
-            <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
-                         Value="Focused">
-                <Setter cs:Name="Setter_0023" TargetName="Root" Property="Background" Value="{DynamicResource CommonSecondaryUltralight}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=(dxg:RowData.RowData).SelectionState, RelativeSource={RelativeSource TemplatedParent}}"
-                         Value="Selected">
-                <Setter cs:Name="Setter_0024" TargetName="Root" Property="Background" Value="{DynamicResource CommonSecondaryUltralight}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Path=IsExpanded}"
-                         Value="False">
-                <Setter TargetName="Border" Property="BorderThickness" Value="0" />
-            </DataTrigger>
-        </ControlTemplate.Triggers>
+        <ContentPresenter />
     </ControlTemplate>
 
 </ResourceDictionary>
