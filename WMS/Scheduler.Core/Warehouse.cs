@@ -77,12 +77,51 @@ namespace Ferretto.WMS.Scheduler.Core
             }
         }
 
-        public async Task<SchedulerRequest> ExecuteListAsync(int listId, int bayId)
+        public async Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(int listId, int areaId, int? bayId)
         {
-            throw new NotImplementedException();
+            var list = await this.dataProvider.GetListByIdAsync(listId);
+            if (list == null)
+            {
+                throw new ArgumentException($"No list with id={listId} exists.");
+            }
+
+            IEnumerable<SchedulerRequest> requests = null;
+            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                list.Status = bayId.HasValue ? ListStatus.Executing : ListStatus.Waiting;
+
+                requests = list.Rows.Select(r =>
+                    {
+                        r.Status = ListRowStatus.Waiting;
+
+                        return new SchedulerRequest
+                        {
+                            IsInstant = false,
+                            BayId = bayId,
+                            AreaId = areaId,
+                            RequestedQuantity = r.RequestedQuantity,
+                            ItemId = r.ItemId,
+                            ListId = listId,
+                            ListRowId = r.Id,
+                            Lot = r.Lot,
+                            MaterialStatusId = r.MaterialStatusId,
+                            PackageTypeId = r.PackageTypeId,
+                            RegistrationNumber = r.RegistrationNumber,
+                            Sub1 = r.Sub1,
+                            Sub2 = r.Sub2
+                        };
+                    }
+                );
+
+                this.dataProvider.AddRange(requests);
+
+                scope.Complete();
+            }
+
+            return requests;
         }
 
-        public async Task<SchedulerRequest> Withdraw(SchedulerRequest request)
+        public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)
         {
             SchedulerRequest qualifiedRequest = null;
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))

@@ -7,6 +7,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         #region Properties
 
         [Required]
+        public int AreaId { get; set; }
+
         public int BayId { get; set; }
 
         [Required]
