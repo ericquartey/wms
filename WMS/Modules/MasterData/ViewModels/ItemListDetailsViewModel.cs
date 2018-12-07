@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -184,7 +184,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.EXECUTELISTDIALOG,
                 new
                 {
-                    Id = this.SelectedItemListRow.Id
+                    Id = this.ItemList.Id
                 }
             );
         }
@@ -196,7 +196,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
                 new
                 {
-                    Id = this.ItemList.Id
+                    Id = this.SelectedItemListRow.Id
                 }
             );
         }
