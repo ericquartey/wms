@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
 
     <!--  converters  -->
     <ctrls:BoolToVisibilityConverter x:Key="BTVC" />
@@ -14,6 +15,8 @@
                                           Hide="True" />
 
     <ctrls:BoolToNavigationStyleConverter x:Key="BTNSC" />
+
+    <dxmvvm:BooleanNegationConverter x:Key="BNC" />
 
 
 </ResourceDictionary>

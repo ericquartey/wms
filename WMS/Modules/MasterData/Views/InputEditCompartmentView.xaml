@@ -185,6 +185,7 @@
                                       RootItemExpandButtonPosition="Left">
                     <wms:AccordionItem FontSize="12"
                                        IsExpandButtonVisible="True"
+                                       IsExpanded="{Binding EnableInputEdit, Mode=OneWay, Converter={StaticResource BNC}}"
                                        IsToggleVisible="False"
                                        TitleHeader="Advanced Details">
                         <Grid>

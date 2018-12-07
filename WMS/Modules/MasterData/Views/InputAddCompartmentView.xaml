@@ -238,6 +238,7 @@
                         </dxa:AccordionItem>-->
                         <wms:AccordionItem FontSize="12"
                                            IsExpandButtonVisible="True"
+                                           IsExpanded="{Binding EnableInputAdd, Mode=OneWay, Converter={StaticResource BNC}}"
                                            IsToggleVisible="False"
                                            TitleHeader="Advanced Details">
                             <!--  ItemDisplayMode="Header"  -->
