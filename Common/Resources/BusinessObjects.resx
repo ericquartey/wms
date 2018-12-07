@@ -804,9 +804,6 @@
     <value>Offline</value>
     <comment>Machine Status - Offline</comment>
   </data>
-  <data name="ItemListStatusId" xml:space="preserve">
-    <value>Status</value>
-  </data>
   <data name="MachineMaintenanceStatusValid" xml:space="preserve">
     <value>Valid</value>
     <comment>Machine - Maintenance Status - Valid</comment>
@@ -822,5 +819,25 @@
   <data name="MachineStatus" xml:space="preserve">
     <value>Machine Status</value>
     <comment>Machine Status</comment>
+  </data>
+  <data name="ItemListStatusWaiting" xml:space="preserve">
+    <value>Waiting</value>
+    <comment>Item List Status - Waiting</comment>
+  </data>
+  <data name="ItemListStatusExecuting" xml:space="preserve">
+    <value>Executing</value>
+    <comment>Item List Status - Executing</comment>
+  </data>
+  <data name="ItemListStatusCompleted" xml:space="preserve">
+    <value>Completed</value>
+    <comment>Item List Status - Completed</comment>
+  </data>
+  <data name="ItemListStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+    <comment>Item List Status - Incomplete</comment>
+  </data>
+  <data name="ItemListStatusSuspended" xml:space="preserve">
+    <value>Suspended</value>
+    <comment>Item List Status - Suspended</comment>
   </data>
 </root>

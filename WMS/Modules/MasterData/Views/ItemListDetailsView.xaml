@@ -274,23 +274,10 @@
                     <GroupBox Grid.Row="0"
                               Margin="20,0"
                               Header="{x:Static res:MasterData.ExecutionDetails}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0"
-                                        Orientation="Horizontal">
-                                <wms:WmsIcon Width="48"
-                                             Height="48"
-                                             Margin="5"
-                                             ColorizeBrush="{Binding StatusColor}"
-                                             SymbolName="{Binding ItemList.ItemListStatus, StringFormat='ListStatus{0}'}" />
-                                <wms:InfoText HorizontalAlignment="Center"
-                                              Content="{Binding ItemList.ItemListStatus}" />
-                            </StackPanel>
-
-                        </Grid>
+                        <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListStatus}"
+                                              EnumValue="{Binding ItemList.ItemListStatus}"
+                                              IconSize="48"
+                                              ShowText="True" />
                     </GroupBox>
                     <GroupBox Grid.Row="1"
                               Margin="20,0"

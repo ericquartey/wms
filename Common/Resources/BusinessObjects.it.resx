@@ -618,14 +618,8 @@
   <data name="ListToExecuteArea" xml:space="preserve">
     <value>Area</value>
   </data>
-  <data name="ItemListStatusId" xml:space="preserve">
-    <value>Stato</value>
-  </data>
   <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
     <value>Area non valida</value>
-  </data>
-  <data name="ItemListTypeId" xml:space="preserve">
-    <value>Tipo</value>
   </data>
   <data name="MachineStatusAutomatic" xml:space="preserve">
     <value>Automatico</value>
@@ -662,5 +656,20 @@
   </data>
   <data name="ListToExecuteBayOptional" xml:space="preserve">
     <value>Baia [Opzionale]</value>
+  </data>
+  <data name="ItemListStatusCompleted" xml:space="preserve">
+    <value>Completata</value>
+  </data>
+  <data name="ItemListStatusExecuting" xml:space="preserve">
+    <value>In Esecuzione</value>
+  </data>
+  <data name="ItemListStatusIncomplete" xml:space="preserve">
+    <value>Incompleta</value>
+  </data>
+  <data name="ItemListStatusSuspended" xml:space="preserve">
+    <value>Sospesa</value>
+  </data>
+  <data name="ItemListStatusWaiting" xml:space="preserve">
+    <value>In Attesa</value>
   </data>
 </root>
