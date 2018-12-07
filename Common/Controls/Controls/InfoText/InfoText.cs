@@ -69,7 +69,6 @@ namespace Ferretto.Common.Controls
 
             if (propertyInfo?.PropertyType.IsEnum == true)
             {
-                this.IsPillVisible = true;
                 this.EnumType = propertyInfo.PropertyType;
 
                 var resourceValue = this.SymbolName != null
@@ -84,7 +83,6 @@ namespace Ferretto.Common.Controls
             }
             else
             {
-                this.IsPillVisible = false;
                 this.ContentText = this.Content;
             }
         }

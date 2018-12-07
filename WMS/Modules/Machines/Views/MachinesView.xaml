@@ -40,8 +40,8 @@
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
-                        <wms:InfoText Content="{Binding Status}" />
-                        <wms:InfoText Content="{Binding MaintenanceStatus}" />
+                        <wms:InfoText Content="{Binding Status}" IsPillVisible="True" />
+                        <wms:InfoText Content="{Binding MaintenanceStatus}" IsPillVisible="True" />
                         <wms:ProgressBarEdit DisplayFormatString="p0"
                                              EditValue="{Binding FillRate}"
                                              Minimum="0"
