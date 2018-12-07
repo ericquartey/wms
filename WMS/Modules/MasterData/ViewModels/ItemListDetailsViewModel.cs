@@ -101,7 +101,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand ShowDetailsListRowCommand => this.showDetailsListRowCommand ??
-                                                                                           (this.showDetailsListRowCommand = new DelegateCommand(this.ExecuteShowDetailsListRowCommand,
+                  (this.showDetailsListRowCommand = new DelegateCommand(this.ExecuteShowDetailsListRowCommand,
                        this.CanExecuteShowDetailsListRowCommand)
              .ObservesProperty(() => this.SelectedItemListRow));
 
@@ -162,7 +162,7 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.ItemList?.IsModified == true;
         }
 
-        private Boolean CanExecuteShowDetailsListRowCommand()
+        private bool CanExecuteShowDetailsListRowCommand()
         {
             return this.selectedItemListRow != null;
         }
