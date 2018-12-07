@@ -11,6 +11,9 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty BackgroundBrushProperty = DependencyProperty.Register(
+            nameof(BackgroundBrush), typeof(SolidColorBrush), typeof(WmsEnumIndicator), new PropertyMetadata(default(SolidColorBrush)));
+
         public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register(
             nameof(EnumType), typeof(Type), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));
 
@@ -22,6 +25,9 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty ShowTextProperty = DependencyProperty.Register(
             nameof(ShowText), typeof(bool), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(ShowTextChanged)));
+
+        public static readonly DependencyProperty SymbolNameProperty = DependencyProperty.Register(
+            nameof(SymbolName), typeof(string), typeof(WmsEnumIndicator), new PropertyMetadata(default(string)));
 
         #endregion Fields
 
@@ -38,16 +44,8 @@ namespace Ferretto.Common.Controls
 
         public SolidColorBrush BackgroundBrush
         {
-            get
-            {
-                var resourceValue = this.SymbolName != null
-                    ? EnumColors.ResourceManager.GetString(this.SymbolName)
-                    : null;
-
-                return resourceValue != null
-                    ? new SolidColorBrush((Color)ColorConverter.ConvertFromString(resourceValue))
-                    : Brushes.Transparent;
-            }
+            get => (SolidColorBrush) this.GetValue(BackgroundBrushProperty);
+            set => this.SetValue(BackgroundBrushProperty, value);
         }
 
         public Type EnumType
@@ -76,16 +74,8 @@ namespace Ferretto.Common.Controls
 
         public string SymbolName
         {
-            get
-            {
-                if (this.EnumValue == null || this.EnumType == null)
-                {
-                    return null;
-                }
-
-                var enumValue = Enum.GetName(this.EnumType, this.EnumValue);
-                return $"{this.EnumType.Name}{enumValue}";
-            }
+            get => (string) this.GetValue(SymbolNameProperty);
+            set => this.SetValue(SymbolNameProperty, value);
         }
 
         #endregion Properties
@@ -94,7 +84,27 @@ namespace Ferretto.Common.Controls
 
         private static void EnumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            UpdateText(d as WmsEnumIndicator);
+            if (!( d is WmsEnumIndicator instance ))
+            {
+                return;
+            }
+
+            UpdateText(instance);
+
+            if (instance.EnumValue == null || instance.EnumType == null)
+            {
+                instance.BackgroundBrush = Brushes.Transparent;
+                return;
+            }
+
+            var enumValue = Enum.GetName(instance.EnumType, instance.EnumValue);
+            instance.SymbolName = $"{instance.EnumType.Name}{enumValue}";
+
+            var resourceValue = EnumColors.ResourceManager.GetString(instance.SymbolName);
+
+            instance.BackgroundBrush = resourceValue != null
+                ? new SolidColorBrush((Color) ColorConverter.ConvertFromString(resourceValue))
+                : Brushes.Transparent;
         }
 
         private static void ShowTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

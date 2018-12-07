@@ -10,12 +10,13 @@
 
     <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsEnumIndicator}}}"
                 Orientation="Horizontal">
-        <TextBlock x:Name="textBlock"
-                   VerticalAlignment="Center" />
         <wms:WmsIcon x:Name="icon"
                      Width="{Binding Path=IconSize}"
                      Height="{Binding Path=IconSize}"
                      ColorizeBrush="{Binding Path=BackgroundBrush, Mode=OneWay}"
                      SymbolName="{Binding Path=SymbolName, Mode=OneWay}" />
+        <TextBlock x:Name="textBlock"
+                   Margin="5,0,0,0"
+                   VerticalAlignment="Center" />
     </StackPanel>
 </UserControl>
