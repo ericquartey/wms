@@ -60,12 +60,12 @@ namespace Ferretto.Common.BLL.Tests
 
         [TestMethod]
         [TestProperty("Description",
-            @"GIVEN a request for an item on an area \
+            @"GIVEN a request for an item on an area and a bay \
                 AND a compartment that can satisfy the request \
-                AND two bays, one of which has a mission already assigned, while the other one has none \
+                AND a bay that has a mission already assigned, but enough buffer to accept another mission \
                WHEN the request is processed \
-               THEN a new mission is created on the bay that has no missions on it")]
-        public async Task MultipleBays()
+               THEN a single mission is successfully created on the bay")]
+        public async Task OneAvailableBay()
         {
             #region Arrange
 
@@ -90,22 +90,15 @@ namespace Ferretto.Common.BLL.Tests
             {
                 ItemId = this.itemFifo.Id,
                 AreaId = this.area1.Id,
+                BayId = this.bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
                 OperationType = DataModels.OperationType.Withdrawal
             };
 
-            var bay2 = new DataModels.Bay
-            {
-                Id = 2,
-                AreaId = this.area1.Id,
-                LoadingUnitsBufferSize = 2
-            };
-
             using (var context = this.CreateContext())
             {
                 context.Compartments.Add(compartment1);
-                context.Bays.Add(bay2);
                 context.Missions.Add(mission1);
                 context.SchedulerRequests.Add(request1);
 
@@ -130,7 +123,7 @@ namespace Ferretto.Common.BLL.Tests
                 #region Assert
 
                 Assert.AreEqual(1, missions.Count());
-                Assert.AreEqual(bay2.Id, missions.First().BayId);
+                Assert.AreEqual(this.bay1.Id, missions.First().BayId);
 
                 #endregion Assert
             }
@@ -141,7 +134,7 @@ namespace Ferretto.Common.BLL.Tests
             @"GIVEN a new request for an item on a bay \
                 AND another request that was already completed \
                WHEN the new request is processed \
-               THEN ")]
+               THEN a new mission is successfully created")]
         public async Task OneCompletedRequest()
         {
             #region Arrange
@@ -213,7 +206,7 @@ namespace Ferretto.Common.BLL.Tests
         [TestProperty("Description",
             @"GIVEN a request for an item on a bay \
                 AND a compartment that can satisfy the request \
-                AND a bay with no more buffer availability to accept a new mission \
+                AND the specified bay has no more buffer availability to accept a new mission \
                WHEN the request is processed \
                THEN no new missions are created")]
         public async Task OneFullBay()
@@ -227,6 +220,7 @@ namespace Ferretto.Common.BLL.Tests
                 Id = 1,
                 ItemId = this.itemFifo.Id,
                 AreaId = this.area1.Id,
+                BayId = this.bay1.Id,
                 IsInstant = true,
                 RequestedQuantity = 5,
                 OperationType = DataModels.OperationType.Withdrawal

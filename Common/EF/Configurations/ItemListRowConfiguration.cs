@@ -44,7 +44,8 @@ namespace Ferretto.Common.EF.Configurations
                 .HasForeignKey(i => i.PackageTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder.Property(i => i.ItemListRowStatus).IsRequired()
+            builder.Property(i => i.Status)
+               .IsRequired()
                .HasColumnType("char(1)")
                .HasConversion(x => (char)x, x => (ItemListRowStatus)Enum.ToObject(typeof(ItemListRowStatus), x));
         }
