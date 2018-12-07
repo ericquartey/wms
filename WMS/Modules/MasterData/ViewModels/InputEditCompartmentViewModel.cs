@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -22,12 +24,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public Tray tray;
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand cancelCommand;
+        private CompartmentDetails compartmentWithEnumeration;
         private ICommand deleteCommand;
         private bool enableInputEdit;
         private string error;
         private string errorColor;
+        private IDataSource<Item> itemsDataSource;
         private LoadingUnitDetails loadingUnit;
         private ICommand saveCommand;
         private CompartmentDetails selectedCompartmentTray;
@@ -64,10 +69,17 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
+
         public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
+        public IDataSource<Item> ItemsDataSource
+        {
+            get => this.itemsDataSource;
+            set => this.SetProperty(ref this.itemsDataSource, value);
+        }
+
         public ICommand SaveCommand => this.saveCommand ??
-                                 (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand)
+                                         (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand)
            .ObservesProperty(() => this.Error));
 
         public CompartmentDetails SelectedCompartmentTray
@@ -89,6 +101,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.SelectedCompartmentTray = selectedCompartmentTray;
             this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
             this.loadingUnit = loadingUnit;
+            this.LoadData();
         }
 
         protected virtual void OnFinishEvent(EventArgs e)
@@ -141,6 +154,19 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.ResetView();
             }
+        }
+
+        private void LoadData()
+        {
+            this.compartmentWithEnumeration = new CompartmentDetails();
+            this.compartmentProvider.GetEnumerationDetails(this.compartmentWithEnumeration);
+
+            this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
+
+            this.selectedCompartmentTray.MaterialStatusChoices = this.compartmentWithEnumeration.MaterialStatusChoices;
+            this.selectedCompartmentTray.CompartmentTypeChoices = this.compartmentWithEnumeration.CompartmentTypeChoices;
+            this.selectedCompartmentTray.ItemPairingChoices = this.compartmentWithEnumeration.ItemPairingChoices;
+            this.selectedCompartmentTray.PackageTypeChoices = this.compartmentWithEnumeration.PackageTypeChoices;
         }
 
         private void OnSelectedCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)

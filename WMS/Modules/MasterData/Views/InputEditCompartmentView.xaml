@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:masterData="clr-namespace:Ferretto.WMS.Modules.MasterData"
@@ -66,6 +67,7 @@
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0"
@@ -107,12 +109,49 @@
                               HorizontalContentAlignment="Right"
                               EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                <wms:TextBox x:Name="ArticleText"
-                             Grid.Row="4"
-                             Grid.Column="0"
-                             Grid.ColumnSpan="3"
-                             HorizontalAlignment="Stretch"
-                             Text="{Binding SelectedCompartmentTray.ItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <wms:LookUpEdit Grid.Row="4"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
+                                DisplayMember="Description"
+                                EditValue="{Binding SelectedCompartmentTray.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
+                                PopupWidth="500"
+                                ValueMember="Id">
+                    <wms:LookUpEdit.PopupContentTemplate>
+                        <ControlTemplate>
+                            <wms:WmsGridControl x:Name="PART_GridControl">
+                                <wms:WmsGridControl.Columns>
+                                    <dxg:GridColumn Width="10*"
+                                                    FieldName="Code" />
+                                    <dxg:GridColumn Width="20*"
+                                                    FieldName="Description" />
+                                    <dxg:GridColumn Width="10*"
+                                                    FieldName="Image">
+                                        <dxg:GridColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Margin="2"
+                                                            HorizontalAlignment="Center">
+                                                    <wms:WmsImage MaxWidth="100"
+                                                                  MaxHeight="100"
+                                                                  BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                                                  BorderThickness="1"
+                                                                  Path="{Binding Data.Image}" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </dxg:GridColumn.CellTemplate>
+                                    </dxg:GridColumn>
+                                </wms:WmsGridControl.Columns>
+                                <wms:WmsGridControl.View>
+                                    <dxg:TableView RowStyle="{DynamicResource AutoHeightRowControlStyle}" />
+                                </wms:WmsGridControl.View>
+                                <wms:WmsGridControl.SortInfo>
+                                    <dxg:GridSortInfo FieldName="Code"
+                                                      SortOrder="Ascending" />
+                                </wms:WmsGridControl.SortInfo>
+                            </wms:WmsGridControl>
+                        </ControlTemplate>
+                    </wms:LookUpEdit.PopupContentTemplate>
+                </wms:LookUpEdit>
 
                 <wms:SpinEdit x:Name="QuantityText"
                               Grid.Row="5"
@@ -126,11 +165,61 @@
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <wms:ComboBox x:Name="Pairing"
+                <wms:ComboBox x:Name="MaterialStatus"
                               Grid.Row="6"
                               Grid.Column="0"
+                              EditValue="{Binding Path=SelectedCompartmentTray.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding Path=SelectedCompartmentTray.MaterialStatusChoices}" />
+                <wms:ComboBox x:Name="Pairing"
+                              Grid.Row="6"
+                              Grid.Column="2"
                               EditValue="{Binding Path=SelectedCompartmentTray.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding Path=SelectedCompartmentTray.ItemPairingChoices}" />
+
+                <dxa:AccordionControl Grid.Row="7"
+                                      Grid.ColumnSpan="3"
+                                      Margin="0,10,0,0"
+                                      Background="Transparent"
+                                      BorderThickness="0"
+                                      IsCollapseButtonVisible="False"
+                                      RootItemExpandButtonPosition="Left">
+                    <wms:AccordionItem FontSize="12"
+                                       IsExpandButtonVisible="True"
+                                       IsToggleVisible="False"
+                                       TitleHeader="Advanced Details">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140" />
+                                <ColumnDefinition Width="10" />
+                                <ColumnDefinition Width="140" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <wms:TextBox Grid.Row="0"
+                                         Grid.Column="0"
+                                         HorizontalAlignment="Stretch"
+                                         Text="{Binding SelectedCompartmentTray.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:TextBox Grid.Row="0"
+                                         Grid.Column="2"
+                                         HorizontalAlignment="Stretch"
+                                         Text="{Binding SelectedCompartmentTray.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:ComboBox x:Name="PackageType"
+                                          Grid.Row="1"
+                                          Grid.Column="0"
+                                          EditValue="{Binding Path=SelectedCompartmentTray.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding Path=SelectedCompartmentTray.PackageTypeChoices}" />
+
+                            <wms:TextBox Grid.Row="1"
+                                         Grid.Column="2"
+                                         HorizontalAlignment="Stretch"
+                                         Text="{Binding SelectedCompartmentTray.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+
+                    </wms:AccordionItem>
+                </dxa:AccordionControl>
 
             </Grid>
         </GroupBox>

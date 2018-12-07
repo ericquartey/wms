@@ -50,7 +50,14 @@ namespace Ferretto.Common.BusinessProviders
                 Stock = model.Stock,
                 ReservedForPick = model.ReservedForPick,
                 ReservedToStore = model.ReservedToStore,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                ItemId = model.ItemId,
+                MaterialStatusId = model.MaterialStatusId,
+                //Optional
+                Sub1 = model.Sub1,
+                Sub2 = model.Sub2,
+                PackageTypeId = model.PackageTypeId,
+                RegistrationNumber = model.RegistrationNumber
             });
             var changedEntitiesCount = await dataContext.SaveChangesAsync();
 
@@ -244,6 +251,18 @@ namespace Ferretto.Common.BusinessProviders
                     ItemPairingDescription = c.ItemPairing.ToString(),
                 })
                 .AsNoTracking();
+        }
+
+        public CompartmentDetails GetEnumerationDetails(CompartmentDetails compartmentDetails)
+        {
+            compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
+            compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
+            compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+            compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            compartmentDetails.ItemPairingChoices = ((Pairing[])
+                Enum.GetValues(typeof(Pairing)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            return compartmentDetails;
         }
 
         public bool HasAnyAllowedItem(int modelId)

@@ -188,9 +188,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteAddCompartmentCommand()
         {
             this.SelectedCompartmentTray = new CompartmentDetails();
-            this.PopulatePairing();
             this.HideMainViewAndShowLateralPanel();
-            this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id, this.selectedCompartmentTray);
+            this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
             this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
         }
 

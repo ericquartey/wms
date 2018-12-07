@@ -295,6 +295,7 @@ namespace Ferretto.Common.BusinessProviders
                        FifoTimePick = a.Item.FifoTimePick,
                        FifoTimeStore = a.Item.FifoTimeStore,
                        Height = a.Item.Height,
+                       Image = a.Item.Image,
                        InventoryDate = a.Item.InventoryDate,
                        InventoryTolerance = a.Item.InventoryTolerance,
                        ManagementTypeDescription = a.Item.ManagementType.ToString(), // TODO change

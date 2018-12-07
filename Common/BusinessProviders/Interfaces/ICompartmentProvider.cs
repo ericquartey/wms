@@ -11,6 +11,8 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<CompartmentDetails> GetByLoadingUnitId(int id);
 
+        CompartmentDetails GetEnumerationDetails(CompartmentDetails compartmentDetails);
+
         bool HasAnyAllowedItem(int modelId);
 
         #endregion Methods
