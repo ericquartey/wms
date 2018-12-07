@@ -145,4 +145,24 @@
     <value>#e2001a</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="ItemListStatusCompleted" xml:space="preserve">
+    <value>#00C853</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListStatusExecuting" xml:space="preserve">
+    <value>#0D47A1</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListStatusIncomplete" xml:space="preserve">
+    <value>#D50000</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListStatusSuspended" xml:space="preserve">
+    <value>#FFB300</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListStatusWaiting" xml:space="preserve">
+    <value>#00BCD4</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>
