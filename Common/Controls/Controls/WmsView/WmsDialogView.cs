@@ -56,8 +56,16 @@ namespace Ferretto.Common.Controls
             {
                 return;
             }
-            wmsDialog.Owner = Application.Current.MainWindow;
-            wmsDialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+            if (Application.Current.MainWindow.IsVisible)
+            {
+                wmsDialog.Owner = Application.Current.MainWindow;
+                wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+
             wmsDialog.ShowDialog();
         }
 
@@ -76,6 +84,11 @@ namespace Ferretto.Common.Controls
                 ((INavigableViewModel)this.DataContext).Dispose();
 
                 this.Close();
+                if (this.Owner == null &&
+                    Application.Current.MainWindow.IsVisible == false)
+                {
+                    Application.Current.Shutdown();
+                }
             }
         }
 

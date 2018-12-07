@@ -840,4 +840,16 @@
     <value>Suspended</value>
     <comment>Item List Status - Suspended</comment>
   </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+    <comment>Credential - Login</comment>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Password</comment>
+  </data>
+  <data name="AccountAccessError" xml:space="preserve">
+    <value>Account access error</value>
+    <comment>Credentials - Account access error</comment>
+  </data>
 </root>

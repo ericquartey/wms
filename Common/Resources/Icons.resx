@@ -385,4 +385,12 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Tiles/Regions_black.png</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="NavigationForward" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_arrow_forward_black_24dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="NavigationCheck" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_check_black_24dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>
