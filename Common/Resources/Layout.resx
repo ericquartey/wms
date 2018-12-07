@@ -125,8 +125,8 @@
     <value>Password</value>
     <comment>LoginView Credentials - Password</comment>
   </data>
-  <data name="SignInToYourAccount" xml:space="preserve">
-    <value>Sign in to your account</value>
+  <data name="WmsLogin" xml:space="preserve">
+    <value>WMS Login</value>
     <comment>LoginView Credentials</comment>
   </data>
   <data name="WmsAccess" xml:space="preserve">
@@ -139,6 +139,10 @@
   </data>
   <data name="Access" xml:space="preserve">
     <value>Access</value>
+    <comment>LoginView</comment>
+  </data>
+  <data name="LoginToWms" xml:space="preserve">
+    <value>Login to WMS</value>
     <comment>LoginView</comment>
   </data>
 </root>

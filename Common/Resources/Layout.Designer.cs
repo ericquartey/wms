@@ -79,6 +79,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login to WMS.
+        /// </summary>
+        public static string LoginToWms {
+            get {
+                return ResourceManager.GetString("LoginToWms", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
         public static string Ok {
@@ -97,20 +106,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sign in to your account.
-        /// </summary>
-        public static string SignInToYourAccount {
-            get {
-                return ResourceManager.GetString("SignInToYourAccount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to WMS  Access.
         /// </summary>
         public static string WmsAccess {
             get {
                 return ResourceManager.GetString("WmsAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WMS Login.
+        /// </summary>
+        public static string WmsLogin {
+            get {
+                return ResourceManager.GetString("WmsLogin", resourceCulture);
             }
         }
     }
