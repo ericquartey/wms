@@ -1,8 +1,8 @@
-﻿namespace Ferretto.Common.DataModels
+﻿namespace Ferretto.WMS.Scheduler.Core
 {
-    // Stato di Lista Articoli
-    public enum ItemListStatus
+    public enum ListRowStatus
     {
+        NotSpecified,
         Waiting = 'W',
         Executing = 'E',
         Completed = 'C',

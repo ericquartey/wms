@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
-            
+
             var aggregatedCompartments = this.dataContext.Compartments
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.Cell)
@@ -126,6 +126,11 @@ namespace Ferretto.WMS.Scheduler.Core
               .FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Gets all compartments in the specified area/bay that have availability for the specified item.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>The unsorted set of compartments matching the specified request.</returns>
         public IQueryable<Compartment> GetCandidateWithdrawalCompartments(SchedulerRequest request)
         {
             if (request == null)
@@ -214,7 +219,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            
+
             lock (this.dataContext)
             {
                 var existingModel = this.dataContext.Areas.Find(model.Id);
