@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -133,6 +133,30 @@ namespace Ferretto.WMS.Scheduler.Core
                 }
                 )
                 .SingleAsync(i => i.Id == itemId);
+        }
+
+        public async Task<ItemList> GetListByIdAsync(int listId)
+        {
+            return await this.dataContext.ItemLists
+                .Include(l => l.ItemListRows)
+                .Select(i => new ItemList
+                {
+                    Id = i.Id,
+                    Rows = i.ItemListRows.Select(r => new ItemListRow
+                    {
+                        Id = r.Id,
+                        ItemId = r.ItemId,
+                        Lot = r.Lot,
+                        MaterialStatusId = r.MaterialStatusId,
+                        PackageTypeId = r.PackageTypeId,
+                        RegistrationNumber = r.RegistrationNumber,
+                        RequestedQuantity = r.RequiredQuantity,
+                        Sub1 = r.Sub1,
+                        Sub2 = r.Sub2
+                    })
+                }
+                )
+                .SingleAsync(l => l.Id == listId);
         }
 
         /// <summary>

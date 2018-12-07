@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Scheduler.Core
@@ -16,6 +16,8 @@ namespace Ferretto.WMS.Scheduler.Core
         Task<Bay> GetBayByIdAsync(int bayId);
 
         Task<Item> GetItemByIdAsync(int itemId);
+
+        Task<ItemList> GetListByIdAsync(int listId);
 
         Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync();
 
