@@ -8,6 +8,8 @@ namespace Ferretto.WMS.Scheduler.Core
 
         public IEnumerable<ItemListRow> Rows { get; set; }
 
+        public ListStatus Status { get; set; }
+
         #endregion Properties
     }
 }

@@ -16,6 +16,8 @@
 
         public int RequestedQuantity { get; set; }
 
+        public ListRowStatus Status { get; set; }
+
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
