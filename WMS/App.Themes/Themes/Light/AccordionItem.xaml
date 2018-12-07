@@ -355,7 +355,8 @@
                                 <Condition Property="ItemType" Value="RootItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedInactiveForeground, ThemeName=Office2016White}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedInactiveForeground, ThemeName=Office2016White}}" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
+                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedInactiveForeground, ThemeName=Office2016White}}" />-->
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -365,7 +366,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground, ThemeName=Office2016White}}" />
                             <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground, ThemeName=Office2016White}}" />
-                            <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />
+                            <!--<Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />-->
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />
                         </MultiTrigger>
                         <MultiTrigger>
@@ -376,7 +377,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground, ThemeName=Office2016White}}" />
                             <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground, ThemeName=Office2016White}}" />
-                            <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />
+                            <!--<Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />-->
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />
                         </MultiTrigger>
                         <MultiTrigger>
@@ -416,8 +417,9 @@
             <dxe:ToggleSwitch ToggleSwitchHeight="20"
                               ToggleSwitchWidth="30"
                               Visibility="{Binding IsToggleVisible, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type wms:AccordionItem}}, Converter={StaticResource BTVC}}" />
-            <TextBlock FontSize="12"
-                       FontWeight="Bold"
+            <TextBlock FontSize="14"
+                       FontWeight="Medium"
+                       Foreground="#FF293133"
                        Text="{Binding TitleHeader, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type wms:AccordionItem}}}" />
         </StackPanel>
     </DataTemplate>
@@ -426,6 +428,7 @@
            TargetType="wms:AccordionItem">
         <!--<Setter Property="Style" Value="{DynamicResource AccordionItemStyle1}"/>-->
         <Setter Property="HeaderTemplate" Value="{StaticResource HeaderAccordingItemTemplate}" />
+        <Setter Property="IsExpanded" Value="False" />
         <!--<Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="wms:AccordionItem">

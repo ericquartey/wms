@@ -33,13 +33,11 @@ namespace Ferretto.Common.Controls
 
         #endregion Fields
 
-        //, OnIsToggleVisibleChanged)
-
         #region Constructors
 
         public AccordionItem()
         {
-            //this.InitializeComponent();
+            this.IsExpanded = false;
         }
 
         #endregion Constructors
@@ -65,14 +63,5 @@ namespace Ferretto.Common.Controls
         }
 
         #endregion Properties
-
-        //private static void OnIsToggleVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (d is Accordion accordion)
-        //    {
-        //        //accordion.ToggleSwitch1.Visible = (bool)e.NewValue;
-        //        //accordion.AccordionItem.togg
-        //    }
-        //}
     }
 }
