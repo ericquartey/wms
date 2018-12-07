@@ -117,71 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Application_Title" xml:space="preserve">
-    <value>WMS – Ferretto Group</value>
-    <comment>Title of the application showing on the main window title bar</comment>
+  <data name="WmsAccess" xml:space="preserve">
+    <value>Accesso WMS</value>
   </data>
-  <data name="ConfiguringPrismModuleCatalog" xml:space="preserve">
-    <value>Configuring Prism module catalog ...</value>
-    <comment>Splash screen message</comment>
+  <data name="SignInToYourAccount" xml:space="preserve">
+    <value>Accedi al tuo account</value>
   </data>
-  <data name="DoneInitializingEntityFramework" xml:space="preserve">
-    <value>Initializing Entity Framework ... done.</value>
-    <comment>Splash screen message</comment>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
   </data>
-  <data name="ElapsedTime" xml:space="preserve">
-    <value>Elapsed Time</value>
-    <comment>Splash screen benchmark</comment>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
   </data>
-  <data name="InitializingCompartmentModule" xml:space="preserve">
-    <value>Initializing Compartment module ...</value>
-    <comment>Splash screen message</comment>
+  <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
   </data>
-  <data name="InitializingEntityFramework" xml:space="preserve">
-    <value>Initializing Entity Framework ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="InitializingLayoutModule" xml:space="preserve">
-    <value>Initializing Layout module ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="InitializingMachinesModule" xml:space="preserve">
-    <value>Initializing Machines module ...</value>
-  </data>
-  <data name="InitializingMainWindow" xml:space="preserve">
-    <value>Initializing main window ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="InitializingMasterDataModule" xml:space="preserve">
-    <value>Initializing Master Data module ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="LoadingPrismModuleCatalog" xml:space="preserve">
-    <value>Loading Prism module catalog ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="OpeningMainWindow" xml:space="preserve">
-    <value>Opening main window ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="ApplyingDatabaseMigrations" xml:space="preserve">
-    <value>Applying database migrations ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="ReseedingDatabase" xml:space="preserve">
-    <value>Reseeding database ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="CheckingDatabaseStructure" xml:space="preserve">
-    <value>Checking database structure ...</value>
-    <comment>Splash screen message</comment>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Loading ...</value>
-    <comment>Generic Loading indication</comment>
-  </data>
-  <data name="InitializingLogin" xml:space="preserve">
-    <value>Initializing Login ...</value>
-    <comment>Spash screen message</comment>
+  <data name="Access" xml:space="preserve">
+    <value>Accedi</value>
   </data>
 </root>

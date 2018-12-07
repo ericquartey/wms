@@ -56,8 +56,18 @@ namespace Ferretto.Common.Controls
             {
                 return;
             }
-            wmsDialog.Owner = Application.Current.MainWindow;
-            wmsDialog.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterOwner;
+            if (Application.Current.MainWindow.IsVisible)
+            {
+                wmsDialog.Owner = Application.Current.MainWindow;
+                wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                Application current = Application.Current;
+                Window mainWindow = current.MainWindow;
+                wmsDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+
             wmsDialog.ShowDialog();
         }
 

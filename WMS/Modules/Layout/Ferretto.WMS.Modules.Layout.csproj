@@ -29,7 +29,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\LoginView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>
