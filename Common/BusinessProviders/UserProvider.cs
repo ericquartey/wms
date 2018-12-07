@@ -36,13 +36,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public string IsValid(User user)
         {
-            if (user.Login.Equals("admin") &&
-                user.Password.Equals("admin"))
-            {
-                return string.Empty;
-            }
-
-            return Resources.BusinessObjects.AccountAccessError;
+            return string.Empty;
         }
 
         public Int32 Save(User model)
