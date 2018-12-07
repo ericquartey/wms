@@ -172,8 +172,8 @@ namespace Ferretto.Common.BusinessProviders
                 compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
                 compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
                 compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-                compartmentDetails.ItemPairingChoices = ((Pairing[])
-                    Enum.GetValues(typeof(Pairing)))
+                compartmentDetails.ItemPairingChoices = ((DataModels.Pairing[])
+                    Enum.GetValues(typeof(DataModels.Pairing)))
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
                 return compartmentDetails;
@@ -259,8 +259,8 @@ namespace Ferretto.Common.BusinessProviders
             compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
             compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
             compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-            compartmentDetails.ItemPairingChoices = ((Pairing[])
-                Enum.GetValues(typeof(Pairing)))
+            compartmentDetails.ItemPairingChoices = ((DataModels.Pairing[])
+                Enum.GetValues(typeof(DataModels.Pairing)))
                 .Select(i => new Enumeration((int)i, i.ToString())).ToList();
             return compartmentDetails;
         }
