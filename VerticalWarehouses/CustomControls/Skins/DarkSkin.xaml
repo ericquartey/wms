@@ -3,10 +3,14 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkSkinGeneral.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkSkinNormal.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkSkinPressed.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkSkinDisabled.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkVarious.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkSkinImages.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkActionButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkNavigationButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkNavigationRepeatButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkMainWindowUserComboBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomOutputText.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomInputText.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

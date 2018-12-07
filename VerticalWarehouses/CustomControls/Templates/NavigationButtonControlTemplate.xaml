@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Templates">
+
+    <ControlTemplate x:Key="VWAPP_NavigationButton_ControlTemplate"
+                     TargetType="Button">
+        <Border Name="Root_NavigationButtonBorder"
+                Width="{DynamicResource VWAPP_NavigationButton_Width_Normal}"
+                Height="{DynamicResource VWAPP_NavigationButton_Height_Normal}"
+                Margin="0,3"
+                Background="{DynamicResource VWAPP_NavigationButton_Background_Normal}"
+                BorderBrush="{DynamicResource VWAPP_NavigationButton_BorderBrush_Normal}"
+                BorderThickness="{DynamicResource VWAPP_NavigationButton_BorderThickness_Normal}">
+            <TextBlock Name="NavigationButtonTextBlock"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontFamily="{DynamicResource VWAPP_NavigationButton_FontFamily_Normal}"
+                       FontSize="{DynamicResource VWAPP_NavigationButton_FontSize_Normal}"
+                       Foreground="{DynamicResource VWAPP_NavigationButton_Foreground_Normal}"
+                       Text="{TemplateBinding Content}"
+                       TextAlignment="Center"
+                       TextWrapping="Wrap" />
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsPressed" Value="true">
+                <Setter TargetName="Root_NavigationButtonBorder" Property="Background" Value="{DynamicResource VWAPP_NavigationButton_Background_Pressed}" />
+                <Setter TargetName="Root_NavigationButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_NavigationButton_BorderBrush_Pressed}" />
+                <Setter TargetName="NavigationButtonTextBlock" Property="Foreground" Value="{DynamicResource VWAPP_NavigationButton_Foreground_Pressed}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter TargetName="Root_NavigationButtonBorder" Property="Background" Value="{DynamicResource VWAPP_NavigationButton_Background_Disabled}" />
+                <Setter TargetName="Root_NavigationButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_NavigationButton_BorderBrush_Disabled}" />
+                <Setter TargetName="NavigationButtonTextBlock" Property="Foreground" Value="{DynamicResource VWAPP_NavigationButton_Foreground_Disabled}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+</ResourceDictionary>

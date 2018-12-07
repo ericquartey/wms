@@ -135,6 +135,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
   <data name="CreationDate" xml:space="preserve">
     <value>Creation Date</value>
   </data>
@@ -150,6 +153,9 @@
   </data>
   <data name="Edit" xml:space="preserve">
     <value>Edit</value>
+  </data>
+  <data name="Execute" xml:space="preserve">
+    <value>Execute</value>
   </data>
   <data name="File" xml:space="preserve">
     <value>File</value>
@@ -194,6 +200,9 @@
     <value>Search</value>
     <comment>Label - Search</comment>
   </data>
+  <data name="ShowDetails" xml:space="preserve">
+    <value>Show Details</value>
+  </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Switch Off</value>
     <comment>Button </comment>
@@ -205,6 +214,9 @@
   <data name="Top" xml:space="preserve">
     <value>Top</value>
     <comment>Button text</comment>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
   </data>
   <data name="UnitOfMeasurement" xml:space="preserve">
     <value>Unit of measurement</value>

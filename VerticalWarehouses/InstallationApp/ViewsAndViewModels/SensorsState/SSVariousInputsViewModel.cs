@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Prism.Mvvm;
-using Ferretto.VW.RemoteIODriver.Source;
+﻿using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 {
@@ -22,7 +20,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 
         public SSVariousInputsViewModel()
         {
-            RemoteIOManager.Current.SensorsSyncronizedEventHandler += this.UpdateSensorsStates;
+            MainWindowViewModel.SensorsStatesChangedEventHandler += this.ChangeSensors;
         }
 
         #endregion Constructors
@@ -41,22 +39,15 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
 
         #region Methods
 
-        private void UpdateSensorsStates()
+        private void ChangeSensors()
         {
-            var tmp = new List<bool>();
-
-            for (int i = 0; i < 8; i++)
-            {
-                tmp.Add(RemoteIOManager.Current.Inputs[i]);
-            }
-
-            this.AntiIntrusionGate = tmp[4];
-            this.CradleEngineSelected = tmp[7];
-            this.ElevatorEngineSelected = tmp[6];
-            this.MicroCarterLeftSide = tmp[2];
-            this.MicroCarterRightSide = tmp[3];
-            this.MushroomHeadButton = tmp[1];
-            this.SecurityFunctionActive = tmp[0];
+            this.AntiIntrusionGate = MainWindowViewModel.States.Sensor1;
+            this.CradleEngineSelected = MainWindowViewModel.States.Sensor2;
+            this.ElevatorEngineSelected = MainWindowViewModel.States.Sensor3;
+            this.MicroCarterLeftSide = MainWindowViewModel.States.Sensor4;
+            this.MicroCarterRightSide = MainWindowViewModel.States.Sensor5;
+            this.MushroomHeadButton = MainWindowViewModel.States.Sensor6;
+            this.SecurityFunctionActive = MainWindowViewModel.States.Sensor7;
         }
 
         #endregion Methods

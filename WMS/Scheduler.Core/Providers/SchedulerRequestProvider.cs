@@ -36,7 +36,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentException("Only withdrawal requests are supported.", nameof(request));
             }
-
+            
             var aggregatedCompartments = this.dataContext.Compartments
                .Include(c => c.LoadingUnit)
                .ThenInclude(l => l.Cell)
@@ -62,17 +62,17 @@ namespace Ferretto.WMS.Scheduler.Core
                    (request.RegistrationNumber == null || c.RegistrationNumber == request.RegistrationNumber)
                )
                .GroupBy(
-                   x => new Tuple<string, string, string, int?, int?, string>(x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber),
+                   x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
                    (key, group) => new
                    {
                        Key = key,
                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
-                       Sub1 = key.Item1,
-                       Sub2 = key.Item2,
-                       Lot = key.Item3,
-                       PackageTypeId = key.Item4,
-                       MaterialStatusId = key.Item5,
-                       RegistrationNumber = key.Item6,
+                       Sub1 = key.Sub1,
+                       Sub2 = key.Sub2,
+                       Lot = key.Lot,
+                       PackageTypeId = key.PackageTypeId,
+                       MaterialStatusId = key.MaterialStatusId,
+                       RegistrationNumber = key.RegistrationNumber,
                        FirstStoreDate = group.Min(c => c.FirstStoreDate)
                    }
                );
@@ -83,8 +83,8 @@ namespace Ferretto.WMS.Scheduler.Core
             var compartmentSets = aggregatedCompartments
                 .GroupJoin(
                     aggregatedRequests,
-                    c => new Tuple<string, string, string, int?, int?, string>(c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber),
-                    r => new Tuple<string, string, string, int?, int?, string>(r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber),
+                    c => new { c.Sub1, c.Sub2, c.Lot, c.PackageTypeId, c.MaterialStatusId, c.RegistrationNumber },
+                    r => new { r.Sub1, r.Sub2, r.Lot, r.PackageTypeId, r.MaterialStatusId, r.RegistrationNumber },
                     (c, r) => new
                     {
                         c = c,
@@ -167,28 +167,24 @@ namespace Ferretto.WMS.Scheduler.Core
                     )
                 .Select(c => new Compartment
                 {
-                    Id = c.Id,
-                    ItemId = c.ItemId.Value,
-                    LoadingUnitId = c.LoadingUnit.Id,
-                    CellId = c.LoadingUnit.Cell.Id,
-                    AreaId = c.LoadingUnit.Cell.Aisle.Area.Id,
+                    AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
+                    CellId = c.LoadingUnit.CellId,
                     Code = c.Code,
-                    Sub1 = c.Sub1,
-                    Sub2 = c.Sub2,
                     FifoTime = c.FifoTime,
                     FirstStoreDate = c.FirstStoreDate,
-                    Stock = c.Stock,
-                    ReservedToStore = c.ReservedToStore,
-                    ReservedForPick = c.ReservedForPick,
-                    PackageTypeId = c.PackageTypeId,
+                    Id = c.Id,
+                    ItemId = c.ItemId.Value,
+                    LoadingUnitId = c.LoadingUnitId,
                     Lot = c.Lot,
-                    Bays = c.LoadingUnit.Cell.Aisle.Area.Bays.Select(
-                        b => new Bay
-                        {
-                            Id = b.Id,
-                            LoadingUnitsBufferSize = b.LoadingUnitsBufferSize
-                        }
-                        ),
+                    MaterialStatusId = c.MaterialStatusId,
+                    MaxCapacity = c.MaxCapacity,
+                    PackageTypeId = c.PackageTypeId,
+                    RegistrationNumber = c.RegistrationNumber,
+                    ReservedForPick = c.ReservedForPick,
+                    ReservedToStore = c.ReservedToStore,
+                    Stock = c.Stock,
+                    Sub1 = c.Sub1,
+                    Sub2 = c.Sub2,
                 });
         }
 
@@ -218,7 +214,7 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 throw new ArgumentNullException(nameof(model));
             }
-
+            
             lock (this.dataContext)
             {
                 var existingModel = this.dataContext.Areas.Find(model.Id);
@@ -238,12 +234,19 @@ namespace Ferretto.WMS.Scheduler.Core
             #region Properties
 
             public int Availability { get; set; }
+
             public DateTime? FirstStoreDate { get; set; }
+
             public string Lot { get; set; }
+
             public int? MaterialStatusId { get; set; }
+
             public int? PackageTypeId { get; set; }
+
             public string RegistrationNumber { get; set; }
+
             public string Sub1 { get; set; }
+
             public string Sub2 { get; set; }
 
             #endregion Properties

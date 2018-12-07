@@ -59,6 +59,8 @@ namespace Ferretto.VW.InvServer
         // Status word (internal)
         private BitArray statusWord;
 
+        private int controlWord;
+
         #endregion Fields
 
         #region Constructors
@@ -70,6 +72,9 @@ namespace Ferretto.VW.InvServer
             this.sckWorker = null;
             this.statusWord = new BitArray(N_BITS_16);
             this.operativeStatus = false;
+
+            // Status e Control Word initialization
+            this.controlWord = 0;
         }
 
         #endregion Constructors
@@ -446,6 +451,11 @@ namespace Ferretto.VW.InvServer
                 // create an echo of received telegram
                 telegramToSend = new byte[nBytes];
                 Array.Copy(telegramReceived, 0, telegramToSend, 0, nBytes);
+
+                if ((ParameterID)paramId == ParameterID.CONTROL_WORD_PARAM)
+                {
+                    controlWord = telegramReceived[6];
+                }
             }
             else
             {
@@ -482,12 +492,12 @@ namespace Ferretto.VW.InvServer
                 {
                     case ParameterID.CONTROL_WORD_PARAM:
                         {
-                            var value = 0x8000;
                             var ans = new byte[2];
                             var valueBytes = new byte[sizeof(short)];
-                            valueBytes = BitConverter.GetBytes(Convert.ToInt16(value));
+                            valueBytes = BitConverter.GetBytes(this.controlWord); //Convert.ToInt16(value));
                             valueBytes.CopyTo(ans, 0);
                             Array.Copy(ans, 0, telegramToSend, 6, 2);
+
                             break;
                         }
                     case ParameterID.HOMING_CREEP_SPEED_PARAM:
@@ -582,6 +592,51 @@ namespace Ferretto.VW.InvServer
                         }
                     case ParameterID.STATUS_WORD_PARAM:
                         {
+                            statusWord.SetAll(false);
+
+                            switch (controlWord)
+                            {
+                                // 3.1
+                                case (4):// Control Word: 00000000 00000100
+                                    this.statusWord.Set(4, true);
+
+                                    break;
+                                // 3.2
+                                case (6):// Control Word: 00000000 00000110
+                                    this.statusWord.Set(5, true);
+                                    this.statusWord.Set(4, true);
+                                    this.statusWord.Set(0, true);
+
+                                    break;
+                                // 3.3
+                                case (7): // Control Word: 00000000 00000111
+                                    this.statusWord.Set(5, true);
+                                    this.statusWord.Set(4, true);
+                                    this.statusWord.Set(1, true);
+
+                                    break;
+                                // 3.4
+                                case (15): // Control Word: 00000000 00001111
+                                    this.statusWord.Set(5, true);
+                                    this.statusWord.Set(4, true);
+                                    this.statusWord.Set(2, true);
+                                    this.statusWord.Set(1, true);
+
+                                    break;
+                                // 3.5
+                                case (31): // Control Word: 00000000 00011111
+                                    this.statusWord.Set(12, true);
+                                    this.statusWord.Set(5, true);
+                                    this.statusWord.Set(4, true);
+                                    this.statusWord.Set(2, true);
+                                    this.statusWord.Set(1, true);
+
+                                    break;
+                                default:
+
+                                    break;
+                            }
+
                             var ans = BitArrayToByteArray(this.statusWord);
                             Array.Copy(ans, 0, telegramToSend, 6, 2);
                             break;

@@ -3,7 +3,7 @@
 namespace Ferretto.Common.DataModels
 {
     // Baia
-    public sealed class Bay
+    public sealed class Bay : IDataModel
     {
         #region Properties
 
@@ -16,8 +16,6 @@ namespace Ferretto.Common.DataModels
         public string BayTypeId { get; set; }
 
         public string Description { get; set; }
-
-        public List<Mission> DestinationMissions { get; set; }
 
         public int Id { get; set; }
 

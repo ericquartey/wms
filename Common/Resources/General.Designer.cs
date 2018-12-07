@@ -106,6 +106,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Code.
+        /// </summary>
+        public static string Code {
+            get {
+                return ResourceManager.GetString("Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
         public static string CreationDate {
@@ -147,6 +156,15 @@ namespace Ferretto.Common.Resources {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execute.
+        /// </summary>
+        public static string Execute {
+            get {
+                return ResourceManager.GetString("Execute", resourceCulture);
             }
         }
         
@@ -259,6 +277,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show Details.
+        /// </summary>
+        public static string ShowDetails {
+            get {
+                return ResourceManager.GetString("ShowDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch Off.
         /// </summary>
         public static string SwitchOff {
@@ -282,6 +309,15 @@ namespace Ferretto.Common.Resources {
         public static string Top {
             get {
                 return ResourceManager.GetString("Top", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string Type {
+            get {
+                return ResourceManager.GetString("Type", resourceCulture);
             }
         }
         

@@ -6,10 +6,10 @@
            TargetType="{x:Type custom:CustomSensorControl}">
         <Style.Triggers>
             <Trigger Property="SensorState" Value="true">
-                <Setter Property="BulletColor" Value="{DynamicResource IAPP_SensorStateBrush_Fill_Up}" />
+                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_SensorStateBrush_Fill_Up}" />
             </Trigger>
             <Trigger Property="SensorState" Value="false">
-                <Setter Property="BulletColor" Value="{DynamicResource IAPP_SensorStateBrush_Fill_Down}" />
+                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_SensorStateBrush_Fill_Down}" />
             </Trigger>
         </Style.Triggers>
     </Style>

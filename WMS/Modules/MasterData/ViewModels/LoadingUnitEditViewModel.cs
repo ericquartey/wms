@@ -1,17 +1,11 @@
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -21,11 +15,11 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand addCommand;
         private ICommand bulkAddCommand;
-        private IDataSource<CompartmentDetails> compartmentsDataSource;
+        private IEnumerable<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
         private Func<CompartmentDetails, CompartmentDetails, string> filterColorFunc;
         private InputAddCompartmentViewModel inputAddVM;
@@ -61,7 +55,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand BulkAddCommand => this.bulkAddCommand ??
                                   (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
 
-        public IDataSource<CompartmentDetails> CompartmentsDataSource
+        public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
             get => this.compartmentsDataSource;
             set => this.SetProperty(ref this.compartmentsDataSource, value);
@@ -174,11 +168,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void RefreshData()
         {
-            this.CompartmentsDataSource = null;
             this.CompartmentsDataSource = this.loadingUnit != null
-                ? this.dataSourceService
-                    .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
-                    .Single()
+                ? this.compartmentProvider.GetByLoadingUnitId(this.loadingUnit.Id).ToList()
                 : null;
         }
 

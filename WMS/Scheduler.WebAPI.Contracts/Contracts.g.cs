@@ -21,14 +21,40 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
-    public partial interface IItemsClient
+    public partial interface IItemListsClient
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetAllAsync(int? skip, int? take, string orderBy);
+        System.Threading.Tasks.Task ExecuteAsync(ListExecutionRequest request);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        System.Threading.Tasks.Task<System.Collections.ObjectModel.ObservableCollection<Item>> GetAllAsync(int? skip, int? take, string orderBy, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ExecuteAsync(ListExecutionRequest request, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task GetAllAsync();
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task GetAllAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task GetByIdAsync(int id);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task GetByIdAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "11.20.1.0 (NJsonSchema v9.11.0.0 (Newtonsoft.Json v9.0.0.0))")]
+    public partial interface IItemsClient
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FileResponse> GetAllAsync(int? skip, int? take, string orderBy);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        System.Threading.Tasks.Task<FileResponse> GetAllAsync(int? skip, int? take, string orderBy, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request);
@@ -68,19 +94,34 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class BindableBase : System.ComponentModel.INotifyPropertyChanged
+    public partial class ListExecutionRequest : System.ComponentModel.INotifyPropertyChanged
     {
-        private string _error;
+        private int _bayId;
+        private int _listId;
     
-        [Newtonsoft.Json.JsonProperty("error", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Error
+        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
+        public int BayId
         {
-            get { return _error; }
+            get { return _bayId; }
             set 
             {
-                if (_error != value)
+                if (_bayId != value)
                 {
-                    _error = value; 
+                    _bayId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListId
+        {
+            get { return _listId; }
+            set 
+            {
+                if (_listId != value)
+                {
+                    _listId = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -91,9 +132,9 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             return Newtonsoft.Json.JsonConvert.SerializeObject(this);
         }
         
-        public static BindableBase FromJson(string data)
+        public static ListExecutionRequest FromJson(string data)
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BindableBase>(data);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ListExecutionRequest>(data);
         }
     
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -108,7 +149,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public abstract partial class BusinessObject : BindableBase, System.ComponentModel.INotifyPropertyChanged
+    public abstract partial class BusinessObject : System.ComponentModel.INotifyPropertyChanged
     {
         private int _id;
     
@@ -148,442 +189,30 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Item : BusinessObject, System.ComponentModel.INotifyPropertyChanged
-    {
-        private string _abcClassDescription;
-        private int? _averageWeight;
-        private string _code;
-        private System.DateTime _creationDate;
-        private string _description;
-        private int? _fifoTimePick;
-        private int? _fifoTimeStore;
-        private int? _height;
-        private System.DateTime? _inventoryDate;
-        private int? _inventoryTolerance;
-        private string _itemCategoryDescription;
-        private System.DateTime? _lastModificationDate;
-        private System.DateTime? _lastPickDate;
-        private System.DateTime? _lastStoreDate;
-        private int? _length;
-        private string _managementTypeDescription;
-        private string _measureUnitDescription;
-        private int? _pickTolerance;
-        private int? _reorderPoint;
-        private int? _reorderQuantity;
-        private int? _storeTolerance;
-        private int _totalAvailable;
-        private int _totalReservedForPick;
-        private int _totalReservedToStore;
-        private int _totalStock;
-        private int? _width;
-    
-        [Newtonsoft.Json.JsonProperty("abcClassDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string AbcClassDescription
-        {
-            get { return _abcClassDescription; }
-            set 
-            {
-                if (_abcClassDescription != value)
-                {
-                    _abcClassDescription = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("averageWeight", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AverageWeight
-        {
-            get { return _averageWeight; }
-            set 
-            {
-                if (_averageWeight != value)
-                {
-                    _averageWeight = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("code", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Code
-        {
-            get { return _code; }
-            set 
-            {
-                if (_code != value)
-                {
-                    _code = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        public System.DateTime CreationDate
-        {
-            get { return _creationDate; }
-            set 
-            {
-                if (_creationDate != value)
-                {
-                    _creationDate = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("description", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Description
-        {
-            get { return _description; }
-            set 
-            {
-                if (_description != value)
-                {
-                    _description = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("fifoTimePick", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? FifoTimePick
-        {
-            get { return _fifoTimePick; }
-            set 
-            {
-                if (_fifoTimePick != value)
-                {
-                    _fifoTimePick = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("fifoTimeStore", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? FifoTimeStore
-        {
-            get { return _fifoTimeStore; }
-            set 
-            {
-                if (_fifoTimeStore != value)
-                {
-                    _fifoTimeStore = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Height
-        {
-            get { return _height; }
-            set 
-            {
-                if (_height != value)
-                {
-                    _height = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("inventoryDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? InventoryDate
-        {
-            get { return _inventoryDate; }
-            set 
-            {
-                if (_inventoryDate != value)
-                {
-                    _inventoryDate = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("inventoryTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? InventoryTolerance
-        {
-            get { return _inventoryTolerance; }
-            set 
-            {
-                if (_inventoryTolerance != value)
-                {
-                    _inventoryTolerance = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("itemCategoryDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ItemCategoryDescription
-        {
-            get { return _itemCategoryDescription; }
-            set 
-            {
-                if (_itemCategoryDescription != value)
-                {
-                    _itemCategoryDescription = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("lastModificationDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? LastModificationDate
-        {
-            get { return _lastModificationDate; }
-            set 
-            {
-                if (_lastModificationDate != value)
-                {
-                    _lastModificationDate = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("lastPickDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? LastPickDate
-        {
-            get { return _lastPickDate; }
-            set 
-            {
-                if (_lastPickDate != value)
-                {
-                    _lastPickDate = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("lastStoreDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTime? LastStoreDate
-        {
-            get { return _lastStoreDate; }
-            set 
-            {
-                if (_lastStoreDate != value)
-                {
-                    _lastStoreDate = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("length", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Length
-        {
-            get { return _length; }
-            set 
-            {
-                if (_length != value)
-                {
-                    _length = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("managementTypeDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string ManagementTypeDescription
-        {
-            get { return _managementTypeDescription; }
-            set 
-            {
-                if (_managementTypeDescription != value)
-                {
-                    _managementTypeDescription = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("measureUnitDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string MeasureUnitDescription
-        {
-            get { return _measureUnitDescription; }
-            set 
-            {
-                if (_measureUnitDescription != value)
-                {
-                    _measureUnitDescription = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("pickTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? PickTolerance
-        {
-            get { return _pickTolerance; }
-            set 
-            {
-                if (_pickTolerance != value)
-                {
-                    _pickTolerance = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("reorderPoint", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ReorderPoint
-        {
-            get { return _reorderPoint; }
-            set 
-            {
-                if (_reorderPoint != value)
-                {
-                    _reorderPoint = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("reorderQuantity", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? ReorderQuantity
-        {
-            get { return _reorderQuantity; }
-            set 
-            {
-                if (_reorderQuantity != value)
-                {
-                    _reorderQuantity = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("storeTolerance", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? StoreTolerance
-        {
-            get { return _storeTolerance; }
-            set 
-            {
-                if (_storeTolerance != value)
-                {
-                    _storeTolerance = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("totalAvailable", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalAvailable
-        {
-            get { return _totalAvailable; }
-            set 
-            {
-                if (_totalAvailable != value)
-                {
-                    _totalAvailable = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("totalReservedForPick", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalReservedForPick
-        {
-            get { return _totalReservedForPick; }
-            set 
-            {
-                if (_totalReservedForPick != value)
-                {
-                    _totalReservedForPick = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("totalReservedToStore", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalReservedToStore
-        {
-            get { return _totalReservedToStore; }
-            set 
-            {
-                if (_totalReservedToStore != value)
-                {
-                    _totalReservedToStore = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("totalStock", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalStock
-        {
-            get { return _totalStock; }
-            set 
-            {
-                if (_totalStock != value)
-                {
-                    _totalStock = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("width", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? Width
-        {
-            get { return _width; }
-            set 
-            {
-                if (_width != value)
-                {
-                    _width = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this);
-        }
-        
-        public static Item FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<Item>(data);
-        }
-    
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected virtual void RaisePropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            if (handler != null) 
-                handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class SchedulerRequest : BusinessObject, System.ComponentModel.INotifyPropertyChanged
     {
-        private int? _areaId;
+        private int _areaId;
         private int? _bayId;
         private System.DateTime? _creationDate;
+        private int _dispatchedQuantity;
         private bool _isInstant;
         private int _itemId;
+        private int? _listId;
+        private int? _listRowId;
         private int? _loadingUnitId;
         private int? _loadingUnitTypeId;
         private string _lot;
         private int? _materialStatusId;
         private int? _packageTypeId;
+        private int _quantityLeftToDispatch;
         private string _registrationNumber;
         private int _requestedQuantity;
         private string _sub1;
         private string _sub2;
         private OperationType _type;
     
-        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? AreaId
+        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
+        public int AreaId
         {
             get { return _areaId; }
             set 
@@ -624,6 +253,20 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
+        [Newtonsoft.Json.JsonProperty("dispatchedQuantity", Required = Newtonsoft.Json.Required.Always)]
+        public int DispatchedQuantity
+        {
+            get { return _dispatchedQuantity; }
+            set 
+            {
+                if (_dispatchedQuantity != value)
+                {
+                    _dispatchedQuantity = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
         [Newtonsoft.Json.JsonProperty("isInstant", Required = Newtonsoft.Json.Required.Always)]
         public bool IsInstant
         {
@@ -647,6 +290,34 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_itemId != value)
                 {
                     _itemId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListId
+        {
+            get { return _listId; }
+            set 
+            {
+                if (_listId != value)
+                {
+                    _listId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("listRowId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ListRowId
+        {
+            get { return _listRowId; }
+            set 
+            {
+                if (_listRowId != value)
+                {
+                    _listRowId = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -717,6 +388,20 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_packageTypeId != value)
                 {
                     _packageTypeId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("quantityLeftToDispatch", Required = Newtonsoft.Json.Required.Always)]
+        public int QuantityLeftToDispatch
+        {
+            get { return _quantityLeftToDispatch; }
+            set 
+            {
+                if (_quantityLeftToDispatch != value)
+                {
+                    _quantityLeftToDispatch = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -827,13 +512,24 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
-    public partial class Mission : System.ComponentModel.INotifyPropertyChanged
+    public partial class Mission : BusinessObject, System.ComponentModel.INotifyPropertyChanged
     {
         private int _bayId;
-        private int _id;
-        private object _itemId;
+        private int _cellId;
+        private int _compartmentId;
+        private int _itemId;
+        private string _lot;
+        private int? _itemListId;
+        private int? _itemListRowId;
+        private int _loadingUnitId;
+        private int? _materialStatusId;
+        private int? _packageTypeId;
         private int _quantity;
-        private string _typeId;
+        private string _registrationNumber;
+        private MissionStatus _status;
+        private string _sub1;
+        private string _sub2;
+        private MissionType _type;
     
         [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
         public int BayId
@@ -849,22 +545,36 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
-        public int Id
+        [Newtonsoft.Json.JsonProperty("cellId", Required = Newtonsoft.Json.Required.Always)]
+        public int CellId
         {
-            get { return _id; }
+            get { return _cellId; }
             set 
             {
-                if (_id != value)
+                if (_cellId != value)
                 {
-                    _id = value; 
+                    _cellId = value; 
                     RaisePropertyChanged();
                 }
             }
         }
     
-        [Newtonsoft.Json.JsonProperty("itemId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public object ItemId
+        [Newtonsoft.Json.JsonProperty("compartmentId", Required = Newtonsoft.Json.Required.Always)]
+        public int CompartmentId
+        {
+            get { return _compartmentId; }
+            set 
+            {
+                if (_compartmentId != value)
+                {
+                    _compartmentId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("itemId", Required = Newtonsoft.Json.Required.Always)]
+        public int ItemId
         {
             get { return _itemId; }
             set 
@@ -872,6 +582,90 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_itemId != value)
                 {
                     _itemId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("lot", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Lot
+        {
+            get { return _lot; }
+            set 
+            {
+                if (_lot != value)
+                {
+                    _lot = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("itemListId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ItemListId
+        {
+            get { return _itemListId; }
+            set 
+            {
+                if (_itemListId != value)
+                {
+                    _itemListId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("itemListRowId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? ItemListRowId
+        {
+            get { return _itemListRowId; }
+            set 
+            {
+                if (_itemListRowId != value)
+                {
+                    _itemListRowId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Always)]
+        public int LoadingUnitId
+        {
+            get { return _loadingUnitId; }
+            set 
+            {
+                if (_loadingUnitId != value)
+                {
+                    _loadingUnitId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("materialStatusId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? MaterialStatusId
+        {
+            get { return _materialStatusId; }
+            set 
+            {
+                if (_materialStatusId != value)
+                {
+                    _materialStatusId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("packageTypeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? PackageTypeId
+        {
+            get { return _packageTypeId; }
+            set 
+            {
+                if (_packageTypeId != value)
+                {
+                    _packageTypeId = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -891,15 +685,71 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
-        [Newtonsoft.Json.JsonProperty("typeId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string TypeId
+        [Newtonsoft.Json.JsonProperty("registrationNumber", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string RegistrationNumber
         {
-            get { return _typeId; }
+            get { return _registrationNumber; }
             set 
             {
-                if (_typeId != value)
+                if (_registrationNumber != value)
                 {
-                    _typeId = value; 
+                    _registrationNumber = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        public MissionStatus Status
+        {
+            get { return _status; }
+            set 
+            {
+                if (_status != value)
+                {
+                    _status = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("sub1", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Sub1
+        {
+            get { return _sub1; }
+            set 
+            {
+                if (_sub1 != value)
+                {
+                    _sub1 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("sub2", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Sub2
+        {
+            get { return _sub2; }
+            set 
+            {
+                if (_sub2 != value)
+                {
+                    _sub2 = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
+        public MissionType Type
+        {
+            get { return _type; }
+            set 
+            {
+                if (_type != value)
+                {
+                    _type = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -923,6 +773,38 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             if (handler != null) 
                 handler(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum MissionStatus
+    {
+        Completed = 67,
+    
+        Executing = 69,
+    
+        Faulted = 70,
+    
+        New = 78,
+    
+        Waiting = 87,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
+    public enum MissionType
+    {
+        Bypass = 66,
+    
+        Inventory = 73,
+    
+        Reorder = 79,
+    
+        Pick = 80,
+    
+        Replace = 82,
+    
+        Put = 84,
     
     }
 

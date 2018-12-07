@@ -8,7 +8,7 @@
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
         <TextBlock Margin="5,1,5,1"
-                   Style="{StaticResource IAPP_ViewCustomControlLabelTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewCustomControlLabelTextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox Name="InputTextBox"
                  Margin="5,1,5,5"

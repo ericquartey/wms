@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly DatabaseContext dataContext;
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -20,7 +20,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public CellProvider(
-            DatabaseContext context,
+            IDatabaseContextService context,
             EnumerationProvider enumerationProvider)
         {
             this.dataContext = context;
@@ -43,20 +43,21 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Cell> GetAll()
         {
-            return GetAllCellsWithFilter(this.dataContext);
+            return GetAllCellsWithFilter(this.dataContext.Current);
         }
 
         public int GetAllCount()
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.Cells.AsNoTracking().Count();
+                return dataContext.Cells.AsNoTracking().Count();
             }
         }
 
         public IQueryable<Enumeration> GetByAisleId(int aisleId)
         {
-            return this.dataContext.Cells
+            return this.dataContext.Current.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -70,7 +71,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Enumeration> GetByAreaId(int areaId)
         {
-            return this.dataContext.Cells
+            return this.dataContext.Current.Cells
                 .AsNoTracking()
                 .Include(c => c.Aisle)
                 .ThenInclude(a => a.Area)
@@ -85,9 +86,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public CellDetails GetById(int id)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var cellDetails = this.dataContext.Cells
+                var cellDetails = dataContext.Cells
                     .Where(c => c.Id == id)
                     .Include(c => c.Aisle)
                     .Select(c => new CellDetails
@@ -123,9 +125,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyLoadingUnits(int cellId)
         {
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                return this.dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
+                return dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
             }
         }
 
@@ -136,13 +139,14 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            lock (this.dataContext)
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Cells.Find(model.Id);
+                var existingModel = dataContext.Cells.Find(model.Id);
 
-                this.dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return this.dataContext.SaveChanges();
+                return dataContext.SaveChanges();
             }
         }
 

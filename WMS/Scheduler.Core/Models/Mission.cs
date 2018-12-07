@@ -1,4 +1,4 @@
-﻿namespace Ferretto.WMS.Scheduler.Core
+namespace Ferretto.WMS.Scheduler.Core
 {
     public class Mission : BusinessObject
     {
@@ -17,6 +17,8 @@
         public int CompartmentId { get; set; }
 
         public int ItemId { get; set; }
+
+        public string Lot { get; set; }
 
         public int? ItemListId { get; set; }
 

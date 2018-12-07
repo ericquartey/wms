@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <SolidColorBrush x:Key="VWAPP_CustomInputText_TextBox_BorderdBrush_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_CustomInputText_TextBox_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+    <SolidColorBrush x:Key="VWAPP_CustomInputText_Label_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+    <SolidColorBrush x:Key="VWAPP_CustomInputText_TextBox_Foreground_Disabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+    <SolidColorBrush x:Key="VWAPP_CustomInputText_TextBox_BorderdBrush_Disabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+    <SolidColorBrush x:Key="VWAPP_CustomInputText_Label_Foreground_Disabled"
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <sys:Double x:Key="VWAPP_CustomInputText_FontSize_Label">10</sys:Double>
+    <FontFamily x:Key="VWAPP_CustomInputText_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <sys:Double x:Key="VWAPP_CustomInputText_FontSize_Input">14</sys:Double>
+
+</ResourceDictionary>

@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.InverterDriver
+namespace Ferretto.VW.InverterDriver
 {
     /// <summary>
     /// IConnectedEvent: interface definition for the event [Connected]

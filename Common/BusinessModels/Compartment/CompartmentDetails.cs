@@ -91,6 +91,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]

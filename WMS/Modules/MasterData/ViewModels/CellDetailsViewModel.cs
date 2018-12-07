@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -6,6 +5,7 @@ using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICellProvider cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+        private readonly ILoadingUnitProvider loadingUnitsProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private CellDetails cell;
         private bool cellHasLoadingUnits;
         private IDataSource<LoadingUnitDetails> loadingUnitsDataSource;
@@ -103,11 +103,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void RefreshData()
         {
-            this.LoadingUnitsDataSource = null;
             this.LoadingUnitsDataSource = this.cell != null
-                ? this.dataSourceService
-                    .GetAll<LoadingUnitDetails>(nameof(CellDetailsViewModel), this.cell.Id)
-                    .Single()
+                ? new DataSource<LoadingUnitDetails>(() => this.loadingUnitsProvider.GetByCellId(this.cell.Id))
                 : null;
         }
 

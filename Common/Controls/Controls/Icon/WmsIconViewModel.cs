@@ -37,6 +37,7 @@ namespace Ferretto.Common.Controls
         {
             if (string.IsNullOrWhiteSpace(symbolName))
             {
+                this.Source = null;
                 return;
             }
 

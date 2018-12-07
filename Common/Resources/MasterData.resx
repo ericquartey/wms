@@ -294,4 +294,32 @@
   <data name="ItemListRowInformation" xml:space="preserve">
     <value>List Rows Information</value>
   </data>
+  <data name="ItemListSavedSuccessfully" xml:space="preserve">
+    <value>Item list saved sucessfully</value>
+    <comment>Notification - item saved</comment>
+  </data>
+  <data name="ListExecute" xml:space="preserve">
+    <value>Execute List</value>
+  </data>
+  <data name="ItemListExecuteOptions" xml:space="preserve">
+    <value>Execute List Options</value>
+  </data>
+  <data name="RunItemList" xml:space="preserve">
+    <value>Execute List</value>
+  </data>
+  <data name="ItemListRowAdd" xml:space="preserve">
+    <value>Add New Row List</value>
+  </data>
+  <data name="ItemListRowEdit" xml:space="preserve">
+    <value>Edit Row List</value>
+  </data>
+  <data name="ItemListRowExecute" xml:space="preserve">
+    <value>Execute Row List</value>
+  </data>
+  <data name="ItemListRowExecuteOptions" xml:space="preserve">
+    <value>Execute List Row Options</value>
+  </data>
+  <data name="RunItemListRow" xml:space="preserve">
+    <value>Execute Row List</value>
+  </data>
 </root>
