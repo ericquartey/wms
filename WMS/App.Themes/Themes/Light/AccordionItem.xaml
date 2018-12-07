@@ -426,27 +426,6 @@
     <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=DevExpress.Xpf.Accordion.AccordionItem,
                                                                 ThemeName=Office2016White}}"
            TargetType="wms:AccordionItem">
-        <!--<Setter Property="Style" Value="{DynamicResource AccordionItemStyle1}"/>-->
         <Setter Property="HeaderTemplate" Value="{StaticResource HeaderAccordingItemTemplate}" />
-        <Setter Property="IsExpanded" Value="False" />
-        <!--<Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="wms:AccordionItem">
-        -->
-        <!--<dxa:AccordionItem x:Name="AccordionItem"
-                                       ExpandButtonPosition="Left"
-                                       FontSize="12"
-                                       FontWeight="Bold"
-                                       Header="{TemplateBinding Header}"
-
-                                       Style="{DynamicResource AccordionItemStyle1}">-->
-        <!--
-                    <ContentPresenter x:Name="CONTENT_PRESENTER" />
-        -->
-        <!--</dxa:AccordionItem>-->
-        <!--
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>-->
     </Style>
 </ResourceDictionary>
