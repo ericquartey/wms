@@ -2,6 +2,7 @@
 {
     public enum OperationType
     {
+        NotSpecified,
         Insertion = 'I',
         Withdrawal = 'W',
         Replacement = 'R',

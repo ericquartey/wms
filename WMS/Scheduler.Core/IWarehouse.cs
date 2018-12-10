@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
@@ -6,9 +7,9 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Methods
 
-        Task<SchedulerRequest> ExecuteListAsync(int listId, int bayId);
+        Task<IEnumerable<SchedulerRequest>> PrepareListForExecutionAsync(int listId, int areaId, int? bayId);
 
-        Task<SchedulerRequest> Withdraw(SchedulerRequest request);
+        Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request);
 
         #endregion Methods
     }
