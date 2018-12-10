@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,7 +33,7 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public async Task<IEnumerable<Mission>> DispatchRequests()
+        public async Task<IEnumerable<Mission>> CreateMissionsForPendingRequests()
         {
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -90,33 +90,62 @@ namespace Ferretto.WMS.Scheduler.Core
             {
                 list.Status = bayId.HasValue ? ListStatus.Executing : ListStatus.Waiting;
 
-                requests = list.Rows.Select(r =>
+                requests = list.Rows.Select(row =>
                     {
-                        r.Status = ListRowStatus.Waiting;
+                        row.Status = bayId.HasValue ? ListRowStatus.Executing : ListRowStatus.Waiting;
 
-                        return new SchedulerRequest
+                        var request = new SchedulerRequest
                         {
                             IsInstant = false,
+                            Type = OperationType.Withdrawal,
                             BayId = bayId,
                             AreaId = areaId,
-                            RequestedQuantity = r.RequestedQuantity,
-                            ItemId = r.ItemId,
+                            RequestedQuantity = row.RequestedQuantity,
+                            ItemId = row.ItemId,
                             ListId = listId,
-                            ListRowId = r.Id,
-                            Lot = r.Lot,
-                            MaterialStatusId = r.MaterialStatusId,
-                            PackageTypeId = r.PackageTypeId,
-                            RegistrationNumber = r.RegistrationNumber,
-                            Sub1 = r.Sub1,
-                            Sub2 = r.Sub2
+                            ListRowId = row.Id,
+                            Lot = row.Lot,
+                            MaterialStatusId = row.MaterialStatusId,
+                            PackageTypeId = row.PackageTypeId,
+                            RegistrationNumber = row.RegistrationNumber,
+                            Sub1 = row.Sub1,
+                            Sub2 = row.Sub2
                         };
-                    }
-                );
 
+                        var task = this.schedulerRequestProvider.FullyQualifyWithdrawalRequest(request);
+                        task.Wait();
+
+                        if (bayId.HasValue)
+                        {
+                            if (task.Result != null)
+                            {
+                                row.Status = ListRowStatus.Executing;
+                            }
+                            else
+                            {
+                                row.Status = ListRowStatus.Suspended;
+                            }
+                        }
+                        else
+                        {
+                            row.Status = ListRowStatus.Waiting;
+                        }
+
+                        this.dataProvider.Update(row);
+
+                        return task.Result;
+                    }
+                )
+                .Where(r => r != null)
+                .ToList();  // remark: some qualified requests may be null
+
+                this.dataProvider.Update(list);
                 this.dataProvider.AddRange(requests);
 
                 scope.Complete();
             }
+
+            await this.CreateMissionsForPendingRequests();
 
             return requests;
         }
@@ -136,19 +165,13 @@ namespace Ferretto.WMS.Scheduler.Core
                 }
             }
 
-            await this.DispatchRequests();
+            await this.CreateMissionsForPendingRequests();
 
             return qualifiedRequest;
         }
 
         private async Task<IEnumerable<Mission>> DispatchWithdrawalRequest(SchedulerRequest request)
         {
-            if (!request.IsInstant)
-            // TODO: extend this method to support normal (non-instant) withdrawal requests
-            {
-                throw new NotImplementedException("Only instant requests are supported.");
-            }
-
             var item = await this.dataProvider.GetItemByIdAsync(request.ItemId);
 
             var missions = new List<Mission>();
