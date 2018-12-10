@@ -142,8 +142,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void InitializeData()
         {
-            this.Compartment = new CompartmentDetails();
-            this.compartmentProvider.GetNewCompartmentDetails(this.compartment, true);
+            this.Compartment = this.compartmentProvider.GetNewCompartmentDetails();
             this.Compartment.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
 
             this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());

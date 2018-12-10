@@ -85,13 +85,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void Initialize(Tray tray, LoadingUnitDetails loadingUnit, CompartmentDetails selectedCompartmentTray)
+        public void Initialize(Tray tray, LoadingUnitDetails loadingUnit, int idSelectedCompartment)
         {
             this.tray = tray;
             this.EnableInputEdit = true;
-            this.SelectedCompartmentTray = selectedCompartmentTray;
+
             this.loadingUnit = loadingUnit;
-            this.InitializeData();
+            this.InitializeData(idSelectedCompartment);
         }
 
         protected virtual void OnFinishEvent(EventArgs e)
@@ -146,10 +146,10 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void InitializeData()
+        private void InitializeData(int idSelectedCompartment)
         {
+            this.SelectedCompartmentTray = this.compartmentProvider.GetById(idSelectedCompartment);
             this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
-            this.compartmentProvider.GetNewCompartmentDetails(this.selectedCompartmentTray, false);
 
             this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
         }

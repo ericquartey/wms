@@ -205,7 +205,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.HideMainViewAndShowLateralPanel();
             this.PopulatePairing();
-            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray);
+            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray.Id);
             this.InputEditVM.FinishEvent += this.InputEditVM_FinishEvent;
         }
 

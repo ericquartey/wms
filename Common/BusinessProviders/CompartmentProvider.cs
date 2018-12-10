@@ -252,8 +252,9 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
-        public void GetNewCompartmentDetails(CompartmentDetails compartmentDetails, bool initializeDefault)
+        public CompartmentDetails GetNewCompartmentDetails()
         {
+            var compartmentDetails = new CompartmentDetails();
             compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
             compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
             compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
@@ -262,11 +263,9 @@ namespace Ferretto.Common.BusinessProviders
                 Enum.GetValues(typeof(DataModels.Pairing)))
                 .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-            if (initializeDefault)
-            {
-                compartmentDetails.ItemPairing = (int)DataModels.Pairing.Free;
-                compartmentDetails.MaterialStatusId = compartmentDetails.MaterialStatusChoices.First().Id;
-            }
+            compartmentDetails.ItemPairing = (int)DataModels.Pairing.Free;
+            compartmentDetails.MaterialStatusId = compartmentDetails.MaterialStatusChoices.First().Id;
+            return compartmentDetails;
         }
 
         public bool HasAnyAllowedItem(int modelId)
