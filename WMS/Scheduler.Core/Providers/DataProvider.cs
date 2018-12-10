@@ -92,6 +92,19 @@ namespace Ferretto.WMS.Scheduler.Core
             this.dataContext.SaveChanges();
         }
 
+        public void AddRange(IEnumerable<SchedulerRequest> requests)
+        {
+            if (requests == null)
+            {
+                throw new ArgumentNullException(nameof(requests));
+            }
+
+            foreach (var request in requests)
+            {
+                this.Add(request);
+            }
+        }
+
         public async Task<Area> GetAreaByIdAsync(int areaId)
         {
             return await this.dataContext.Areas
