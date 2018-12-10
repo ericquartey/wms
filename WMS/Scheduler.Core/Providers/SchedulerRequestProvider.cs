@@ -38,44 +38,44 @@ namespace Ferretto.WMS.Scheduler.Core
             }
 
             var aggregatedCompartments = this.dataContext.Compartments
-               .Include(c => c.LoadingUnit)
-               .ThenInclude(l => l.Cell)
-               .ThenInclude(c => c.Aisle)
-               .ThenInclude(a => a.Area)
-               .Where(c =>
-                   c.ItemId == request.ItemId
-                   &&
-                   c.LoadingUnit.Cell.Aisle.Area.Id == request.AreaId
-                   &&
-                   (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
-                   &&
-                   (request.Sub1 == null || c.Sub1 == request.Sub1)
-                   &&
-                   (request.Sub2 == null || c.Sub2 == request.Sub2)
-                   &&
-                   (request.Lot == null || c.Lot == request.Lot)
-                   &&
-                   (request.PackageTypeId.HasValue == false || c.PackageTypeId == request.PackageTypeId)
-                   &&
-                   (request.MaterialStatusId.HasValue == false || c.MaterialStatusId == request.MaterialStatusId)
-                   &&
-                   (request.RegistrationNumber == null || c.RegistrationNumber == request.RegistrationNumber)
-               )
-               .GroupBy(
-                   x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
-                   (key, group) => new
-                   {
-                       Key = key,
-                       Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
-                       Sub1 = key.Sub1,
-                       Sub2 = key.Sub2,
-                       Lot = key.Lot,
-                       PackageTypeId = key.PackageTypeId,
-                       MaterialStatusId = key.MaterialStatusId,
-                       RegistrationNumber = key.RegistrationNumber,
-                       FirstStoreDate = group.Min(c => c.FirstStoreDate)
-                   }
-               );
+                .Include(c => c.LoadingUnit)
+                .ThenInclude(l => l.Cell)
+                .ThenInclude(c => c.Aisle)
+                .ThenInclude(a => a.Area)
+                .Where(c =>
+                    c.ItemId == request.ItemId
+                    &&
+                    c.LoadingUnit.Cell.Aisle.Area.Id == request.AreaId
+                    &&
+                    (request.BayId.HasValue == false || c.LoadingUnit.Cell.Aisle.Area.Bays.Any(b => b.Id == request.BayId))
+                    &&
+                    (request.Sub1 == null || c.Sub1 == request.Sub1)
+                    &&
+                    (request.Sub2 == null || c.Sub2 == request.Sub2)
+                    &&
+                    (request.Lot == null || c.Lot == request.Lot)
+                    &&
+                    (request.PackageTypeId.HasValue == false || c.PackageTypeId == request.PackageTypeId)
+                    &&
+                    (request.MaterialStatusId.HasValue == false || c.MaterialStatusId == request.MaterialStatusId)
+                    &&
+                    (request.RegistrationNumber == null || c.RegistrationNumber == request.RegistrationNumber)
+                )
+                .GroupBy(
+                    x => new { x.Sub1, x.Sub2, x.Lot, x.PackageTypeId, x.MaterialStatusId, x.RegistrationNumber },
+                    (key, group) => new
+                    {
+                        Key = key,
+                        Availability = group.Sum(c => c.Stock - c.ReservedForPick + c.ReservedToStore),
+                        Sub1 = key.Sub1,
+                        Sub2 = key.Sub2,
+                        Lot = key.Lot,
+                        PackageTypeId = key.PackageTypeId,
+                        MaterialStatusId = key.MaterialStatusId,
+                        RegistrationNumber = key.RegistrationNumber,
+                        FirstStoreDate = group.Min(c => c.FirstStoreDate)
+                    }
+                );
 
             var aggregatedRequests = this.dataContext.SchedulerRequests
                 .Where(r => r.ItemId == request.ItemId);
