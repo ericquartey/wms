@@ -20,7 +20,7 @@ namespace Ferretto.Common.Controls
         public ImageSource Source
         {
             get => this.source;
-            set => this.SetProperty(ref this.source, value);
+            set => this.SetProperty(ref this.source, this.ColorizeImage(value));
         }
 
         #endregion Properties
@@ -53,12 +53,15 @@ namespace Ferretto.Common.Controls
 
         private ImageSource ColorizeImage(ImageSource image)
         {
-            if (this.colorizeBrush == null || image is BitmapImage == false)
+            if (this.colorizeBrush == null || image is BitmapSource == false)
             {
                 return image;
             }
 
-            var bitmap = new WriteableBitmap(image as BitmapImage);
+            System.Diagnostics.Debug.WriteLine($"ColorizeImage: {this.colorizeBrush} - {this.source}");
+
+            var bitmap = image as WriteableBitmap ?? new WriteableBitmap(image as BitmapImage);
+
             var currentPixel = new byte[bitmap.Format.BitsPerPixel / 8];
 
             for (var row = 0; row < bitmap.PixelHeight; row++)

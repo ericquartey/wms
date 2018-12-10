@@ -70,6 +70,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Account access error.
+        /// </summary>
+        public static string AccountAccessError {
+            get {
+                return ResourceManager.GetString("AccountAccessError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aisle.
         /// </summary>
         public static string Aisle {
@@ -799,6 +808,51 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completed.
+        /// </summary>
+        public static string ItemListStatusCompleted {
+            get {
+                return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Executing.
+        /// </summary>
+        public static string ItemListStatusExecuting {
+            get {
+                return ResourceManager.GetString("ItemListStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incomplete.
+        /// </summary>
+        public static string ItemListStatusIncomplete {
+            get {
+                return ResourceManager.GetString("ItemListStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Suspended.
+        /// </summary>
+        public static string ItemListStatusSuspended {
+            get {
+                return ResourceManager.GetString("ItemListStatusSuspended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Waiting.
+        /// </summary>
+        public static string ItemListStatusWaiting {
+            get {
+                return ResourceManager.GetString("ItemListStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Management Type.
         /// </summary>
         public static string ItemManagementType {
@@ -1240,6 +1294,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Machine.
         /// </summary>
         public static string Machine {
@@ -1357,6 +1420,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fill Rate.
+        /// </summary>
+        public static string MachineFillRate {
+            get {
+                return ResourceManager.GetString("MachineFillRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Image.
         /// </summary>
         public static string MachineImage {
@@ -1425,6 +1497,42 @@ namespace Ferretto.Common.Resources {
         public static string MachineLongitude {
             get {
                 return ResourceManager.GetString("MachineLongitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Maintenance Status.
+        /// </summary>
+        public static string MachineMaintenanceStatus {
+            get {
+                return ResourceManager.GetString("MachineMaintenanceStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expired.
+        /// </summary>
+        public static string MachineMaintenanceStatusExpired {
+            get {
+                return ResourceManager.GetString("MachineMaintenanceStatusExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expiring.
+        /// </summary>
+        public static string MachineMaintenanceStatusExpiring {
+            get {
+                return ResourceManager.GetString("MachineMaintenanceStatusExpiring", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid.
+        /// </summary>
+        public static string MachineMaintenanceStatusValid {
+            get {
+                return ResourceManager.GetString("MachineMaintenanceStatusValid", resourceCulture);
             }
         }
         
@@ -1510,6 +1618,51 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machine Status.
+        /// </summary>
+        public static string MachineStatus {
+            get {
+                return ResourceManager.GetString("MachineStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Automatic.
+        /// </summary>
+        public static string MachineStatusAutomatic {
+            get {
+                return ResourceManager.GetString("MachineStatusAutomatic", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MachineStatusError {
+            get {
+                return ResourceManager.GetString("MachineStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual.
+        /// </summary>
+        public static string MachineStatusManual {
+            get {
+                return ResourceManager.GetString("MachineStatusManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Offline.
+        /// </summary>
+        public static string MachineStatusOffline {
+            get {
+                return ResourceManager.GetString("MachineStatusOffline", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test Date.
         /// </summary>
         public static string MachineTestDate {
@@ -1560,6 +1713,15 @@ namespace Ferretto.Common.Resources {
         public static string PackageType {
             get {
                 return ResourceManager.GetString("PackageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         

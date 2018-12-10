@@ -15,5 +15,6 @@
 
     <ctrls:BoolToNavigationStyleConverter x:Key="BTNSC" />
 
+    <ctrls:EnumToBrushConverter x:Key="ETBC" />
 
 </ResourceDictionary>

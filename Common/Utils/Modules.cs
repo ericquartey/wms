@@ -18,6 +18,7 @@
     {
         #region Fields
 
+        public const string LOGINVIEW = "LoginViewModel";
         public const string REGION_MAINCONTENT = "MainContent";
         public const string REGION_MENU = "Menu";
 

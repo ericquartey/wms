@@ -187,6 +187,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type Brush..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToBrushType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToBrushType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type Double..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToDoubleType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToDoubleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type GridViewNavigationStyle..
         /// </summary>
         public static string ConverterCanConvertOnlyToNavigationStyleType {
@@ -219,6 +237,24 @@ namespace Ferretto.Common.Resources {
         public static string ConverterCanConvertOnlyToVisibilityType {
             get {
                 return ResourceManager.GetString("ConverterCanConvertOnlyToVisibilityType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter parameter must be bool.
+        /// </summary>
+        public static string ConverterParameterMustBeBool {
+            get {
+                return ResourceManager.GetString("ConverterParameterMustBeBool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter parameter must be a type.
+        /// </summary>
+        public static string ConverterParameterMustBeType {
+            get {
+                return ResourceManager.GetString("ConverterParameterMustBeType", resourceCulture);
             }
         }
         
