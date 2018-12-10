@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
+        private readonly CompartmentTypeProvider compartmentTypeProvider;
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
@@ -20,10 +22,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public CompartmentProvider(
             IDatabaseContextService context,
-            EnumerationProvider enumerationProvider)
+            EnumerationProvider enumerationProvider,
+            CompartmentTypeProvider compartmentTypeProvider)
         {
             this.dataContext = context;
             this.enumerationProvider = enumerationProvider;
+            this.compartmentTypeProvider = compartmentTypeProvider;
         }
 
         #endregion Constructors
@@ -36,30 +40,42 @@ namespace Ferretto.Common.BusinessProviders
             {
                 throw new ArgumentNullException(nameof(model));
             }
-
-            var dataContext = this.dataContext.Current;
-            var entry = dataContext.Compartments.Add(new DataModels.Compartment
+            using (var scope = new TransactionScope())
             {
-                Width = model.Width,
-                Height = model.Height,
-                XPosition = model.XPosition,
-                YPosition = model.YPosition,
-                LoadingUnitId = model.LoadingUnitId,
-                CompartmentTypeId = model.CompartmentTypeId,
-                ItemPairing = DataModels.Pairing.Free,
-                Stock = model.Stock,
-                ReservedForPick = model.ReservedForPick,
-                ReservedToStore = model.ReservedToStore,
-                CreationDate = DateTime.Now
-            });
+                var dataContext = this.dataContext.Current;
 
-            var changedEntitiesCount = await dataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
-            {
-                model.Id = entry.Entity.Id;
+                var typeId = await this.compartmentTypeProvider.Add(new CompartmentType
+                {
+                    Width = model.Width,
+                    Height = model.Height,
+                    Description = "Test1"
+                });
+
+                var entry = dataContext.Compartments.Add(new DataModels.Compartment
+                {
+                    Width = model.Width,
+                    Height = model.Height,
+                    XPosition = model.XPosition,
+                    YPosition = model.YPosition,
+                    LoadingUnitId = model.LoadingUnitId,
+                    CompartmentTypeId = typeId,
+                    ItemPairing = DataModels.Pairing.Free,
+                    Stock = model.Stock,
+                    ReservedForPick = model.ReservedForPick,
+                    ReservedToStore = model.ReservedToStore,
+                    CreationDate = DateTime.Now
+                });
+
+                var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    model.Id = entry.Entity.Id;
+                }
+
+                scope.Complete();
+
+                return changedEntitiesCount;
             }
-
-            return changedEntitiesCount;
         }
 
         public int Delete(int id)
@@ -122,6 +138,8 @@ namespace Ferretto.Common.BusinessProviders
                    .Where(c => c.Id == id)
                    .Include(c => c.LoadingUnit)
                    .Include(c => c.Item)
+                   .Include(c => c.CompartmentType)
+                   .ThenInclude(ct => ct.ItemsCompartmentTypes)
                    .Include(c => c.CompartmentStatus)
                    .Select(c => new CompartmentDetails
                    {
@@ -139,7 +157,7 @@ namespace Ferretto.Common.BusinessProviders
                        PackageTypeId = c.PackageTypeId,
                        Lot = c.Lot,
                        RegistrationNumber = c.RegistrationNumber,
-                       MaxCapacity = c.MaxCapacity,
+                       MaxCapacity = c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity,
                        Stock = c.Stock,
                        ReservedForPick = c.ReservedForPick,
                        ReservedToStore = c.ReservedToStore,
@@ -207,6 +225,8 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.Item)
                 .Include(c => c.CompartmentStatus)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
                 .Select(c => new CompartmentDetails
                 {
                     Id = c.Id,
@@ -223,7 +243,7 @@ namespace Ferretto.Common.BusinessProviders
                     PackageTypeId = c.PackageTypeId,
                     Lot = c.Lot,
                     RegistrationNumber = c.RegistrationNumber,
-                    MaxCapacity = c.MaxCapacity,
+                    MaxCapacity = c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity,
                     Stock = c.Stock,
                     ReservedForPick = c.ReservedForPick,
                     ReservedToStore = c.ReservedToStore,
