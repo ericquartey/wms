@@ -40,15 +40,15 @@
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
                                                 SensorState="{Binding ZeroPawlSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
+                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
                                                 SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
+                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
                                                 SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
+                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

@@ -6,9 +6,7 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomInputFieldControlFocusableStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomControlInputFieldStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBlockStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMachineModeToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMachineOnMarchToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ExpanderStyle.xaml" />

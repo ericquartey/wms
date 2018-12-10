@@ -64,9 +64,9 @@
                     Content="{x:Static res:General.Bottom}"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />
         </Grid>
-        <custom:CustomInputFieldControl Grid.Row="2"
-                                        Grid.Column="1"
-                                        LabelText="{x:Static res:OperatorApp.SearchCode}" />
+        <custom:CustomInputFieldControlFocusable Grid.Row="2"
+                                                 Grid.Column="1"
+                                                 LabelText="{x:Static res:OperatorApp.SearchCode}" />
         <Grid Grid.Row="3"
               Grid.Column="1"
               Grid.ColumnSpan="2">

@@ -39,30 +39,30 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <custom:CustomInputFieldControl Grid.Row="1"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding ReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.ReferenceCellNumber}" />
-            <custom:CustomInputFieldControl Grid.Row="2"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding ReferenceCellNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.ReferenceCellNumber}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="2"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding ReferenceCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.ReferenceCellHeight}" />
             <custom:CustomLabelTextBlockControl Grid.Row="3"
                                                 Margin="0,0,100,0"
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
-            <custom:CustomInputFieldControl Grid.Row="4"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.StepValue}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="4"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />
             <custom:CustomLabelTextBlockControl Grid.Row="5"
                                                 Margin="0,0,100,0"
                                                 ContentText="{Binding CurrentOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentOffset}" />
-            <custom:CustomInputFieldControl Grid.Row="6"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.CorrectOffset}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="6"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding CorrectOffset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.CorrectOffset}" />
             <Button Grid.Row="1"
                     Grid.Column="2"
                     Content="{x:Static res:InstallationApp.SetPosition}"

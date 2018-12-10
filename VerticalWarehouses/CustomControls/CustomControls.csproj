@@ -95,10 +95,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\CustomControlHighlightableBullet.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\CustomGateControlSensorsThreePositions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,15 +103,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\CustomInputFieldControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\CustomInputFieldControlFocusable.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CustomInputText.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -131,10 +119,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\CustomOuputText.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\CustomSensorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,11 +127,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Skins\DarkCustomInputText.xaml">
+    <Page Include="Skins\DarkCustomControlSensor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Skins\DarkCustomOutputText.xaml">
+    <Page Include="Skins\DarkCustomInputFieldControlFocusable.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -219,15 +203,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\CustomControlInputFieldStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Styles\CustomInputFieldControlFocusableStyles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Styles\CustomInputTextStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -252,10 +228,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TextBlockStyles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Styles\TextBoxStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -293,23 +265,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\CustomControlHighlightableBullet.xaml.cs">
-      <DependentUpon>CustomControlHighlightableBullet.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CustomGateControlSensorsThreePositions.xaml.cs">
       <DependentUpon>CustomGateControlSensorsThreePositions.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomGateControlSensorsTwoPositions.xaml.cs">
       <DependentUpon>CustomGateControlSensorsTwoPositions.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomInputFieldControl.xaml.cs">
-      <DependentUpon>CustomInputFieldControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CustomInputFieldControlFocusable.xaml.cs">
       <DependentUpon>CustomInputFieldControlFocusable.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\CustomInputText.xaml.cs">
-      <DependentUpon>CustomInputText.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomLabelTextBlockControl.xaml.cs">
       <DependentUpon>CustomLabelTextBlockControl.xaml</DependentUpon>
@@ -319,9 +282,6 @@
     </Compile>
     <Compile Include="Controls\CustomMachineOnMarchToggleButton.xaml.cs">
       <DependentUpon>CustomMachineOnMarchToggleButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\CustomOuputText.xaml.cs">
-      <DependentUpon>CustomOuputText.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CustomSensorControl.xaml.cs">
       <DependentUpon>CustomSensorControl.xaml</DependentUpon>

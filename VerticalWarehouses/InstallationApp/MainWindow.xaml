@@ -18,7 +18,6 @@
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -84,7 +83,8 @@
                     <custom:CustomMachineModeToggleButton CustomCommand="{Binding MachineModeCustomCommand}"
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
-                    <custom:CustomMachineOnMarchToggleButton CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                    <custom:CustomMachineOnMarchToggleButton Margin="10,0,0,0"
+                                                             CustomCommand="{Binding MachineOnMarchCustomCommand}"
                                                              MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
                 </StackPanel>
@@ -92,7 +92,7 @@
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <ContentControl Name="InstallationPageRegionContentControl"
@@ -101,8 +101,10 @@
                             Height="610"
                             Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Expander Grid.Column="0"
-                      Width="210"
+                      Width="auto"
                       Height="610"
+                      Margin="10,0,0,0"
+                      HorizontalAlignment="Center"
                       VerticalAlignment="Center"
                       IsExpanded="{Binding IsNavigationButtonRegionExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       Style="{StaticResource WmsExpanderStyle}">

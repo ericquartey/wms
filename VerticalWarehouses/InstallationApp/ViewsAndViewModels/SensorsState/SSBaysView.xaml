@@ -39,7 +39,7 @@
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.LuPresentInBay}"
                                                 SensorState="{Binding LuPresentInBay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
+                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

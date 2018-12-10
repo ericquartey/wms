@@ -11,7 +11,6 @@
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
@@ -20,20 +19,23 @@
             <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150" />
+            <RowDefinition Height="80" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Image Grid.Row="0"
                Grid.Column="0"
                Margin="50,10,0,0"
-               Source="{DynamicResource Ferretto_Logo}" />
+               HorizontalAlignment="Left"
+               Source="{DynamicResource Ferretto_Logo}"
+               Stretch="Uniform" />
         <Image Grid.Row="1"
                Grid.Column="1"
                Margin="0,0,0,50"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
-                    HorizontalAlignment="Center">
+                    Margin="60,0,0,0"
+                    HorizontalAlignment="Left">
             <Rectangle Name="SpaceRectangle1"
                        Height="50" />
             <TextBlock HorizontalAlignment="Left"
@@ -43,16 +45,17 @@
                        Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
                        Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Rectangle Name="SpaceRectangle2"
-                       Height="160" />
-            <custom:CustomInputFieldControl Width="200"
-                                            HorizontalAlignment="Left"
-                                            InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                            LabelText="{x:Static res:General.UserLogin}"
-                                            Style="{StaticResource VWAPP_SplashScreenMainWindowCustomControlInputField_ValidationTest}" />
-            <custom:CustomInputFieldControl Width="200"
-                                            HorizontalAlignment="Left"
-                                            InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:General.PasswordLogin}" />
+                       Height="130" />
+            <custom:CustomInputFieldControlFocusable Width="200"
+                                                     HorizontalAlignment="Left"
+                                                     InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                                     LabelText="{x:Static res:General.UserLogin}"
+                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
+            <custom:CustomInputFieldControlFocusable Width="200"
+                                                     HorizontalAlignment="Left"
+                                                     InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:General.PasswordLogin}"
+                                                     Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
             <TextBlock Height="60"
                        HorizontalAlignment="Left"
                        Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"

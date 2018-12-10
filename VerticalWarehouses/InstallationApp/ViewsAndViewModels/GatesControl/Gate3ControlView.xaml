@@ -36,14 +36,14 @@
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <custom:CustomInputFieldControl Grid.Row="1"
-                                            Grid.Column="0"
-                                            Margin="0,0,100,0"
-                                            LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
-            <custom:CustomInputFieldControl Grid.Row="2"
-                                            Grid.Column="0"
-                                            Margin="0,0,100,0"
-                                            LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                     Grid.Column="0"
+                                                     Margin="0,0,100,0"
+                                                     LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="2"
+                                                     Grid.Column="0"
+                                                     Margin="0,0,100,0"
+                                                     LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
             <custom:CustomLabelTextBlockControl Grid.Row="1"
                                                 Grid.Column="2"
                                                 LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
