@@ -12,6 +12,7 @@ namespace Ferretto.Common.BusinessModels
         private int? fifoTimePick;
         private int? fifoTimeStore;
         private int? height;
+        private string image;
         private int? inventoryTolerance;
         private int? length;
         private int? pickTolerance;
@@ -65,6 +66,12 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.height;
             set => this.SetIfStrictlyPositive(ref this.height, value);
+        }
+
+        public string Image
+        {
+            get => this.image;
+            set => this.SetProperty(ref this.image, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemLastInventoryDate), ResourceType = typeof(BusinessObjects))]

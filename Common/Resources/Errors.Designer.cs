@@ -286,6 +286,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Changes found..
+        /// </summary>
+        public static string NoChangesFound {
+            get {
+                return ResourceManager.GetString("NoChangesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The parameter cannot be null or whitespace..
         /// </summary>
         public static string ParameterCannotBeNullOrWhitespace {
