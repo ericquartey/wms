@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,39 +26,41 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public void Add(SchedulerRequest model)
+        public bool Add(SchedulerRequest request)
         {
-            if (model == null)
+            if (request == null)
             {
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException(nameof(request));
             }
 
             var entry = this.dataContext.SchedulerRequests.Add(
                 new Common.DataModels.SchedulerRequest
                 {
-                    AreaId = model.AreaId,
-                    BayId = model.BayId,
-                    IsInstant = model.IsInstant,
-                    ItemId = model.ItemId,
-                    ListId = model.ListId,
-                    ListRowId = model.ListRowId,
-                    LoadingUnitId = model.LoadingUnitId,
-                    LoadingUnitTypeId = model.LoadingUnitTypeId,
-                    Lot = model.Lot,
-                    MaterialStatusId = model.MaterialStatusId,
-                    PackageTypeId = model.PackageTypeId,
-                    RegistrationNumber = model.RegistrationNumber,
-                    OperationType = (Common.DataModels.OperationType)(int)model.Type,
-                    RequestedQuantity = model.RequestedQuantity,
-                    Sub1 = model.Sub1,
-                    Sub2 = model.Sub2
+                    AreaId = request.AreaId,
+                    BayId = request.BayId,
+                    IsInstant = request.IsInstant,
+                    ItemId = request.ItemId,
+                    ListId = request.ListId,
+                    ListRowId = request.ListRowId,
+                    LoadingUnitId = request.LoadingUnitId,
+                    LoadingUnitTypeId = request.LoadingUnitTypeId,
+                    Lot = request.Lot,
+                    MaterialStatusId = request.MaterialStatusId,
+                    PackageTypeId = request.PackageTypeId,
+                    RegistrationNumber = request.RegistrationNumber,
+                    OperationType = (Common.DataModels.OperationType)(int)request.Type,
+                    RequestedQuantity = request.RequestedQuantity,
+                    Sub1 = request.Sub1,
+                    Sub2 = request.Sub2
                 }
             );
 
             if (this.dataContext.SaveChanges() > 0)
             {
-                model.Id = entry.Entity.Id;
+                request.Id = entry.Entity.Id;
+                return true;
             }
+            return false;
         }
 
         public void AddRange(IEnumerable<Mission> missions)

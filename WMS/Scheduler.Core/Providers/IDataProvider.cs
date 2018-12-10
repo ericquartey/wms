@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Ferretto.WMS.Scheduler.Core
@@ -7,7 +7,7 @@ namespace Ferretto.WMS.Scheduler.Core
     {
         #region Methods
 
-        void Add(SchedulerRequest model);
+        bool Add(SchedulerRequest model);
 
         void AddRange(IEnumerable<Mission> missions);
 
