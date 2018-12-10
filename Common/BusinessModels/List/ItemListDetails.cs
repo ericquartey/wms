@@ -52,8 +52,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListExecutionEndDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? ExecutionEndDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemListFireExecutionDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? FireExecutionDate { get; set; }
+        [Display(Name = nameof(BusinessObjects.ItemListFirstExecutionDate), ResourceType = typeof(BusinessObjects))]
+        public DateTime? FirstExecutionDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListItemsCount), ResourceType = typeof(BusinessObjects))]
         public int ItemListItemsCount

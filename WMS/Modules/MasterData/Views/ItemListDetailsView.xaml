@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.ItemListDetailsView"
+<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.ItemListDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -314,8 +314,7 @@
                                           Visibility="{Binding Path=ItemList.LastModificationDate, Converter={StaticResource RTVC}}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.FireExecutionDate}"
-                                          Visibility="{Binding Path=ItemList.FireExecutionDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.FirstExecutionDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
                                           Content="{Binding Path=ItemList.ExecutionEndDate}"

@@ -587,8 +587,8 @@
   <data name="ItemListExecutionEndDate" xml:space="preserve">
     <value>Fine esecuzione</value>
   </data>
-  <data name="ItemListFireExecutionDate" xml:space="preserve">
-    <value>Esecuzione</value>
+  <data name="ItemListFirstExecutionDate" xml:space="preserve">
+    <value>Prima Esecuzione</value>
   </data>
   <data name="ItemListJob" xml:space="preserve">
     <value>Commessa</value>
