@@ -218,7 +218,7 @@ namespace Ferretto.WMS.Scheduler.Core
                    ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
                    ItemId = r.ItemId,
                    ListId = r.ListId,
-                   ListRowId = r.LoadingUnitId,
+                   ListRowId = r.ListRowId,
                    LoadingUnitId = r.LoadingUnitId,
                    LoadingUnitTypeId = r.LoadingUnitTypeId,
                    Lot = r.Lot,
