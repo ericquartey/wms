@@ -142,6 +142,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Initializing Login ....
+        /// </summary>
+        public static string InitializingLogin {
+            get {
+                return ResourceManager.GetString("InitializingLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initializing Machines module ....
         /// </summary>
         public static string InitializingMachinesModule {

@@ -24,7 +24,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             var wakeUpPath = configuration["Hubs:WakeUp"];
             services.AddTransient<IWakeupHubClient>(s => new WakeupHubClient(schedulerUrl, wakeUpPath));
 
-            services.AddWebAPIClients(schedulerUrl);
+            services.AddWebAPIServices(schedulerUrl);
 
             return services.BuildServiceProvider();
         }

@@ -187,6 +187,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type Brush..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToBrushType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToBrushType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter can only convert to value of type Double..
+        /// </summary>
+        public static string ConverterCanConvertOnlyToDoubleType {
+            get {
+                return ResourceManager.GetString("ConverterCanConvertOnlyToDoubleType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Converter can only convert to value of type GridViewNavigationStyle..
         /// </summary>
         public static string ConverterCanConvertOnlyToNavigationStyleType {
@@ -223,6 +241,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Converter parameter must be bool.
+        /// </summary>
+        public static string ConverterParameterMustBeBool {
+            get {
+                return ResourceManager.GetString("ConverterParameterMustBeBool", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Converter parameter must be a type.
+        /// </summary>
+        public static string ConverterParameterMustBeType {
+            get {
+                return ResourceManager.GetString("ConverterParameterMustBeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: it is no possible to Edit this Compartment..
         /// </summary>
         public static string EditNoPossible {
@@ -246,6 +282,15 @@ namespace Ferretto.Common.Resources {
         public static string MarkupNameOfSyntax {
             get {
                 return ResourceManager.GetString("MarkupNameOfSyntax", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Changes found..
+        /// </summary>
+        public static string NoChangesFound {
+            get {
+                return ResourceManager.GetString("NoChangesFound", resourceCulture);
             }
         }
         

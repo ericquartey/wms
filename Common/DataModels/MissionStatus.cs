@@ -4,8 +4,8 @@
     {
         New = 'N',
         Waiting = 'W',
-        Executing = 'E',
+        Executing = 'X',
         Completed = 'C',
-        Faulted = 'F'
+        Error = 'E'
     }
 }

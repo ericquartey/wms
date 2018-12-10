@@ -31,14 +31,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #endregion Fields
 
-        #region Constructors
-
-        public InputBulkAddCompartmentViewModel()
-        {
-        }
-
-        #endregion Constructors
-
         #region Events
 
         public event EventHandler FinishEvent;
@@ -177,10 +169,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         private void OnSelectedBulkCompartmentPropertyChanged(object sender, PropertyChangedEventArgs e)

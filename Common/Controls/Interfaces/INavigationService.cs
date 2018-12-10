@@ -12,13 +12,13 @@
 
         void Disappear(INavigableView viewModel);
 
+        string GetNewViewModelName(string fullViewName);
+
         INavigableView GetRegisteredView(string viewName);
 
         INavigableViewModel GetRegisteredViewModel(string mapId, object data = null);
 
         INavigableView GetView(string moduleViewName, object data = null);
-
-        string GetNewViewModelName(string fullViewName);
 
         INavigableViewModel GetViewModelByName(string viewModelName);
 
@@ -30,6 +30,8 @@
                                                             where TItemsView : INavigableView;
 
         INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data = null);
+
+        void StartPresentation(INavigableViewModel viewModel);
 
         #endregion Methods
     }

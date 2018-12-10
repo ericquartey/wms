@@ -16,9 +16,12 @@
              Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
 
+
     <Grid>
 
         <Grid.Resources>
+            <wms:BoolToDoubleConverter x:Key="BTOC" ValueOnTrue="1" ValueOnFalse="0.3" />
+
             <DataTemplate x:Key="cardTemplate">
 
                 <Grid DataContext="{Binding Row}">
@@ -27,26 +30,36 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <wms:WmsIcon Grid.Column="0"
-                                 Width="70"
-                                 Height="70"
+                                 Margin="0,35,0,0"
+                                 Width="90"
+                                 Height="90"
+                                 Opacity="{Binding IsOnLine, Converter={StaticResource BTOC}}"
                                  VerticalAlignment="Top"
                                  SymbolName="{Binding Image}" />
                     <StackPanel Grid.Column="1"
                                 Margin="12,-10,12,0"
                                 VerticalAlignment="Top"
                                 Orientation="Vertical">
-                        <wms:InfoText Content="{Binding MovedLoadingUnitsCount}" />
-                        <wms:InfoText Content="{Binding AreaName}" />
-                        <wms:InfoText Content="{Binding RegistrationNumber}" />
+                        <wms:InfoText Content="{Binding Status}" IsPillVisible="True" />
+                        <wms:InfoText Content="{Binding MaintenanceStatus}" IsPillVisible="True" />
+                        <wms:ProgressBarEdit DisplayFormatString="p0"
+                                             EditValue="{Binding FillRate}"
+                                             Minimum="0"
+                                             Maximum="100" />
                     </StackPanel>
                 </Grid>
 
             </DataTemplate>
 
             <DataTemplate x:Key="cardHeaderTemplate">
-                <TextBlock VerticalAlignment="Center"
-                           FontSize="20"
-                           Text="{Binding Path=RowData.Row.Nickname}" />
+                <Border Background="{DynamicResource CommonSecondaryUltralight}">
+                    <Grid Margin="11,3">
+                        <TextBlock VerticalAlignment="Center"
+                                   FontSize="20"
+                                   Opacity="{Binding RowData.Row.IsOnLine, Converter={StaticResource BTOC}}"
+                                   Text="{Binding Path=RowData.Row.Nickname}" />
+                    </Grid>
+                </Border>
             </DataTemplate>
         </Grid.Resources>
 
@@ -55,8 +68,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <wms:Expander x:Name="FiltersExpander"
-                      Grid.Column="0"
+        <wms:Expander Grid.Column="0"
                       VerticalAlignment="Stretch"
                       VerticalContentAlignment="Stretch"
                       ExpandDirection="Left"
@@ -94,7 +106,7 @@
                                   CardLayout="Rows"
                                   CardMargin="0,0,6,6"
                                   CardTemplate="{StaticResource cardTemplate}"
-                                  FixedSize="230"
+                                  FixedSize="200"
                                   MinFixedSize="100"
                                   NavigationStyle="Row"
                                   PrintAutoCardWidth="False"

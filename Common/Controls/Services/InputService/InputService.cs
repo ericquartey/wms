@@ -329,6 +329,10 @@ namespace Ferretto.Common.Controls.Services
             if (isMain)
             {
                 viewModel = this.GetMainMenuViewModel();
+                if (viewModel == null)
+                {
+                    return isHandled;
+                }
             }
             if (handledShortKey != null &&
                 handledShortKey.DoAction != null)

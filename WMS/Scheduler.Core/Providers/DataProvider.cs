@@ -26,39 +26,41 @@ namespace Ferretto.WMS.Scheduler.Core
 
         #region Methods
 
-        public void Add(SchedulerRequest model)
+        public bool Add(SchedulerRequest request)
         {
-            if (model == null)
+            if (request == null)
             {
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException(nameof(request));
             }
 
             var entry = this.dataContext.SchedulerRequests.Add(
                 new Common.DataModels.SchedulerRequest
                 {
-                    AreaId = model.AreaId,
-                    BayId = model.BayId,
-                    IsInstant = model.IsInstant,
-                    ItemId = model.ItemId,
-                    ListId = model.ListId,
-                    ListRowId = model.ListRowId,
-                    LoadingUnitId = model.LoadingUnitId,
-                    LoadingUnitTypeId = model.LoadingUnitTypeId,
-                    Lot = model.Lot,
-                    MaterialStatusId = model.MaterialStatusId,
-                    PackageTypeId = model.PackageTypeId,
-                    RegistrationNumber = model.RegistrationNumber,
-                    OperationType = (Common.DataModels.OperationType)(int)model.Type,
-                    RequestedQuantity = model.RequestedQuantity,
-                    Sub1 = model.Sub1,
-                    Sub2 = model.Sub2
+                    AreaId = request.AreaId,
+                    BayId = request.BayId,
+                    IsInstant = request.IsInstant,
+                    ItemId = request.ItemId,
+                    ListId = request.ListId,
+                    ListRowId = request.ListRowId,
+                    LoadingUnitId = request.LoadingUnitId,
+                    LoadingUnitTypeId = request.LoadingUnitTypeId,
+                    Lot = request.Lot,
+                    MaterialStatusId = request.MaterialStatusId,
+                    PackageTypeId = request.PackageTypeId,
+                    RegistrationNumber = request.RegistrationNumber,
+                    OperationType = (Common.DataModels.OperationType)(int)request.Type,
+                    RequestedQuantity = request.RequestedQuantity,
+                    Sub1 = request.Sub1,
+                    Sub2 = request.Sub2
                 }
             );
 
             if (this.dataContext.SaveChanges() > 0)
             {
-                model.Id = entry.Entity.Id;
+                request.Id = entry.Entity.Id;
+                return true;
             }
+            return false;
         }
 
         public void AddRange(IEnumerable<Mission> missions)
@@ -90,6 +92,19 @@ namespace Ferretto.WMS.Scheduler.Core
             );
 
             this.dataContext.SaveChanges();
+        }
+
+        public void AddRange(IEnumerable<SchedulerRequest> requests)
+        {
+            if (requests == null)
+            {
+                throw new ArgumentNullException(nameof(requests));
+            }
+
+            foreach (var request in requests)
+            {
+                this.Add(request);
+            }
         }
 
         public async Task<Area> GetAreaByIdAsync(int areaId)
@@ -135,35 +150,101 @@ namespace Ferretto.WMS.Scheduler.Core
                 .SingleAsync(i => i.Id == itemId);
         }
 
-        public async Task<SchedulerRequest> GetNextRequestToProcessAsync()
+        public async Task<ItemList> GetListByIdAsync(int listId)
+        {
+            return await this.dataContext.ItemLists
+                .Include(l => l.ItemListRows)
+                .Select(i => new ItemList
+                {
+                    Id = i.Id,
+                    Rows = i.ItemListRows.Select(r => new ItemListRow
+                    {
+                        Id = r.Id,
+                        ItemId = r.ItemId,
+                        Lot = r.Lot,
+                        MaterialStatusId = r.MaterialStatusId,
+                        PackageTypeId = r.PackageTypeId,
+                        RegistrationNumber = r.RegistrationNumber,
+                        RequestedQuantity = r.RequiredQuantity,
+                        Sub1 = r.Sub1,
+                        Sub2 = r.Sub2
+                    })
+                }
+                )
+                .SingleAsync(l => l.Id == listId);
+        }
+
+        /// <summary>
+        /// Gets all the pending requests that:
+        /// - are not completed (dispatched qty is not equal to requested qty)
+        /// - are already allocated to a bay
+        /// - the allocated bay has buffer to accept new missions
+        /// - are associated to a list that is in execution
+        ///
+        /// Requests are sorted by:
+        /// - Instant first
+        /// - All others after, giving priority to the lists ones that are already started
+        ///
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-                .Where(r => r.RequestedQuantity > r.DispatchedQuantity)
-                .OrderBy(s => s.IsInstant)
-                .OrderBy(s => s.CreationDate)
-                .Select(r => new SchedulerRequest
-                {
-                    Id = r.Id,
-                    AreaId = r.AreaId,
-                    BayId = r.BayId,
-                    CreationDate = r.CreationDate,
-                    IsInstant = r.IsInstant,
-                    ItemId = r.ItemId,
-                    ListId = r.ListId,
-                    ListRowId = r.LoadingUnitId,
-                    LoadingUnitId = r.LoadingUnitId,
-                    LoadingUnitTypeId = r.LoadingUnitTypeId,
-                    Lot = r.Lot,
-                    Type = (OperationType)r.OperationType,
-                    MaterialStatusId = r.MaterialStatusId,
-                    PackageTypeId = r.PackageTypeId,
-                    RegistrationNumber = r.RegistrationNumber,
-                    RequestedQuantity = r.RequestedQuantity,
-                    DispatchedQuantity = r.DispatchedQuantity,
-                    Sub1 = r.Sub1,
-                    Sub2 = r.Sub2
-                })
-                .FirstOrDefaultAsync();
+               .Include(r => r.List)
+               .Include(r => r.ListRow)
+               .Include(r => r.Bay)
+               .ThenInclude(b => b.Missions)
+               .Where(r =>
+                    r.BayId.HasValue
+                    &&
+                    r.RequestedQuantity > r.DispatchedQuantity
+                    &&
+                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count()
+                    &&
+                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing)
+                    &&
+                    (r.ListId.HasValue == false || r.List.Status == Common.DataModels.ItemListStatus.Executing)
+                )
+               .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
+               .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
+               .Select(r => new SchedulerRequest
+               {
+                   Id = r.Id,
+                   AreaId = r.AreaId,
+                   BayId = r.BayId,
+                   CreationDate = r.CreationDate,
+                   IsInstant = r.IsInstant,
+                   ListStatus = r.List != null ? (ListStatus)r.List.Status : ListStatus.NotSpecified,
+                   ListRowStatus = r.ListRow != null ? (ListRowStatus)r.ListRow.Status : ListRowStatus.NotSpecified,
+                   ItemId = r.ItemId,
+                   ListId = r.ListId,
+                   ListRowId = r.ListRowId,
+                   LoadingUnitId = r.LoadingUnitId,
+                   LoadingUnitTypeId = r.LoadingUnitTypeId,
+                   Lot = r.Lot,
+                   Type = (OperationType)r.OperationType,
+                   MaterialStatusId = r.MaterialStatusId,
+                   PackageTypeId = r.PackageTypeId,
+                   RegistrationNumber = r.RegistrationNumber,
+                   RequestedQuantity = r.RequestedQuantity,
+                   DispatchedQuantity = r.DispatchedQuantity,
+                   Sub1 = r.Sub1,
+                   Sub2 = r.Sub2
+               })
+               .ToListAsync();
+        }
+
+        public void Update(ItemList list)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            var existingList = this.dataContext.ItemLists.Find(list.Id);
+            this.dataContext.Entry(existingList).CurrentValues.SetValues(list);
+
+            this.dataContext.SaveChanges();
         }
 
         public void Update(Mission mission)
@@ -201,6 +282,19 @@ namespace Ferretto.WMS.Scheduler.Core
 
             var existingModel = this.dataContext.SchedulerRequests.Find(request.Id);
             this.dataContext.Entry(existingModel).CurrentValues.SetValues(request);
+
+            this.dataContext.SaveChanges();
+        }
+
+        public void Update(ItemListRow row)
+        {
+            if (row == null)
+            {
+                throw new ArgumentNullException(nameof(row));
+            }
+
+            var existingRow = this.dataContext.ItemListRows.Find(row.Id);
+            this.dataContext.Entry(existingRow).CurrentValues.SetValues(row);
 
             this.dataContext.SaveChanges();
         }

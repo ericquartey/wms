@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -50,7 +51,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
             try
             {
-                var acceptedRequest = await this.warehouse.ExecuteListAsync(request.ListId, request.BayId);
+                var acceptedRequest = await this.warehouse.PrepareListForExecutionAsync(request.ListId, request.AreaId, request.BayId);
                 if (acceptedRequest == null)
                 {
                     this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
@@ -69,7 +70,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             return this.Ok();
         }
 
-        [ProducesResponseType(200)]
+        [ProducesResponseType(200, Type = typeof(ItemList))]
         [ProducesResponseType(400)]
         [HttpGet]
         public async Task<ActionResult> GetAll()
@@ -102,7 +103,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             }
         }
 
-        [ProducesResponseType(200)]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<ItemList>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [HttpGet("{id}")]
@@ -122,7 +123,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                            Code = l.Code,
                            Description = l.Description,
                            Priority = l.Priority,
-                           ItemListStatus = (ItemListStatus)l.ItemListStatus,
+                           ItemListStatus = (ItemListStatus)l.Status,
                            ItemListType = (int)((ItemListType)l.ItemListType),
                            ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                            CreationDate = l.CreationDate,
@@ -133,7 +134,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                            ShipmentUnitCode = l.ShipmentUnitCode,
                            ShipmentUnitDescription = l.ShipmentUnitDescription,
                            LastModificationDate = l.LastModificationDate,
-                           FireExecutionDate = l.FirstExecutionDate,
+                           FirstExecutionDate = l.FirstExecutionDate,
                            ExecutionEndDate = l.ExecutionEndDate,
                            ItemListRows = l.ItemListRows.Select(r => new ItemListRow
                            {
@@ -142,7 +143,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                                CreationDate = r.CreationDate,
                                ItemDescription = r.Item.Description,
                                RequiredQuantity = r.RequiredQuantity,
-                               RowPriority = r.RowPriority
+                               RowPriority = r.Priority
                            })
                        })
                        .SingleOrDefaultAsync();

@@ -6,9 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -20,26 +22,19 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
-
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private ICommand cancelCommand;
+        private CompartmentDetails compartment;
         private bool enableInputAdd;
         private string error;
         private string errorColor;
+        private IDataSource<Item> itemsDataSource;
         private int loadingUnitId;
         private ICommand saveCommand;
-        private CompartmentDetails selectedCompartmentTray;
         private string title = Common.Resources.MasterData.AddCompartment;
         private Tray tray;
 
         #endregion Fields
-
-        #region Constructors
-
-        public InputAddCompartmentViewModel()
-        {
-        }
-
-        #endregion Constructors
 
         #region Events
 
@@ -51,6 +46,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand CancelCommand => this.cancelCommand ??
                           (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand));
+
+        public CompartmentDetails Compartment
+        {
+            get => this.compartment;
+            set => this.SetProperty(ref this.compartment, value);
+        }
 
         public bool EnableCheck { get; set; }
 
@@ -64,16 +65,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
+        public IDataSource<Item> ItemsDataSource
+        {
+            get => this.itemsDataSource;
+            set => this.SetProperty(ref this.itemsDataSource, value);
+        }
+
         public ICommand SaveCommand => this.saveCommand ??
                                  (this.saveCommand = new DelegateCommand(() => this.ExecuteSaveCommand().ConfigureAwait(false), this.CanExecuteSaveCommand)
                                  .ObservesProperty(() => this.Error)
-                                .ObservesProperty(() => this.SelectedCompartmentTray));
-
-        public CompartmentDetails SelectedCompartmentTray
-        {
-            get => this.selectedCompartmentTray;
-            set => this.SetProperty(ref this.selectedCompartmentTray, value);
-        }
+                                .ObservesProperty(() => this.Compartment));
 
         public string Title { get => this.title; private set => this.SetProperty(ref this.title, value); }
 
@@ -90,10 +91,9 @@ namespace Ferretto.WMS.Modules.MasterData
         public void Initialize(Tray tray, int loadingUnitId)
         {
             this.Tray = tray;
-            this.SelectedCompartmentTray = new CompartmentDetails();
             this.EnableInputAdd = true;
-            this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
             this.loadingUnitId = loadingUnitId;
+            this.InitializeData();
         }
 
         protected virtual void OnFinishEvent(EventArgs e)
@@ -109,7 +109,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.EnableCheck)
             {
-                string error = this.Tray.CanBulkAddCompartment(this.SelectedCompartmentTray, this.Tray, true);
+                string error = this.Tray.CanBulkAddCompartment(this.Compartment, this.Tray, true);
                 this.SetError(error);
                 return error != null && error.Trim() != "";
             }
@@ -140,10 +140,18 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
+        private void InitializeData()
+        {
+            this.Compartment = this.compartmentProvider.GetNewCompartmentDetails();
+            this.Compartment.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
+
+            this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());
+        }
+
         private bool IsNullSelectedCompartment()
         {
-            if (this.selectedCompartmentTray != null && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null
-                && this.selectedCompartmentTray.Width != null && this.selectedCompartmentTray.Height != null && this.selectedCompartmentTray.Width != 0 && this.selectedCompartmentTray.Height != 0)
+            if (this.compartment != null && this.compartment.XPosition != null && this.compartment.YPosition != null
+                && this.compartment.Width != null && this.compartment.Height != null && this.compartment.Width != 0 && this.compartment.Height != 0)
             {
                 return false;
             }
@@ -168,22 +176,23 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ResetView()
         {
             this.EnableInputAdd = false;
-            this.SelectedCompartmentTray.PropertyChanged -= this.OnSelectedCompartmentPropertyChanged;
+            this.Compartment.PropertyChanged -= this.OnSelectedCompartmentPropertyChanged;
             this.Reset();
             this.OnFinishEvent(null);
         }
 
         private async Task<bool> SaveLoadingUnit()
         {
-            if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
+            if (this.tray.CanAddCompartment(this.Compartment))
             {
-                this.SelectedCompartmentTray.LoadingUnitId = this.loadingUnitId;
-                this.SelectedCompartmentTray.CompartmentTypeId = 2;
+                this.Compartment.LoadingUnitId = this.loadingUnitId;
+                //TODO: implement create new Compartment Type
+                this.Compartment.CompartmentTypeId = 2;
 
-                var add = await this.compartmentProvider.Add(this.SelectedCompartmentTray);
+                var add = await this.compartmentProvider.Add(this.Compartment);
                 if (add == 1)
                 {
-                    this.tray.AddCompartment(this.SelectedCompartmentTray);
+                    this.tray.AddCompartment(this.Compartment);
                 }
                 return true;
             }
