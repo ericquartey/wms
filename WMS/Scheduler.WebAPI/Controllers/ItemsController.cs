@@ -92,7 +92,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
             try
             {
-                var acceptedRequest = await this.warehouse.Withdraw(request);
+                var acceptedRequest = await this.warehouse.WithdrawAsync(request);
                 if (acceptedRequest == null)
                 {
                     this.logger.LogWarning($"Withdrawal request of item {request.ItemId} could not be processed.");

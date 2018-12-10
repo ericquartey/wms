@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Scheduler.Core
             }
         }
 
-        public async Task<IEnumerable<SchedulerRequest>> ExecuteListAsync(int listId, int areaId, int? bayId)
+        public async Task<IEnumerable<SchedulerRequest>> PrepareListForExecutionAsync(int listId, int areaId, int? bayId)
         {
             var list = await this.dataProvider.GetListByIdAsync(listId);
             if (list == null)

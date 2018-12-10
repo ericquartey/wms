@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
             try
             {
-                var acceptedRequest = await this.warehouse.ExecuteListAsync(request.ListId, request.AreaId, request.BayId);
+                var acceptedRequest = await this.warehouse.PrepareListForExecutionAsync(request.ListId, request.AreaId, request.BayId);
                 if (acceptedRequest == null)
                 {
                     this.logger.LogWarning($"Request of execution for list (id={request.ListId}) could not be processed.");
