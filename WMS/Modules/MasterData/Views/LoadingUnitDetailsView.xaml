@@ -256,36 +256,28 @@
                     <StackPanel Orientation="Vertical">
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.CreationDate}"
-                                      Visibility="{Binding Path=LoadingUnit.CreationDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.CreationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.LastHandlingDate}"
-                                      Visibility="{Binding Path=LoadingUnit.LastHandlingDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.LastHandlingDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.InventoryDate}"
-                                      Visibility="{Binding Path=LoadingUnit.InventoryDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.LastPickDate}"
-                                      Visibility="{Binding Path=LoadingUnit.LastPickDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.LastStoreDate}"
-                                      Visibility="{Binding Path=LoadingUnit.LastStoreDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.LastStoreDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.InCycleCount}"
-                                      Visibility="{Binding Path=LoadingUnit.InCycleCount, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.InCycleCount}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.OutCycleCount}"
-                                      Visibility="{Binding Path=LoadingUnit.OutCycleCount, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.OutCycleCount}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding LoadingUnit.OtherCycleCount}"
-                                      Visibility="{Binding Path=LoadingUnit.OtherCycleCount, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding LoadingUnit.OtherCycleCount}" />
                     </StackPanel>
                 </GroupBox>
 
