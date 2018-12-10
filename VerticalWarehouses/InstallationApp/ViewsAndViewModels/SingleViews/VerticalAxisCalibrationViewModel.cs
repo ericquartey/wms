@@ -8,7 +8,7 @@ using System.Threading;
 using Ferretto.VW.Utils.Source.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver;
+using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
@@ -18,7 +18,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         #region Fields
 
         private bool enableStartButton = true;
-        private InverterDriver.InverterDriver inverter;
         private bool isStopButtonActive;
         private string lowerBound;
         private string noteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
@@ -117,14 +116,10 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             CalibrateVerticalAxis calibrateVA;
             this.EnableStartButton = false;
             this.IsStopButtonActive = true;
-            this.NoteString = "Connecting...";
-            this.inverter = new InverterDriver.InverterDriver();
-            var tmp = this.inverter.Initialize();
-            this.NoteString = (tmp) ? "Connected." : "Connection failed.";
             await Task.Delay(2000);
 
             calibrateVA = new CalibrateVerticalAxis();
-            calibrateVA.SetInverterDriverInterface = this.inverter;
+            calibrateVA.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
 
             calibrateVA.Initialize();
             calibrateVA.ThrowEndEvent += new CalibrateVerticalAixsEndedEventHandler(this.Calibration);

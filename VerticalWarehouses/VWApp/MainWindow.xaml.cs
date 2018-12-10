@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.VWApp
 {
@@ -20,7 +21,7 @@ namespace Ferretto.VW.VWApp
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-
+            InverteDriverManager.InverterDriverStaticInstance.Terminate();
             Application.Current.Shutdown();
         }
 

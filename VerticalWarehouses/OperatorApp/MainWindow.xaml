@@ -50,7 +50,7 @@
                                   Content="Operator"
                                   IsSelected="True"
                                   Style="{StaticResource VWAPP_MainWindowUserComboBoxItemStyle}"
-                                  Template="{StaticResource IAPP_MainWindowUserComboBoxItemTemplate}" />
+                                  Template="{StaticResource VWAPP_MainWindowUserComboBoxItemTemplate}" />
                     <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
                                   Content="Log Off">
                         <ComboBoxItem.Style>
