@@ -192,6 +192,18 @@
   <data name="UnableToConnectToDatabase" xml:space="preserve">
     <value>Impossibile connettersi al database</value>
   </data>
+  <data name="ConverterCanConvertOnlyToBrushType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo Brush.</value>
+  </data>
+  <data name="ConverterParameterMustBeType" xml:space="preserve">
+    <value>Il parametro del converter deve essere un Type</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToDoubleType" xml:space="preserve">
+    <value>Questo converter può convertire solo valori di tipo Double.</value>
+  </data>
+  <data name="ConverterParameterMustBeBool" xml:space="preserve">
+    <value>Il parametro del converter deve essere un bool</value>
+  </data>
   <data name="NoChangesFound" xml:space="preserve">
     <value>Non ho trovato modifiche da apportare.</value>
   </data>

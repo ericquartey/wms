@@ -244,7 +244,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if ((this.Data is int modelId))
             {
                 this.ItemList = this.itemListProvider.GetById(modelId);
-                this.SetColorStatus();
             }
         }
 
@@ -254,35 +253,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
                 ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
-            }
-        }
-
-        private void SetColorStatus()
-        {
-            if (this.ItemList != null && this.ItemList.ItemListStatus > 0)
-            {
-                switch (this.ItemList.ItemListStatus)
-                {
-                    case ItemListStatus.Waiting:
-                        this.StatusColor = Application.Current.Resources["WaitingStatus"].ToString();//cyan
-                        break;
-
-                    case ItemListStatus.Executing:
-                        this.StatusColor = Application.Current.Resources["ExecutingStatus"].ToString();//blue
-                        break;
-
-                    case ItemListStatus.Completed:
-                        this.StatusColor = Application.Current.Resources["CompletedStatus"].ToString();//green
-                        break;
-
-                    case ItemListStatus.Incomplete:
-                        this.StatusColor = Application.Current.Resources["IncompleteStatus"].ToString();//red
-                        break;
-
-                    case ItemListStatus.Suspended:
-                        this.StatusColor = Application.Current.Resources["SuspendedStatus"].ToString();//orange
-                        break;
-                }
             }
         }
 
