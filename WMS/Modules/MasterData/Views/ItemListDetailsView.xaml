@@ -186,34 +186,55 @@
 
                 </GroupBox>
 
-                <wms:ActionBar Grid.Row="1"
-                               Grid.ColumnSpan="4"
-                               Margin="10,10,10,0"
-                               HorizontalAlignment="Right"
-                               Style="{DynamicResource ActionBarNotCustomizable}">
 
-                    <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
-                                       Content="{x:Static res:MasterData.ItemListRowExecute}"
-                                       CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
-                                       GlyphSize="Custom" />
-
-                    <wms:ActionBarItem Command="{Binding EditListRowCommand}"
-                                       Content="{x:Static res:MasterData.ItemListRowEdit}"
-                                       CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
-                                       GlyphSize="Custom" />
-
-                    <wms:ActionBarItem Command="{Binding AddListRowCommand}"
-                                       Content="{x:Static res:MasterData.ItemListRowAdd}"
-                                       CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
-                                       GlyphSize="Custom" />
-                </wms:ActionBar>
 
                 <GroupBox Grid.Row="2"
-                          Grid.ColumnSpan="4"
-                          Header="{x:Static res:MasterData.ItemListRowInformation}">
+                          Grid.ColumnSpan="4">
+                    <GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="4*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Row="0"
+                                     Grid.Column="0"
+                                     Height="15"
+                                     Margin="0"
+                                     Padding="-2"
+                                     HorizontalAlignment="Left"
+                                     BorderThickness="0"
+                                     FontSize="14.666"
+                                     FontWeight="SemiBold"
+                                     Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+
+                            <wms:ActionBar Grid.Row="0"
+                                           Grid.ColumnSpan="4"
+                                           HorizontalAlignment="Right"
+                                           Style="{DynamicResource ActionBarNotCustomizable}">
+
+                                <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
+                                                   Content="{x:Static res:MasterData.ItemListRowExecute}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                                                   GlyphSize="Custom" />
+
+                                <wms:ActionBarItem Command="{Binding ShowDetailsListRowCommand}"
+                                                   Content="{x:Static res:MasterData.ItemListRowShowDetails}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                                   GlyphSize="Custom" />
+
+                                <wms:ActionBarItem Command="{Binding AddListRowCommand}"
+                                                   Content="{x:Static res:MasterData.ItemListRowAdd}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
+                                                   GlyphSize="Custom" />
+                            </wms:ActionBar>
+                        </Grid>
+                    </GroupBox.Header>
                     <StackPanel Margin="0,10,0,0">
                         <wms:WmsGridControl MinHeight="280"
                                             MaxWidth="2000"

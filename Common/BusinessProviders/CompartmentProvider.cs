@@ -190,8 +190,8 @@ namespace Ferretto.Common.BusinessProviders
                 compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
                 compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
                 compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-                compartmentDetails.ItemPairingChoices =
-                    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
+                compartmentDetails.ItemPairingChoices = ((DataModels.Pairing[])
+                    Enum.GetValues(typeof(DataModels.Pairing)))
                     .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
                 return compartmentDetails;
@@ -271,6 +271,22 @@ namespace Ferretto.Common.BusinessProviders
                     ItemPairingDescription = c.ItemPairing.ToString(),
                 })
                 .AsNoTracking();
+        }
+
+        public CompartmentDetails GetNewCompartmentDetails()
+        {
+            var compartmentDetails = new CompartmentDetails();
+            compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
+            compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
+            compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+            compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            compartmentDetails.ItemPairingChoices = ((DataModels.Pairing[])
+                Enum.GetValues(typeof(DataModels.Pairing)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+
+            compartmentDetails.ItemPairing = (int)DataModels.Pairing.Free;
+            compartmentDetails.MaterialStatusId = compartmentDetails.MaterialStatusChoices.First().Id;
+            return compartmentDetails;
         }
 
         public bool HasAnyAllowedItem(int modelId)

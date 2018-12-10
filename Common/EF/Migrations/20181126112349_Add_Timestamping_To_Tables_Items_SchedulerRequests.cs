@@ -63,7 +63,8 @@ namespace Ferretto.Common.EF.Migrations
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
                     table: "SchedulerRequests",
-                    nullable: false);
+                    nullable: false,
+                    defaultValueSql: "GETUTCDATE()");
 
                 migrationBuilder.AddColumn<DateTime>(
                     name: "LastModificationDate",
@@ -76,7 +77,8 @@ namespace Ferretto.Common.EF.Migrations
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
                     table: "LoadingUnits",
-                    nullable: false);
+                    nullable: false,
+                    defaultValueSql: "GETUTCDATE()");
 
                 this.AddDates(migrationBuilder, now, db.Items, nameof(db.Items));
                 migrationBuilder.AlterColumn<DateTime>(
@@ -116,7 +118,8 @@ namespace Ferretto.Common.EF.Migrations
                 migrationBuilder.AlterColumn<DateTime>(
                     name: "LastModificationDate",
                     table: "Compartments",
-                    nullable: false);
+                    nullable: false,
+                    defaultValueSql: "GETUTCDATE()");
             }
         }
 

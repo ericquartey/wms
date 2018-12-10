@@ -187,7 +187,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteAddCompartmentCommand()
         {
-            this.SelectedCompartmentTray = null;
+            this.SelectedCompartmentTray = new CompartmentDetails();
             this.HideMainViewAndShowLateralPanel();
             this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
             this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
@@ -204,7 +204,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCompartmentCommand()
         {
             this.HideMainViewAndShowLateralPanel();
-            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray);
+            this.PopulatePairing();
+            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray.Id);
             this.InputEditVM.FinishEvent += this.InputEditVM_FinishEvent;
         }
 
@@ -244,7 +245,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ResetInputView();
             if (sender is InputAddCompartmentViewModel model)
             {
-                this.SelectedCompartmentTray = model.SelectedCompartmentTray;
+                this.SelectedCompartmentTray = model.Compartment;
             }
             this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
         }
@@ -268,6 +269,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
                 this.InitializeTray();
             }
+        }
+
+        private void PopulatePairing()
+        {
+            this.selectedCompartmentTray.ItemPairingChoices = this.loadingUnit.CellPairingChoices;
         }
 
         private void ResetInputView()

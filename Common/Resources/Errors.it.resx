@@ -204,4 +204,7 @@
   <data name="ConverterParameterMustBeBool" xml:space="preserve">
     <value>Il parametro del converter deve essere un bool</value>
   </data>
+  <data name="NoChangesFound" xml:space="preserve">
+    <value>Non ho trovato modifiche da apportare.</value>
+  </data>
 </root>
