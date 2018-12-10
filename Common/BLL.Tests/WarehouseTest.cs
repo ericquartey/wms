@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.EF;
 using Ferretto.WMS.Scheduler.Core;
@@ -223,7 +223,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.DispatchRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequests();
 
                 #endregion Act
 
@@ -296,7 +296,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.DispatchRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequests();
 
                 #endregion Act
 
@@ -379,7 +379,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.DispatchRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequests();
 
                 #endregion Act
 
@@ -454,7 +454,7 @@ namespace Ferretto.Common.BLL.Tests
                     new SchedulerRequestProvider(context),
                     new Mock<ILogger<Warehouse>>().Object);
 
-                var missions = await warehouse.DispatchRequests();
+                var missions = await warehouse.CreateMissionsForPendingRequests();
 
                 #endregion Act
 
