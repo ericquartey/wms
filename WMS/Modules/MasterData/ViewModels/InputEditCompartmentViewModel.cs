@@ -140,7 +140,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteSaveCommand()
         {
             this.SetError();
-            if (this.SaveLoadingUnit())
+            if (this.SaveCompartment())
             {
                 this.ResetView();
             }
@@ -173,7 +173,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.OnFinishEvent(null);
         }
 
-        private bool SaveLoadingUnit()
+        private bool SaveCompartment()
         {
             if (this.tray.CanAddCompartment(this.SelectedCompartmentTray, true))
             {
