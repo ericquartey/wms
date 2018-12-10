@@ -211,7 +211,7 @@ namespace Ferretto.Common.Controls.Services
         public void StartPresentation(INavigableViewModel viewModel)
         {
             Application.Current.Dispatcher.BeginInvoke(
-                      DispatcherPriority.ContextIdle,
+                      DispatcherPriority.SystemIdle,
                       new Action(() =>
                       {
                           Application.Current.MainWindow.Show();

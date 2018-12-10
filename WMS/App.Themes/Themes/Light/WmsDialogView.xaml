@@ -32,6 +32,7 @@
                                                                                                                ThemeName=Office2016White,
                                                                                                                ResourceKey=FloatingContainerCaptionTemplate}}" />
                             <ItemsControl x:Name="ButtonContainer"
+                                          IsTabStop="False"  
                                           Grid.Column="1"
                                           dxc:HeaderItemControl.CloseTemplateProvider="{DynamicResource {dxt:DXWindowThemeKey ResourceKey=HeaderItemControlCloseTemplateProvider}}"
                                           dxc:HeaderItemControl.CommonTemplateProvider="{DynamicResource {dxt:DXWindowThemeKey ResourceKey=HeaderItemControlCommonTemplateProvider}}"
@@ -39,20 +40,25 @@
                                           UseLayoutRounding="True">
 
                                 <dxc:ThemedWindowHeaderItemsControl x:Name="PART_HeaderCustomItems"
+                                                                  IsTabStop="False"      
                                                                     Style="{DynamicResource {dxt:DXTabbedWindowThemeKey ResourceKey=ControlContainerStyle}}" />
 
                                 <dxc:HeaderItemControl x:Name="PART_Minimize"
+                                                     IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}" />
                                 <dxc:HeaderItemControl x:Name="PART_Restore"
+                                                  IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=False}, RelativeSource={RelativeSource Self}}" />
                                 <dxc:HeaderItemControl x:Name="PART_Maximize"
+                                                       IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=True}, RelativeSource={RelativeSource Self}}" />
                                 <dxc:HeaderItemControl x:Name="PART_CloseButton"
+                                                     IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderCloseButtonStyle}}" />
                             </ItemsControl>
