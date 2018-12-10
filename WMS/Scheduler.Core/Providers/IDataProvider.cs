@@ -25,6 +25,10 @@ namespace Ferretto.WMS.Scheduler.Core
 
         void Update(SchedulerRequest request);
 
+        void Update(ItemList list);
+
+        void Update(ItemListRow row);
+
         #endregion Methods
     }
 }

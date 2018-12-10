@@ -225,6 +225,19 @@ namespace Ferretto.WMS.Scheduler.Core
                .ToListAsync();
         }
 
+        public void Update(ItemList list)
+        {
+            if (list == null)
+            {
+                throw new ArgumentNullException(nameof(list));
+            }
+
+            var existingList = this.dataContext.ItemLists.Find(list.Id);
+            this.dataContext.Entry(existingList).CurrentValues.SetValues(list);
+
+            this.dataContext.SaveChanges();
+        }
+
         public void Update(Mission mission)
         {
             if (mission == null)
@@ -260,6 +273,19 @@ namespace Ferretto.WMS.Scheduler.Core
 
             var existingModel = this.dataContext.SchedulerRequests.Find(request.Id);
             this.dataContext.Entry(existingModel).CurrentValues.SetValues(request);
+
+            this.dataContext.SaveChanges();
+        }
+
+        public void Update(ItemListRow row)
+        {
+            if (row == null)
+            {
+                throw new ArgumentNullException(nameof(row));
+            }
+
+            var existingRow = this.dataContext.ItemListRows.Find(row.Id);
+            this.dataContext.Entry(existingRow).CurrentValues.SetValues(row);
 
             this.dataContext.SaveChanges();
         }
