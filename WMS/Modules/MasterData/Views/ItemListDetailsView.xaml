@@ -306,20 +306,16 @@
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.CreationDate}"
-                                          Visibility="{Binding Path=ItemList.CreationDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.LastModificationDate}"
-                                          Visibility="{Binding Path=ItemList.LastModificationDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.LastModificationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.FireExecutionDate}"
-                                          Visibility="{Binding Path=ItemList.FireExecutionDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.FirstExecutionDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.ExecutionEndDate}"
-                                          Visibility="{Binding Path=ItemList.ExecutionEndDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.ExecutionEndDate}" />
                         </StackPanel>
 
                     </GroupBox>

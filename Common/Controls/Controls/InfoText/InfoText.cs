@@ -64,7 +64,13 @@ namespace Ferretto.Common.Controls
             }
 
             var bindingExpression = this.GetBindingExpression(ContentProperty);
-            var propertyInfo = bindingExpression?.ResolvedSource.GetType()
+
+            if (bindingExpression?.ResolvedSourcePropertyName == null)
+            {
+                return;
+            }
+
+            var propertyInfo = bindingExpression?.ResolvedSource?.GetType()
                 .GetProperty(bindingExpression.ResolvedSourcePropertyName);
 
             if (propertyInfo?.PropertyType.IsEnum == true)

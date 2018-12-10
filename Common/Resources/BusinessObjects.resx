@@ -736,9 +736,9 @@
     <value>End Execution</value>
     <comment>Item List - End Execution</comment>
   </data>
-  <data name="ItemListFireExecutionDate" xml:space="preserve">
-    <value>Fire Execution</value>
-    <comment>Item List - Fire Execution</comment>
+  <data name="ItemListFirstExecutionDate" xml:space="preserve">
+    <value>First Execution</value>
+    <comment>Item List - First Execution</comment>
   </data>
   <data name="ItemListJob" xml:space="preserve">
     <value>Job</value>

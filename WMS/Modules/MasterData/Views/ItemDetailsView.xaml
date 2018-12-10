@@ -253,28 +253,22 @@
                                       MaxHeight="400"
                                       BorderBrush="{DynamicResource CommonSecondaryLight}"
                                       BorderThickness="1"
-                                      Path="{Binding Path=Item.Image}"
-                                      Visibility="{Binding Path=Item.Image, Converter={StaticResource RTVC}}" />
+                                      Path="{Binding Path=Item.Image}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding Path=Item.CreationDate}"
-                                      Visibility="{Binding Path=Item.CreationDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.CreationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding Path=Item.LastModificationDate}"
-                                      Visibility="{Binding Path=Item.LastModificationDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.LastModificationDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding Path=Item.InventoryDate}"
-                                      Visibility="{Binding Path=Item.InventoryDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.InventoryDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding Path=Item.LastPickDate}"
-                                      Visibility="{Binding Path=Item.LastPickDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.LastPickDate}" />
                         <wms:InfoText HorizontalAlignment="Left"
                                       HorizontalContentAlignment="Left"
-                                      Content="{Binding Path=Item.LastStoreDate}"
-                                      Visibility="{Binding Path=Item.LastStoreDate, Converter={StaticResource RTVC}}" />
+                                      Content="{Binding Path=Item.LastStoreDate}" />
                     </StackPanel>
 
                 </GroupBox>
