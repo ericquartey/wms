@@ -36,7 +36,7 @@
             <wms:ActionBarItem Command="{Binding WithdrawCommand}"
                                Content="{x:Static res:MasterData.Withdraw}"
                                CustomGlyphSize="24,24"
-                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_get_app_black_24dp.png"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom" />
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
@@ -192,7 +192,7 @@
                         <wms:WmsGridControl MinHeight="280"
                                             MaxWidth="2000"
                                             MaxHeight="280"
-                                            CurrentItem="{Binding SelectedCompartment, Mode=TwoWay}"                                            
+                                            CurrentItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                             ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
                                             Visibility="{Binding ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
@@ -208,14 +208,22 @@
                             </wms:WmsGridControl.View>
 
                             <wms:WmsGridControl.Columns>
-                                <dxg:GridColumn Width="200*" FieldName="Code" />
-                                <dxg:GridColumn Width="200*" FieldName="LoadingUnitCode" />
-                                <dxg:GridColumn Width="100*" FieldName="Sub1" />
-                                <dxg:GridColumn Width="100*" FieldName="Sub2" />
-                                <dxg:GridColumn Width="200*" FieldName="Lot" />
-                                <dxg:GridColumn Width="200*" FieldName="CompartmentStatusDescription" />
-                                <dxg:GridColumn Width="100*" FieldName="Stock" />
-                                <dxg:GridColumn Width="200*" FieldName="ItemPairingDescription" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Code" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="LoadingUnitCode" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub1" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub2" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Lot" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Stock" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="ItemPairingDescription" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
