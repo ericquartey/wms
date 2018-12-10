@@ -64,38 +64,39 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <wms:TextBox Margin="0,0,20,0"
-                             Text="{Binding ItemWithdraw.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
-                <wms:TextBox Grid.Column="1"
-                             Text="{Binding ItemWithdraw.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
-                <wms:TextBox Grid.Row="1"
-                             Grid.Column="0"
-                             Margin="0,0,20,0"
-                             Text="{Binding ItemWithdraw.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
-                <wms:TextBox Grid.Row="1"
-                             Grid.Column="1"
-                             Text="{Binding ItemWithdraw.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
-
                 <wms:ComboBox x:Name="SelectedArea"
-                              Grid.Row="3"
                               Margin="0,0,20,0"
                               DisplayMember="Name"
                               EditValue="{Binding ItemWithdraw.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding ItemWithdraw.AreaChoices}" />
                 <wms:ComboBox x:Name="SelectedBay"
-                              Grid.Row="3"
                               Grid.Column="1"
                               EditValue="{Binding ItemWithdraw.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               ItemsSource="{Binding ItemWithdraw.BayChoices}"
                               Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}" />
-                <wms:InfoText Grid.Row="4"
+
+                <wms:TextBox Margin="0,0,20,0"
+                             Grid.Row="1"
+                             Text="{Binding ItemWithdraw.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                <wms:TextBox Grid.Column="1"
+                             Grid.Row="1"
+                             Text="{Binding ItemWithdraw.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                <wms:TextBox Grid.Row="2"
+                             Grid.Column="0"
+                             Margin="0,0,20,0"
+                             Text="{Binding ItemWithdraw.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+                <wms:TextBox Grid.Row="2"
+                             Grid.Column="1"
+                             Text="{Binding ItemWithdraw.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
+
+                <wms:InfoText Grid.Row="3"
                               Content="{Binding ItemWithdraw.TotalAvailable}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
-                <wms:SpinEdit Grid.Row="4"
+                <wms:SpinEdit Grid.Row="3"
                               Grid.Column="1"
                               EditValue="{Binding ItemWithdraw.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
