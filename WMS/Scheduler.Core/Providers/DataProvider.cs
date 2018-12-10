@@ -175,16 +175,23 @@ namespace Ferretto.WMS.Scheduler.Core
         public async Task<IEnumerable<SchedulerRequest>> GetRequestsToProcessAsync()
         {
             return await this.dataContext.SchedulerRequests
-               .Where(r =>
-                    r.BayId.HasValue
-                    &&
-                    r.RequestedQuantity > r.DispatchedQuantity
-                )
                .Include(r => r.List)
                .Include(r => r.ListRow)
                .Include(r => r.Bay)
                .ThenInclude(b => b.Missions)
-               .Where(r => r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count())
+               .Where(r =>
+                    r.BayId.HasValue
+                    &&
+                    r.RequestedQuantity > r.DispatchedQuantity
+                    &&
+                    r.Bay.LoadingUnitsBufferSize > r.Bay.Missions.Count()
+                    &&
+                    (r.ListRowId.HasValue == false || r.ListRow.Status == Common.DataModels.ItemListRowStatus.Executing)
+                    &&
+                    (r.ListId.HasValue == false || r.List.Status == Common.DataModels.ItemListStatus.Executing)
+                )
+               .OrderBy(r => r.ListId.HasValue ? r.List.Priority : int.MaxValue)
+               .ThenBy(r => r.ListRowId.HasValue ? r.ListRow.Priority : int.MaxValue)
                .Select(r => new SchedulerRequest
                {
                    Id = r.Id,
@@ -209,19 +216,6 @@ namespace Ferretto.WMS.Scheduler.Core
                    Sub1 = r.Sub1,
                    Sub2 = r.Sub2
                })
-               .Where(r =>
-                    (
-                        r.ListRowStatus == ListRowStatus.Executing
-                        ||
-                        r.ListRowStatus == ListRowStatus.NotSpecified
-                    )
-                    &&
-                    (
-                        r.ListStatus == ListStatus.Executing
-                        ||
-                        r.ListStatus == ListStatus.NotSpecified
-                    )
-                )
                .ToListAsync();
         }
 
