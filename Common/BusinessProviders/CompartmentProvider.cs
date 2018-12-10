@@ -46,11 +46,10 @@ namespace Ferretto.Common.BusinessProviders
                 YPosition = model.YPosition,
                 LoadingUnitId = model.LoadingUnitId,
                 CompartmentTypeId = model.CompartmentTypeId,
-                ItemPairing = (DataModels.Pairing)((int)model.ItemPairing),
+                ItemPairing = (DataModels.Pairing)model.ItemPairing,
                 Stock = model.Stock,
                 ReservedForPick = model.ReservedForPick,
                 ReservedToStore = model.ReservedToStore,
-                CreationDate = DateTime.Now,
                 ItemId = model.ItemId,
                 MaterialStatusId = model.MaterialStatusId,
                 //Optional

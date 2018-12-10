@@ -13,7 +13,7 @@ namespace Ferretto.Common.BusinessModels
         private IEnumerable<Enumeration> compartmentTypeChoices;
         private int? fifoTime;
         private int? height;
-        private int? itemPairing;
+        private int itemPairing;
         private IEnumerable<Enumeration> itemPairingChoices;
         private IEnumerable<Enumeration> materialStatusChoices;
         private int? materialStatusId;
@@ -91,7 +91,7 @@ namespace Ferretto.Common.BusinessModels
         public int? ItemId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public int? ItemPairing
+        public int ItemPairing
         {
             get => this.itemPairing;
             set => this.SetIfPositive(ref this.itemPairing, value);

@@ -187,7 +187,7 @@ namespace Ferretto.WMS.Modules.MasterData
             if (this.tray.CanAddCompartment(this.Compartment))
             {
                 this.Compartment.LoadingUnitId = this.loadingUnitId;
-                //Set Vertimag Compartment Type
+                //TODO: implement create new Compartment Type
                 this.Compartment.CompartmentTypeId = 2;
 
                 var add = await this.compartmentProvider.Add(this.Compartment);
