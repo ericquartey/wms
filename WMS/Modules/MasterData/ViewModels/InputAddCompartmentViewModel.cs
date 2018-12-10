@@ -178,7 +178,7 @@ namespace Ferretto.WMS.Modules.MasterData
             if (this.tray.CanAddCompartment(this.SelectedCompartmentTray))
             {
                 this.SelectedCompartmentTray.LoadingUnitId = this.loadingUnitId;
-                this.SelectedCompartmentTray.CompartmentTypeId = 2;
+                //this.SelectedCompartmentTray.CompartmentTypeId = 2;
 
                 var add = await this.compartmentProvider.Add(this.SelectedCompartmentTray);
                 if (add == 1)

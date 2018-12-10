@@ -134,50 +134,57 @@ namespace Ferretto.Common.BusinessProviders
             var dataContext = this.dataContext.Current;
             lock (dataContext)
             {
-                var compartmentDetails = dataContext.Compartments
+                var compartmentList = dataContext.Compartments
                    .Where(c => c.Id == id)
                    .Include(c => c.LoadingUnit)
                    .Include(c => c.Item)
-                   .Include(c => c.CompartmentType)
-                   .ThenInclude(ct => ct.ItemsCompartmentTypes)
                    .Include(c => c.CompartmentStatus)
-                   .Select(c => new CompartmentDetails
+                   .Join(
+                        dataContext.ItemsCompartmentTypes,
+                        cmp => cmp.CompartmentTypeId,
+                        ict => ict.CompartmentTypeId,
+                        (cmp, ict) => new { cmp, ict }
+                    )
+                   .Where(j => j.ict.ItemId == j.cmp.ItemId)
+                   .Select(j => new CompartmentDetails
                    {
-                       Id = c.Id,
-                       Code = c.Code,
-                       LoadingUnitCode = c.LoadingUnit.Code,
-                       CompartmentTypeId = c.CompartmentTypeId,
-                       ItemPairing = (int)c.ItemPairing,
-                       ItemCode = c.Item.Code,
-                       ItemDescription = c.Item.Description,
-                       Sub1 = c.Sub1,
-                       Sub2 = c.Sub2,
-                       MaterialStatusId = c.MaterialStatusId,
-                       FifoTime = c.FifoTime,
-                       PackageTypeId = c.PackageTypeId,
-                       Lot = c.Lot,
-                       RegistrationNumber = c.RegistrationNumber,
-                       MaxCapacity = c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity,
-                       Stock = c.Stock,
-                       ReservedForPick = c.ReservedForPick,
-                       ReservedToStore = c.ReservedToStore,
-                       CompartmentStatusId = c.CompartmentStatusId,
-                       CompartmentStatusDescription = c.CompartmentStatus.Description,
-                       CreationDate = c.CreationDate,
-                       LastHandlingDate = c.LastHandlingDate,
-                       InventoryDate = c.InventoryDate,
-                       FirstStoreDate = c.FirstStoreDate,
-                       LastStoreDate = c.LastStoreDate,
-                       LastPickDate = c.LastPickDate,
-                       Width = c.Width,
-                       Height = c.Height,
-                       XPosition = c.XPosition,
-                       YPosition = c.YPosition,
-                       LoadingUnitId = c.LoadingUnitId,
-                       ItemId = c.ItemId,
-                       ItemPairingDescription = c.ItemPairing.ToString()
+                       Id = j.cmp.Id,
+                       Code = j.cmp.Code,
+                       LoadingUnitCode = j.cmp.LoadingUnit.Code,
+                       CompartmentTypeId = j.cmp.CompartmentTypeId,
+                       ItemPairing = (int)j.cmp.ItemPairing,
+                       ItemCode = j.cmp.Item.Code,
+                       ItemDescription = j.cmp.Item.Description,
+                       Sub1 = j.cmp.Sub1,
+                       Sub2 = j.cmp.Sub2,
+                       MaterialStatusId = j.cmp.MaterialStatusId,
+                       FifoTime = j.cmp.FifoTime,
+                       PackageTypeId = j.cmp.PackageTypeId,
+                       Lot = j.cmp.Lot,
+                       RegistrationNumber = j.cmp.RegistrationNumber,
+                       MaxCapacity = j.ict.MaxCapacity,
+                       Stock = j.cmp.Stock,
+                       ReservedForPick = j.cmp.ReservedForPick,
+                       ReservedToStore = j.cmp.ReservedToStore,
+                       CompartmentStatusId = j.cmp.CompartmentStatusId,
+                       CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
+                       CreationDate = j.cmp.CreationDate,
+                       LastHandlingDate = j.cmp.LastHandlingDate,
+                       InventoryDate = j.cmp.InventoryDate,
+                       FirstStoreDate = j.cmp.FirstStoreDate,
+                       LastStoreDate = j.cmp.LastStoreDate,
+                       LastPickDate = j.cmp.LastPickDate,
+                       Width = j.cmp.Width,
+                       Height = j.cmp.Height,
+                       XPosition = j.cmp.XPosition,
+                       YPosition = j.cmp.YPosition,
+                       LoadingUnitId = j.cmp.LoadingUnitId,
+                       ItemId = j.cmp.ItemId,
+                       ItemPairingDescription = j.cmp.ItemPairing.ToString()
                    })
-                   .Single();
+                   .ToList();
+
+                var compartmentDetails = compartmentList.Single();
 
                 compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
                 compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
