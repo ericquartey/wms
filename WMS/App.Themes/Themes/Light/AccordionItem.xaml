@@ -12,6 +12,9 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
+    <Color x:Key="Grey">#FF293133</Color>
+
+
     <wms:BoolToVisibilityConverter x:Key="BTVC" />
 
     <!--  Static Resources  -->
@@ -205,7 +208,6 @@
                                                                     Focusable="False"
                                                                     ItemState="Default"
                                                                     ItemType="{Binding ItemType, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <!--  Template="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemBackgroundTemplate}}"  -->
                                 <Grid x:Name="PART_HeaderInternalContainer"
                                       Margin="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderMargin}}">
                                     <Grid.ColumnDefinitions>
@@ -459,13 +461,11 @@
                         <!--#endregion-->
                         <!--#region Foreground & States-->
                         <Trigger Property="ItemType" Value="RootItem">
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDefaultForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Selected" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Selected" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -473,8 +473,7 @@
                                 <Condition Property="IsSelectionActive" Value="False" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="SelectedInactive" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="ItemState" Value="SelectedInactive" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -482,8 +481,7 @@
                                 <Condition Property="ItemType" Value="SubItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedForeground}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -492,17 +490,14 @@
                                 <Condition Property="ItemType" Value="SubItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedInactiveForeground}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedInactiveForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsSelected" Value="True" />
                                 <Condition Property="ItemType" Value="RootItem" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedForeground}}" />-->
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -510,9 +505,7 @@
                                 <Condition Property="IsSelectionActive" Value="False" />
                                 <Condition Property="ItemType" Value="RootItem" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedInactiveForeground}}" />-->
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedInactiveForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -521,8 +514,7 @@
                                 <Condition Property="ItemType" Value="SubItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />
                         </MultiTrigger>
@@ -532,9 +524,7 @@
                                 <Condition Property="ActualHighlightOnHover" Value="True" />
                                 <Condition Property="ItemType" Value="RootItem" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}}" />-->
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />
                         </MultiTrigger>
@@ -547,8 +537,7 @@
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Pressed" />
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Pressed" />
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderPressedForeground}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderPressedForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -559,8 +548,7 @@
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Pressed" />
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Pressed" />
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderPressedForeground}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderPressedForeground}}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource Grey}" />
                         </MultiTrigger>
                         <Trigger Property="ItemType" Value="Wrapper">
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Default" />
@@ -608,7 +596,7 @@
                               Visibility="{Binding IsToggleVisible, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type wms:AccordionItem}}, Converter={StaticResource BTVC}}" />
             <TextBlock FontSize="14"
                        FontWeight="Medium"
-                       Foreground="#FF293133"
+                       Foreground="{StaticResource Grey}"
                        Text="{Binding TitleHeader, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type wms:AccordionItem}}}" />
         </StackPanel>
     </DataTemplate>
