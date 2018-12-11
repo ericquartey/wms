@@ -852,4 +852,8 @@
     <value>Account access error</value>
     <comment>Credentials - Account access error</comment>
   </data>
+  <data name="ItemListRowDispatchedQuantity" xml:space="preserve">
+    <value>Dispatched Quantity</value>
+    <comment>List Row - Dispatched Quantity</comment>
+  </data>
 </root>
