@@ -7,8 +7,11 @@
                  xmlns:prism="http://www.codeplex.com/prism"
                  xmlns:r="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                  Title="{x:Static r:DesktopApp.Application_Title}"
+                 Height="950"
+                 Width="1440"
                  MinWidth="1024"
                  MinHeight="576"
+                 WindowStartupLocation="CenterScreen"  
                  mc:Ignorable="d">
     <Grid>
         <ContentControl x:Name="MainContent"
