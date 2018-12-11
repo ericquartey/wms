@@ -68,13 +68,11 @@
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"
-                                      MinWidth="200" />
+                                      MinWidth="300" />
                     <ColumnDefinition Width="*"
-                                      MinWidth="200" />
+                                      MinWidth="300" />
                     <ColumnDefinition Width="*"
-                                      MinWidth="200" />
-                    <ColumnDefinition Width="*"
-                                      MinWidth="200" />
+                                      MinWidth="300" />
                 </Grid.ColumnDefinitions>
 
                 <GroupBox Grid.Row="0"
@@ -130,9 +128,13 @@
                             <dxe:ToggleSwitch x:Name="toggleSwitch"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                              Background="#FF293133"
+                                              Foreground="#FF293133"
+                                              IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ToggleSwitchHeight="20"
+                                              ToggleSwitchWidth="30" />
                             <TextBox x:Name="TitleLabel"
-                                     Margin="60,0,0,0"
+                                     Margin="40,0,0,0"
                                      BorderThickness="0"
                                      FontSize="14.666"
                                      FontWeight="SemiBold"
