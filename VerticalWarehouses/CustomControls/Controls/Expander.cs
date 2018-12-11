@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using DevExpress.Mvvm.UI;
 
-namespace Ferretto.Common.Controls
+namespace Ferretto.VW.CustomControls.Controls
 {
     public class Expander : System.Windows.Controls.Expander
     {

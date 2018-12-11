@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace Ferretto.VW.CustomControls.Controls
 {
     /// <summary>
-    /// Interaction logic for CustomInputFieldControlFocusable.xaml
+    /// Interaction logic for CustomInputFieldControlFocusableFocusable.xaml
     /// </summary>
     public partial class CustomInputFieldControlFocusable : UserControl
     {

@@ -15,70 +15,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    <LinearGradientBrush x:Key="ComboBox.Static.Background" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Offset="0.0" Color="Transparent" />
-        <GradientStop Offset="1.0" Color="Transparent" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ComboBox.Static.Editable.Background"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Static.Editable.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Background"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph"
-                     Color="Transparent" />
-    <LinearGradientBrush x:Key="ComboBox.MouseOver.Background" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Offset="0.0" Color="Transparent" />
-        <GradientStop Offset="1.0" Color="Transparent" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Background"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Border"
-                     Color="Transparent" />
-    <LinearGradientBrush x:Key="ComboBox.MouseOver.Editable.Button.Background" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Offset="0.0" Color="Transparent" />
-        <GradientStop Offset="1.0" Color="Transparent" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Button.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Glyph"
-                     Color="Transparent" />
-    <LinearGradientBrush x:Key="ComboBox.Pressed.Background" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Offset="0.0" Color="#FFDAECFC" />
-        <GradientStop Offset="1.0" Color="#FFC4E0FC" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ComboBox.Pressed.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Background"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Border"
-                     Color="Transparent" />
-    <LinearGradientBrush x:Key="ComboBox.Pressed.Editable.Button.Background" StartPoint="0,0" EndPoint="0,1">
-        <GradientStop Offset="0.0" Color="#FFDAEBFC" />
-        <GradientStop Offset="1.0" Color="#FFC4E0FC" />
-    </LinearGradientBrush>
-    <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Button.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Glyph"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Background"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Background"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Border"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="ComboBox.Static.Glyph"
-                     Color="Transparent" />
+
     <Style x:Key="ComboBoxToggleButton"
            TargetType="{x:Type ToggleButton}">
         <Setter Property="OverridesDefaultStyle" Value="true" />
@@ -142,9 +79,6 @@
                             <Setter TargetName="splitBorder" Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
                             <Setter TargetName="splitBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_MainWindowUserComboBox_BorderBrush_Normal}" />
                         </MultiDataTrigger>
-                        <Trigger Property="IsPressed" Value="true">
-                            <Setter TargetName="arrow" Property="Fill" Value="{StaticResource ComboBox.Pressed.Glyph}" />
-                        </Trigger>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true" />
@@ -203,36 +137,30 @@
                    Margin="1"
                    AllowsTransparency="true"
                    IsOpen="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
-                   Placement="Bottom"
-                   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                <Themes:SystemDropShadowChrome x:Name="shadow"
-                                               MinWidth="{Binding ActualWidth, ElementName=templateRoot}"
-                                               MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                               Color="Transparent">
-                    <Border x:Name="dropDownBorder"
-                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-                            BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
-                            BorderThickness="1">
-                        <ScrollViewer x:Name="DropDownScrollViewer">
-                            <Grid x:Name="grid"
-                                  RenderOptions.ClearTypeHint="Enabled">
-                                <Canvas x:Name="canvas"
-                                        Width="0"
-                                        Height="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top">
-                                    <Rectangle x:Name="opaqueRect"
-                                               Width="{Binding ActualWidth, ElementName=dropDownBorder}"
-                                               Height="{Binding ActualHeight, ElementName=dropDownBorder}"
-                                               Fill="{Binding Background, ElementName=dropDownBorder}" />
-                                </Canvas>
-                                <ItemsPresenter x:Name="ItemsPresenter"
-                                                KeyboardNavigation.DirectionalNavigation="Contained"
-                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </Grid>
-                        </ScrollViewer>
-                    </Border>
-                </Themes:SystemDropShadowChrome>
+                   Placement="Bottom">
+                <Border x:Name="dropDownBorder"
+                        Background="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}"
+                        BorderBrush="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}"
+                        BorderThickness="1">
+                    <ScrollViewer x:Name="DropDownScrollViewer">
+                        <Grid x:Name="grid"
+                              RenderOptions.ClearTypeHint="Enabled">
+                            <Canvas x:Name="canvas"
+                                    Width="0"
+                                    Height="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top">
+                                <Rectangle x:Name="opaqueRect"
+                                           Width="{Binding ActualWidth, ElementName=dropDownBorder}"
+                                           Height="{Binding ActualHeight, ElementName=dropDownBorder}"
+                                           Fill="{Binding Background, ElementName=dropDownBorder}" />
+                            </Canvas>
+                            <ItemsPresenter x:Name="ItemsPresenter"
+                                            KeyboardNavigation.DirectionalNavigation="Contained"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
             </Popup>
             <ToggleButton x:Name="toggleButton"
                           Grid.ColumnSpan="2"
@@ -253,10 +181,6 @@
                               SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
         </Grid>
         <ControlTemplate.Triggers>
-            <Trigger SourceName="PART_Popup" Property="HasDropShadow" Value="true">
-                <Setter TargetName="shadow" Property="Margin" Value="0,0,5,5" />
-                <Setter TargetName="shadow" Property="Color" Value="#71000000" />
-            </Trigger>
             <Trigger Property="HasItems" Value="false">
                 <Setter TargetName="dropDownBorder" Property="Height" Value="95" />
             </Trigger>
@@ -309,36 +233,30 @@
                    Grid.ColumnSpan="2"
                    AllowsTransparency="true"
                    IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}"
-                   Placement="Bottom"
-                   PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                <Themes:SystemDropShadowChrome x:Name="shadow"
-                                               MinWidth="{Binding ActualWidth, ElementName=templateRoot}"
-                                               MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                               Color="Transparent">
-                    <Border x:Name="dropDownBorder"
-                            Background="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"
-                            BorderBrush="{DynamicResource {x:Static SystemColors.WindowFrameBrushKey}}"
-                            BorderThickness="1">
-                        <ScrollViewer x:Name="DropDownScrollViewer">
-                            <Grid x:Name="grid"
-                                  RenderOptions.ClearTypeHint="Enabled">
-                                <Canvas x:Name="canvas"
-                                        Width="0"
-                                        Height="0"
-                                        HorizontalAlignment="Left"
-                                        VerticalAlignment="Top">
-                                    <Rectangle x:Name="opaqueRect"
-                                               Width="{Binding ActualWidth, ElementName=dropDownBorder}"
-                                               Height="{Binding ActualHeight, ElementName=dropDownBorder}"
-                                               Fill="{Binding Background, ElementName=dropDownBorder}" />
-                                </Canvas>
-                                <ItemsPresenter x:Name="ItemsPresenter"
-                                                KeyboardNavigation.DirectionalNavigation="Contained"
-                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                            </Grid>
-                        </ScrollViewer>
-                    </Border>
-                </Themes:SystemDropShadowChrome>
+                   Placement="Bottom">
+                <Border x:Name="dropDownBorder"
+                        Background="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}"
+                        BorderBrush="{DynamicResource VWAPP_MainWindowUserComboBox_BorderBrush_Normal}"
+                        BorderThickness="1">
+                    <ScrollViewer x:Name="DropDownScrollViewer">
+                        <Grid x:Name="grid"
+                              RenderOptions.ClearTypeHint="Enabled">
+                            <Canvas x:Name="canvas"
+                                    Width="0"
+                                    Height="0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top">
+                                <Rectangle x:Name="opaqueRect"
+                                           Width="{Binding ActualWidth, ElementName=dropDownBorder}"
+                                           Height="{Binding ActualHeight, ElementName=dropDownBorder}"
+                                           Fill="{Binding Background, ElementName=dropDownBorder}" />
+                            </Canvas>
+                            <ItemsPresenter x:Name="ItemsPresenter"
+                                            KeyboardNavigation.DirectionalNavigation="Contained"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
             </Popup>
             <ToggleButton x:Name="toggleButton"
                           Grid.ColumnSpan="2"
@@ -365,10 +283,6 @@
             <Trigger Property="IsKeyboardFocusWithin" Value="true">
                 <Setter Property="Foreground" Value="Black" />
             </Trigger>
-            <Trigger SourceName="PART_Popup" Property="HasDropShadow" Value="true">
-                <Setter TargetName="shadow" Property="Margin" Value="0,0,5,5" />
-                <Setter TargetName="shadow" Property="Color" Value="#71000000" />
-            </Trigger>
             <Trigger Property="HasItems" Value="false">
                 <Setter TargetName="dropDownBorder" Property="Height" Value="95" />
             </Trigger>
@@ -390,7 +304,7 @@
         <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
         <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
         <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_MainWindowUserComboBox_BorderBrush_Normal}" />
-        <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />

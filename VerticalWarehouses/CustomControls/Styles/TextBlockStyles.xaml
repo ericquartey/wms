@@ -14,12 +14,6 @@
         <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
         <Setter Property="FontSize" Value="20" />
     </Style>
-    <Style x:Key="VWAPP_ViewCustomControlLabelTextBlockStyle"
-           TargetType="{x:Type TextBlock}">
-        <Setter Property="Foreground" Value="{DynamicResource VWAPP_CCLabelTextBlock_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
-        <Setter Property="FontSize" Value="16" />
-    </Style>
     <Style x:Key="VWAPP_SplashScreenTitleTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_SSTitleViewTextBlock_Foreground_Normal}" />

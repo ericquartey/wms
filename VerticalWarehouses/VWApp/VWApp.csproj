@@ -168,6 +168,10 @@
       <Project>{1ec2e502-155d-48c0-82b9-961fb97149a3}</Project>
       <Name>InstallationApp</Name>
     </ProjectReference>
+    <ProjectReference Include="..\InverterDriver\InverterDriver.csproj">
+      <Project>{119128D4-1776-427A-AEC1-6DA12B0FF813}</Project>
+      <Name>InverterDriver</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
       <Name>Navigation</Name>

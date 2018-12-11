@@ -34,7 +34,7 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
@@ -51,25 +51,30 @@
                             Orientation="Horizontal">
                     <ComboBox Name="userComboBox"
                               Width="150"
-                              Margin="10,15,2,5"
+                              Margin="20,15,0,5"
                               HorizontalContentAlignment="Right"
                               VerticalContentAlignment="Center"
                               FontSize="25"
                               Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
                               Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                      Margin="35,0,0,0"
+                                      HorizontalAlignment="Center"
+                                      Background="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}"
                                       Content="{x:Static res:InstallationApp.Installer}"
                                       IsSelected="True"
                                       Style="{StaticResource VWAPP_MainWindowUserComboBoxItemStyle}"
-                                      Template="{StaticResource IAPP_MainWindowUserComboBoxItemTemplate}" />
+                                      Template="{StaticResource VWAPP_MainWindowUserComboBoxItemTemplate}" />
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                      Margin="65,0,0,0"
+                                      HorizontalAlignment="Center"
                                       Content="{x:Static res:InstallationApp.LogOff}">
                             <ComboBoxItem.Style>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
                                     <Setter Property="Foreground" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
                                     <Setter Property="FontFamily" Value="{DynamicResource VWAPP_BodyFont}" />
-                                    <Setter Property="FontSize" Value="20" />
+                                    <Setter Property="FontSize" Value="{DynamicResource VWAPP_MainWindowUserComboBox_FontSize_Normal}" />
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                                     <Setter Property="VerticalContentAlignment" Value="Center" />
                                     <EventSetter Event="PreviewMouseDown"
@@ -79,34 +84,39 @@
                         </ComboBoxItem>
                     </ComboBox>
                     <Image Height="30"
-                           Margin="0,10,30,2"
+                           Margin="2,10,20,2"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
                     <custom:CustomMachineModeToggleButton CustomCommand="{Binding MachineModeCustomCommand}"
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
-                    <custom:CustomMachineOnMarchToggleButton CustomCommand="{Binding MachineOnMarchCustomCommand}"
+                    <custom:CustomMachineOnMarchToggleButton Margin="10,0,0,0"
+                                                             CustomCommand="{Binding MachineOnMarchCustomCommand}"
                                                              MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
-                    <custom:CustomInputText LabelText="Inserire Ciaone" />
                 </StackPanel>
             </Border>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <ContentControl x:Name="InstallationPageRegionContentControl"
+            <ContentControl Name="InstallationPageRegionContentControl"
                             Grid.Column="1"
                             Width="730"
                             Height="610"
                             Content="{Binding ContentRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <ContentControl x:Name="InstallationPageNavigationButtonsRegionContentControl"
-                            Grid.Column="0"
-                            Width="210"
-                            Height="610"
-                            VerticalAlignment="Center"
-                            Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Expander Grid.Column="0"
+                      Width="auto"
+                      Height="610"
+                      Margin="10,0,0,0"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      IsExpanded="{Binding IsNavigationButtonRegionExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      Style="{StaticResource WmsExpanderStyle}">
+                <ContentControl Name="InstallationPageNavigationButtonsRegionContentControl"
+                                Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Expander>
         </Grid>
     </Grid>
 </Window>

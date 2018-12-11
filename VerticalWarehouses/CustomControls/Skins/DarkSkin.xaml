@@ -9,8 +9,8 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkNavigationButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkNavigationRepeatButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkMainWindowUserComboBox.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomOutputText.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomInputText.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomInputFieldControlFocusable.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomControlSensor.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
