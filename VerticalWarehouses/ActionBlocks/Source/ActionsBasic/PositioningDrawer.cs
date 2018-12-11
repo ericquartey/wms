@@ -494,6 +494,13 @@ namespace Ferretto.VW.ActionBlocks
             logger.Log(LogLevel.Debug, "Stop inverter");
         }
 
+        public void TargetPosition()
+        {
+            this.inverterDriver.SendRequest(ParameterID.POSITION_TARGET_POSITION_PARAM, this.systemIndex, 5);
+
+            logger.Log(LogLevel.Debug, "Stop inverter");
+        }
+
         #endregion Method
     }
 }
