@@ -29,6 +29,10 @@ namespace Ferretto.Common.Controls
             ServiceLocator.Current.GetInstance<IEventService>()
                .Subscribe((StatusEventArgs eventArgs) =>
                {
+                   NLog.LogManager
+                      .GetCurrentClassLogger()
+                      .Trace(string.Format("Displaying status message '{0}'.", eventArgs.Message));
+
                    this.keepInfoTimer.Stop();
                    this.Message = eventArgs.Message;
                    this.IconName = this.GetIconNameFromStatusType(eventArgs.Type);
