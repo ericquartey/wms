@@ -117,17 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="WmsAccess" xml:space="preserve">
-    <value>Accesso WMS</value>
-  </data>
-  <data name="WmsLogin" xml:space="preserve">
-    <value>WMS Login</value>
-  </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="Username" xml:space="preserve">
+    <value>Nome Utente</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -136,6 +130,6 @@
     <value>Accedi</value>
   </data>
   <data name="LoginToWms" xml:space="preserve">
-    <value>Accedi al WMS</value>
+    <value>Accesso Utente</value>
   </data>
 </root>

@@ -14,7 +14,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.Login), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.Username), ResourceType = typeof(BusinessObjects))]
         public string Login
         {
             get => this.login;

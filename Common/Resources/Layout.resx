@@ -117,21 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-    <comment>LoignView Credentials - Login</comment>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+    <comment>LoignView Credentials - Username</comment>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
     <comment>LoginView Credentials - Password</comment>
-  </data>
-  <data name="WmsLogin" xml:space="preserve">
-    <value>WMS Login</value>
-    <comment>LoginView Credentials</comment>
-  </data>
-  <data name="WmsAccess" xml:space="preserve">
-    <value>WMS  Access</value>
-    <comment>LoginView</comment>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -142,7 +134,7 @@
     <comment>LoginView</comment>
   </data>
   <data name="LoginToWms" xml:space="preserve">
-    <value>Login to WMS</value>
+    <value>User Login</value>
     <comment>LoginView</comment>
   </data>
 </root>
