@@ -49,7 +49,7 @@
                                                  Orientation="Horizontal"
                                                  VerticalAlignment="Center" />
                             <TextBlock Grid.Column="1"
-                                       Text="{Binding Path=DisplayText, ElementName=progressBarEditControl}"
+                                       Text="{Binding Path=DisplayText, ElementName=InnerProgressBarEditControl}"
                                        VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
