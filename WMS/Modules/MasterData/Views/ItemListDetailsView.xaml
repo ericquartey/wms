@@ -129,7 +129,6 @@
                             <dxe:ToggleSwitch x:Name="toggleSwitch"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              dxt:ThemeManager.ThemeName="Office2016ColorfulSE"
                                               IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBox x:Name="TitleLabel"
                                      Margin="60,0,0,0"
@@ -241,17 +240,17 @@
                                             MaxHeight="280"
                                             CurrentItem="{Binding SelectedItemListRow, Mode=TwoWay}"
                                             ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}">
-                            <wms:WmsGridControl.View>
+                            <!--wms:WmsGridControl.View>
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItemListRow.Id, Mode=OneWay}"
                                                                       StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}" />
-                                            <!--  TODO StartViewName="{x:Static modules:MasterData.EDITITEMLISTROW}"  -->
+                                            <TODO StartViewName="{x:Static modules:MasterData.EDITITEMLISTROW}">
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
-                            </wms:WmsGridControl.View>
+                            </-->
 
                             <wms:WmsGridControl.Columns>
                                 <dxg:GridColumn Width="100*"
