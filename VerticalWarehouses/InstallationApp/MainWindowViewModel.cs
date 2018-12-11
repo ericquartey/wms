@@ -115,24 +115,9 @@ namespace Ferretto.VW.InstallationApp
             NavigationService.GoToViewEventHandler += this.HideNavigationButtonRegion;
             NavigationService.ExitViewEventHandler += this.ShowNavigationButtonRegion;
             SensorsStatesChangedEventHandler += this.EventInitializer;
-
-            //**
-            // Create the driver for the inverter
-            this.inverterDriver = new InverterDriver.InverterDriver();
-            this.inverterDriver.Initialize();
-
-            this.ResolutionCalibrationVerticalAxisVMInstance.SetInverterDriver = this.inverterDriver;
-            //**
         }
 
-
-    #endregion Constructors
-
-
-        //~MainWindowViewModel()
-        //{
-        //    this.inverterDriver.Terminate();
-        //}
+        #endregion Constructors
 
         #region Delegates
 

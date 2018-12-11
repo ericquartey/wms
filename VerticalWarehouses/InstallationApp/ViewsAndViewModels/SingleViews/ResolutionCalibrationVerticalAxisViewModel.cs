@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -76,16 +77,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         }
 
         #endregion Constructors
-
-        //**
-        public InverterDriver.InverterDriver SetInverterDriver
-        {
-            set
-            {
-                this.inverterDriver = value;
-            }
-        }
-        //**
 
         #region Properties
 
@@ -207,7 +198,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             // Begin changes for the initial positioning
             bool conversionInitialPosition;
-            decimal desiredInitialPositionDec;
+            // decimal desiredInitialPositionDec;
 
             conversionInitialPosition = decimal.TryParse(desiredInitialPosition, out desiredInitialPositionDec);
             if(conversionInitialPosition)
@@ -217,13 +208,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 this.IsSetPositionButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
 
-                // uncomment these code lines
-                //this.inverterDriver = new InverterDriver.InverterDriver();
-                //this.inverterDriver.Initialize();
-
                 // Inizio posizionamento
                 positioningDrawer = new PositioningDrawer();
-                positioningDrawer.SetInverterDriverInterface = this.inverterDriver;
+                positioningDrawer.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
                 this.positioningDrawer.ThrowEndEvent += new PositioningDrawerEndEventHandler(this.PositioningDone);
                 positioningDrawer.Initialize(this.resolution);
                 positioningDrawer.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
@@ -233,8 +220,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 this.IsMesuredInitialPositionHighlighted = true;
             }
             // End changes for the initial positioning
-
-            //this.NoteString = Common.Resources.InstallationApp.InsertMesuredInitialPosition;
         }
 
         public void PositioningDone(bool result)
