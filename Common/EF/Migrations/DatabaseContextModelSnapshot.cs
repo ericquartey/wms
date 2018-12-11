@@ -704,11 +704,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("FirstExecutionDate");
 
-                    b.Property<string>("ItemListStatus")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
-
                     b.Property<string>("ItemListType")
                         .IsRequired()
                         .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
@@ -729,6 +724,11 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<string>("ShipmentUnitCode");
 
                     b.Property<string>("ShipmentUnitDescription");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasColumnType("char(1)");
 
                     b.HasKey("Id");
 
@@ -759,11 +759,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("ItemListId");
 
-                    b.Property<string>("ItemListRowStatus")
-                        .IsRequired()
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
-                        .HasColumnType("char(1)");
-
                     b.Property<DateTime?>("LastExecutionDate");
 
                     b.Property<DateTime>("LastModificationDate")
@@ -776,11 +771,16 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("PackageTypeId");
 
+                    b.Property<int>("Priority");
+
                     b.Property<string>("RegistrationNumber");
 
                     b.Property<int>("RequiredQuantity");
 
-                    b.Property<int>("RowPriority");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)))
+                        .HasColumnType("char(1)");
 
                     b.Property<string>("Sub1");
 

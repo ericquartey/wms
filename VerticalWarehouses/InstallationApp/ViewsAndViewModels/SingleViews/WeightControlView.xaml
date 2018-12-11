@@ -20,7 +20,7 @@
             <RowDefinition Height="80" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.WeightControl}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -36,22 +36,22 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="3*" />
             </Grid.RowDefinitions>
-            <custom:CustomInputFieldControl Grid.Row="1"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding InsertedWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.InsertedWeight}" />
             <custom:CustomLabelTextBlockControl Grid.Row="1"
                                                 Grid.Column="2"
                                                 ContentText="{Binding AcceptableWeightTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.AcceptableWeightTolerance}" />
-            <custom:CustomInputFieldControl Grid.Row="2"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding TestRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.TestRun}" />
-            <custom:CustomInputFieldControl Grid.Row="3"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding FeedRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.FeedRate}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="2"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding TestRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.TestRun}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="3"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding FeedRate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.FeedRate}" />
             <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                 Grid.Column="2"
                                                 ContentText="{Binding MesuredWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -70,10 +70,10 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Button Content="{x:Static res:InstallationApp.Start}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Column="2"
                     Content="{x:Static res:InstallationApp.Stop}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
 </UserControl>

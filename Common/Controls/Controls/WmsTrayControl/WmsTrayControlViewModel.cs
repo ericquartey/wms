@@ -22,6 +22,7 @@ namespace Ferretto.Common.Controls
         private int penThickness;
         private Func<CompartmentDetails, CompartmentDetails, string> selectedColorFilterFunc;
         private CompartmentDetails selectedCompartment;
+        private WmsBaseCompartment selectedItem;
         private int top;
         private Tray tray;
         private double widthTrayPixel;
@@ -106,13 +107,29 @@ namespace Ferretto.Common.Controls
             get => this.selectedCompartment;
             set
             {
-                this.selectedCompartment = value;
-                this.UpdateColorCompartments();
-                this.UpdateCompartment();
+                if (this.selectedCompartment != value)
+                {
+                    this.selectedCompartment = value;
+                    this.SetSelectedItem();
+                }
+            }
+        }
+
+        public WmsBaseCompartment SelectedItem
+        {
+            get => this.selectedItem;
+            set
+            {
+                if (this.selectedItem != value)
+                {
+                    this.selectedItem = value;
+                    this.NotifyPropertyChanged(nameof(this.SelectedItem));
+                }
             }
         }
 
         public bool ShowBackground { get; set; }
+
         public bool ShowRuler { get; set; }
 
         public int Top
@@ -172,20 +189,8 @@ namespace Ferretto.Common.Controls
             {
                 this.ResizeCompartment(widthTrayPixel, heightTrayPixel, compartment);
             }
-        }
 
-        public void UpdateCompartment()
-        {
-            if (this.Tray == null || this.SelectedCompartment == null)
-            {
-                return;
-            }
-
-            var current = this.items.FirstOrDefault(i => i.CompartmentDetails.Id == this.SelectedCompartment.Id);
-            if (current != null)
-            {
-                this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, current);
-            }
+            this.SetSelectedItem();
         }
 
         public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments)
@@ -303,6 +308,12 @@ namespace Ferretto.Common.Controls
         private void ResizeCompartment(double widthTrayPixel, double heightTrayPixel, WmsBaseCompartment compartment)
         // TODO: consider moving this into the view
         {
+            if (compartment == null ||
+                this.tray == null)
+            {
+                return;
+            }
+
             this.widthTrayPixel = widthTrayPixel;
             this.heightTrayPixel = heightTrayPixel;
 
@@ -348,6 +359,32 @@ namespace Ferretto.Common.Controls
                 this.Tray.Dimension.Width);
             compartment.Height = bottom - compartment.Top;
             compartment.Width = right - compartment.Left;
+        }
+
+        private void SetSelectedItem()
+        {
+            if (this.selectedCompartment == null ||
+                this.Items == null)
+            {
+                this.SelectedItem = null;
+                return;
+            }
+            var foundCompartment = this.Items.FirstOrDefault(c => c.CompartmentDetails.Id == this.selectedCompartment.Id);
+            if (foundCompartment == null)
+            {
+                this.SelectedItem = null;
+                return;
+            }
+
+            if (this.selectedItem != null &&
+                this.selectedItem.CompartmentDetails.Id == this.selectedCompartment.Id)
+            {
+                return;
+            }
+
+            this.SelectedItem = foundCompartment;
+            this.UpdateColorCompartments();
+            this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, this.selectedItem);
         }
 
         private void Tray_CompartmentChangedEvent(Object sender, Tray.CompartmentEventArgs e)

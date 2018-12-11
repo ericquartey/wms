@@ -7,6 +7,9 @@ using Ferretto.VW.Utils.Source;
 using System.Threading;
 using Ferretto.VW.Utils.Source.Configuration;
 using System.Threading.Tasks;
+using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.InverterDriver.Source;
+using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -51,18 +54,33 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         #region Properties
 
         public Boolean EnableStartButton { get => this.enableStartButton; set => this.SetProperty(ref this.enableStartButton, value); }
+
         public Boolean IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
+
         public String LowerBound { get => this.lowerBound; set { this.SetProperty(ref this.lowerBound, value); this.InputsCorrectionControlEventHandler(); } }
+
         public String NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
+
         public String Offset { get => this.offset; set { this.SetProperty(ref this.offset, value); this.InputsCorrectionControlEventHandler(); } }
+
         public String Resolution { get => this.resolution; set { this.SetProperty(ref this.resolution, value); this.InputsCorrectionControlEventHandler(); } }
+
         public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
+
         public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.StopButtonMethod()));
+
         public String UpperBound { get => this.upperBound; set { this.SetProperty(ref this.upperBound, value); this.InputsCorrectionControlEventHandler(); } }
 
         #endregion Properties
 
         #region Methods
+
+        private void Calibration(bool result)
+        {
+            this.EnableStartButton = true;
+            this.IsStopButtonActive = false;
+            this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
+        }
 
         private void CheckInputsCorrectness()
         {
@@ -88,28 +106,26 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         private async void ExecuteStartButtonCommand()
         {
-            //TODO: implement start button functionality
-            //Temporary stuff to check DataManager behaviour
-            this.originProcedureCanceled = false;
+            // Temporary the variables have a fixed value,
+            // they will be variables when there'll be new functions
+            int m = 5;
+            short ofs = 1;
+            short vFast = 1;
+            short vCreep = 1;
+
+            CalibrateVerticalAxis calibrateVA;
             this.EnableStartButton = false;
-            this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
             this.IsStopButtonActive = true;
             await Task.Delay(2000);
-            if (!this.originProcedureCanceled)
-            {
-                this.IsStopButtonActive = false;
-                this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
-                this.EnableStartButton = true;
-                var ii = DataManager.CurrentData.InstallationInfo;
-                ii.Set_Y_Resolution = true;
-                DataManager.CurrentData.InstallationInfo = ii;
-            }
-            else
-            {
-                this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
-                this.IsStopButtonActive = false;
-                this.EnableStartButton = true;
-            }
+
+            calibrateVA = new CalibrateVerticalAxis();
+            calibrateVA.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
+
+            calibrateVA.Initialize();
+            calibrateVA.ThrowEndEvent += new CalibrateVerticalAixsEndedEventHandler(this.Calibration);
+            this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
+            calibrateVA.SetVAxisOrigin(m, ofs, vFast, vCreep);
+            this.NoteString = "Homing Done.";
         }
 
         private void StopButtonMethod()

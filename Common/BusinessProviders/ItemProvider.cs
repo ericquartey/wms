@@ -20,7 +20,7 @@ namespace Ferretto.Common.BusinessProviders
 
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
-        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsClient itemsClient;
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService;
 
         #endregion Fields
 
@@ -29,10 +29,10 @@ namespace Ferretto.Common.BusinessProviders
         public ItemProvider(
             IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
-            WMS.Scheduler.WebAPI.Contracts.IItemsClient itemsClient)
+            WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService)
         {
             this.dataContext = dataContext;
-            this.itemsClient = itemsClient;
+            this.itemsService = itemsService;
             this.enumerationProvider = enumerationProvider;
         }
 
@@ -232,14 +232,14 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemsClient.WithdrawAsync(
+                await this.itemsService.WithdrawAsync(
                    new WMS.Scheduler.WebAPI.Contracts.SchedulerRequest
                    {
                        IsInstant = true,
                        Type = WMS.Scheduler.WebAPI.Contracts.OperationType.Withdrawal,
                        ItemId = itemWithdraw.ItemDetails.Id,
                        BayId = itemWithdraw.BayId,
-                       AreaId = itemWithdraw.AreaId,
+                       AreaId = itemWithdraw.AreaId.Value,
                        Lot = itemWithdraw.Lot,
                        RequestedQuantity = itemWithdraw.Quantity,
                        RegistrationNumber = itemWithdraw.RegistrationNumber,
@@ -295,6 +295,7 @@ namespace Ferretto.Common.BusinessProviders
                        FifoTimePick = a.Item.FifoTimePick,
                        FifoTimeStore = a.Item.FifoTimeStore,
                        Height = a.Item.Height,
+                       Image = a.Item.Image,
                        InventoryDate = a.Item.InventoryDate,
                        InventoryTolerance = a.Item.InventoryTolerance,
                        ManagementTypeDescription = a.Item.ManagementType.ToString(), // TODO change

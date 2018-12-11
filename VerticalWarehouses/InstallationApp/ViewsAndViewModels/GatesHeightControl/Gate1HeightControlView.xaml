@@ -21,7 +21,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate1HeightControl}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -38,10 +38,10 @@
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <custom:CustomInputFieldControl Grid.Row="1"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
             <custom:CustomLabelTextBlockControl Grid.Row="1"
                                                 Grid.Column="2"
                                                 ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -75,10 +75,10 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Content="{x:Static res:InstallationApp.Start}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Column="2"
                     Content="{x:Static res:InstallationApp.Stop}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
 </UserControl>

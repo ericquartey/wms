@@ -1,18 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Media;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
-using Ferretto.Common.Controls.Services;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -22,7 +15,7 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+        private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private ICommand addCommand;
         private ICommand bulkAddCommand;
@@ -175,11 +168,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public void RefreshData()
         {
-            this.CompartmentsDataSource = null;
             this.CompartmentsDataSource = this.loadingUnit != null
-                ? this.dataSourceService
-                    .GetAll<CompartmentDetails>(nameof(LoadingUnitDetailsViewModel), this.loadingUnit.Id)
-                    .Single().GetData().ToList()
+                ? this.compartmentProvider.GetByLoadingUnitId(this.loadingUnit.Id).ToList()
                 : null;
         }
 
@@ -197,7 +187,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteAddCompartmentCommand()
         {
-            this.SelectedCompartmentTray = null;
+            this.SelectedCompartmentTray = new CompartmentDetails();
             this.HideMainViewAndShowLateralPanel();
             this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
             this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
@@ -214,7 +204,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCompartmentCommand()
         {
             this.HideMainViewAndShowLateralPanel();
-            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray);
+            this.PopulatePairing();
+            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray.Id);
             this.InputEditVM.FinishEvent += this.InputEditVM_FinishEvent;
         }
 
@@ -254,7 +245,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ResetInputView();
             if (sender is InputAddCompartmentViewModel model)
             {
-                this.SelectedCompartmentTray = model.SelectedCompartmentTray;
+                this.SelectedCompartmentTray = model.Compartment;
             }
             this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
         }
@@ -278,6 +269,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
                 this.InitializeTray();
             }
+        }
+
+        private void PopulatePairing()
+        {
+            this.selectedCompartmentTray.ItemPairingChoices = this.loadingUnit.CellPairingChoices;
         }
 
         private void ResetInputView()

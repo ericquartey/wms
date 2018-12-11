@@ -310,8 +310,8 @@
   <data name="ItemListRowAdd" xml:space="preserve">
     <value>Add New Row List</value>
   </data>
-  <data name="ItemListRowEdit" xml:space="preserve">
-    <value>Edit Row List</value>
+  <data name="ItemListRowShowDetails" xml:space="preserve">
+    <value>Show Details Row List</value>
   </data>
   <data name="ItemListRowExecute" xml:space="preserve">
     <value>Execute Row List</value>

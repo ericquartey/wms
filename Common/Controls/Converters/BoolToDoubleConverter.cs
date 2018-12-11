@@ -1,0 +1,40 @@
+﻿using System;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Data;
+using Ferretto.Common.Resources;
+
+namespace Ferretto.Common.Controls
+{
+    public class BoolToDoubleConverter : DependencyObject, IValueConverter
+    {
+
+        #region Properties
+
+        public object ValueOnFalse { get; set; }
+        public object ValueOnTrue { get; set; }
+
+        #endregion Properties
+
+        #region Methods
+
+        public Object Convert(object value, Type targetType, Object parameter, CultureInfo culture)
+        {
+            if (targetType != typeof(double))
+            {
+                throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToDoubleType);
+            }
+
+            return System.Convert.ToBoolean(value, culture)
+                ? System.Convert.ToDouble(this.ValueOnTrue, culture)
+                : System.Convert.ToDouble(this.ValueOnFalse, culture);
+        }
+
+        public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)
+        {
+            return null;
+        }
+
+        #endregion Methods
+    }
+}

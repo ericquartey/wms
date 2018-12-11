@@ -19,7 +19,7 @@
             <RowDefinition Height="530" />
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.PanelsControl}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -86,38 +86,43 @@
                                                 Margin="0,0,100,0"
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
-            <custom:CustomInputFieldControl Grid.Row="5"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.StepValue}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="5"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />
             <custom:CustomLabelTextBlockControl Grid.Row="7"
                                                 Margin="0,0,100,0"
                                                 ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.PanelCorrection}" />
             <Button Grid.Row="4"
+                    Margin="0,1"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:General.Next}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="4"
                     Grid.Column="2"
+                    Margin="0,1"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.SetPosition}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="5"
                     Grid.Column="2"
+                    Margin="0,1"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.StepUp}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="6"
                     Grid.Column="2"
+                    Margin="0,1"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.StepDown}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="7"
                     Grid.Column="2"
+                    Margin="0,1"
                     HorizontalAlignment="Left"
                     Content="{x:Static res:InstallationApp.Correct}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
 
         </Grid>
     </Grid>

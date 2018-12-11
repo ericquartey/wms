@@ -7,6 +7,7 @@ namespace Ferretto.Common.DataModels
         #region Properties
 
         DateTime CreationDate { get; set; }
+
         DateTime LastModificationDate { get; set; }
 
         #endregion Properties

@@ -2,7 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
@@ -121,34 +123,45 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="0"
-                          Grid.Column="1"
-                          Header="{x:Static res:MasterData.ShipmentUnitInformation}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"
-                                              MinWidth="100" />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <CheckBox Grid.Row="0"
-                                  Margin="0,0,20,0"
-                                  Content="Associated"
-                                  IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:TextBox Grid.Row="1"
-                                     Margin="0,0,20,0"
-                                     IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:TextBox Grid.Row="2"
-                                     Margin="0,0,20,0"
-                                     IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                     Text="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                          Grid.Column="1">
+                    <GroupBox.Header>
+                        <Grid>
+                            <dxe:ToggleSwitch x:Name="toggleSwitch"
+                                              HorizontalAlignment="Left"
+                                              VerticalAlignment="Center"
+                                              IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox x:Name="TitleLabel"
+                                     Margin="60,0,0,0"
+                                     BorderThickness="0"
+                                     FontSize="14.666"
+                                     FontWeight="SemiBold"
+                                     Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+                        </Grid>
+                    </GroupBox.Header>
+                    <StackPanel IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"
+                                                  MinWidth="100" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-
-                    </Grid>
+                            <wms:TextBox Grid.Row="1"
+                                         Margin="0,0,20,0"
+                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <wms:TextBox Grid.Row="2"
+                                         Margin="0,0,20,0"
+                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         Text="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                    </StackPanel>
                 </GroupBox>
+
 
                 <GroupBox Grid.Row="0"
                           Grid.Column="2"
@@ -172,51 +185,72 @@
 
                 </GroupBox>
 
-                <wms:ActionBar Grid.Row="1"
-                               Grid.ColumnSpan="4"
-                               Margin="10,10,10,0"
-                               HorizontalAlignment="Right"
-                               Style="{DynamicResource ActionBarNotCustomizable}">
 
-                    <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
-                                       Content="{x:Static res:MasterData.ItemListRowExecute}"
-                                       CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
-                                       GlyphSize="Custom" />
-
-                    <wms:ActionBarItem Command="{Binding EditListRowCommand}"
-                                       Content="{x:Static res:MasterData.ItemListRowEdit}"
-                                       CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
-                                       GlyphSize="Custom" />
-
-                    <wms:ActionBarItem Command="{Binding AddListRowCommand}"
-                                       Content="{x:Static res:MasterData.ItemListRowAdd}"
-                                       CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
-                                       GlyphSize="Custom" />
-                </wms:ActionBar>
 
                 <GroupBox Grid.Row="2"
-                          Grid.ColumnSpan="4"
-                          Header="{x:Static res:MasterData.ItemListRowInformation}">
+                          Grid.ColumnSpan="4">
+                    <GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="4*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Row="0"
+                                     Grid.Column="0"
+                                     Height="15"
+                                     Margin="0"
+                                     Padding="-2"
+                                     HorizontalAlignment="Left"
+                                     BorderThickness="0"
+                                     FontSize="14.666"
+                                     FontWeight="SemiBold"
+                                     Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+
+                            <wms:ActionBar Grid.Row="0"
+                                           Grid.ColumnSpan="4"
+                                           HorizontalAlignment="Right"
+                                           Style="{DynamicResource ActionBarNotCustomizable}">
+
+                                <wms:ActionBarItem Command="{Binding ListRowExecuteCommand}"
+                                                   Content="{x:Static res:MasterData.ItemListRowExecute}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                                                   GlyphSize="Custom" />
+
+                                <wms:ActionBarItem Command="{Binding ShowDetailsListRowCommand}"
+                                                   Content="{x:Static res:MasterData.ItemListRowShowDetails}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                                   GlyphSize="Custom" />
+
+                                <wms:ActionBarItem Command="{Binding AddListRowCommand}"
+                                                   Content="{x:Static res:MasterData.ItemListRowAdd}"
+                                                   CustomGlyphSize="24,24"
+                                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_box_black_24dp.png"
+                                                   GlyphSize="Custom" />
+                            </wms:ActionBar>
+                        </Grid>
+                    </GroupBox.Header>
                     <StackPanel Margin="0,10,0,0">
                         <wms:WmsGridControl MinHeight="280"
                                             MaxWidth="2000"
                                             MaxHeight="280"
                                             CurrentItem="{Binding SelectedItemListRow, Mode=TwoWay}"
                                             ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}">
-                            <wms:WmsGridControl.View>
+                            <!--TODO wms:WmsGridControl.View>
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItemListRow.Id, Mode=OneWay}"
                                                                       StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}" />
-                                            <!--  TODO StartViewName="{x:Static modules:MasterData.EDITITEMLISTROW}"  -->
+                                            < StartViewName="{x:Static modules:MasterData.EDITITEMLISTROW}">
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
-                            </wms:WmsGridControl.View>
+                            </-->
 
                             <wms:WmsGridControl.Columns>
                                 <dxg:GridColumn Width="100*"
@@ -228,7 +262,7 @@
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="RequiredQuantity" />
                                 <dxg:GridColumn Width="120*"
-                                                FieldName="ItemListRowStatusDescription" />
+                                                FieldName="StatusDescription" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>
@@ -260,23 +294,10 @@
                     <GroupBox Grid.Row="0"
                               Margin="20,0"
                               Header="{x:Static res:MasterData.ExecutionDetails}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <StackPanel Grid.Row="0"
-                                        Orientation="Horizontal">
-                                <wms:WmsIcon Width="48"
-                                             Height="48"
-                                             Margin="5"
-                                             ColorizeBrush="{Binding StatusColor}"
-                                             SymbolName="{Binding ItemList.ItemListStatus, StringFormat='ListStatus{0}'}" />
-                                <wms:InfoText HorizontalAlignment="Center"
-                                              Content="{Binding ItemList.ItemListStatus}" />
-                            </StackPanel>
-
-                        </Grid>
+                        <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListStatus}"
+                                              EnumValue="{Binding ItemList.ItemListStatus}"
+                                              IconSize="48"
+                                              ShowText="True" />
                     </GroupBox>
                     <GroupBox Grid.Row="1"
                               Margin="20,0"
@@ -284,20 +305,16 @@
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.CreationDate}"
-                                          Visibility="{Binding Path=ItemList.CreationDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.LastModificationDate}"
-                                          Visibility="{Binding Path=ItemList.LastModificationDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.LastModificationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.FireExecutionDate}"
-                                          Visibility="{Binding Path=ItemList.FireExecutionDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.FirstExecutionDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.ExecutionEndDate}"
-                                          Visibility="{Binding Path=ItemList.ExecutionEndDate, Converter={StaticResource RTVC}}" />
+                                          Content="{Binding Path=ItemList.ExecutionEndDate}" />
                         </StackPanel>
 
                     </GroupBox>

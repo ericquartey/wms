@@ -62,8 +62,8 @@
     <DataTemplate DataType="{x:Type singleViews:CellsControlViewModel}">
         <singleViews:CellsControlView />
     </DataTemplate>
-    <DataTemplate DataType="{x:Type gatesControl:GatesControlNavigationButtonsViewModel}">
-        <gatesControl:GatesControlNavigationButtonsView />
+    <DataTemplate DataType="{x:Type singleViews:IdleViewModel}">
+        <singleViews:IdleView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type gatesControl:Gate1ControlViewModel}">
         <gatesControl:Gate1ControlView />
@@ -82,9 +82,6 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type gatesHeightControl:Gate3HeightControlViewModel}">
         <gatesHeightControl:Gate3HeightControlView />
-    </DataTemplate>
-    <DataTemplate DataType="{x:Type gatesHeightControl:GatesHeightControlNavigationButtonsViewModel}">
-        <gatesHeightControl:GatesHeightControlNavigationButtonsView />
     </DataTemplate>
     <DataTemplate DataType="{x:Type viewsAndViewModels:MainWindowNavigationButtonsViewModel}">
         <viewsAndViewModels:MainWindowNavigationButtonsView />

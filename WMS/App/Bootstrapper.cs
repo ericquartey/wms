@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Prism;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Modularity;
@@ -51,10 +52,12 @@ namespace Ferretto.WMS.App
         {
             base.InitializeShell();
 
-            SplashScreenService.SetMessage(Common.Resources.DesktopApp.OpeningMainWindow);
+            SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLogin);
 
+            SplashScreenService.Hide();
             Application.Current.MainWindow = (Window)this.Shell;
-            Application.Current.MainWindow.Show();
+            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+            navigationService.Appear(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW);
         }
 
         #endregion Methods

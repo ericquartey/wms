@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using DevExpress.Xpf.Layout.Core;
-using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
@@ -21,12 +16,8 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IDataSourceService
-                    dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-
-        private readonly IItemListProvider itemListProvider =
-                    ServiceLocator.Current.GetInstance<IItemListProvider>();
-
+        private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+        private ICommand addListRowCommand;
         private ItemListDetails itemList;
         private IEnumerable<ItemListRow> itemListRowDataSource;
         private ICommand listExecuteCommand;
@@ -36,9 +27,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelSelectionChangedSubscription;
         private ICommand revertCommand;
         private ICommand saveCommand;
-        private ICommand editListRowCommand;
-        private ICommand addListRowCommand;
         private ItemListRow selectedItemListRow;
+        private ICommand showDetailsListRowCommand;
 
         #endregion Fields
 
@@ -52,6 +42,11 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
+
+        public ICommand AddListRowCommand => this.addListRowCommand ??
+                                   (this.addListRowCommand = new DelegateCommand(this.ExecuteAddListRowCommand,
+                       this.CanExecuteAddListRowCommand)
+             .ObservesProperty(() => this.SelectedItemListRow));
 
         public ItemListDetails ItemList
         {
@@ -92,43 +87,6 @@ namespace Ferretto.WMS.Modules.MasterData
                                    (this.listRowExecuteCommand = new DelegateCommand(this.ExecuteListRowCommand,
                        this.CanExecuteListRowCommand)
              .ObservesProperty(() => this.SelectedItemListRow));
-        public ICommand AddListRowCommand => this.addListRowCommand ??
-                                   (this.addListRowCommand = new DelegateCommand(this.ExecuteAddListRowCommand,
-                       this.CanExecuteAddListRowCommand)
-             .ObservesProperty(() => this.SelectedItemListRow));
-
-        private void ExecuteAddListRowCommand()
-        {
-            //TODO
-        }
-
-        private Boolean CanExecuteAddListRowCommand()
-        {
-            if (this.selectedItemListRow != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public ICommand EditListRowCommand => this.editListRowCommand ??
-                                   (this.editListRowCommand = new DelegateCommand(this.ExecuteEditListRowCommand,
-                       this.CanExecuteEditListRowCommand)
-             .ObservesProperty(() => this.SelectedItemListRow));
-
-        private void ExecuteEditListRowCommand()
-        {
-            //TODO
-        }
-
-        private Boolean CanExecuteEditListRowCommand()
-        {
-            if (this.selectedItemListRow != null)
-            {
-                return true;
-            }
-            return false;
-        }
 
         public ICommand RevertCommand => this.revertCommand ??
                                           (this.revertCommand = new DelegateCommand(this.LoadData, this.CanExecuteRevert));
@@ -142,6 +100,11 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedItemListRow, value);
         }
 
+        public ICommand ShowDetailsListRowCommand => this.showDetailsListRowCommand ??
+                  (this.showDetailsListRowCommand = new DelegateCommand(this.ExecuteShowDetailsListRowCommand,
+                       this.CanExecuteShowDetailsListRowCommand)
+             .ObservesProperty(() => this.SelectedItemListRow));
+
         public string StatusColor { get; private set; }
 
         #endregion Properties
@@ -152,6 +115,11 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.LoadData();
             base.OnAppear();
+        }
+
+        private Boolean CanExecuteAddListRowCommand()
+        {
+            return this.selectedItemListRow != null;
         }
 
         private bool CanExecuteListCommand()
@@ -171,20 +139,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteListRowCommand()
         {
-            if(this.selectedItemListRow != null)
+            if (this.selectedItemListRow != null)
             {
-                var status = this.selectedItemListRow.ItemListRowStatusDescription;
-                if (status == ItemListStatus.Incomplete.ToString()
-                    || status == ItemListStatus.Suspended.ToString()
-                    || status == ItemListStatus.Waiting.ToString())
+                var status = this.selectedItemListRow.ItemListRowStatus;
+                if (status == ItemListRowStatus.Incomplete
+                    || status == ItemListRowStatus.Suspended
+                    || status == ItemListRowStatus.Waiting)
                 {
                     return true;
                 }
             }
             return false;
         }
-        
-    
 
         private bool CanExecuteRevert()
         {
@@ -196,6 +162,16 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.ItemList?.IsModified == true;
         }
 
+        private bool CanExecuteShowDetailsListRowCommand()
+        {
+            return this.selectedItemListRow != null;
+        }
+
+        private void ExecuteAddListRowCommand()
+        {
+            //TODO
+        }
+
         private void ExecuteListCommand()
         {
             this.NavigationService.Appear(
@@ -203,10 +179,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.EXECUTELISTDIALOG,
                 new
                 {
-                    Id = this.SelectedItemListRow.Id
+                    Id = this.ItemList.Id
                 }
             );
         }
+
         private void ExecuteListRowCommand()
         {
             this.NavigationService.Appear(
@@ -214,7 +191,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
                 new
                 {
-                    Id = this.ItemList.Id
+                    Id = this.SelectedItemListRow.Id
                 }
             );
         }
@@ -231,6 +208,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
             }
+        }
+
+        private void ExecuteShowDetailsListRowCommand()
+        {
+            //TODO
         }
 
         private void Initialize()
@@ -262,7 +244,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if ((this.Data is int modelId))
             {
                 this.ItemList = this.itemListProvider.GetById(modelId);
-                this.SetColorStatus();
             }
         }
 
@@ -272,35 +253,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
                 ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
-            }
-        }
-
-        private void SetColorStatus()
-        {
-            if (this.ItemList != null && this.ItemList.ItemListStatus > 0)
-            {
-                switch (this.ItemList.ItemListStatus)
-                {
-                    case ItemListStatus.Waiting:
-                        this.StatusColor = Application.Current.Resources["WaitingStatus"].ToString();//cyan
-                        break;
-
-                    case ItemListStatus.Executing:
-                        this.StatusColor = Application.Current.Resources["ExecutingStatus"].ToString();//blue
-                        break;
-
-                    case ItemListStatus.Completed:
-                        this.StatusColor = Application.Current.Resources["CompletedStatus"].ToString();//green
-                        break;
-
-                    case ItemListStatus.Incomplete:
-                        this.StatusColor = Application.Current.Resources["IncompleteStatus"].ToString();//red
-                        break;
-
-                    case ItemListStatus.Suspended:
-                        this.StatusColor = Application.Current.Resources["SuspendedStatus"].ToString();//orange
-                        break;
-                }
             }
         }
 

@@ -9,12 +9,23 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
+        private IEnumerable<Enumeration> compartmentStatusChoices;
+        private IEnumerable<Enumeration> compartmentTypeChoices;
         private int? fifoTime;
         private int? height;
+        private int itemPairing;
+        private IEnumerable<Enumeration> itemPairingChoices;
+        private IEnumerable<Enumeration> materialStatusChoices;
+        private int? materialStatusId;
         private int? maxCapacity;
+        private IEnumerable<Enumeration> packageTypeChoices;
+        private int? packageTypeId;
+        private string registrationNumber;
         private int reservedForPick;
         private int reservedToStore;
         private int stock;
+        private string sub1;
+        private string sub2;
         private int? width;
         private int? xPosition;
         private int? yPosition;
@@ -26,7 +37,11 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
 
-        public IEnumerable<Enumeration> CompartmentStatusChoices { get; set; }
+        public IEnumerable<Enumeration> CompartmentStatusChoices
+        {
+            get => this.compartmentStatusChoices;
+            set => this.SetProperty(ref this.compartmentStatusChoices, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public string CompartmentStatusDescription { get; set; }
@@ -34,7 +49,11 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public int? CompartmentStatusId { get; set; }
 
-        public IEnumerable<Enumeration> CompartmentTypeChoices { get; set; }
+        public IEnumerable<Enumeration> CompartmentTypeChoices
+        {
+            get => this.compartmentTypeChoices;
+            set => this.SetProperty(ref this.compartmentTypeChoices, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CompartmentType), ResourceType = typeof(BusinessObjects))]
         public int CompartmentTypeId { get; set; }
@@ -72,9 +91,17 @@ namespace Ferretto.Common.BusinessModels
         public int? ItemId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public int ItemPairing { get; set; }
+        public int ItemPairing
+        {
+            get => this.itemPairing;
+            set => this.SetIfPositive(ref this.itemPairing, value);
+        }
 
-        public IEnumerable<Enumeration> ItemPairingChoices { get; set; }
+        public IEnumerable<Enumeration> ItemPairingChoices
+        {
+            get => this.itemPairingChoices;
+            set => this.SetProperty(ref this.itemPairingChoices, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
         public string ItemPairingDescription { get; set; }
@@ -91,15 +118,24 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitId { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
 
-        public IEnumerable<Enumeration> MaterialStatusChoices { get; set; }
+        public IEnumerable<Enumeration> MaterialStatusChoices
+        {
+            get => this.materialStatusChoices;
+            set => this.SetProperty(ref this.materialStatusChoices, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
-        public int? MaterialStatusId { get; set; }
+        public int? MaterialStatusId
+        {
+            get => this.materialStatusId;
+            set => this.SetProperty(ref this.materialStatusId, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CompartmentMaxCapacity), ResourceType = typeof(BusinessObjects))]
         public int? MaxCapacity
@@ -108,13 +144,25 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.maxCapacity, value);
         }
 
-        public IEnumerable<Enumeration> PackageTypeChoices { get; set; }
+        public IEnumerable<Enumeration> PackageTypeChoices
+        {
+            get => this.packageTypeChoices;
+            set => this.SetProperty(ref this.packageTypeChoices, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
-        public int? PackageTypeId { get; set; }
+        public int? PackageTypeId
+        {
+            get => this.packageTypeId;
+            set => this.SetProperty(ref this.packageTypeId, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.RegistrationNumber), ResourceType = typeof(BusinessObjects))]
-        public string RegistrationNumber { get; set; }
+        public string RegistrationNumber
+        {
+            get => this.registrationNumber;
+            set => this.SetProperty(ref this.registrationNumber, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CompartmentReservedForPick), ResourceType = typeof(BusinessObjects))]
         public int ReservedForPick
@@ -138,10 +186,18 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
-        public string Sub1 { get; set; }
+        public string Sub1
+        {
+            get => this.sub1;
+            set => this.SetProperty(ref this.sub1, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub2), ResourceType = typeof(BusinessObjects))]
-        public string Sub2 { get; set; }
+        public string Sub2
+        {
+            get => this.sub2;
+            set => this.SetProperty(ref this.sub2, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
         public int? Width

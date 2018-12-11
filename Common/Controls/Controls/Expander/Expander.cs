@@ -11,12 +11,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached(
-            "HideToggleButton",
-            typeof(bool),
-            typeof(Expander),
-            new FrameworkPropertyMetadata(false));
-
+        public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached("HideToggleButton", typeof(bool), typeof(Expander), new FrameworkPropertyMetadata(false));
         private Grid gridHeaderSite;
         private ToggleButton toggleButton;
 

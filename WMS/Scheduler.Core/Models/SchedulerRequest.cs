@@ -67,6 +67,10 @@
 
         public int? ListRowId { get; set; }
 
+        public ListRowStatus ListRowStatus { get; set; }
+
+        public ListStatus ListStatus { get; set; }
+
         public int? LoadingUnitId { get; set; }
 
         public int? LoadingUnitTypeId { get; set; }

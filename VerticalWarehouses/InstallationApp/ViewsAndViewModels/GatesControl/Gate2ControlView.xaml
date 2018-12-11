@@ -21,7 +21,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0"
                    Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.Gate2Control}" />
         <Grid Grid.Row="1"
               Grid.Column="1">
@@ -36,14 +36,14 @@
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <custom:CustomInputFieldControl Grid.Row="1"
-                                            Grid.Column="0"
-                                            Margin="0,0,100,0"
-                                            LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
-            <custom:CustomInputFieldControl Grid.Row="2"
-                                            Grid.Column="0"
-                                            Margin="0,0,100,0"
-                                            LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                     Grid.Column="0"
+                                                     Margin="0,0,100,0"
+                                                     LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="2"
+                                                     Grid.Column="0"
+                                                     Margin="0,0,100,0"
+                                                     LabelText="{x:Static res:InstallationApp.DelayBetweenCicles}" />
             <custom:CustomLabelTextBlockControl Grid.Row="1"
                                                 Grid.Column="2"
                                                 LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
@@ -61,10 +61,10 @@
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0"
                     Content="{x:Static res:InstallationApp.Start}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Column="2"
                     Content="{x:Static res:InstallationApp.Stop}"
-                    Style="{StaticResource IAPP_ViewButtonStyle}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
 </UserControl>

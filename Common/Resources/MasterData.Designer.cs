@@ -331,15 +331,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Row List.
-        /// </summary>
-        public static string ItemListRowEdit {
-            get {
-                return ResourceManager.GetString("ItemListRowEdit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Execute Row List.
         /// </summary>
         public static string ItemListRowExecute {
@@ -363,6 +354,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListRowInformation {
             get {
                 return ResourceManager.GetString("ItemListRowInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show Details Row List.
+        /// </summary>
+        public static string ItemListRowShowDetails {
+            get {
+                return ResourceManager.GetString("ItemListRowShowDetails", resourceCulture);
             }
         }
         

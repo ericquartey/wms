@@ -44,6 +44,7 @@ namespace Ferretto.WMS.Modules.Layout
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
+            navigationService.Register<LoginView, LoginViewModel>();
 
             var notificationService = ServiceLocator.Current.GetInstance<INotificationServiceClient>();
             notificationService.StartAsync().ConfigureAwait(true);

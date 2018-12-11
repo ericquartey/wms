@@ -17,7 +17,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:OperatorApp.ExecutableListsRows}" />
         <Grid Grid.Row="1"
               Grid.Column="1">

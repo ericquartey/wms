@@ -2,11 +2,46 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
-    <Style x:Key="IAPP_ViewCustomInputFieldFocusableControlTextBoxStyle"
+
+    <Style x:Key="VWAPP_CustomInputFieldControlFocusableStyle"
+           TargetType="{x:Type custom:CustomInputFieldControlFocusable}">
+        <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_BorderColor_Normal}" />
+        <Style.Triggers>
+            <Trigger Property="Highlighted" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CCInput_Highlighted_Normal}" />
+            </Trigger>
+            <Trigger Property="Highlighted" Value="false">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CCInput_NotHighlighted_Normal}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CCInput_NotHighlighted_Normal}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_BorderColor_TextBox_Disabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="VWAPP_CustomInputFieldControlFocusable_TextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="Background" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBlock_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBlock_FontFamily}" />
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBlock_FontSize}" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBlock_Foreground_Disabled}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="VWAPP_CustomInputFieldControlFocusable_TextBoxStyle"
            TargetType="{x:Type TextBox}">
-        <Setter Property="Foreground" Value="{DynamicResource IAPP_CCInput_Foreground_Normal}" />
-        <Setter Property="FontFamily" Value="{DynamicResource IAPP_BodyFont}" />
-        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Background" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_Background_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBox_Foreground_Normal}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBox_FontFamily}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBox_BorderThickness}" />
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBox_FontSize}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type TextBox}">
@@ -20,55 +55,13 @@
                                       HorizontalScrollBarVisibility="Hidden"
                                       VerticalScrollBarVisibility="Hidden" />
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsEnabled" Value="false">
-                            <Setter TargetName="border" Property="Opacity" Value="0.56" />
-                        </Trigger>
-                        <Trigger Property="IsMouseOver" Value="true">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </Trigger>
-                        <Trigger Property="IsFocused" Value="true">
-                            <Setter TargetName="border" Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource TemplatedParent}}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-    <Style x:Key="IAPP_ViewCustomInputFieldControlFocusableStyle"
-           TargetType="{x:Type custom:CustomInputFieldControlFocusable}">
         <Style.Triggers>
-            <Trigger Property="Highlighted" Value="true">
-                <Setter Property="BorderColor" Value="{DynamicResource IAPP_CCInput_Highlighted_Normal}" />
-            </Trigger>
-            <Trigger Property="Highlighted" Value="false">
-                <Setter Property="BorderColor" Value="{DynamicResource IAPP_CCInput_NotHighlighted_Normal}" />
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_TextBox_Foreground_Disabled}" />
             </Trigger>
         </Style.Triggers>
-    </Style>
-    <Style x:Key="IAPP_ViewCustomInputFieldControlFocusableStyle_Validation"
-           TargetType="{x:Type custom:CustomInputFieldControlFocusable}">
-        <Style.Triggers>
-            <Trigger Property="Validation.HasError" Value="true">
-                <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}" />
-            </Trigger>
-        </Style.Triggers>
-        <Setter Property="Validation.ErrorTemplate">
-            <Setter.Value>
-                <ControlTemplate>
-                    <DockPanel DockPanel.Dock="Bottom">
-                        <AdornedElementPlaceholder>
-                            <Border BorderBrush="Red"
-                                    BorderThickness="2" />
-                        </AdornedElementPlaceholder>
-                        <TextBlock Margin="3"
-                                   DockPanel.Dock="Bottom"
-                                   Foreground="Red"
-                                   Text="!"
-                                   ToolTip="{Binding Path=AdornerElement.ToolTip, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Adorner}}}" />
-                    </DockPanel>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 </ResourceDictionary>

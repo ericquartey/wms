@@ -180,4 +180,8 @@
     <value>Loading ...</value>
     <comment>Generic Loading indication</comment>
   </data>
+  <data name="InitializingLogin" xml:space="preserve">
+    <value>Initializing Login ...</value>
+    <comment>Spash screen message</comment>
+  </data>
 </root>

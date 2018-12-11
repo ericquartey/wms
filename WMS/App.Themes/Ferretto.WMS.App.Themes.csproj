@@ -30,11 +30,18 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Remove="Themes\Light\PasswordBox.xaml" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
   
   <ItemGroup>
     <None Update="Themes\Light\ActionBarItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Themes\Light\ProgressBarEdit.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

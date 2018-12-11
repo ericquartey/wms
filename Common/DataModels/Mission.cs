@@ -1,7 +1,7 @@
 ﻿namespace Ferretto.Common.DataModels
 {
     // Missione
-    public sealed class Mission
+    public sealed class Mission : IDataModel
     {
         #region Properties
 
