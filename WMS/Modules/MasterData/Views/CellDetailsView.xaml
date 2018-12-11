@@ -41,7 +41,7 @@
             </wms:ActionBar>
         </Grid>
 
-        <ScrollViewer Grid.Row="1"                      
+        <ScrollViewer Grid.Row="1"
                       Focusable="False"
                       IsTabStop="True">
             <Grid Grid.Row="1">
@@ -160,7 +160,7 @@
                         <wms:WmsGridControl MinHeight="200"
                                             MaxWidth="2000"
                                             MaxHeight="1000"
-                                            CurrentItem="{Binding SelectedLoadingUnit, Mode=TwoWay}"                                            
+                                            CurrentItem="{Binding SelectedLoadingUnit, Mode=TwoWay}"
                                             ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}"
                                             Visibility="{Binding CellHasLoadingUnits, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>

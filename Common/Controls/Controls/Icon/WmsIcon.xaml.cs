@@ -49,7 +49,6 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsIcon wmsIcon && wmsIcon.InnerImage.DataContext is WmsIconViewModel viewModel)
             {
-                System.Diagnostics.Debug.WriteLine($"OnColorizeBrushChanged: {wmsIcon.ColorizeBrush} - {wmsIcon.SymbolName}");
                 viewModel.ColorizeImage((SolidColorBrush)e.NewValue);
             }
         }
@@ -58,7 +57,6 @@ namespace Ferretto.Common.Controls
         {
             if (d is WmsIcon wmsIcon && wmsIcon.InnerImage.DataContext is WmsIconViewModel viewModel)
             {
-                System.Diagnostics.Debug.WriteLine($"OnSymbolNameChanged: {wmsIcon.ColorizeBrush} - {wmsIcon.SymbolName}");
                 viewModel.RetrieveImage((string)e.NewValue);
             }
         }

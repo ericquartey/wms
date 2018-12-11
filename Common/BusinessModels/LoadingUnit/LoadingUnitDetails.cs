@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -39,7 +39,9 @@ namespace Ferretto.Common.BusinessModels
         public int CellPairing { get; set; }
 
         public IEnumerable<Enumeration> CellPairingChoices { get; set; }
+
         public string CellPairingDetails { get; set; }
+
         public IEnumerable<Enumeration> CellPositionChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
@@ -138,7 +140,7 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
+                throw new ArgumentException("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
             }
         }
 

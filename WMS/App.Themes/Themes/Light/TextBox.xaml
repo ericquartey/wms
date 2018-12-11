@@ -46,6 +46,11 @@
                                  TextWrapping="{TemplateBinding IsMultiline,
                                                                 Converter={StaticResource BTTWC}}" />
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="InnerTextBox" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InnerTextBox}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

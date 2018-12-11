@@ -75,12 +75,12 @@
                               ItemsSource="{Binding ItemWithdraw.BayChoices}"
                               Visibility="{Binding ElementName=SelectedArea, Path=SelectedItem, Converter={StaticResource RTVC}}" />
 
-                <wms:TextBox Margin="0,0,20,0"
-                             Grid.Row="1"
+                <wms:TextBox Grid.Row="1"
+                             Margin="0,0,20,0"
                              Text="{Binding ItemWithdraw.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
-                <wms:TextBox Grid.Column="1"
-                             Grid.Row="1"
+                <wms:TextBox Grid.Row="1"
+                             Grid.Column="1"
                              Text="{Binding ItemWithdraw.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              Visibility="{Binding AdvancedWithdraw, Converter={StaticResource BTVC}}" />
                 <wms:TextBox Grid.Row="2"

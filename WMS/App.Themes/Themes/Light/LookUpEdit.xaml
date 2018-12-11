@@ -33,7 +33,7 @@
                             </Label.Content>
                         </Label>
 
-                        <dxg:LookUpEdit Name="dxgLookUpEdit"
+                        <dxg:LookUpEdit Name="InnerLookUpEdit"
                                         Grid.Row="1"
                                         AllowDefaultButton="False"
                                         AllowNullInput="{TemplateBinding AllowNullInput}"
@@ -62,6 +62,11 @@
                             </dxg:LookUpEdit.Buttons>
                         </dxg:LookUpEdit>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="InnerLookUpEdit" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InnerLookUpEdit}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

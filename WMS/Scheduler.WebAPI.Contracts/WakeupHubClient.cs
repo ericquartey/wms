@@ -27,10 +27,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
             this.connection.Closed += async (error) =>
             {
-                System.Diagnostics.Debug.WriteLine("Connection to hub closed!");
                 await Task.Delay(new Random().Next(0, 5) * 1000);
 
-                System.Diagnostics.Debug.WriteLine("Retrying connection to hub ...");
                 await this.connection.StartAsync();
             };
         }

@@ -24,6 +24,7 @@ namespace Ferretto.WMS.Modules.Layout
         #region Properties
 
         public IUnityContainer Container { get; private set; }
+
         public IRegionManager RegionManager { get; private set; }
 
         #endregion Properties
@@ -34,13 +35,16 @@ namespace Ferretto.WMS.Modules.Layout
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingLayoutModule);
 
-            this.Container.RegisterType<INavigationService, NavigationService>(
-                new ContainerControlledLifetimeManager());
-            this.Container.RegisterType<IInputService, InputService>(
-                                    new ContainerControlledLifetimeManager());
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Loading module ...");
+
+            this.Container.RegisterType<INavigationService, NavigationService>(new ContainerControlledLifetimeManager());
+            this.Container.RegisterType<IInputService, InputService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IDialogService, DialogService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<IHistoryViewService, HistoryViewService>(new ContainerControlledLifetimeManager());
             this.Container.RegisterType<INotificationServiceClient, NotificationServiceClient>(new ContainerControlledLifetimeManager());
+
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             navigationService.Register<LayoutView, LayoutViewModel>();
             navigationService.Register<MenuView, MenuViewModel>();
@@ -56,6 +60,10 @@ namespace Ferretto.WMS.Modules.Layout
                 typeof(LayoutView));
             this.RegionManager.RegisterViewWithRegion(
                 $"{nameof(Common.Utils.Modules.Layout)}.{Common.Utils.Modules.Layout.REGION_MENU}", typeof(MenuView));
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Module loaded.");
         }
 
         #endregion Methods

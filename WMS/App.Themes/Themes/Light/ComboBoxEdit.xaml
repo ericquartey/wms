@@ -31,7 +31,7 @@
                                 </MultiBinding>
                             </Label.Content>
                         </Label>
-                        <dxe:ComboBoxEdit Name="dxeComboBoxEdit"
+                        <dxe:ComboBoxEdit Name="InnerComboBoxEdit"
                                           Grid.Row="1"
                                           AllowDefaultButton="False"
                                           AllowNullInput="{TemplateBinding AllowNullInput}"
@@ -56,6 +56,11 @@
                             </dxe:ComboBoxEdit.Buttons>
                         </dxe:ComboBoxEdit>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="InnerComboBoxEdit" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InnerComboBoxEdit}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

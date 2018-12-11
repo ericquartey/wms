@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Windows;
+using DevExpress.Mvvm.UI;
+using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -30,7 +33,10 @@ namespace Ferretto.Common.Controls
             var property = type.GetProperty(splits[splits.Length - 1]);
             if (property == null)
             {
-                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because property '{fieldName}' is not available on model type '{type}'.");
+                NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Warn(string.Format("Cannot determine label value because property '{0}' is not available on model type '{1}'.", fieldName, type));
+
                 return $"[{fieldName}]";
             }
 
@@ -41,7 +47,10 @@ namespace Ferretto.Common.Controls
 
             if (displayAttributeData == null)
             {
-                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because no DisplayAttribute is available on the property '{fieldName}'.");
+                NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Warn(string.Format("Form control: cannot determine label value because no DisplayAttribute is available on the property '{0}'.", fieldName));
+
                 return $"[{fieldName}]";
             }
 
@@ -58,11 +67,28 @@ namespace Ferretto.Common.Controls
 
             if (propertyInfo == null)
             {
-                System.Diagnostics.Debug.WriteLine($"Form control: cannot determine label value because no resource with name '{name}' on type '{resourceType.Name}' is available.");
+                NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Warn(string.Format("Form control: cannot determine label value because no resource with name '{0}' on type '{1}' is available.", name, resourceType.Name));
+
                 return $"[{name}]";
             }
 
             return (string)propertyInfo.GetValue(null);
+        }
+
+        public static void SetFocus(INavigableView view, string controlNameToFocus)
+        {
+            if (string.IsNullOrEmpty(controlNameToFocus) == false &&
+                view is DependencyObject viewDep)
+            {
+                var elemToFocus = LayoutTreeHelper.GetVisualChildren(viewDep).OfType<FrameworkElement>()
+                                                  .FirstOrDefault(item => item.Name == controlNameToFocus);
+                if (elemToFocus != null)
+                {
+                    elemToFocus.Focus();
+                }
+            }
         }
 
         #endregion Methods

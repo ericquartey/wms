@@ -21,7 +21,7 @@
         <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
     </Style>
 
-     <ControlTemplate x:Key="SpinEditButtonEditStyle" TargetType="{x:Type dxe:ButtonEdit}">
+    <ControlTemplate x:Key="SpinEditButtonEditStyle" TargetType="{x:Type dxe:ButtonEdit}">
             <Grid x:Name="GridSpinEdit">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -91,6 +91,7 @@
                 </DataTrigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+    
     <ControlTemplate x:Key="{dxet:ButtonsThemeKey ResourceKey=SpinDownButtonTemplate,
                                                   ThemeName=Office2016White}"
                      TargetType="{x:Type ButtonBase}">
