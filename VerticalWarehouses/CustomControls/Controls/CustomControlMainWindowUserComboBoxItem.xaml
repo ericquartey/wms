@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Ferretto.VW.CustomControls.Controls.CustomControlMainWindowUserComboBoxItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="60"
+             d:DesignWidth="100"
+             mc:Ignorable="d">
+    <Grid Name="LayoutRoot"
+          Background="Transparent">
+        <TextBlock Background="Transparent"
+                   FontSize="{DynamicResource VWAPP_MainWindowUserComboBox_FontSize_Normal}"
+                   Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
+                   Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Button Width="{Binding ElementName=LayoutRoot, Path=ActualWidth}"
+                Height="{Binding ElementName=LayoutRoot, Path=ActualHeight}"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                Command="{Binding CustomCommand}" />
+    </Grid>
+</UserControl>
