@@ -338,7 +338,8 @@
                                 <Condition Property="ItemType" Value="SubItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedInactiveForeground, ThemeName=Office2016White}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedInactiveForeground, ThemeName=Office2016White}}" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
+                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedInactiveForeground, ThemeName=Office2016White}}" />-->
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -346,7 +347,8 @@
                                 <Condition Property="ItemType" Value="RootItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedForeground, ThemeName=Office2016White}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedForeground, ThemeName=Office2016White}}" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
+                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedForeground, ThemeName=Office2016White}}" />-->
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -365,7 +367,8 @@
                                 <Condition Property="ItemType" Value="SubItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground, ThemeName=Office2016White}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground, ThemeName=Office2016White}}" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
+                            <!--  Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground, ThemeName=Office2016White}}" /  -->
                             <!--<Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />-->
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />
                         </MultiTrigger>
@@ -376,7 +379,8 @@
                                 <Condition Property="ItemType" Value="RootItem" />
                             </MultiTrigger.Conditions>
                             <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground, ThemeName=Office2016White}}" />
-                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground, ThemeName=Office2016White}}" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
+                            <!--  Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground, ThemeName=Office2016White}}" /  -->
                             <!--<Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />-->
                             <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />
                         </MultiTrigger>
