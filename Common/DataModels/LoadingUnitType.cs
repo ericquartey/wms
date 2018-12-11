@@ -13,6 +13,8 @@ namespace Ferretto.Common.DataModels
 
         public string Description { get; set; }
 
+        public bool HasCompartments { get; set; }
+
         public int Id { get; set; }
 
         public LoadingUnitHeightClass LoadingUnitHeightClass { get; set; }

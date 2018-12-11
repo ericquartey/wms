@@ -61,6 +61,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection), ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection { get; set; }
 
+        public bool LoadingUnitTypeHasCompartments { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
         public int Height { get; set; }
 
