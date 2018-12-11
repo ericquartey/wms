@@ -38,10 +38,10 @@
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <custom:CustomInputFieldControl Grid.Row="1"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
             <custom:CustomLabelTextBlockControl Grid.Row="1"
                                                 Grid.Column="2"
                                                 ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

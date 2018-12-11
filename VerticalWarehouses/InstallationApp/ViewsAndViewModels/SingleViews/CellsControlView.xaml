@@ -52,10 +52,10 @@
                                                 Margin="0,0,100,0"
                                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
-            <custom:CustomInputFieldControl Grid.Row="4"
-                                            Margin="0,0,100,0"
-                                            InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            LabelText="{x:Static res:InstallationApp.StepValue}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="4"
+                                                     Margin="0,0,100,0"
+                                                     InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                     LabelText="{x:Static res:InstallationApp.StepValue}" />
             <custom:CustomLabelTextBlockControl Grid.Row="6"
                                                 Margin="0,0,100,0"
                                                 ContentText="{Binding PanelCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

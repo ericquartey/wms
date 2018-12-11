@@ -8,15 +8,13 @@
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
         <TextBlock Margin="5,1,5,1"
-                   Style="{StaticResource VWAPP_ViewCustomControlLabelTextBlockStyle}"
+                   Style="{StaticResource VWAPP_CustomInputFieldControlFocusable_TextBlockStyle}"
                    Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox Name="InputTextBox"
                  Margin="5,1,5,5"
-                 Background="Transparent"
                  BorderBrush="{Binding BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                 BorderThickness="1"
                  KeyDown="OnKeyDownHandler"
-                 Style="{StaticResource IAPP_ViewCustomInputFieldFocusableControlTextBoxStyle}"
+                 Style="{StaticResource VWAPP_CustomInputFieldControlFocusable_TextBoxStyle}"
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

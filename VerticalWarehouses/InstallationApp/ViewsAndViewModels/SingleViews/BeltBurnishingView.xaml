@@ -38,11 +38,11 @@
                 <ColumnDefinition Width="40" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <custom:CustomOuputText Grid.Row="1"
-                                    Grid.Column="0"
-                                    Margin="0,0,100,0"
-                                    LabelText="{x:Static res:InstallationApp.UpperBound}"
-                                    OutputText="4500" />
+            <custom:CustomLabelTextBlockControl Grid.Row="1"
+                                                Grid.Column="0"
+                                                Margin="0,0,100,0"
+                                                ContentText="4500"
+                                                LabelText="{x:Static res:InstallationApp.UpperBound}" />
             <custom:CustomLabelTextBlockControl Grid.Row="2"
                                                 Grid.Column="0"
                                                 Margin="0,0,100,0"
@@ -58,10 +58,10 @@
                                                 Margin="0,0,100,0"
                                                 ContentText="4500"
                                                 LabelText="{x:Static res:InstallationApp.CompletedCicles}" />
-            <custom:CustomInputFieldControl Grid.Row="1"
-                                            Grid.Column="2"
-                                            Margin="0,0,100,0"
-                                            LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
+            <custom:CustomInputFieldControlFocusable Grid.Row="1"
+                                                     Grid.Column="2"
+                                                     Margin="0,0,100,0"
+                                                     LabelText="{x:Static res:InstallationApp.RequiredCicles}" />
         </Grid>
         <Grid Grid.Row="2"
               Grid.Column="1">

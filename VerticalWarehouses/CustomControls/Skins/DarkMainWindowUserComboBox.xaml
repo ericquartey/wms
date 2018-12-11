@@ -3,20 +3,14 @@
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
+    <FontFamily x:Key="VWAPP_MainWindowUserComboBox_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <sys:Double x:Key="VWAPP_MainWindowUserComboBox_FontSize_Normal">14</sys:Double>
+
     <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Background_Normal"
                      Color="Transparent" />
     <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
     <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_BorderBrush_Normal"
                      Color="Transparent" />
-    <FontFamily x:Key="VWAPP_MainWindowUserComboBox_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
-    <sys:Double x:Key="VWAPP_MainWindowUserComboBox_FontSize_Normal">14</sys:Double>
-
-    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Background_Inactive"
-                     Color="Transparent" />
-    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Foreground_Inactive"
-                     Color="{DynamicResource ColorFerrettoBlack}" />
-    <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_BorderBrush_Inactive"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
 
 </ResourceDictionary>

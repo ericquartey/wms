@@ -1,6 +1,9 @@
 ﻿using System.Windows;
 using Ferretto.VW.Navigation;
 using System.Windows.Input;
+using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System;
 
 namespace Ferretto.VW.InstallationApp
 {

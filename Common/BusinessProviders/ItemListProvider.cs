@@ -107,7 +107,7 @@ namespace Ferretto.Common.BusinessProviders
                    ShipmentUnitCode = l.ShipmentUnitCode,
                    ShipmentUnitDescription = l.ShipmentUnitDescription,
                    LastModificationDate = l.LastModificationDate,
-                   FireExecutionDate = l.FirstExecutionDate,
+                   FirstExecutionDate = l.FirstExecutionDate,
                    ExecutionEndDate = l.ExecutionEndDate,
                }).Single();
 

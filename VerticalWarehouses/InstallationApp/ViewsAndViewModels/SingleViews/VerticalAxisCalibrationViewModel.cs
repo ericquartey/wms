@@ -8,7 +8,7 @@ using System.Threading;
 using Ferretto.VW.Utils.Source.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver;
+using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
@@ -27,8 +27,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private ICommand startButtonCommand;
         private ICommand stopButtonCommand;
         private string upperBound;
-
-        private InverterDriver.InverterDriver inverter;
 
         #endregion Fields
 
@@ -56,18 +54,33 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         #region Properties
 
         public Boolean EnableStartButton { get => this.enableStartButton; set => this.SetProperty(ref this.enableStartButton, value); }
+
         public Boolean IsStopButtonActive { get => this.isStopButtonActive; set => this.SetProperty(ref this.isStopButtonActive, value); }
+
         public String LowerBound { get => this.lowerBound; set { this.SetProperty(ref this.lowerBound, value); this.InputsCorrectionControlEventHandler(); } }
+
         public String NoteString { get => this.noteString; set => this.SetProperty(ref this.noteString, value); }
+
         public String Offset { get => this.offset; set { this.SetProperty(ref this.offset, value); this.InputsCorrectionControlEventHandler(); } }
+
         public String Resolution { get => this.resolution; set { this.SetProperty(ref this.resolution, value); this.InputsCorrectionControlEventHandler(); } }
+
         public ICommand StartButtonCommand => this.startButtonCommand ?? (this.startButtonCommand = new DelegateCommand(this.ExecuteStartButtonCommand));
+
         public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(() => this.StopButtonMethod()));
+
         public String UpperBound { get => this.upperBound; set { this.SetProperty(ref this.upperBound, value); this.InputsCorrectionControlEventHandler(); } }
 
         #endregion Properties
 
         #region Methods
+
+        private void Calibration(bool result)
+        {
+            this.EnableStartButton = true;
+            this.IsStopButtonActive = false;
+            this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
+        }
 
         private void CheckInputsCorrectness()
         {
@@ -103,14 +116,10 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             CalibrateVerticalAxis calibrateVA;
             this.EnableStartButton = false;
             this.IsStopButtonActive = true;
-            this.noteString = "Connecting...";
-            this.inverter = new InverterDriver.InverterDriver();
-            this.inverter.Initialize();
-            this.noteString = "Connected!";
-            await Task.Delay(1000);
+            await Task.Delay(2000);
 
             calibrateVA = new CalibrateVerticalAxis();
-            calibrateVA.SetInverterDriverInterface = this.inverter;
+            calibrateVA.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
 
             calibrateVA.Initialize();
             calibrateVA.ThrowEndEvent += new CalibrateVerticalAixsEndedEventHandler(this.Calibration);
@@ -123,13 +132,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             this.originProcedureCanceled = true;
-        }
-
-        private void Calibration(bool result)
-        {
-            this.EnableStartButton = true;
-            this.IsStopButtonActive = false;
-            this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisCompleted;
         }
 
         #endregion Methods

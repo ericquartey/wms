@@ -6,6 +6,8 @@ using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
 using System.ComponentModel;
+using Ferretto.VW.InverterDriver.Source;
+using System.Diagnostics;
 
 namespace Ferretto.VW.VWApp
 {
@@ -14,6 +16,7 @@ namespace Ferretto.VW.VWApp
         #region Fields
 
         private readonly bool installation_completed;
+        private ICommand changeSkin;
         private int currentSelection;
         private bool customComboBoxStateBool = false;
         private ICommand loginButtonCommand;
@@ -23,7 +26,6 @@ namespace Ferretto.VW.VWApp
         private string serialNumber;
         private ICommand switchOffCommand;
         private string userLogin = "Installer";
-        private ICommand changeSkin;
 
         #endregion Fields
 
@@ -39,6 +41,8 @@ namespace Ferretto.VW.VWApp
         #endregion Constructors
 
         #region Properties
+
+        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => (Application.Current as App).ChangeSkin()));
 
         public Int32 CurrentSelection
         {
@@ -65,13 +69,18 @@ namespace Ferretto.VW.VWApp
         }
 
         public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(this.ExecuteLoginButtonCommand));
+
         public String LoginErrorMessage { get => this.loginErrorMessage; set => this.SetProperty(ref this.loginErrorMessage, value); }
+
         public String MachineModel { get => this.machineModel; set => this.SetProperty(ref this.machineModel, value); }
+
         public String PasswordLogin { get => this.passwordLogin; set => this.SetProperty(ref this.passwordLogin, value); }
+
         public String SerialNumber { get => this.serialNumber; set => this.SetProperty(ref this.serialNumber, value); }
+
         public ICommand SwitchOffCommand => this.switchOffCommand ?? (this.switchOffCommand = new DelegateCommand(() => { Application.Current.Shutdown(); }));
+
         public String UserLogin { get => this.userLogin; set => this.SetProperty(ref this.userLogin, value); }
-        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(()=> (Application.Current as App).ChangeSkin()));
 
         #endregion Properties
 
@@ -91,6 +100,10 @@ namespace Ferretto.VW.VWApp
 
         private void ExecuteLoginButtonCommand()
         {
+            InverteDriverManager.InverterDriverStaticInstance = new InverterDriver.InverterDriver();
+            var tmp = InverteDriverManager.InverterDriverStaticInstance.Initialize();
+            Debug.Print(tmp.ToString());
+
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)

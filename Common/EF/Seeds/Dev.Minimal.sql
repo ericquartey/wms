@@ -575,14 +575,14 @@ INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellC
 INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellConfigurationId, LoadingUnitTypeId, Priority) VALUES (2, 3, 3, 1);
 
 SET IDENTITY_INSERT LoadingUnits ON;
-INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (1, 'UDC1', 1, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A');
-INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (2, 'UDC2', 2, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A');
-INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (3, 'VERTIMAG1.1', 301, 'Free', 2, 15, 800, 400, 'U', 'M', 'A');
-INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId)
-VALUES (4, 'VERTIMAG1.2', 302, 'Free', 2, 5, 700, 300, 'U', 'M', 'A');
+INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
+VALUES (1, 'UDC1', 1, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 3, 6, 9);
+INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
+VALUES (2, 'UDC2', 2, 'Free', 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 4, 8, 12);
+INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
+VALUES (3, 'VERTIMAG1.1', 301, 'Free', 2, 15, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
+INSERT INTO LoadingUnits (Id, Code, CellId, CellPairing, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
+VALUES (4, 'VERTIMAG1.2', 302, 'Free', 2, 5, 700, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
 SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments
@@ -729,13 +729,13 @@ DECLARE
    @ItemListStatus_Wait char(1) = 'W';
 
 SET IDENTITY_INSERT ItemLists ON;
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated) VALUES (@ItemList1_Id, 'Lista-1', @ItemListType_Pik, 'Prima Lista', 1, 'W', 1);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated) VALUES (@ItemList2_Id, 'Lista-2', @ItemListType_Pik, 'Seconda Lista', 1, 'C', 1);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated) VALUES (3,             'Lista-3', @ItemListType_Put, 'Terza Lista', 1, 'W', 1);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated) VALUES (4,             'Lista-4', @ItemListType_Put, 'Quarta Lista', 1, 'C', 1);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated) VALUES (5,             'Lista-5', @ItemListType_Pik, 'Quinta Lista', 1, 'I', 1);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated) VALUES (6,             'Lista-6', @ItemListType_Put, 'Sesta Lista', 1, 'S', 1);
-INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated) VALUES (7,             'Lista-7', @ItemListType_Inv, 'Settima Lista', 1, 'E', 1);
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList1_Id, 'Lista-1', @ItemListType_Pik, 'Prima Lista', 1, 'W', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (@ItemList2_Id, 'Lista-2', @ItemListType_Pik, 'Seconda Lista', 1, 'C', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (3,             'Lista-3', @ItemListType_Put, 'Terza Lista', 1, 'W', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (4,             'Lista-4', @ItemListType_Put, 'Quarta Lista', 1, 'C', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (5,             'Lista-5', @ItemListType_Pik, 'Quinta Lista', 1, 'I', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (6,             'Lista-6', @ItemListType_Put, 'Sesta Lista', 1, 'S', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
+INSERT INTO ItemLists (Id, Code, ItemListType, Description, Priority, Status, ShipmentUnitAssociated, CreationDate, LastModificationDate, FirstExecutionDate, ExecutionEndDate) VALUES (7,             'Lista-7', @ItemListType_Inv, 'Settima Lista', 1, 'E', 1, '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00');
 SET IDENTITY_INSERT ItemLists OFF;
 
 --List Row
