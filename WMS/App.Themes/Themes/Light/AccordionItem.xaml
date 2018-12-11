@@ -11,13 +11,10 @@
                     xmlns:dxmvvminternal="clr-namespace:DevExpress.Mvvm.UI.Interactivity.Internal;assembly=DevExpress.Xpf.Core.v18.2"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib"
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
-    <!--ResourceDictionary.MergedDictionaries>
-        <dxdst:ResourceDictionaryEx Source="/DevExpress.Xpf.Accordion.v18.2;component/Themes/Generic/Resources.xaml" />
-    </-->
+
     <wms:BoolToVisibilityConverter x:Key="BTVC" />
 
-
-    <!--  STATIC  -->
+    <!--  Static Resources  -->
     <sys:Double x:Key="HeaderTouchHeight">44</sys:Double>
     <sys:Double x:Key="ExpandButtonTouchSize">34</sys:Double>
     <sys:Double x:Key="ItemTouchOffset">35</sys:Double>
@@ -142,7 +139,8 @@
             </MultiDataTrigger>
         </Style.Triggers>
     </Style>
-    <!--  STATIC  -->
+    <!--  Static Resources  -->
+
 
     <dxmvvm:ObjectToObjectConverter x:Key="collapseItemConverter"
                                     DefaultTarget="False">
@@ -150,9 +148,6 @@
                         Target="True" />
     </dxmvvm:ObjectToObjectConverter>
 
-
-    <!--<Style x:Key="{dxdst:DefaultStyleThemeKey FullName=DevExpress.Xpf.Accordion.AccordionItem}"
-           TargetType="{x:Type dxa:AccordionItem}">-->
 
     <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=DevExpress.Xpf.Accordion.AccordionItem,
                                                                 ThemeName=Office2016White}}"
@@ -254,7 +249,6 @@
                                             VerticalAlignment="Stretch"
                                             Background="{TemplateBinding Background}"
                                             SnapsToDevicePixels="True">
-                                        <!--    -->
 
                                         <ContentPresenter x:Name="PART_HeaderContent"
                                                           Margin="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=HeaderElementsMargin}}"
@@ -466,7 +460,6 @@
                         <!--#region Foreground & States-->
                         <Trigger Property="ItemType" Value="RootItem">
                             <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="#FF293133" />
-
                             <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDefaultForeground}}" />-->
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
