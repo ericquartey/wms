@@ -127,9 +127,8 @@
                             <dxe:ToggleSwitch x:Name="toggleSwitch"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              Background="#FF293133"
-                                              Foreground="#FF293133"
                                               IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              Template="{DynamicResource WmsToggleSwitch}"
                                               ToggleSwitchHeight="20"
                                               ToggleSwitchWidth="30" />
                             <TextBox x:Name="TitleLabel"

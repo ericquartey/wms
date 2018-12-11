@@ -197,7 +197,7 @@
 
 
     <!--<ControlTemplate x:Key="{dxet:ToggleSwitchThemeKey ResourceKey=Template}" TargetType="{x:Type dxe:ToggleSwitch}">-->
-    <ControlTemplate x:Key="TOGGLE"
+    <ControlTemplate x:Key="WmsToggleSwitch"
                      TargetType="{x:Type dxe:ToggleSwitch}">
         <dxei:ToggleSwitchButtonChrome x:Name="PART_Owner"
                                        RenderTemplate="{StaticResource ResourceKey={dxet:ToggleSwitchThemeKey ResourceKey=RenderTemplate}}" />
