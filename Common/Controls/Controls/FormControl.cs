@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Windows;
+using DevExpress.Mvvm.UI;
+using Ferretto.Common.Controls.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
@@ -72,6 +75,20 @@ namespace Ferretto.Common.Controls
             }
 
             return (string)propertyInfo.GetValue(null);
+        }
+
+        public static void SetFocus(INavigableView view, string controlNameToFocus)
+        {
+            if (string.IsNullOrEmpty(controlNameToFocus) == false &&
+                view is DependencyObject viewDep)
+            {
+                var elemToFocus = LayoutTreeHelper.GetVisualChildren(viewDep).OfType<FrameworkElement>()
+                                                  .FirstOrDefault(item => item.Name == controlNameToFocus);
+                if (elemToFocus != null)
+                {
+                    elemToFocus.Focus();
+                }
+            }
         }
 
         #endregion Methods

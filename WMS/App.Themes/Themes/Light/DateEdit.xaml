@@ -45,6 +45,11 @@
                             </dxe:DateEdit.Buttons>
                         </dxe:DateEdit>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="InnerDateEdit" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InnerDateEdit}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
