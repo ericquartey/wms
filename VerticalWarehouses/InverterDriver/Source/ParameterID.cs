@@ -58,7 +58,7 @@
                 case ParameterID.HOMING_OFFSET_PARAM: type = ValueDataType.Int16; break;
                 case ParameterID.POSITION_ACCELERATION_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.POSITION_DECELERATION_PARAM: type = ValueDataType.Float; break;
-                case ParameterID.POSITION_TARGET_POSITION_PARAM: type = ValueDataType.Int16; break;
+                case ParameterID.POSITION_TARGET_POSITION_PARAM: type = ValueDataType.Int32; break;
                 case ParameterID.POSITION_TARGET_SPEED_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.SET_OPERATING_MODE_PARAM: type = ValueDataType.Int16; break;
                 case ParameterID.STATUS_WORD_PARAM: type = ValueDataType.Int16; break;

@@ -447,8 +447,10 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public InverterDriverExitStatus SettingRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex, object value)
         {
+            var valueType = ParameterIDClass.Instance.GetDataValueType(paramID);
+
             // Store the request into the list.
-            var Rq = new Request(TypeOfRequest.SettingRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, ValueDataType.Int16, value);
+            var Rq = new Request(TypeOfRequest.SettingRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, valueType, value);
 
             BitArray bitArrayCtrlTmp = null;
             if (paramID == ParameterID.CONTROL_WORD_PARAM)
