@@ -4,16 +4,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
+using Ferretto.Common.EF;
 
 namespace Ferretto.Common.BusinessProviders
 {
     public class ItemCompartmentTypeProvider : IItemCompartmentTypeProvider
     {
+        #region Fields
+
+        private readonly IDatabaseContextService dataContext;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public ItemCompartmentTypeProvider(
+            IDatabaseContextService context)
+        {
+            this.dataContext = context;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         public Task<Int32> Add(ItemCompartmentType model)
         {
-            throw new NotImplementedException();
+            //TODO: Task 823
+            //if (model == null)
+            //{
+            //    throw new ArgumentNullException(nameof(model));
+            //}
+
+            //var dataContext = this.dataContext.Current;
+            //var existing = dataContext.ItemsCompartmentTypes.SingleOrDefault(
+            //    ict =>
+            //    (ict.CompartmentTypeId == model.CompartmentTypeId
+            //    && ict.ItemId = model.ItemId));
+
+            //if (existing == null)
+            //{
+            //    var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
+            //    {
+            //        Description = model.Description,
+            //        Height = model.Height,
+            //        Width = model.Width
+            //    });
+
+            //    var changedEntitiesCount = await dataContext.SaveChangesAsync();
+            //    if (changedEntitiesCount > 0)
+            //    {
+            //        model.Id = entry.Entity.Id;
+            //        return model.Id;
+            //    }
+            throw new Exception();
         }
 
         public Int32 Delete(Int32 id)

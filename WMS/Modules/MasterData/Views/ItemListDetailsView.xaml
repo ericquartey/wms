@@ -129,7 +129,6 @@
                             <dxe:ToggleSwitch x:Name="toggleSwitch"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              dxt:ThemeManager.ThemeName="Office2016ColorfulSE"
                                               IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBox x:Name="TitleLabel"
                                      Margin="60,0,0,0"
