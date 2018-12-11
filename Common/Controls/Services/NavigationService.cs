@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
+using System.Windows.Threading;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
@@ -204,6 +206,20 @@ namespace Ferretto.Common.Controls.Services
             var vm = ServiceLocator.Current.GetInstance<INavigableViewModel>(mapId);
             vm.Token = token;
             return vm;
+        }
+
+        public void StartPresentation(INavigableViewModel viewModel)
+        {
+            Application.Current.Dispatcher.BeginInvoke(
+                      DispatcherPriority.SystemIdle,
+                      new Action(() =>
+                      {
+                          Application.Current.MainWindow.Show();
+                          if (viewModel != null)
+                          {
+                              viewModel.Disappear();
+                          }
+                      }));
         }
 
         private void ActivateView(string moduleViewName, string instanceModuleViewName)

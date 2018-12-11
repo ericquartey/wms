@@ -1,27 +1,23 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
+
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ButtonStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ComboBoxStyles.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomInputFieldControlFocusableStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomControlInputFieldStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBoxStyles.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TextBlockStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/RepeatButtonStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomControlHighlightableBulletStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TESTCCBoxStyle.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/TESTCCBoxItemStyle.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomComboBoxStyles.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxItemTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/InstallationAppViewComboBoxTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowMachineStateComboBoxTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowMachineStateComboBoxItemTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMachineModeToggleButtonStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMachineOnMarchToggleButtonStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ExpanderStyle.xaml" />
+
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxTemplate.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxItemTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTCCBoxItemTemplate.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/TESTToggleButtonTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/NavigationButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/ActionButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/RepeatButtonControlTemplate.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/CustomMachineModeToggleButton_Template.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/CustomMachineOnMarchToggleButton_Template.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/CustomInputText_TextBoxTemplate.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

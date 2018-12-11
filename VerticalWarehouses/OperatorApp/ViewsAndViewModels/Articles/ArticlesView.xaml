@@ -19,7 +19,7 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Column="1"
-                   Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:OperatorApp.InstantArticle}" />
         <Grid Grid.Row="1"
               Grid.Column="1"
@@ -64,9 +64,9 @@
                     Content="{x:Static res:General.Bottom}"
                     Style="{StaticResource IAPP_ViewButtonStyle}" />
         </Grid>
-        <custom:CustomInputFieldControl Grid.Row="2"
-                                        Grid.Column="1"
-                                        LabelText="{x:Static res:OperatorApp.SearchCode}" />
+        <custom:CustomInputFieldControlFocusable Grid.Row="2"
+                                                 Grid.Column="1"
+                                                 LabelText="{x:Static res:OperatorApp.SearchCode}" />
         <Grid Grid.Row="3"
               Grid.Column="1"
               Grid.ColumnSpan="2">

@@ -22,7 +22,7 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
                        Grid.Column="1"
-                       Style="{StaticResource IAPP_ViewTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.VerticalAxis}" />
             <Grid Grid.Row="1"
                   Grid.Column="1">
@@ -42,15 +42,15 @@
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.ZeroVerticalSensor}"
                                                 SensorState="{Binding ZeroVerticalSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
+                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.EmergencyEndRun}"
                                                 SensorState="{Binding EmergencyEndRun, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
+                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
                     <custom:CustomSensorControl Margin="10"
                                                 LabelText="{x:Static res:InstallationApp.BrakeResistanceOvertemperature}"
                                                 SensorState="{Binding BrakeResistanceOvertemperature, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                Style="{StaticResource IAPP_ViewCustomSensorControlStyle}" />
+                                                Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
                 </StackPanel>
             </Grid>
         </Grid>

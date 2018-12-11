@@ -81,7 +81,7 @@
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding RunWithdrawCommand}"
+                <wms:ActionBarItem Command="{Binding}"
                                    Content="{x:Static res:MasterData.RunItemListRow}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"

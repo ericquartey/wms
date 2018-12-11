@@ -26,7 +26,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ServiceCollectionExtensions.cs" Condition="'$(TargetFramework)' == 'net471'"/>
+    <Compile Remove="ServiceCollectionExtensions.cs" Condition="'$(TargetFramework)' == 'net471'" />
   </ItemGroup>
 
   <Target Name="NSwag" BeforeTargets="Clean" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netcoreapp2.1' ">

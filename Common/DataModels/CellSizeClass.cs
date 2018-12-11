@@ -3,13 +3,20 @@
 namespace Ferretto.Common.DataModels
 {
     // Classe Dimensione Cella
-    public sealed class CellSizeClass
+    public sealed class CellSizeClass : IDataModel
     {
-        public int Id { get; set; }
-        public string Description { get; set; }
-        public int Width { get; set; }
-        public int Length { get; set; }
+        #region Properties
 
         public IEnumerable<CellType> CellTypes { get; set; }
+
+        public string Description { get; set; }
+
+        public int Id { get; set; }
+
+        public int Length { get; set; }
+
+        public int Width { get; set; }
+
+        #endregion Properties
     }
 }

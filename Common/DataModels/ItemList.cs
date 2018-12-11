@@ -4,11 +4,10 @@ using System.Collections.Generic;
 namespace Ferretto.Common.DataModels
 {
     // Lista Articoli
-    public sealed class ItemList : ITimestamped
+    public sealed class ItemList : ITimestamped, IDataModel
     {
         #region Properties
 
-       
         public string Code { get; set; }
 
         public DateTime CreationDate { get; set; }
@@ -27,8 +26,6 @@ namespace Ferretto.Common.DataModels
 
         public IEnumerable<ItemListRow> ItemListRows { get; set; }
 
-        public ItemListStatus ItemListStatus { get; set; }
-
         public ItemListType ItemListType { get; set; }
 
         public string Job { get; set; }
@@ -46,6 +43,8 @@ namespace Ferretto.Common.DataModels
         public string ShipmentUnitCode { get; set; }
 
         public string ShipmentUnitDescription { get; set; }
+
+        public ItemListStatus Status { get; set; }
 
         #endregion Properties
     }

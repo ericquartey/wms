@@ -22,10 +22,18 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\BusinessModels\Ferretto.Common.BusinessModels.csproj" />
-    <ProjectReference Include="..\..\Common\BusinessProviders\Ferretto.Common.BusinessProviders.csproj" />
     <ProjectReference Include="..\..\Common\DataModels\Ferretto.Common.DataModels.csproj" />
     <ProjectReference Include="..\..\Common\EF\Ferretto.Common.EF.csproj" />
     <ProjectReference Include="..\Scheduler.Core\Ferretto.WMS.Scheduler.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="hostconfig.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
