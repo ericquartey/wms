@@ -16,8 +16,6 @@ namespace Ferretto.Common.DataModels
 
         public int CellId { get; set; }
 
-        public Pairing CellPairing { get; set; }
-
         public CellPosition CellPosition { get; set; }
 
         public int CellPositionId { get; set; }
@@ -37,6 +35,8 @@ namespace Ferretto.Common.DataModels
         public int InCycleCount { get; set; }
 
         public DateTime? InventoryDate { get; set; }
+
+        public bool IsCellPairingFixed { get; set; }
 
         public DateTime? LastHandlingDate { get; set; }
 

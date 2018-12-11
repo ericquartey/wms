@@ -13,8 +13,7 @@ namespace Ferretto.Common.BusinessModels
         private IEnumerable<Enumeration> compartmentTypeChoices;
         private int? fifoTime;
         private int? height;
-        private int itemPairing;
-        private IEnumerable<Enumeration> itemPairingChoices;
+        private bool isItemPairingFixed;
         private IEnumerable<Enumeration> materialStatusChoices;
         private int? materialStatusId;
         private int? maxCapacity;
@@ -81,6 +80,13 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
+        public bool IsItemPairingFixed
+        {
+            get => this.isItemPairingFixed;
+            set => this.SetProperty(ref this.isItemPairingFixed, value);
+        }
+
         [Display(Name = nameof(BusinessObjects.ItemCode_extended), ResourceType = typeof(BusinessObjects))]
         public string ItemCode { get; set; }
 
@@ -89,22 +95,6 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.CompartmentItem), ResourceType = typeof(BusinessObjects))]
         public int? ItemId { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public int ItemPairing
-        {
-            get => this.itemPairing;
-            set => this.SetIfPositive(ref this.itemPairing, value);
-        }
-
-        public IEnumerable<Enumeration> ItemPairingChoices
-        {
-            get => this.itemPairingChoices;
-            set => this.SetProperty(ref this.itemPairingChoices, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public string ItemPairingDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
