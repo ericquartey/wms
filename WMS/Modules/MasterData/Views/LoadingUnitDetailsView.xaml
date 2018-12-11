@@ -1,4 +1,4 @@
-<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitDetailsView"
+﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
@@ -33,6 +33,7 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
+
             <wms:ActionBarItem Command="{Binding EditCommand}"
                                Content="{x:Static res:General.Edit}"
                                CustomGlyphSize="24,24"
@@ -47,6 +48,11 @@
                                Content="{x:Static res:General.Revert}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_undo_black_24dp.png"
+                               GlyphSize="Custom" />
+            <wms:ActionBarItem Command="{Binding WithdrawCommand}"
+                               Content="{x:Static res:MasterData.Withdraw}"
+                               CustomGlyphSize="24,24"
+                               Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
