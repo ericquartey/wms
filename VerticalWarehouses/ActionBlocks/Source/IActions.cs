@@ -54,9 +54,10 @@
         #endregion Properties
 
         #region Methods
-        void Initialize();
 
-        void MoveAlongVerticalAxisToPoint(short x, float vMax, float acc, float dec, float w, short offset);
+        void Initialize(decimal resolution);
+
+        void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset);
 
         void Halt();
 

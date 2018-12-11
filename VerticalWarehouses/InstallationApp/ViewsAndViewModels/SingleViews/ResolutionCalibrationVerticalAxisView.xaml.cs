@@ -9,10 +9,19 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
     {
         #region Constructors
 
-        public ResolutionCalibrationVerticalAxisView()
+        public ResolutionCalibrationVerticalAxisView(InverterDriver.InverterDriver driver)
         {
             this.InitializeComponent();
-            this.DataContext = new ResolutionCalibrationVerticalAxisViewModel();
+
+            // ope file and read the resolution parameter
+
+            var resol = new ResolutionCalibrationVerticalAxisViewModel();
+            resol.SetInverterDriver = driver;
+            //this.DataContext = new ResolutionCalibrationVerticalAxisViewModel();
+            this.DataContext = resol;
+
+            // ope file, read the new resolution parameter and save it 
+
         }
 
         #endregion Constructors

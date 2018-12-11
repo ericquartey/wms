@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.ActionBlocks;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -13,7 +14,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         private readonly int defaultInitialPosition = 1000;
         private readonly int defaultMovement = 4000;
-        private readonly double defaultResolution = 165;
+        private readonly double defaultResolution = 1024; // 165
 
         private ICommand acceptButtonCommand;
         private ICommand cancelButtonCommand;
@@ -33,6 +34,19 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private string noteString = Common.Resources.InstallationApp.MoveToInitialPosition;
         private string repositionLenght;
         private ICommand setPositionButtonCommand;
+        // Begin resolution changes
+        private decimal resolution;
+        private decimal x;
+        private float vMax; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float acc; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float dec; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float w; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private short offset; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private InverterDriver.InverterDriver inverterDriver;
+        private PositioningDrawer positioningDrawer;
+        private decimal desiredInitialPositionDec;
+        private bool operation;
+        // End resolution changes
 
         #endregion Fields
 
@@ -40,12 +54,38 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         public ResolutionCalibrationVerticalAxisViewModel()
         {
+            bool conversionResolution;
+
             this.CurrentResolution = this.defaultResolution.ToString();
             this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
             this.RepositionLenght = this.defaultMovement.ToString();
+
+            // Begin resolution changes
+            vMax = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            acc = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            dec = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            w = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            offset = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            conversionResolution = decimal.TryParse(this.CurrentResolution, out resolution);
+
+            if (!conversionResolution)
+            {
+                this.NoteString = "Wrong resolution";
+            }
+            // End resolution changes
         }
 
         #endregion Constructors
+
+        //**
+        public InverterDriver.InverterDriver SetInverterDriver
+        {
+            set
+            {
+                this.inverterDriver = value;
+            }
+        }
+        //**
 
         #region Properties
 
@@ -140,24 +180,98 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             }
         }
 
-        private async void MoveButtonMethod()
+        private void MoveButtonMethod()
         {
-            this.IsMoveButtonActive = false;
-            this.NoteString = Common.Resources.InstallationApp.MovingToDesiredPosition;
-            await Task.Delay(2000);
-            this.IsMesuredLenghtTextInputActive = true;
-            this.IsMesuredMovementHighlighted = true;
-            this.NoteString = Common.Resources.InstallationApp.InsertMesuredMovement;
+            // Begin changes for the PositioningDrawer
+            bool conversionRepositionLenght;
+            decimal repositionLenght;
+
+            conversionRepositionLenght = decimal.TryParse(this.RepositionLenght, out repositionLenght);
+
+            if (conversionRepositionLenght)
+            {
+                operation = false;
+                this.x = repositionLenght + desiredInitialPositionDec;
+                this.IsMoveButtonActive = false;
+                this.NoteString = Common.Resources.InstallationApp.MovingToDesiredPosition;
+                positioningDrawer.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
+            }
+            else
+            {
+                this.NoteString = "Positioning not possible";
+            }
+            // End changes for the PositioningDrawer
         }
 
-        private async void SetPositionButtonMethod()
+        private void SetPositionButtonMethod()
         {
-            this.IsSetPositionButtonActive = false;
-            this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
-            await Task.Delay(2000);
-            this.IsMesuredInitialPositionTextInputActive = true;
-            this.IsMesuredInitialPositionHighlighted = true;
-            this.NoteString = Common.Resources.InstallationApp.InsertMesuredInitialPosition;
+            // Begin changes for the initial positioning
+            bool conversionInitialPosition;
+            decimal desiredInitialPositionDec;
+
+            conversionInitialPosition = decimal.TryParse(desiredInitialPosition, out desiredInitialPositionDec);
+            if(conversionInitialPosition)
+            {
+                operation = true;
+                this.x = desiredInitialPositionDec;
+                this.IsSetPositionButtonActive = false;
+                this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
+
+                // uncomment these code lines
+                //this.inverterDriver = new InverterDriver.InverterDriver();
+                //this.inverterDriver.Initialize();
+
+                // Inizio posizionamento
+                positioningDrawer = new PositioningDrawer();
+                positioningDrawer.SetInverterDriverInterface = this.inverterDriver;
+                this.positioningDrawer.ThrowEndEvent += new PositioningDrawerEndEventHandler(this.PositioningDone);
+                positioningDrawer.Initialize(this.resolution);
+                positioningDrawer.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
+                // Fine posizionamento
+
+                this.IsMesuredInitialPositionTextInputActive = true;
+                this.IsMesuredInitialPositionHighlighted = true;
+            }
+            // End changes for the initial positioning
+
+            //this.NoteString = Common.Resources.InstallationApp.InsertMesuredInitialPosition;
+        }
+
+        public void PositioningDone(bool result)
+        {
+            string message = "";
+
+            if (result)
+            {
+                // If operation = true -> SetPosition
+                if (operation)
+                {
+                    this.IsMesuredInitialPositionTextInputActive = true;
+                    this.IsMesuredInitialPositionHighlighted = true;
+                    message = Common.Resources.InstallationApp.InsertMesuredInitialPosition;
+                }
+                else // false -> Move
+                {
+                    this.IsMesuredLenghtTextInputActive = true;
+                    this.IsMesuredMovementHighlighted = true;
+                    message = Common.Resources.InstallationApp.InsertMesuredMovement;
+                }
+            }
+            else
+            {
+                if (operation)
+                {
+                    message = "Initial position not done";
+                }
+                else
+                {
+                    message = "Positioning not done";
+                }
+
+            }
+
+            this.NoteString = message;
+            positioningDrawer.StopInverter();
         }
 
         #endregion Methods

@@ -11,6 +11,7 @@ using Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.InverterDriver;
 using System.Net;
 using System.IO;
 using System.Configuration;
@@ -34,6 +35,10 @@ namespace Ferretto.VW.InstallationApp
         private bool machineOnMarchSelectionBool = false;
         private int machineOnMarchSelectionInt = 0;
         private int machineModeSelectionInt = 0;
+
+
+        public InverterDriver.InverterDriver inverterDriver;
+
 
         #endregion Constants, Statics & Others
 
@@ -104,9 +109,24 @@ namespace Ferretto.VW.InstallationApp
             this.NavigationRegionCurrentViewModel = this.MainWindowNavigationButtonsVMInstance;
             this.ConnectMethod();
             SensorsStatesChangedEventHandler += this.EventInitializer;
+
+            //**
+            // Create the driver for the inverter
+            this.inverterDriver = new InverterDriver.InverterDriver();
+            this.inverterDriver.Initialize();
+
+            this.ResolutionCalibrationVerticalAxisVMInstance.SetInverterDriver = this.inverterDriver;
+            //**
         }
 
-        #endregion Constructors
+
+    #endregion Constructors
+
+
+        //~MainWindowViewModel()
+        //{
+        //    this.inverterDriver.Terminate();
+        //}
 
         #region Delegates
 
