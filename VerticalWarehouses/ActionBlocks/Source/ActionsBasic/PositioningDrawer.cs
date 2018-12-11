@@ -30,6 +30,12 @@ namespace Ferretto.VW.ActionBlocks
 
         private float dec;
 
+        private bool absolute_movement;
+
+        private bool currentPositionRequested;
+
+        private bool bStoppedOk;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private InverterDriver.InverterDriver inverterDriver;
@@ -41,9 +47,17 @@ namespace Ferretto.VW.ActionBlocks
             set => this.inverterDriver = value;
         }
 
-        private readonly string[] positioningDrawerSteps = new string[] { "1.1", /* "1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4" , "5", "6a" }; // At this time we take into account only the code code 6a
+        public bool AbsoluteMovement
+        {
+            set => this.absolute_movement = value;
+            get => this.absolute_movement;
 
-        private int i;
+            
+        }
+
+        private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4" , "5", "6a" }; // At this time we take into account only the code code 6a
+
+        private int i = 0;
 
         string positioningStep;
 
@@ -61,6 +75,8 @@ namespace Ferretto.VW.ActionBlocks
 
         public void Initialize(decimal resolution)
         {
+            this.absolute_movement = true;
+
             if (this.inverterDriver != null)
             {
                 inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(EnquiryTelegram);
@@ -87,6 +103,13 @@ namespace Ferretto.VW.ActionBlocks
 
         #region Method
 
+        public void Terminate()
+        {
+            // Unsubscribe the event handlers
+            this.inverterDriver.SelectTelegramDone -= this.SelectTelegram;
+            this.inverterDriver.EnquiryTelegramDone -= this.EnquiryTelegram;
+        }
+
         public void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset)
         {
             // Assign the parameters
@@ -96,6 +119,8 @@ namespace Ferretto.VW.ActionBlocks
             this.acc = acc;
             this.dec = dec;
             this.i = 0;
+
+            this.bStoppedOk = false;
 
             // Start the routine
             stepExecution();
@@ -109,7 +134,7 @@ namespace Ferretto.VW.ActionBlocks
 
             positioningStep = positioningDrawerSteps[i];
 
-            // logger.Log(LogLevel.Debug, "Positioning Step = " + positioningStep);
+            logger.Log(LogLevel.Debug, "Positioning Step = " + positioningStep);
 
             var error_Message = "";
             switch (positioningStep)
@@ -152,7 +177,6 @@ namespace Ferretto.VW.ActionBlocks
                     dataSetIndex = 0x05;
                     paramID = ParameterID.CONTROL_WORD_PARAM;
                     valParam = (short)0x00;
-
                     break;
 
                 // Modes of Operation
@@ -187,28 +211,14 @@ namespace Ferretto.VW.ActionBlocks
                 case "6a":
                     dataSetIndex = 0x05;
                     paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = (short)0x1F;
-                    break;
-
-                // Operation Enabled
-                case "6b":
-                    dataSetIndex = 0x05;
-                    paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = (short)0x5F;
-                    break;
-
-                // Operation Enabled
-                case "6c":
-                    dataSetIndex = 0x05;
-                    paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = (short)0x3F;
-                    break;
-
-                // Operation Enabled
-                case "6d":
-                    dataSetIndex = 0x05;
-                    paramID = ParameterID.CONTROL_WORD_PARAM;
-                    valParam = (short)0x7F;
+                    if(this.AbsoluteMovement)
+                    { 
+                        valParam = (short)0x1F;
+                    }
+                    else
+                    {
+                        valParam = (short)0x5F;
+                    }
                     break;
 
                 default:
@@ -338,7 +348,13 @@ namespace Ferretto.VW.ActionBlocks
                 if (i < positioningDrawerSteps.Length)
                     stepExecution();
                 else // The execution ended
+                {
                     ThrowEndEvent?.Invoke(true);
+
+                    this.StopInverter();
+
+                    this.bStoppedOk = true;
+                }
             }
             else
             {
@@ -353,7 +369,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private void SelectTelegram(Object sender, SelectTelegramDoneEventArgs eventArgs)
         {
-            logger.Log(LogLevel.Debug, "Condition = " + (positioningDrawerSteps.Length < i).ToString());
+            //logger.Log(LogLevel.Debug, "Condition = " + (positioningDrawerSteps.Length < i).ToString());
 
             if (positioningDrawerSteps.Length > i)
             {
@@ -417,7 +433,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private void CtrExistStatus(InverterDriverExitStatus idStatus)
         {
-            logger.Log(LogLevel.Debug, "idStatus = " + idStatus.ToString());
+            //logger.Log(LogLevel.Debug, "idStatus = " + idStatus.ToString());
             var error_Message = "";
             if (idStatus != InverterDriverExitStatus.Success)
             {
@@ -473,6 +489,9 @@ namespace Ferretto.VW.ActionBlocks
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
             this.valParam = (short)0x00; // 0000 0000
             InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+            this.i = 0;
+
+            logger.Log(LogLevel.Debug, "Stop inverter");
         }
 
         #endregion Method

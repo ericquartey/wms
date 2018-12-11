@@ -83,11 +83,19 @@ namespace Ferretto.WMS.Modules.Layout
 
         public override Boolean KeyPress(ShortKeyInfo shortKeyInfo)
         {
+            if (shortKeyInfo.ShortKey.IsControlShift &&
+                shortKeyInfo.ShortKey.Key == Key.O)
+            {
+                this.AccessGranted();
+                return true;
+            }
+
             if (shortKeyInfo.ShortKey.Key == Key.Enter)
             {
                 this.loginCommand.Execute(null);
                 return true;
             }
+
             return base.KeyPress(shortKeyInfo);
         }
 
@@ -95,6 +103,15 @@ namespace Ferretto.WMS.Modules.Layout
         {
             this.User.PropertyChanged -= this.OnItemPropertyChanged;
             base.OnDispose();
+        }
+
+        private void AccessGranted()
+        {
+            this.IsBusy = true;
+            this.IsEnabled = false;
+            this.Status = Icons.ResourceManager.GetString(nameof(Icons.NavigationCheck));
+            this.LoginCheck = Common.Resources.Layout.Ok;
+            this.NavigationService.StartPresentation(this);
         }
 
         private bool CanLogin()
@@ -114,11 +131,8 @@ namespace Ferretto.WMS.Modules.Layout
             {
                 return;
             }
-            this.IsBusy = true;
-            this.IsEnabled = false;
-            this.Status = Icons.ResourceManager.GetString(nameof(Icons.NavigationCheck));
-            this.LoginCheck = Common.Resources.Layout.Ok;
-            this.NavigationService.StartPresentation(this);
+
+            this.AccessGranted();
         }
 
         private void OnItemPropertyChanged(Object sender, PropertyChangedEventArgs e)

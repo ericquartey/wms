@@ -72,21 +72,7 @@ namespace Feretto.Common.BLL.Tests
 
             tray.AddCompartment(compartment1);
             Assert.IsFalse(tray.CanAddCompartment(compartment2));
-            tray.AddCompartment(compartment2);
-            Assert.IsFalse(tray.CanAddCompartment(compartment3));
-            tray.AddCompartment(compartment3);
-            Assert.IsFalse(tray.CanAddCompartment(compartment4));
-            tray.AddCompartment(compartment4);
-            Assert.IsFalse(tray.CanAddCompartment(compartment5));
-            tray.AddCompartment(compartment5);
-            Assert.IsFalse(tray.CanAddCompartment(compartment6));
-            tray.AddCompartment(compartment6);
-            Assert.IsFalse(tray.CanAddCompartment(compartment7));
-            tray.AddCompartment(compartment7);
-            Assert.IsFalse(tray.CanAddCompartment(compartment8));
-            tray.AddCompartment(compartment8);
-            Assert.IsFalse(tray.CanAddCompartment(compartment9));
-            tray.AddCompartment(compartment9);
+            Assert.ThrowsException<System.ArgumentException>(() => tray.AddCompartment(compartment2));
         }
 
         [TestMethod]

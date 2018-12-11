@@ -24,7 +24,9 @@ namespace Ferretto.WMS.Modules.Machines
         #region Properties
 
         public IUnityContainer Container { get; private set; }
+
         public INavigationService NavigationService { get; private set; }
+
         public IRegionManager RegionManager { get; private set; }
 
         #endregion Properties
@@ -35,7 +37,15 @@ namespace Ferretto.WMS.Modules.Machines
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMachinesModule);
 
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Loading module ...");
+
             this.NavigationService.Register<MachinesView, MachinesViewModel>();
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Module loaded.");
         }
 
         #endregion Methods

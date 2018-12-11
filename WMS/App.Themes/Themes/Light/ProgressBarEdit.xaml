@@ -37,7 +37,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <dxe:ProgressBarEdit x:Name="progressBarEditControl"
+                            <dxe:ProgressBarEdit x:Name="InnerProgressBarEditControl"
                                                  ContentDisplayMode="None"
                                                  DisplayFormatString="{TemplateBinding DisplayFormatString}"
                                                  EditValue="{Binding Path=EditValue,RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -53,6 +53,11 @@
                                        VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsFocused" Value="True">
+                            <Setter TargetName="InnerProgressBarEditControl" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InnerProgressBarEditControl}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
