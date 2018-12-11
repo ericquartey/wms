@@ -33,6 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.11" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\Common\Controls\Ferretto.Common.Controls.csproj" />
   </ItemGroup>
 

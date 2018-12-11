@@ -48,12 +48,25 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            this.LoadModule(moduleName);
+            NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Trace(string.Format("Opening view '{0}' of module '{1}'.", viewModelName, moduleName));
 
-            var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
-            var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
+            try
+            {
+                this.LoadModule(moduleName);
 
-            this.CheckAddRegion(moduleViewName, data);
+                var modelName = MvvmNaming.GetModelNameFromViewModelName(viewModelName);
+                var moduleViewName = MvvmNaming.GetViewName(moduleName, modelName);
+
+                this.CheckAddRegion(moduleViewName, data);
+            }
+            catch (Exception ex)
+            {
+                NLog.LogManager
+                    .GetCurrentClassLogger()
+                    .Error(ex, string.Format("Cannot show view '{0}' for module '{1}'.", viewModelName, moduleName));
+            }
         }
 
         public void Disappear(INavigableView view)
@@ -63,13 +76,26 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            if (view.ViewType == WmsViewType.Docking)
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace(string.Format("Closing view '{0}' (mapId='{1}').", view.Title, view.MapId));
+
+            try
             {
-                this.RemoveRegion(view.MapId);
+                if (view.ViewType == WmsViewType.Docking)
+                {
+                    this.RemoveRegion(view.MapId);
+                }
+                else
+                {
+                    this.dialogs.Remove(view.MapId);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.dialogs.Remove(view.MapId);
+                NLog.LogManager
+                    .GetCurrentClassLogger()
+                    .Error(ex, string.Format("Cannot close view '{0}' (mapId='{1}').", view.Title, view.MapId));
             }
         }
 
@@ -80,14 +106,23 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            if (viewModel.MapId != null &&
+            try
+            {
+                if (viewModel.MapId != null &&
                 this.dialogs.ContainsKey(viewModel.MapId))
-            {
-                this.dialogs[viewModel.MapId].Disappear();
+                {
+                    this.dialogs[viewModel.MapId].Disappear();
+                }
+                else
+                {
+                    this.RemoveRegion(viewModel.MapId);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                this.RemoveRegion(viewModel.MapId);
+                NLog.LogManager
+                    .GetCurrentClassLogger()
+                    .Error(ex, string.Format("Cannot close view model '{0}' (mapId='{1}').", viewModel.GetType().Name, viewModel.MapId));
             }
         }
 

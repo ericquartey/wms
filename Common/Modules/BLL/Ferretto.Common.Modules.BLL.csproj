@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="DevExpress.Data" Version="18.2.3" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
+    <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="Prism.Core" Version="6.3.0" />
     <PackageReference Include="Prism.Unity" Version="6.3.0" />
   </ItemGroup>

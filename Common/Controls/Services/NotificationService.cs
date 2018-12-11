@@ -13,9 +13,10 @@ namespace Ferretto.Common.Controls.Services
         #region Fields
 
         private const string HealthIsOnLineMessage = "IsOnline";
-        private const int RetryConnectionTimeout = 10000;
+        private const int MaxRetryConnectionTimeout = 10000;
         private readonly IEventService eventService = ServiceLocator.Current.GetInstance<IEventService>();
         private readonly string healthPath;
+        private readonly Random random = new Random();
         private readonly string url;
         private Microsoft.AspNetCore.SignalR.Client.HubConnection connection;
         private bool isConnected;
@@ -47,9 +48,13 @@ namespace Ferretto.Common.Controls.Services
             }
             catch
             {
-                System.Diagnostics.Debug.WriteLine($"Hub connection failed. Retrying in {RetryConnectionTimeout / 1000.0} seconds ...");
+                var reconnectionTime = this.random.Next(0, MaxRetryConnectionTimeout);
 
-                await Task.Delay(RetryConnectionTimeout);
+                NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Error(string.Format("Connection failed. Retrying in {0} seconds...", reconnectionTime / 1000));
+
+                await Task.Delay(reconnectionTime);
 
                 await this.connection?.StartAsync();
             }
@@ -57,11 +62,21 @@ namespace Ferretto.Common.Controls.Services
 
         private async Task ConnectAsync()
         {
-            System.Diagnostics.Debug.WriteLine("Hub connecting...");
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace(string.Format("Hub connecting..."));
+
             await this.connection.StartAsync();
-            System.Diagnostics.Debug.WriteLine("Hub connected.");
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace(string.Format("Hub connected."));
+
             await this.connection.SendAsync(HealthIsOnLineMessage);
-            System.Diagnostics.Debug.WriteLine("Message to hub sent.");
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace(string.Format("Message to hub sent."));
         }
 
         private async Task InitializeAsync()
@@ -74,7 +89,9 @@ namespace Ferretto.Common.Controls.Services
 
             this.connection.Closed += async (error) =>
             {
-                System.Diagnostics.Debug.WriteLine("Connection to hub closed.");
+                NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Debug(string.Format("Connection to hub closed."));
 
                 if (this.isConnected)
                 {
@@ -82,9 +99,14 @@ namespace Ferretto.Common.Controls.Services
                 }
 
                 this.isConnected = false;
-                System.Diagnostics.Debug.WriteLine("Retrying connection to hub...");
 
-                await Task.Delay(RetryConnectionTimeout);
+                var reconnectionTime = this.random.Next(0, MaxRetryConnectionTimeout);
+
+                NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Error(string.Format("Retrying connection in {0} seconds...", reconnectionTime / 1000));
+
+                await Task.Delay(reconnectionTime);
                 await this.ConnectAsync();
             };
 
@@ -93,7 +115,10 @@ namespace Ferretto.Common.Controls.Services
 
         private void OnIsOnLine_MessageReceived()
         {
-            System.Diagnostics.Debug.WriteLine($"Message {HealthIsOnLineMessage} received from server.");
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Error(string.Format("Message {0} received from server", HealthIsOnLineMessage));
+
             this.isConnected = true;
             this.eventService.Invoke(new StatusEventArgs() { IsSchedulerOnline = true });
         }
