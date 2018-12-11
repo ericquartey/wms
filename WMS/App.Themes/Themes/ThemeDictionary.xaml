@@ -31,6 +31,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ProgressBarEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/PasswordBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/AccordionItem.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/WmsCheckboxEdit.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
