@@ -22,7 +22,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private const int DELAY_TIME = 500;             // Delay time: 250 msec
 
-        private long x;
+        private int x;
 
         private float vMax;
 
@@ -358,12 +358,15 @@ namespace Ferretto.VW.ActionBlocks
             }
             else
             {
-                // Insert a delay
-                Thread.Sleep(DELAY_TIME);
-                // A new request to read the StatusWord
-                InverterDriverExitStatus idExitStatus = inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
+                if (!this.bStoppedOk)
+                {
+                    // Insert a delay
+                    Thread.Sleep(DELAY_TIME);
+                    // A new request to read the StatusWord
+                    InverterDriverExitStatus idExitStatus = inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
 
-                CtrExistStatus(idExitStatus);
+                    CtrExistStatus(idExitStatus);
+                }
             }
         }
 
@@ -498,7 +501,7 @@ namespace Ferretto.VW.ActionBlocks
         {
             this.inverterDriver.SendRequest(ParameterID.POSITION_TARGET_POSITION_PARAM, this.systemIndex, 5);
 
-            logger.Log(LogLevel.Debug, "Stop inverter");
+            this.currentPositionRequested = true;
         }
 
         #endregion Method
