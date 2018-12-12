@@ -16,8 +16,9 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
-        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+        private readonly ChangeDetector<ItemDetails> changeDetector = new ChangeDetector<ItemDetails>();
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
@@ -69,19 +70,21 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.item;
             set
             {
-                if (this.Item != null && value != this.Item)
-                {
-                    this.Item.TakeSnapshot();
-                    this.Item.PropertyChanged -= this.OnItemPropertyChanged;
-                }
-
-                if (!this.SetProperty(ref this.item, value))
+                if (this.item == value)
                 {
                     return;
                 }
 
-                this.Item.TakeSnapshot();
-                this.Item.PropertyChanged += this.OnItemPropertyChanged;
+                if (this.item != null)
+                {
+                    this.item.PropertyChanged -= this.OnItemPropertyChanged;
+                }
+
+                this.SetProperty(ref this.item, value);
+
+                this.changeDetector.TakeSnapshot(this.item);
+
+                this.item.PropertyChanged += this.OnItemPropertyChanged;
 
                 this.RefreshData();
             }
@@ -140,12 +143,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteRevert()
         {
-            return this.Item?.IsModified == true;
+            return this.changeDetector.IsModified == true;
         }
 
         private bool CanExecuteSave()
         {
-            return this.Item?.IsModified == true;
+            return this.changeDetector.IsModified == true;
         }
 
         private bool CanExecuteWithdraw()
@@ -153,13 +156,24 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.Item?.TotalAvailable > 0;
         }
 
+        private void ChangeDetector_ModifiedChanged(System.Object sender, System.EventArgs e)
+        {
+            this.EvaluateCanExecuteCommands();
+        }
+
+        private void EvaluateCanExecuteCommands()
+        {
+            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
+        }
+
         private void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.itemProvider.Save(this.Item);
-
             if (modifiedRowCount > 0)
             {
-                this.Item.TakeSnapshot();
+                this.changeDetector.TakeSnapshot(this.Item);
 
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
 
@@ -181,8 +195,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Item>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Item>>(eventArgs => { this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Item>>(eventArgs => this.LoadData(), this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Item>>(eventArgs => this.LoadData());
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Item>>(
                 eventArgs =>
                 {
@@ -199,6 +213,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Token,
                 true,
                 true);
+
+            this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
         private void LoadData()
@@ -212,15 +228,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.Item.TotalAvailable))
-            {
-                ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
-            }
-            else if (e.PropertyName == nameof(this.Item.IsModified))
-            {
-                ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-                ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
-            }
+            this.EvaluateCanExecuteCommands();
         }
 
         #endregion Methods

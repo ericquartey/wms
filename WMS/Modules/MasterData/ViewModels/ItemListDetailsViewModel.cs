@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -16,6 +15,7 @@ namespace Ferretto.WMS.Modules.MasterData
     {
         #region Fields
 
+        private readonly ChangeDetector<ItemListDetails> changeDetector = new ChangeDetector<ItemListDetails>();
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
         private ICommand addListRowCommand;
         private ItemListDetails itemList;
@@ -53,18 +53,20 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.itemList;
             set
             {
-                if (this.ItemList != null && value != this.ItemList)
-                {
-                    this.ItemList.TakeSnapshot();
-                    this.ItemList.PropertyChanged -= this.OnItemListPropertyChanged;
-                }
-
-                if (!this.SetProperty(ref this.itemList, value))
+                if (this.itemList == value)
                 {
                     return;
                 }
 
-                this.ItemList.TakeSnapshot();
+                if (this.itemList != null)
+                {
+                    this.ItemList.PropertyChanged -= this.OnItemListPropertyChanged;
+                }
+
+                this.SetProperty(ref this.itemList, value);
+
+                this.changeDetector.TakeSnapshot(this.ItemList);
+
                 this.ItemList.PropertyChanged += this.OnItemListPropertyChanged;
 
                 //TODO
@@ -154,17 +156,28 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteRevert()
         {
-            return this.ItemList?.IsModified == true;
+            return this.changeDetector.IsModified == true;
         }
 
         private bool CanExecuteSave()
         {
-            return this.ItemList?.IsModified == true;
+            return this.changeDetector.IsModified == true;
         }
 
         private bool CanExecuteShowDetailsListRowCommand()
         {
             return this.selectedItemListRow != null;
+        }
+
+        private void ChangeDetector_ModifiedChanged(System.Object sender, System.EventArgs e)
+        {
+            this.EvaluateCanExecuteCommands();
+        }
+
+        private void EvaluateCanExecuteCommands()
+        {
+            ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
+            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteAddListRowCommand()
@@ -199,10 +212,9 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.itemListProvider.Save(this.ItemList);
-
             if (modifiedRowCount > 0)
             {
-                this.ItemList.TakeSnapshot();
+                this.changeDetector.TakeSnapshot(this.ItemList);
 
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.ItemList.Id));
 
@@ -237,6 +249,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     this.Token,
                     true,
                     true);
+
+            this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
         private void LoadData()
@@ -249,11 +263,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void OnItemListPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.ItemList.IsModified))
-            {
-                ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-                ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
-            }
+            this.EvaluateCanExecuteCommands();
         }
 
         #endregion Methods
