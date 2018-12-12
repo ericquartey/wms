@@ -681,4 +681,7 @@
   <data name="AccountAccessError" xml:space="preserve">
     <value>Errore di accesso</value>
   </data>
+  <data name="ItemListRowDispatchedQuantity" xml:space="preserve">
+    <value>Quantità Evasa</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@ namespace Ferretto.Common.BusinessModels
 
         private string code;
         private DateTime creationDate;
+        private int dispatchedQuantity;
         private string itemDescription;
         private ItemListRowStatus itemListRowStatus;
         private int requiredQUantity;
@@ -26,6 +27,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
+        public int DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
