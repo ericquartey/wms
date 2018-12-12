@@ -22,7 +22,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private const int DELAY_TIME = 500;             // Delay time: 250 msec
 
-        private int x;
+        private long x;
 
         private float vMax;
 
@@ -51,8 +51,6 @@ namespace Ferretto.VW.ActionBlocks
         {
             set => this.absolute_movement = value;
             get => this.absolute_movement;
-
-            
         }
 
         private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4" , "5", "6a" }; // At this time we take into account only the code code 6a

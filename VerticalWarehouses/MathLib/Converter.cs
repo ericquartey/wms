@@ -18,53 +18,53 @@ namespace Ferretto.VW.MathLib
 
         // Conversion from mm to pulse
         // Conversion from mm distance to pulse distance
-        public int FromMMToPulse(decimal mmDistance)
+        public long FromMMToPulse(decimal mmDistance)
         {
             decimal pulseDistanceDecimal;
-            int  pulseDistanceInt;
+            long  pulseDistanceLong;
             decimal converted;
 
             pulseDistanceDecimal = mmDistance * resolution;
             converted = Math.Round(pulseDistanceDecimal, 0);
 
-            pulseDistanceInt = (int)converted;
+            pulseDistanceLong = (long)converted;
 
-            return pulseDistanceInt;
+            return pulseDistanceLong;
         }
 
         // Conversion from mm/s speed to pulse/s speed
-        public int FromMMSToPulseS(decimal mmsSpeed)
+        public long FromMMSToPulseS(decimal mmsSpeed)
         {
             decimal pulseSpeedDecimal;
-            int pulseSpeedInt;
+            long pulseSpeedLong;
             decimal converted;
 
             pulseSpeedDecimal = mmsSpeed * resolution;
             converted = Math.Round(pulseSpeedDecimal, 0);
 
-            pulseSpeedInt = (int)converted;
+            pulseSpeedLong = (long)converted;
 
-            return pulseSpeedInt;
+            return pulseSpeedLong;
         }
 
         // Conversion from mm/s^2 acceleration to pulse/s^2 acceleration
-        public int FromMMS2ToPulseS2(decimal mms2Acceleration)
+        public long FromMMS2ToPulseS2(decimal mms2Acceleration)
         {
             decimal pulseAccelerationDecimal;
-            int pulseAccelerationInt;
+            long pulseAccelerationLong;
             decimal converted;
 
             pulseAccelerationDecimal = mms2Acceleration * resolution;
             converted = Math.Round(pulseAccelerationDecimal, 0);
 
-            pulseAccelerationInt = (int)converted;
+            pulseAccelerationLong = (long)converted;
 
-            return pulseAccelerationInt;
+            return pulseAccelerationLong;
         }
 
         // Conversion from pulse to mm
         // Conversion from pulse distance to mm distance
-        public decimal FromPulseToMM(int pulseDistance)
+        public decimal FromPulseToMM(long pulseDistance)
         {
             decimal mmDistanceDecimal;
 
@@ -74,7 +74,7 @@ namespace Ferretto.VW.MathLib
         }
 
         // Conversion from pulse/s speed to mm/s speed
-        public decimal FromPulseSToMMS(int pulseSpeedS)
+        public decimal FromPulseSToMMS(long pulseSpeedS)
         {
             decimal mmSpeedDecimalS;
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.MathLib
         }
 
         // Conversion from pulse/s^2 acceleration to mm/s^2 acceleration
-        public decimal FromPulseS2ToMMS2(int pulseSpeedS2)
+        public decimal FromPulseS2ToMMS2(long pulseSpeedS2)
         {
             decimal mmSpeedDecimalS2;
 

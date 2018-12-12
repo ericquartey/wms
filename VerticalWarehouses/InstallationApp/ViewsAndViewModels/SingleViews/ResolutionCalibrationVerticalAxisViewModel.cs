@@ -38,12 +38,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         // Begin resolution changes
         private decimal resolution;
         private decimal x;
-        private float vMax; // Temporary assigned to constant value, they will become variable with new funcionalities
-        private float acc; // Temporary assigned to constant value, they will become variable with new funcionalities
-        private float dec; // Temporary assigned to constant value, they will become variable with new funcionalities
-        private float w; // Temporary assigned to constant value, they will become variable with new funcionalities
-        private short offset; // Temporary assigned to constant value, they will become variable with new funcionalities
-        private InverterDriver.InverterDriver inverterDriver;
+        private float vMax = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float acc = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float dec = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float w = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private short offset = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
         private PositioningDrawer positioningDrawer;
         private decimal desiredInitialPositionDec;
         private bool operation;
@@ -62,11 +61,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             this.RepositionLenght = this.defaultMovement.ToString();
 
             // Begin resolution changes
-            vMax = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            acc = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            dec = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            w = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            offset = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            //vMax = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            //acc = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            //dec = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            //w = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+            //offset = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
             conversionResolution = decimal.TryParse(this.CurrentResolution, out resolution);
 
             if (!conversionResolution)
