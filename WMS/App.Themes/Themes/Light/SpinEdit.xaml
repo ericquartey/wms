@@ -19,6 +19,8 @@
         <Setter Property="EditValueType" Value="{x:Type sys:Int32}" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
+        <Setter Property="MaskType" Value="Numeric" />
+        <Setter Property="Mask" Value="N0" />
     </Style>
 
     <ControlTemplate x:Key="SpinEditButtonEditStyle" TargetType="{x:Type dxe:ButtonEdit}">
@@ -36,7 +38,17 @@
                         </MultiBinding>
                     </Label.Content>
                 </Label>
-                <ContentControl MaxHeight="52" x:Name="PART_Root" Grid.Row="1" Template="{TemplateBinding ActualBorderTemplate}" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" dx:FocusHelper2.Focusable="False" dxeh:ControlHelper.ShowFocusedState="{Binding Path=IsKeyboardFocusWithin, RelativeSource={RelativeSource TemplatedParent}}" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                <ContentControl x:Name="PART_Root"
+                                Grid.Row="1"
+                                MaxHeight="52"
+                                Template="{TemplateBinding ActualBorderTemplate}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                dx:FocusHelper2.Focusable="False"
+                                dxeh:ControlHelper.ShowFocusedState="{Binding Path=IsKeyboardFocusWithin, RelativeSource={RelativeSource TemplatedParent}}"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch">
                     <Grid x:Name="ButtonEditGrid" SnapsToDevicePixels="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -91,7 +103,7 @@
                 </DataTrigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-    
+
     <ControlTemplate x:Key="{dxet:ButtonsThemeKey ResourceKey=SpinDownButtonTemplate,
                                                   ThemeName=Office2016White}"
                      TargetType="{x:Type ButtonBase}">

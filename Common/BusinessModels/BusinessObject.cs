@@ -52,20 +52,12 @@ namespace Ferretto.Common.BusinessModels
 
         protected bool SetIfPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
         {
-            if (value.HasValue)
+            if (value.HasValue && value.Value < 0)
             {
-                if (value.Value < 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
-                }
-
-                if (!member.HasValue || member.Value != value.Value)
-                {
-                    return this.SetProperty(ref member, value, propertyName);
-                }
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBePositive);
             }
 
-            return false;
+            return this.SetProperty(ref member, value, propertyName);
         }
 
         protected bool SetIfPositive(ref int member, int value, [CallerMemberName] string propertyName = null)
@@ -80,20 +72,12 @@ namespace Ferretto.Common.BusinessModels
 
         protected bool SetIfStrictlyPositive(ref int? member, int? value, [CallerMemberName] string propertyName = null)
         {
-            if (value.HasValue)
+            if (value.HasValue && value.Value <= 0)
             {
-                if (value.Value <= 0)
-                {
-                    throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
-                }
-
-                if (!member.HasValue || member.Value != value.Value)
-                {
-                    return this.SetProperty(ref member, value, propertyName);
-                }
+                throw new ArgumentOutOfRangeException(nameof(value), Errors.ParameterMustBeStrictlyPositive);
             }
 
-            return false;
+            return this.SetProperty(ref member, value, propertyName);
         }
 
         protected bool SetIfStrictlyPositive(ref int member, int value, [CallerMemberName] string propertyName = null)
@@ -117,7 +101,7 @@ namespace Ferretto.Common.BusinessModels
             var propertyInfo = bo.GetType().GetProperty(e.PropertyName);
             var newValue = propertyInfo.GetValue(sender);
             var snapshotValue = propertyInfo.GetValue(bo.snapshot);
-            if (newValue.Equals(snapshotValue) == false)
+            if (newValue?.Equals(snapshotValue) == false)
             {
                 if (bo.modifiedProperties.Contains(e.PropertyName) == false)
                 {
