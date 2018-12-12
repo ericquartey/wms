@@ -145,7 +145,7 @@
                         <wms:WmsCheckEdit Grid.Row="1"
                                           Grid.Column="1"
                                           Margin="0,0,20,0"
-                                          Content="Is Fixed"
+                                          Content="{x:Static res:BusinessObjects.PairingFixed}"
                                           IsChecked="{Binding Path=LoadingUnit.IsCellPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
@@ -234,7 +234,8 @@
                                     <dxg:GridColumn Width="100*"
                                                     FieldName="MaxCapacity" />
                                     <dxg:GridColumn Width="200*"
-                                                    FieldName="IsCellPairingFixed" />
+                                                    FieldName="IsItemPairingFixed"
+                                                    Style="{DynamicResource BooleanCellTemplate}" />
                                 </wms:WmsGridControl.Columns>
 
                                 <wms:WmsGridControl.SortInfo>

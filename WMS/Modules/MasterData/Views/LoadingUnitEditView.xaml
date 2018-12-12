@@ -99,7 +99,8 @@
                     <dxg:GridColumn Width="100*"
                                     FieldName="Stock" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="IsItemPairingFixed" />
+                                    FieldName="IsItemPairingFixed"
+                                    Style="{DynamicResource BooleanCellTemplate}" />
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
