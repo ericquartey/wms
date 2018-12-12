@@ -2,14 +2,14 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
-                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
-                    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys">
+                    xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
     <wms:PropertyDescriptionConverter x:Key="DNC"
                                       Control="{x:Type wms:ProgressBarEdit}"
                                       Property="{x:Static wms:ProgressBarEdit.EditValueProperty}" />
 
-    <!-- customized control style (add label) -->
+    <!--  customized control style (add label)  -->
     <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey Type=dxe:ProgressBarEdit,
                                                                 ThemeName=Office2016White}}"
            TargetType="wms:ProgressBarEdit">
@@ -38,19 +38,19 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <dxe:ProgressBarEdit x:Name="InnerProgressBarEditControl"
+                                                 Height="8"
+                                                 VerticalAlignment="Center"
                                                  ContentDisplayMode="None"
                                                  DisplayFormatString="{TemplateBinding DisplayFormatString}"
-                                                 EditValue="{Binding Path=EditValue,RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                 Height="8"
-                                                 ShowBorder="False"
+                                                 EditValue="{Binding Path=EditValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                  IsPercent="True"
                                                  Maximum="{TemplateBinding Maximum}"
                                                  Minimum="{TemplateBinding Minimum}"
                                                  Orientation="Horizontal"
-                                                 VerticalAlignment="Center" />
+                                                 ShowBorder="False" />
                             <TextBlock Grid.Column="1"
-                                       Text="{Binding Path=DisplayText, ElementName=progressBarEditControl}"
-                                       VerticalAlignment="Center" />
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Path=DisplayText, ElementName=progressBarEditControl}" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -64,8 +64,9 @@
 
     </Style>
 
-    <!-- bar color customization -->
-    <SolidColorBrush x:Key="fillBrush" Color="#00000000" />
+    <!--  bar color customization  -->
+    <SolidColorBrush x:Key="fillBrush"
+                     Color="#00000000" />
     <ControlTemplate x:Key="{dxet:ProgressBarEditThemeKey ThemeName=Office2016White,
                                                           ResourceKey=PanelLeftSideHorizontalTemplate}"
                      TargetType="{x:Type ContentControl}">
@@ -74,16 +75,22 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Border Background="{DynamicResource ProgressBarForeground}" Grid.RowSpan="2" />
-            <Rectangle x:Name="Background" Grid.ColumnSpan="2" Grid.RowSpan="2" Opacity="1">
+            <Border Grid.RowSpan="2"
+                    Background="{DynamicResource ProgressBarForeground}" />
+            <Rectangle x:Name="Background"
+                       Grid.RowSpan="2"
+                       Grid.ColumnSpan="2"
+                       Opacity="1">
                 <Rectangle.Fill>
                     <MultiBinding>
                         <MultiBinding.Converter>
                             <dxe:ProgressBarHighlightConverter />
                         </MultiBinding.Converter>
                         <Binding Source="{StaticResource fillBrush}" />
-                        <Binding ElementName="Background" Path="ActualWidth" />
-                        <Binding ElementName="Background" Path="ActualHeight" />
+                        <Binding ElementName="Background"
+                                 Path="ActualWidth" />
+                        <Binding ElementName="Background"
+                                 Path="ActualHeight" />
                         <Binding Path="(dxe:BaseEdit.OwnerEdit).StyleSettings.AccelerateRatio" />
                     </MultiBinding>
                 </Rectangle.Fill>
@@ -91,7 +98,7 @@
         </Grid>
     </ControlTemplate>
 
-    <!-- bar background color customization -->
+    <!--  bar background color customization  -->
     <ControlTemplate x:Key="{dxet:ProgressBarEditThemeKey ThemeName=Office2016White,
                                                           ResourceKey=PanelRightSideHorizontalTemplate}"
                      TargetType="{x:Type ContentControl}">
