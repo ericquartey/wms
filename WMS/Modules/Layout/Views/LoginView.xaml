@@ -41,7 +41,7 @@
             <TextBlock Focusable="False"
                        FontSize="16"
                        FontWeight="Bold"
-                       Text="{x:Static res:Layout.LoginToWms}" />
+                       Text="{x:Static res:Layout.UserLogin}" />
             <wms:TextBox Name="LoginTB"
                          MaxLength="20"
                          Text="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
