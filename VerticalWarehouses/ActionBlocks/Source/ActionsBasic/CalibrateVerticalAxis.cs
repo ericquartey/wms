@@ -86,8 +86,8 @@ namespace Ferretto.VW.ActionBlocks
         public void Initialize()
         {
             // Subscribe the event handlers
-            this.inverterDriver.SelectTelegramDone_CalibrateVerticalAxis += new SelectTelegramDoneEventHandler(this.SelectTelegram);
-            this.inverterDriver.EnquiryTelegramDone_CalibrateVerticalAxis += new EnquiryTelegramDoneEventHandler(this.EnquiryTelegram);
+            this.inverterDriver.SelectTelegramDone_CalibrateVerticalAxis += this.SelectTelegram;
+            this.inverterDriver.EnquiryTelegramDone_CalibrateVerticalAxis += this.EnquiryTelegram;
         }
 
         /// <summary>

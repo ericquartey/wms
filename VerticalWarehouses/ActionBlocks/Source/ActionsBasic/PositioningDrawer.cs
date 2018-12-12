@@ -90,8 +90,8 @@ namespace Ferretto.VW.ActionBlocks
 
             if (this.inverterDriver != null)
             {
-                this.inverterDriver.EnquiryTelegramDone_PositioningDrawer += new InverterDriver.EnquiryTelegramDoneEventHandler(this.EnquiryTelegram);
-                this.inverterDriver.SelectTelegramDone_PositioningDrawer += new InverterDriver.SelectTelegramDoneEventHandler(this.SelectTelegram);
+                this.inverterDriver.EnquiryTelegramDone_PositioningDrawer += this.EnquiryTelegram;
+                this.inverterDriver.SelectTelegramDone_PositioningDrawer += this.SelectTelegram;
                 this.inverterDriver.Error += this.DriverError;
             }
         }
