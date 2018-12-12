@@ -107,6 +107,7 @@ namespace Ferretto.VW.ActionBlocks
             this.bStoppedOk = false;
 
             // Start the routine
+            this.inverterDriver.CurrentActionType = ActionType.PositioningDrawer;
             this.stepExecution();
         }
 

@@ -101,6 +101,7 @@ namespace Ferretto.VW.ActionBlocks
             this.vFast = vFast;
             this.vCreep = vCreep;
 
+            this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
             // Start the routine
             this.stepExecution();
         }
