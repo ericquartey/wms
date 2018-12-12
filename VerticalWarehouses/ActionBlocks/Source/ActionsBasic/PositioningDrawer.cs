@@ -22,7 +22,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private const int DELAY_TIME = 500;             // Delay time: 250 msec
 
-        private long x;
+        private int x;
 
         private float vMax;
 
@@ -141,7 +141,7 @@ namespace Ferretto.VW.ActionBlocks
                 case "1.1":
                     paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
                     dataSetIndex = 0x05;
-                    valParam = (int)x;
+                    valParam = x;
                     break;
 
                 case "1.2":
