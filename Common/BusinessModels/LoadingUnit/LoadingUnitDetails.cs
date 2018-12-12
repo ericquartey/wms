@@ -136,7 +136,7 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                throw new ArgumentException("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
+                throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, this.Id));
             }
         }
 

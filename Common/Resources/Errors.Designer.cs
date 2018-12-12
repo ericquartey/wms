@@ -277,6 +277,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments..
+        /// </summary>
+        public static string LoadingUnitOverlappingCompartment {
+            get {
+                return ResourceManager.GetString("LoadingUnitOverlappingCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
         /// </summary>
         public static string MarkupNameOfSyntax {
