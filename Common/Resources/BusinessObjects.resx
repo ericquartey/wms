@@ -852,4 +852,8 @@
     <value>Account access error</value>
     <comment>Credentials - Account access error</comment>
   </data>
+  <data name="CompartmentItemPairing" xml:space="preserve">
+    <value>Item Pairing</value>
+    <comment>Compartment - Item Pairing</comment>
+  </data>
 </root>

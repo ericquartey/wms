@@ -681,4 +681,7 @@
   <data name="AccountAccessError" xml:space="preserve">
     <value>Errore di accesso</value>
   </data>
+  <data name="CompartmentItemPairing" xml:space="preserve">
+    <value>Abbinamento Articolo</value>
+  </data>
 </root>

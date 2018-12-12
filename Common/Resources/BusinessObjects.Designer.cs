@@ -376,6 +376,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Pairing.
+        /// </summary>
+        public static string CompartmentItemPairing {
+            get {
+                return ResourceManager.GetString("CompartmentItemPairing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last Handling Date.
         /// </summary>
         public static string CompartmentLastHandlingDate {
