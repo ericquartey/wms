@@ -73,7 +73,7 @@ namespace Ferretto.Common.BusinessModels
             var propertyInfo = this.instance.GetType().GetProperty(e.PropertyName);
             var newValue = propertyInfo.GetValue(sender);
             var snapshotValue = propertyInfo.GetValue(this.snapshot);
-            if (newValue?.Equals(snapshotValue) == false)
+            if (newValue != snapshotValue && newValue?.Equals(snapshotValue) == false)
             {
                 if (this.modifiedProperties.Contains(e.PropertyName) == false)
                 {
