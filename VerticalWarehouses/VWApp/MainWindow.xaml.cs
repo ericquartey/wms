@@ -21,7 +21,7 @@ namespace Ferretto.VW.VWApp
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            InverteDriverManager.InverterDriverStaticInstance.Terminate();
+            InverteDriverManager.InverterDriverStaticInstance?.Terminate();
             Application.Current.Shutdown();
         }
 
