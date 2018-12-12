@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.CompartmentItemPairing), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.CompartmentIsItemPairingFixed), ResourceType = typeof(BusinessObjects))]
         public bool IsItemPairingFixed
         {
             get => this.isItemPairingFixed;

@@ -210,7 +210,7 @@
     <comment>Compartment - Max Capacity</comment>
   </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
-    <value>Fixed Item Pairing</value>
+    <value>Item Pairing</value>
     <comment>Compartment - Fixed Pairing</comment>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
@@ -417,7 +417,7 @@
     <value>Reference Type</value>
     <comment>Loading Unit - Reference Type</comment>
   </data>
-  <data name="LoadingUnitCellPairing" xml:space="preserve">
+  <data name="LoadingUnitIsCellPairingFixed" xml:space="preserve">
     <value>Cell Pairing</value>
     <comment>Loading Unit - Cell Pairing</comment>
   </data>
@@ -852,8 +852,8 @@
     <value>Account access error</value>
     <comment>Credentials - Account access error</comment>
   </data>
-  <data name="CompartmentItemPairing" xml:space="preserve">
-    <value>Item Pairing</value>
-    <comment>Compartment - Item Pairing</comment>
+  <data name="PairingFixed" xml:space="preserve">
+    <value>Fixed</value>
+    <comment>Pairing - Fixed</comment>
   </data>
 </root>

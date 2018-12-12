@@ -130,7 +130,7 @@
                                       ItemsSource="{Binding Compartment.CompartmentTypeChoices}" />
                         <wms:WmsCheckEdit Grid.Row="2"
                                           Grid.Column="1"
-                                          Content="Is Fixed"
+                                          Content="{x:Static res:BusinessObjects.PairingFixed}"
                                           IsChecked="{Binding Compartment.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="3"
                                       Margin="0,0,20,0"

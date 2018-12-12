@@ -169,7 +169,7 @@
 
                     <wms:WmsCheckEdit Grid.Row="6"
                                       Grid.Column="2"
-                                      Content="Is Fixed"
+                                      Content="{x:Static res:BusinessObjects.PairingFixed}"
                                       IsChecked="{Binding Compartment.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <dxa:AccordionControl Grid.Row="7"

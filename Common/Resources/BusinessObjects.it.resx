@@ -292,7 +292,7 @@
     <value>Data Ultima Movimentazione</value>
   </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
-    <value>Abbinamento Articolo Fisso</value>
+    <value>Abbinamento Articolo</value>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
@@ -342,8 +342,8 @@
   <data name="LoadingUnitReferenceType" xml:space="preserve">
     <value>Tipo Referenza</value>
   </data>
-  <data name="LoadingUnitCellPairing" xml:space="preserve">
-    <value>Abbinamento Cella</value>
+  <data name="LoadingUnitIsCellPairingFixed" xml:space="preserve">
+    <value>Abbinamento Celle</value>
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
     <value>Peso</value>
@@ -681,7 +681,7 @@
   <data name="AccountAccessError" xml:space="preserve">
     <value>Errore di accesso</value>
   </data>
-  <data name="CompartmentItemPairing" xml:space="preserve">
-    <value>Abbinamento Articolo</value>
+  <data name="PairingFixed" xml:space="preserve">
+    <value>Fisso</value>
   </data>
 </root>
