@@ -69,7 +69,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     return;
                 }
 
-                this.ChangeDetector.TakeSnapshot(this.loadingUnit);
+                this.TakeSnapshot(this.loadingUnit);
 
                 this.RefreshData();
             }
@@ -130,7 +130,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.ChangeDetector.TakeSnapshot(this.loadingUnit);
+            this.TakeSnapshot(this.loadingUnit);
 
             this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.loadingUnit.Id));
 

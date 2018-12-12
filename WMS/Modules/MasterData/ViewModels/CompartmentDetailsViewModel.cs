@@ -53,7 +53,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 if (this.SetProperty(ref this.compartment, value))
                 {
-                    this.ChangeDetector.TakeSnapshot(this.compartment);
+                    this.TakeSnapshot(this.compartment);
 
                     var loadingUnit = this.loadingUnitProvider.GetById(this.compartment.LoadingUnitId);
                     this.InitializeTray(loadingUnit);
@@ -116,7 +116,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var modifiedRowCount = this.compartmentProvider.Save(this.compartment);
             if (modifiedRowCount > 0)
             {
-                this.ChangeDetector.TakeSnapshot(this.compartment);
+                this.TakeSnapshot(this.compartment);
 
                 this.EventService.Invoke(new ModelChangedEvent<Compartment>(this.compartment.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));

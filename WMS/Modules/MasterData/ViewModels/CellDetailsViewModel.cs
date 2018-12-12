@@ -45,7 +45,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     return;
                 }
 
-                this.ChangeDetector.TakeSnapshot(this.cell);
+                this.TakeSnapshot(this.cell);
 
                 this.RefreshData();
             }
@@ -110,7 +110,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var modifiedRowCount = this.cellProvider.Save(this.cell);
             if (modifiedRowCount > 0)
             {
-                this.ChangeDetector.TakeSnapshot(this.cell);
+                this.TakeSnapshot(this.cell);
 
                 this.EventService.Invoke(new ModelChangedEvent<Cell>(this.cell.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CellSavedSuccessfully));

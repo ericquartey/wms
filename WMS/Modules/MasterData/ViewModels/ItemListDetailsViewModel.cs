@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -49,21 +48,12 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.itemList;
             set
             {
-                if (this.itemList == value)
+                if (!this.SetProperty(ref this.itemList, value))
                 {
                     return;
                 }
 
-                if (this.itemList != null)
-                {
-                    this.ItemList.PropertyChanged -= this.OnItemListPropertyChanged;
-                }
-
-                this.SetProperty(ref this.itemList, value);
-
-                this.ChangeDetector.TakeSnapshot(this.ItemList);
-
-                this.ItemList.PropertyChanged += this.OnItemListPropertyChanged;
+                this.TakeSnapshot(this.ItemList);
 
                 //TODO
                 //this.RefreshData();
@@ -111,7 +101,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var modifiedRowCount = this.itemListProvider.Save(this.itemList);
             if (modifiedRowCount > 0)
             {
-                this.ChangeDetector.TakeSnapshot(this.itemList);
+                this.TakeSnapshot(this.itemList);
 
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.itemList.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
@@ -228,11 +218,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.ItemList = this.itemListProvider.GetById(modelId);
             }
-        }
-
-        private void OnItemListPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            this.EvaluateCanExecuteCommands();
         }
 
         #endregion Methods

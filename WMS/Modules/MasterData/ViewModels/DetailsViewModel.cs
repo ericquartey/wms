@@ -34,8 +34,6 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand SaveCommand => this.saveCommand ??
                                        (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand));
 
-        protected ChangeDetector<T> ChangeDetector => this.changeDetector;
-
         #endregion Properties
 
         #region Methods
@@ -59,6 +57,11 @@ namespace Ferretto.WMS.Modules.MasterData
         protected abstract void ExecuteRevertCommand();
 
         protected abstract void ExecuteSaveCommand();
+
+        protected void TakeSnapshot(T model)
+        {
+            this.changeDetector.TakeSnapshot(model);
+        }
 
         private void ChangeDetector_ModifiedChanged(System.Object sender, System.EventArgs e)
         {
