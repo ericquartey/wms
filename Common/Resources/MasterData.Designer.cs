@@ -196,6 +196,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Layout Overview.
+        /// </summary>
+        public static string CompartmentsLayoutOverview {
+            get {
+                return ResourceManager.GetString("CompartmentsLayoutOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content Information.
         /// </summary>
         public static string ContentInformation {

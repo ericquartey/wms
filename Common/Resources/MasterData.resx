@@ -322,4 +322,8 @@
   <data name="RunItemListRow" xml:space="preserve">
     <value>Execute Row List</value>
   </data>
+  <data name="CompartmentsLayoutOverview" xml:space="preserve">
+    <value>Layout Overview</value>
+    <comment>Label - Grouping</comment>
+  </data>
 </root>

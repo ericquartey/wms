@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Ferretto.VW.ActionBlocks.Source;
 using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.VWApp
@@ -20,9 +21,11 @@ namespace Ferretto.VW.VWApp
 
         protected override void OnClosed(EventArgs e)
         {
-            base.OnClosed(e);
+            ActionManager.PositioningDrawerInstance?.Terminate();
+            ActionManager.CalibrateVerticalAxisInstance?.Terminate();
             InverteDriverManager.InverterDriverStaticInstance?.Terminate();
             Application.Current.Shutdown();
+            base.OnClosed(e);
         }
 
         #endregion Methods

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
 {

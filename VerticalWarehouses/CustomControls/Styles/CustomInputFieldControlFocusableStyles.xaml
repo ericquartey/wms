@@ -7,17 +7,17 @@
            TargetType="{x:Type custom:CustomInputFieldControlFocusable}">
         <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_BorderColor_Normal}" />
         <Style.Triggers>
-            <Trigger Property="Highlighted" Value="true">
-                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CCInput_Highlighted_Normal}" />
-            </Trigger>
             <Trigger Property="Highlighted" Value="false">
-                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CCInput_NotHighlighted_Normal}" />
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_BorderColor_Normal}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="true">
-                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CCInput_NotHighlighted_Normal}" />
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_BorderColor_Normal}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_BorderColor_TextBox_Disabled}" />
+            </Trigger>
+            <Trigger Property="Highlighted" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_CustomInputFieldControlFocusable_BorderColor_Highlighted}" />
             </Trigger>
         </Style.Triggers>
     </Style>
