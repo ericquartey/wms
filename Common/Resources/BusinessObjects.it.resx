@@ -672,8 +672,8 @@
   <data name="ItemListStatusWaiting" xml:space="preserve">
     <value>In Attesa</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="Username" xml:space="preserve">
+    <value>Nome Utente</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
