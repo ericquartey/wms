@@ -108,6 +108,8 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.handlingParametersCorrection, value);
         }
 
+        public bool LoadingUnitTypeHasCompartments { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
         public int Height
         {

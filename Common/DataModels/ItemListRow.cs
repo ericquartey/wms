@@ -14,7 +14,7 @@ namespace Ferretto.Common.DataModels
 
         public DateTime CreationDate { get; set; }
 
-        public int EvadedQuantity { get; set; }
+        public int DispatchedQuantity { get; set; }
 
         public int Id { get; set; }
 
