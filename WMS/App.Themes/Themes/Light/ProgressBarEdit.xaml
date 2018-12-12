@@ -49,8 +49,8 @@
                                                  Orientation="Horizontal"
                                                  ShowBorder="False" />
                             <TextBlock Grid.Column="1"
-                                       VerticalAlignment="Center"
-                                       Text="{Binding Path=DisplayText, ElementName=progressBarEditControl}" />
+                                       Text="{Binding Path=DisplayText, ElementName=InnerProgressBarEditControl}"
+                                       VerticalAlignment="Center" />
                         </Grid>
                     </Grid>
                     <ControlTemplate.Triggers>
