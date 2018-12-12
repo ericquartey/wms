@@ -21,9 +21,18 @@ namespace Ferretto.VW.VWApp
 
         protected override void OnClosed(EventArgs e)
         {
-            InverteDriverManager.InverterDriverStaticInstance.Terminate();
-            ActionManager.PositioningDrawerInstance.Terminate();
-            ActionManager.CalibrateVerticalAxisInstance.Terminate();
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.Terminate();
+            }
+            if (ActionManager.CalibrateVerticalAxisInstance != null)
+            {
+                ActionManager.CalibrateVerticalAxisInstance.Terminate();
+            }
+            if (InverteDriverManager.InverterDriverStaticInstance != null)
+            {
+                InverteDriverManager.InverterDriverStaticInstance.Terminate();
+            }
             Application.Current.Shutdown();
             base.OnClosed(e);
         }

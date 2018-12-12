@@ -140,13 +140,9 @@ namespace Ferretto.VW.VWApp
             InverteDriverManager.InverterDriverStaticInstance = new InverterDriver.InverterDriver();
             if (InverteDriverManager.InverterDriverStaticInstance.Initialize())
             {
-                ActionManager.PositioningDrawerInstance = new ActionBlocks.PositioningDrawer();
+                ActionManager.PositioningDrawerInstance = new PositioningDrawer();
                 ActionManager.PositioningDrawerInstance.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
                 ActionManager.PositioningDrawerInstance.Initialize();
-
-                ActionManager.CalibrateVerticalAxisInstance = new CalibrateVerticalAxis();
-                ActionManager.CalibrateVerticalAxisInstance.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
-                ActionManager.CalibrateVerticalAxisInstance.Initialize();
             }
         }
 
