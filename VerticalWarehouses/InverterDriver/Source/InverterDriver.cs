@@ -90,11 +90,15 @@ namespace Ferretto.VW.InverterDriver
 
         public event ConnectedEventHandler Connected;
 
-        public event EnquiryTelegramDoneEventHandler EnquiryTelegramDone;
+        public event EnquiryTelegramDoneEventHandler EnquiryTelegramDone_CalibrateVerticalAxis;
+
+        public event EnquiryTelegramDoneEventHandler EnquiryTelegramDone_PositioningDrawer;
 
         public event ErrorEventHandler Error;
 
-        public event SelectTelegramDoneEventHandler SelectTelegramDone;
+        public event SelectTelegramDoneEventHandler SelectTelegramDone_CalibrateVerticalAxis;
+
+        public event SelectTelegramDoneEventHandler SelectTelegramDone_PositioningDrawer;
 
         #endregion Events
 
