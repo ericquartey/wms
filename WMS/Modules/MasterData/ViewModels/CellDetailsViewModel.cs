@@ -1,17 +1,14 @@
-using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
-using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CellDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public class CellDetailsViewModel : DetailsViewModel<CellDetails>, IRefreshDataEntityViewModel
     {
         #region Fields
 
@@ -23,8 +20,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelChangedEventSubscription;
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
-        private ICommand revertCommand;
-        private ICommand saveCommand;
         private object selectedLoadingUnit;
 
         #endregion Fields
@@ -49,6 +44,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     return;
                 }
+
+                this.ChangeDetector.TakeSnapshot(this.cell);
+
                 this.RefreshData();
             }
         }
@@ -81,12 +79,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.loadingUnitsDataSource, value);
         }
 
-        public ICommand RevertCommand => this.revertCommand ??
-          (this.revertCommand = new DelegateCommand(this.LoadData));
-
-        public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
-
         public object SelectedLoadingUnit
         {
             get => this.selectedLoadingUnit;
@@ -108,6 +100,23 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
+        protected override void ExecuteRevertCommand()
+        {
+            this.LoadData();
+        }
+
+        protected override void ExecuteSaveCommand()
+        {
+            var modifiedRowCount = this.cellProvider.Save(this.cell);
+            if (modifiedRowCount > 0)
+            {
+                this.ChangeDetector.TakeSnapshot(this.cell);
+
+                this.EventService.Invoke(new ModelChangedEvent<Cell>(this.cell.Id));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CellSavedSuccessfully));
+            }
+        }
+
         protected override void OnAppear()
         {
             this.LoadData();
@@ -120,18 +129,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EventService.Unsubscribe<ModelChangedEvent<Cell>>(this.modelChangedEventSubscription);
             this.EventService.Unsubscribe<ModelSelectionChangedEvent<Cell>>(this.modelSelectionChangedSubscription);
             base.OnDispose();
-        }
-
-        private void ExecuteSaveCommand()
-        {
-            var modifiedRowCount = this.cellProvider.Save(this.Cell);
-
-            if (modifiedRowCount > 0)
-            {
-                this.EventService.Invoke(new ModelChangedEvent<Cell>(this.Cell.Id));
-
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CellSavedSuccessfully));
-            }
         }
 
         private void Initialize()

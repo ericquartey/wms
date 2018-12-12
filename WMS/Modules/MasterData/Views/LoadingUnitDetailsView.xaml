@@ -97,21 +97,21 @@
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.LoadingUnitTypeId}"
+                                      EditValue="{Binding LoadingUnit.LoadingUnitTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.LoadingUnitTypeChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.LoadingUnitStatusId}"
+                                      EditValue="{Binding LoadingUnit.LoadingUnitStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.LoadingUnitStatusChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.AbcClassId}"
+                                      EditValue="{Binding LoadingUnit.AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.AbcClassChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.ReferenceType}"
+                                      EditValue="{Binding LoadingUnit.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.ReferenceTypeChoices}" />
                         <wms:TextBox Grid.Row="3"
                                      Grid.ColumnSpan="3"
@@ -137,17 +137,17 @@
                         </Grid.ColumnDefinitions>
                         <wms:ComboBox Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellId}"
-                                      ItemsSource="{Binding LoadingUnit.CellChoices}" />
+                                      EditValue="{Binding Path=LoadingUnit.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=LoadingUnit.CellChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellPositionId}"
-                                      ItemsSource="{Binding LoadingUnit.CellPositionChoices}" />
+                                      EditValue="{Binding Path=LoadingUnit.CellPositionId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=LoadingUnit.CellPositionChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellPairing}"
-                                      ItemsSource="{Binding LoadingUnit.CellPairingChoices}" />
+                                      EditValue="{Binding Path=LoadingUnit.CellPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=LoadingUnit.CellPairingChoices}" />
 
                     </Grid>
                 </GroupBox>
@@ -163,13 +163,13 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>

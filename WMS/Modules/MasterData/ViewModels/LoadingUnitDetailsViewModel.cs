@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
@@ -12,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class LoadingUnitDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
+    public class LoadingUnitDetailsViewModel : DetailsViewModel<LoadingUnitDetails>, IRefreshDataEntityViewModel
     {
         #region Fields
 
@@ -27,8 +26,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private bool readOnlyTray;
-        private ICommand revertCommand;
-        private ICommand saveCommand;
+
         private CompartmentDetails selectedCompartment;
         private Tray tray;
         private Func<CompartmentDetails, CompartmentDetails, string> trayColoringFunc;
@@ -53,7 +51,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand EditCommand => this.editCommand ??
-                  (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
+               (this.editCommand = new DelegateCommand(this.ExecuteEditCommand));
 
         public bool IsCompartmentSelectableTray
         {
@@ -71,6 +69,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     return;
                 }
 
+                this.ChangeDetector.TakeSnapshot(this.loadingUnit);
+
                 this.RefreshData();
             }
         }
@@ -86,12 +86,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.readOnlyTray;
             set => this.SetProperty(ref this.readOnlyTray, value);
         }
-
-        public ICommand RevertCommand => this.revertCommand ??
-                                         (this.revertCommand = new DelegateCommand(this.LoadData));
-
-        public ICommand SaveCommand => this.saveCommand ??
-                                       (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand));
 
         public CompartmentDetails SelectedCompartment
         {
@@ -122,6 +116,27 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
+        protected override void ExecuteRevertCommand()
+        {
+            this.LoadData();
+        }
+
+        protected override void ExecuteSaveCommand()
+        {
+            var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
+
+            if (modifiedRowCount <= 0)
+            {
+                return;
+            }
+
+            this.ChangeDetector.TakeSnapshot(this.loadingUnit);
+
+            this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.loadingUnit.Id));
+
+            this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+        }
+
         protected override void OnAppear()
         {
             this.LoadData();
@@ -140,20 +155,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCommand()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.LoadingUnit.Id);
-        }
-
-        private void ExecuteSaveCommand()
-        {
-            var modifiedRowCount = this.loadingUnitProvider.Save(this.LoadingUnit);
-
-            if (modifiedRowCount <= 0)
-            {
-                return;
-            }
-
-            this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.LoadingUnit.Id));
-
-            this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
         }
 
         private void Initialize()
@@ -189,6 +190,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     Width = this.LoadingUnit.Width
                 }
             };
+
             if (this.LoadingUnit.Compartments != null)
             {
                 newTray.AddCompartmentsRange(this.LoadingUnit.Compartments);

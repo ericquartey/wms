@@ -12,11 +12,10 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel, IEdit
+    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IRefreshDataEntityViewModel, IEdit
     {
         #region Fields
 
-        private readonly ChangeDetector<ItemDetails> changeDetector = new ChangeDetector<ItemDetails>();
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
@@ -25,8 +24,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelChangedEventSubscription;
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
-        private ICommand revertCommand;
-        private ICommand saveCommand;
         private object selectedCompartment;
         private ICommand withdrawCommand;
 
@@ -82,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 this.SetProperty(ref this.item, value);
 
-                this.changeDetector.TakeSnapshot(this.item);
+                this.ChangeDetector.TakeSnapshot(this.item);
 
                 this.item.PropertyChanged += this.OnItemPropertyChanged;
 
@@ -95,12 +92,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.itemHasCompartments;
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
-
-        public ICommand RevertCommand => this.revertCommand ??
-                  (this.revertCommand = new DelegateCommand(this.LoadData, this.CanExecuteRevert));
-
-        public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSave));
 
         public object SelectedCompartment
         {
@@ -127,6 +118,31 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+
+            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override void ExecuteRevertCommand()
+        {
+            this.LoadData();
+        }
+
+        protected override void ExecuteSaveCommand()
+        {
+            var modifiedRowCount = this.itemProvider.Save(this.Item);
+            if (modifiedRowCount > 0)
+            {
+                this.ChangeDetector.TakeSnapshot(this.Item);
+
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
+
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
+            }
+        }
+
         protected override void OnAppear()
         {
             this.LoadData();
@@ -141,44 +157,9 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private bool CanExecuteRevert()
-        {
-            return this.changeDetector.IsModified == true;
-        }
-
-        private bool CanExecuteSave()
-        {
-            return this.changeDetector.IsModified == true;
-        }
-
         private bool CanExecuteWithdraw()
         {
             return this.Item?.TotalAvailable > 0;
-        }
-
-        private void ChangeDetector_ModifiedChanged(System.Object sender, System.EventArgs e)
-        {
-            this.EvaluateCanExecuteCommands();
-        }
-
-        private void EvaluateCanExecuteCommands()
-        {
-            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
-            ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-            ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
-        }
-
-        private void ExecuteSaveCommand()
-        {
-            var modifiedRowCount = this.itemProvider.Save(this.Item);
-            if (modifiedRowCount > 0)
-            {
-                this.changeDetector.TakeSnapshot(this.Item);
-
-                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
-
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
-            }
         }
 
         private void ExecuteWithdraw()
@@ -213,8 +194,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Token,
                 true,
                 true);
-
-            this.changeDetector.ModifiedChanged += this.ChangeDetector_ModifiedChanged;
         }
 
         private void LoadData()
