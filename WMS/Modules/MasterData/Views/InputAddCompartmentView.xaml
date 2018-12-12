@@ -167,11 +167,10 @@
                                   EditValue="{Binding Path=Compartment.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   ItemsSource="{Binding Path=Compartment.MaterialStatusChoices}" />
 
-                    <wms:ComboBox x:Name="Pairing"
-                                  Grid.Row="6"
-                                  Grid.Column="2"
-                                  EditValue="{Binding Path=Compartment.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ItemsSource="{Binding Path=Compartment.ItemPairingChoices}" />
+                    <wms:WmsCheckEdit Grid.Row="6"
+                                      Grid.Column="2"
+                                      Content="Is Fixed"
+                                      IsChecked="{Binding Compartment.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <dxa:AccordionControl Grid.Row="7"
                                           Grid.ColumnSpan="3"

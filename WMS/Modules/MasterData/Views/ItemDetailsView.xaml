@@ -224,7 +224,7 @@
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Stock" />
                                 <dxg:GridColumn Width="200*"
-                                                FieldName="ItemPairingDescription" />
+                                                FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
