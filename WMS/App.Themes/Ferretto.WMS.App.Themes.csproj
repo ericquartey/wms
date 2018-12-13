@@ -30,6 +30,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <None Remove="Themes\Light\BusyIndicator.xaml" />
     <None Remove="Themes\Light\PasswordBox.xaml" />
   </ItemGroup>
   
