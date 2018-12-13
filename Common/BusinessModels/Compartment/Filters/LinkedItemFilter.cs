@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessModels
             var color = "Blue";
             if (selected != null)
             {
-                if ((compartment.ItemPairing != 0 || compartment == selected) && compartment.ItemPairing == selected.ItemPairing)
+                if (compartment == selected && compartment.IsItemPairingFixed == selected.IsItemPairingFixed)
                 {
                     color = "#76FF03";
                 }
@@ -28,8 +28,11 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         public Func<CompartmentDetails, CompartmentDetails, string> ColorFunc => colorFunc;
+
         public string Description => "Compartment";
+
         public int Id => 2;
+
         public CompartmentDetails Selected { get; set; }
 
         #endregion Properties

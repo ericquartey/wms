@@ -133,7 +133,7 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <wms:ComboBox Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
@@ -143,11 +143,12 @@
                                       Margin="0,0,20,0"
                                       EditValue="{Binding LoadingUnit.CellPositionId}"
                                       ItemsSource="{Binding LoadingUnit.CellPositionChoices}" />
-                        <wms:ComboBox Grid.Row="1"
-                                      Grid.Column="1"
-                                      Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellPairing}"
-                                      ItemsSource="{Binding LoadingUnit.CellPairingChoices}" />
+
+                        <wms:WmsCheckEdit Grid.Row="1"
+                                          Grid.Column="1"
+                                          Margin="0,0,20,0"
+                                          Content="{x:Static res:BusinessObjects.PairingFixed}"
+                                          IsChecked="{Binding Path=LoadingUnit.IsCellPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -217,26 +218,27 @@
                                 </dxg:TableView>
                             </wms:WmsGridControl.View>
 
-                            <wms:WmsGridControl.Columns>
-                                <dxg:GridColumn Width="200*"
-                                                FieldName="Code" />
-                                <dxg:GridColumn Width="200*"
-                                                FieldName="LoadingUnitCode" />
-                                <dxg:GridColumn Width="100*"
-                                                FieldName="Sub1" />
-                                <dxg:GridColumn Width="100*"
-                                                FieldName="Sub2" />
-                                <dxg:GridColumn Width="200*"
-                                                FieldName="Lot" />
-                                <dxg:GridColumn Width="200*"
-                                                FieldName="CompartmentStatusDescription" />
-                                <dxg:GridColumn Width="100*"
-                                                FieldName="Stock" />
-                                <dxg:GridColumn Width="100*"
-                                                FieldName="MaxCapacity" />
-                                <dxg:GridColumn Width="200*"
-                                                FieldName="ItemPairingDescription" />
-                            </wms:WmsGridControl.Columns>
+                                <wms:WmsGridControl.Columns>
+                                    <dxg:GridColumn Width="200*"
+                                                    FieldName="Code" />
+                                    <dxg:GridColumn Width="200*"
+                                                    FieldName="LoadingUnitCode" />
+                                    <dxg:GridColumn Width="100*"
+                                                    FieldName="Sub1" />
+                                    <dxg:GridColumn Width="100*"
+                                                    FieldName="Sub2" />
+                                    <dxg:GridColumn Width="200*"
+                                                    FieldName="Lot" />
+                                    <dxg:GridColumn Width="200*"
+                                                    FieldName="CompartmentStatusDescription" />
+                                    <dxg:GridColumn Width="100*"
+                                                    FieldName="Stock" />
+                                    <dxg:GridColumn Width="100*"
+                                                    FieldName="MaxCapacity" />
+                                    <dxg:GridColumn Width="200*"
+                                                    FieldName="IsItemPairingFixed"
+                                                    Style="{DynamicResource BooleanCellTemplate}" />
+                                </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
                                 <dxg:GridSortInfo FieldName="Code"

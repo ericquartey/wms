@@ -30,11 +30,11 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? InventoryDate { get; set; }
 
+        public bool IsItemPairingFixed { get; set; }
+
         public Item Item { get; set; }
 
         public int? ItemId { get; set; }
-
-        public Pairing ItemPairing { get; set; }
 
         public DateTime? LastHandlingDate { get; set; }
 

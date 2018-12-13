@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.Common.DataModels;
+﻿using Ferretto.Common.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -30,12 +29,6 @@ namespace Ferretto.Common.EF.Configurations
                 .HasDefaultValueSql("GETUTCDATE()");
             builder.Property(c => c.LastModificationDate)
                 .HasDefaultValueSql("GETUTCDATE()");
-            builder.Property(c => c.ItemPairing)
-                .HasColumnType("NVARCHAR(MAX)")
-                .HasConversion(
-                    x => x.ToString()
-                    , x => (Pairing)Enum.Parse(typeof(Pairing), x)
-                );
 
             builder.HasOne(c => c.LoadingUnit)
                 .WithMany(l => l.Compartments)

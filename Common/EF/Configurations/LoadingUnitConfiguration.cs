@@ -40,12 +40,6 @@ namespace Ferretto.Common.EF.Configurations
                 .HasDefaultValue(0);
             builder.Property(l => l.OtherCycleCount)
                 .HasDefaultValue(0);
-            builder.Property(c => c.CellPairing)
-                .HasColumnType("NVARCHAR(MAX)")
-                .HasConversion(
-                    x => x.ToString()
-                    , x => (Pairing)Enum.Parse(typeof(Pairing), x)
-                );
 
             builder.HasOne(l => l.AbcClass)
                 .WithMany(a => a.LoadingUnits)

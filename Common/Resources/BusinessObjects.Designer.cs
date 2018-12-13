@@ -358,6 +358,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Pairing.
+        /// </summary>
+        public static string CompartmentIsItemPairingFixed {
+            get {
+                return ResourceManager.GetString("CompartmentIsItemPairingFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item.
         /// </summary>
         public static string CompartmentItem {
@@ -417,15 +426,6 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentMaxCapacity {
             get {
                 return ResourceManager.GetString("CompartmentMaxCapacity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Pairing.
-        /// </summary>
-        public static string CompartmentPairing {
-            get {
-                return ResourceManager.GetString("CompartmentPairing", resourceCulture);
             }
         }
         
@@ -1105,15 +1105,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell Pairing.
-        /// </summary>
-        public static string LoadingUnitCellPairing {
-            get {
-                return ResourceManager.GetString("LoadingUnitCellPairing", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
         public static string LoadingUnitCode {
@@ -1182,6 +1173,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitInventoryDate {
             get {
                 return ResourceManager.GetString("LoadingUnitInventoryDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell Pairing.
+        /// </summary>
+        public static string LoadingUnitIsCellPairingFixed {
+            get {
+                return ResourceManager.GetString("LoadingUnitIsCellPairingFixed", resourceCulture);
             }
         }
         
@@ -1299,6 +1299,15 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitWidth {
             get {
                 return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
             }
         }
         
@@ -1713,6 +1722,15 @@ namespace Ferretto.Common.Resources {
         public static string PackageType {
             get {
                 return ResourceManager.GetString("PackageType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fixed.
+        /// </summary>
+        public static string PairingFixed {
+            get {
+                return ResourceManager.GetString("PairingFixed", resourceCulture);
             }
         }
         
