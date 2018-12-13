@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="TextBlockErrorMessageStyle" TargetType="{x:Type TextBlock}">
+    <Style x:Key="TextBlockErrorMessageStyle"
+           TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ErrorMessageColorBrush}" />
         <Setter Property="FontWeight" Value="Bold" />
     </Style>

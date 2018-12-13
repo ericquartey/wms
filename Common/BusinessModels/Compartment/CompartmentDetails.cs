@@ -19,11 +19,11 @@ namespace Ferretto.Common.BusinessModels
         private string itemCode;
         private string itemDescription;
         private int? itemId;
-        private int itemPairing;
         private IEnumerable<Enumeration> itemPairingChoices;
         private string loadingUnitCode;
         private int loadingUnitId;
         private string lot;
+        private bool isItemPairingFixed;
         private IEnumerable<Enumeration> materialStatusChoices;
         private int? materialStatusId;
         private int? maxCapacity;
@@ -102,6 +102,13 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
 
+        [Display(Name = nameof(BusinessObjects.CompartmentIsItemPairingFixed), ResourceType = typeof(BusinessObjects))]
+        public bool IsItemPairingFixed
+        {
+            get => this.isItemPairingFixed;
+            set => this.SetProperty(ref this.isItemPairingFixed, value);
+        }
+
         [Display(Name = nameof(BusinessObjects.ItemCode_extended), ResourceType = typeof(BusinessObjects))]
         public string ItemCode
         {
@@ -122,22 +129,6 @@ namespace Ferretto.Common.BusinessModels
             get => this.itemId;
             set => this.SetProperty(ref this.itemId, value);
         }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public int ItemPairing
-        {
-            get => this.itemPairing;
-            set => this.SetIfPositive(ref this.itemPairing, value);
-        }
-
-        public IEnumerable<Enumeration> ItemPairingChoices
-        {
-            get => this.itemPairingChoices;
-            set => this.SetProperty(ref this.itemPairingChoices, value);
-        }
-
-        [Display(Name = nameof(BusinessObjects.CompartmentPairing), ResourceType = typeof(BusinessObjects))]
-        public string ItemPairingDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
