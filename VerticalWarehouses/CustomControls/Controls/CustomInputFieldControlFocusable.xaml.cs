@@ -19,7 +19,7 @@ namespace Ferretto.VW.CustomControls.Controls
     /// <summary>
     /// Interaction logic for CustomInputFieldControlFocusableFocusable.xaml
     /// </summary>
-    public partial class CustomInputFieldControlFocusable : UserControl
+    public partial class CustomInputFieldControlFocusable : UserControl, INotifyPropertyChanged
     {
         #region Fields
 

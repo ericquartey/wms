@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181211154922_Rename_EvadedQuantity_Field_In_ItemListRows_ToDispatchedQuantity")]
+    partial class Rename_EvadedQuantity_Field_In_ItemListRows_ToDispatchedQuantity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -976,8 +978,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired();
-
-                    b.Property<bool>("HasCompartments");
 
                     b.Property<int>("LoadingUnitHeightClassId");
 

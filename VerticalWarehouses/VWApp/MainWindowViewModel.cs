@@ -8,6 +8,8 @@ using Ferretto.VW.Navigation;
 using System.ComponentModel;
 using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
+using Ferretto.VW.ActionBlocks.Source;
+using Ferretto.VW.ActionBlocks;
 
 namespace Ferretto.VW.VWApp
 {
@@ -100,10 +102,7 @@ namespace Ferretto.VW.VWApp
 
         private void ExecuteLoginButtonCommand()
         {
-            InverteDriverManager.InverterDriverStaticInstance = new InverterDriver.InverterDriver();
-            var tmp = InverteDriverManager.InverterDriverStaticInstance.Initialize();
-            Debug.Print(tmp.ToString());
-
+            this.InitializeInverterConnection();
             if (this.CheckInputCorrectness(this.UserLogin, this.PasswordLogin))
             {
                 switch (this.UserLogin)
@@ -133,6 +132,17 @@ namespace Ferretto.VW.VWApp
             else
             {
                 this.LoginErrorMessage = Common.Resources.VWApp.ErrorLogin;
+            }
+        }
+
+        private void InitializeInverterConnection()
+        {
+            InverteDriverManager.InverterDriverStaticInstance = new InverterDriver.InverterDriver();
+            if (InverteDriverManager.InverterDriverStaticInstance.Initialize())
+            {
+                ActionManager.PositioningDrawerInstance = new PositioningDrawer();
+                ActionManager.PositioningDrawerInstance.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
+                ActionManager.PositioningDrawerInstance.Initialize();
             }
         }
 

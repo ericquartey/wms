@@ -11,8 +11,8 @@
     <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBrush_Down"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="VWAPP_CustomControlSensor_TextBlock_Foreground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+                     Color="{DynamicResource ColorFerrettoBlack}" />
     <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBackground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+                     Color="{DynamicResource ColorFerrettoBlack}" />
 
 </ResourceDictionary>
