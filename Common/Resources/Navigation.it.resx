@@ -216,4 +216,19 @@
   <data name="ItemListRowExecution" xml:space="preserve">
     <value>Esecuzione della Riga della Lista</value>
   </data>
+  <data name="CellDetails" xml:space="preserve">
+    <value>Dettagli Cella</value>
+  </data>
+  <data name="CompartmentDetails" xml:space="preserve">
+    <value>Dettagli Scomparto</value>
+  </data>
+  <data name="ItemDetails" xml:space="preserve">
+    <value>Dettagli Articolo</value>
+  </data>
+  <data name="LoadingUnitDetails" xml:space="preserve">
+    <value>Dettagli Unità di Carico</value>
+  </data>
+  <data name="Machines" xml:space="preserve">
+    <value>Macchine</value>
+  </data>
 </root>

@@ -204,4 +204,16 @@
   <data name="Type" xml:space="preserve">
     <value>Tipo</value>
   </data>
+  <data name="Down" xml:space="preserve">
+    <value>Giù</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Inferiore</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Superiore</value>
+  </data>
 </root>
