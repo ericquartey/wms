@@ -97,6 +97,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid index.
+        /// </summary>
+        public static string BusyIndicatorInvalidIndex {
+            get {
+                return ResourceManager.GetString("BusyIndicatorInvalidIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style &apos;{0}&apos; for &apos;{1}&apos; not found..
+        /// </summary>
+        public static string BusyIndicatorStyleNotFound {
+            get {
+                return ResourceManager.GetString("BusyIndicatorStyleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {
@@ -273,6 +291,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemTypeWasNotSpecified {
             get {
                 return ResourceManager.GetString("ItemTypeWasNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments..
+        /// </summary>
+        public static string LoadingUnitOverlappingCompartment {
+            get {
+                return ResourceManager.GetString("LoadingUnitOverlappingCompartment", resourceCulture);
             }
         }
         

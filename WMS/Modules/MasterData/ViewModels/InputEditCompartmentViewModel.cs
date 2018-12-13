@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
@@ -96,7 +93,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected virtual void OnFinishEvent(EventArgs e)
         {
-            EventHandler handler = this.FinishEvent;
+            var handler = this.FinishEvent;
             if (handler != null)
             {
                 handler(this, e);
@@ -110,7 +107,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteEditCommand()
         {
-            string error = this.tray.CanBulkAddCompartment(this.SelectedCompartmentTray, this.tray, true, true);
+            var error = this.tray.CanBulkAddCompartment(this.SelectedCompartmentTray, this.tray, true, true);
             this.SetError(error);
             if (error == null || error == "")
             {
@@ -225,7 +222,7 @@ namespace Ferretto.WMS.Modules.MasterData
             compartment.ItemCode = this.SelectedCompartmentTray.ItemCode;
             compartment.Stock = this.SelectedCompartmentTray.Stock;
             compartment.MaxCapacity = this.SelectedCompartmentTray.MaxCapacity;
-            compartment.ItemPairing = this.SelectedCompartmentTray.ItemPairing;
+            compartment.IsItemPairingFixed = this.SelectedCompartmentTray.IsItemPairingFixed;
         }
 
         #endregion Methods

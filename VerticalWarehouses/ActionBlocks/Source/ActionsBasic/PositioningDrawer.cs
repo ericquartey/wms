@@ -37,7 +37,7 @@ namespace Ferretto.VW.ActionBlocks
         private InverterDriver.InverterDriver inverterDriver;
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
-        // At this time we take into account only the code 6a
+        // At this time we take into account only the code code 6a
         private string positioningStep;
 
         private byte systemIndex = 0x00;
@@ -81,7 +81,7 @@ namespace Ferretto.VW.ActionBlocks
         {
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
             this.valParam = (short)0x010F; // 0x01nF
-            InverterDriverExitStatus idExitStatus = inverterDriver.SettingRequest(paramID, systemIndex, dataSetIndex, valParam);
+            var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, this.dataSetIndex, this.valParam);
         }
 
         public void Initialize()
@@ -90,8 +90,8 @@ namespace Ferretto.VW.ActionBlocks
 
             if (this.inverterDriver != null)
             {
-                inverterDriver.EnquiryTelegramDone += this.EnquiryTelegram;
-                inverterDriver.SelectTelegramDone += this.SelectTelegram;
+                this.inverterDriver.EnquiryTelegramDone_PositioningDrawer += this.EnquiryTelegram;
+                this.inverterDriver.SelectTelegramDone_PositioningDrawer += this.SelectTelegram;
                 this.inverterDriver.Error += this.DriverError;
             }
         }
@@ -107,7 +107,8 @@ namespace Ferretto.VW.ActionBlocks
             this.bStoppedOk = false;
 
             // Start the routine
-            stepExecution();
+            this.inverterDriver.CurrentActionType = ActionType.PositioningDrawer;
+            this.stepExecution();
         }
 
         public void ReStart()
@@ -137,8 +138,8 @@ namespace Ferretto.VW.ActionBlocks
         public void Terminate()
         {
             // Unsubscribe the event handlers
-            this.inverterDriver.SelectTelegramDone -= this.SelectTelegram;
-            this.inverterDriver.EnquiryTelegramDone -= this.EnquiryTelegram;
+            this.inverterDriver.SelectTelegramDone_PositioningDrawer -= this.SelectTelegram;
+            this.inverterDriver.EnquiryTelegramDone_PositioningDrawer -= this.EnquiryTelegram;
         }
 
         private void CtrExistStatus(InverterDriverExitStatus idStatus)
