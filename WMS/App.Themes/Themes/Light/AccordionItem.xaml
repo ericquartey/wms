@@ -15,8 +15,15 @@
 
 
     <Color x:Key="Grey">#FF293133</Color>
+    <Color x:Key="LightGrey">#c5c7c4</Color>
+    <Color x:Key="MediumGrey">#707173</Color>
+
     <SolidColorBrush x:Key="DefaultGrey"
                      Color="{StaticResource Grey}" />
+    <SolidColorBrush x:Key="HoverLightGrey"
+                     Color="{StaticResource LightGrey}" />
+    <SolidColorBrush x:Key="PressedMediumGrey"
+                     Color="{StaticResource MediumGrey}" />
 
     <wms:BoolToVisibilityConverter x:Key="BTVC" />
 
@@ -156,62 +163,62 @@
     <!--  Static Resources  -->
 
 
-    <!--  COLOR RESOURCES  -->
+    <!--  Color Resources  -->
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderDefaultForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderPressedForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderDisabledForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderFocusedForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedInactiveForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDefaultForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}"
-                     Color="#FFc6c4c4" />
+                     Color="{StaticResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderPressedForeground}"
-                     Color="#FFc6c4c4" />
+                     Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDisabledForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderFocusedForeground}"
-                     Color="#FFc6c4c4" />
+                     Color="{StaticResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedForeground}"
-                     Color="#FFc6c4c4" />
+                     Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedInactiveForeground}"
-                     Color="#FFc6c4c4" />
+                     Color="{StaticResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=Background}"
-                     Color="#FFE6E6E6" />
+                     Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=BorderBrush}"
-                     Color="#FFE6E6E6" />
+                     Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=TextForeground}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=SearchControlNullTextForeground}"
                      Opacity="0.62"
-                     Color="#FFABABAB" />
+                     Color="{StaticResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=SearchControlClearButtonFill}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=SearchControlSearchButtonFill}"
-                     Color="#FF444444" />
+                     Color="{StaticResource Grey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=HeaderForeground}"
-                     Color="#FF444444" />
-    <!--  COLOR RESOURCES  -->
+                     Color="{StaticResource Grey}" />
+    <!--  Color Resources  -->
 
 
-    <!--  EXPAND BUTTON  -->
-    <ControlTemplate x:Key="EXPANDBUTTON"
+    <!--  Arrow Expand Button  -->
+    <ControlTemplate x:Key="ArrowExpandButton"
                      TargetType="{x:Type dxa:AccordionExpandButton}">
         <Grid x:Name="Root">
             <Border x:Name="RootItemHover"
-                    Background="#30000000"
+                    Background="Black"
                     Opacity="0" />
             <Border x:Name="RootItemPressed"
-                    Background="#FF666666"
+                    Background="{StaticResource PressedMediumGrey}"
                     Opacity="0" />
             <dxa:ExpandButtonContentPresenter x:Name="IsUnchecked"
                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -320,14 +327,14 @@
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <!--  EXPAND BUTTON  -->
+    <!--  Arrow Expand Button  -->
 
 
-    <!--  ACCORDION EXPAND BUTTON  -->
+    <!--  Arrow Expand Button Style  -->
     <dxt:EditorStringIdConverter x:Key="EditorStringIdConverter" />
     <dxan:AccordionItemConverter x:Key="accordionItemConverter" />
 
-    <Style x:Key="ACCORDIONEXPANBUTTON"
+    <Style x:Key="ArrowExpandButtonStyle"
            TargetType="dxa:AccordionExpandButton">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Background" Value="Yellow" />
@@ -335,7 +342,7 @@
         <Setter Property="Height" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemExpandButtonSize}}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="Template" Value="{StaticResource EXPANDBUTTON}" />
+        <Setter Property="Template" Value="{StaticResource ArrowExpandButton}" />
         <Setter Property="Margin" Value="0,0,0,0" />
         <Setter Property="ClickMode" Value="Press" />
         <Setter Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderDefaultForeground}}" />
@@ -355,11 +362,11 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <!--  ACCORDION EXPAND BUTTON  -->
+    <!--  Arrow Expand Button Style  -->
 
 
-    <!--  SUBITEM ITEMBACKGROUNDCONTROL  -->
-    <ControlTemplate x:Key="SUBITEMBACKGROUNDCONTROL"
+    <!--  SubItem Child  -->
+    <ControlTemplate x:Key="SubItemChild"
                      TargetType="{x:Type dxa:AccordionItemBackgroundControl}">
         <Grid x:Name="Root">
             <Border x:Name="ItemHover"
@@ -415,11 +422,11 @@
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <!--  SUBITEM ITEMBACKGROUNDCONTROL  -->
+    <!--  SubItem Child  -->
 
 
-    <!--  ROOTITEM ITEMBACKGROUNDCONTROL  -->
-    <ControlTemplate x:Key="ROOTITEMBACKGROUNDCONTROL"
+    <!--  Root Item Parent  -->
+    <ControlTemplate x:Key="RootItemParent"
                      TargetType="{x:Type dxa:AccordionItemBackgroundControl}">
         <Grid x:Name="Root">
             <Border x:Name="ItemHover"
@@ -475,11 +482,11 @@
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <!--  ROOTITEM ITEMBACKGROUNDCONTROL  -->
+    <!--  Root Item Parent  -->
 
 
-    <!--  ACCORDION ROOT ITEM  -->
-    <DataTemplate x:Key="HeaderAccordingItemTemplate">
+    <!--  WMS Root Item Parent Accordion  -->
+    <DataTemplate x:Key="RootItemParentTemplate">
         <StackPanel Orientation="Horizontal">
             <dxe:ToggleSwitch Margin="15,0,0,0"
                               Template="{DynamicResource WmsToggleSwitch}"
@@ -495,7 +502,7 @@
     </DataTemplate>
 
     <Style TargetType="{x:Type wms:AccordionItem}">
-        <Setter Property="HeaderTemplate" Value="{StaticResource HeaderAccordingItemTemplate}" />
+        <Setter Property="HeaderTemplate" Value="{StaticResource RootItemParentTemplate}" />
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -549,7 +556,7 @@
                                                                     Focusable="False"
                                                                     ItemState="Default"
                                                                     ItemType="{Binding ItemType, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                    Template="{StaticResource ROOTITEMBACKGROUNDCONTROL}" />
+                                                                    Template="{StaticResource RootItemParent}" />
                                 <Grid x:Name="PART_HeaderInternalContainer"
                                       Margin="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderMargin}}">
                                     <Grid.ColumnDefinitions>
@@ -572,7 +579,7 @@
                                     </Grid.RowDefinitions>
                                     <dxa:AccordionExpandButton x:Name="PART_ExpandButton"
                                                                Grid.RowSpan="2"
-                                                               Style="{StaticResource ACCORDIONEXPANBUTTON}" />
+                                                               Style="{StaticResource ArrowExpandButtonStyle}" />
 
                                     <ContentPresenter x:Name="PART_Glyph"
                                                       Grid.Row="1"
@@ -934,10 +941,10 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <!--  ACCORDION ROOT ITEM  -->
+    <!--  WMS Root Item Parent Accordion  -->
 
 
-    <!--  ACCORDION SUB ITEM  -->
+    <!--  Sub Item Child Accordion  -->
     <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=DevExpress.Xpf.Accordion.AccordionItem,
                                                                 ThemeName=Office2016White}}"
            TargetType="{x:Type dxa:AccordionItem}">
@@ -994,7 +1001,7 @@
                                                                     Focusable="False"
                                                                     ItemState="Default"
                                                                     ItemType="{Binding ItemType, RelativeSource={RelativeSource TemplatedParent}}"
-                                                                    Template="{StaticResource SUBITEMBACKGROUNDCONTROL}" />
+                                                                    Template="{StaticResource SubItemChild}" />
 
                                 <Grid x:Name="PART_HeaderInternalContainer"
                                       Margin="0,0,0,0">
@@ -1376,6 +1383,6 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <!--  ACCORDION SUB ITEM  -->
+    <!--  Sub Item Child Accordion  -->
 
 </ResourceDictionary>
