@@ -13,22 +13,25 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly IDatabaseContextService dataContext;
+        private readonly ItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion Fields
 
         #region Constructors
 
         public CompartmentTypeProvider(
-            IDatabaseContextService context)
+            IDatabaseContextService context,
+            ItemCompartmentTypeProvider itemCompartmentTypeProvider)
         {
             this.dataContext = context;
+            this.itemCompartmentTypeProvider = itemCompartmentTypeProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public async Task<Int32> Add(CompartmentType model)
+        public async Task<OperationResult> Add(CompartmentType model, int? itemId, int? maxCapacity)
         {
             //TODO: Task 823
             if (model == null)
@@ -38,10 +41,11 @@ namespace Ferretto.Common.BusinessProviders
 
             var dataContext = this.dataContext.Current;
             var existing = dataContext.CompartmentTypes.SingleOrDefault(ct =>
-            (ct.Width == model.Width || ct.Height == model.Height)
-            &&
-            (ct.Width == model.Height || ct.Height == model.Width));
+            (ct.Width == model.Width && ct.Height == model.Height)
+            ||
+            (ct.Width == model.Height && ct.Height == model.Width));
 
+            var compartmentTypeId = -1;
             if (existing == null)
             {
                 var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
@@ -55,11 +59,37 @@ namespace Ferretto.Common.BusinessProviders
                 if (changedEntitiesCount > 0)
                 {
                     model.Id = entry.Entity.Id;
-                    return model.Id;
+                    compartmentTypeId = model.Id;
+                }
+            }
+            else
+            {
+                compartmentTypeId = existing.Id;
+            }
+
+            //Add Association ItemCompartmentType
+            if (itemId.HasValue)
+            {
+                var itemCompartmentTypeId = await this.itemCompartmentTypeProvider.Add(new ItemCompartmentType
+                {
+                    ItemId = itemId.Value,
+                    MaxCapacity = maxCapacity,
+                    CompartmentTypeId = compartmentTypeId
+                });
+
+                var addItemCompartmentTypeCount = await dataContext.SaveChangesAsync();
+                if (addItemCompartmentTypeCount < 1)
+                {
+                    //TODO
                 }
             }
 
-            return existing.Id;
+            return new OperationResult(true, entityId: compartmentTypeId);
+        }
+
+        public Task<OperationResult> Add(CompartmentType model)
+        {
+            return this.Add(model, null, null);
         }
 
         public Int32 Delete(Int32 id)

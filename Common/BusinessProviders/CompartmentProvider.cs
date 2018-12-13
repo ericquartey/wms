@@ -34,13 +34,15 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<int> Add(CompartmentDetails model)
+        public async Task<OperationResult> Add(CompartmentDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            using (var scope = new TransactionScope())
+            //TODO: use Transaction
+
+            try
             {
                 var dataContext = this.dataContext.Current;
 
@@ -48,8 +50,8 @@ namespace Ferretto.Common.BusinessProviders
                 {
                     Width = model.Width,
                     Height = model.Height,
-                    Description = "Test1"
-                });
+                    Description = ""
+                }, model.ItemId, model.MaxCapacity);
 
                 var entry = dataContext.Compartments.Add(new DataModels.Compartment
                 {
@@ -58,12 +60,14 @@ namespace Ferretto.Common.BusinessProviders
                     XPosition = model.XPosition,
                     YPosition = model.YPosition,
                     LoadingUnitId = model.LoadingUnitId,
-                    CompartmentTypeId = typeId,
+                    CompartmentTypeId = typeId.EntityId.Value,
                     ItemPairing = DataModels.Pairing.Free,
                     Stock = model.Stock,
                     ReservedForPick = model.ReservedForPick,
                     ReservedToStore = model.ReservedToStore,
-                    CreationDate = DateTime.Now
+                    CreationDate = DateTime.Now,
+                    ItemId = model.ItemId,
+                    MaterialStatusId = model.MaterialStatusId
                 });
 
                 var changedEntitiesCount = await dataContext.SaveChangesAsync();
@@ -72,9 +76,11 @@ namespace Ferretto.Common.BusinessProviders
                     model.Id = entry.Entity.Id;
                 }
 
-                scope.Complete();
-
-                return changedEntitiesCount;
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
             }
         }
 
@@ -139,13 +145,12 @@ namespace Ferretto.Common.BusinessProviders
                    .Include(c => c.LoadingUnit)
                    .Include(c => c.Item)
                    .Include(c => c.CompartmentStatus)
-                   .Join(
+                   .GroupJoin(
                         dataContext.ItemsCompartmentTypes,
-                        cmp => cmp.CompartmentTypeId,
-                        ict => ict.CompartmentTypeId,
-                        (cmp, ict) => new { cmp, ict }
+                        cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
+                        ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
+                        (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() }
                     )
-                   .Where(j => j.ict.ItemId == j.cmp.ItemId)
                    .Select(j => new CompartmentDetails
                    {
                        Id = j.cmp.Id,
@@ -162,7 +167,7 @@ namespace Ferretto.Common.BusinessProviders
                        PackageTypeId = j.cmp.PackageTypeId,
                        Lot = j.cmp.Lot,
                        RegistrationNumber = j.cmp.RegistrationNumber,
-                       MaxCapacity = j.ict.MaxCapacity,
+                       MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
                        Stock = j.cmp.Stock,
                        ReservedForPick = j.cmp.ReservedForPick,
                        ReservedToStore = j.cmp.ReservedToStore,

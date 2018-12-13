@@ -28,36 +28,41 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<Int32> Add(ItemCompartmentType model)
+        public async Task<OperationResult> Add(ItemCompartmentType model)
         {
-            //TODO: Task 823
-            //if (model == null)
-            //{
-            //    throw new ArgumentNullException(nameof(model));
-            //}
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            try
+            {
+                var dataContext = this.dataContext.Current;
+                var existing = dataContext.ItemsCompartmentTypes.SingleOrDefault(
+                    ict =>
+                    (ict.CompartmentTypeId == model.CompartmentTypeId
+                    && ict.ItemId == model.ItemId));
 
-            //var dataContext = this.dataContext.Current;
-            //var existing = dataContext.ItemsCompartmentTypes.SingleOrDefault(
-            //    ict =>
-            //    (ict.CompartmentTypeId == model.CompartmentTypeId
-            //    && ict.ItemId = model.ItemId));
+                if (existing == null)
+                {
+                    var entry = dataContext.ItemsCompartmentTypes.Add(new DataModels.ItemCompartmentType
+                    {
+                        CompartmentTypeId = model.CompartmentTypeId,
+                        ItemId = model.ItemId,
+                        MaxCapacity = model.MaxCapacity
+                    });
 
-            //if (existing == null)
-            //{
-            //    var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
-            //    {
-            //        Description = model.Description,
-            //        Height = model.Height,
-            //        Width = model.Width
-            //    });
-
-            //    var changedEntitiesCount = await dataContext.SaveChangesAsync();
-            //    if (changedEntitiesCount > 0)
-            //    {
-            //        model.Id = entry.Entity.Id;
-            //        return model.Id;
-            //    }
-            throw new Exception();
+                    var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                    if (changedEntitiesCount <= 0)
+                    {
+                        return new OperationResult(false, description: Resources.General.NotAddDB);
+                    }
+                }
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
         public Int32 Delete(Int32 id)

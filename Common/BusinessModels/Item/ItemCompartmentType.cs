@@ -8,9 +8,9 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        public int? CompartmentTypeId { get; set; }
+        public int CompartmentTypeId { get; set; }
 
-        public int? ItemId { get; set; }
+        public int ItemId { get; set; }
 
         public int? MaxCapacity { get; set; }
 
