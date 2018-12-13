@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
+using System.Windows.Threading;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.Common.Controls.Interfaces;
@@ -12,8 +13,10 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(nameof(FocusedStart), typeof(string), typeof(WmsDialogView), new FrameworkPropertyMetadata(default(string), null));
+
         private readonly INavigationService
-            navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+                    navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
 
         private readonly WmsViewType viewType;
 
@@ -36,6 +39,12 @@ namespace Ferretto.Common.Controls
         #region Properties
 
         public object Data { get; set; }
+
+        public string FocusedStart
+        {
+            get => (string)this.GetValue(FocusedStartProperty);
+            set => this.SetValue(FocusedStartProperty, value);
+        }
 
         public bool IsClosed { get; set; }
 
@@ -116,6 +125,8 @@ namespace Ferretto.Common.Controls
                 this.DataContext =
                     this.navigationService.RegisterAndGetViewModel(this.GetType().ToString(), this.GetMainViewToken(), this.Data);
             }
+            ((INavigableViewModel)this.DataContext)?.Appear();
+            FormControl.SetFocus(this, this.FocusedStart);
         }
 
         private string GetAttachedViewModel()
@@ -155,7 +166,6 @@ namespace Ferretto.Common.Controls
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             this.CheckDataContext();
-            ((INavigableViewModel)this.DataContext)?.Appear();
         }
 
         #endregion Methods

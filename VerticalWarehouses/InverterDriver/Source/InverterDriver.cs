@@ -25,6 +25,7 @@ namespace Ferretto.VW.InverterDriver
         public const int HEARTBIT = 14;
         public const string IP_ADDR_INVERTER_DEFAULT = "169.254.231.248";
         public const int PORT_ADDR_INVERTER_DEFAULT = 17221;
+        public ActionType CurrentActionType;
         private static readonly object lockFlags = new object();
         private static readonly object lockObj = new object();
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
@@ -90,11 +91,15 @@ namespace Ferretto.VW.InverterDriver
 
         public event ConnectedEventHandler Connected;
 
-        public event EnquiryTelegramDoneEventHandler EnquiryTelegramDone;
+        public event EnquiryTelegramDoneEventHandler EnquiryTelegramDone_CalibrateVerticalAxis;
+
+        public event EnquiryTelegramDoneEventHandler EnquiryTelegramDone_PositioningDrawer;
 
         public event ErrorEventHandler Error;
 
-        public event SelectTelegramDoneEventHandler SelectTelegramDone;
+        public event SelectTelegramDoneEventHandler SelectTelegramDone_CalibrateVerticalAxis;
+
+        public event SelectTelegramDoneEventHandler SelectTelegramDone_PositioningDrawer;
 
         #endregion Events
 
@@ -338,16 +343,22 @@ namespace Ferretto.VW.InverterDriver
                 this.errorReceivedTelegram = this.received_telegram(telegramRead, out var paramID, out this.retParameterValue);
                 if (!this.errorReceivedTelegram)
                 {
-                    if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External)
+                    switch (this.CurrentActionType)
                     {
-                        // Notify the <EnquiryTelegram> via Event firing
-                        EnquiryTelegramDone?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
-                    }
-
-                    if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External)
-                    {
-                        // Notify the <SelectTelegram> via Event firing
-                        SelectTelegramDone?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType));
+                        case ActionType.CalibrateVerticalAxis:
+                            {
+                                if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_CalibrateVerticalAxis?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                break;
+                            }
+                        case ActionType.PositioningDrawer:
+                            {
+                                if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_PositioningDrawer?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_PositioningDrawer?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                break;
+                            }
+                        default:
+                            break;
                     }
 
                     // Update internal class members
@@ -447,8 +458,10 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public InverterDriverExitStatus SettingRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex, object value)
         {
+            var valueType = ParameterIDClass.Instance.GetDataValueType(paramID);
+
             // Store the request into the list.
-            var Rq = new Request(TypeOfRequest.SettingRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, ValueDataType.Int16, value);
+            var Rq = new Request(TypeOfRequest.SettingRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, valueType, value);
 
             BitArray bitArrayCtrlTmp = null;
             if (paramID == ParameterID.CONTROL_WORD_PARAM)

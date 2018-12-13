@@ -58,8 +58,6 @@ namespace Ferretto.Common.Controls
                 return image;
             }
 
-            System.Diagnostics.Debug.WriteLine($"ColorizeImage: {this.colorizeBrush} - {this.source}");
-
             var bitmap = image as WriteableBitmap ?? new WriteableBitmap(image as BitmapImage);
 
             var currentPixel = new byte[bitmap.Format.BitsPerPixel / 8];

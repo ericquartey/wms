@@ -42,17 +42,24 @@ namespace Ferretto.Common.Controls.Services
                 return;
             }
 
-            this.navigationService.LoadModule(moduleName);
+            try
+            {
+                this.navigationService.LoadModule(moduleName);
 
-            if (this.isControlPressed)
-            {
-                this.navigationService.Appear(moduleName, viewModelName, data);
+                if (this.isControlPressed)
+                {
+                    this.navigationService.Appear(moduleName, viewModelName, data);
+                }
+                else
+                {
+                    this.currentHistoryView.Appear(moduleName, viewModelName, data);
+                }
+                this.Reset();
             }
-            else
+            catch (System.Exception ex)
             {
-                this.currentHistoryView.Appear(moduleName, viewModelName, data);
+                NLog.LogManager.GetCurrentClassLogger().Error(ex, $"Cannot show view {viewModelName} for module {moduleName}.");
             }
-            this.Reset();
         }
 
         public void Previous()

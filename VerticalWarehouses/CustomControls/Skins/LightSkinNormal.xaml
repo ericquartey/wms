@@ -23,9 +23,9 @@
     <SolidColorBrush x:Key="VWAPP_CCInput_NotHighlighted_Normal"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
-    <SolidColorBrush x:Key="VWAPP_SensorState_Foreground_Normal"
+    <SolidColorBrush x:Key="VWAPP_CustomControlSensor_TextBlock_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoBlack}" />
-    <SolidColorBrush x:Key="VWAPP_SensorState_BulletBackground_Normal"
+    <SolidColorBrush x:Key="VWAPP_CustomControlSensor_BulletBackground_Normal"
                      Color="{DynamicResource ColorFerrettoBlack}" />
 
 </ResourceDictionary>

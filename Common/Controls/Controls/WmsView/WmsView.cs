@@ -12,6 +12,9 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty EnableHistoryViewProperty = DependencyProperty.Register(nameof(EnableHistoryView), typeof(bool), typeof(WmsView));
+
+        public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(nameof(FocusedStart), typeof(string), typeof(WmsView), new FrameworkPropertyMetadata(default(string), null));
+
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(nameof(ViewModel), typeof(INavigableViewModel), typeof(WmsView));
 
         private readonly INavigationService
@@ -40,6 +43,12 @@ namespace Ferretto.Common.Controls
         {
             get => (bool)this.GetValue(EnableHistoryViewProperty);
             set => this.SetValue(EnableHistoryViewProperty, value);
+        }
+
+        public string FocusedStart
+        {
+            get => (string)this.GetValue(FocusedStartProperty);
+            set => this.SetValue(FocusedStartProperty, value);
         }
 
         public bool IsClosed { get; set; }
@@ -97,6 +106,7 @@ namespace Ferretto.Common.Controls
             }
             this.ViewModel = (INavigableViewModel)this.DataContext;
             ((INavigableViewModel)this.DataContext)?.Appear();
+            FormControl.SetFocus(this, this.FocusedStart);
         }
 
         private void CheckToAddHistoryView()
@@ -171,7 +181,7 @@ namespace Ferretto.Common.Controls
         private void WMSView_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
             this.CheckDataContext();
-            this.CheckToAddHistoryView();            
+            this.CheckToAddHistoryView();
         }
 
         #endregion Methods

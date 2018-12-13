@@ -46,6 +46,10 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.InitializingMasterDataModule);
 
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Loading module ...");
+
             this.NavigationService.Register<ItemsView, ItemsViewModel>();
             this.NavigationService.Register<ItemDetailsView, ItemDetailsViewModel>();
 
@@ -98,6 +102,10 @@ namespace Ferretto.WMS.Modules.MasterData
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.DoneInitializingEntityFramework);
 
 #endif
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Module loaded.");
         }
 
         #endregion Methods

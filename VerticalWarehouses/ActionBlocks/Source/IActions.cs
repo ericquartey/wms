@@ -62,6 +62,8 @@
 
         void StopInverter();
 
+        void Terminate();
+
         #endregion Methods
     }
 }

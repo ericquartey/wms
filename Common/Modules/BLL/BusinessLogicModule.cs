@@ -31,6 +31,10 @@ namespace Ferretto.Common.Modules.BLL
 
         public void Initialize()
         {
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Loading module ...");
+
             this.Container.RegisterType<IAreaProvider, AreaProvider>();
             this.Container.RegisterType<IBayProvider, BayProvider>();
             this.Container.RegisterType<ICellProvider, CellProvider>();
@@ -49,6 +53,10 @@ namespace Ferretto.Common.Modules.BLL
 
             this.Container.RegisterType<DatabaseContext, DatabaseContext>(new InjectionConstructor());
             this.Container.RegisterType<EnumerationProvider, EnumerationProvider>(new InjectionConstructor(new DatabaseContext()));
+
+            NLog.LogManager
+               .GetCurrentClassLogger()
+               .Trace("Module loaded.");
         }
 
         #endregion Methods

@@ -840,9 +840,9 @@
     <value>Suspended</value>
     <comment>Item List Status - Suspended</comment>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-    <comment>Credential - Login</comment>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+    <comment>Credential - Username</comment>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
@@ -851,5 +851,9 @@
   <data name="AccountAccessError" xml:space="preserve">
     <value>Account access error</value>
     <comment>Credentials - Account access error</comment>
+  </data>
+  <data name="ItemListRowDispatchedQuantity" xml:space="preserve">
+    <value>Dispatched Quantity</value>
+    <comment>List Row - Dispatched Quantity</comment>
   </data>
 </root>
