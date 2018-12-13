@@ -6,6 +6,7 @@
         <Border Name="Root_ActionButtonBorder"
                 Width="{DynamicResource VWAPP_ActionButton_Width_Normal}"
                 Height="{DynamicResource VWAPP_ActionButton_Height_Normal}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                 Background="{DynamicResource VWAPP_ActionButton_Background_Normal}"
                 BorderBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
                 BorderThickness="{DynamicResource VWAPP_ActionButton_BorderThickness_Normal}">

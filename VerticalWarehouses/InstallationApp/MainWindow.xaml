@@ -58,7 +58,6 @@
                               Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
                               Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                      Margin="35,0,0,0"
                                       HorizontalAlignment="Center"
                                       Background="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}"
                                       Content="{x:Static res:InstallationApp.Installer}"
@@ -66,9 +65,7 @@
                                       Style="{StaticResource VWAPP_MainWindowUserComboBoxItemStyle}"
                                       Template="{StaticResource VWAPP_MainWindowUserComboBoxItemTemplate}" />
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                      Margin="65,0,0,0"
-                                      HorizontalAlignment="Center"
-                                      Content="{x:Static res:InstallationApp.LogOff}">
+                                      HorizontalAlignment="Center">
                             <ComboBoxItem.Style>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Background" Value="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}" />
@@ -77,19 +74,25 @@
                                     <Setter Property="FontSize" Value="{DynamicResource VWAPP_MainWindowUserComboBox_FontSize_Normal}" />
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                                     <Setter Property="VerticalContentAlignment" Value="Center" />
-                                    <EventSetter Event="PreviewMouseDown"
-                                                 Handler="BackToVWAppButtonMethod" />
                                 </Style>
                             </ComboBoxItem.Style>
+                            <custom:CustomControlMainWindowUserComboBoxItem Width="{Binding ElementName=userComboBox, Path=ActualWidth}"
+                                                                            Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                                                            HorizontalAlignment="Center"
+                                                                            HorizontalContentAlignment="Center"
+                                                                            CustomCommand="{Binding BackToVWAPPCommand}"
+                                                                            LabelText="{x:Static res:InstallationApp.LogOff}" />
                         </ComboBoxItem>
                     </ComboBox>
                     <Image Height="30"
                            Margin="2,10,20,2"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
-                    <custom:CustomMachineModeToggleButton CustomCommand="{Binding MachineModeCustomCommand}"
+                    <custom:CustomMachineModeToggleButton Name="MachineModeControl"
+                                                          CustomCommand="{Binding MachineModeCustomCommand}"
                                                           MachineModeState="{Binding MachineModeSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                           Style="{StaticResource VWAPP_CustomMachineModeToggleButtonStyle}" />
-                    <custom:CustomMachineOnMarchToggleButton Margin="10,0,0,0"
+                    <custom:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
+                                                             Margin="10,0,0,0"
                                                              CustomCommand="{Binding MachineOnMarchCustomCommand}"
                                                              MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />

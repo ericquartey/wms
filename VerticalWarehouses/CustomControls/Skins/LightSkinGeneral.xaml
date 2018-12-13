@@ -43,13 +43,13 @@
     <SolidColorBrush x:Key="VWAPP_SensorStateBrush_Fill_Down"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
 
-    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineMode_Auto"
+    <SolidColorBrush x:Key="VWAPP_MainWindowCustomComboBoxMachineMode_Auto"
                      Color="Blue" />
-    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineMode_Manual"
+    <SolidColorBrush x:Key="VWAPP_MainWindowCustomComboBoxMachineMode_Manual"
                      Color="{DynamicResource ColorFerrettoGreen}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineOnMarch_On"
+    <SolidColorBrush x:Key="VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"
                      Color="{DynamicResource ColorFerrettoGreen}" />
-    <SolidColorBrush x:Key="IAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
+    <SolidColorBrush x:Key="VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
     <FontFamily x:Key="VWAPP_TitleFont">pack://application:,,,/Fonts/#RobotoCondensed-Regular.ttf</FontFamily>

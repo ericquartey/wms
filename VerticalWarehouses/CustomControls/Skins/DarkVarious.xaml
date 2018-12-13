@@ -22,9 +22,4 @@
     <SolidColorBrush x:Key="IAPP_CCInput_NotHighlighted_Normal"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
-    <SolidColorBrush x:Key="VWAPP_SensorState_Foreground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <SolidColorBrush x:Key="VWAPP_SensorState_BulletBackground_Normal"
-                     Color="{DynamicResource ColorFerrettoPureWhite}" />
-
 </ResourceDictionary>
