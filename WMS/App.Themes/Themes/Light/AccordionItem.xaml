@@ -14,16 +14,12 @@
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
 
-    <Color x:Key="Grey">#FF293133</Color>
-    <Color x:Key="LightGrey">#c5c7c4</Color>
-    <Color x:Key="MediumGrey">#707173</Color>
-
     <SolidColorBrush x:Key="DefaultGrey"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="HoverLightGrey"
-                     Color="{StaticResource LightGrey}" />
+                     Color="{DynamicResource LightGrey}" />
     <SolidColorBrush x:Key="PressedMediumGrey"
-                     Color="{StaticResource MediumGrey}" />
+                     Color="{DynamicResource MediumGrey}" />
 
     <wms:BoolToVisibilityConverter x:Key="BTVC" />
 
@@ -165,48 +161,48 @@
 
     <!--  Color Resources  -->
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderDefaultForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}"
-                     Color="{StaticResource LightGrey}" />
+                     Color="{DynamicResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderPressedForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderDisabledForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderFocusedForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderSelectedInactiveForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDefaultForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}"
-                     Color="{StaticResource LightGrey}" />
+                     Color="{DynamicResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderPressedForeground}"
-                     Color="{StaticResource MediumGrey}" />
+                     Color="{DynamicResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDisabledForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderFocusedForeground}"
-                     Color="{StaticResource LightGrey}" />
+                     Color="{DynamicResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedForeground}"
-                     Color="{StaticResource MediumGrey}" />
+                     Color="{DynamicResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderSelectedInactiveForeground}"
-                     Color="{StaticResource LightGrey}" />
+                     Color="{DynamicResource LightGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=Background}"
-                     Color="{StaticResource MediumGrey}" />
+                     Color="{DynamicResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=BorderBrush}"
-                     Color="{StaticResource MediumGrey}" />
+                     Color="{DynamicResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionItemThemeKeys ResourceKey=TextForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=SearchControlNullTextForeground}"
                      Opacity="0.62"
-                     Color="{StaticResource MediumGrey}" />
+                     Color="{DynamicResource MediumGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=SearchControlClearButtonFill}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=SearchControlSearchButtonFill}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <SolidColorBrush x:Key="{dxat:AccordionThemeKeys ResourceKey=HeaderForeground}"
-                     Color="{StaticResource Grey}" />
+                     Color="{DynamicResource DarkGrey}" />
     <!--  Color Resources  -->
 
 
