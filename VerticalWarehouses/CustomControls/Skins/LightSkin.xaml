@@ -11,6 +11,7 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightMainWindowUserComboBox.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomControlInputFieldFocusable.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomControlSensor.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomLabelTextBlock.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
