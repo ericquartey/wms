@@ -97,6 +97,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid index.
+        /// </summary>
+        public static string BusyIndicatorInvalidIndex {
+            get {
+                return ResourceManager.GetString("BusyIndicatorInvalidIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style &apos;{0}&apos; for &apos;{1}&apos; not found..
+        /// </summary>
+        public static string BusyIndicatorStyleNotFound {
+            get {
+                return ResourceManager.GetString("BusyIndicatorStyleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {

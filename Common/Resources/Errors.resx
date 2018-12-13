@@ -219,4 +219,10 @@
   <data name="NoChangesFound" xml:space="preserve">
     <value>No Changes found.</value>
   </data>
+  <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
+    <value>Style '{0}' for '{1}' not found.</value>
+  </data>
+  <data name="BusyIndicatorInvalidIndex" xml:space="preserve">
+    <value>Invalid index</value>
+  </data>
 </root>

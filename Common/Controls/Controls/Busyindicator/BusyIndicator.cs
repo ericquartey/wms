@@ -2,42 +2,43 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.Controls
 {
-    [StyleTypedProperty(Property = "BusyStyle", StyleTargetType = typeof(Control))]
+    [StyleTypedProperty(Property = nameof(BusyIndicator.BusyStyle), StyleTargetType = typeof(Control))]
     public class BusyIndicator : Decorator
     {
         #region Fields
 
         public static readonly DependencyProperty BusyHorizontalAlignmentProperty = DependencyProperty.Register(
-          "BusyHorizontalAlignment",
+          nameof(BusyHorizontalAlignment),
           typeof(HorizontalAlignment),
           typeof(BusyIndicator),
           new FrameworkPropertyMetadata(HorizontalAlignment.Center));
 
         public static readonly DependencyProperty BusyStyleProperty =
             DependencyProperty.Register(
-            "BusyStyle",
+            nameof(BusyStyle),
             typeof(Style),
             typeof(BusyIndicator),
             new FrameworkPropertyMetadata(OnBusyStyleChanged));
 
         public static readonly DependencyProperty BusyVerticalAlignmentProperty = DependencyProperty.Register(
-          "BusyVerticalAlignment",
+          nameof(BusyVerticalAlignment),
           typeof(VerticalAlignment),
           typeof(BusyIndicator),
           new FrameworkPropertyMetadata(VerticalAlignment.Center));
 
         public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
-            "IsBusy",
+            nameof(IsBusy),
             typeof(bool),
             typeof(BusyIndicator),
             new FrameworkPropertyMetadata(false,
                 FrameworkPropertyMetadataOptions.AffectsMeasure));
 
         public static readonly DependencyProperty ShowModeProperty =
-                        DependencyProperty.Register("ShowMode", typeof(IndicatorType),
+                        DependencyProperty.Register(nameof(ShowMode), typeof(IndicatorType),
                         typeof(BusyIndicator),
                         new FrameworkPropertyMetadata(IndicatorType.Default, OnIndicatorTypeChanged));
 
@@ -151,7 +152,7 @@ namespace Ferretto.Common.Controls
                 return this.busyHost;
             }
 
-            throw new IndexOutOfRangeException("index");
+            throw new IndexOutOfRangeException(Errors.BusyIndicatorInvalidIndex);
         }
 
         protected override Size MeasureOverride(Size constraint)
@@ -166,21 +167,6 @@ namespace Ferretto.Common.Controls
             this.busyHost.Measure(constraint);
 
             return new Size(Math.Max(ret.Width, this.busyHost.DesiredSize.Width), Math.Max(ret.Height, this.busyHost.DesiredSize.Height));
-        }
-
-        private static Style FindNameFromResource(string keyRes)
-        {
-            foreach (var dictionary in Application.Current.Resources.MergedDictionaries)
-            {
-                foreach (var key in dictionary.Keys)
-                {
-                    if (key.ToString() == keyRes)
-                    {
-                        return dictionary[key] as Style;
-                    }
-                }
-            }
-            return null;
         }
 
         private static void OnBusyStyleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -204,7 +190,7 @@ namespace Ferretto.Common.Controls
                 }
                 else
                 {
-                    throw new ArgumentException($"Style '{newType}' for '{decType}' not found");
+                    throw new ArgumentException(string.Format(Errors.BusyIndicatorStyleNotFound, newType, decType));
                 }
             }
         }
