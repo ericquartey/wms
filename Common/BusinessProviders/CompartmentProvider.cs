@@ -61,7 +61,7 @@ namespace Ferretto.Common.BusinessProviders
                     YPosition = model.YPosition,
                     LoadingUnitId = model.LoadingUnitId,
                     CompartmentTypeId = typeId.EntityId.Value,
-                    ItemPairing = DataModels.Pairing.Free,
+                    IsItemPairingFixed = model.IsItemPairingFixed,
                     Stock = model.Stock,
                     ReservedForPick = model.ReservedForPick,
                     ReservedToStore = model.ReservedToStore,
@@ -114,7 +114,7 @@ namespace Ferretto.Common.BusinessProviders
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
                    CompartmentTypeDescription = c.CompartmentType.Description,
                    ItemDescription = c.Item.Description,
-                   ItemPairingDescription = c.ItemPairing.ToString(),
+                   IsItemPairingFixed = c.IsItemPairingFixed,
                    LoadingUnitCode = c.LoadingUnit.Code,
                    Lot = c.Lot,
                    MaterialStatusDescription = c.MaterialStatus.Description,
@@ -157,7 +157,7 @@ namespace Ferretto.Common.BusinessProviders
                        Code = j.cmp.Code,
                        LoadingUnitCode = j.cmp.LoadingUnit.Code,
                        CompartmentTypeId = j.cmp.CompartmentTypeId,
-                       ItemPairing = (int)j.cmp.ItemPairing,
+                       IsItemPairingFixed = c.IsItemPairingFixed,
                        ItemCode = j.cmp.Item.Code,
                        ItemDescription = j.cmp.Item.Description,
                        Sub1 = j.cmp.Sub1,
@@ -185,7 +185,6 @@ namespace Ferretto.Common.BusinessProviders
                        YPosition = j.cmp.YPosition,
                        LoadingUnitId = j.cmp.LoadingUnitId,
                        ItemId = j.cmp.ItemId,
-                       ItemPairingDescription = j.cmp.ItemPairing.ToString()
                    })
                    .ToList();
 
@@ -195,9 +194,6 @@ namespace Ferretto.Common.BusinessProviders
                 compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
                 compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
                 compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-                compartmentDetails.ItemPairingChoices = ((DataModels.Pairing[])
-                    Enum.GetValues(typeof(DataModels.Pairing)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
                 return compartmentDetails;
             }
@@ -225,7 +221,7 @@ namespace Ferretto.Common.BusinessProviders
                     Stock = c.Stock,
                     Sub1 = c.Sub1,
                     Sub2 = c.Sub2,
-                    ItemPairingDescription = c.ItemPairing.ToString(),
+                    IsItemPairingFixed = c.IsItemPairingFixed
                 })
                 .AsNoTracking();
         }
@@ -245,7 +241,6 @@ namespace Ferretto.Common.BusinessProviders
                     Code = c.Code,
                     LoadingUnitCode = c.LoadingUnit.Code,
                     CompartmentTypeId = c.CompartmentTypeId,
-                    ItemPairing = (int)c.ItemPairing,
                     ItemCode = c.Item.Code,
                     ItemDescription = c.Item.Description,
                     Sub1 = c.Sub1,
@@ -273,7 +268,7 @@ namespace Ferretto.Common.BusinessProviders
                     YPosition = c.YPosition,
                     LoadingUnitId = c.LoadingUnitId,
                     ItemId = c.ItemId,
-                    ItemPairingDescription = c.ItemPairing.ToString(),
+                    IsItemPairingFixed = c.IsItemPairingFixed,
                 })
                 .AsNoTracking();
         }
@@ -281,16 +276,14 @@ namespace Ferretto.Common.BusinessProviders
         public CompartmentDetails GetNewCompartmentDetails()
         {
             var compartmentDetails = new CompartmentDetails();
+
             compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
             compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
             compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
             compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-            compartmentDetails.ItemPairingChoices = ((DataModels.Pairing[])
-                Enum.GetValues(typeof(DataModels.Pairing)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-            compartmentDetails.ItemPairing = (int)DataModels.Pairing.Free;
-            compartmentDetails.MaterialStatusId = compartmentDetails.MaterialStatusChoices.First().Id;
+            compartmentDetails.MaterialStatusId = compartmentDetails.MaterialStatusChoices.FirstOrDefault()?.Id;
+
             return compartmentDetails;
         }
 

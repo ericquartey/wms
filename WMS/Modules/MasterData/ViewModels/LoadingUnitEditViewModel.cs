@@ -204,7 +204,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCompartmentCommand()
         {
             this.HideMainViewAndShowLateralPanel();
-            this.PopulatePairing();
+
             this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray.Id);
             this.InputEditVM.FinishEvent += this.InputEditVM_FinishEvent;
         }
@@ -269,11 +269,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
                 this.InitializeTray();
             }
-        }
-
-        private void PopulatePairing()
-        {
-            this.selectedCompartmentTray.ItemPairingChoices = this.loadingUnit.CellPairingChoices;
         }
 
         private void ResetInputView()

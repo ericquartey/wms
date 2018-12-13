@@ -125,4 +125,10 @@
     <value>Ok</value>
     <comment>Button - Label text</comment>
   </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Password Login:</value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>User Login:</value>
+  </data>
 </root>

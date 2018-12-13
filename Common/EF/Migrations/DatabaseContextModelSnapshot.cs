@@ -406,11 +406,9 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<DateTime?>("InventoryDate");
 
-                    b.Property<int?>("ItemId");
+                    b.Property<bool>("IsItemPairingFixed");
 
-                    b.Property<string>("ItemPairing")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(MAX)");
+                    b.Property<int?>("ItemId");
 
                     b.Property<DateTime?>("LastHandlingDate");
 
@@ -543,13 +541,11 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("CellPairing")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(MAX)");
-
                     b.Property<int>("DefaultHandlingParametersCorrection");
 
                     b.Property<string>("Image");
+
+                    b.Property<bool>("IsCellPairingFixed");
 
                     b.Property<int>("LoadingUnitTypeId");
 
@@ -814,10 +810,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.Property<int>("CellId");
 
-                    b.Property<string>("CellPairing")
-                        .IsRequired()
-                        .HasColumnType("NVARCHAR(MAX)");
-
                     b.Property<int>("CellPositionId");
 
                     b.Property<string>("Code")
@@ -836,6 +828,8 @@ namespace Ferretto.Common.EF.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<DateTime?>("InventoryDate");
+
+                    b.Property<bool>("IsCellPairingFixed");
 
                     b.Property<DateTime?>("LastHandlingDate");
 
