@@ -9,14 +9,13 @@
              mc:Ignorable="d">
     <Grid Name="LayoutRoot"
           Background="Transparent">
-        <TextBlock Background="Transparent"
-                   FontSize="{DynamicResource VWAPP_MainWindowUserComboBox_FontSize_Normal}"
-                   Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
-                   Text="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Button Width="{Binding ElementName=LayoutRoot, Path=ActualWidth}"
-                Height="{Binding ElementName=LayoutRoot, Path=ActualHeight}"
+        <Button Name="btnctrl"
                 Background="Transparent"
                 BorderBrush="Transparent"
-                Command="{Binding CustomCommand}" />
+                Command="{Binding CustomCommand}"
+                Content="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                FontSize="{DynamicResource VWAPP_MainWindowUserComboBox_FontSize_Normal}"
+                Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
+
     </Grid>
 </UserControl>
