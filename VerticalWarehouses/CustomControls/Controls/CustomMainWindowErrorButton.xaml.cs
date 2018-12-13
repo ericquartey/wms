@@ -20,8 +20,14 @@ namespace Ferretto.VW.CustomControls.Controls
     /// Interaction logic for CustomMainWindowErrorButton.xaml
     /// </summary>
     public partial class CustomMainWindowErrorButton : UserControl, INotifyPropertyChanged
-
     {
+        #region Fields
+
+        public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register("ContentText", typeof(string), typeof(CustomMainWindowErrorButton));
+        public static readonly DependencyProperty CustomCommandProperty = DependencyProperty.Register("CustomCommand", typeof(ICommand), typeof(CustomMainWindowErrorButton));
+
+        #endregion Fields
+
         #region Constructors
 
         public CustomMainWindowErrorButton()
@@ -37,6 +43,22 @@ namespace Ferretto.VW.CustomControls.Controls
         public event PropertyChangedEventHandler PropertyChanged;
 
         #endregion Events
+
+        #region Properties
+
+        public string ContentText
+        {
+            get => (string)this.GetValue(ContentTextProperty);
+            set { this.SetValue(ContentTextProperty, value); this.RaisePropertyChanged("ContentText"); }
+        }
+
+        public ICommand CustomCommand
+        {
+            get => (ICommand)this.GetValue(CustomCommandProperty);
+            set { this.SetValue(CustomCommandProperty, value); this.RaisePropertyChanged("CustomCommand"); }
+        }
+
+        #endregion Properties
 
         #region Methods
 

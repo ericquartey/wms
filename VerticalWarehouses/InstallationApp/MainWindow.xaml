@@ -88,7 +88,9 @@
                                                              CustomCommand="{Binding MachineOnMarchCustomCommand}"
                                                              MachineOnMarchState="{Binding MachineOnMarchSelectionBool, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                              Style="{StaticResource VWAPP_CustomMachineOnMarchToggleButtonStyle}" />
-                    <custom:CustomMainWindowErrorButton Content="Error" />
+                    <custom:CustomMainWindowErrorButton Margin="10,0,0,0"
+                                                        ContentText="Error"
+                                                        CustomCommand="{Binding BackToVWAPPCommand}" />
                 </StackPanel>
             </Border>
         </Grid>

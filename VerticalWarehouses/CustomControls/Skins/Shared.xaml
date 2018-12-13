@@ -11,6 +11,7 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMachineOnMarchToggleButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/ExpanderStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomLabelTextBlockStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
 
 
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Templates/MainWindowUserComboBoxTemplate.xaml" />

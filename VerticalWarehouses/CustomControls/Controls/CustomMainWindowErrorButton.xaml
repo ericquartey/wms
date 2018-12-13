@@ -8,21 +8,25 @@
              d:DesignWidth="120"
              mc:Ignorable="d">
     <Button Name="LayoutRoot"
+            Width="120"
+            Height="60"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
             Background="Transparent"
-            BorderBrush="{Binding VWAPP_CustomMainWindowErrorButton_BorderBrush_Normal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            Command="{Binding Command}">
+            Command="{Binding Command}"
+            Template="{StaticResource VWAPP_CustomMachineOnMarchToggleButton_ControlTemplate}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40" />
                 <ColumnDefinition Width="80" />
+                <ColumnDefinition Width="40" />
             </Grid.ColumnDefinitions>
-            <Rectangle Grid.Column="0"
+            <Rectangle Grid.Column="1"
                        Width="40"
                        Height="58"
-                       HorizontalAlignment="Left"
                        Fill="Red" />
-            <TextBlock Grid.Column="1"
-                       Text="{Binding Content.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Grid.Column="0"
+                       Style="{StaticResource VWAPP_CustomMainWindowErrorButton_TextBlockStyle}"
+                       Text="{Binding ContentText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </Button>
 </UserControl>

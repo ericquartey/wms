@@ -12,6 +12,8 @@
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomInputFieldControlFocusable.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomControlSensor.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomLabelTextBlock.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/DarkCustomMainWindowErrorButton.xaml" />
+
         <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
