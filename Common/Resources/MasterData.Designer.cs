@@ -205,6 +205,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} X {1} ( Width [mm] X Height [mm] ).
+        /// </summary>
+        public static string CompartmentTypeListFormat {
+            get {
+                return ResourceManager.GetString("CompartmentTypeListFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content Information.
         /// </summary>
         public static string ContentInformation {
