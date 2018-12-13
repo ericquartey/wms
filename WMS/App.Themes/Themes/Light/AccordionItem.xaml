@@ -133,7 +133,7 @@
     <Style x:Key="glyphPresenterStyle"
            TargetType="ContentPresenter">
         <Setter Property="Content" Value="{Binding Glyph, RelativeSource={RelativeSource TemplatedParent}}" />
-        <!--<Setter Property="ContentTemplate" Value="{Binding GlyphTemplate, RelativeSource={RelativeSource TemplatedParent}}" />-->
+        <Setter Property="ContentTemplate" Value="{Binding GlyphTemplate, RelativeSource={RelativeSource TemplatedParent}}" />
         <Setter Property="ContentTemplateSelector" Value="{Binding GlyphTemplateSelector, RelativeSource={RelativeSource TemplatedParent}}" />
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -203,11 +203,10 @@
     <!--  COLOR RESOURCES  -->
 
 
-
+    <!--  EXPAND BUTTON  -->
     <ControlTemplate x:Key="EXPANDBUTTON"
                      TargetType="{x:Type dxa:AccordionExpandButton}">
         <Grid x:Name="Root">
-            <!--<Label x:Name="CIAONE">CIAONE</Label>-->
             <Border x:Name="RootItemHover"
                     Background="#30000000"
                     Opacity="0" />
@@ -310,45 +309,34 @@
                     <Condition Property="ItemType" Value="RootItem" />
                     <Condition Property="IsMouseOver" Value="True" />
                 </MultiTrigger.Conditions>
-                <!--<Setter TargetName="RootItemHover" Property="Opacity" Value="1" />
-                <Setter TargetName="RootItemContentExpand" Property="Fill" Value="#FF1B293E" />
-                <Setter TargetName="RootItemContentCollapse" Property="Fill" Value="#FF1B293E" />-->
+                <Setter TargetName="RootItemHover" Property="Opacity" Value="1" />
             </MultiTrigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
                     <Condition Property="ItemType" Value="RootItem" />
                     <Condition Property="IsPressed" Value="True" />
                 </MultiTrigger.Conditions>
-                <!--<Setter TargetName="RootItemPressed" Property="Opacity" Value="1" />
-                <Setter TargetName="RootItemContentExpand" Property="Fill" Value="#FF1B293E" />
-                <Setter TargetName="RootItemContentCollapse" Property="Fill" Value="#FF1B293E" />-->
+                <Setter TargetName="RootItemPressed" Property="Opacity" Value="1" />
             </MultiTrigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <!--  EXPAND BUTTON  -->
 
 
-
-
-
-
-
+    <!--  ACCORDION EXPAND BUTTON  -->
     <dxt:EditorStringIdConverter x:Key="EditorStringIdConverter" />
     <dxan:AccordionItemConverter x:Key="accordionItemConverter" />
 
     <Style x:Key="ACCORDIONEXPANBUTTON"
            TargetType="dxa:AccordionExpandButton">
-        <!--<Style x:Key="{dxat:AccordionItemThemeKeys ResourceKey=ExpanderButtonStyle}"
-           TargetType="dxa:AccordionExpandButton">-->
         <Setter Property="Focusable" Value="False" />
         <Setter Property="Background" Value="Yellow" />
         <Setter Property="Width" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemExpandButtonSize}}" />
         <Setter Property="Height" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemExpandButtonSize}}" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
-        <!--<Setter Property="Template" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ExpanderButtonTemplate}}" />-->
         <Setter Property="Template" Value="{StaticResource EXPANDBUTTON}" />
         <Setter Property="Margin" Value="0,0,0,0" />
-        <!--<Setter Property="Margin" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=HeaderElementsMargin}}" />-->
         <Setter Property="ClickMode" Value="Press" />
         <Setter Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderDefaultForeground}}" />
         <Setter Property="Visibility" Value="Collapsed" />
@@ -429,6 +417,7 @@
     </ControlTemplate>
     <!--  SUBITEM ITEMBACKGROUNDCONTROL  -->
 
+
     <!--  ROOTITEM ITEMBACKGROUNDCONTROL  -->
     <ControlTemplate x:Key="ROOTITEMBACKGROUNDCONTROL"
                      TargetType="{x:Type dxa:AccordionItemBackgroundControl}">
@@ -489,9 +478,11 @@
     <!--  ROOTITEM ITEMBACKGROUNDCONTROL  -->
 
 
+    <!--  ACCORDION ROOT ITEM  -->
     <DataTemplate x:Key="HeaderAccordingItemTemplate">
         <StackPanel Orientation="Horizontal">
             <dxe:ToggleSwitch Margin="15,0,0,0"
+                              Template="{DynamicResource WmsToggleSwitch}"
                               ToggleSwitchHeight="20"
                               ToggleSwitchWidth="30"
                               Visibility="{Binding IsToggleVisible, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type wms:AccordionItem}}, Converter={StaticResource BTVC}}" />
@@ -503,12 +494,6 @@
         </StackPanel>
     </DataTemplate>
 
-
-    <!--
-        BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=DevExpress.Xpf.Accordion.AccordionItem,
-        ThemeName=Office2016White}}"
-    -->
-    <!--  ACCORDION ROOT ITEM  -->
     <Style TargetType="{x:Type wms:AccordionItem}">
         <Setter Property="HeaderTemplate" Value="{StaticResource HeaderAccordingItemTemplate}" />
         <Setter Property="Background" Value="Transparent" />
@@ -531,8 +516,8 @@
                             <dxa:AccordionItemForegroundBehavior Foreground="{Binding Foreground, RelativeSource={RelativeSource TemplatedParent}}"
                                                                  ItemDefaultForeground="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderDefaultForeground}}"
                                                                  ItemType="{Binding ItemType, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                 RootItemDefaultForeground="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDefaultForeground}}"
                                                                  TextDefaultForeground="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=TextForeground}}" />
-                            <!--  RootItemDefaultForeground="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderDefaultForeground}}"  -->
 
                         </dxmvvm:Interaction.Behaviors>
                         <Grid x:Name="PART_ItemContainer">
@@ -565,7 +550,6 @@
                                                                     ItemState="Default"
                                                                     ItemType="{Binding ItemType, RelativeSource={RelativeSource TemplatedParent}}"
                                                                     Template="{StaticResource ROOTITEMBACKGROUNDCONTROL}" />
-                                <!--    -->
                                 <Grid x:Name="PART_HeaderInternalContainer"
                                       Margin="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderMargin}}">
                                     <Grid.ColumnDefinitions>
@@ -590,8 +574,6 @@
                                                                Grid.RowSpan="2"
                                                                Style="{StaticResource ACCORDIONEXPANBUTTON}" />
 
-
-                                    <!--  Style="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ExpanderButtonStyle}}"  -->
                                     <ContentPresenter x:Name="PART_Glyph"
                                                       Grid.Row="1"
                                                       Grid.Column="1"
@@ -610,9 +592,9 @@
                                             Grid.ColumnSpan="8"
                                             HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch"
-                                            Background="Transparent"
+                                            Background="{TemplateBinding Background}"
                                             SnapsToDevicePixels="True">
-                                        <!--  Background="{TemplateBinding Background}"  -->
+
                                         <ContentPresenter x:Name="PART_HeaderContent"
                                                           Margin="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=HeaderElementsMargin}}"
                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -955,13 +937,10 @@
     <!--  ACCORDION ROOT ITEM  -->
 
 
-
-
     <!--  ACCORDION SUB ITEM  -->
     <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=DevExpress.Xpf.Accordion.AccordionItem,
                                                                 ThemeName=Office2016White}}"
            TargetType="{x:Type dxa:AccordionItem}">
-        <!--<Setter Property="HeaderTemplate" Value="{StaticResource HeaderAccordingItemTemplate}" />-->
         <Setter Property="Background" Value="Transparent" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -1016,10 +995,9 @@
                                                                     ItemState="Default"
                                                                     ItemType="{Binding ItemType, RelativeSource={RelativeSource TemplatedParent}}"
                                                                     Template="{StaticResource SUBITEMBACKGROUNDCONTROL}" />
-                                <!--    -->
+
                                 <Grid x:Name="PART_HeaderInternalContainer"
                                       Margin="0,0,0,0">
-                                    <!--  {DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderMargin}}  -->
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition x:Name="LeftExpandButtonColumn"
                                                           Width="Auto" />
@@ -1042,11 +1020,6 @@
                                                                Grid.RowSpan="2"
                                                                Style="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ExpanderButtonStyle}}" />
 
-
-                                    <!--
-                                        Style="{StaticResource ACCORDIONEXPANBUTTON}"
-                                        Style="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ExpanderButtonStyle}}"
-                                    -->
                                     <ContentPresenter x:Name="PART_Glyph"
                                                       Grid.Row="1"
                                                       Grid.Column="1"
@@ -1065,9 +1038,9 @@
                                             Grid.ColumnSpan="8"
                                             HorizontalAlignment="Stretch"
                                             VerticalAlignment="Stretch"
-                                            Background="Transparent"
+                                            Background="{TemplateBinding Background}"
                                             SnapsToDevicePixels="True">
-                                        <!--  Background="{TemplateBinding Background}"  -->
+
                                         <ContentPresenter x:Name="PART_HeaderContent"
                                                           Margin="0,0,0,0"
                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -1277,18 +1250,18 @@
                         <!--#endregion-->
                         <!--#region Foreground & States-->
                         <Trigger Property="ItemType" Value="RootItem">
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource DefaultGrey}" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource DefaultGrey}" />
                         </Trigger>
                         <Trigger Property="IsSelected" Value="True">
-                            <!--<Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Selected" />-->
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource DefaultGrey}" />-->
+                            <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Selected" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource DefaultGrey}" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsSelected" Value="True" />
                                 <Condition Property="IsSelectionActive" Value="False" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="SelectedInactive" />-->
+                            <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="SelectedInactive" />
                             <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{StaticResource DefaultGrey}" />
                         </MultiTrigger>
                         <MultiTrigger>
@@ -1329,10 +1302,10 @@
                                 <Condition Property="ActualHighlightOnHover" Value="True" />
                                 <Condition Property="ItemType" Value="SubItem" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}}" />-->
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}}" />-->
+                            <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}}" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=ItemHeaderHoverForeground}}" />
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />-->
+                            <Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
@@ -1340,10 +1313,9 @@
                                 <Condition Property="ActualHighlightOnHover" Value="True" />
                                 <Condition Property="ItemType" Value="RootItem" />
                             </MultiTrigger.Conditions>
-                            <!--<Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}}" />-->
-                            <!--<Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}}" />-->
+                            <Setter TargetName="PART_RootContentControl" Property="Tag" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}}" />
+                            <Setter TargetName="PART_ExpandButton" Property="Foreground" Value="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=RootItemHeaderHoverForeground}}" />
                             <Setter TargetName="PART_BackgroundControl" Property="ItemState" Value="Hover" />
-                            <!--<Setter TargetName="PART_ExpandButton" Property="ItemState" Value="Hover" />-->
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
