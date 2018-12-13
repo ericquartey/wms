@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Ferretto.VW.ActionBlocks.Source;
+using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.MathLib;
 
-namespace Ferretto.VW.ActionBlocks.Source
+namespace Ferretto.VW.ActionBlocks
 {
     public static class ActionManager
     {
@@ -13,6 +14,7 @@ namespace Ferretto.VW.ActionBlocks.Source
 
         public static CalibrateVerticalAxis CalibrateVerticalAxisInstance;
         public static PositioningDrawer PositioningDrawerInstance;
+        public static Converter ConverterInstance;
 
         #endregion Fields
     }
