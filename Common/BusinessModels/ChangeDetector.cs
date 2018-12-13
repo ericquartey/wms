@@ -45,21 +45,24 @@ namespace Ferretto.Common.BusinessModels
             this.instance.PropertyChanged -= this.Instance_PropertyChanged;
         }
 
-        public void TakeSnapshot(T instance)
+        public void TakeSnapshot(T newInstance)
         {
-            if (instance != null && this.instance != instance)
+            if (this.instance != newInstance)
             {
                 if (this.instance != null)
                 {
                     this.instance.PropertyChanged -= this.Instance_PropertyChanged;
                 }
 
-                this.instance = instance;
-                this.instance.PropertyChanged += this.Instance_PropertyChanged;
-
-                this.snapshot = this.instance.Clone() as T;
+                this.instance = newInstance;
                 this.modifiedProperties.Clear();
                 this.IsModified = false;
+
+                if (newInstance != null)
+                {
+                    newInstance.PropertyChanged += this.Instance_PropertyChanged;
+                    this.snapshot = newInstance.Clone() as T;
+                }
             }
         }
 
