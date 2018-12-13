@@ -48,7 +48,8 @@
     <ControlTemplate x:Key="{dxgt:GridCardThemeKey ThemeName=Office2016White,
                                                    ResourceKey=HeaderContentTemplate}"
                      TargetType="{x:Type ContentControl}">
-        <ContentPresenter x:Name="ContentPresenter1" Margin="0" />
+        <ContentPresenter x:Name="ContentPresenter1"
+                          Margin="0" />
     </ControlTemplate>
 
     <ControlTemplate x:Key="{dxgt:GridCardThemeKey ThemeName=Office2016White,

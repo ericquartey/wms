@@ -219,6 +219,9 @@
   <data name="NoChangesFound" xml:space="preserve">
     <value>No Changes found.</value>
   </data>
+  <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
+    <value>Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments.</value>
+  </data>
   <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
     <value>Style '{0}' for '{1}' not found.</value>
   </data>
