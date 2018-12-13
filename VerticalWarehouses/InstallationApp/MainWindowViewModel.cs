@@ -47,10 +47,6 @@ namespace Ferretto.VW.InstallationApp
         private bool machineOnMarchSelectionBool = false;
         private bool isNavigationButtonRegionExpanded = true;
 
-
-        public InverterDriver.InverterDriver inverterDriver;
-
-
         #endregion Constants, Statics & Others
 
         #region ViewModels & Commands Fields
