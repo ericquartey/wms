@@ -20,6 +20,7 @@ namespace Ferretto.Common.BusinessModels
         private int? handlingParametersCorrection;
         private int height;
         private int inCycleCount;
+        private bool isCellPairingFixed;
         private int length;
         private string loadingUnitStatusId;
         private int loadingUnitTypeId;
@@ -96,8 +97,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.handlingParametersCorrection, value);
         }
 
-        public bool LoadingUnitTypeHasCompartments { get; set; }
-
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
         public int Height
         {
@@ -116,7 +115,11 @@ namespace Ferretto.Common.BusinessModels
         public DateTime? InventoryDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitIsCellPairingFixed), ResourceType = typeof(BusinessObjects))]
-        public bool IsCellPairingFixed { get; set; }
+        public bool IsCellPairingFixed
+        {
+            get => this.isCellPairingFixed;
+            set => this.SetProperty(ref this.isCellPairingFixed, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
@@ -150,6 +153,8 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
+
+        public bool LoadingUnitTypeHasCompartments { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitTypeId

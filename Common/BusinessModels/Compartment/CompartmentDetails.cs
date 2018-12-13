@@ -16,14 +16,13 @@ namespace Ferretto.Common.BusinessModels
         private int compartmentTypeId;
         private int? fifoTime;
         private int? height;
+        private bool isItemPairingFixed;
         private string itemCode;
         private string itemDescription;
         private int? itemId;
-        private IEnumerable<Enumeration> itemPairingChoices;
         private string loadingUnitCode;
         private int loadingUnitId;
         private string lot;
-        private bool isItemPairingFixed;
         private IEnumerable<Enumeration> materialStatusChoices;
         private int? materialStatusId;
         private int? maxCapacity;
