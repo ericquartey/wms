@@ -213,9 +213,6 @@
   <data name="CellSide_extended" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
-  <data name="CompartmentCode" xml:space="preserve">
-    <value>Codice</value>
-  </data>
   <data name="CompartmentFifoTime" xml:space="preserve">
     <value>Tempo FIFO</value>
   </data>

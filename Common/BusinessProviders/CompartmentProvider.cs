@@ -93,7 +93,6 @@ namespace Ferretto.Common.BusinessProviders
                .Select(c => new Compartment
                {
                    Id = c.Id,
-                   Code = c.Code,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
                    CompartmentTypeDescription = c.CompartmentType.Description,
                    ItemDescription = c.Item.Description,
@@ -131,7 +130,6 @@ namespace Ferretto.Common.BusinessProviders
                    .Select(c => new CompartmentDetails
                    {
                        Id = c.Id,
-                       Code = c.Code,
                        LoadingUnitCode = c.LoadingUnit.Code,
                        CompartmentTypeId = c.CompartmentTypeId,
                        IsItemPairingFixed = c.IsItemPairingFixed,
@@ -186,7 +184,6 @@ namespace Ferretto.Common.BusinessProviders
                 .Select(c => new Compartment
                 {
                     Id = c.Id,
-                    Code = c.Code,
                     CompartmentStatusDescription = c.CompartmentStatus.Description,
                     CompartmentTypeDescription = c.CompartmentType.Description,
                     ItemDescription = c.Item.Description,
@@ -211,7 +208,6 @@ namespace Ferretto.Common.BusinessProviders
                 .Select(c => new CompartmentDetails
                 {
                     Id = c.Id,
-                    Code = c.Code,
                     LoadingUnitCode = c.LoadingUnit.Code,
                     CompartmentTypeId = c.CompartmentTypeId,
                     ItemCode = c.Item.Code,

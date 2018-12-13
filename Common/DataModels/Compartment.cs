@@ -3,12 +3,9 @@ using System.Collections.Generic;
 
 namespace Ferretto.Common.DataModels
 {
-    // Scomparto
     public sealed class Compartment : ITimestamped, IDataModel
     {
         #region Properties
-
-        public string Code { get; set; }
 
         public CompartmentStatus CompartmentStatus { get; set; }
 
