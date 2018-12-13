@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,32 @@ namespace Ferretto.VW.CustomControls.Controls
     /// <summary>
     /// Interaction logic for CustomMainWindowErrorButton.xaml
     /// </summary>
-    public partial class CustomMainWindowErrorButton : UserControl
+    public partial class CustomMainWindowErrorButton : UserControl, INotifyPropertyChanged
+
     {
+        #region Constructors
+
         public CustomMainWindowErrorButton()
         {
-            InitializeComponent();
+            this.InitializeComponent();
+            this.LayoutRoot.DataContext = this;
         }
+
+        #endregion Constructors
+
+        #region Events
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion Events
+
+        #region Methods
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            if (this.PropertyChanged != null) this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion Methods
     }
 }

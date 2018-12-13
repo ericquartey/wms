@@ -7,8 +7,10 @@
              d:DesignHeight="60"
              d:DesignWidth="120"
              mc:Ignorable="d">
-    <Button Background="Transparent"
-            BorderBrush="{Binding VWAPP_CustomMainWindowErrorButton_BorderBrush_Normal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+    <Button Name="LayoutRoot"
+            Background="Transparent"
+            BorderBrush="{Binding VWAPP_CustomMainWindowErrorButton_BorderBrush_Normal, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Command="{Binding Command}">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40" />
@@ -19,7 +21,8 @@
                        Height="58"
                        HorizontalAlignment="Left"
                        Fill="Red" />
-            <TextBlock Grid.Column="1" />
+            <TextBlock Grid.Column="1"
+                       Text="{Binding Content.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </Button>
 </UserControl>
