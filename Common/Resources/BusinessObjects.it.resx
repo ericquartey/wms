@@ -352,7 +352,7 @@
     <value>Altezza [mm]</value>
   </data>
   <data name="LoadingUnitHandlingParametersCorrection" xml:space="preserve">
-    <value>Correzione velocità [mm/s]</value>
+    <value>Correzione velocità [%]</value>
   </data>
   <data name="LoadingUnitInventoryDate" xml:space="preserve">
     <value>Data Ultimo Inventario</value>

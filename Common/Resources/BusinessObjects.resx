@@ -430,7 +430,7 @@
     <comment>Loading Unit - Height</comment>
   </data>
   <data name="LoadingUnitHandlingParametersCorrection" xml:space="preserve">
-    <value>Speed Correction [mm/s]</value>
+    <value>Speed Correction [%]</value>
     <comment>Loading Unit - Speed Correction</comment>
   </data>
   <data name="LoadingUnitCreationDate" xml:space="preserve">

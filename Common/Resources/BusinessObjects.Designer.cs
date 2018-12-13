@@ -1150,7 +1150,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed Correction [mm/s].
+        ///   Looks up a localized string similar to Speed Correction [%].
         /// </summary>
         public static string LoadingUnitHandlingParametersCorrection {
             get {
