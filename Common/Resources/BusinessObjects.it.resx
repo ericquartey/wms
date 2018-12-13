@@ -672,13 +672,16 @@
   <data name="ItemListStatusWaiting" xml:space="preserve">
     <value>In Attesa</value>
   </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
+  <data name="Username" xml:space="preserve">
+    <value>Nome Utente</value>
   </data>
   <data name="Password" xml:space="preserve">
     <value>Password</value>
   </data>
   <data name="AccountAccessError" xml:space="preserve">
     <value>Errore di accesso</value>
+  </data>
+  <data name="ItemListRowDispatchedQuantity" xml:space="preserve">
+    <value>Quantità Evasa</value>
   </data>
 </root>

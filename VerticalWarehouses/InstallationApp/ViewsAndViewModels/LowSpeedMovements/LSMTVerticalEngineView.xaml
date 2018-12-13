@@ -48,13 +48,19 @@
                                                     Grid.Column="0"
                                                     ContentText="10%"
                                                     LabelText="{x:Static res:InstallationApp.FeedRate}" />
-                <Button Grid.Row="1"
+                <Button Name="VerticalEngineUp"
+                        Grid.Row="1"
                         Grid.Column="2"
                         Content="{x:Static res:InstallationApp.Up}"
+                        PreviewMouseDown="MoveUpVerticalAxisHandler"
+                        PreviewMouseUp="StopVerticalAxisHandler"
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-                <Button Grid.Row="3"
+                <Button Name="VerticalEngineDown"
+                        Grid.Row="3"
                         Grid.Column="2"
                         Content="{x:Static res:InstallationApp.Down}"
+                        PreviewMouseDown="MoveDownVerticalAxisHandler"
+                        PreviewMouseUp="StopVerticalAxisHandler"
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             </Grid>
         </Grid>

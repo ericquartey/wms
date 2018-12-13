@@ -71,7 +71,7 @@ namespace Ferretto.VW.ActionBlocks
 
         #endregion Properties
 
-        #region Method
+        #region Methods
 
         public void Halt()
         {
@@ -86,10 +86,23 @@ namespace Ferretto.VW.ActionBlocks
 
             if (this.inverterDriver != null)
             {
-                inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(EnquiryTelegram);
-                inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(SelectTelegram);
+                inverterDriver.EnquiryTelegramDone += this.EnquiryTelegram;
+                inverterDriver.SelectTelegramDone += this.SelectTelegram;
                 this.inverterDriver.Error += this.DriverError;
                 converter = new Converter(resolution);
+            }
+        }
+
+        public void Initialize()
+        {
+            this.absolute_movement = true;
+
+            if (this.inverterDriver != null)
+            {
+                inverterDriver.EnquiryTelegramDone += this.EnquiryTelegram;
+                inverterDriver.SelectTelegramDone += this.SelectTelegram;
+                this.inverterDriver.Error += this.DriverError;
+                converter = new Converter();
             }
         }
 
@@ -487,7 +500,6 @@ namespace Ferretto.VW.ActionBlocks
             CtrExistStatus(idExitStatus);
         }
 
-
-        #endregion Method
+        #endregion Methods
     }
 }
