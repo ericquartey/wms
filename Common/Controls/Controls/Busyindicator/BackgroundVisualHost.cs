@@ -10,13 +10,13 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty CreateContentProperty = DependencyProperty.Register(
-            "CreateContent",
+            nameof(CreateContent),
             typeof(CreateVisualContent),
             typeof(BackgroundVisualHost),
             new FrameworkPropertyMetadata(OnCreateContentChanged));
 
         public static readonly DependencyProperty IsContentShowingProperty = DependencyProperty.Register(
-            "IsContentShowing",
+            nameof(IsContentShowing),
             typeof(bool),
             typeof(BackgroundVisualHost),
             new FrameworkPropertyMetadata(false, OnIsContentShowingChanged));

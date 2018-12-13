@@ -27,22 +27,17 @@
   <ItemGroup>
     <Resource Include="Icons\**\*.png" />
     <Resource Include="Images\**\*.png" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <None Remove="Themes\Light\BusyIndicator.xaml" />
-    <None Remove="Themes\Light\PasswordBox.xaml" />
-  </ItemGroup>
+  </ItemGroup>  
   
   <ItemGroup>
     <ProjectReference Include="$(SolutionDir)\Common\Controls\Ferretto.Common.Controls.csproj" />
-  </ItemGroup>
+  </ItemGroup>  
   
   <ItemGroup>
-    <None Update="Themes\Light\ActionBarItem.xaml">
+    <None Update="Themes\Light\BusyIndicator.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-    <None Update="Themes\Light\ProgressBarEdit.xaml">
+    <None Update="Themes\Light\PasswordBox.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>

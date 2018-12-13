@@ -13,7 +13,7 @@ namespace Ferretto.Common.Controls
         private const string backgroundVisualHostName = "BackgroundVisualHostThread";
 
         private readonly BackgroundVisualHost.CreateVisualContent createContent;
-        private readonly HostVisual hostVisual = null;
+        private readonly HostVisual hostVisual = new HostVisual();
         private readonly Action invalidateMeasure;
 
         private readonly AutoResetEvent sync = new AutoResetEvent(false);
@@ -25,8 +25,7 @@ namespace Ferretto.Common.Controls
         public ThreadedVisualHelper(
             BackgroundVisualHost.CreateVisualContent createContent,
             Action invalidateMeasure)
-        {
-            this.hostVisual = new HostVisual();
+        {            
             this.createContent = createContent;
             this.invalidateMeasure = invalidateMeasure;
 
