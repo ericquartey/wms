@@ -41,8 +41,6 @@ namespace Ferretto.VW.ActionBlocks
         private float vMax;
         private int x;
 
-        private Converter converter;
-
         #endregion Fields
 
         #region Events
