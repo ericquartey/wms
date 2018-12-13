@@ -179,16 +179,18 @@
                                           BorderThickness="0"
                                           IsCollapseButtonVisible="False"
                                           RootItemExpandButtonPosition="Left">
-                        <wms:AccordionItem FontSize="12"
+                        <wms:AccordionItem x:Name="WmsAccordionItem"
+                                           FontSize="12"
+                                           FontWeight="Normal"
                                            IsExpandButtonVisible="True"
                                            IsExpanded="{Binding EnableInputAdd, Mode=OneWay, Converter={StaticResource BNC}}"
                                            IsToggleVisible="False"
                                            TitleHeader="Advanced Details">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="155" />
                                     <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="155" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
