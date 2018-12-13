@@ -72,8 +72,6 @@
 
                 <wms:WmsGridControl.Columns>
                     <dxg:GridColumn Width="100*"
-                                    FieldName="Code" />
-                    <dxg:GridColumn Width="100*"
                                     FieldName="LoadingUnitCode" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="CompartmentTypeDescription" />
@@ -94,7 +92,7 @@
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
-                    <dxg:GridSortInfo FieldName="Code"
+                    <dxg:GridSortInfo FieldName="LoadingUnitCode"
                                       SortOrder="Ascending" />
                 </wms:WmsGridControl.SortInfo>
 
