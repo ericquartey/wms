@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows;
-using Ferretto.VW.ActionBlocks.Source;
+using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.VWApp

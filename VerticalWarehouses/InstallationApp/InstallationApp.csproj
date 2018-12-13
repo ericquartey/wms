@@ -444,6 +444,10 @@
       <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
       <Name>InverterDriver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MathLib\MathLib.csproj">
+      <Project>{2f188460-af20-4b52-a19d-1a01941756d2}</Project>
+      <Name>MathLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>
       <Name>Navigation</Name>

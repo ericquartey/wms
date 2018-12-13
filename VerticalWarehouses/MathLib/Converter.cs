@@ -6,14 +6,10 @@ namespace Ferretto.VW.MathLib
     {
         decimal resolution;
 
-        public Converter()
+        public decimal ManageResolution
         {
-            this.resolution = 1024;
-        }
-
-        public Converter(decimal resolution)
-        {
-            this.resolution = resolution;
+            set => this.resolution = value;
+            get => this.resolution;
         }
 
         // Conversion from mm to pulse

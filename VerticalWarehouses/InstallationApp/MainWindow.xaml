@@ -57,7 +57,6 @@
                               Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}"
                               Style="{StaticResource IAPP_MainWindowUserComboBoxTemplate}">
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                      Margin="35,0,0,0"
                                       HorizontalAlignment="Center"
                                       Background="{DynamicResource VWAPP_MainWindowUserComboBox_Background_Normal}"
                                       Content="{x:Static res:InstallationApp.Installer}"
@@ -65,7 +64,6 @@
                                       Style="{StaticResource VWAPP_MainWindowUserComboBoxItemStyle}"
                                       Template="{StaticResource VWAPP_MainWindowUserComboBoxItemTemplate}" />
                         <ComboBoxItem Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
-                                      Margin="65,0,0,0"
                                       HorizontalAlignment="Center">
                             <ComboBoxItem.Style>
                                 <Style TargetType="ComboBoxItem">
@@ -77,7 +75,11 @@
                                     <Setter Property="VerticalContentAlignment" Value="Center" />
                                 </Style>
                             </ComboBoxItem.Style>
-                            <custom:CustomControlMainWindowUserComboBoxItem CustomCommand="{Binding BackToVWAPPCommand}"
+                            <custom:CustomControlMainWindowUserComboBoxItem Width="{Binding ElementName=userComboBox, Path=ActualWidth}"
+                                                                            Height="{Binding ElementName=userComboBox, Path=ActualHeight}"
+                                                                            HorizontalAlignment="Center"
+                                                                            HorizontalContentAlignment="Center"
+                                                                            CustomCommand="{Binding BackToVWAPPCommand}"
                                                                             LabelText="{x:Static res:InstallationApp.LogOff}" />
                         </ComboBoxItem>
                     </ComboBox>

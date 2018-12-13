@@ -1,11 +1,9 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -15,7 +13,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         private readonly int defaultInitialPosition = 1000;
         private readonly int defaultMovement = 4000;
-        private readonly double defaultResolution = 1024; // 165
 
         private ICommand acceptButtonCommand;
         private ICommand cancelButtonCommand;
@@ -35,7 +32,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private string noteString = Common.Resources.InstallationApp.MoveToInitialPosition;
         private string repositionLenght;
         private ICommand setPositionButtonCommand;
-        // Begin resolution changes
+
         private decimal resolution;
         private decimal x;
         private float vMax = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
@@ -43,10 +40,8 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private float dec = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
         private float w = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
         private short offset = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-        private PositioningDrawer positioningDrawer;
         private decimal desiredInitialPositionDec;
         private bool operation;
-        // End resolution changes
 
         #endregion Fields
 
@@ -56,23 +51,16 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             bool conversionResolution;
 
-            this.CurrentResolution = this.defaultResolution.ToString();
+            this.CurrentResolution = ActionManager.ConverterInstance.ManageResolution.ToString("##.##");
             this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
             this.RepositionLenght = this.defaultMovement.ToString();
 
-            // Begin resolution changes
-            //vMax = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            //acc = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            //dec = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            //w = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
-            //offset = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
             conversionResolution = decimal.TryParse(this.CurrentResolution, out resolution);
 
             if (!conversionResolution)
             {
                 this.NoteString = "Wrong resolution";
             }
-            // End resolution changes
         }
 
         #endregion Constructors
@@ -104,18 +92,23 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         private void AcceptButtonMethod()
         {
+            decimal resolutionDec;
+
             this.CurrentResolution = this.NewResolution;
             this.NoteString = Common.Resources.InstallationApp.ResolutionModified;
             var ii = DataManager.CurrentData.InstallationInfo;
             ii.Belt_Burnishing = true;
             DataManager.CurrentData.InstallationInfo = ii;
+
+            decimal.TryParse(NewResolution, out resolutionDec);
+            ActionManager.ConverterInstance.ManageResolution = resolutionDec;
         }
 
         private void CalculateNewResolutionMethod()
         {
-            double.TryParse(this.CurrentResolution, out var cr);
-            double.TryParse(this.MesuredLenght, out var ml);
-            double.TryParse(this.RepositionLenght, out var rl);
+            decimal.TryParse(this.CurrentResolution, out var cr);
+            decimal.TryParse(this.MesuredLenght, out var ml);
+            decimal.TryParse(this.RepositionLenght, out var rl);
             this.NewResolution = ((cr * ml) / rl).ToString("##.##");
             this.IsAcceptButtonActive = true;
         }
@@ -174,17 +167,19 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             // Begin changes for the PositioningDrawer
             bool conversionRepositionLenght;
-            decimal repositionLenght;
+            decimal repositionLenghtDec;
 
-            conversionRepositionLenght = decimal.TryParse(this.RepositionLenght, out repositionLenght);
+            conversionRepositionLenght = decimal.TryParse(this.RepositionLenght, out repositionLenghtDec);
 
             if (conversionRepositionLenght)
             {
                 operation = false;
-                this.x = repositionLenght + desiredInitialPositionDec;
+                this.x = repositionLenghtDec + desiredInitialPositionDec;
                 this.IsMoveButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.MovingToDesiredPosition;
-                positioningDrawer.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+                ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
+                ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
             }
             else
             {
@@ -197,7 +192,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             // Begin changes for the initial positioning
             bool conversionInitialPosition;
-            // decimal desiredInitialPositionDec;
 
             conversionInitialPosition = decimal.TryParse(desiredInitialPosition, out desiredInitialPositionDec);
             if(conversionInitialPosition)
@@ -208,11 +202,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
 
                 // Inizio posizionamento
-                positioningDrawer = new PositioningDrawer();
-                positioningDrawer.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
-                this.positioningDrawer.ThrowEndEvent += new PositioningDrawerEndEventHandler(this.PositioningDone);
-                positioningDrawer.Initialize(this.resolution);
-                positioningDrawer.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+                ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
+                ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
                 // Fine posizionamento
 
                 this.IsMesuredInitialPositionTextInputActive = true;
@@ -251,11 +243,12 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 {
                     message = "Positioning not done";
                 }
-
             }
 
             this.NoteString = message;
-            positioningDrawer.StopInverter();
+            ActionManager.PositioningDrawerInstance.StopInverter();
+
+            ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
         }
 
         #endregion Methods

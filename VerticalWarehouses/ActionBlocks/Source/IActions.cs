@@ -55,7 +55,7 @@
 
         #region Methods
 
-        void Initialize(decimal resolution);
+        void Initialize();
 
         void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset);
 
