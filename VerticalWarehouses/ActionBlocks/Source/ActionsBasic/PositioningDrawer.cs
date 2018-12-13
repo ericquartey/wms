@@ -4,7 +4,6 @@ using Ferretto.VW.InverterDriver;
 using NLog;
 using System.Collections;
 using Ferretto.VW.MathLib;
-using Ferretto.VW.MathLib;
 
 namespace Ferretto.VW.ActionBlocks
 {
