@@ -14,10 +14,6 @@ using Ferretto.VW.Utils.Source;
 using System.Net;
 using System.IO;
 using System.Configuration;
-using System.Windows.Media.Animation;
-using System.Windows.Media;
-using System.Windows;
-using Ferretto.VW.ActionBlocks.Source;
 
 #if CODEMAID
     // disable codemaid in this file
@@ -30,6 +26,8 @@ namespace Ferretto.VW.InstallationApp
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void SensorsStatesChangedEvent();
+
+    public delegate void ChangeBoolDelegate(bool b);
 
     public class MainWindowViewModel : BindableBase
     {
@@ -82,7 +80,6 @@ namespace Ferretto.VW.InstallationApp
         private ICommand beltBurnishingButtonCommand;
         private ICommand cellsControlButtonCommand;
         private ICommand cellsPanelControlButtonCommand;
-        private ICommand changeSkin;
         private ICommand gate1HeightControlNavigationButtonCommand;
         private ICommand gate2HeightControlNavigationButtonCommand;
         private ICommand gate3HeightControlNavigationButtonCommand;
@@ -120,11 +117,11 @@ namespace Ferretto.VW.InstallationApp
             this.ConnectMethod();
             NavigationService.GoToViewEventHandler += this.HideNavigationButtonRegion;
             NavigationService.ExitViewEventHandler += this.ShowNavigationButtonRegion;
-            MainWindow.FinishedMachineModeChangeStateEventHandler += () => this.MachineModeSelectionBool = !this.MachineModeSelectionBool;
-            MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool;
+            MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
+            MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
-            SensorsStatesChangedEventHandler += this.EventInitializer;
+            SensorsStatesChangedEventHandler += () => { };
         }
 
         #endregion Constructors
@@ -148,8 +145,6 @@ namespace Ferretto.VW.InstallationApp
         public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.CellsControlVMInstance));
 
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.CellsPanelControlVMInsance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
-
-        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => NavigationService.RaiseChangeSkinToDarkEvent()));
 
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance));
 
@@ -201,7 +196,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
-        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => NavigationService.RaiseBackToVWAppEvent()));
+        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => { NavigationService.RaiseBackToVWAppEvent(); MainWindowViewModel.ClickedOnMachineModeEventHandler = null; MainWindowViewModel.ClickedOnMachineOnMarchEventHandler = null; }));
 
         #endregion Commands Properties
 
@@ -255,10 +250,6 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void EventInitializer()
-        {
-        }
-
         private void HideNavigationButtonRegion()
         {
             this.IsNavigationButtonRegionExpanded = false;
@@ -267,15 +258,6 @@ namespace Ferretto.VW.InstallationApp
         private void ShowNavigationButtonRegion()
         {
             this.IsNavigationButtonRegionExpanded = true;
-        }
-
-        private void SetMachineOn()
-        {
-            var ca = new ColorAnimation();
-            ca.From = (Color)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"];
-            ca.To = (Color)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"];
-            ca.Duration = new Duration(TimeSpan.FromSeconds(.5));
-            ca.RepeatBehavior = RepeatBehavior.Forever;
         }
 
         private void RaiseSensorsStatesChangedEvent() => SensorsStatesChangedEventHandler();
