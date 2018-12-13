@@ -223,6 +223,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not add to database..
+        /// </summary>
+        public static string NotAddDB {
+            get {
+                return ResourceManager.GetString("NotAddDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
         public static string Open {

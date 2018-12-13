@@ -177,6 +177,9 @@
   <data name="Next" xml:space="preserve">
     <value>Next</value>
   </data>
+  <data name="NotAddDB" xml:space="preserve">
+    <value>Not add to database.</value>
+  </data>
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>

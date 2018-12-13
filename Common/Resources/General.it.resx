@@ -204,4 +204,7 @@
   <data name="Type" xml:space="preserve">
     <value>Tipo</value>
   </data>
+  <data name="NotAddDB" xml:space="preserve">
+    <value>Non aggiunto al database.</value>
+  </data>
 </root>
