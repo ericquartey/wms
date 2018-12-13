@@ -53,7 +53,6 @@
                 <Button Name="GateEngineUp"
                         Grid.Row="1"
                         Grid.Column="2"
-                        Command="{Binding Action}"
                         Content="{x:Static res:InstallationApp.Up}"
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
                 <Button Name="GateEngineDown"
