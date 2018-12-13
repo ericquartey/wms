@@ -32,7 +32,7 @@
                             </Label.Content>
                         </Label>
                         <dxe:CheckEdit Content="{TemplateBinding Content}"
-                                       IsChecked="{TemplateBinding IsChecked}" />
+                                       IsChecked="{Binding IsChecked, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsCheckEdit}}}" />
                     </StackPanel>
                 </ControlTemplate>
 

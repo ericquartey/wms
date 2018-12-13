@@ -157,7 +157,7 @@ namespace Ferretto.Common.BusinessProviders
                        Code = j.cmp.Code,
                        LoadingUnitCode = j.cmp.LoadingUnit.Code,
                        CompartmentTypeId = j.cmp.CompartmentTypeId,
-                       IsItemPairingFixed = c.IsItemPairingFixed,
+                       IsItemPairingFixed = j.cmp.IsItemPairingFixed,
                        ItemCode = j.cmp.Item.Code,
                        ItemDescription = j.cmp.Item.Description,
                        Sub1 = j.cmp.Sub1,
