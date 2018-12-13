@@ -194,7 +194,7 @@
     <comment>Button text</comment>
   </data>
   <data name="NextButton" xml:space="preserve">
-    <value>  Next &gt;  </value>
+    <value>Next &gt;  </value>
     <comment>Button text</comment>
   </data>
   <data name="Off" xml:space="preserve">
@@ -238,11 +238,11 @@
     <comment>Label text</comment>
   </data>
   <data name="LowerBound" xml:space="preserve">
-    <value>Lower bound (mm):</value>
+    <value>Lower bound [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="Offset" xml:space="preserve">
-    <value>Offset (mm):</value>
+    <value>Offset [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="Output" xml:space="preserve">
@@ -262,11 +262,11 @@
     <comment>Button text</comment>
   </data>
   <data name="UpperBound" xml:space="preserve">
-    <value>Upper bound (mm):</value>
+    <value>Upper bound [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="ResolutionCalibration" xml:space="preserve">
-    <value>Resolution     Calibration</value>
+    <value>Resolution Calibration</value>
     <comment>Title - Button text</comment>
   </data>
   <data name="SensorsState" xml:space="preserve">
@@ -390,15 +390,15 @@
     <comment>Label text</comment>
   </data>
   <data name="MesuredLenght" xml:space="preserve">
-    <value>Mesured lenght (mm):</value>
+    <value>Mesured lenght [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="NewResolution" xml:space="preserve">
-    <value>New resolution (imp/mm):</value>
+    <value>New resolution [imp/mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="RepositionLenght" xml:space="preserve">
-    <value>Reposition lenght:</value>
+    <value>Reposition lenght [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="ResolutionModified" xml:space="preserve">
@@ -406,15 +406,15 @@
     <comment>Label text</comment>
   </data>
   <data name="CurrentResolution" xml:space="preserve">
-    <value>Current resolution (imp/mm):</value>
+    <value>Current resolution [imp/mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="DesiredInitialPosition" xml:space="preserve">
-    <value>Desired initial position (mm):</value>
+    <value>Desired initial position [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
-    <value>Desired movement (mm):</value>
+    <value>Desired movement [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="InsertDesiredMovement" xml:space="preserve">
@@ -430,7 +430,7 @@
     <comment>Note text</comment>
   </data>
   <data name="MesuredMovement" xml:space="preserve">
-    <value>Mesured movement (mm):</value>
+    <value>Mesured movement [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="VerticalResolutionCalibration" xml:space="preserve">
@@ -450,11 +450,11 @@
     <comment>Label text</comment>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
-    <value>Current position (mm):</value>
+    <value>Current position [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="DelayBetweenCicles" xml:space="preserve">
-    <value>Delay between cicles (s):</value>
+    <value>Delay between cicles [s]:</value>
     <comment>Label text</comment>
   </data>
   <data name="Middle" xml:space="preserve">
@@ -486,7 +486,7 @@
     <comment>Label</comment>
   </data>
   <data name="CurrentHeight" xml:space="preserve">
-    <value>Current height (mm):</value>
+    <value>Current height [mm]:</value>
     <comment>Label</comment>
   </data>
   <data name="GateCalibrated" xml:space="preserve">
@@ -494,7 +494,7 @@
     <comment>Note text</comment>
   </data>
   <data name="GateCorrection" xml:space="preserve">
-    <value>Gate correction (mm):</value>
+    <value>Gate correction [mm]:</value>
     <comment>Label</comment>
   </data>
   <data name="GateOutOfTolerance" xml:space="preserve">
@@ -510,15 +510,15 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="SpeedMMSec" xml:space="preserve">
-    <value>Speed (mm/sec):</value>
+    <value>Speed [mm/s]:</value>
     <comment>Label</comment>
   </data>
   <data name="SystemErrorMM" xml:space="preserve">
-    <value>System error (mm):</value>
+    <value>System error [mm]:</value>
     <comment>Label</comment>
   </data>
   <data name="Tolerance" xml:space="preserve">
-    <value>Tolerance (mm +/-):</value>
+    <value>Tolerance (+/-) [mm]:</value>
     <comment>Label</comment>
   </data>
   <data name="VerticalOffsetCalibration" xml:space="preserve">
@@ -542,15 +542,15 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
-    <value>Acceptable weight tolerance (%):</value>
+    <value>Acceptable weight tolerance [%]:</value>
     <comment>Label text</comment>
   </data>
   <data name="InsertedWeight" xml:space="preserve">
-    <value>Inserted weight (kg):</value>
+    <value>Inserted weight [kg]:</value>
     <comment>Label text</comment>
   </data>
   <data name="MesuredWeight" xml:space="preserve">
-    <value>Mesured weight (kg):</value>
+    <value>Mesured weight [kg]:</value>
     <comment>Label text</comment>
   </data>
   <data name="MesuredWeightInTolerance" xml:space="preserve">
@@ -566,11 +566,11 @@
     <comment>Label text</comment>
   </data>
   <data name="CorrectOffset" xml:space="preserve">
-    <value>Correct offset (mm):</value>
+    <value>Adjusted offset [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="CurrentOffset" xml:space="preserve">
-    <value>Current offset (mm):</value>
+    <value>Current offset [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="DoCorrectOffset" xml:space="preserve">
@@ -578,7 +578,7 @@
     <comment>Button text</comment>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
-    <value>Reference's cell height (mm):</value>
+    <value>Reference's cell height [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="ReferenceCellNumber" xml:space="preserve">
@@ -594,11 +594,11 @@
     <comment>Button text</comment>
   </data>
   <data name="StepValue" xml:space="preserve">
-    <value>Step value (mm):</value>
+    <value>Step value [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="CellHeight" xml:space="preserve">
-    <value>Current cell's height (mm):</value>
+    <value>Current cell's height [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="CellsPanelControl" xml:space="preserve">
@@ -614,7 +614,7 @@
     <comment>Label text</comment>
   </data>
   <data name="PanelCorrection" xml:space="preserve">
-    <value>Panel correction (mm):</value>
+    <value>Panel correction [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="TotalPanels" xml:space="preserve">
@@ -707,7 +707,7 @@
     <comment>Title - Button text</comment>
   </data>
   <data name="MesuredInitialPosition" xml:space="preserve">
-    <value>Mesured initial position (mm):</value>
+    <value>Measured initial position [mm]:</value>
     <comment>Label text</comment>
   </data>
   <data name="MoveToInitialPosition" xml:space="preserve">
@@ -735,7 +735,7 @@
     <comment>Note text</comment>
   </data>
   <data name="CellCorrection" xml:space="preserve">
-    <value>Cell correction (mm):</value>
+    <value>Cell correction [mm]:</value>
     <comment>Label text</comment>
   </data>
 </root>

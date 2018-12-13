@@ -295,7 +295,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X Coordinate.
+        ///   Looks up a localized string similar to X Coordinate [mm].
         /// </summary>
         public static string CellXCoordinate {
             get {
@@ -304,7 +304,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Y Coordinate.
+        ///   Looks up a localized string similar to Y Coordinate [mm].
         /// </summary>
         public static string CellYCoordinate {
             get {
@@ -313,7 +313,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Z Coordinate.
+        ///   Looks up a localized string similar to Z Coordinate [mm].
         /// </summary>
         public static string CellZCoordinate {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height.
+        ///   Looks up a localized string similar to Height [mm].
         /// </summary>
         public static string CompartmentHeight {
             get {
@@ -493,7 +493,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Width.
+        ///   Looks up a localized string similar to Width [mm].
         /// </summary>
         public static string CompartmentWidth {
             get {
@@ -502,7 +502,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to X Position.
+        ///   Looks up a localized string similar to X Position [mm].
         /// </summary>
         public static string CompartmentXPosition {
             get {
@@ -511,7 +511,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Y Position.
+        ///   Looks up a localized string similar to Y Position [mm].
         /// </summary>
         public static string CompartmentYPosition {
             get {
@@ -529,7 +529,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Average Weight.
+        ///   Looks up a localized string similar to Average Weight [kg].
         /// </summary>
         public static string ItemAverageWeight {
             get {
@@ -610,7 +610,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height.
+        ///   Looks up a localized string similar to Height [mm].
         /// </summary>
         public static string ItemHeight {
             get {
@@ -664,7 +664,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Length.
+        ///   Looks up a localized string similar to Length [mm].
         /// </summary>
         public static string ItemLength {
             get {
@@ -781,7 +781,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shipment Unit Associated.
+        ///   Looks up a localized string similar to Associated Shipment Unit.
         /// </summary>
         public static string ItemListShipmentUnitAssociated {
             get {
@@ -934,7 +934,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Width.
+        ///   Looks up a localized string similar to Width [mm].
         /// </summary>
         public static string ItemWidth {
             get {
@@ -1132,7 +1132,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed Correction.
+        ///   Looks up a localized string similar to Speed Correction [%].
         /// </summary>
         public static string LoadingUnitHandlingParametersCorrection {
             get {
@@ -1141,7 +1141,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height.
+        ///   Looks up a localized string similar to Height [mm].
         /// </summary>
         public static string LoadingUnitHeight {
             get {
@@ -1204,7 +1204,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Length.
+        ///   Looks up a localized string similar to Length [mm].
         /// </summary>
         public static string LoadingUnitLength {
             get {
@@ -1276,7 +1276,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Weight.
+        ///   Looks up a localized string similar to Weight [kg].
         /// </summary>
         public static string LoadingUnitWeight {
             get {
@@ -1285,7 +1285,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Width.
+        ///   Looks up a localized string similar to Width [mm].
         /// </summary>
         public static string LoadingUnitWidth {
             get {
@@ -1312,7 +1312,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Actual Weight.
+        ///   Looks up a localized string similar to Actual Weight [kg].
         /// </summary>
         public static string MachineActualWeight {
             get {
@@ -1672,7 +1672,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Total Max Weight.
+        ///   Looks up a localized string similar to Total Max Weight [kg].
         /// </summary>
         public static string MachineTotalMaxWeight {
             get {
