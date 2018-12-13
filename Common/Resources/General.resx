@@ -180,10 +180,6 @@
   <data name="Open" xml:space="preserve">
     <value>Open</value>
   </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Password Login:</value>
-    <comment>Label</comment>
-  </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
     <comment>Command - Update the contents of the current page</comment>
@@ -224,13 +220,5 @@
   <data name="Up" xml:space="preserve">
     <value>Up</value>
     <comment>Button text</comment>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>User Login:</value>
-    <comment>Label</comment>
-  </data>
-  <data name="VertimagX" xml:space="preserve">
-    <value>Vertimag X</value>
-    <comment>Title</comment>
   </data>
 </root>
