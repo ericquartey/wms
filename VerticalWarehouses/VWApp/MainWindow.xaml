@@ -49,12 +49,12 @@
             <custom:CustomInputFieldControlFocusable Width="200"
                                                      HorizontalAlignment="Left"
                                                      InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                     LabelText="{x:Static res:General.UserLogin}"
+                                                     LabelText="{x:Static res:VWApp.UserLogin}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
             <custom:CustomInputFieldControlFocusable Width="200"
                                                      HorizontalAlignment="Left"
                                                      InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:General.PasswordLogin}"
+                                                     LabelText="{x:Static res:VWApp.PasswordLogin}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
             <TextBlock Height="60"
                        HorizontalAlignment="Left"

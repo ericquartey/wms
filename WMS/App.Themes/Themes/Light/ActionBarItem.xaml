@@ -192,7 +192,7 @@
 
 
     <ControlTemplate x:Key="{dxbt:BarItemBorderThemeKey ResourceKey=Normal,
-                                                         ThemeName=Office2016White}"
+                                                        ThemeName=Office2016White}"
                      TargetType="{x:Type dxb:ItemBorderControl}">
         <Grid x:Name="Root">
             <Border x:Name="NormalState"

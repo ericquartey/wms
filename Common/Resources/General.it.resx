@@ -162,17 +162,8 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Password Login:</value>
-  </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Spegni</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>User Login:</value>
-  </data>
-  <data name="VertimagX" xml:space="preserve">
-    <value>Vertimag X</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
@@ -203,5 +194,17 @@
   </data>
   <data name="Type" xml:space="preserve">
     <value>Tipo</value>
+  </data>
+  <data name="Down" xml:space="preserve">
+    <value>Giù</value>
+  </data>
+  <data name="Up" xml:space="preserve">
+    <value>Su</value>
+  </data>
+  <data name="Bottom" xml:space="preserve">
+    <value>Inferiore</value>
+  </data>
+  <data name="Top" xml:space="preserve">
+    <value>Superiore</value>
   </data>
 </root>

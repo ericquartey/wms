@@ -7,8 +7,6 @@ namespace Ferretto.Common.DataModels
     {
         #region Properties
 
-        public Pairing CellPairing { get; set; }
-
         public IEnumerable<DefaultCompartment> DefaultCompartments { get; set; }
 
         public int DefaultHandlingParametersCorrection { get; set; }
@@ -16,6 +14,8 @@ namespace Ferretto.Common.DataModels
         public int Id { get; set; }
 
         public string Image { get; set; }
+
+        public bool IsCellPairingFixed { get; set; }
 
         public LoadingUnitType LoadingUnitType { get; set; }
 

@@ -142,7 +142,7 @@
     <comment>Label text</comment>
   </data>
   <data name="Availability" xml:space="preserve">
-    <value>Availability (units):</value>
+    <value>Availability [units]:</value>
     <comment>Label text</comment>
   </data>
   <data name="Batch" xml:space="preserve">
