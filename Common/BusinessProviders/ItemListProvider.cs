@@ -53,6 +53,11 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
+        public Task<OperationResult> ExecuteImmediately(int areaId, int bayId)
+        {
+            return new Task<OperationResult>(() => new OperationResult(false, "not implemented"));
+        }
+
         public IQueryable<ItemList> GetAll()
         {
             var itemLists = this.dataContext.Current.ItemLists
@@ -182,6 +187,11 @@ namespace Ferretto.Common.BusinessProviders
 
                 return dataContext.SaveChanges();
             }
+        }
+
+        public Task<OperationResult> ScheduleForExecution(int areaId)
+        {
+            return new Task<OperationResult>(() => new OperationResult(false, "not implemented"));
         }
 
         private static IQueryable<ItemList> GetAllListsWithAggregations(DatabaseContext context, Expression<Func<DataModels.ItemList, bool>> whereFunc = null)

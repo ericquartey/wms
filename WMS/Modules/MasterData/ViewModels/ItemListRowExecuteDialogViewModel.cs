@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
-        private ListToExecute listRowToExecute;
+        private ItemListExecutionRequest listRowToExecute;
 
         private ICommand runListRowExecuteCommand;
 
@@ -35,7 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ListToExecute ListRowToExecute
+        public ItemListExecutionRequest ListRowToExecute
         {
             get => this.listRowToExecute;
             set
@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.ListRowToExecute = new ListToExecute();
+            this.ListRowToExecute = new ItemListExecutionRequest();
         }
 
         private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
