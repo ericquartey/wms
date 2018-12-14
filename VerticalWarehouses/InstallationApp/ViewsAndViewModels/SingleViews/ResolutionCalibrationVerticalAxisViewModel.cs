@@ -51,7 +51,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             bool conversionResolution;
 
-            this.CurrentResolution = ActionManager.ConverterInstance.ManageResolution.ToString("##.##");
+            if (ActionManager.ConverterInstance != null)
+                this.CurrentResolution = ActionManager.ConverterInstance.ManageResolution.ToString("##.##");
+            else
+                this.CurrentResolution = "1024";
+
             this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
             this.RepositionLenght = this.defaultMovement.ToString();
 
@@ -141,6 +145,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                         this.IsMesuredInitialPositionTextInputActive = false;
                         this.IsMesuredInitialPositionHighlighted = false;
                         this.NoteString = Common.Resources.InstallationApp.MoveToPosition;
+
+                        // Inizio modifica
+                        this.IsMesuredInitialPositionTextInputActive = true;
+                        this.IsMesuredInitialPositionHighlighted = true;
+                        // Fine modifica
                     }
                 }
             }
@@ -201,14 +210,14 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 this.IsSetPositionButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
 
-                // Inizio posizionamento
                 ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
                 ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
                 ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
-                // Fine posizionamento
 
-                this.IsMesuredInitialPositionTextInputActive = true;
-                this.IsMesuredInitialPositionHighlighted = true;
+                // Inizio modifica
+                //this.IsMesuredInitialPositionTextInputActive = true;
+                //this.IsMesuredInitialPositionHighlighted = true;
+                // Fine modifica
             }
             // End changes for the initial positioning
         }
