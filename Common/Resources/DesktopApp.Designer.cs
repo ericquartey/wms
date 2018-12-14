@@ -79,6 +79,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to revert your changes?.
+        /// </summary>
+        public static string AreYouSureToRevertChanges {
+            get {
+                return ResourceManager.GetString("AreYouSureToRevertChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Checking database structure ....
         /// </summary>
         public static string CheckingDatabaseStructure {
@@ -93,6 +102,15 @@ namespace Ferretto.Common.Resources {
         public static string ConfiguringPrismModuleCatalog {
             get {
                 return ResourceManager.GetString("ConfiguringPrismModuleCatalog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm Operation.
+        /// </summary>
+        public static string ConfirmOperation {
+            get {
+                return ResourceManager.GetString("ConfirmOperation", resourceCulture);
             }
         }
         

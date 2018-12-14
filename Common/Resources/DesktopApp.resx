@@ -184,4 +184,12 @@
     <value>Initializing Login ...</value>
     <comment>Spash screen message</comment>
   </data>
+  <data name="AreYouSureToRevertChanges" xml:space="preserve">
+    <value>Are you sure you want to revert your changes?</value>
+    <comment>Prompt message</comment>
+  </data>
+  <data name="ConfirmOperation" xml:space="preserve">
+    <value>Confirm Operation</value>
+    <comment>Prompt title</comment>
+  </data>
 </root>

@@ -168,4 +168,10 @@
   <data name="InitializingLogin" xml:space="preserve">
     <value>Inizializzazione login ...</value>
   </data>
+  <data name="AreYouSureToRevertChanges" xml:space="preserve">
+    <value>Sei sicuro di voler annullare tutte le modifiche?</value>
+  </data>
+  <data name="ConfirmOperation" xml:space="preserve">
+    <value>Conferma Operazione</value>
+  </data>
 </root>

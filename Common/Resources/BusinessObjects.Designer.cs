@@ -700,6 +700,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Area.
+        /// </summary>
+        public static string ItemListExecutionRequestArea {
+            get {
+                return ResourceManager.GetString("ItemListExecutionRequestArea", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string ItemListExecutionRequestBay {
+            get {
+                return ResourceManager.GetString("ItemListExecutionRequestBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Immediately.
+        /// </summary>
+        public static string ItemListExecutionRequestRunImmediately {
+            get {
+                return ResourceManager.GetString("ItemListExecutionRequestRunImmediately", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Execution.
         /// </summary>
         public static string ItemListFirstExecutionDate {
@@ -1060,15 +1087,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area.
-        /// </summary>
-        public static string ListToExecuteArea {
-            get {
-                return ResourceManager.GetString("ListToExecuteArea", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Area not valid.
         /// </summary>
         public static string ListToExecuteAreaInvalidError {
@@ -1083,15 +1101,6 @@ namespace Ferretto.Common.Resources {
         public static string ListToExecuteBayInvalidError {
             get {
                 return ResourceManager.GetString("ListToExecuteBayInvalidError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Bay [Optional].
-        /// </summary>
-        public static string ListToExecuteBayOptional {
-            get {
-                return ResourceManager.GetString("ListToExecuteBayOptional", resourceCulture);
             }
         }
         
@@ -1299,15 +1308,6 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitWidth {
             get {
                 return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login.
-        /// </summary>
-        public static string Login {
-            get {
-                return ResourceManager.GetString("Login", resourceCulture);
             }
         }
         

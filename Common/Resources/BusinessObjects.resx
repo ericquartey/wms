@@ -768,7 +768,7 @@
     <value>Code</value>
     <comment>Item List - Code</comment>
   </data>
-  <data name="ListToExecuteArea" xml:space="preserve">
+  <data name="ItemListExecutionRequestArea" xml:space="preserve">
     <value>Area</value>
   </data>
   <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
@@ -777,8 +777,8 @@
   <data name="ListToExecuteBayInvalidError" xml:space="preserve">
     <value>Bay not valid</value>
   </data>
-  <data name="ListToExecuteBayOptional" xml:space="preserve">
-    <value>Bay [Optional]</value>
+  <data name="ItemListExecutionRequestBay" xml:space="preserve">
+    <value>Bay</value>
   </data>
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Maintenance Status</value>
@@ -859,5 +859,9 @@
   <data name="ItemListRowDispatchedQuantity" xml:space="preserve">
     <value>Dispatched Quantity</value>
     <comment>List Row - Dispatched Quantity</comment>
+  </data>
+  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
+    <value>Run Immediately</value>
+    <comment>List Execution Request - Run Immediately</comment>
   </data>
 </root>
