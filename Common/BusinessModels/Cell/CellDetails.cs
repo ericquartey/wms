@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
@@ -13,6 +12,9 @@ namespace Ferretto.Common.BusinessModels
         private int? floor;
         private int? number;
         private int priority;
+        private int? xCoordinate;
+        private int? yCoordinate;
+        private int? zCoordinate;
 
         #endregion Fields
 
@@ -76,13 +78,25 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> SideChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? XCoordinate { get; set; }
+        public int? XCoordinate
+        {
+            get => this.xCoordinate;
+            set => this.SetIfPositive(ref this.xCoordinate, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? YCoordinate { get; set; }
+        public int? YCoordinate
+        {
+            get => this.yCoordinate;
+            set => this.SetIfPositive(ref this.yCoordinate, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? ZCoordinate { get; set; }
+        public int? ZCoordinate
+        {
+            get => this.zCoordinate;
+            set => this.SetIfPositive(ref this.zCoordinate, value);
+        }
 
         #endregion Properties
     }

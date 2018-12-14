@@ -1,7 +1,6 @@
 ﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.CellDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -88,6 +87,8 @@
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="1"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
@@ -97,6 +98,7 @@
                         <wms:SpinEdit Grid.Row="3"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="1"
                                       EditValue="{Binding Cell.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
@@ -123,10 +125,14 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="1"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="1"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.Floor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="0"
@@ -136,14 +142,20 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.XCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.YCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.ZCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>

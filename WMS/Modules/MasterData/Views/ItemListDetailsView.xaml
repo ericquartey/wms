@@ -112,6 +112,7 @@
                                           SelectedItem="Pick" />
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
+                                          MinValue="1"
                                           EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                         <wms:TextBox Grid.Row="1"

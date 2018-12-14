@@ -13,6 +13,9 @@ namespace Ferretto.Common.BusinessModels
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
         private int length;
         private int width;
+        private int height;
+        private int weight;
+        private int? handlingParametersCorrection;
 
         #endregion Fields
 
@@ -58,11 +61,20 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection), ResourceType = typeof(BusinessObjects))]
-        public int? HandlingParametersCorrection { get; set; }
+        [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
+            ResourceType = typeof(BusinessObjects))]
+        public int? HandlingParametersCorrection
+        {
+            get => this.handlingParametersCorrection;
+            set => this.SetIfPositive(ref this.handlingParametersCorrection, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
-        public int Height { get; set; }
+        public int Height
+        {
+            get => this.height;
+            set => this.SetIfStrictlyPositive(ref this.height, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitInCycleCount), ResourceType = typeof(BusinessObjects))]
         public int InCycleCount { get; set; }
@@ -119,7 +131,11 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<EnumerationString> ReferenceTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWeight), ResourceType = typeof(BusinessObjects))]
-        public int Weight { get; set; }
+        public int Weight
+        {
+            get => this.weight;
+            set => this.SetIfPositive(ref this.weight, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWidth), ResourceType = typeof(BusinessObjects))]
         public int Width

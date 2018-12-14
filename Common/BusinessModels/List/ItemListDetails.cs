@@ -95,7 +95,11 @@ namespace Ferretto.Common.BusinessModels
         public DateTime? LastModificationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
-        public int Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+        public int Priority
+        {
+            get => this.priority;
+            set => this.SetIfStrictlyPositive(ref this.priority, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitAssociated), ResourceType = typeof(BusinessObjects))]
         public bool ShipmentUnitAssociated { get => this.shipmentUnitAssociated; set => this.SetProperty(ref this.shipmentUnitAssociated, value); }
