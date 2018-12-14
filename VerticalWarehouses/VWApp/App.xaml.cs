@@ -27,9 +27,6 @@ namespace Ferretto.VW.VWApp
             this.InitializeComponent();
             NavigationService.InitializeEvents();
             DataManager.CurrentData = new DataManager();
-            //NavigationService.ChangeSkinToLightEventHandler += (Current as App).ChangeSkinToLight;
-            //NavigationService.ChangeSkinToMediumEventHandler += (Current as App).ChangeSkinToMedium;
-            //NavigationService.ChangeSkinToDarkEventHandler += (Current as App).ChangeSkinToDark;
             NavigationService.ChangeSkinToDarkEventHandler += (Current as App).ChangeSkin;
         }
 
@@ -38,9 +35,13 @@ namespace Ferretto.VW.VWApp
         #region Properties
 
         public InstallationApp.MainWindow InstallationAppMainWindowInstance { get; set; }
+
         public InstallationApp.MainWindowViewModel InstallationAppMainWindowViewModel { get; set; }
+
         public Boolean MachineOk { get => this.machineOk; set => this.machineOk = value; }
+
         public OperatorApp.MainWindow OperatorMainWindowInstance { get; set; }
+
         public Skin Skin { get; set; } = Skin.Dark;
 
         #endregion Properties

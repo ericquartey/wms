@@ -50,7 +50,6 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
                 {
-                    Description = model.Description,
                     Height = model.Height,
                     Width = model.Width
                 });
@@ -85,7 +84,6 @@ namespace Ferretto.Common.BusinessProviders
                 if (addItemCompartmentTypeCount < 1)
                 {
                     //TODO
-                    return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(ItemCompartmentType)));
                 }
             }
 

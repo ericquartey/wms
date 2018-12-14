@@ -22,42 +22,42 @@ namespace Ferretto.Common.BusinessModels
         public int Column
         {
             get => this.column;
-            set => this.SetProperty(ref this.column, value);
+            set => this.SetIfStrictlyPositive(ref this.column, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
         public int Height
         {
             get => this.height;
-            set => this.SetProperty(ref this.height, value);
+            set => this.SetIfStrictlyPositive(ref this.height, value);
         }
 
         [Display(Name = nameof(BusinessObjects.BulkCompartmentRow), ResourceType = typeof(BusinessObjects))]
         public int Row
         {
             get => this.row;
-            set => this.SetProperty(ref this.row, value);
+            set => this.SetIfStrictlyPositive(ref this.row, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
         public int Width
         {
             get => this.width;
-            set => this.SetProperty(ref this.width, value);
+            set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
         public int XPosition
         {
             get => this.xPosition;
-            set => this.SetProperty(ref this.xPosition, value);
+            set => this.SetIfPositive(ref this.xPosition, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
         public int YPosition
         {
             get => this.yPosition;
-            set => this.SetProperty(ref this.yPosition, value);
+            set => this.SetIfPositive(ref this.yPosition, value);
         }
 
         #endregion Properties

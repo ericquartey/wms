@@ -243,18 +243,30 @@ namespace Ferretto.Common.Controls.Services
             return vm;
         }
 
-        public void StartPresentation(INavigableViewModel viewModel)
+        public void StartPresentation(Action operationBefore, Action operationAfter)
         {
-            Application.Current.Dispatcher.BeginInvoke(
-                      DispatcherPriority.SystemIdle,
-                      new Action(() =>
-                      {
-                          Application.Current.MainWindow.Show();
-                          if (viewModel != null)
-                          {
-                              viewModel.Disappear();
-                          }
-                      }));
+            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.SystemIdle,
+                 new Action(() =>
+                 {
+                     var inputService = ServiceLocator.Current.GetInstance<IInputService>();
+                     // Get current UI context
+                     if (inputService.FocusedElement is UIElement elementFocused)
+                     {
+                         elementFocused.Dispatcher.BeginInvoke(
+                              DispatcherPriority.DataBind,
+                              new Action(() =>
+                              {
+                                  operationBefore.Invoke();
+                              }));
+                         elementFocused.Dispatcher.BeginInvoke(
+                             DispatcherPriority.SystemIdle,
+                             new Action(() =>
+                             {
+                                 Application.Current.MainWindow.Show();
+                                 operationAfter.Invoke();
+                             }));                      
+                     }
+                 }));
         }
 
         private void ActivateView(string moduleViewName, string instanceModuleViewName)

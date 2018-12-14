@@ -49,8 +49,7 @@ namespace Ferretto.Common.BusinessProviders
                 var typeId = await this.compartmentTypeProvider.Add(new CompartmentType
                 {
                     Width = model.Width,
-                    Height = model.Height,
-                    Description = ""
+                    Height = model.Height
                 }, model.ItemId, model.MaxCapacity);
 
                 var entry = dataContext.Compartments.Add(new DataModels.Compartment
@@ -111,7 +110,6 @@ namespace Ferretto.Common.BusinessProviders
                {
                    Id = c.Id,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
-                   CompartmentTypeDescription = c.CompartmentType.Description,
                    ItemDescription = c.Item.Description,
                    IsItemPairingFixed = c.IsItemPairingFixed,
                    LoadingUnitCode = c.LoadingUnit.Code,
@@ -210,7 +208,6 @@ namespace Ferretto.Common.BusinessProviders
                 {
                     Id = c.Id,
                     CompartmentStatusDescription = c.CompartmentStatus.Description,
-                    CompartmentTypeDescription = c.CompartmentType.Description,
                     ItemDescription = c.Item.Description,
                     LoadingUnitCode = c.LoadingUnit.Code,
                     Lot = c.Lot,

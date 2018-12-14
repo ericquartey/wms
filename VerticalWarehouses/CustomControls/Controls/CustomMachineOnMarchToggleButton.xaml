@@ -29,7 +29,7 @@
                        VerticalAlignment="Center"
                        FontFamily="{DynamicResource VWAPP_ActionButton_FontFamily_Normal}"
                        FontSize="{DynamicResource VWAPP_ActionButton_FontSize_Normal}"
-                       Foreground="{Binding ElementName=LayoutRoot, Path=BorderBrush, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                       Foreground="{DynamicResource VWAPP_ActionButton_Foreground_Normal}"
                        Text="{Binding MachineOnMarchString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextAlignment="Center" />
         </Grid>

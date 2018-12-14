@@ -565,7 +565,7 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         public void Terminate()
         {
-            this.Terminate_HeartBeat.Set();  // Terminate the heartbeat thread
+            this.Terminate_HeartBeat?.Set();  // Terminate the heartbeat thread
             this.destroyThread();
             this.disconnect_from_inverter();
 
