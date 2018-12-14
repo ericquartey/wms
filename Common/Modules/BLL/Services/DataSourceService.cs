@@ -53,7 +53,28 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "CompartmentsViewAll",
                             Resources.MasterData.CompartmentAll,
                             () => compartmentProvider.GetAll(),
-                            () => compartmentCountProvider.GetAllCount())
+                            () => compartmentCountProvider.GetAllCount()),
+
+                        new FilterDataSource<Compartment>(
+                            "CompartmentStatusAvailable",
+                            Resources.MasterData.CompartmentStatusAvailable,
+                            () => compartmentProvider.GetWithStatusAvailable(),
+                            () => compartmentCountProvider.GetWithStatusAvailableCount()),
+                        new FilterDataSource<Compartment>(
+                            "CompartmentStatusAwaiting",
+                            Resources.MasterData.CompartmentStatusAwaiting,
+                            () => compartmentProvider.GetWithStatusAwaiting(),
+                            () => compartmentCountProvider.GetWithStatusAwaitingCount()),
+                        new FilterDataSource<Compartment>(
+                            "CompartmentStatusExpired",
+                            Resources.MasterData.CompartmentStatusExpired,
+                            () => compartmentProvider.GetWithStatusExpired(),
+                            () => compartmentCountProvider.GetWithStatusExpiredCount()),
+                        new FilterDataSource<Compartment>(
+                            "CompartmentStatusBlocked",
+                            Resources.MasterData.CompartmentStatusBlocked,
+                            () => compartmentProvider.GetWithStatusBlocked(),
+                            () => compartmentCountProvider.GetWithStatusBlockedCount()),
                     }.Cast<IFilterDataSource<TModel>>();
 
                 case MasterData.CELLS:
@@ -66,7 +87,23 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "CellsViewAll",
                             Resources.MasterData.CellAll,
                             () => cellProvider.GetAll(),
-                            () => cellCountProvider.GetAllCount())
+                            () => cellCountProvider.GetAllCount()),
+
+                        new FilterDataSource<Cell>(
+                            "CellStatusEmpty",
+                            Resources.MasterData.CellStatusEmpty,
+                            () => cellProvider.GetWithStatusEmpty(),
+                            () => cellCountProvider.GetWithStatusEmptyCount()),
+                        new FilterDataSource<Cell>(
+                            "CellStatusFull",
+                            Resources.MasterData.CellStatusFull,
+                            () => cellProvider.GetWithStatusFull(),
+                            () => cellCountProvider.GetWithStatusFullCount()),
+                        new FilterDataSource<Cell>(
+                            "CellClassA",
+                            Resources.MasterData.CellClassA,
+                            () => cellProvider.GetWithClassA(),
+                            () => cellCountProvider.GetWithClassACount()),
                     }.Cast<IFilterDataSource<TModel>>();
 
                 case Machines.MACHINES:

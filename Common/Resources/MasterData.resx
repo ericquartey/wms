@@ -353,4 +353,28 @@
   <data name="LoadingUnitStatusUsed" xml:space="preserve">
     <value>Used Status</value>
   </data>
+  <data name="CellClassA" xml:space="preserve">
+    <value>Class A</value>
+  </data>
+  <data name="CellStatusEmpty" xml:space="preserve">
+    <value>Empty Status</value>
+  </data>
+  <data name="CellStatusFull" xml:space="preserve">
+    <value>Full Status</value>
+  </data>
+  <data name="CompartmentStatusAvailable" xml:space="preserve">
+    <value>Available Status</value>
+  </data>
+  <data name="CompartmentStatusAwaiting" xml:space="preserve">
+    <value>Awaiting Verification Status</value>
+  </data>
+  <data name="CompartmentStatusBlocked" xml:space="preserve">
+    <value>Blocked Status</value>
+  </data>
+  <data name="CompartmentStatusExpired" xml:space="preserve">
+    <value>Expired Status</value>
+  </data>
+  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
+    <value>{0} X {1} [mm]</value>
+  </data>
 </root>

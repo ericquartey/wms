@@ -123,6 +123,7 @@ namespace Ferretto.Common.BusinessProviders
                {
                    Id = c.Id,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
+                   CompartmentTypeDescription = string.Format(Resources.MasterData.CompartmentTypeListFormatReduced, c.Width, c.Height),
                    ItemDescription = c.Item.Description,
                    IsItemPairingFixed = c.IsItemPairingFixed,
                    LoadingUnitCode = c.LoadingUnit.Code,
@@ -298,6 +299,15 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusAvailableFilter);
         }
 
+        public Int32 GetWithStatusAvailableCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Compartments.AsNoTracking().Count(StatusAvailableFilter);
+            }
+        }
+
         public IQueryable<Compartment> GetWithStatusAwaiting()
         {
             return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusAwaitingFilter);
@@ -323,15 +333,6 @@ namespace Ferretto.Common.BusinessProviders
             lock (dataContext)
             {
                 return dataContext.Compartments.AsNoTracking().Count(StatusBlockedFilter);
-            }
-        }
-
-        public Int32 GetWithStatusCompletedCount()
-        {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusAvailableFilter);
             }
         }
 
@@ -398,7 +399,7 @@ namespace Ferretto.Common.BusinessProviders
                {
                    Id = c.Id,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
-                   CompartmentTypeDescription = c.CompartmentType.Description,
+                   CompartmentTypeDescription = string.Format(Resources.MasterData.CompartmentTypeListFormat, c.Width, c.Height),
                    ItemDescription = c.Item.Description,
                    IsItemPairingFixed = c.IsItemPairingFixed,
                    LoadingUnitCode = c.LoadingUnit.Code,
