@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -67,12 +67,6 @@ namespace Ferretto.Common.BusinessModels
                 this[nameof(this.BayId)],
             }.Where(s => !String.IsNullOrEmpty(s))
         );
-
-        [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
-        public string ItemCode => this.ItemListDetails?.Code;
-
-        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
-        public string ItemDescription => this.ItemListDetails?.Description;
 
         public ItemListDetails ItemListDetails
         {
