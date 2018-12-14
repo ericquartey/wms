@@ -10,11 +10,17 @@
 
     <StackPanel DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type wms:WmsEnumIndicator}}}"
                 Orientation="Horizontal">
+        <Border Width="{Binding Path=IconSize}"
+                Height="{Binding Path=IconSize}"
+                Background="{Binding Path=BackgroundBrush, Mode=OneWay}"
+                CornerRadius="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Width}"
+                Visibility="{Binding HideIcon, Converter={StaticResource BTVC}}" />
         <wms:WmsIcon x:Name="icon"
                      Width="{Binding Path=IconSize}"
                      Height="{Binding Path=IconSize}"
                      ColorizeBrush="{Binding Path=BackgroundBrush, Mode=OneWay}"
-                     SymbolName="{Binding Path=SymbolName, Mode=OneWay}" />
+                     SymbolName="{Binding Path=SymbolName, Mode=OneWay}"
+                     Visibility="{Binding HideIcon, Converter={StaticResource BTVIC}}" />
         <TextBlock x:Name="textBlock"
                    Margin="5,0,0,0"
                    VerticalAlignment="Center" />

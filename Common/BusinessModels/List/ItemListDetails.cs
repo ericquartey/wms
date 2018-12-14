@@ -20,6 +20,8 @@ namespace Ferretto.Common.BusinessModels
         private IEnumerable<ItemListRow> itemListRows;
         private ItemListStatus itemListStatus;
         private int itemListType;
+        private IEnumerable<Enumeration> itemListTypeChoices;
+        private String itemListTypeDescription;
         private string job;
         private int priority;
         private bool shipmentUnitAssociated;
@@ -107,10 +109,33 @@ namespace Ferretto.Common.BusinessModels
         public int ItemListType
         {
             get => this.itemListType;
-            set => this.SetProperty(ref this.itemListType, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemListType, value))
+                {
+                    this.SetItemListDescription();
+                }
+            }
         }
 
-        public IEnumerable<Enumeration> ItemListTypeChoices { get; set; }
+        public IEnumerable<Enumeration> ItemListTypeChoices
+        {
+            get => this.itemListTypeChoices;
+            set
+            {
+                if (this.SetProperty(ref this.itemListTypeChoices, value))
+                {
+                    this.SetItemListDescription();
+                }
+            }
+        }
+
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        public string ItemListTypeDescription
+        {
+            get => this.itemListTypeDescription;
+            set => this.SetProperty(ref this.itemListTypeDescription, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemListJob), ResourceType = typeof(BusinessObjects))]
         public string Job
@@ -151,5 +176,14 @@ namespace Ferretto.Common.BusinessModels
         }
 
         #endregion Properties
+
+        #region Methods
+
+        private void SetItemListDescription()
+        {
+            this.ItemListTypeDescription = this.ItemListTypeChoices?.SingleOrDefault(c => c.Id == this.ItemListType)?.Description;
+        }
+
+        #endregion Methods
     }
 }

@@ -51,6 +51,11 @@ namespace Ferretto.Common.Controls
             this.OnAppear();
         }
 
+        public virtual bool CanDisappear()
+        {
+            return true;
+        }
+
         public virtual void Disappear()
         {
             this.OnDisappear();
