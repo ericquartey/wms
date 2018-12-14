@@ -176,11 +176,10 @@
                                   EditValue="{Binding Path=Compartment.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   ItemsSource="{Binding Path=Compartment.MaterialStatusChoices}" />
 
-                    <wms:ComboBox x:Name="Pairing"
-                                  Grid.Row="6"
-                                  Grid.Column="2"
-                                  EditValue="{Binding Path=Compartment.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                  ItemsSource="{Binding Path=Compartment.ItemPairingChoices}" />
+                    <wms:WmsCheckEdit Grid.Row="6"
+                                      Grid.Column="2"
+                                      Content="{x:Static res:BusinessObjects.PairingFixed}"
+                                      IsChecked="{Binding Compartment.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <dxa:AccordionControl Grid.Row="7"
                                           Grid.ColumnSpan="3"
@@ -189,16 +188,18 @@
                                           BorderThickness="0"
                                           IsCollapseButtonVisible="False"
                                           RootItemExpandButtonPosition="Left">
-                        <wms:AccordionItem FontSize="12"
+                        <wms:AccordionItem x:Name="WmsAccordionItem"
+                                           FontSize="12"
+                                           FontWeight="Normal"
                                            IsExpandButtonVisible="True"
                                            IsExpanded="{Binding EnableInputAdd, Mode=OneWay, Converter={StaticResource BNC}}"
                                            IsToggleVisible="False"
                                            TitleHeader="Advanced Details">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="155" />
                                     <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="155" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />

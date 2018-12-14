@@ -11,7 +11,22 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
+        private string abcClassId;
+        private int aisleId;
+        private int areaId;
+        private int cellId;
+        private int cellPositionId;
+        private string code;
+        private int? handlingParametersCorrection;
+        private int height;
+        private int inCycleCount;
+        private bool isCellPairingFixed;
         private int length;
+        private string loadingUnitStatusId;
+        private int loadingUnitTypeId;
+        private string note;
+        private string referenceType;
+        private int weight;
         private int width;
         private int height;
         private int weight;
@@ -27,23 +42,32 @@ namespace Ferretto.Common.BusinessModels
         public string AbcClassDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
-        public string AbcClassId { get; set; }
+        public string AbcClassId
+        {
+            get => this.abcClassId;
+            set => this.SetProperty(ref this.abcClassId, value);
+        }
 
-        public int AisleId { get; set; }
+        public int AisleId
+        {
+            get => this.aisleId;
+            set => this.SetProperty(ref this.aisleId, value);
+        }
 
-        public int AreaId { get; set; }
+        public int AreaId
+        {
+            get => this.areaId;
+            set => this.SetProperty(ref this.areaId, value);
+        }
 
         public IEnumerable<Enumeration> CellChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCurrentCell), ResourceType = typeof(BusinessObjects))]
-        public int CellId { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.LoadingUnitCellPairing), ResourceType = typeof(BusinessObjects))]
-        public int CellPairing { get; set; }
-
-        public IEnumerable<Enumeration> CellPairingChoices { get; set; }
-
-        public string CellPairingDetails { get; set; }
+        public int CellId
+        {
+            get => this.cellId;
+            set => this.SetProperty(ref this.cellId, value);
+        }
 
         public IEnumerable<Enumeration> CellPositionChoices { get; set; }
 
@@ -51,10 +75,18 @@ namespace Ferretto.Common.BusinessModels
         public string CellPositionDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellPosition), ResourceType = typeof(BusinessObjects))]
-        public int CellPositionId { get; set; }
+        public int CellPositionId
+        {
+            get => this.cellPositionId;
+            set => this.SetProperty(ref this.cellPositionId, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
-        public string Code { get; set; }
+        public string Code
+        {
+            get => this.code;
+            set => this.SetProperty(ref this.code, value);
+        }
 
         public BindingList<CompartmentDetails> Compartments => this.compartments;
 
@@ -77,10 +109,21 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitInCycleCount), ResourceType = typeof(BusinessObjects))]
-        public int InCycleCount { get; set; }
+        public int InCycleCount
+        {
+            get => this.inCycleCount;
+            set => this.SetProperty(ref this.inCycleCount, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitInventoryDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? InventoryDate { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.LoadingUnitIsCellPairingFixed), ResourceType = typeof(BusinessObjects))]
+        public bool IsCellPairingFixed
+        {
+            get => this.isCellPairingFixed;
+            set => this.SetProperty(ref this.isCellPairingFixed, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitLastHandlingDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastHandlingDate { get; set; }
@@ -104,18 +147,32 @@ namespace Ferretto.Common.BusinessModels
         public string LoadingUnitStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitStatus), ResourceType = typeof(BusinessObjects))]
-        public string LoadingUnitStatusId { get; set; }
+        public string LoadingUnitStatusId
+        {
+            get => this.loadingUnitStatusId;
+            set => this.SetProperty(ref this.loadingUnitStatusId, value);
+        }
 
         public IEnumerable<Enumeration> LoadingUnitTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitTypeDescription { get; set; }
 
+        public bool LoadingUnitTypeHasCompartments { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitType), ResourceType = typeof(BusinessObjects))]
-        public int LoadingUnitTypeId { get; set; }
+        public int LoadingUnitTypeId
+        {
+            get => this.loadingUnitTypeId;
+            set => this.SetProperty(ref this.loadingUnitTypeId, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitNotes), ResourceType = typeof(BusinessObjects))]
-        public string Note { get; set; }
+        public string Note
+        {
+            get => this.note;
+            set => this.SetProperty(ref this.note, value);
+        }
 
         public Position OriginTray { get; set; }
 
@@ -126,7 +183,11 @@ namespace Ferretto.Common.BusinessModels
         public int OutCycleCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
-        public string ReferenceType { get; set; }
+        public string ReferenceType
+        {
+            get => this.referenceType;
+            set => this.SetProperty(ref this.referenceType, value);
+        }
 
         public IEnumerable<EnumerationString> ReferenceTypeChoices { get; set; }
 
@@ -156,7 +217,7 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                throw new ArgumentException("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
+                throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, this.Id));
             }
         }
 

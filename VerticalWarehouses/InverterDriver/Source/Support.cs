@@ -3,6 +3,12 @@
 
 namespace Ferretto.VW.InverterDriver
 {
+    public enum ActionType
+    {
+        PositioningDrawer,
+        CalibrateVerticalAxis,
+    }
+
     /// <summary>
     /// Status of inverter machine.
     /// </summary>

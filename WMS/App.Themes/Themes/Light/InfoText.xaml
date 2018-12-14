@@ -4,15 +4,15 @@
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
     <wms:BoolToVisibilityConverter x:Key="BTVC" />
-    <wms:BoolToVisibilityConverter x:Key="BTVIC" Invert="True" />
+    <wms:BoolToVisibilityConverter x:Key="BTVIC"
+                                   Invert="True" />
     <wms:PropertyDescriptionConverter x:Key="DNC"
                                       Control="{x:Type wms:InfoText}"
                                       Property="{x:Static wms:InfoText.ContentProperty}" />
 
-    <Style
-        BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.Label,
+    <Style BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.Label,
                                                                 ThemeName=Office2016White}}"
-        TargetType="{x:Type wms:InfoText}">
+           TargetType="{x:Type wms:InfoText}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type wms:InfoText}">
@@ -22,43 +22,45 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Label x:Name="InnerLabel"
-                               Style="{DynamicResource ControlLabelStyle}"
                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                FontFamily="{DynamicResource FontSmall}"
-                               FontSize="{DynamicResource FontSizeSmall}">
+                               FontSize="{DynamicResource FontSizeSmall}"
+                               Style="{DynamicResource ControlLabelStyle}">
                             <Label.Content>
                                 <MultiBinding Converter="{StaticResource DNC}">
                                     <Binding RelativeSource="{RelativeSource Self}" />
                                     <Binding Path="DataContext"
-                                                 RelativeSource="{RelativeSource Self}" />
+                                             RelativeSource="{RelativeSource Self}" />
                                 </MultiBinding>
                             </Label.Content>
                         </Label>
 
                         <StackPanel Grid.Row="1">
                             <Border x:Name="InnerTextEnumBorder"
-                                    CornerRadius="7"
                                     Background="{TemplateBinding BackgroundBrush}"
-                                    Visibility="{TemplateBinding IsPillVisible, Converter={StaticResource BTVC}}">
+                                    CornerRadius="7"
+                                    Visibility="{TemplateBinding IsPillVisible,
+                                                                 Converter={StaticResource BTVC}}">
                                 <Label x:Name="InnerTextEnum"
-                                       Foreground="{DynamicResource CommonBackground}"
                                        Margin="8,0"
                                        Padding="0,1,0,1"
-                                       Content="{TemplateBinding ContentText}"
                                        HorizontalAlignment="Center"
-                                       FontWeight="Bold"
+                                       Content="{TemplateBinding ContentText}"
                                        FontFamily="{DynamicResource FontSmall}"
-                                       FontSize="{DynamicResource FontSizeSmall}" />
+                                       FontSize="{DynamicResource FontSizeSmall}"
+                                       FontWeight="Bold"
+                                       Foreground="{DynamicResource CommonBackground}" />
                             </Border>
 
                             <Label x:Name="InnerTextValue"
                                    Padding="0,1,0,1"
-                                   Content="{TemplateBinding ContentText}"
                                    HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                   FontWeight="Bold"
+                                   Content="{TemplateBinding ContentText}"
                                    FontFamily="{DynamicResource FontSmall}"
                                    FontSize="{DynamicResource FontSizeSmall}"
-                                   Visibility="{TemplateBinding IsPillVisible, Converter={StaticResource BTVIC}}" />
+                                   FontWeight="Bold"
+                                   Visibility="{TemplateBinding IsPillVisible,
+                                                                Converter={StaticResource BTVIC}}" />
 
                         </StackPanel>
                     </Grid>

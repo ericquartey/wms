@@ -37,7 +37,8 @@
                                Content="{x:Static res:General.Edit}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
-                               GlyphSize="Custom" />
+                               GlyphSize="Custom"
+                               IsVisible="{Binding LoadingUnit.LoadingUnitTypeHasCompartments}" />
             <wms:ActionBarItem Command="{Binding SaveCommand}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
@@ -61,6 +62,7 @@
                       IsTabStop="True">
             <Grid Margin="0,0,5,0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -94,21 +96,21 @@
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.LoadingUnitTypeId}"
+                                      EditValue="{Binding LoadingUnit.LoadingUnitTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.LoadingUnitTypeChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.LoadingUnitStatusId}"
+                                      EditValue="{Binding LoadingUnit.LoadingUnitStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.LoadingUnitStatusChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.AbcClassId}"
+                                      EditValue="{Binding LoadingUnit.AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.AbcClassChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.ReferenceType}"
+                                      EditValue="{Binding LoadingUnit.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.ReferenceTypeChoices}" />
                         <wms:TextBox Grid.Row="3"
                                      Grid.ColumnSpan="3"
@@ -130,21 +132,22 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <wms:ComboBox Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellId}"
-                                      ItemsSource="{Binding LoadingUnit.CellChoices}" />
+                                      EditValue="{Binding Path=LoadingUnit.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=LoadingUnit.CellChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding LoadingUnit.CellPositionId}"
                                       ItemsSource="{Binding LoadingUnit.CellPositionChoices}" />
-                        <wms:ComboBox Grid.Row="1"
-                                      Grid.Column="1"
-                                      Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellPairing}"
-                                      ItemsSource="{Binding LoadingUnit.CellPairingChoices}" />
+
+                        <wms:WmsCheckEdit Grid.Row="1"
+                                          Grid.Column="1"
+                                          Margin="0,0,20,0"
+                                          Content="{x:Static res:BusinessObjects.PairingFixed}"
+                                          IsChecked="{Binding Path=LoadingUnit.IsCellPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -161,16 +164,16 @@
                         </Grid.ColumnDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
                                       MinValue="1"
-                                      EditValue="{Binding LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       MinValue="0"
-                                      EditValue="{Binding LoadingUnit.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
                                       MinValue="0"
                                       AllowNullInput="True"
-                                      EditValue="{Binding LoadingUnit.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -179,76 +182,74 @@
                           Grid.Column="0"
                           Grid.ColumnSpan="2"
                           Margin="0"
-                          Header="{x:Static res:MasterData.Compartments}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+                          Header="{x:Static res:MasterData.CompartmentsLayoutOverview}"
+                          Visibility="{Binding LoadingUnit.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
+                    <wms:WmsTrayControl Margin="0"
+                                        CanvasMinHeight="150"
+                                        IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
+                                        IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
+                                        SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
+                                        SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                                        ShowBackground="True"
+                                        Tray="{Binding Tray, Mode=OneWay}" />
+                </GroupBox>
 
-                        <wms:WmsTrayControl Grid.Row="0"
-                                            Margin="0"
-                                            CanvasMinHeight="150"
-                                            IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
-                                            IsReadOnly="{Binding ReadOnlyTray, Mode=OneWay}"
-                                            SelectedColorFilterFunc="{Binding TrayColoringFunc, Mode=OneWay}"
-                                            SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
-                                            ShowBackground="True"
-                                            Tray="{Binding Tray, Mode=OneWay}" />
+                <GroupBox Grid.Row="3"
+                          Grid.Column="0"
+                          Grid.ColumnSpan="2"
+                          Margin="0"
+                          Header="{x:Static res:MasterData.Compartments}"
+                          Visibility="{Binding LoadingUnit.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
+                    <StackPanel Margin="0,5,0,0">
+                        <TextBlock Text="{x:Static res:MasterData.LoadingUnitWithNoCompartment}"
+                                   Visibility="{Binding LoadingUnitHasCompartments, Converter={StaticResource BTVIC}}" />
+                        <wms:WmsGridControl MinHeight="200"
+                                            MaxWidth="2000"
+                                            MaxHeight="200"
+                                            ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
+                                            SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"
+                                            Visibility="{Binding LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
+                            <wms:WmsGridControl.View>
+                                <dxg:TableView>
+                                    <i:Interaction.Triggers>
+                                        <i:EventTrigger EventName="RowDoubleClick">
+                                            <wms:WmsHistoryViewAppear Id="{Binding SelectedCompartment.Id, Mode=OneWay}"
+                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                                      StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
+                                        </i:EventTrigger>
+                                    </i:Interaction.Triggers>
+                                </dxg:TableView>
+                            </wms:WmsGridControl.View>
 
-                        <StackPanel Grid.Row="1"
-                                    Margin="0,5,0,0">
-                            <TextBlock Text="{x:Static res:MasterData.LoadingUnitWithNoCompartment}"
-                                       Visibility="{Binding LoadingUnitHasCompartments, Converter={StaticResource BTVIC}}" />
-                            <wms:WmsGridControl MinHeight="200"
-                                                MaxWidth="2000"
-                                                MaxHeight="200"
-                                                ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
-                                                SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"
-                                                Visibility="{Binding LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
-                                <wms:WmsGridControl.View>
-                                    <dxg:TableView>
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="RowDoubleClick">
-                                                <wms:WmsHistoryViewAppear Id="{Binding SelectedCompartment.Id, Mode=OneWay}"
-                                                                          StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
-                                                                          StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </dxg:TableView>
-                                </wms:WmsGridControl.View>
+                            <wms:WmsGridControl.Columns>
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="LoadingUnitCode" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub1" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Sub2" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="Lot" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="CompartmentStatusDescription" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="Stock" />
+                                <dxg:GridColumn Width="100*"
+                                                FieldName="MaxCapacity" />
+                                <dxg:GridColumn Width="200*"
+                                                FieldName="IsItemPairingFixed"
+                                                Style="{DynamicResource BooleanCellTemplate}" />
+                            </wms:WmsGridControl.Columns>
 
-                                <wms:WmsGridControl.Columns>
-                                    <dxg:GridColumn Width="200*"
-                                                    FieldName="Code" />
-                                    <dxg:GridColumn Width="200*"
-                                                    FieldName="LoadingUnitCode" />
-                                    <dxg:GridColumn Width="100*"
-                                                    FieldName="Sub1" />
-                                    <dxg:GridColumn Width="100*"
-                                                    FieldName="Sub2" />
-                                    <dxg:GridColumn Width="200*"
-                                                    FieldName="Lot" />
-                                    <dxg:GridColumn Width="200*"
-                                                    FieldName="CompartmentStatusDescription" />
-                                    <dxg:GridColumn Width="100*"
-                                                    FieldName="Stock" />
-                                    <dxg:GridColumn Width="100*"
-                                                    FieldName="MaxCapacity" />
-                                    <dxg:GridColumn Width="200*"
-                                                    FieldName="ItemPairingDescription" />
-                                </wms:WmsGridControl.Columns>
+                            <wms:WmsGridControl.SortInfo>
+                                <dxg:GridSortInfo FieldName="LoadingUnitCode"
+                                                  SortOrder="Ascending" />
+                            </wms:WmsGridControl.SortInfo>
 
-                                <wms:WmsGridControl.SortInfo>
-                                    <dxg:GridSortInfo FieldName="Code"
-                                                      SortOrder="Ascending" />
-                                </wms:WmsGridControl.SortInfo>
+                        </wms:WmsGridControl>
 
-                            </wms:WmsGridControl>
+                    </StackPanel>
 
-                        </StackPanel>
-
-                    </Grid>
                 </GroupBox>
 
             </Grid>

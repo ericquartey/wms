@@ -61,7 +61,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Acceptable weight tolerance (%):.
+        ///   Looks up a localized string similar to Acceptable weight tolerance [%]:.
         /// </summary>
         public static string AcceptableWeightTolerance {
             get {
@@ -178,7 +178,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Cell correction (mm):.
+        ///   Looks up a localized string similar to Cell correction [mm]:.
         /// </summary>
         public static string CellCorrection {
             get {
@@ -187,7 +187,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current cell&apos;s height (mm):.
+        ///   Looks up a localized string similar to Current cell&apos;s height [mm]:.
         /// </summary>
         public static string CellHeight {
             get {
@@ -250,7 +250,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Correct offset (mm):.
+        ///   Looks up a localized string similar to Adjusted offset [mm]:.
         /// </summary>
         public static string CorrectOffset {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current height (mm):.
+        ///   Looks up a localized string similar to Current height [mm]:.
         /// </summary>
         public static string CurrentHeight {
             get {
@@ -295,7 +295,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current offset (mm):.
+        ///   Looks up a localized string similar to Current offset [mm]:.
         /// </summary>
         public static string CurrentOffset {
             get {
@@ -313,7 +313,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current position (mm):.
+        ///   Looks up a localized string similar to Current position [mm]:.
         /// </summary>
         public static string CurrentPosition {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current resolution (imp/mm):.
+        ///   Looks up a localized string similar to Current resolution [imp/mm]:.
         /// </summary>
         public static string CurrentResolution {
             get {
@@ -331,7 +331,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delay between cicles (s):.
+        ///   Looks up a localized string similar to Delay between cicles [s]:.
         /// </summary>
         public static string DelayBetweenCicles {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Desired initial position (mm):.
+        ///   Looks up a localized string similar to Desired initial position [mm]:.
         /// </summary>
         public static string DesiredInitialPosition {
             get {
@@ -349,7 +349,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Desired movement (mm):.
+        ///   Looks up a localized string similar to Desired movement [mm]:.
         /// </summary>
         public static string DesiredMovement {
             get {
@@ -538,7 +538,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gate correction (mm):.
+        ///   Looks up a localized string similar to Gate correction [mm]:.
         /// </summary>
         public static string GateCorrection {
             get {
@@ -619,7 +619,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inserted weight (kg):.
+        ///   Looks up a localized string similar to Inserted weight [kg]:.
         /// </summary>
         public static string InsertedWeight {
             get {
@@ -709,7 +709,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Lower bound (mm):.
+        ///   Looks up a localized string similar to Lower bound [mm]:.
         /// </summary>
         public static string LowerBound {
             get {
@@ -826,7 +826,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured initial position (mm):.
+        ///   Looks up a localized string similar to Measured initial position [mm]:.
         /// </summary>
         public static string MesuredInitialPosition {
             get {
@@ -835,7 +835,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured lenght (mm):.
+        ///   Looks up a localized string similar to Mesured lenght [mm]:.
         /// </summary>
         public static string MesuredLenght {
             get {
@@ -844,7 +844,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured movement (mm):.
+        ///   Looks up a localized string similar to Mesured movement [mm]:.
         /// </summary>
         public static string MesuredMovement {
             get {
@@ -853,7 +853,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mesured weight (kg):.
+        ///   Looks up a localized string similar to Mesured weight [kg]:.
         /// </summary>
         public static string MesuredWeight {
             get {
@@ -952,7 +952,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New resolution (imp/mm):.
+        ///   Looks up a localized string similar to New resolution [imp/mm]:.
         /// </summary>
         public static string NewResolution {
             get {
@@ -961,7 +961,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to   Next &gt;  .
+        ///   Looks up a localized string similar to Next &gt;  .
         /// </summary>
         public static string NextButton {
             get {
@@ -979,7 +979,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Offset (mm):.
+        ///   Looks up a localized string similar to Offset [mm]:.
         /// </summary>
         public static string Offset {
             get {
@@ -1033,7 +1033,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Panel correction (mm):.
+        ///   Looks up a localized string similar to Panel correction [mm]:.
         /// </summary>
         public static string PanelCorrection {
             get {
@@ -1060,7 +1060,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reference&apos;s cell height (mm):.
+        ///   Looks up a localized string similar to Reference&apos;s cell height [mm]:.
         /// </summary>
         public static string ReferenceCellHeight {
             get {
@@ -1078,7 +1078,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reposition lenght:.
+        ///   Looks up a localized string similar to Reposition lenght [mm]:.
         /// </summary>
         public static string RepositionLenght {
             get {
@@ -1114,7 +1114,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Resolution     Calibration.
+        ///   Looks up a localized string similar to Resolution Calibration.
         /// </summary>
         public static string ResolutionCalibration {
             get {
@@ -1222,7 +1222,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed (mm/sec):.
+        ///   Looks up a localized string similar to Speed [mm/s]:.
         /// </summary>
         public static string SpeedMMSec {
             get {
@@ -1258,7 +1258,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Step value (mm):.
+        ///   Looks up a localized string similar to Step value [mm]:.
         /// </summary>
         public static string StepValue {
             get {
@@ -1276,7 +1276,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to System error (mm):.
+        ///   Looks up a localized string similar to System error [mm]:.
         /// </summary>
         public static string SystemErrorMM {
             get {
@@ -1294,7 +1294,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tolerance (mm +/-):.
+        ///   Looks up a localized string similar to Tolerance (+/-) [mm]:.
         /// </summary>
         public static string Tolerance {
             get {
@@ -1321,7 +1321,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Upper bound (mm):.
+        ///   Looks up a localized string similar to Upper bound [mm]:.
         /// </summary>
         public static string UpperBound {
             get {

@@ -61,13 +61,13 @@
     <SolidColorBrush x:Key="HoverCommonSecondaryDark"
                      Color="{StaticResource WhiteGrey}" />
 
-    <!-- progress bar color brush  -->
+    <!--  progress bar color brush  -->
     <SolidColorBrush x:Key="ProgressBarForeground"
                      Color="{StaticResource Green}" />
     <SolidColorBrush x:Key="ProgressBarBackground"
                      Color="{StaticResource LightGrey}" />
 
-    <!-- messages  -->
+    <!--  messages  -->
     <SolidColorBrush x:Key="ErrorMessageColorBrush"
                      Color="{StaticResource Red}" />
     <SolidColorBrush x:Key="ErrorMessageBackgroundColor"

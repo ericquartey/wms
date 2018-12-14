@@ -3,12 +3,9 @@ using System.Collections.Generic;
 
 namespace Ferretto.Common.DataModels
 {
-    // Scomparto
     public sealed class Compartment : ITimestamped, IDataModel
     {
         #region Properties
-
-        public string Code { get; set; }
 
         public CompartmentStatus CompartmentStatus { get; set; }
 
@@ -30,11 +27,11 @@ namespace Ferretto.Common.DataModels
 
         public DateTime? InventoryDate { get; set; }
 
+        public bool IsItemPairingFixed { get; set; }
+
         public Item Item { get; set; }
 
         public int? ItemId { get; set; }
-
-        public Pairing ItemPairing { get; set; }
 
         public DateTime? LastHandlingDate { get; set; }
 

@@ -174,7 +174,6 @@ namespace Ferretto.WMS.Scheduler.Core
                 {
                     AreaId = c.LoadingUnit.Cell.Aisle.AreaId,
                     CellId = c.LoadingUnit.CellId,
-                    Code = c.Code,
                     FifoTime = c.FifoTime,
                     FirstStoreDate = c.FirstStoreDate,
                     Id = c.Id,

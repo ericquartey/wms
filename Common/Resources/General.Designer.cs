@@ -232,15 +232,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Password Login:.
-        /// </summary>
-        public static string PasswordLogin {
-            get {
-                return ResourceManager.GetString("PasswordLogin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         public static string Refresh {
@@ -336,24 +327,6 @@ namespace Ferretto.Common.Resources {
         public static string Up {
             get {
                 return ResourceManager.GetString("Up", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User Login:.
-        /// </summary>
-        public static string UserLogin {
-            get {
-                return ResourceManager.GetString("UserLogin", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Vertimag X.
-        /// </summary>
-        public static string VertimagX {
-            get {
-                return ResourceManager.GetString("VertimagX", resourceCulture);
             }
         }
     }

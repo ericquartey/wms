@@ -62,27 +62,19 @@
                                       MinWidth="300" />
                 </Grid.ColumnDefinitions>
 
-                <GroupBox Grid.Row="0"
-                          Grid.RowSpan="2"
-                          Grid.Column="0"
-                          Margin="0"
+                <GroupBox Grid.RowSpan="2"
                           Header="{x:Static res:MasterData.CompartmentInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="400*" />
-                            <ColumnDefinition Width="100*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox Grid.Row="0"
-                                     Grid.ColumnSpan="2"
-                                     Text="{Binding Compartment.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <wms:LookUpEdit Grid.Row="1"
-                                        Grid.ColumnSpan="2"
+
+                        <wms:LookUpEdit Margin="0,0,20,0"
                                         DisplayMember="Code"
                                         EditValue="{Binding Compartment.LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                         ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}"
@@ -124,25 +116,26 @@
                             </wms:LookUpEdit.PopupContentTemplate>
                         </wms:LookUpEdit>
 
-                        <wms:ComboBox Grid.Row="2"
-                                      Margin="0,0,20,0"
-                                      EditValue="{Binding Compartment.CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Compartment.CompartmentTypeChoices}" />
-                        <wms:ComboBox Grid.Row="2"
-                                      Grid.Column="1"
-                                      Margin="0,0,20,0"
-                                      EditValue="{Binding Compartment.ItemPairing, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Compartment.ItemPairingChoices}" />
-                        <wms:ComboBox Grid.Row="3"
+                        <wms:ComboBox Grid.Column="1"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Compartment.CompartmentStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False"
                                       ItemsSource="{Binding Compartment.CompartmentStatusChoices}" />
+
+                        <wms:ComboBox Grid.Row="1"
+                                      Margin="0,0,20,0"
+                                      EditValue="{Binding Compartment.CompartmentTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Compartment.CompartmentTypeChoices}" />
+
+                        <wms:WmsCheckEdit Grid.Row="1"
+                                          Grid.Column="1"
+                                          Content="{x:Static res:BusinessObjects.PairingFixed}"
+                                          IsChecked="{Binding Compartment.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Grid.Row="0"
-                          Grid.RowSpan="2"
+                <GroupBox Grid.RowSpan="2"
                           Grid.Column="1"
                           Margin="20,0,20,0"
                           Header="{x:Static res:MasterData.CurrentItemInformation}">
@@ -237,8 +230,7 @@
                 </GroupBox>
 
 
-                <GroupBox Grid.Row="0"
-                          Grid.Column="2"
+                <GroupBox Grid.Column="2"
                           Margin="20,0,0,0"
                           Header="{x:Static res:MasterData.PhysicalInformation}">
                     <Grid>
@@ -282,8 +274,7 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="1"
-                          Grid.Column="2"
-                          Margin="20,0,0,0"
+                          Margin="0,14,0,0"
                           Header="{x:Static res:MasterData.ContentInformation}">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -321,7 +312,6 @@
                 </GroupBox>
 
                 <GroupBox Grid.Row="2"
-                          Grid.Column="0"
                           Grid.ColumnSpan="3"
                           Header="{x:Static res:MasterData.CompartmentPosition}">
 

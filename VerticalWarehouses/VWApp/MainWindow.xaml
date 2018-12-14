@@ -31,7 +31,7 @@
                Stretch="Uniform" />
         <Image Grid.Row="1"
                Grid.Column="1"
-               Margin="0,0,0,50"
+               Margin="0,60,0,50"
                Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
         <StackPanel Grid.Row="1"
                     Grid.Column="0"
@@ -46,16 +46,16 @@
                        Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
                        Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Rectangle Name="SpaceRectangle2"
-                       Height="130" />
+                       Height="80" />
             <custom:CustomInputFieldControlFocusable Width="200"
                                                      HorizontalAlignment="Left"
                                                      InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                                     LabelText="{x:Static res:General.UserLogin}"
+                                                     LabelText="{x:Static res:VWApp.UserLogin}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
             <custom:CustomInputFieldControlFocusable Width="200"
                                                      HorizontalAlignment="Left"
                                                      InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                     LabelText="{x:Static res:General.PasswordLogin}"
+                                                     LabelText="{x:Static res:VWApp.PasswordLogin}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
             <TextBlock Height="60"
                        HorizontalAlignment="Left"
@@ -63,6 +63,7 @@
                        Text="{Binding LoginErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextWrapping="WrapWithOverflow" />
             <Button Width="200"
+                    Margin="0,0,0,0"
                     HorizontalAlignment="Left"
                     Command="{Binding LoginButtonCommand}"
                     Content="{x:Static res:General.Login}"

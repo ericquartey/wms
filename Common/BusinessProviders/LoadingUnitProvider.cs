@@ -36,7 +36,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(LoadingUnitDetails model)
+        public Task<OperationResult> Add(LoadingUnitDetails model)
         {
             throw new NotImplementedException();
         }
@@ -105,12 +105,12 @@ namespace Ferretto.Common.BusinessProviders
                     Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
                     Note = l.Note,
-                    CellPairing = (int)l.CellPairing,
-                    CellPairingDetails = l.CellPairing.ToString(),
+                    IsCellPairingFixed = l.IsCellPairingFixed,
                     ReferenceType = l.Reference.ToString(),
                     Height = l.Height,
                     Weight = l.Weight,
                     HandlingParametersCorrection = l.HandlingParametersCorrection,
+                    LoadingUnitTypeHasCompartments = l.LoadingUnitType.HasCompartments,
                     CreationDate = l.CreationDate,
                     LastHandlingDate = l.LastHandlingDate,
                     InventoryDate = l.InventoryDate,
@@ -155,12 +155,12 @@ namespace Ferretto.Common.BusinessProviders
                     Width = l.LoadingUnitType.LoadingUnitSizeClass.Width,
                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
                     Note = l.Note,
-                    CellPairing = (int)l.CellPairing,
-                    CellPairingDetails = l.CellPairing.ToString(),
+                    IsCellPairingFixed = l.IsCellPairingFixed,
                     ReferenceType = l.Reference.ToString(),
                     Height = l.Height,
                     Weight = l.Weight,
                     HandlingParametersCorrection = l.HandlingParametersCorrection,
+                    LoadingUnitTypeHasCompartments = l.LoadingUnitType.HasCompartments,
                     CreationDate = l.CreationDate,
                     LastHandlingDate = l.LastHandlingDate,
                     InventoryDate = l.InventoryDate,
@@ -184,9 +184,6 @@ namespace Ferretto.Common.BusinessProviders
                     loadingUnitDetails.AddCompartment(compartment);
                 }
 
-                loadingUnitDetails.CellPairingChoices =
-                    ((DataModels.Pairing[])Enum.GetValues(typeof(DataModels.Pairing)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
                 loadingUnitDetails.ReferenceTypeChoices =
                     ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
                     .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();

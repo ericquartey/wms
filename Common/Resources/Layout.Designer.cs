@@ -10,8 +10,8 @@
 
 namespace Ferretto.Common.Resources {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.Common.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Layout {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal Layout() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.Common.Resources {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.Common.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Access.
         /// </summary>
@@ -68,25 +68,16 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Access", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to Login.
+        ///   Looks up a localized string similar to User Login.
         /// </summary>
-        public static string Login {
+        public static string UserLogin {
             get {
-                return ResourceManager.GetString("Login", resourceCulture);
+                return ResourceManager.GetString("UserLogin", resourceCulture);
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Login to WMS.
-        /// </summary>
-        public static string LoginToWms {
-            get {
-                return ResourceManager.GetString("LoginToWms", resourceCulture);
-            }
-        }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ok.
         /// </summary>
@@ -95,7 +86,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
@@ -104,22 +95,13 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Password", resourceCulture);
             }
         }
-        
+
         /// <summary>
-        ///   Looks up a localized string similar to WMS  Access.
+        ///   Looks up a localized string similar to Username.
         /// </summary>
-        public static string WmsAccess {
+        public static string Username {
             get {
-                return ResourceManager.GetString("WmsAccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to WMS Login.
-        /// </summary>
-        public static string WmsLogin {
-            get {
-                return ResourceManager.GetString("WmsLogin", resourceCulture);
+                return ResourceManager.GetString("Username", resourceCulture);
             }
         }
     }

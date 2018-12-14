@@ -40,19 +40,23 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="7*" />
                 </Grid.ColumnDefinitions>
-                <custom:CustomLabelTextBlockControl Grid.Row="1"
+                <custom:CustomLabelTextBlockControl Name="ActualPositionLabel"
+                                                    Grid.Row="1"
                                                     Grid.Column="0"
                                                     ContentText="1235,2"
                                                     LabelText="{x:Static res:InstallationApp.ActualPosition}" />
-                <custom:CustomLabelTextBlockControl Grid.Row="3"
+                <custom:CustomLabelTextBlockControl Name="FeedRateLabel"
+                                                    Grid.Row="3"
                                                     Grid.Column="0"
                                                     ContentText="10%"
                                                     LabelText="{x:Static res:InstallationApp.FeedRate}" />
-                <Button Grid.Row="1"
+                <Button Name="GateEngineUp"
+                        Grid.Row="1"
                         Grid.Column="2"
                         Content="{x:Static res:InstallationApp.Up}"
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
-                <Button Grid.Row="3"
+                <Button Name="GateEngineDown"
+                        Grid.Row="3"
                         Grid.Column="2"
                         Content="{x:Static res:InstallationApp.Down}"
                         Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />

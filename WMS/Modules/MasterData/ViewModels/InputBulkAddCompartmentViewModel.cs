@@ -140,8 +140,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     compartment.LoadingUnitId = this.tray.LoadingUnitId;
                     compartment.CompartmentTypeId = 2;
-                    var add = await this.compartmentProvider.Add(compartment);
-                    if (add != 1)
+                    var result = await this.compartmentProvider.Add(compartment);
+                    if (!result.Success)
                     {
                         addAll = false;
                     }

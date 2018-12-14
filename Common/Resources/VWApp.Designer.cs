@@ -77,5 +77,23 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Ok", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password Login:.
+        /// </summary>
+        public static string PasswordLogin {
+            get {
+                return ResourceManager.GetString("PasswordLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Login:.
+        /// </summary>
+        public static string UserLogin {
+            get {
+                return ResourceManager.GetString("UserLogin", resourceCulture);
+            }
+        }
     }
 }
