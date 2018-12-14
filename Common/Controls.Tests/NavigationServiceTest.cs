@@ -213,7 +213,7 @@ namespace Feretto.Common.Controls.Tests
 
             public System.Boolean CanDisappear()
             {
-                // Test method. Nothing to do here.
+                return true;
             }
 
             public void Disappear()
