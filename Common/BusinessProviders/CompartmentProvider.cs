@@ -153,7 +153,6 @@ namespace Ferretto.Common.BusinessProviders
                    .Select(j => new CompartmentDetails
                    {
                        Id = j.cmp.Id,
-                       Code = j.cmp.Code,
                        LoadingUnitCode = j.cmp.LoadingUnit.Code,
                        CompartmentTypeId = j.cmp.CompartmentTypeId,
                        IsItemPairingFixed = j.cmp.IsItemPairingFixed,
