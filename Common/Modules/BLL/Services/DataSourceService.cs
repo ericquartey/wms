@@ -104,7 +104,19 @@ namespace Ferretto.Common.Modules.BLL.Services
                             "LoadingUnitsViewAll",
                             Resources.MasterData.LoadingUnitAll,
                             () => loadingUnitProvider.GetAll(),
-                            () => loadingUnitCountProvider.GetAllCount())
+                            () => loadingUnitCountProvider.GetAllCount()),
+
+                        new FilterDataSource<LoadingUnit>(
+                            "LoadingUnitsViewAreaManual",
+                            Resources.MasterData.LoadingUnitAll,
+                            () => loadingUnitProvider.GetAll(),
+                            () => loadingUnitCountProvider.GetAllCount()),
+
+                        new FilterDataSource<LoadingUnit>(
+                            "LoadingUnitsViewAreaVertimag",
+                            Resources.MasterData.LoadingUnitAll,
+                            () => loadingUnitProvider.GetAll(),
+                            () => loadingUnitCountProvider.GetAllCount()),
                     }.Cast<IFilterDataSource<TModel>>();
 
                 case MasterData.ITEMLISTS:
@@ -120,6 +132,24 @@ namespace Ferretto.Common.Modules.BLL.Services
                             () => itemListCountProvider.GetAllCount()),
 
                         new FilterDataSource<ItemList>(
+                            "ItemListViewTypePick",
+                            Resources.MasterData.ItemListsTypePick,
+                            () => itemListProvider.GetWithTypePick(),
+                            () => itemListCountProvider.GetWithTypePickCount()),
+
+                        new FilterDataSource<ItemList>(
+                            "ItemListViewTypePut",
+                            Resources.MasterData.ItemListsTypePut,
+                            () => itemListProvider.GetWithTypePut(),
+                            () => itemListCountProvider.GetWithTypePutCount()),
+
+                        new FilterDataSource<ItemList>(
+                            "ItemListViewTypeInventory",
+                            Resources.MasterData.ItemListsTypeInventory,
+                            () => itemListProvider.GetWithTypeInventory(),
+                            () => itemListCountProvider.GetWithTypeInventoryCount()),
+
+                        new FilterDataSource<ItemList>(
                             "ItemListViewStatusWaiting",
                             Resources.MasterData.ItemListStatusWaiting,
                             () => itemListProvider.GetWithStatusWaiting(),
@@ -130,12 +160,6 @@ namespace Ferretto.Common.Modules.BLL.Services
                             Resources.MasterData.ItemListStatusCompleted,
                             () => itemListProvider.GetWithStatusCompleted(),
                             () => itemListCountProvider.GetWithStatusCompletedCount()),
-
-                        new FilterDataSource<ItemList>(
-                            "ItemListViewTypePick",
-                            Resources.MasterData.ItemListsTypePick,
-                            () => itemListProvider.GetWithTypePick(),
-                            () => itemListCountProvider.GetWithTypePickCount()),
                     }.Cast<IFilterDataSource<TModel>>();
 
                 default:

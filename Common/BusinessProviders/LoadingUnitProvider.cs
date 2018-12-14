@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -10,6 +11,12 @@ namespace Ferretto.Common.BusinessProviders
     public class LoadingUnitProvider : ILoadingUnitProvider
     {
         #region Fields
+
+        private static readonly Expression<Func<DataModels.LoadingUnit, bool>> AreaManualFilter =
+            list => list.CellPositionId == 1;//AREA MANUAL
+
+        private static readonly Expression<Func<DataModels.LoadingUnit, bool>> AreaVertimagFilter =
+                    list => list.CellPositionId == 2;//AREA VERTIMAG
 
         private readonly ICellProvider cellProvider;
         private readonly ICompartmentProvider compartmentProvider;
@@ -193,6 +200,34 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public IQueryable<ItemList> GetWithAreaManual()
+        {
+            return null;// GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaManualFilter);
+        }
+
+        public Int32 GetWithAreaManualCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return 1;// dataContext.ItemLists.AsNoTracking();//.Count(AreaManualFilter);
+            }
+        }
+
+        public IQueryable<ItemList> GetWithAreaVertimag()
+        {
+            return null;// GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaVertimagFilter);
+        }
+
+        public Int32 GetWithAreaVertimagCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return 1;// dataContext.ItemLists.AsNoTracking();//.Count(AreaVertimagFilter);
+            }
+        }
+
         public bool HasAnyCompartments(int loadingUnitId)
         {
             var dataContext = this.dataContext.Current;
@@ -224,6 +259,32 @@ namespace Ferretto.Common.BusinessProviders
 
                 return dataContext.SaveChanges();
             }
+        }
+
+        private static IQueryable<LoadingUnit> GetAllLoadingUnitsWithAggregations(DatabaseContext context, Expression<Func<DataModels.LoadingUnit, bool>> whereFunc = null)
+        {
+            var actualWhereFunc = whereFunc ?? ((i) => true);
+
+            return context.LoadingUnits
+                .Include(l => l.LoadingUnitType)
+                .Include(l => l.LoadingUnitStatus)
+                .Include(l => l.AbcClass)
+                .Include(l => l.CellPosition)
+                .Select(l => new LoadingUnit
+                {
+                    Id = l.Id,
+                    Code = l.Code,
+                    LoadingUnitTypeDescription = l.LoadingUnitType.Description,
+                    LoadingUnitStatusDescription = l.LoadingUnitStatus.Description,
+                    AbcClassDescription = l.AbcClass.Description,
+                    AreaName = l.Cell.Aisle.Area.Name,
+                    AisleName = l.Cell.Aisle.Name,
+                    CellFloor = l.Cell.Floor,
+                    CellColumn = l.Cell.Column,
+                    CellSide = l.Cell.Side.ToString(),
+                    CellNumber = l.Cell.CellNumber,
+                    CellPositionDescription = l.CellPosition.Description,
+                }).AsNoTracking();
         }
 
         #endregion Methods
