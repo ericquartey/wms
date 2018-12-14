@@ -4,8 +4,8 @@
     {
         #region Properties
 
-        public string Description { get; set; }
         public int? Height { get; set; }
+
         public int? Width { get; set; }
 
         #endregion Properties

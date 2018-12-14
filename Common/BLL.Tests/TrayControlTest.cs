@@ -24,7 +24,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 100,
                 XPosition = 0,
                 YPosition = 0,
-                Code = "3",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -33,7 +32,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 100,
                 XPosition = 0,
                 YPosition = 100,
-                Code = "2",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -42,7 +40,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 100,
                 XPosition = 0,
                 YPosition = 200,
-                Code = "3",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -51,7 +48,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 100,
                 XPosition = 0,
                 YPosition = 300,
-                Code = "2",
             });
         }
 
@@ -69,7 +65,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 0,
                 YPosition = 0,
-                Code = "3",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -78,7 +73,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 0,
                 YPosition = 200,
-                Code = "2",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -87,7 +81,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 200,
                 YPosition = 0,
-                Code = "1",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -96,7 +89,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 200,
                 YPosition = 200,
-                Code = "4",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -105,7 +97,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 400,
                 YPosition = 0,
-                Code = "5",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -114,7 +105,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 400,
                 YPosition = 200,
-                Code = "6",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -123,7 +113,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 600,
                 YPosition = 0,
-                Code = "7",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -132,7 +121,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 600,
                 YPosition = 200,
-                Code = "7",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -141,7 +129,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 800,
                 YPosition = 0,
-                Code = "7",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -150,8 +137,9 @@ namespace Feretto.Common.BLL.Tests
                 Height = 200,
                 XPosition = 800,
                 YPosition = 200,
-                Code = "7",
             });
+
+            Assert.AreEqual(10, tray.Compartments.Count);
         }
 
         [TestMethod]
@@ -168,7 +156,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 0,
-                Code = "3",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -177,7 +164,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 50,
-                Code = "2",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -186,7 +172,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 100,
-                Code = "3",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -195,7 +180,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 150,
-                Code = "2",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -204,7 +188,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 200,
-                Code = "3",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -213,7 +196,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 250,
-                Code = "2",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -222,7 +204,6 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 300,
-                Code = "3",
             });
 
             tray.AddCompartment(new CompartmentDetails
@@ -231,8 +212,9 @@ namespace Feretto.Common.BLL.Tests
                 Height = 50,
                 XPosition = 0,
                 YPosition = 350,
-                Code = "2",
             });
+
+            Assert.AreEqual(8, tray.Compartments.Count);
         }
 
         #endregion Methods

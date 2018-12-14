@@ -26,9 +26,9 @@
             <TextBlock Grid.Column="0"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       FontFamily="{DynamicResource VWAPP_ActionButton_FontFamily_Normal}"
-                       FontSize="{DynamicResource VWAPP_ActionButton_FontSize_Normal}"
-                       Foreground="{Binding ElementName=LayoutRoot, Path=BorderBrush, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                       FontFamily="{DynamicResource VWAPP_CustomMachineModeToggleButton_FontFamily}"
+                       FontSize="{DynamicResource VWAPP_CustomMachineModeToggleButton_FontSize}"
+                       Foreground="{DynamicResource VWAPP_CustomMachineModeToggleButton_Foreground_Normal}"
                        Text="{Binding MachineModeString, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                        TextAlignment="Center" />
         </Grid>

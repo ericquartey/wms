@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 using Ferretto.VW.InverterDriver;
 using NLog;
 using System.Collections;
+using Ferretto.VW.MathLib;
 
 namespace Ferretto.VW.ActionBlocks
 {
@@ -24,9 +21,8 @@ namespace Ferretto.VW.ActionBlocks
         #region Fields
 
         private const int DELAY_TIME = 500;             // Delay time: 250 msec
-
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4", "5", "6a" };
+        private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4", "5", "6a" }; // At this time we take into account only the code code 6a
         private bool absolute_movement;
         private float acc;
         private bool bStoppedOk;
@@ -35,7 +31,7 @@ namespace Ferretto.VW.ActionBlocks
         private float dec;
         private int i = 0;
         private InverterDriver.InverterDriver inverterDriver;
-        private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
+        ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
         // At this time we take into account only the code code 6a
         private string positioningStep;
@@ -43,14 +39,11 @@ namespace Ferretto.VW.ActionBlocks
         private byte systemIndex = 0x00;
         private object valParam = "";
         private float vMax;
-        private short x;
+        private int x;
 
         #endregion Fields
 
         #region Events
-
-        // [Read] event
-        public event PositioningDrawerReadEventHandler ThrowCurrentPositionEvent;
 
         // [Ended] event
         public event PositioningDrawerEndEventHandler ThrowEndEvent;
@@ -58,19 +51,22 @@ namespace Ferretto.VW.ActionBlocks
         // [Error] event
         public event PositioningDrawerErrorEventHandler ThrowErrorEvent;
 
+        // [Read] event
+        public event PositioningDrawerReadEventHandler ThrowCurrentPositionEvent;
+
         #endregion Events
 
         #region Properties
+
+        public InverterDriver.InverterDriver SetInverterDriverInterface
+        {
+            set => this.inverterDriver = value;
+        }
 
         public bool AbsoluteMovement
         {
             set => this.absolute_movement = value;
             get => this.absolute_movement;
-        }
-
-        public InverterDriver.InverterDriver SetInverterDriverInterface
-        {
-            set => this.inverterDriver = value;
         }
 
         #endregion Properties
@@ -96,13 +92,15 @@ namespace Ferretto.VW.ActionBlocks
             }
         }
 
-        public void MoveAlongVerticalAxisToPoint(short x, float vMax, float acc, float dec, float w, short offset)
+        public void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset)
         {
             // Assign the parameters
-            this.x = x;
+            // Convert x from Decimal [mm] to [Pulse]
+            this.x = ActionManager.ConverterInstance.FromMMToPulse(x);
             this.vMax = vMax;
             this.acc = acc;
             this.dec = dec;
+            this.i = 0;
 
             this.bStoppedOk = false;
 
@@ -227,136 +225,127 @@ namespace Ferretto.VW.ActionBlocks
 
             BitArray statusWordBA01;
 
-            // Inizio parte ricezione current position
-            if (this.currentPositionRequested)
+            switch (type)
             {
-                this.currentPositionRequested = false;
+                case ValueDataType.Int16:
+                    {
+                        short value = Convert.ToInt16(eventArgs.Value);
+                        statusWord = new byte[sizeof(short)];
+                        statusWord = BitConverter.GetBytes(value);
 
-                var tryConversion = float.TryParse(eventArgs.Value.ToString(), out var value);
+                        break;
+                    }
+                case ValueDataType.Int32:
+                    {
+                        int value = Convert.ToInt32(eventArgs.Value);
+                        statusWord = new byte[sizeof(int)];
+                        statusWord = BitConverter.GetBytes(value);
 
-                if (tryConversion)
+                        break;
+                    }
+
+                default:
+                    {
+                        // In the case the var is not Int16 or Int32, we take into account 0 as default value
+                        statusWord = new byte[1];
+                        statusWord = BitConverter.GetBytes(0);
+
+                        break;
+                    }
+            }
+
+            statusWord01 = new byte[] { statusWord[0], statusWord[1] };
+            statusWordBA01 = new BitArray(statusWord01);
+
+            var error_Message = "";
+            switch (positioningStep)
+            {
+                // No StatusWord to check
+                case "1.1":
+                case "1.2":
+                case "1.3":
+                case "1.4":
+                case "2.1":
+                    statusWordValue = true;
+
+                    break;
+
+                // 0x0050
+                case "1":
+                    if (statusWordBA01[4] && statusWordBA01[6])
+                    {
+                        statusWordValue = true;
+                    }
+                    break;
+
+                case "2":
+                    break;
+
+                // 0x0031
+                case "3":
+                    if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
+                    {
+                        statusWordValue = true;
+                    }
+                    break;
+
+                // 0x0033
+                case "4":
+                    if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5])
+                    {
+                        statusWordValue = true;
+                    }
+                    break;
+
+                // Filter: 0xnn37
+                case "5":
+                    if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5])
+                    {
+                        statusWordValue = true;
+                    }
+                    break;
+
+                case "6a":
+                case "6b":
+                case "6c":
+                case "6d":
+                    if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[10]) // 10 = target reached
+                    {
+                        statusWordValue = true;
+                    }
+                    break;
+
+                default:
+                    error_Message = "Unknown Operation";
+                    ThrowErrorEvent?.Invoke(error_Message);
+                    break;
+            }
+
+            if (statusWordValue)
+            {
+                i++;
+
+                if (i < positioningDrawerSteps.Length)
+                    stepExecution();
+                else // The execution ended
                 {
-                    ThrowCurrentPositionEvent?.Invoke(value.ToString());
+                    ThrowEndEvent?.Invoke(true);
+
+                    this.StopInverter();
+
+                    this.bStoppedOk = true;
                 }
             }
-            // Fine parte ricezione current position
             else
             {
-                switch (type)
+                if (!this.bStoppedOk)
                 {
-                    case ValueDataType.Int16:
-                        {
-                            short value = Convert.ToInt16(eventArgs.Value);
-                            statusWord = new byte[sizeof(short)];
-                            statusWord = BitConverter.GetBytes(value);
+                    // Insert a delay
+                    Thread.Sleep(DELAY_TIME);
+                    // A new request to read the StatusWord
+                    InverterDriverExitStatus idExitStatus = inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
 
-                            break;
-                        }
-                    case ValueDataType.Int32:
-                        {
-                            int value = Convert.ToInt32(eventArgs.Value);
-                            statusWord = new byte[sizeof(int)];
-                            statusWord = BitConverter.GetBytes(value);
-
-                            break;
-                        }
-
-                    default:
-                        {
-                            // In the case the var is not Int16 or Int32, we take into account 0 as default value
-                            statusWord = new byte[1];
-                            statusWord = BitConverter.GetBytes(0);
-
-                            break;
-                        }
-                }
-
-                statusWord01 = new byte[] { statusWord[0], statusWord[1] };
-                statusWordBA01 = new BitArray(statusWord01);
-
-                var error_Message = "";
-                switch (positioningStep)
-                {
-                    // 0x0050
-                    case "1":
-                        if (statusWordBA01[4] && statusWordBA01[6])
-                        {
-                            statusWordValue = true;
-                        }
-                        break;
-
-                    case "2":
-                        break;
-
-                    // 0x0031
-                    case "3":
-                        if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
-                        {
-                            statusWordValue = true;
-                        }
-                        break;
-
-                    // 0x0033
-                    case "4":
-                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5])
-                        {
-                            statusWordValue = true;
-                        }
-                        break;
-
-                    // Filter: 0xnn37
-                    case "5":
-                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5])
-                        {
-                            statusWordValue = true;
-                        }
-                        break;
-
-                    case "6a":
-                    case "6b":
-                    case "6c":
-                    case "6d":
-                        // case "7":
-                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[10]) // 10 = target reached
-                        {
-                            statusWordValue = true;
-                        }
-                        break;
-
-                    default:
-                        error_Message = "Unknown Operation";
-                        ThrowErrorEvent?.Invoke(error_Message);
-                        break;
-                }
-
-                logger.Log(LogLevel.Debug, String.Format("Positioning Step = {0}    Status word valu = {1}", positioningStep, statusWordValue.ToString()));
-
-                if (statusWordValue)
-                {
-                    i++;
-
-                    if (i < positioningDrawerSteps.Length)
-                        stepExecution();
-                    else // The execution ended
-                    {
-                        ThrowEndEvent?.Invoke(true);
-
-                        this.StopInverter();
-
-                        this.bStoppedOk = true;
-                    }
-                }
-                else
-                {
-                    if (!this.bStoppedOk)
-                    {
-                        // Insert a delay
-                        Thread.Sleep(DELAY_TIME);
-                        // A new request to read the StatusWord
-                        InverterDriverExitStatus idExitStatus = inverterDriver.SendRequest(paramID, systemIndex, dataSetIndex);
-
-                        CtrExistStatus(idExitStatus);
-                    }
+                    CtrExistStatus(idExitStatus);
                 }
             }
         }
@@ -382,15 +371,6 @@ namespace Ferretto.VW.ActionBlocks
                     stepExecution();
                 }
             }
-            else
-            {
-                //if (positioningDrawer_Thread != null)
-                //{
-                //    positioningDrawer_Thread.Abort();
-                //}
-
-                ThrowEndEvent?.Invoke(true);
-            }
         }
 
         private void stepExecution()
@@ -410,7 +390,7 @@ namespace Ferretto.VW.ActionBlocks
                 case "1.1":
                     paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
                     dataSetIndex = 0x05;
-                    valParam = (int)x;
+                    valParam = x;
                     break;
 
                 case "1.2":

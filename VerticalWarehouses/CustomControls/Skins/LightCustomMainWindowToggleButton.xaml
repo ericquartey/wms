@@ -1,0 +1,33 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:Double x:Key="VWAPP_CustomMachineModeToggleButton_FontSize">14</sys:Double>
+    <sys:Double x:Key="VWAPP_CustomMachineOnMarchToggleButton_FontSize">14</sys:Double>
+    <FontFamily x:Key="VWAPP_CustomMachineModeToggleButton_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <FontFamily x:Key="VWAPP_CustomMachineOnMarchToggleButton_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <Thickness x:Key="VWAPP_CustomMachineModeToggleButton_Thickness">1,1,1,1</Thickness>
+    <Thickness x:Key="VWAPP_CustomMachineOnMarchToggleButton_Thickness">1,1,1,1</Thickness>
+
+    <SolidColorBrush x:Key="VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="VWAPP_CustomMachineModeToggleButton_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="VWAPP_CustomMachineOnMarchToggleButton_BorderBrush_Normal"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="VWAPP_CustomMachineOnMarchToggleButton_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+
+    <SolidColorBrush x:Key="VWAPP_CustomMachineModeToggleButton_BorderBrush_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+    <SolidColorBrush x:Key="VWAPP_CustomMachineModeToggleButton_Foreground_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+
+    <SolidColorBrush x:Key="VWAPP_CustomMachineOnMarchToggleButton_BorderBrush_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+    <SolidColorBrush x:Key="VWAPP_CustomMachineOnMarchToggleButton_Foreground_Pressed"
+                     Color="{DynamicResource EDBGrayA}" />
+
+</ResourceDictionary>

@@ -179,38 +179,43 @@
                                           BorderThickness="0"
                                           IsCollapseButtonVisible="False"
                                           RootItemExpandButtonPosition="Left">
-                        <wms:AccordionItem FontSize="12"
+                        <wms:AccordionItem x:Name="WmsAccordionItem"
+                                           FontSize="12"
+                                           FontWeight="Normal"
                                            IsExpandButtonVisible="True"
                                            IsExpanded="{Binding EnableInputAdd, Mode=OneWay, Converter={StaticResource BNC}}"
                                            IsToggleVisible="False"
-                                           TitleHeader="Advanced Details">
+                                           TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="2" />
+                                    <ColumnDefinition Width="150" />
                                     <ColumnDefinition Width="10" />
-                                    <ColumnDefinition Width="140" />
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="2" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
                                     <RowDefinition Height="auto" />
+                                    <RowDefinition Height="2" />
                                 </Grid.RowDefinitions>
                                 <wms:TextBox Grid.Row="0"
-                                             Grid.Column="0"
+                                             Grid.Column="1"
                                              HorizontalAlignment="Stretch"
                                              Text="{Binding Compartment.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <wms:TextBox Grid.Row="0"
-                                             Grid.Column="2"
+                                             Grid.Column="3"
                                              HorizontalAlignment="Stretch"
                                              Text="{Binding Compartment.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <wms:ComboBox x:Name="PackageType"
                                               Grid.Row="1"
-                                              Grid.Column="0"
+                                              Grid.Column="1"
                                               EditValue="{Binding Path=Compartment.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               ItemsSource="{Binding Path=Compartment.PackageTypeChoices}" />
 
                                 <wms:TextBox Grid.Row="1"
-                                             Grid.Column="2"
+                                             Grid.Column="3"
                                              HorizontalAlignment="Stretch"
                                              Text="{Binding Compartment.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>

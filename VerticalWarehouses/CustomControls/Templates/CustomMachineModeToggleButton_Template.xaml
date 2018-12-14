@@ -5,19 +5,15 @@
     <ControlTemplate x:Key="VWAPP_CustomMachineModeToggleButton_ControlTemplate"
                      TargetType="Button">
         <Border Name="Root_CustomMachineModeToggleButtonBorder"
-                Background="{DynamicResource VWAPP_ActionButton_Background_Normal}"
-                BorderBrush="{DynamicResource VWAPP_ActionButton_BorderBrush_Normal}"
-                BorderThickness="{DynamicResource VWAPP_ActionButton_BorderThickness_Normal}">
+                Background="Transparent"
+                BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
+                BorderThickness="{DynamicResource VWAPP_CustomMachineModeToggleButton_Thickness}">
             <ContentPresenter />
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsPressed" Value="true">
-                <Setter TargetName="Root_CustomMachineModeToggleButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Pressed}" />
-                <Setter TargetName="Root_CustomMachineModeToggleButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Pressed}" />
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="false">
-                <Setter TargetName="Root_CustomMachineModeToggleButtonBorder" Property="Background" Value="{DynamicResource VWAPP_ActionButton_Background_Disabled}" />
-                <Setter TargetName="Root_CustomMachineModeToggleButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_ActionButton_BorderBrush_Disabled}" />
+                <Setter TargetName="Root_CustomMachineModeToggleButtonBorder" Property="Background" Value="transparent" />
+                <Setter TargetName="Root_CustomMachineModeToggleButtonBorder" Property="BorderBrush" Value="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Pressed}" />
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

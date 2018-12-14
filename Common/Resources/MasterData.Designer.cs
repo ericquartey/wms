@@ -70,6 +70,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Details.
+        /// </summary>
+        public static string AdvancedDetails {
+            get {
+                return ResourceManager.GetString("AdvancedDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Withdraw.
         /// </summary>
         public static string AdvancedWithdraw {
@@ -201,6 +210,15 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentsLayoutOverview {
             get {
                 return ResourceManager.GetString("CompartmentsLayoutOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} X {1} ( Width [mm] X Height [mm] ).
+        /// </summary>
+        public static string CompartmentTypeListFormat {
+            get {
+                return ResourceManager.GetString("CompartmentTypeListFormat", resourceCulture);
             }
         }
         

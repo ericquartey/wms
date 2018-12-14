@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\bin\Debug\</OutputPath>
+    <OutputPath>.\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -96,6 +96,10 @@
     <ProjectReference Include="..\InverterDriver\InverterDriver.csproj">
       <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
       <Name>InverterDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MathLib\MathLib.csproj">
+      <Project>{2f188460-af20-4b52-a19d-1a01941756d2}</Project>
+      <Name>MathLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>

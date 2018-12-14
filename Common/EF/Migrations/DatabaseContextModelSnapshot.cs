@@ -388,8 +388,6 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Code");
-
                     b.Property<int?>("CompartmentStatusId");
 
                     b.Property<int>("CompartmentTypeId");
@@ -456,10 +454,6 @@ namespace Ferretto.Common.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Code")
-                        .IsUnique()
-                        .HasFilter("[Code] IS NOT NULL");
-
                     b.HasIndex("CompartmentStatusId");
 
                     b.HasIndex("CompartmentTypeId");
@@ -494,9 +488,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired();
 
                     b.Property<int?>("Height");
 

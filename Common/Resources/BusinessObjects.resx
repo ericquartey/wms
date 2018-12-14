@@ -169,10 +169,6 @@
     <value>Cell Side</value>
     <comment>Cell - Side (extended)</comment>
   </data>
-  <data name="CompartmentCode" xml:space="preserve">
-    <value>Code</value>
-    <comment>Compartment - Code</comment>
-  </data>
   <data name="CompartmentFifoTime" xml:space="preserve">
     <value>FIFO Time</value>
     <comment>Compartment - FIFO Time</comment>

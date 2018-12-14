@@ -3,7 +3,6 @@ using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InverterDriver.Source;
 using System.Windows.Input;
 using System.Diagnostics;
-using Ferretto.VW.ActionBlocks.Source;
 using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
@@ -31,7 +30,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
             {
                 short targetPosition = -4096;
                 ActionManager.PositioningDrawerInstance.AbsoluteMovement = false;
-                InverteDriverManager.InverterDriverStaticInstance.CurrentActionType = ActionType.PositioningDrawer;
                 ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(targetPosition, 0, 0, 0, 0, 0);
             }
         }

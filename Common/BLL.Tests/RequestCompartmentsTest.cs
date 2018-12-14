@@ -37,7 +37,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -96,7 +95,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -106,7 +104,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment2 = new DataModels.Compartment
             {
                 Id = 2,
-                Code = "Compartment #2",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = OtherLoadingUnitId,
@@ -173,7 +170,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -228,7 +224,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = "S1",
                 Sub2 = "S2",
@@ -308,7 +303,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 1,
-                    Code = "Compartment #1",
                     ItemId = this.itemFifo.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -318,7 +312,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 2,
-                    Code = "Compartment #2",
                     ItemId = this.itemFifo.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -328,7 +321,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 3,
-                    Code = "Compartment #3",
                     ItemId = this.itemFifo.Id,
                     Sub1 = subZ,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -338,7 +330,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 4,
-                    Code = "Compartment #4",
                     ItemId = this.itemFifo.Id,
                     Sub1 = subZ,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -396,7 +387,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = "S1",
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -454,7 +444,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -522,7 +511,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -605,7 +593,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 1,
-                    Code = "Compartment #1",
                     ItemId = this.itemVolume.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -615,7 +602,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 2,
-                    Code = "Compartment #2",
                     ItemId = this.itemVolume.Id,
                     Sub1 = subX,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -625,7 +611,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 3,
-                    Code = "Compartment #3",
                     ItemId = this.itemVolume.Id,
                     Sub1 = subZ,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -635,7 +620,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 4,
-                    Code = "Compartment #4",
                     ItemId = this.itemVolume.Id,
                     Sub1 = subY,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -645,7 +629,6 @@ namespace Ferretto.Common.BLL.Tests
                 new DataModels.Compartment
                 {
                     Id = 5,
-                    Code = "Compartment #5",
                     ItemId = this.itemVolume.Id,
                     Sub1 = subY,
                     LoadingUnitId = this.loadingUnit1.Id,
@@ -707,7 +690,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = subX,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -717,7 +699,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment2 = new DataModels.Compartment
             {
                 Id = 2,
-                Code = "Compartment #2",
                 ItemId = this.item1.Id,
                 Sub1 = subZ,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -795,7 +776,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment1 = new DataModels.Compartment
             {
                 Id = 1,
-                Code = "Compartment #1",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.loadingUnit1.Id,
@@ -805,7 +785,6 @@ namespace Ferretto.Common.BLL.Tests
             var compartment2 = new DataModels.Compartment
             {
                 Id = 2,
-                Code = "Compartment #2",
                 ItemId = this.item1.Id,
                 Sub1 = sub1,
                 LoadingUnitId = this.loadingUnit1.Id,

@@ -6,7 +6,6 @@ using Ferretto.VW.Navigation;
 using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
-using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
 {
