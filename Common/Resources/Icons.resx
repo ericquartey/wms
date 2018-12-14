@@ -310,7 +310,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListViewTypePick" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/file/ic_file_upload_black_48dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/content/ic_unarchive_black_48dp.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="StatusTypeError" xml:space="preserve">
@@ -399,6 +399,14 @@
   </data>
   <data name="PairingFree" xml:space="preserve">
     <value />
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListViewTypeInventory" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_assignment_black_48dp.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ItemListViewTypePut" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/content/ic_archive_black_48dp.png</value>
     <comment>@Invariant</comment>
   </data>
 </root>

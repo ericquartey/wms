@@ -403,11 +403,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick Type.
+        ///   Looks up a localized string similar to Inventory Lists.
+        /// </summary>
+        public static string ItemListsTypeInventory {
+            get {
+                return ResourceManager.GetString("ItemListsTypeInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Lists.
         /// </summary>
         public static string ItemListsTypePick {
             get {
                 return ResourceManager.GetString("ItemListsTypePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put Lists.
+        /// </summary>
+        public static string ItemListsTypePut {
+            get {
+                return ResourceManager.GetString("ItemListsTypePut", resourceCulture);
             }
         }
         

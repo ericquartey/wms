@@ -277,11 +277,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/file/ic_file_upload_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_assignment_black_48dp.png.
+        /// </summary>
+        public static string ItemListViewTypeInventory {
+            get {
+                return ResourceManager.GetString("ItemListViewTypeInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/content/ic_unarchive_black_48dp.png.
         /// </summary>
         public static string ItemListViewTypePick {
             get {
                 return ResourceManager.GetString("ItemListViewTypePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/content/ic_archive_black_48dp.png.
+        /// </summary>
+        public static string ItemListViewTypePut {
+            get {
+                return ResourceManager.GetString("ItemListViewTypePut", resourceCulture);
             }
         }
         

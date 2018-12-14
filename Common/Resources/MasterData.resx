@@ -277,7 +277,7 @@
     <value>Waiting Status</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Pick Type</value>
+    <value>Pick Lists</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Customer Order Information</value>
@@ -325,5 +325,11 @@
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Layout Overview</value>
     <comment>Label - Grouping</comment>
+  </data>
+  <data name="ItemListsTypeInventory" xml:space="preserve">
+    <value>Inventory Lists</value>
+  </data>
+  <data name="ItemListsTypePut" xml:space="preserve">
+    <value>Put Lists</value>
   </data>
 </root>
