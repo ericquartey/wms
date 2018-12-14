@@ -28,9 +28,6 @@ namespace Ferretto.Common.BusinessModels
         private string referenceType;
         private int weight;
         private int width;
-        private int height;
-        private int weight;
-        private int? handlingParametersCorrection;
 
         #endregion Fields
 
