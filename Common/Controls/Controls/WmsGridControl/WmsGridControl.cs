@@ -55,14 +55,14 @@ namespace Ferretto.Common.Controls
         #region Methods
 
         protected override void OnInitialized(System.EventArgs e)
-        {
+        {            
             base.OnInitialized(e);
 
             this.SetValue(ScrollBarExtensions.ScrollBarModeProperty, ScrollBarMode.TouchOverlap);
 
             this.SetToken();
 
-            this.SetOperationsOnSelectedItem();
+            this.SetOperationsOnSelectedItem();            
         }
 
         private static void OnSelectedValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -79,25 +79,22 @@ namespace Ferretto.Common.Controls
         private static void SetSelectedItem(WmsGridControl gridControl, IBusinessObject bo)
         {
             var rowHandle = gridControl.FindRowByValue(nameof(IBusinessObject.Id), bo.Id);
-            gridControl.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    if (rowHandle > -1)
-                    {
-                        gridControl.View.FocusedRowHandle = rowHandle;
-                        gridControl.SelectItem(rowHandle);
-                        gridControl.SelectedItem = gridControl.CurrentItem;
-                    }
-                    else
-                    {
-                        gridControl.SelectedItem = gridControl.CurrentItem = null;
-                    }
-                    gridControl.SelectedItem = gridControl.CurrentItem;
-                }), DispatcherPriority.Loaded);
+            if (rowHandle > -1)
+            {
+                gridControl.View.FocusedRowHandle = rowHandle;
+                gridControl.SelectItem(rowHandle);
+                gridControl.SelectedItem = gridControl.CurrentItem;
+            }
+            else
+            {
+                gridControl.SelectedItem = gridControl.CurrentItem = null;
+            }
+            gridControl.SelectedItem = gridControl.CurrentItem;
         }
 
         private void SetOperationsOnSelectedItem()
         {
-            this.SelectedItemChanged += this.WmsGridControl_SelectedItemChanged;
+            this.SelectedItemChanged += this.WmsGridControl_SelectedItemChanged;         
         }
 
         private void SetToken()
@@ -114,6 +111,7 @@ namespace Ferretto.Common.Controls
                 this.token = wmsView.Token;
                 var wmsViewViewModel = ((INavigableView)wmsView).DataContext as INavigableViewModel;
                 this.wmsViewModel = wmsViewViewModel as IRefreshDataEntityViewModel;
+                this.SelectedItem = -1;                
                 this.Loaded -= this.WmsGridControl_Loaded;
             }
         }
