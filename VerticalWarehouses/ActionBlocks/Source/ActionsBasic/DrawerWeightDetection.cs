@@ -84,7 +84,7 @@
         /// </summary>
         public void Terminate()
         {
-            this.drawerPositionController.Resume();
+            this.drawerPositionController.Stop();
             this.drawerPositionController.ThrowEndEvent -= this.DrawerPositioningEndEvent;
             this.drawerPositionController.ThrowErrorEvent -= this.DrawerPositioningErrorEvent;
         }

@@ -120,7 +120,6 @@
 
         void Initialize();
 
-
         /// <summary>
         /// Move along vertical axis.
         /// </summary>
@@ -132,7 +131,7 @@
         /// <param name="offset">Offset (distance)</param>
         void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset);
 
-        void Resume();
+        void Stop();
 
         void Terminate();
 

@@ -190,7 +190,7 @@ namespace Ferretto.VW.ActionBlocks
             this.stepExecution();
         }
 
-        public void Resume()
+        public void Stop()
         {
             this.paramID = ParameterID.CONTROL_WORD_PARAM;
             this.cmdWord.SetAll(false);
@@ -389,7 +389,7 @@ namespace Ferretto.VW.ActionBlocks
                 // Notify the end procedure
                 ThrowEndEvent?.Invoke(true);
                 // End the motion control of inverter
-                this.Resume();
+                this.Stop();
                 this.i = 0;
 
                 return;
@@ -462,7 +462,7 @@ namespace Ferretto.VW.ActionBlocks
                                 // Notify the End of routine
                                 ThrowEndEvent?.Invoke(true);
                                 // Resume the motion control of inverter
-                                this.Resume();
+                                this.Stop();
                             }
                             else
                             {
