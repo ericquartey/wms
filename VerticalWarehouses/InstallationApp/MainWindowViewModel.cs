@@ -14,6 +14,8 @@ using Ferretto.VW.Utils.Source;
 using System.Net;
 using System.IO;
 using System.Configuration;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 
 #if CODEMAID
     // disable codemaid in this file
@@ -105,6 +107,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand weightControlButtonCommand;
         private ICommand machineModeCustomCommand;
         private ICommand machineOnMarchCustomCommand;
+        private ICommand errorButtonCommand;
 
         #endregion ViewModels & Commands Fields
 
@@ -212,6 +215,8 @@ namespace Ferretto.VW.InstallationApp
 
         public Boolean IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
 
+        public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(this.ErrorButtonCommandMethod));
+
         #endregion Other Properties
 
         #region Methods
@@ -258,6 +263,34 @@ namespace Ferretto.VW.InstallationApp
         private void ShowNavigationButtonRegion()
         {
             this.IsNavigationButtonRegionExpanded = true;
+        }
+
+        private void ErrorButtonCommandMethod()
+        {
+            var p = new Popup();
+            var g = new Grid();
+            p.Width = 300;
+            p.Height = 300;
+            p.Placement = PlacementMode.Absolute;
+            var s = new StackPanel();
+            s.Width = 200;
+            s.Height = 290;
+            s.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            s.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            var l = new Label();
+            l.Width = 150;
+            l.Height = 150;
+            l.Content = "Errore";
+            var b = new Button();
+            b.Width = 150;
+            b.Height = 60;
+            b.Content = "Ok, chiudi popup";
+            b.Command = new DelegateCommand(() => p.IsOpen = false);
+            s.Children.Add(l);
+            s.Children.Add(b);
+            g.Children.Add(s);
+            p.Child = g;
+            p.IsOpen = true;
         }
 
         private void RaiseSensorsStatesChangedEvent() => SensorsStatesChangedEventHandler();

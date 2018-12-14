@@ -13,7 +13,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Background="Transparent"
-            Command="{Binding Command}"
+            Command="{Binding CustomCommand}"
             Template="{StaticResource VWAPP_CustomMachineOnMarchToggleButton_ControlTemplate}">
         <Grid>
             <Grid.ColumnDefinitions>
