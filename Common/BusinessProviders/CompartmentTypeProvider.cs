@@ -61,6 +61,10 @@ namespace Ferretto.Common.BusinessProviders
                     model.Id = entry.Entity.Id;
                     compartmentTypeId = model.Id;
                 }
+                else
+                {
+                    return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(CompartmentType)));
+                }
             }
             else
             {
@@ -81,6 +85,7 @@ namespace Ferretto.Common.BusinessProviders
                 if (addItemCompartmentTypeCount < 1)
                 {
                     //TODO
+                    return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(ItemCompartmentType)));
                 }
             }
 

@@ -54,7 +54,7 @@ namespace Ferretto.Common.BusinessProviders
                     var changedEntitiesCount = await dataContext.SaveChangesAsync();
                     if (changedEntitiesCount <= 0)
                     {
-                        return new OperationResult(false, description: Resources.General.NotAddDB);
+                        return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(ItemCompartmentType)));
                     }
                 }
                 return new OperationResult(true);

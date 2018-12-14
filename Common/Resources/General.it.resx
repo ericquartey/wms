@@ -162,17 +162,8 @@
   <data name="Login" xml:space="preserve">
     <value>Login</value>
   </data>
-  <data name="PasswordLogin" xml:space="preserve">
-    <value>Password Login:</value>
-  </data>
   <data name="SwitchOff" xml:space="preserve">
     <value>Spegni</value>
-  </data>
-  <data name="UserLogin" xml:space="preserve">
-    <value>User Login:</value>
-  </data>
-  <data name="VertimagX" xml:space="preserve">
-    <value>Vertimag X</value>
   </data>
   <data name="Cancel" xml:space="preserve">
     <value>Annulla</value>
@@ -205,7 +196,7 @@
     <value>Tipo</value>
   </data>
   <data name="NotAddDB" xml:space="preserve">
-    <value>Non aggiunto al database.</value>
+    <value>Non aggiunto {0} al database.</value>
   </data>
   <data name="Down" xml:space="preserve">
     <value>Giù</value>

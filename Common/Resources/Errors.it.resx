@@ -216,4 +216,7 @@
   <data name="BusyIndicatorInvalidIndex" xml:space="preserve">
     <value>Indice invalido</value>
   </data>
+  <data name="NotAddDB" xml:space="preserve">
+    <value>Non aggiunto {0} al database.</value>
+  </data>
 </root>
