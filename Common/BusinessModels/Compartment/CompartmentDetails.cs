@@ -9,7 +9,6 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private string code;
         private IEnumerable<Enumeration> compartmentStatusChoices;
         private int? compartmentStatusId;
         private IEnumerable<Enumeration> compartmentTypeChoices;
@@ -41,13 +40,6 @@ namespace Ferretto.Common.BusinessModels
         #endregion Fields
 
         #region Properties
-
-        [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
-        public string Code
-        {
-            get => this.code;
-            set => this.SetProperty(ref this.code, value);
-        }
 
         public IEnumerable<Enumeration> CompartmentStatusChoices
         {

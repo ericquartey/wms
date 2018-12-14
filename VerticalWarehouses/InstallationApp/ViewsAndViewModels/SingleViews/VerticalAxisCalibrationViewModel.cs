@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
-using Ferretto.VW.ActionBlocks.Source;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -120,7 +119,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 this.IsStopButtonActive = true;
                 await Task.Delay(2000);
 
-                ActionManager.CalibrateVerticalAxisInstance.ThrowEndEvent += new CalibrateVerticalAixsEndedEventHandler(this.Calibration);
+                ActionManager.CalibrateVerticalAxisInstance.ThrowEndEvent += this.Calibration;
                 this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
                 ActionManager.CalibrateVerticalAxisInstance.SetVAxisOrigin(m, ofs, vFast, vCreep);
                 this.NoteString = "Homing Done.";

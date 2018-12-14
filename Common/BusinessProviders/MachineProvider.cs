@@ -43,7 +43,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(MachineDetails model)
+        public Task<OperationResult> Add(MachineDetails model)
         {
             throw new NotImplementedException();
         }
