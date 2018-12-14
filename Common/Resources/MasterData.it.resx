@@ -292,6 +292,13 @@
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Panoramica Scomparti</value>
   </data>
+  <data name="CompartmentTypeListFormat" xml:space="preserve">
+    <value>{0} X {1} ( Larghezza [mm] X Altezza [mm] )</value>
+  </data>
+  <data name="AdvancedDetails" xml:space="preserve">
+    <value>Ulteriori Dettagli</value>
+  </data>
+</root>
   <data name="ItemListsTypeInventory" xml:space="preserve">
     <value>Inventario delle Liste</value>
   </data>

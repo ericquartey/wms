@@ -481,6 +481,22 @@
     <!--  Root Item Parent  -->
 
 
+    <!--  Glyph Template  -->
+    <DataTemplate x:Key="AccordionItemDefaultGlyphTemplate">
+        <dxt:DXImage x:Name="glyph"
+                     Margin="{DynamicResource {dxat:AccordionItemThemeKeys ResourceKey=HeaderElementsMargin}}"
+                     SnapsToDevicePixels="True"
+                     Source="{Binding}" />
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding}"
+                         Value="{x:Null}">
+                <Setter TargetName="glyph" Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+    <!--  Glyph Template  -->
+
+
     <!--  WMS Root Item Parent Accordion  -->
     <DataTemplate x:Key="RootItemParentTemplate">
         <StackPanel Orientation="Horizontal">

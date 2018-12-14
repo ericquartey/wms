@@ -326,6 +326,12 @@
     <value>Layout Overview</value>
     <comment>Label - Grouping</comment>
   </data>
+  <data name="CompartmentTypeListFormat" xml:space="preserve">
+    <value>{0} X {1} ( Width [mm] X Height [mm] )</value>
+  </data>
+  <data name="AdvancedDetails" xml:space="preserve">
+    <value>Advanced Details</value>
+  </data>
   <data name="ItemListsTypeInventory" xml:space="preserve">
     <value>Inventory Lists</value>
   </data>

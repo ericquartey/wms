@@ -19,6 +19,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media;
 using System.Windows;
 using Ferretto.VW.ActionBlocks;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 
 #if CODEMAID
     // disable codemaid in this file
@@ -31,6 +33,8 @@ namespace Ferretto.VW.InstallationApp
     public delegate void ClickedOnMachineModeEvent();
 
     public delegate void SensorsStatesChangedEvent();
+
+    public delegate void ChangeBoolDelegate(bool b);
 
     public class MainWindowViewModel : BindableBase
     {
@@ -83,7 +87,6 @@ namespace Ferretto.VW.InstallationApp
         private ICommand beltBurnishingButtonCommand;
         private ICommand cellsControlButtonCommand;
         private ICommand cellsPanelControlButtonCommand;
-        private ICommand changeSkin;
         private ICommand gate1HeightControlNavigationButtonCommand;
         private ICommand gate2HeightControlNavigationButtonCommand;
         private ICommand gate3HeightControlNavigationButtonCommand;
@@ -109,6 +112,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand weightControlButtonCommand;
         private ICommand machineModeCustomCommand;
         private ICommand machineOnMarchCustomCommand;
+        private ICommand errorButtonCommand;
 
         #endregion ViewModels & Commands Fields
 
@@ -121,11 +125,11 @@ namespace Ferretto.VW.InstallationApp
             this.ConnectMethod();
             NavigationService.GoToViewEventHandler += this.HideNavigationButtonRegion;
             NavigationService.ExitViewEventHandler += this.ShowNavigationButtonRegion;
-            MainWindow.FinishedMachineModeChangeStateEventHandler += () => this.MachineModeSelectionBool = !this.MachineModeSelectionBool;
-            MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool;
+            MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
+            MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
             ClickedOnMachineModeEventHandler += () => { };
             ClickedOnMachineOnMarchEventHandler += () => { };
-            SensorsStatesChangedEventHandler += this.EventInitializer;
+            SensorsStatesChangedEventHandler += () => { };
         }
 
         #endregion Constructors
@@ -149,8 +153,6 @@ namespace Ferretto.VW.InstallationApp
         public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.CellsControlVMInstance));
 
         public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = this.CellsPanelControlVMInsance; this.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
-
-        public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => NavigationService.RaiseChangeSkinToDarkEvent()));
 
         public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = this.Gate1HeightControlVMInstance));
 
@@ -202,7 +204,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
-        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => NavigationService.RaiseBackToVWAppEvent()));
+        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => { NavigationService.RaiseBackToVWAppEvent(); MainWindowViewModel.ClickedOnMachineModeEventHandler = null; MainWindowViewModel.ClickedOnMachineOnMarchEventHandler = null; }));
 
         #endregion Commands Properties
 
@@ -217,6 +219,8 @@ namespace Ferretto.VW.InstallationApp
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
         public Boolean IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
+
+        public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(this.ErrorButtonCommandMethod));
 
         #endregion Other Properties
 
@@ -256,10 +260,6 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void EventInitializer()
-        {
-        }
-
         private void HideNavigationButtonRegion()
         {
             this.IsNavigationButtonRegionExpanded = false;
@@ -270,13 +270,32 @@ namespace Ferretto.VW.InstallationApp
             this.IsNavigationButtonRegionExpanded = true;
         }
 
-        private void SetMachineOn()
+        private void ErrorButtonCommandMethod()
         {
-            var ca = new ColorAnimation();
-            ca.From = (Color)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"];
-            ca.To = (Color)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"];
-            ca.Duration = new Duration(TimeSpan.FromSeconds(.5));
-            ca.RepeatBehavior = RepeatBehavior.Forever;
+            var p = new Popup();
+            var g = new Grid();
+            p.Width = 300;
+            p.Height = 300;
+            p.Placement = PlacementMode.Absolute;
+            var s = new StackPanel();
+            s.Width = 200;
+            s.Height = 290;
+            s.HorizontalAlignment = System.Windows.HorizontalAlignment.Center;
+            s.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            var l = new Label();
+            l.Width = 150;
+            l.Height = 150;
+            l.Content = "Errore";
+            var b = new Button();
+            b.Width = 150;
+            b.Height = 60;
+            b.Content = "Ok, chiudi popup";
+            b.Command = new DelegateCommand(() => p.IsOpen = false);
+            s.Children.Add(l);
+            s.Children.Add(b);
+            g.Children.Add(s);
+            p.Child = g;
+            p.IsOpen = true;
         }
 
         private void RaiseSensorsStatesChangedEvent() => SensorsStatesChangedEventHandler();
