@@ -31,7 +31,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(CellDetails model)
+        public Task<OperationResult> Add(CellDetails model)
         {
             throw new NotImplementedException();
         }
