@@ -9,6 +9,7 @@
                     xmlns:dxgt="http://schemas.devexpress.com/winfx/2008/xaml/grid/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                     xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     mc:Ignorable="cs">
 
     <dx:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -198,7 +199,7 @@
         <Setter Property="ShowFilterButtonOnHover" Value="False" />
     </Style>
 
-    <!-- focused row style  -->
+    <!--  focused row style  -->
     <ControlTemplate x:Key="{dxgt:GridControlThemeKey ResourceKey=FocusedRowBorderTemplate, ThemeName=Office2016White}">
         <Rectangle cs:Name="Rectangle_0003"
                    SnapsToDevicePixels="True"
@@ -206,34 +207,47 @@
                    StrokeThickness="2" />
     </ControlTemplate>
 
-    <Style x:Key="AutoHeightRowControlStyle" TargetType="{x:Type dxg:RowControl}">
+    <Style x:Key="AutoHeightRowControlStyle"
+           TargetType="{x:Type dxg:RowControl}">
         <Setter Property="Height" Value="Auto" />
         <Setter Property="FontSize" Value="{DynamicResource GridFontSize}" />
     </Style>
 
-    <Style TargetType="{x:Type dxg:RowControl}" BasedOn="{StaticResource AutoHeightRowControlStyle}">
+    <Style BasedOn="{StaticResource AutoHeightRowControlStyle}"
+           TargetType="{x:Type dxg:RowControl}">
         <Setter Property="Height" Value="30" />
     </Style>
 
     <!--  row style  -->
-    <ControlTemplate x:Key="{dxgt:GridRowThemeKey ThemeName=Office2016White, ResourceKey=RowTemplate}" TargetType="dxg:RowControl">
-        <Border BorderBrush="Transparent" x:Name="RowContentBorder" Background="{DynamicResource CommonSecondaryUltralight}">
+    <ControlTemplate x:Key="{dxgt:GridRowThemeKey ThemeName=Office2016White,
+                                                  ResourceKey=RowTemplate}"
+                     TargetType="dxg:RowControl">
+        <Border x:Name="RowContentBorder"
+                Background="{DynamicResource CommonSecondaryUltralight}"
+                BorderBrush="Transparent">
             <Grid>
-                <Border x:Name="Background" BorderThickness="0" Background="Transparent" />
-                <Grid x:Name="PART_LayoutPanel"/>
-                <Border x:Name="SelectedBorder" BorderThickness="2" BorderBrush="Transparent"/>
+                <Border x:Name="Background"
+                        Background="Transparent"
+                        BorderThickness="0" />
+                <Grid x:Name="PART_LayoutPanel" />
+                <Border x:Name="SelectedBorder"
+                        BorderBrush="Transparent"
+                        BorderThickness="2" />
             </Grid>
         </Border>
         <ControlTemplate.Triggers>
 
-            <DataTrigger Binding="{Binding AlternateRow}"  Value="True">
+            <DataTrigger Binding="{Binding AlternateRow}"
+                         Value="True">
                 <Setter TargetName="Background" Property="Background" Value="{Binding Path=View.ActualAlternateRowBackground}" />
             </DataTrigger>
-            <DataTrigger Binding="{Binding AlternateRow}"  Value="False">
+            <DataTrigger Binding="{Binding AlternateRow}"
+                         Value="False">
                 <Setter TargetName="Background" Property="Background" Value="{DynamicResource CommonBackground}" />
             </DataTrigger>
 
-            <DataTrigger Binding="{Binding IsSelected}"  Value="True">
+            <DataTrigger Binding="{Binding IsSelected}"
+                         Value="True">
                 <Setter TargetName="SelectedBorder" Property="BorderBrush" Value="{DynamicResource CommonSecondaryMedium}" />
             </DataTrigger>
         </ControlTemplate.Triggers>
@@ -642,5 +656,22 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <Style x:Key="BooleanCellTemplate" TargetType="{x:Type dxg:GridColumn}">
+        <Setter Property="CellTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid VerticalAlignment="Center">
+                        <wms:WmsIcon Width="18"
+                            Height="18"
+                            ColorizeBrush="{DynamicResource CommonSecondaryDark}"
+                            SymbolName="PairingFixed"
+                            Visibility="{Binding Path=Data.IsItemPairingFixed, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
 </ResourceDictionary>

@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -12,20 +11,18 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemDetailsViewModel : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel, IEdit
+    public class ItemDetailsViewModel : DetailsViewModel<ItemDetails>, IRefreshDataEntityViewModel, IEdit
     {
         #region Fields
 
-        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
         private ItemDetails item;
         private bool itemHasCompartments;
         private object modelChangedEventSubscription;
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
-        private ICommand revertCommand;
-        private ICommand saveCommand;
         private object selectedCompartment;
         private ICommand withdrawCommand;
 
@@ -69,19 +66,12 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.item;
             set
             {
-                if (this.Item != null && value != this.Item)
-                {
-                    this.Item.TakeSnapshot();
-                    this.Item.PropertyChanged -= this.OnItemPropertyChanged;
-                }
-
                 if (!this.SetProperty(ref this.item, value))
                 {
                     return;
                 }
 
-                this.Item.TakeSnapshot();
-                this.Item.PropertyChanged += this.OnItemPropertyChanged;
+                this.TakeSnapshot(this.item);
 
                 this.RefreshData();
             }
@@ -92,12 +82,6 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.itemHasCompartments;
             set => this.SetProperty(ref this.itemHasCompartments, value);
         }
-
-        public ICommand RevertCommand => this.revertCommand ??
-                  (this.revertCommand = new DelegateCommand(this.LoadData, this.CanExecuteRevert));
-
-        public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSave));
 
         public object SelectedCompartment
         {
@@ -124,6 +108,30 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
+        protected override void EvaluateCanExecuteCommands()
+        {
+            base.EvaluateCanExecuteCommands();
+
+            ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
+        }
+
+        protected override void ExecuteRevertCommand()
+        {
+            this.LoadData();
+        }
+
+        protected override void ExecuteSaveCommand()
+        {
+            var modifiedRowCount = this.itemProvider.Save(this.Item);
+            if (modifiedRowCount > 0)
+            {
+                this.TakeSnapshot(this.Item);
+
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
+            }
+        }
+
         protected override void OnAppear()
         {
             this.LoadData();
@@ -138,33 +146,9 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnDispose();
         }
 
-        private bool CanExecuteRevert()
-        {
-            return this.Item?.IsModified == true;
-        }
-
-        private bool CanExecuteSave()
-        {
-            return this.Item?.IsModified == true;
-        }
-
         private bool CanExecuteWithdraw()
         {
             return this.Item?.TotalAvailable > 0;
-        }
-
-        private void ExecuteSaveCommand()
-        {
-            var modifiedRowCount = this.itemProvider.Save(this.Item);
-
-            if (modifiedRowCount > 0)
-            {
-                this.Item.TakeSnapshot();
-
-                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
-
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
-            }
         }
 
         private void ExecuteWithdraw()
@@ -181,8 +165,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Item>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Item>>(eventArgs => { this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Item>>(eventArgs => this.LoadData(), this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Item>>(eventArgs => this.LoadData());
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Item>>(
                 eventArgs =>
                 {
@@ -207,19 +191,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Item = this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
-            }
-        }
-
-        private void OnItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.Item.TotalAvailable))
-            {
-                ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
-            }
-            else if (e.PropertyName == nameof(this.Item.IsModified))
-            {
-                ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-                ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             }
         }
 

@@ -207,4 +207,13 @@
   <data name="NoChangesFound" xml:space="preserve">
     <value>Non ho trovato modifiche da apportare.</value>
   </data>
+  <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
+    <value>Impossibile aggiungere lo scomparto specificato alla loading unit con id={0} perchè si sovrappone a uno o più scomparti esistenti.</value>
+  </data>
+  <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
+    <value>Stile '{0}' per '{1}' non trovato.</value>
+  </data>
+  <data name="BusyIndicatorInvalidIndex" xml:space="preserve">
+    <value>Indice invalido</value>
+  </data>
 </root>

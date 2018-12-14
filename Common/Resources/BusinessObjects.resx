@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -169,10 +169,6 @@
     <value>Cell Side</value>
     <comment>Cell - Side (extended)</comment>
   </data>
-  <data name="CompartmentCode" xml:space="preserve">
-    <value>Code</value>
-    <comment>Compartment - Code</comment>
-  </data>
   <data name="CompartmentFifoTime" xml:space="preserve">
     <value>FIFO Time</value>
     <comment>Compartment - FIFO Time</comment>
@@ -186,7 +182,7 @@
     <comment>Compartment - Last Handling Date</comment>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
-    <value>Height</value>
+    <value>Height [mm]</value>
     <comment>Compartment - Height</comment>
   </data>
   <data name="CompartmentLastInventoryDate" xml:space="preserve">
@@ -209,9 +205,9 @@
     <value>Max Capacity</value>
     <comment>Compartment - Max Capacity</comment>
   </data>
-  <data name="CompartmentPairing" xml:space="preserve">
-    <value>Pairing</value>
-    <comment>Compartment - Pairing</comment>
+  <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
+    <value>Item Pairing</value>
+    <comment>Compartment - Fixed Pairing</comment>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
     <value>Reserved for Pick</value>
@@ -246,15 +242,15 @@
     <comment>Compartment Type - Description</comment>
   </data>
   <data name="CompartmentWidth" xml:space="preserve">
-    <value>Width</value>
+    <value>Width [mm]</value>
     <comment>Compartment - Width</comment>
   </data>
   <data name="CompartmentXPosition" xml:space="preserve">
-    <value>X Position</value>
+    <value>X Position [mm]</value>
     <comment>Compartment - X Position</comment>
   </data>
   <data name="CompartmentYPosition" xml:space="preserve">
-    <value>Y Position</value>
+    <value>Y Position [mm]</value>
     <comment>Compartment - Y Position</comment>
   </data>
   <data name="ItemAvailable" xml:space="preserve">
@@ -262,7 +258,7 @@
     <comment>Item - Available (calculated)</comment>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
-    <value>Average Weight</value>
+    <value>Average Weight [kg]</value>
     <comment>Item - Average Weight</comment>
   </data>
   <data name="ItemCategory" xml:space="preserve">
@@ -298,7 +294,7 @@
     <comment>Item - FIFO Store Time</comment>
   </data>
   <data name="ItemHeight" xml:space="preserve">
-    <value>Height</value>
+    <value>Height [mm]</value>
     <comment>Item - Height</comment>
   </data>
   <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
@@ -322,7 +318,7 @@
     <comment>Item - Last Store Date</comment>
   </data>
   <data name="ItemLength" xml:space="preserve">
-    <value>Length</value>
+    <value>Length [mm]</value>
     <comment>Item - Length</comment>
   </data>
   <data name="ItemManagementType" xml:space="preserve">
@@ -362,7 +358,7 @@
     <comment>Item - Store Tolerance</comment>
   </data>
   <data name="ItemWidth" xml:space="preserve">
-    <value>Width</value>
+    <value>Width [mm]</value>
     <comment>Item - Width</comment>
   </data>
   <data name="LoadingUnit" xml:space="preserve">
@@ -378,7 +374,7 @@
     <comment>Loading Unit - Code (extended)</comment>
   </data>
   <data name="LoadingUnitLength" xml:space="preserve">
-    <value>Length</value>
+    <value>Length [mm]</value>
     <comment>Loading Unit - Length</comment>
   </data>
   <data name="LoadingUnitStatus" xml:space="preserve">
@@ -394,7 +390,7 @@
     <comment>Loading Unit Type - Description</comment>
   </data>
   <data name="LoadingUnitWidth" xml:space="preserve">
-    <value>Width</value>
+    <value>Width [mm]</value>
     <comment>Loading Unit - Width</comment>
   </data>
   <data name="MaterialStatus" xml:space="preserve">
@@ -417,20 +413,20 @@
     <value>Reference Type</value>
     <comment>Loading Unit - Reference Type</comment>
   </data>
-  <data name="LoadingUnitCellPairing" xml:space="preserve">
+  <data name="LoadingUnitIsCellPairingFixed" xml:space="preserve">
     <value>Cell Pairing</value>
     <comment>Loading Unit - Cell Pairing</comment>
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
-    <value>Weight</value>
+    <value>Weight [kg]</value>
     <comment>Loading Unit - Weight</comment>
   </data>
   <data name="LoadingUnitHeight" xml:space="preserve">
-    <value>Height</value>
+    <value>Height [mm]</value>
     <comment>Loading Unit - Height</comment>
   </data>
   <data name="LoadingUnitHandlingParametersCorrection" xml:space="preserve">
-    <value>Speed Correction</value>
+    <value>Speed Correction [%]</value>
     <comment>Loading Unit - Speed Correction</comment>
   </data>
   <data name="LoadingUnitCreationDate" xml:space="preserve">
@@ -478,15 +474,15 @@
     <comment>Cell - Type</comment>
   </data>
   <data name="CellXCoordinate" xml:space="preserve">
-    <value>X Coordinate</value>
+    <value>X Coordinate [mm]</value>
     <comment>Cell - X Coordinate</comment>
   </data>
   <data name="CellYCoordinate" xml:space="preserve">
-    <value>Y Coordinate</value>
+    <value>Y Coordinate [mm]</value>
     <comment>Cell - Y Coordinate</comment>
   </data>
   <data name="CellZCoordinate" xml:space="preserve">
-    <value>Z Coordinate</value>
+    <value>Z Coordinate [mm]</value>
     <comment>Cell - Z Coordinate</comment>
   </data>
   <data name="LoadingUnitCurrentCell" xml:space="preserve">
@@ -498,7 +494,7 @@
     <comment>Machine</comment>
   </data>
   <data name="MachineActualWeight" xml:space="preserve">
-    <value>Actual Weight</value>
+    <value>Actual Weight [kg]</value>
     <comment>Machine - Actual Weight</comment>
   </data>
   <data name="MachineAisle" xml:space="preserve">
@@ -614,7 +610,7 @@
     <comment>Machine - Test Date</comment>
   </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
-    <value>Total Max Weight</value>
+    <value>Total Max Weight [kg]</value>
     <comment>Machine - Total Max Weight</comment>
   </data>
   <data name="MachineModel" xml:space="preserve">
@@ -761,7 +757,7 @@
     <comment>List Row - Status</comment>
   </data>
   <data name="ItemListShipmentUnitAssociated" xml:space="preserve">
-    <value>Shipment Unit Associated</value>
+    <value>Associated Shipment Unit</value>
     <comment>Item List - Is Associated Shipment Unit</comment>
   </data>
   <data name="ItemListShipmentUnitCode" xml:space="preserve">
@@ -851,6 +847,10 @@
   <data name="AccountAccessError" xml:space="preserve">
     <value>Account access error</value>
     <comment>Credentials - Account access error</comment>
+  </data>
+  <data name="PairingFixed" xml:space="preserve">
+    <value>Fixed</value>
+    <comment>Pairing - Fixed</comment>
   </data>
   <data name="ItemListRowDispatchedQuantity" xml:space="preserve">
     <value>Dispatched Quantity</value>

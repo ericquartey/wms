@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
@@ -9,10 +8,19 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
+        private string abcClassId;
+        private int aisleId;
+        private int areaId;
+        private int cellStatusId;
+        private int? cellTypeId;
         private int? column;
         private int? floor;
         private int? number;
         private int priority;
+        private int side;
+        private int? xCoordinate;
+        private int? yCoordinate;
+        private int? zCoordinate;
 
         #endregion Fields
 
@@ -21,24 +29,44 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<EnumerationString> AbcClassChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.AbcClass), ResourceType = typeof(BusinessObjects))]
-        public string AbcClassId { get; set; }
+        public string AbcClassId
+        {
+            get => this.abcClassId;
+            set => this.SetProperty(ref this.abcClassId, value);
+        }
 
         public IEnumerable<Enumeration> AisleChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.Aisle), ResourceType = typeof(BusinessObjects))]
-        public int AisleId { get; set; }
+        public int AisleId
+        {
+            get => this.aisleId;
+            set => this.SetProperty(ref this.aisleId, value);
+        }
 
-        public int AreaId { get; set; }
+        public int AreaId
+        {
+            get => this.areaId;
+            set => this.SetProperty(ref this.areaId, value);
+        }
 
         public IEnumerable<Enumeration> CellStatusChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellStatus), ResourceType = typeof(BusinessObjects))]
-        public int CellStatusId { get; set; }
+        public int CellStatusId
+        {
+            get => this.cellStatusId;
+            set => this.SetProperty(ref this.cellStatusId, value);
+        }
 
         public IEnumerable<Enumeration> CellTypeChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellType), ResourceType = typeof(BusinessObjects))]
-        public int? CellTypeId { get; set; }
+        public int? CellTypeId
+        {
+            get => this.cellTypeId;
+            set => this.SetProperty(ref this.cellTypeId, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CellColumn), ResourceType = typeof(BusinessObjects))]
         public int? Column
@@ -71,18 +99,34 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
-        public int Side { get; set; }
+        public int Side
+        {
+            get => this.side;
+            set => this.SetProperty(ref this.side, value);
+        }
 
         public IEnumerable<Enumeration> SideChoices { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellXCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? XCoordinate { get; set; }
+        public int? XCoordinate
+        {
+            get => this.xCoordinate;
+            set => this.SetProperty(ref this.xCoordinate, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? YCoordinate { get; set; }
+        public int? YCoordinate
+        {
+            get => this.yCoordinate;
+            set => this.SetProperty(ref this.yCoordinate, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
-        public int? ZCoordinate { get; set; }
+        public int? ZCoordinate
+        {
+            get => this.zCoordinate;
+            set => this.SetProperty(ref this.zCoordinate, value);
+        }
 
         #endregion Properties
     }

@@ -132,10 +132,10 @@
                                                                ColorizeBrush="White"
                                                                SymbolName="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.IconName, Mode=OneWay}" />
                                                 <TextBlock Margin="5,0,0,0"
+                                                           VerticalAlignment="Center"
                                                            FontFamily="{DynamicResource FontSmall}"
                                                            FontSize="{DynamicResource FontSizeSmall}"
                                                            Foreground="{DynamicResource OnCommonPrimary}"
-                                                           VerticalAlignment="Center"
                                                            Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type ctrls:WmsStatusBar}}, Path=DataContext.Message}"
                                                            TextAlignment="Left" />
                                             </StackPanel>

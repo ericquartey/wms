@@ -11,11 +11,14 @@ using Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl;
 using Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.InverterDriver;
 using System.Net;
 using System.IO;
 using System.Configuration;
-using System.Windows.Controls.Primitives;
-using System.Windows.Controls;
+using System.Windows.Media.Animation;
+using System.Windows.Media;
+using System.Windows;
+using Ferretto.VW.ActionBlocks;
 
 #if CODEMAID
     // disable codemaid in this file

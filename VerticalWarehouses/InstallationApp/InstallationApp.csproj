@@ -5,6 +5,15 @@
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
     <StartupObject />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\bin\Release\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,21 +21,6 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\CustomControls\CustomControls.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\InverterDriver\InverterDriver.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\Navigation\Navigation.csproj">
-    </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.csproj">
-    </ProjectReference>
   </ItemGroup>
 
   <!--<ItemGroup>
@@ -55,6 +49,16 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.1.0" />
     <PackageReference Include="Prism.Core" Version="6.3.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Resources\Ferretto.Common.Resources.csproj" />
+    <ProjectReference Include="..\ActionBlocks\ActionBlocks.csproj" />
+    <ProjectReference Include="..\CustomControls\CustomControls.csproj" />
+    <ProjectReference Include="..\InverterDriver\InverterDriver.csproj" />
+    <ProjectReference Include="..\MathLib\MathLib.csproj" />
+    <ProjectReference Include="..\Navigation\Navigation.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
 </Project>
