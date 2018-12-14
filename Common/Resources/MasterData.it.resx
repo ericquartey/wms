@@ -292,6 +292,9 @@
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Panoramica Scomparti</value>
   </data>
+  <data name="ListRequestAccepted" xml:space="preserve">
+    <value>Richiesta sulla lista accettata </value>
+  </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
     <value>{0} X {1} ( Larghezza [mm] X Altezza [mm] )</value>
   </data>
