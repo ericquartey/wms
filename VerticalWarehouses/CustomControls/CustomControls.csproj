@@ -360,21 +360,14 @@
     <Resource Include="Assets\White_arrow_down.svg.png" />
     <Resource Include="Assets\brush_dark.png" />
     <Resource Include="Assets\brush_light.png" />
-    <Content Include="Assets\ferretto_logo_light.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Assets\ferretto_logo_dark.png" />
     <Resource Include="Assets\background_machine.png" />
     <Resource Include="Assets\ferrettogrouplogo_dark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Assets\ferrettogrouplogo_light.png" />
-    <Content Include="Fonts\HelveticaNeue-LightCond.otf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Fonts\RobotoCondensed-Regular.ttf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Fonts\HelveticaNeue-LightCond.otf" />
+    <Resource Include="Fonts\RobotoCondensed-Regular.ttf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -386,6 +379,9 @@
       <Project>{ec02d26c-f149-496c-bc7c-75d229b4333f}</Project>
       <Name>Ferretto.Common.Resources</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ferretto_logo_light.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
