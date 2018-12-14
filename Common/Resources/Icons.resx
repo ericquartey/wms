@@ -409,4 +409,24 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/content/ic_archive_black_48dp.png</value>
     <comment>@Invariant</comment>
   </data>
+  <data name="LoadingUnitsViewAreaManual" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-fork-lift-64.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="LoadingUnitsViewAreaVertimag" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-stack-50.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="LoadingUnitsViewStatusAvailable" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-data-quality-50.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="LoadingUnitsViewStatusBlocked" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-unavailable-50.png</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="LoadingUnitsViewStatusUsed" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-gears-50.png</value>
+    <comment>@Invariant</comment>
+  </data>
 </root>

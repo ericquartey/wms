@@ -10,13 +10,25 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<LoadingUnitDetails> GetByCellId(int id);
 
-        IQueryable<ItemList> GetWithAreaManual();
+        IQueryable<LoadingUnit> GetWithAreaManual();
 
         Int32 GetWithAreaManualCount();
 
-        IQueryable<ItemList> GetWithAreaVertimag();
+        IQueryable<LoadingUnit> GetWithAreaVertimag();
 
         Int32 GetWithAreaVertimagCount();
+
+        IQueryable<LoadingUnit> GetWithStatusAvailable();
+
+        Int32 GetWithStatusAvailableCount();
+
+        IQueryable<LoadingUnit> GetWithStatusBlocked();
+
+        Int32 GetWithStatusBlockedCount();
+
+        IQueryable<LoadingUnit> GetWithStatusUsed();
+
+        Int32 GetWithStatusUsedCount();
 
         bool HasAnyCompartments(int itemId);
 

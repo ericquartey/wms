@@ -475,6 +475,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Manual Area.
+        /// </summary>
+        public static string LoadingUnitAreaManual {
+            get {
+                return ResourceManager.GetString("LoadingUnitAreaManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag Area.
+        /// </summary>
+        public static string LoadingUnitAreaVertimag {
+            get {
+                return ResourceManager.GetString("LoadingUnitAreaVertimag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit Information.
         /// </summary>
         public static string LoadingUnitInformation {
@@ -498,6 +516,33 @@ namespace Ferretto.Common.Resources {
         public static string LoadingUnitSavedSuccessfully {
             get {
                 return ResourceManager.GetString("LoadingUnitSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Status.
+        /// </summary>
+        public static string LoadingUnitStatusAvailable {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatusAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blocked Status.
+        /// </summary>
+        public static string LoadingUnitStatusBlocked {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatusBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used Status.
+        /// </summary>
+        public static string LoadingUnitStatusUsed {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatusUsed", resourceCulture);
             }
         }
         

@@ -412,6 +412,51 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-fork-lift-64.png.
+        /// </summary>
+        public static string LoadingUnitsViewAreaManual {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewAreaManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-stack-50.png.
+        /// </summary>
+        public static string LoadingUnitsViewAreaVertimag {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewAreaVertimag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-data-quality-50.png.
+        /// </summary>
+        public static string LoadingUnitsViewStatusAvailable {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewStatusAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-unavailable-50.png.
+        /// </summary>
+        public static string LoadingUnitsViewStatusBlocked {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewStatusBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-gears-50.png.
+        /// </summary>
+        public static string LoadingUnitsViewStatusUsed {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewStatusUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/white/dashboard.png.
         /// </summary>
         public static string MachineStatus {

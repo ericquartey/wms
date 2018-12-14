@@ -298,4 +298,19 @@
   <data name="ItemListsTypePut" xml:space="preserve">
     <value>Put Liste</value>
   </data>
+  <data name="LoadingUnitAreaManual" xml:space="preserve">
+    <value>Area Manual</value>
+  </data>
+  <data name="LoadingUnitAreaVertimag" xml:space="preserve">
+    <value>Area Vertimag</value>
+  </data>
+  <data name="LoadingUnitStatusAvailable" xml:space="preserve">
+    <value>Stato Disponibile</value>
+  </data>
+  <data name="LoadingUnitStatusBlocked" xml:space="preserve">
+    <value>Stato Bloccato</value>
+  </data>
+  <data name="LoadingUnitStatusUsed" xml:space="preserve">
+    <value>Stato Usato</value>
+  </data>
 </root>

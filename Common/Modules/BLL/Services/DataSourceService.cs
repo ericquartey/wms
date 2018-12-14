@@ -108,15 +108,30 @@ namespace Ferretto.Common.Modules.BLL.Services
 
                         new FilterDataSource<LoadingUnit>(
                             "LoadingUnitsViewAreaManual",
-                            Resources.MasterData.LoadingUnitAll,
-                            () => loadingUnitProvider.GetAll(),
-                            () => loadingUnitCountProvider.GetAllCount()),
-
+                            Resources.MasterData.LoadingUnitAreaManual,
+                            () => loadingUnitProvider.GetWithAreaManual(),
+                            () => loadingUnitCountProvider.GetWithAreaManualCount()),
                         new FilterDataSource<LoadingUnit>(
                             "LoadingUnitsViewAreaVertimag",
-                            Resources.MasterData.LoadingUnitAll,
-                            () => loadingUnitProvider.GetAll(),
-                            () => loadingUnitCountProvider.GetAllCount()),
+                            Resources.MasterData.LoadingUnitAreaVertimag,
+                            () => loadingUnitProvider.GetWithAreaVertimag(),
+                            () => loadingUnitCountProvider.GetWithAreaVertimagCount()),
+
+                        new FilterDataSource<LoadingUnit>(
+                            "LoadingUnitsViewStatusAvailable",
+                            Resources.MasterData.LoadingUnitStatusAvailable,
+                            () => loadingUnitProvider.GetWithStatusAvailable(),
+                            () => loadingUnitCountProvider.GetWithStatusAvailableCount()),
+                        new FilterDataSource<LoadingUnit>(
+                            "LoadingUnitsViewStatusBlocked",
+                            Resources.MasterData.LoadingUnitStatusBlocked,
+                            () => loadingUnitProvider.GetWithStatusBlocked(),
+                            () => loadingUnitCountProvider.GetWithStatusBlockedCount()),
+                        new FilterDataSource<LoadingUnit>(
+                            "LoadingUnitsViewStatusUsed",
+                            Resources.MasterData.LoadingUnitStatusUsed,
+                            () => loadingUnitProvider.GetWithStatusUsed(),
+                            () => loadingUnitCountProvider.GetWithStatusUsedCount()),
                     }.Cast<IFilterDataSource<TModel>>();
 
                 case MasterData.ITEMLISTS:

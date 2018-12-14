@@ -13,10 +13,19 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private static readonly Expression<Func<DataModels.LoadingUnit, bool>> AreaManualFilter =
-            list => list.CellPositionId == 1;//AREA MANUAL
+            lu => lu.CellPositionId == 1;//AREA MANUAL
 
         private static readonly Expression<Func<DataModels.LoadingUnit, bool>> AreaVertimagFilter =
-                    list => list.CellPositionId == 2;//AREA VERTIMAG
+            lu => lu.CellPositionId == 2;//AREA VERTIMAG
+
+        private static readonly Expression<Func<DataModels.LoadingUnit, bool>> StatusAvailableFilter =
+            lu => lu.LoadingUnitStatusId == "A";//STATUS Available
+
+        private static readonly Expression<Func<DataModels.LoadingUnit, bool>> StatusBlockedFilter =
+            lu => lu.LoadingUnitStatusId == "B";//STATUS Blocked
+
+        private static readonly Expression<Func<DataModels.LoadingUnit, bool>> StatusUsedFilter =
+            lu => lu.LoadingUnitStatusId == "U";//STATUS Used
 
         private readonly ICellProvider cellProvider;
         private readonly ICompartmentProvider compartmentProvider;
@@ -200,9 +209,9 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public IQueryable<ItemList> GetWithAreaManual()
+        public IQueryable<LoadingUnit> GetWithAreaManual()
         {
-            return null;// GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaManualFilter);
+            return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaManualFilter);
         }
 
         public Int32 GetWithAreaManualCount()
@@ -210,13 +219,13 @@ namespace Ferretto.Common.BusinessProviders
             var dataContext = this.dataContext.Current;
             lock (dataContext)
             {
-                return 1;// dataContext.ItemLists.AsNoTracking();//.Count(AreaManualFilter);
+                return dataContext.LoadingUnits.AsNoTracking().Count(AreaManualFilter);
             }
         }
 
-        public IQueryable<ItemList> GetWithAreaVertimag()
+        public IQueryable<LoadingUnit> GetWithAreaVertimag()
         {
-            return null;// GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaVertimagFilter);
+            return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaVertimagFilter);
         }
 
         public Int32 GetWithAreaVertimagCount()
@@ -224,7 +233,49 @@ namespace Ferretto.Common.BusinessProviders
             var dataContext = this.dataContext.Current;
             lock (dataContext)
             {
-                return 1;// dataContext.ItemLists.AsNoTracking();//.Count(AreaVertimagFilter);
+                return dataContext.LoadingUnits.AsNoTracking().Count(AreaVertimagFilter);
+            }
+        }
+
+        public IQueryable<LoadingUnit> GetWithStatusAvailable()
+        {
+            return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusAvailableFilter);
+        }
+
+        public Int32 GetWithStatusAvailableCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.LoadingUnits.AsNoTracking().Count(StatusAvailableFilter);
+            }
+        }
+
+        public IQueryable<LoadingUnit> GetWithStatusBlocked()
+        {
+            return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusBlockedFilter);
+        }
+
+        public Int32 GetWithStatusBlockedCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.LoadingUnits.AsNoTracking().Count(StatusBlockedFilter);
+            }
+        }
+
+        public IQueryable<LoadingUnit> GetWithStatusUsed()
+        {
+            return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusUsedFilter);
+        }
+
+        public Int32 GetWithStatusUsedCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.LoadingUnits.AsNoTracking().Count(StatusUsedFilter);
             }
         }
 
@@ -270,6 +321,7 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(l => l.LoadingUnitStatus)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
+                .Where(actualWhereFunc)
                 .Select(l => new LoadingUnit
                 {
                     Id = l.Id,
