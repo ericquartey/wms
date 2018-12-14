@@ -1,14 +1,10 @@
 ﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.InputEditCompartmentView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxa="http://schemas.devexpress.com/winfx/2008/xaml/accordion"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:masterData="clr-namespace:Ferretto.WMS.Modules.MasterData"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
@@ -19,7 +15,6 @@
     <Grid x:Name="Edit"
           MinWidth="300"
           Visibility="{Binding EnableInputEdit, Converter={StaticResource BTVC}, Mode=TwoWay}">
-
 
         <wms:ActionBar Grid.Row="0"
                        Grid.Column="1"
@@ -89,11 +84,15 @@
                 <wms:SpinEdit x:Name="WidthText"
                               Grid.Row="2"
                               Grid.Column="0"
+                              MinValue="1"
+                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 <wms:SpinEdit x:Name="HeightText"
                               Grid.Row="2"
                               Grid.Column="2"
+                              MinValue="1"
+                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
@@ -101,10 +100,14 @@
                               Grid.Row="3"
                               Grid.Column="0"
                               HorizontalAlignment="Stretch"
+                              MinValue="0"
+                              AllowNullInput="True"
                               EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 <wms:SpinEdit x:Name="PositionYText"
                               Grid.Row="3"
                               Grid.Column="2"
+                              MinValue="0"
+                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
                               HorizontalContentAlignment="Right"
                               EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
@@ -156,12 +159,14 @@
                 <wms:SpinEdit x:Name="QuantityText"
                               Grid.Row="5"
                               Grid.Column="0"
+                              MinValue="0"
                               MinWidth="90"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <wms:SpinEdit x:Name="CapacityText"
                               Grid.Row="5"
                               Grid.Column="2"
+                              MinValue="1"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

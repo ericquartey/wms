@@ -77,7 +77,7 @@ namespace Ferretto.Common.BusinessModels
         public int? FifoTime
         {
             get => this.fifoTime;
-            set => this.SetIfStrictlyPositive(ref this.fifoTime, value);
+            set => this.SetIfPositive(ref this.fifoTime, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentFirstStoreDate), ResourceType = typeof(BusinessObjects))]

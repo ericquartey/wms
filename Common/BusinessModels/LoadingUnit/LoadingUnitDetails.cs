@@ -90,18 +90,19 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.LoadingUnitHandlingParametersCorrection),
+            ResourceType = typeof(BusinessObjects))]
         public int? HandlingParametersCorrection
         {
             get => this.handlingParametersCorrection;
-            set => this.SetProperty(ref this.handlingParametersCorrection, value);
+            set => this.SetIfPositive(ref this.handlingParametersCorrection, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitHeight), ResourceType = typeof(BusinessObjects))]
         public int Height
         {
             get => this.height;
-            set => this.SetProperty(ref this.height, value);
+            set => this.SetIfStrictlyPositive(ref this.height, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitInCycleCount), ResourceType = typeof(BusinessObjects))]
@@ -191,7 +192,7 @@ namespace Ferretto.Common.BusinessModels
         public int Weight
         {
             get => this.weight;
-            set => this.SetIfStrictlyPositive(ref this.weight, value);
+            set => this.SetIfPositive(ref this.weight, value);
         }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitWidth), ResourceType = typeof(BusinessObjects))]

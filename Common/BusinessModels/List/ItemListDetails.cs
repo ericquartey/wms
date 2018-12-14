@@ -126,7 +126,7 @@ namespace Ferretto.Common.BusinessModels
         public int Priority
         {
             get => this.priority;
-            set => this.SetProperty(ref this.priority, value);
+            set => this.SetIfStrictlyPositive(ref this.priority, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitAssociated), ResourceType = typeof(BusinessObjects))]
