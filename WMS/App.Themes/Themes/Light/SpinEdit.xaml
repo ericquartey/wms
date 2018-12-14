@@ -19,6 +19,8 @@
         <Setter Property="EditValueType" Value="{x:Type sys:Int32}" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
         <Setter Property="Template" Value="{DynamicResource SpinEditButtonEditStyle}" />
+        <Setter Property="MaskType" Value="Numeric" />
+        <Setter Property="Mask" Value="N0" />
     </Style>
 
     <ControlTemplate x:Key="SpinEditButtonEditStyle"

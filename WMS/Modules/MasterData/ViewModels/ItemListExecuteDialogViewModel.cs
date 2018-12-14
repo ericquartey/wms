@@ -1,5 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -17,9 +17,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
-
-        private ListToExecute listToExecute;
-
+        private ItemListExecutionRequest executionRequest;
+        private bool isBusy;
         private ICommand runListExecuteCommand;
 
         #endregion Fields
@@ -35,24 +34,36 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ListToExecute ListToExecute
+        public ItemListExecutionRequest ExecutionRequest
         {
-            get => this.listToExecute;
+            get => this.executionRequest;
             set
             {
-                if (this.ListToExecute != null && value != this.ListToExecute)
+                if (this.executionRequest == value)
                 {
-                    this.ListToExecute.PropertyChanged -= this.OnItemListPropertyChanged;
+                    return;
                 }
-                if (this.SetProperty(ref this.listToExecute, value))
+
+                if (this.executionRequest != null)
                 {
-                    this.ListToExecute.PropertyChanged += this.OnItemListPropertyChanged;
+                    this.executionRequest.PropertyChanged -= this.OnItemListPropertyChanged;
+                }
+
+                if (this.SetProperty(ref this.executionRequest, value))
+                {
+                    this.ExecutionRequest.PropertyChanged += this.OnItemListPropertyChanged;
                 }
             }
         }
 
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set => this.SetProperty(ref this.isBusy, value);
+        }
+
         public ICommand RunListExecuteCommand => this.runListExecuteCommand ??
-                    (this.runListExecuteCommand = new DelegateCommand(this.ExecuteListCommand));
+                            (this.runListExecuteCommand = new DelegateCommand(this.ExecuteListCommand, this.CanExecuteListCommand));
 
         #endregion Properties
 
@@ -66,27 +77,56 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.ListToExecute.ItemListDetails = this.itemListProvider.GetById(modelId.Value);
-            this.ListToExecute.AreaChoices = this.areaProvider.GetAll();
-            this.listToExecute.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
+            this.executionRequest.ItemListDetails = this.itemListProvider.GetById(modelId.Value);
+            this.executionRequest.AreaChoices = this.areaProvider.GetAll();
+            this.executionRequest.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
         }
 
-        private void ExecuteListCommand()
+        private bool CanExecuteListCommand()
         {
-            throw new NotImplementedException();
+            return string.IsNullOrEmpty(this.executionRequest.Error);
+        }
+
+        private async void ExecuteListCommand()
+        {
+            Debug.Assert(this.executionRequest.AreaId.HasValue);
+
+            this.IsBusy = true;
+            OperationResult result = null;
+            if (this.executionRequest.RunImmediately)
+            {
+                Debug.Assert(this.executionRequest.BayId.HasValue);
+
+                result = await this.itemListProvider.ExecuteImmediately(this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+            }
+            else
+            {
+                result = await this.itemListProvider.ScheduleForExecution(this.executionRequest.AreaId.Value);
+            }
+
+            this.IsBusy = false;
+
+            if (result.Success)
+            {
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ListRequestAccepted, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
+            }
         }
 
         private void Initialize()
         {
-            this.ListToExecute = new ListToExecute();
+            this.ExecutionRequest = new ItemListExecutionRequest();
         }
 
         private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.ListToExecute.AreaId) &&
-                this.ListToExecute.AreaId.HasValue)
+            if (e.PropertyName == nameof(this.executionRequest.AreaId) &&
+                this.executionRequest.AreaId.HasValue)
             {
-                this.ListToExecute.BayChoices = this.bayProvider.GetByAreaId(this.ListToExecute.AreaId.Value);
+                this.executionRequest.BayChoices = this.bayProvider.GetByAreaId(this.ExecutionRequest.AreaId.Value);
             }
         }
 

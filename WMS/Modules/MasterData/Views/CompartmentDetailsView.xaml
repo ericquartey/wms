@@ -211,6 +211,8 @@
                                       ItemsSource="{Binding Compartment.MaterialStatusChoices}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
+                                      MinValue="0"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Compartment.FifoTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="3"
                                      Grid.Column="0"
@@ -243,21 +245,29 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="1"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Compartment.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      MinValue="1"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Compartment.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Compartment.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Compartment.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                     </Grid>
@@ -278,19 +288,24 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="1"
+                                      AllowNullInput="True"
                                       EditValue="{Binding Compartment.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
                                       EditValue="{Binding Compartment.ReservedForPick, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
                                       EditValue="{Binding Compartment.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
+                                      MinValue="0"
                                       EditValue="{Binding Compartment.ReservedToStore, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       IsEnabled="False" />
                     </Grid>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
@@ -8,6 +7,8 @@ namespace Ferretto.Common.BusinessProviders
     public interface IItemListProvider : IBusinessProvider<ItemList, ItemListDetails>
     {
         #region Methods
+
+        Task<OperationResult> ExecuteImmediately(int areaId, int bayId);
 
         IQueryable<ItemList> GetWithStatusCompleted();
 
@@ -28,6 +29,8 @@ namespace Ferretto.Common.BusinessProviders
         IQueryable<ItemList> GetWithTypePut();
 
         int GetWithTypePutCount();
+
+        Task<OperationResult> ScheduleForExecution(int areaId);
 
         #endregion Methods
     }

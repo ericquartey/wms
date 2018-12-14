@@ -20,11 +20,14 @@ namespace Ferretto.Common.Controls
         public static readonly DependencyProperty EnumValueProperty = DependencyProperty.Register(
             nameof(EnumValue), typeof(Enum), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));
 
+        public static readonly DependencyProperty HideIconProperty = DependencyProperty.Register(
+            nameof(HideIcon), typeof(bool), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(EnumChanged)));
+
         public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register(
-            nameof(IconSize), typeof(int), typeof(WmsEnumIndicator));
+                    nameof(IconSize), typeof(int), typeof(WmsEnumIndicator));
 
         public static readonly DependencyProperty ShowTextProperty = DependencyProperty.Register(
-            nameof(ShowText), typeof(bool), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(ShowTextChanged)));
+                    nameof(ShowText), typeof(bool), typeof(WmsEnumIndicator), new PropertyMetadata(new PropertyChangedCallback(ShowTextChanged)));
 
         public static readonly DependencyProperty SymbolNameProperty = DependencyProperty.Register(
             nameof(SymbolName), typeof(string), typeof(WmsEnumIndicator), new PropertyMetadata(default(string)));
@@ -44,7 +47,7 @@ namespace Ferretto.Common.Controls
 
         public SolidColorBrush BackgroundBrush
         {
-            get => (SolidColorBrush) this.GetValue(BackgroundBrushProperty);
+            get => (SolidColorBrush)this.GetValue(BackgroundBrushProperty);
             set => this.SetValue(BackgroundBrushProperty, value);
         }
 
@@ -58,6 +61,12 @@ namespace Ferretto.Common.Controls
         {
             get => (Enum)this.GetValue(EnumValueProperty);
             set => this.SetValue(EnumValueProperty, value);
+        }
+
+        public bool HideIcon
+        {
+            get => (bool)this.GetValue(HideIconProperty);
+            set => this.SetValue(HideIconProperty, value);
         }
 
         public int IconSize
@@ -74,7 +83,7 @@ namespace Ferretto.Common.Controls
 
         public string SymbolName
         {
-            get => (string) this.GetValue(SymbolNameProperty);
+            get => (string)this.GetValue(SymbolNameProperty);
             set => this.SetValue(SymbolNameProperty, value);
         }
 
@@ -84,7 +93,7 @@ namespace Ferretto.Common.Controls
 
         private static void EnumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!( d is WmsEnumIndicator instance ))
+            if (!(d is WmsEnumIndicator instance))
             {
                 return;
             }
@@ -103,7 +112,7 @@ namespace Ferretto.Common.Controls
             var resourceValue = EnumColors.ResourceManager.GetString(instance.SymbolName);
 
             instance.BackgroundBrush = resourceValue != null
-                ? new SolidColorBrush((Color) ColorConverter.ConvertFromString(resourceValue))
+                ? new SolidColorBrush((Color)ColorConverter.ConvertFromString(resourceValue))
                 : Brushes.Transparent;
         }
 

@@ -326,6 +326,16 @@
     <value>Layout Overview</value>
     <comment>Label - Grouping</comment>
   </data>
+  <data name="ItemListExecuteImmediately" xml:space="preserve">
+    <value>Execute Immediately</value>
+  </data>
+  <data name="ListRequestAccepted" xml:space="preserve">
+    <value>List request accepted</value>
+    <comment>Notification - request accepted</comment>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
     <value>{0} X {1} ( Width [mm] X Height [mm] )</value>
   </data>

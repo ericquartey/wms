@@ -82,7 +82,7 @@ namespace Ferretto.Common.BusinessModels
         public int Quantity
         {
             get => this.quantity;
-            set => this.SetProperty(ref this.quantity, value);
+            set => this.SetIfPositive(ref this.quantity, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawRegistrationNumber), ResourceType = typeof(BusinessObjects))]

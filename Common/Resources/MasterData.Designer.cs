@@ -403,6 +403,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute Immediately.
+        /// </summary>
+        public static string ItemListExecuteImmediately {
+            get {
+                return ResourceManager.GetString("ItemListExecuteImmediately", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute List Options.
         /// </summary>
         public static string ItemListExecuteOptions {
@@ -556,6 +565,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List request accepted.
+        /// </summary>
+        public static string ListRequestAccepted {
+            get {
+                return ResourceManager.GetString("ListRequestAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
@@ -705,6 +723,15 @@ namespace Ferretto.Common.Resources {
         public static string SimpleWithdraw {
             get {
                 return ResourceManager.GetString("SimpleWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

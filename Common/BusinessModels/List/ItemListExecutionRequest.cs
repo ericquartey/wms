@@ -1,21 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class ListToExecute : BusinessObject
+    public class ItemListExecutionRequest : BusinessObject
     {
         #region Fields
 
         private IEnumerable<Area> areaChoices;
         private int? areaId;
+        private bool areaIdHasValue;
         private IEnumerable<Bay> bayChoices;
         private int? bayId;
         private ItemListDetails itemListDetails;
+        private bool runImmediately;
 
         #endregion Fields
 
@@ -27,11 +28,23 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.areaChoices, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ListToExecuteArea), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestArea), ResourceType = typeof(BusinessObjects))]
         public int? AreaId
         {
             get => this.areaId;
-            set => this.SetProperty(ref this.areaId, value);
+            set
+            {
+                if (this.SetProperty(ref this.areaId, value))
+                {
+                    this.AreaIdHasValue = this.areaId.HasValue;
+                }
+            }
+        }
+
+        public bool AreaIdHasValue
+        {
+            get => this.areaIdHasValue;
+            set => this.SetProperty(ref this.areaIdHasValue, value);
         }
 
         public IEnumerable<Bay> BayChoices
@@ -40,7 +53,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.bayChoices, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ListToExecuteBayOptional), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestBay), ResourceType = typeof(BusinessObjects))]
         public int? BayId
         {
             get => this.bayId;
@@ -55,16 +68,23 @@ namespace Ferretto.Common.BusinessModels
             }.Where(s => !String.IsNullOrEmpty(s))
         );
 
-        [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
-        public string ItemCode => this.ItemListDetails?.Code;
-
-        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
-        public string ItemDescription => this.ItemListDetails?.Description;
-
         public ItemListDetails ItemListDetails
         {
             get => this.itemListDetails;
             set => this.SetProperty(ref this.itemListDetails, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestRunImmediately), ResourceType = typeof(BusinessObjects))]
+        public bool RunImmediately
+        {
+            get => this.runImmediately;
+            set
+            {
+                if (this.SetProperty(ref this.runImmediately, value))
+                {
+                    this.BayId = null;
+                }
+            }
         }
 
         #endregion Properties
@@ -86,8 +106,8 @@ namespace Ferretto.Common.BusinessModels
                         break;
 
                     case nameof(this.BayId):
-                        if (this.bayId.HasValue == false ||
-                            this.bayId.Value == 0)
+                        if ((this.bayId.HasValue == false ||
+                            this.bayId.Value == 0) && this.runImmediately)
                         {
                             return Resources.BusinessObjects.ListToExecuteBayInvalidError;
                         }
