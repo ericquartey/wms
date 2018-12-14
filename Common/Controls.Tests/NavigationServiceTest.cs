@@ -166,11 +166,17 @@ namespace Feretto.Common.Controls.Tests
             #region Properties
 
             public object Data { get; set; }
+
             public object DataContext { get; set; }
+
             public bool IsClosed { get; set; }
+
             public string MapId { get; set; }
+
             public string Title { get; set; }
+
             public string Token { get; set; }
+
             public WmsViewType ViewType { get; }
 
             #endregion Properties
@@ -189,8 +195,11 @@ namespace Feretto.Common.Controls.Tests
             #region Properties
 
             public System.Object Data { get; set; }
+
             public System.String MapId { get; set; }
+
             public System.String StateId { get; set; }
+
             public System.String Token { get; set; }
 
             #endregion Properties
@@ -198,6 +207,11 @@ namespace Feretto.Common.Controls.Tests
             #region Methods
 
             public void Appear()
+            {
+                // Test method. Nothing to do here.
+            }
+
+            public System.Boolean CanDisappear()
             {
                 // Test method. Nothing to do here.
             }
