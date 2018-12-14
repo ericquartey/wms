@@ -55,7 +55,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<OperationResult> ExecuteImmediately(int areaId, int bayId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, "not implemented"));
+            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
         }
 
         public IQueryable<ItemList> GetAll()
@@ -191,7 +191,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<OperationResult> ScheduleForExecution(int areaId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, "not implemented"));
+            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
         }
 
         private static IQueryable<ItemList> GetAllListsWithAggregations(DatabaseContext context, Expression<Func<DataModels.ItemList, bool>> whereFunc = null)
