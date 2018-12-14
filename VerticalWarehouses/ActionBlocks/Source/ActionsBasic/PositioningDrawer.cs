@@ -154,12 +154,12 @@ namespace Ferretto.VW.ActionBlocks
 
             if (this.inverterDriver != null)
             {
-                this.inverterDriver.EnquiryTelegramDone += new InverterDriver.EnquiryTelegramDoneEventHandler(this.EnquiryTelegram);
-                this.inverterDriver.SelectTelegramDone += new InverterDriver.SelectTelegramDoneEventHandler(this.SelectTelegram);
+                this.inverterDriver.EnquiryTelegramDone_PositioningDrawer += new InverterDriver.EnquiryTelegramDoneEventHandler(this.EnquiryTelegram);
+                this.inverterDriver.SelectTelegramDone_PositioningDrawer += new InverterDriver.SelectTelegramDoneEventHandler(this.SelectTelegram);
             }
         }
 
-        public void MoveAlongVerticalAxisToPoint(int x, float vMax, float acc, float dec, float w, short offset)
+        public void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset)
         {
             // Enable the update current vertical shaft position
             this.inverterDriver.Enable_Update_Current_Position_Vertical_Shaft_Mode = this.enableRetrivialCurrentPositionMode;
@@ -170,7 +170,8 @@ namespace Ferretto.VW.ActionBlocks
             this.dataSetIndex = 0x05;  // it is related to the used motor (vertical --> DATASET 1; horizontal --> DATASET 2)
 
             // Assign the parameters
-            this.x = x;
+            // Convert x from Decimal [mm] to [Pulse]
+            this.x = ActionManager.ConverterInstance.FromMMToPulse(x);
             this.vMax = vMax;
             this.acc = acc;
             this.dec = dec;
@@ -179,6 +180,8 @@ namespace Ferretto.VW.ActionBlocks
             this.bStoppedOk = false;
             this.bInitialShaftPosition = true;
             this.initialPosition = 0;
+
+            this.inverterDriver.CurrentActionType = ActionType.PositioningDrawer;
 
             // Require the initial position of shaft (and cache it)
             this.inverterDriver.SendRequest(ParameterID.ACTUAL_POSITION_SHAFT, this.systemIndex, this.dataSetIndex);
@@ -211,8 +214,8 @@ namespace Ferretto.VW.ActionBlocks
             // Unsubscribe the event handlers
             if (this.inverterDriver != null)
             {
-                this.inverterDriver.SelectTelegramDone -= this.SelectTelegram;
-                this.inverterDriver.EnquiryTelegramDone -= this.EnquiryTelegram;
+                this.inverterDriver.SelectTelegramDone_PositioningDrawer -= this.SelectTelegram;
+                this.inverterDriver.EnquiryTelegramDone_PositioningDrawer -= this.EnquiryTelegram;
             }
         }
 

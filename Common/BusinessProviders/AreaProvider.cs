@@ -27,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(Area model)
+        public Task<OperationResult> Add(Area model)
         {
             throw new NotImplementedException();
         }

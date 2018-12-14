@@ -120,6 +120,7 @@
 
         void Initialize();
 
+
         /// <summary>
         /// Move along vertical axis.
         /// </summary>
@@ -129,7 +130,7 @@
         /// <param name="dec">Deceleration</param>
         /// <param name="w">Weight</param>
         /// <param name="offset">Offset (distance)</param>
-        void MoveAlongVerticalAxisToPoint(int x, float vMax, float acc, float dec, float w, short offset);
+        void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset);
 
         void Resume();
 

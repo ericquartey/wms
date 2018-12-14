@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class ItemListDetailsViewModel : BaseServiceNavigationViewModel
+    public class ItemListDetailsViewModel : DetailsViewModel<ItemListDetails>
     {
         #region Fields
 
@@ -25,8 +22,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelChangedEventSubscription;
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
-        private ICommand revertCommand;
-        private ICommand saveCommand;
         private ItemListRow selectedItemListRow;
         private ICommand showDetailsListRowCommand;
 
@@ -53,19 +48,12 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.itemList;
             set
             {
-                if (this.ItemList != null && value != this.ItemList)
-                {
-                    this.ItemList.TakeSnapshot();
-                    this.ItemList.PropertyChanged -= this.OnItemListPropertyChanged;
-                }
-
                 if (!this.SetProperty(ref this.itemList, value))
                 {
                     return;
                 }
 
-                this.ItemList.TakeSnapshot();
-                this.ItemList.PropertyChanged += this.OnItemListPropertyChanged;
+                this.TakeSnapshot(this.ItemList);
 
                 //TODO
                 //this.RefreshData();
@@ -88,12 +76,6 @@ namespace Ferretto.WMS.Modules.MasterData
                        this.CanExecuteListRowCommand)
              .ObservesProperty(() => this.SelectedItemListRow));
 
-        public ICommand RevertCommand => this.revertCommand ??
-                                          (this.revertCommand = new DelegateCommand(this.LoadData, this.CanExecuteRevert));
-
-        public ICommand SaveCommand => this.saveCommand ??
-                  (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSave));
-
         public ItemListRow SelectedItemListRow
         {
             get => this.selectedItemListRow;
@@ -105,11 +87,26 @@ namespace Ferretto.WMS.Modules.MasterData
                        this.CanExecuteShowDetailsListRowCommand)
              .ObservesProperty(() => this.SelectedItemListRow));
 
-        public string StatusColor { get; private set; }
-
         #endregion Properties
 
         #region Methods
+
+        protected override void ExecuteRevertCommand()
+        {
+            this.LoadData();
+        }
+
+        protected override void ExecuteSaveCommand()
+        {
+            var modifiedRowCount = this.itemListProvider.Save(this.itemList);
+            if (modifiedRowCount > 0)
+            {
+                this.TakeSnapshot(this.itemList);
+
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.itemList.Id));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
+            }
+        }
 
         protected override void OnAppear()
         {
@@ -152,16 +149,6 @@ namespace Ferretto.WMS.Modules.MasterData
             return false;
         }
 
-        private bool CanExecuteRevert()
-        {
-            return this.ItemList?.IsModified == true;
-        }
-
-        private bool CanExecuteSave()
-        {
-            return this.ItemList?.IsModified == true;
-        }
-
         private bool CanExecuteShowDetailsListRowCommand()
         {
             return this.selectedItemListRow != null;
@@ -194,20 +181,6 @@ namespace Ferretto.WMS.Modules.MasterData
                     Id = this.SelectedItemListRow.Id
                 }
             );
-        }
-
-        private void ExecuteSaveCommand()
-        {
-            var modifiedRowCount = this.itemListProvider.Save(this.ItemList);
-
-            if (modifiedRowCount > 0)
-            {
-                this.ItemList.TakeSnapshot();
-
-                this.EventService.Invoke(new ModelChangedEvent<Item>(this.ItemList.Id));
-
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
-            }
         }
 
         private void ExecuteShowDetailsListRowCommand()
@@ -244,15 +217,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if ((this.Data is int modelId))
             {
                 this.ItemList = this.itemListProvider.GetById(modelId);
-            }
-        }
-
-        private void OnItemListPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.ItemList.IsModified))
-            {
-                ((DelegateCommand)this.RevertCommand)?.RaiseCanExecuteChanged();
-                ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
             }
         }
 

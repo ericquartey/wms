@@ -97,6 +97,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid index.
+        /// </summary>
+        public static string BusyIndicatorInvalidIndex {
+            get {
+                return ResourceManager.GetString("BusyIndicatorInvalidIndex", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Style &apos;{0}&apos; for &apos;{1}&apos; not found..
+        /// </summary>
+        public static string BusyIndicatorStyleNotFound {
+            get {
+                return ResourceManager.GetString("BusyIndicatorStyleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error retrieving document group from the Main Layout Manager..
         /// </summary>
         public static string CannotRetrieveDocumentGroupFromLayoutManager {
@@ -277,6 +295,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments..
+        /// </summary>
+        public static string LoadingUnitOverlappingCompartment {
+            get {
+                return ResourceManager.GetString("LoadingUnitOverlappingCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Syntax for NameOf is Type={x:Type &lt;className&gt;}..
         /// </summary>
         public static string MarkupNameOfSyntax {
@@ -291,6 +318,15 @@ namespace Ferretto.Common.Resources {
         public static string NoChangesFound {
             get {
                 return ResourceManager.GetString("NoChangesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not add {0} to database..
+        /// </summary>
+        public static string NotAddDB {
+            get {
+                return ResourceManager.GetString("NotAddDB", resourceCulture);
             }
         }
         

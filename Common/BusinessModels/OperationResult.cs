@@ -4,20 +4,21 @@
     {
         #region Constructors
 
-        public OperationResult(bool success, string description)
+        public OperationResult(bool success, int? entityId = null, string description = null)
         {
             this.Success = success;
             this.Description = description;
+            this.EntityId = entityId;
         }
-
-        public OperationResult(bool success) : this(success, null)
-        { }
 
         #endregion Constructors
 
         #region Properties
 
         public string Description { get; private set; }
+
+        public int? EntityId { get; private set; }
+
         public bool Success { get; private set; }
 
         #endregion Properties

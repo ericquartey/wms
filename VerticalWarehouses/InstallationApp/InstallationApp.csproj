@@ -406,20 +406,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -443,6 +434,10 @@
     <ProjectReference Include="..\InverterDriver\InverterDriver.csproj">
       <Project>{119128d4-1776-427a-aec1-6da12b0ff813}</Project>
       <Name>InverterDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MathLib\MathLib.csproj">
+      <Project>{2f188460-af20-4b52-a19d-1a01941756d2}</Project>
+      <Name>MathLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Navigation\Navigation.csproj">
       <Project>{8f34417e-3c32-4694-91af-b286fbf0e1ac}</Project>

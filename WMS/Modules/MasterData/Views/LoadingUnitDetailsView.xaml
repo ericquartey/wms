@@ -97,21 +97,21 @@
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.LoadingUnitTypeId}"
+                                      EditValue="{Binding LoadingUnit.LoadingUnitTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.LoadingUnitTypeChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.LoadingUnitStatusId}"
+                                      EditValue="{Binding LoadingUnit.LoadingUnitStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.LoadingUnitStatusChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.AbcClassId}"
+                                      EditValue="{Binding LoadingUnit.AbcClassId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.AbcClassChoices}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.ReferenceType}"
+                                      EditValue="{Binding LoadingUnit.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding LoadingUnit.ReferenceTypeChoices}" />
                         <wms:TextBox Grid.Row="3"
                                      Grid.ColumnSpan="3"
@@ -133,21 +133,22 @@
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <wms:ComboBox Grid.ColumnSpan="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellId}"
-                                      ItemsSource="{Binding LoadingUnit.CellChoices}" />
+                                      EditValue="{Binding Path=LoadingUnit.CellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=LoadingUnit.CellChoices}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding LoadingUnit.CellPositionId}"
                                       ItemsSource="{Binding LoadingUnit.CellPositionChoices}" />
-                        <wms:ComboBox Grid.Row="1"
-                                      Grid.Column="1"
-                                      Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.CellPairing}"
-                                      ItemsSource="{Binding LoadingUnit.CellPairingChoices}" />
+
+                        <wms:WmsCheckEdit Grid.Row="1"
+                                          Grid.Column="1"
+                                          Margin="0,0,20,0"
+                                          Content="{x:Static res:BusinessObjects.PairingFixed}"
+                                          IsChecked="{Binding Path=LoadingUnit.IsCellPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -163,13 +164,13 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding LoadingUnit.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.HandlingParametersCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     </Grid>
                 </GroupBox>
@@ -219,8 +220,6 @@
 
                             <wms:WmsGridControl.Columns>
                                 <dxg:GridColumn Width="200*"
-                                                FieldName="Code" />
-                                <dxg:GridColumn Width="200*"
                                                 FieldName="LoadingUnitCode" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Sub1" />
@@ -235,11 +234,12 @@
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="MaxCapacity" />
                                 <dxg:GridColumn Width="200*"
-                                                FieldName="ItemPairingDescription" />
+                                                FieldName="IsItemPairingFixed"
+                                                Style="{DynamicResource BooleanCellTemplate}" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
-                                <dxg:GridSortInfo FieldName="Code"
+                                <dxg:GridSortInfo FieldName="LoadingUnitCode"
                                                   SortOrder="Ascending" />
                             </wms:WmsGridControl.SortInfo>
 

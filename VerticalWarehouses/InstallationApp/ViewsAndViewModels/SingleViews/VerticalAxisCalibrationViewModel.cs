@@ -108,24 +108,22 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         {
             // Temporary the variables have a fixed value,
             // they will be variables when there'll be new functions
-            int m = 5;
-            short ofs = 1;
-            short vFast = 1;
-            short vCreep = 1;
+            if (ActionManager.CalibrateVerticalAxisInstance != null)
+            {
+                int m = 5;
+                short ofs = 1;
+                short vFast = 1;
+                short vCreep = 1;
 
-            CalibrateVerticalAxis calibrateVA;
-            this.EnableStartButton = false;
-            this.IsStopButtonActive = true;
-            await Task.Delay(2000);
+                this.EnableStartButton = false;
+                this.IsStopButtonActive = true;
+                await Task.Delay(2000);
 
-            calibrateVA = new CalibrateVerticalAxis();
-            calibrateVA.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
-
-            calibrateVA.Initialize();
-            calibrateVA.ThrowEndEvent += new CalibrateVerticalAixsEndedEventHandler(this.Calibration);
-            this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
-            calibrateVA.SetVAxisOrigin(m, ofs, vFast, vCreep);
-            this.NoteString = "Homing Done.";
+                ActionManager.CalibrateVerticalAxisInstance.ThrowEndEvent += this.Calibration;
+                this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
+                ActionManager.CalibrateVerticalAxisInstance.SetVAxisOrigin(m, ofs, vFast, vCreep);
+                this.NoteString = "Homing Done.";
+            }
         }
 
         private void StopButtonMethod()

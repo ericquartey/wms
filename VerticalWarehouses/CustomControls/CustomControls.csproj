@@ -95,6 +95,10 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\CustomControlMainWindowUserComboBoxItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\CustomGateControlSensorsThreePositions.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -164,6 +168,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Skins\LightActionButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\LightCustomControlInputFieldFocusable.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skins\LightCustomControlSensor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -265,6 +277,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CustomControlMainWindowUserComboBoxItem.xaml.cs">
+      <DependentUpon>CustomControlMainWindowUserComboBoxItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomGateControlSensorsThreePositions.xaml.cs">
       <DependentUpon>CustomGateControlSensorsThreePositions.xaml</DependentUpon>
     </Compile>
@@ -292,20 +307,11 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <Resource Include="Assets\gear_icon.png" />
     <Resource Include="Assets\ic_account_circle_black_18dp.png" />
     <Resource Include="Assets\ic_account_circle_black_48dp.png" />

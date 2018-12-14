@@ -115,7 +115,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Availability (units):.
+        ///   Looks up a localized string similar to Availability [units]:.
         /// </summary>
         public static string Availability {
             get {
@@ -169,11 +169,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Evaded quantity:.
+        ///   Looks up a localized string similar to Dispatched quantity:.
         /// </summary>
-        public static string EvadedQuantity {
+        public static string DispatchedQuantity {
             get {
-                return ResourceManager.GetString("EvadedQuantity", resourceCulture);
+                return ResourceManager.GetString("DispatchedQuantity", resourceCulture);
             }
         }
         

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="UpperBound" xml:space="preserve">
-    <value>Limite Superiore:</value>
+    <value>Limite Superiore [mm]:</value>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
@@ -127,7 +127,7 @@
     <value>Risoluzione:</value>
   </data>
   <data name="ActualPosition" xml:space="preserve">
-    <value>Posizione Attuale:</value>
+    <value>Posizione Effettiva:</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>Auto</value>
@@ -214,10 +214,10 @@
     <value>Calibrazione asse non effettuata</value>
   </data>
   <data name="LowerBound" xml:space="preserve">
-    <value>Limite Inferiore:</value>
+    <value>Limite Inferiore [mm]:</value>
   </data>
   <data name="Offset" xml:space="preserve">
-    <value>Offset:</value>
+    <value>Offset [mm]:</value>
   </data>
   <data name="Output" xml:space="preserve">
     <value>Risultato:</value>
@@ -332,25 +332,25 @@
     <value>Posizione iniziale:</value>
   </data>
   <data name="MesuredLenght" xml:space="preserve">
-    <value>Spostamento misurato (mm):</value>
+    <value>Spostamento misurato [mm]:</value>
   </data>
   <data name="NewResolution" xml:space="preserve">
-    <value>Nuova risoluzione (imp/mm):</value>
+    <value>Nuova risoluzione [imp/mm]:</value>
   </data>
   <data name="RepositionLenght" xml:space="preserve">
-    <value>Lunghezza spostamento (mm):</value>
+    <value>Lunghezza spostamento [mm]:</value>
   </data>
   <data name="ResolutionModified" xml:space="preserve">
     <value>Risoluzione modificata correttamente.</value>
   </data>
   <data name="CurrentResolution" xml:space="preserve">
-    <value>Risoluzione attuale (imp/mm):</value>
+    <value>Risoluzione attuale [imp/mm]:</value>
   </data>
   <data name="DesiredInitialPosition" xml:space="preserve">
-    <value>Posizione iniziale desiderata (mm):</value>
+    <value>Posizione iniziale desiderata [mm]:</value>
   </data>
   <data name="DesiredMovement" xml:space="preserve">
-    <value>Spostamento desiderato (mm):</value>
+    <value>Spostamento desiderato [mm]:</value>
   </data>
   <data name="InsertDesiredMovement" xml:space="preserve">
     <value>Inserire lo spostamento desiderato.</value>
@@ -362,7 +362,7 @@
     <value>Inserire lo spostamento misurato.</value>
   </data>
   <data name="MesuredMovement" xml:space="preserve">
-    <value>Spostamento misurato (mm):</value>
+    <value>Spostamento misurato [mm]:</value>
   </data>
   <data name="VerticalResolutionCalibration" xml:space="preserve">
     <value>Risoluzione Asse Verticale</value>
@@ -377,10 +377,10 @@
     <value>Cicli completati:</value>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
-    <value>Posizione attuale (mm):</value>
+    <value>Posizione attuale [mm]:</value>
   </data>
   <data name="DelayBetweenCicles" xml:space="preserve">
-    <value>Ritardo tra i cicli (s):</value>
+    <value>Ritardo tra i cicli [s]:</value>
   </data>
   <data name="Middle" xml:space="preserve">
     <value>Intermedia</value>
@@ -404,13 +404,13 @@
     <value>Raggi attivati:</value>
   </data>
   <data name="CurrentHeight" xml:space="preserve">
-    <value>Altezza corrente (mm):</value>
+    <value>Altezza corrente [mm]:</value>
   </data>
   <data name="GateCalibrated" xml:space="preserve">
     <value>Serranda calibrata.</value>
   </data>
   <data name="GateCorrection" xml:space="preserve">
-    <value>Correzione serranda (mm):</value>
+    <value>Correzione serranda [mm]:</value>
   </data>
   <data name="GateOutOfTolerance" xml:space="preserve">
     <value>La serranda è fuori tolleranza.</value>
@@ -422,13 +422,13 @@
     <value>Controllo Pannelli</value>
   </data>
   <data name="SpeedMMSec" xml:space="preserve">
-    <value>Velocità (mm/s):</value>
+    <value>Velocità [mm/s]:</value>
   </data>
   <data name="SystemErrorMM" xml:space="preserve">
-    <value>Errore di sistema (mm):</value>
+    <value>Errore di sistema [mm]:</value>
   </data>
   <data name="Tolerance" xml:space="preserve">
-    <value>Tolleranza (mm +/-):</value>
+    <value>Tolleranza (+/-) [mm]:</value>
   </data>
   <data name="VerticalOffsetCalibration" xml:space="preserve">
     <value>Offset Asse Verticale</value>
@@ -446,13 +446,13 @@
     <value>Controllo Altezza Serranda</value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
-    <value>Tolleranza peso accettabile (%):</value>
+    <value>Tolleranza peso accettabile [%]:</value>
   </data>
   <data name="InsertedWeight" xml:space="preserve">
-    <value>Peso inserito (kg):</value>
+    <value>Peso inserito [kg]:</value>
   </data>
   <data name="MesuredWeight" xml:space="preserve">
-    <value>Peso misurato (kg):</value>
+    <value>Peso misurato [kg]:</value>
   </data>
   <data name="MesuredWeightInTolerance" xml:space="preserve">
     <value>Il peso misurato rientra nella tolleranza.</value>
@@ -464,16 +464,16 @@
     <value>Test corsa:</value>
   </data>
   <data name="CorrectOffset" xml:space="preserve">
-    <value>Offset corretto (mm):</value>
+    <value>Offset corretto [mm]:</value>
   </data>
   <data name="CurrentOffset" xml:space="preserve">
-    <value>Offset attuale (mm):</value>
+    <value>Offset attuale [mm]:</value>
   </data>
   <data name="DoCorrectOffset" xml:space="preserve">
     <value>Correggi</value>
   </data>
   <data name="ReferenceCellHeight" xml:space="preserve">
-    <value>Altezza cella di riferimento (mm):</value>
+    <value>Altezza cella di riferimento [mm]:</value>
   </data>
   <data name="ReferenceCellNumber" xml:space="preserve">
     <value>Numero cella di riferimento:</value>
@@ -485,7 +485,7 @@
     <value>Step +</value>
   </data>
   <data name="StepValue" xml:space="preserve">
-    <value>Valore step (mm):</value>
+    <value>Valore step [mm]:</value>
   </data>
   <data name="CellHeight" xml:space="preserve">
     <value>Altezza cella attuale (mm):</value>
@@ -500,7 +500,7 @@
     <value>Pannello attuale:</value>
   </data>
   <data name="PanelCorrection" xml:space="preserve">
-    <value>Correzione pannello (mm):</value>
+    <value>Correzione pannello [mm]:</value>
   </data>
   <data name="TotalPanels" xml:space="preserve">
     <value>Pannelli totali:</value>
@@ -545,21 +545,24 @@
     <value>Macchina installata completamente</value>
   </data>
   <data name="Shape1Done" xml:space="preserve">
-    <value>Sagoma serranda 1</value>
+    <value>Sagoma Serranda 1</value>
   </data>
   <data name="Shape2Done" xml:space="preserve">
-    <value>Sagoma serranda 2</value>
+    <value>Sagoma Serranda 2</value>
   </data>
   <data name="Shape3Done" xml:space="preserve">
-    <value>Sagoma serranda 3</value>
+    <value>Sagoma Serranda 3</value>
   </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
-    <value>Origine asse verticale</value>
+    <value>Origine Asse Verticale</value>
   </data>
   <data name="VerticalResolutionDone" xml:space="preserve">
-    <value>Risoluzione asse verticale</value>
+    <value>Risoluzione Asse Verticale</value>
   </data>
   <data name="CellsControl" xml:space="preserve">
     <value>Controllo Celle</value>
+  </data>
+  <data name="CellCorrection" xml:space="preserve">
+    <value>Correzione Cella[mm]:</value>
   </data>
 </root>

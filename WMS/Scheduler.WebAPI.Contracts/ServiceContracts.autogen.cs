@@ -96,8 +96,23 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public partial class ListExecutionRequest : System.ComponentModel.INotifyPropertyChanged
     {
+        private int _areaId;
         private int _bayId;
         private int _listId;
+    
+        [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
+        public int AreaId
+        {
+            get { return _areaId; }
+            set 
+            {
+                if (_areaId != value)
+                {
+                    _areaId = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
     
         [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
         public int BayId
@@ -192,7 +207,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     public abstract partial class BusinessObject : BindableBase, System.ComponentModel.INotifyPropertyChanged
     {
         private int _id;
-        private bool _isModified;
     
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.Always)]
         public int Id
@@ -203,20 +217,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_id != value)
                 {
                     _id = value; 
-                    RaisePropertyChanged();
-                }
-            }
-        }
-    
-        [Newtonsoft.Json.JsonProperty("isModified", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsModified
-        {
-            get { return _isModified; }
-            set 
-            {
-                if (_isModified != value)
-                {
-                    _isModified = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -832,6 +832,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "9.11.0.0 (Newtonsoft.Json v9.0.0.0)")]
     public enum OperationType
     {
+        NotSpecified = 0,
+    
         Insertion = 73,
     
         Reorder = 79,
@@ -1112,13 +1114,13 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     {
         Completed = 67,
     
-        Executing = 69,
-    
-        Faulted = 70,
+        Error = 69,
     
         New = 78,
     
         Waiting = 87,
+    
+        Executing = 88,
     
     }
     

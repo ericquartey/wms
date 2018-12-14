@@ -1,9 +1,9 @@
 ﻿using Prism.Commands;
 using Prism.Mvvm;
 using System;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.ActionBlocks;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -13,7 +13,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         private readonly int defaultInitialPosition = 1000;
         private readonly int defaultMovement = 4000;
-        private readonly double defaultResolution = 165;
 
         private ICommand acceptButtonCommand;
         private ICommand cancelButtonCommand;
@@ -34,15 +33,38 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private string repositionLenght;
         private ICommand setPositionButtonCommand;
 
+        private decimal resolution;
+        private decimal x;
+        private float vMax = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float acc = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float dec = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private float w = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private short offset = 1; // Temporary assigned to constant value, they will become variable with new funcionalities
+        private decimal desiredInitialPositionDec;
+        private bool operation;
+
         #endregion Fields
 
         #region Constructors
 
         public ResolutionCalibrationVerticalAxisViewModel()
         {
-            this.CurrentResolution = this.defaultResolution.ToString();
+            bool conversionResolution;
+
+            if (ActionManager.ConverterInstance != null)
+                this.CurrentResolution = ActionManager.ConverterInstance.ManageResolution.ToString("##.##");
+            else
+                this.CurrentResolution = "1024";
+
             this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
             this.RepositionLenght = this.defaultMovement.ToString();
+
+            conversionResolution = decimal.TryParse(this.CurrentResolution, out resolution);
+
+            if (!conversionResolution)
+            {
+                this.NoteString = "Wrong resolution";
+            }
         }
 
         #endregion Constructors
@@ -74,18 +96,23 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 
         private void AcceptButtonMethod()
         {
+            decimal resolutionDec;
+
             this.CurrentResolution = this.NewResolution;
             this.NoteString = Common.Resources.InstallationApp.ResolutionModified;
             var ii = DataManager.CurrentData.InstallationInfo;
             ii.Belt_Burnishing = true;
             DataManager.CurrentData.InstallationInfo = ii;
+
+            decimal.TryParse(NewResolution, out resolutionDec);
+            ActionManager.ConverterInstance.ManageResolution = resolutionDec;
         }
 
         private void CalculateNewResolutionMethod()
         {
-            double.TryParse(this.CurrentResolution, out var cr);
-            double.TryParse(this.MesuredLenght, out var ml);
-            double.TryParse(this.RepositionLenght, out var rl);
+            decimal.TryParse(this.CurrentResolution, out var cr);
+            decimal.TryParse(this.MesuredLenght, out var ml);
+            decimal.TryParse(this.RepositionLenght, out var rl);
             this.NewResolution = ((cr * ml) / rl).ToString("##.##");
             this.IsAcceptButtonActive = true;
         }
@@ -118,6 +145,11 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                         this.IsMesuredInitialPositionTextInputActive = false;
                         this.IsMesuredInitialPositionHighlighted = false;
                         this.NoteString = Common.Resources.InstallationApp.MoveToPosition;
+
+                        // Inizio modifica
+                        this.IsMesuredInitialPositionTextInputActive = true;
+                        this.IsMesuredInitialPositionHighlighted = true;
+                        // Fine modifica
                     }
                 }
             }
@@ -140,24 +172,92 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             }
         }
 
-        private async void MoveButtonMethod()
+        private void MoveButtonMethod()
         {
-            this.IsMoveButtonActive = false;
-            this.NoteString = Common.Resources.InstallationApp.MovingToDesiredPosition;
-            await Task.Delay(2000);
-            this.IsMesuredLenghtTextInputActive = true;
-            this.IsMesuredMovementHighlighted = true;
-            this.NoteString = Common.Resources.InstallationApp.InsertMesuredMovement;
+            // Begin changes for the PositioningDrawer
+            bool conversionRepositionLenght;
+            decimal repositionLenghtDec;
+
+            conversionRepositionLenght = decimal.TryParse(this.RepositionLenght, out repositionLenghtDec);
+
+            if (conversionRepositionLenght)
+            {
+                operation = false;
+                this.x = repositionLenghtDec + desiredInitialPositionDec;
+                this.IsMoveButtonActive = false;
+                this.NoteString = Common.Resources.InstallationApp.MovingToDesiredPosition;
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+                ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
+                ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
+            }
+            else
+            {
+                this.NoteString = "Positioning not possible";
+            }
+            // End changes for the PositioningDrawer
         }
 
-        private async void SetPositionButtonMethod()
+        private void SetPositionButtonMethod()
         {
-            this.IsSetPositionButtonActive = false;
-            this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
-            await Task.Delay(2000);
-            this.IsMesuredInitialPositionTextInputActive = true;
-            this.IsMesuredInitialPositionHighlighted = true;
-            this.NoteString = Common.Resources.InstallationApp.InsertMesuredInitialPosition;
+            // Begin changes for the initial positioning
+            bool conversionInitialPosition;
+
+            conversionInitialPosition = decimal.TryParse(desiredInitialPosition, out desiredInitialPositionDec);
+            if(conversionInitialPosition)
+            {
+                operation = true;
+                this.x = desiredInitialPositionDec;
+                this.IsSetPositionButtonActive = false;
+                this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
+
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+                ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
+                ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, vMax, acc, dec, w, offset);
+
+                // Inizio modifica
+                //this.IsMesuredInitialPositionTextInputActive = true;
+                //this.IsMesuredInitialPositionHighlighted = true;
+                // Fine modifica
+            }
+            // End changes for the initial positioning
+        }
+
+        public void PositioningDone(bool result)
+        {
+            string message = "";
+
+            if (result)
+            {
+                // If operation = true -> SetPosition
+                if (operation)
+                {
+                    this.IsMesuredInitialPositionTextInputActive = true;
+                    this.IsMesuredInitialPositionHighlighted = true;
+                    message = Common.Resources.InstallationApp.InsertMesuredInitialPosition;
+                }
+                else // false -> Move
+                {
+                    this.IsMesuredLenghtTextInputActive = true;
+                    this.IsMesuredMovementHighlighted = true;
+                    message = Common.Resources.InstallationApp.InsertMesuredMovement;
+                }
+            }
+            else
+            {
+                if (operation)
+                {
+                    message = "Initial position not done";
+                }
+                else
+                {
+                    message = "Positioning not done";
+                }
+            }
+
+            this.NoteString = message;
+            ActionManager.PositioningDrawerInstance.StopInverter();
+
+            ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
         }
 
         #endregion Methods

@@ -13,7 +13,7 @@
                      Height="30"
                      HorizontalAlignment="Center"
                      VerticalAlignment="Center"
-                     Fill="{DynamicResource VWAPP_SensorState_BulletBackground_Normal}" />
+                     Fill="{DynamicResource VWAPP_CustomControlSensor_BulletBackground_Normal}" />
             <Ellipse Width="28"
                      Height="28"
                      HorizontalAlignment="Center"

@@ -9,7 +9,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        public Task<Int32> Add(User model)
+        public Task<OperationResult> Add(User model)
         {
             throw new NotImplementedException();
         }
