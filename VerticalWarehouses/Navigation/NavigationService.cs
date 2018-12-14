@@ -54,15 +54,15 @@
 
         public static void InitializeEvents()
         {
-            CellBlocksChangedEventHandler += InitializerMethod;
-            CellsChangedEventHandler += InitializerMethod;
-            DrawersChangedEventHandler += InitializerMethod;
-            InstallationInfoChangedEventHandler += InitializerMethod;
-            GoToViewEventHandler += InitializerMethod;
-            ExitViewEventHandler += InitializerMethod;
-            ChangeSkinToLightEventHandler += InitializerMethod;
-            ChangeSkinToMediumEventHandler += InitializerMethod;
-            ChangeSkinToDarkEventHandler += InitializerMethod;
+            CellBlocksChangedEventHandler += () => { };
+            CellsChangedEventHandler += () => { };
+            DrawersChangedEventHandler += () => { };
+            InstallationInfoChangedEventHandler += () => { };
+            GoToViewEventHandler += () => { };
+            ExitViewEventHandler += () => { };
+            ChangeSkinToLightEventHandler += () => { };
+            ChangeSkinToMediumEventHandler += () => { };
+            ChangeSkinToDarkEventHandler += () => { };
         }
 
         public static void RaiseBackToVWAppEvent() => BackToVWAppEventHandler();
@@ -84,10 +84,6 @@
         public static void RaiseGoToViewEvent() => GoToViewEventHandler();
 
         public static void RaiseInstallationInfoChangedEvent() => InstallationInfoChangedEventHandler();
-
-        private static void InitializerMethod()
-        {
-        }
 
         #endregion Methods
     }

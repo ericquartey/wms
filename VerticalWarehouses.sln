@@ -20,8 +20,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZZ_CellManagementTestApp", "VerticalWarehouses\ZZ_CellManagementTestApp\ZZ_CellManagementTestApp.csproj", "{981DC3E9-A331-4137-A5F5-C0D22FB5F0ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VWApp", "VerticalWarehouses\VWApp\VWApp.csproj", "{F80020FF-8655-4999-90AD-C4711173D55D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1EC2E502-155D-48C0-82B9-961FB97149A3} = {1EC2E502-155D-48C0-82B9-961FB97149A3}
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstallationApp", "VerticalWarehouses\InstallationApp\InstallationApp.csproj", "{1EC2E502-155D-48C0-82B9-961FB97149A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstallationApp", "VerticalWarehouses\InstallationApp\InstallationApp.csproj", "{1EC2E502-155D-48C0-82B9-961FB97149A3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OperatorApp", "VerticalWarehouses\OperatorApp\OperatorApp.csproj", "{2DDC7447-9196-4C21-AF86-502D0C952669}"
 EndProject
@@ -149,16 +152,16 @@ Global
 		{F80020FF-8655-4999-90AD-C4711173D55D}.Release|x86.Build.0 = Release|x86
 		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x64.ActiveCfg = Debug|x64
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x64.Build.0 = Debug|x64
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x86.ActiveCfg = Debug|x86
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x86.Build.0 = Debug|x86
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x64.Build.0 = Debug|Any CPU
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Debug|x86.Build.0 = Debug|Any CPU
 		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x64.ActiveCfg = Release|x64
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x64.Build.0 = Release|x64
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x86.ActiveCfg = Release|x86
-		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x86.Build.0 = Release|x86
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x64.ActiveCfg = Release|Any CPU
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x64.Build.0 = Release|Any CPU
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x86.ActiveCfg = Release|Any CPU
+		{1EC2E502-155D-48C0-82B9-961FB97149A3}.Release|x86.Build.0 = Release|Any CPU
 		{2DDC7447-9196-4C21-AF86-502D0C952669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2DDC7447-9196-4C21-AF86-502D0C952669}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DDC7447-9196-4C21-AF86-502D0C952669}.Debug|x64.ActiveCfg = Debug|x64

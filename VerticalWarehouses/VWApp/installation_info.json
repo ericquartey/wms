@@ -1,0 +1,16 @@
+{
+  "Belt_Burnishing": false,
+  "Machine_Ok": false,
+  "Ok_Gate1": false,
+  "Ok_Gate2": false,
+  "Ok_Gate3": false,
+  "Ok_Laser1": false,
+  "Ok_Laser2": false,
+  "Ok_Laser3": false,
+  "Ok_Shape1": false,
+  "Ok_Shape2": false,
+  "Ok_Shape3": false,
+  "Origin_X_Axis": false,
+  "Origin_Y_Axis": false,
+  "Set_Y_Resolution": false
+}
