@@ -49,8 +49,7 @@ namespace Ferretto.Common.BusinessProviders
                 var typeId = await this.compartmentTypeProvider.Add(new CompartmentType
                 {
                     Width = model.Width,
-                    Height = model.Height,
-                    Description = ""
+                    Height = model.Height
                 }, model.ItemId, model.MaxCapacity);
 
                 var entry = dataContext.Compartments.Add(new DataModels.Compartment

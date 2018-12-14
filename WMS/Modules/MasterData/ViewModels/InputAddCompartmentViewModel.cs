@@ -192,7 +192,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     this.tray.AddCompartment(this.Compartment);
                 }
-                return true;
+                else
+                {
+                    this.SetError(result.Description);
+                }
+                return result.Success;
             }
             else
             {
