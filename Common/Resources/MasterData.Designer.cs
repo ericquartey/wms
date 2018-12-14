@@ -70,6 +70,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Details.
+        /// </summary>
+        public static string AdvancedDetails {
+            get {
+                return ResourceManager.GetString("AdvancedDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Withdraw.
         /// </summary>
         public static string AdvancedWithdraw {

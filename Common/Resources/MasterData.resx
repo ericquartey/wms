@@ -329,4 +329,7 @@
   <data name="CompartmentTypeListFormat" xml:space="preserve">
     <value>{0} X {1} ( Width [mm] X Height [mm] )</value>
   </data>
+  <data name="AdvancedDetails" xml:space="preserve">
+    <value>Advanced Details</value>
+  </data>
 </root>
