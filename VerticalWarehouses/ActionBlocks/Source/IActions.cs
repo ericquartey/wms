@@ -40,11 +40,74 @@
     }
 
     /// <summary>
+    /// Interface for Drawer weight detection.
+    /// </summary>
+    public interface IDrawerWeightDetection
+    {
+        #region Properties
+
+        /// <summary>
+        /// Set Inverter driver.
+        /// </summary>
+        InverterDriver.InverterDriver SetInverterDriverInterface { set; }
+
+        /// <summary>
+        /// Get the weight of drawer.
+        /// </summary>
+        float Weight { get; }
+
+        #endregion Properties
+
+        #region Methods
+
+        /// <summary>
+        /// Initialize the weight detection routine.
+        /// </summary>
+        void Initialize();
+
+        /// <summary>
+        /// Run the routine to detect the weight.
+        /// </summary>
+        /// <param name="d">Target position (relative)</param>
+        /// <param name="v">Speed</param>
+        /// <param name="acc">Acceleration</param>
+        /// <param name="dec">Deceleration</param>
+        void Run(long d, float v, float acc, float dec);
+
+        /// <summary>
+        /// Terminate the weight detection routine.
+        /// </summary>
+        void Terminate();
+
+        #endregion Methods
+    }
+
+    /// <summary>
     /// Interface for Positioning (vertical) drawer routine.
     /// </summary>
     public interface IPositioningDrawer
     {
         #region Properties
+
+        /// <summary>
+        /// Get current position.
+        /// </summary>
+        int CurrentPosition { get; }
+
+        /// <summary>
+        /// Enable read maximum analog Ic (absorption current).
+        /// </summary>
+        bool EnableReadMaxAnalogIc { set; }
+
+        /// <summary>
+        /// Enable the retrivial position of drawer during movement.
+        /// </summary>
+        bool EnableRetrivialCurrentPositionMode { set; }
+
+        /// <summary>
+        /// Get the maximum Analog Ic (absorption current).
+        /// </summary>
+        short MaxAnalogIc { get; }
 
         /// <summary>
         /// Set Inverter driver.
@@ -54,13 +117,21 @@
         #endregion Properties
 
         #region Methods
+
         void Initialize();
 
-        void MoveAlongVerticalAxisToPoint(short x, float vMax, float acc, float dec, float w, short offset);
+        /// <summary>
+        /// Move along vertical axis.
+        /// </summary>
+        /// <param name="x">Target position</param>
+        /// <param name="vMax">Speed.</param>
+        /// <param name="acc">Acceleration</param>
+        /// <param name="dec">Deceleration</param>
+        /// <param name="w">Weight</param>
+        /// <param name="offset">Offset (distance)</param>
+        void MoveAlongVerticalAxisToPoint(int x, float vMax, float acc, float dec, float w, short offset);
 
-        void Halt();
-
-        void StopInverter();
+        void Resume();
 
         void Terminate();
 
