@@ -192,4 +192,7 @@
     <value>Confirm Operation</value>
     <comment>Prompt title</comment>
   </data>
+  <data name="AreYouSureToLeaveThePage" xml:space="preserve">
+    <value>Leaving the page will revert all your usaved changes. Are you sure you want to proceed?</value>
+  </data>
 </root>

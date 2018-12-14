@@ -174,4 +174,7 @@
   <data name="ConfirmOperation" xml:space="preserve">
     <value>Conferma Operazione</value>
   </data>
+  <data name="AreYouSureToLeaveThePage" xml:space="preserve">
+    <value>Uscendo da questa pagina, tutte le modifiche verranno perse. Sei sicuro di voler proseguire?</value>
+  </data>
 </root>

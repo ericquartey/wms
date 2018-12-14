@@ -79,6 +79,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Leaving the page will revert all your usaved changes. Are you sure you want to proceed?.
+        /// </summary>
+        public static string AreYouSureToLeaveThePage {
+            get {
+                return ResourceManager.GetString("AreYouSureToLeaveThePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Are you sure you want to revert your changes?.
         /// </summary>
         public static string AreYouSureToRevertChanges {

@@ -32,7 +32,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand RevertCommand => this.revertCommand ??
-                                         (this.revertCommand = new DelegateCommand(this.ExecuteRevertWithPrompt, this.CanExecuteRevertCommand));
+                                                 (this.revertCommand = new DelegateCommand(this.ExecuteRevertWithPrompt, this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
                                        (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand));
@@ -40,6 +40,27 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Properties
 
         #region Methods
+
+        public override System.Boolean CanDisappear()
+        {
+            if (this.changeDetector.IsModified)
+            {
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+
+                var result = dialogService.ShowMessage(
+                    DesktopApp.AreYouSureToLeaveThePage,
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Exclamation,
+                    DialogButtons.OKCancel);
+
+                if (result == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         protected virtual bool CanExecuteRevertCommand()
         {
