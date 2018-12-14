@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using System.Transactions;
 using Ferretto.Common.BusinessModels;
@@ -11,6 +12,18 @@ namespace Ferretto.Common.BusinessProviders
     public class CompartmentProvider : ICompartmentProvider
     {
         #region Fields
+
+        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusAvailableFilter =
+           compartment => compartment.MaterialStatusId == 1;
+
+        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusAwaitingFilter =
+           compartment => compartment.MaterialStatusId == 2;
+
+        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusBlockedFilter =
+           compartment => compartment.MaterialStatusId == 4;
+
+        private static readonly Expression<Func<DataModels.Compartment, bool>> StatusExpiredFilter =
+           compartment => compartment.MaterialStatusId == 3;
 
         private readonly CompartmentTypeProvider compartmentTypeProvider;
         private readonly IDatabaseContextService dataContext;
@@ -283,6 +296,62 @@ namespace Ferretto.Common.BusinessProviders
             return compartmentDetails;
         }
 
+        public IQueryable<Compartment> GetWithStatusAvailable()
+        {
+            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusAvailableFilter);
+        }
+
+        public IQueryable<Compartment> GetWithStatusAwaiting()
+        {
+            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusAwaitingFilter);
+        }
+
+        public Int32 GetWithStatusAwaitingCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Compartments.AsNoTracking().Count(StatusAwaitingFilter);
+            }
+        }
+
+        public IQueryable<Compartment> GetWithStatusBlocked()
+        {
+            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusBlockedFilter);
+        }
+
+        public Int32 GetWithStatusBlockedCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Compartments.AsNoTracking().Count(StatusBlockedFilter);
+            }
+        }
+
+        public Int32 GetWithStatusCompletedCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Compartments.AsNoTracking().Count(StatusAvailableFilter);
+            }
+        }
+
+        public IQueryable<Compartment> GetWithStatusExpired()
+        {
+            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusExpiredFilter);
+        }
+
+        public Int32 GetWithStatusExpiredCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Compartments.AsNoTracking().Count(StatusExpiredFilter);
+            }
+        }
+
         public bool HasAnyAllowedItem(int modelId)
         {
             var dataContext = this.dataContext.Current;
@@ -314,6 +383,36 @@ namespace Ferretto.Common.BusinessProviders
 
                 return dataContext.SaveChanges();
             }
+        }
+
+        private static IQueryable<Compartment> GetAllCompartmentsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Compartment, bool>> whereFunc = null)
+        {
+            var actualWhereFunc = whereFunc ?? ((i) => true);
+
+            return context.Compartments
+               .Include(c => c.LoadingUnit)
+               .Include(c => c.MaterialStatus)
+               .Include(c => c.Item)
+               .Include(c => c.CompartmentType)
+               .Include(c => c.CompartmentStatus)
+               .Include(c => c.PackageType)
+               .Where(actualWhereFunc)
+               .Select(c => new Compartment
+               {
+                   Id = c.Id,
+                   CompartmentStatusDescription = c.CompartmentStatus.Description,
+                   CompartmentTypeDescription = c.CompartmentType.Description,
+                   ItemDescription = c.Item.Description,
+                   IsItemPairingFixed = c.IsItemPairingFixed,
+                   LoadingUnitCode = c.LoadingUnit.Code,
+                   Lot = c.Lot,
+                   MaterialStatusDescription = c.MaterialStatus.Description,
+                   Stock = c.Stock,
+                   Sub1 = c.Sub1,
+                   Sub2 = c.Sub2
+               }
+               )
+               .AsNoTracking();
         }
 
         #endregion Methods
