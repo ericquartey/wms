@@ -40,7 +40,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(ItemDetails model)
+        public Task<OperationResult> Add(ItemDetails model)
         {
             throw new NotImplementedException();
         }
@@ -252,7 +252,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, ex.Message);
+                return new OperationResult(false, description: ex.Message);
             }
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Transactions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
+        private readonly CompartmentTypeProvider compartmentTypeProvider;
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
@@ -19,52 +21,67 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public CompartmentProvider(
-                    IDatabaseContextService context,
-            EnumerationProvider enumerationProvider)
+            IDatabaseContextService context,
+            EnumerationProvider enumerationProvider,
+            CompartmentTypeProvider compartmentTypeProvider)
         {
             this.dataContext = context;
             this.enumerationProvider = enumerationProvider;
+            this.compartmentTypeProvider = compartmentTypeProvider;
         }
 
         #endregion Constructors
 
         #region Methods
 
-        public async Task<int> Add(CompartmentDetails model)
+        public async Task<OperationResult> Add(CompartmentDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
+            //TODO: use Transaction
 
-            var dataContext = this.dataContext.Current;
-            var entry = dataContext.Compartments.Add(new DataModels.Compartment
+            try
             {
-                Width = model.Width,
-                Height = model.Height,
-                XPosition = model.XPosition,
-                YPosition = model.YPosition,
-                LoadingUnitId = model.LoadingUnitId,
-                CompartmentTypeId = model.CompartmentTypeId,
-                IsItemPairingFixed = model.IsItemPairingFixed,
-                Stock = model.Stock,
-                ReservedForPick = model.ReservedForPick,
-                ReservedToStore = model.ReservedToStore,
-                ItemId = model.ItemId,
-                MaterialStatusId = model.MaterialStatusId,
-                Sub1 = model.Sub1,
-                Sub2 = model.Sub2,
-                PackageTypeId = model.PackageTypeId,
-                RegistrationNumber = model.RegistrationNumber
-            });
+                var dataContext = this.dataContext.Current;
 
-            var changedEntitiesCount = await dataContext.SaveChangesAsync();
-            if (changedEntitiesCount > 0)
-            {
-                model.Id = entry.Entity.Id;
+                var typeId = await this.compartmentTypeProvider.Add(new CompartmentType
+                {
+                    Width = model.Width,
+                    Height = model.Height,
+                    Description = ""
+                }, model.ItemId, model.MaxCapacity);
+
+                var entry = dataContext.Compartments.Add(new DataModels.Compartment
+                {
+                    Width = model.Width,
+                    Height = model.Height,
+                    XPosition = model.XPosition,
+                    YPosition = model.YPosition,
+                    LoadingUnitId = model.LoadingUnitId,
+                    CompartmentTypeId = typeId.EntityId.Value,
+                    IsItemPairingFixed = model.IsItemPairingFixed,
+                    Stock = model.Stock,
+                    ReservedForPick = model.ReservedForPick,
+                    ReservedToStore = model.ReservedToStore,
+                    CreationDate = DateTime.Now,
+                    ItemId = model.ItemId,
+                    MaterialStatusId = model.MaterialStatusId
+                });
+
+                var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                if (changedEntitiesCount > 0)
+                {
+                    model.Id = entry.Entity.Id;
+                }
+
+                return new OperationResult(true);
             }
-
-            return changedEntitiesCount;
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
         public int Delete(int id)
@@ -122,46 +139,54 @@ namespace Ferretto.Common.BusinessProviders
             var dataContext = this.dataContext.Current;
             lock (dataContext)
             {
-                var compartmentDetails = dataContext.Compartments
+                var compartmentList = dataContext.Compartments
                    .Where(c => c.Id == id)
                    .Include(c => c.LoadingUnit)
                    .Include(c => c.Item)
                    .Include(c => c.CompartmentStatus)
-                   .Select(c => new CompartmentDetails
+                   .GroupJoin(
+                        dataContext.ItemsCompartmentTypes,
+                        cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
+                        ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
+                        (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() }
+                    )
+                   .Select(j => new CompartmentDetails
                    {
-                       Id = c.Id,
-                       LoadingUnitCode = c.LoadingUnit.Code,
-                       CompartmentTypeId = c.CompartmentTypeId,
-                       IsItemPairingFixed = c.IsItemPairingFixed,
-                       ItemCode = c.Item.Code,
-                       ItemDescription = c.Item.Description,
-                       Sub1 = c.Sub1,
-                       Sub2 = c.Sub2,
-                       MaterialStatusId = c.MaterialStatusId,
-                       FifoTime = c.FifoTime,
-                       PackageTypeId = c.PackageTypeId,
-                       Lot = c.Lot,
-                       RegistrationNumber = c.RegistrationNumber,
-                       MaxCapacity = c.MaxCapacity,
-                       Stock = c.Stock,
-                       ReservedForPick = c.ReservedForPick,
-                       ReservedToStore = c.ReservedToStore,
-                       CompartmentStatusId = c.CompartmentStatusId,
-                       CompartmentStatusDescription = c.CompartmentStatus.Description,
-                       CreationDate = c.CreationDate,
-                       LastHandlingDate = c.LastHandlingDate,
-                       InventoryDate = c.InventoryDate,
-                       FirstStoreDate = c.FirstStoreDate,
-                       LastStoreDate = c.LastStoreDate,
-                       LastPickDate = c.LastPickDate,
-                       Width = c.Width,
-                       Height = c.Height,
-                       XPosition = c.XPosition,
-                       YPosition = c.YPosition,
-                       LoadingUnitId = c.LoadingUnitId,
-                       ItemId = c.ItemId
+                       Id = j.cmp.Id,
+                       LoadingUnitCode = j.cmp.LoadingUnit.Code,
+                       CompartmentTypeId = j.cmp.CompartmentTypeId,
+                       IsItemPairingFixed = j.cmp.IsItemPairingFixed,
+                       ItemCode = j.cmp.Item.Code,
+                       ItemDescription = j.cmp.Item.Description,
+                       Sub1 = j.cmp.Sub1,
+                       Sub2 = j.cmp.Sub2,
+                       MaterialStatusId = j.cmp.MaterialStatusId,
+                       FifoTime = j.cmp.FifoTime,
+                       PackageTypeId = j.cmp.PackageTypeId,
+                       Lot = j.cmp.Lot,
+                       RegistrationNumber = j.cmp.RegistrationNumber,
+                       MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
+                       Stock = j.cmp.Stock,
+                       ReservedForPick = j.cmp.ReservedForPick,
+                       ReservedToStore = j.cmp.ReservedToStore,
+                       CompartmentStatusId = j.cmp.CompartmentStatusId,
+                       CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
+                       CreationDate = j.cmp.CreationDate,
+                       LastHandlingDate = j.cmp.LastHandlingDate,
+                       InventoryDate = j.cmp.InventoryDate,
+                       FirstStoreDate = j.cmp.FirstStoreDate,
+                       LastStoreDate = j.cmp.LastStoreDate,
+                       LastPickDate = j.cmp.LastPickDate,
+                       Width = j.cmp.Width,
+                       Height = j.cmp.Height,
+                       XPosition = j.cmp.XPosition,
+                       YPosition = j.cmp.YPosition,
+                       LoadingUnitId = j.cmp.LoadingUnitId,
+                       ItemId = j.cmp.ItemId,
                    })
-                   .Single();
+                   .ToList();
+
+                var compartmentDetails = compartmentList.Single();
 
                 compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
                 compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
@@ -205,6 +230,8 @@ namespace Ferretto.Common.BusinessProviders
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.Item)
                 .Include(c => c.CompartmentStatus)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
                 .Select(c => new CompartmentDetails
                 {
                     Id = c.Id,
@@ -219,7 +246,7 @@ namespace Ferretto.Common.BusinessProviders
                     PackageTypeId = c.PackageTypeId,
                     Lot = c.Lot,
                     RegistrationNumber = c.RegistrationNumber,
-                    MaxCapacity = c.MaxCapacity,
+                    MaxCapacity = c.CompartmentType.ItemsCompartmentTypes.SingleOrDefault(ict => ict.ItemId == c.ItemId).MaxCapacity,
                     Stock = c.Stock,
                     ReservedForPick = c.ReservedForPick,
                     ReservedToStore = c.ReservedToStore,
