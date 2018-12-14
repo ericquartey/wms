@@ -19,6 +19,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Media;
 using System.Windows;
 using Ferretto.VW.ActionBlocks;
+using System.Windows.Controls.Primitives;
+using System.Windows.Controls;
 
 #if CODEMAID
     // disable codemaid in this file
