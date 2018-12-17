@@ -98,6 +98,8 @@
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
                 <wms:SpinEdit Grid.Row="3"
                               Grid.Column="1"
+                              MinValue="1"
+                              AllowNullInput="False"
                               EditValue="{Binding ItemWithdraw.Quantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               Visibility="{Binding ElementName=SelectedBay, Path=SelectedItem, Converter={StaticResource RTVC}}" />
             </Grid>
