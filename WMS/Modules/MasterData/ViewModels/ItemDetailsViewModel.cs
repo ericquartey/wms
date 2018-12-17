@@ -19,7 +19,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private IDataSource<Compartment> compartmentsDataSource;
-        private ItemDetails item;
         private bool itemHasCompartments;
         private object modelChangedEventSubscription;
         private object modelRefreshSubscription;
@@ -62,22 +61,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ItemDetails Item
-        {
-            get => this.item;
-            set
-            {
-                if (!this.SetProperty(ref this.item, value))
-                {
-                    return;
-                }
-
-                this.TakeSnapshot(this.item);
-
-                this.RefreshData();
-            }
-        }
-
         public bool ItemHasCompartments
         {
             get => this.itemHasCompartments;
@@ -102,10 +85,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void RefreshData()
+        public override void RefreshData()
         {
-            this.CompartmentsDataSource = this.item != null
-                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.item.Id))
+            this.CompartmentsDataSource = this.Model != null
+                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.Model.Id))
                 : null;
         }
 
@@ -123,12 +106,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.itemProvider.Save(this.Item);
+            var modifiedRowCount = this.itemProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
-                this.TakeSnapshot(this.Item);
+                this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
         }
@@ -149,7 +132,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteWithdraw()
         {
-            return this.Item?.TotalAvailable > 0;
+            return this.Model?.TotalAvailable > 0;
         }
 
         private void ExecuteWithdraw()
@@ -159,7 +142,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
                 new
                 {
-                    Id = this.Item.Id
+                    Id = this.Model.Id
                 }
             );
         }
@@ -178,7 +161,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     }
                     else
                     {
-                        this.Item = null;
+                        this.Model = null;
                     }
                 },
                 this.Token,
@@ -190,7 +173,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is int modelId)
             {
-                this.Item = await this.itemProvider.GetById(modelId);
+                this.Model = await this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
             }
         }

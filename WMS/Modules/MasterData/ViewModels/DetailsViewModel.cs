@@ -9,13 +9,14 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel
+    public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
         where T : BusinessObject
     {
         #region Fields
 
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
 
+        private T model;
         private ICommand revertCommand;
         private ICommand saveCommand;
 
@@ -32,8 +33,22 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
+        public T Model
+        {
+            get => this.model;
+            set
+            {
+                if (this.SetProperty(ref this.model, value))
+                {
+                    this.changeDetector.TakeSnapshot(this.model);
+
+                    this.RefreshData();
+                }
+            }
+        }
+
         public ICommand RevertCommand => this.revertCommand ??
-            (this.revertCommand = new DelegateCommand(async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true), this.CanExecuteRevertCommand));
+                    (this.revertCommand = new DelegateCommand(async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true), this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
                                        (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand));
@@ -63,6 +78,8 @@ namespace Ferretto.WMS.Modules.MasterData
             return true;
         }
 
+        public abstract void RefreshData();
+
         protected virtual bool CanExecuteRevertCommand()
         {
             return this.changeDetector.IsModified == true;
@@ -70,7 +87,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.changeDetector.IsModified == true;
+            return this.changeDetector.IsModified == true && string.IsNullOrWhiteSpace(this.Model.Error);
         }
 
         protected virtual void EvaluateCanExecuteCommands()
@@ -83,9 +100,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected abstract void ExecuteSaveCommand();
 
-        protected void TakeSnapshot(T model)
+        protected void TakeModelSnapshot()
         {
-            this.changeDetector.TakeSnapshot(model);
+            this.changeDetector.TakeSnapshot(this.model);
         }
 
         private void ChangeDetector_ModifiedChanged(System.Object sender, System.EventArgs e)
