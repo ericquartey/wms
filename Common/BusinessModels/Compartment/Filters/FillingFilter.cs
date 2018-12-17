@@ -6,11 +6,13 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private static readonly Func<CompartmentDetails, CompartmentDetails, string> colorFunc =
-            delegate(CompartmentDetails compartment, CompartmentDetails selected)
+        private static readonly Func<ICompartment, ICompartment, string> colorFunc =
+            delegate (ICompartment compartment, ICompartment selected)
             {
-                var stock = compartment.Stock;
-                var max = compartment.MaxCapacity;
+                var compartmentDetails = compartment as CompartmentDetails;
+
+                var stock = compartmentDetails.Stock;
+                var max = compartmentDetails.MaxCapacity;
                 string color;
 
                 if (max == null || max.Value == 0)
@@ -19,7 +21,7 @@ namespace Ferretto.Common.BusinessModels
                 }
                 else
                 {
-                    var filling = (double) stock / max.Value * 100.0;
+                    var filling = (double)stock / max.Value * 100.0;
 
                     if (stock == 0)
                     {
@@ -78,10 +80,13 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, CompartmentDetails, string> ColorFunc => colorFunc;
+        public Func<ICompartment, ICompartment, string> ColorFunc => colorFunc;
+
         public string Description => "Compartment";
+
         public int Id => 2;
-        public CompartmentDetails Selected { get; set; }
+
+        public ICompartment Selected { get; set; }
 
         #endregion Properties
     }

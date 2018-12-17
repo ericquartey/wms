@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
-using System.Windows;
-using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -20,8 +20,8 @@ namespace Ferretto.Common.Controls
         private int left;
         private SolidColorBrush penBrush;
         private int penThickness;
-        private Func<CompartmentDetails, CompartmentDetails, string> selectedColorFilterFunc;
-        private CompartmentDetails selectedCompartment;
+        private Func<ICompartment, ICompartment, string> selectedColorFilterFunc;
+        private ICompartment selectedCompartment;
         private WmsBaseCompartment selectedItem;
         private int top;
         private Tray tray;
@@ -37,7 +37,7 @@ namespace Ferretto.Common.Controls
 
         #region Properties
 
-        public CompartmentDetails CompartmentDetailsProperty { get; set; }
+        public ICompartment CompartmentDetailsProperty { get; set; }
 
         public bool IsCompartmentSelectable
         {
@@ -92,7 +92,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
+        public Func<ICompartment, ICompartment, string> SelectedColorFilterFunc
         {
             get => this.selectedColorFilterFunc;
             set
@@ -102,7 +102,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        public CompartmentDetails SelectedCompartment
+        public ICompartment SelectedCompartment
         {
             get => this.selectedCompartment;
             set
@@ -193,7 +193,7 @@ namespace Ferretto.Common.Controls
             this.SetSelectedItem();
         }
 
-        public void UpdateCompartments(IEnumerable<CompartmentDetails> compartments)
+        public void UpdateCompartments(IEnumerable<ICompartment> compartments)
         {
             if (this.Tray == null)
             {

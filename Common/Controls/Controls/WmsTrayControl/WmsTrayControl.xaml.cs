@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Ferretto.Common.BusinessModels;
-using System.Linq;
 
 namespace Ferretto.Common.Controls
 {
@@ -26,12 +24,12 @@ namespace Ferretto.Common.Controls
             nameof(RulerStep), typeof(int), typeof(WmsTrayControl), new FrameworkPropertyMetadata(100, OnRulerStepChanged));
 
         public static readonly DependencyProperty SelectedColorFilterFuncProperty = DependencyProperty.Register(
-            nameof(SelectedColorFilterFunc), typeof(Func<CompartmentDetails, CompartmentDetails, string>),
+            nameof(SelectedColorFilterFunc), typeof(Func<ICompartment, ICompartment, string>),
             typeof(WmsTrayControl),
             new FrameworkPropertyMetadata(OnSelectedColorFilterFuncChanged));
 
         public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
-            nameof(SelectedItem), typeof(CompartmentDetails), typeof(WmsTrayControl),
+            nameof(SelectedItem), typeof(ICompartment), typeof(WmsTrayControl),
             new FrameworkPropertyMetadata(OnSelectedCompartmentChanged));
 
         public static readonly DependencyProperty ShowBackgroundProperty = DependencyProperty.Register(
@@ -84,16 +82,16 @@ namespace Ferretto.Common.Controls
             set => this.SetValue(RulerStepProperty, value);
         }
 
-        public Func<CompartmentDetails, CompartmentDetails, string> SelectedColorFilterFunc
+        public Func<ICompartment, ICompartment, string> SelectedColorFilterFunc
         {
-            get => (Func<CompartmentDetails, CompartmentDetails, string>)this.GetValue(
+            get => (Func<ICompartment, ICompartment, string>)this.GetValue(
                 SelectedColorFilterFuncProperty);
             set => this.SetValue(SelectedColorFilterFuncProperty, value);
         }
 
-        public CompartmentDetails SelectedItem
+        public ICompartment SelectedItem
         {
-            get => (CompartmentDetails)this.GetValue(SelectedItemProperty);
+            get => (ICompartment)this.GetValue(SelectedItemProperty);
             set => this.SetValue(SelectedItemProperty, value);
         }
 
@@ -225,7 +223,7 @@ namespace Ferretto.Common.Controls
             if (d is WmsTrayControl wmsTrayControl &&
                 wmsTrayControl.CanvasListBoxControl.DataContext is WmsTrayControlViewModel viewModel)
             {
-                viewModel.SelectedColorFilterFunc = (Func<CompartmentDetails, CompartmentDetails, string>)e.NewValue;
+                viewModel.SelectedColorFilterFunc = (Func<ICompartment, ICompartment, string>)e.NewValue;
             }
         }
 

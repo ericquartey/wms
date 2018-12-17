@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Ferretto.Common.BusinessModels;
 
@@ -16,19 +16,19 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<Compartment> GetWithStatusAvailable();
 
-        Int32 GetWithStatusAvailableCount();
+        int GetWithStatusAvailableCount();
 
         IQueryable<Compartment> GetWithStatusAwaiting();
 
-        Int32 GetWithStatusAwaitingCount();
+        int GetWithStatusAwaitingCount();
 
         IQueryable<Compartment> GetWithStatusBlocked();
 
-        Int32 GetWithStatusBlockedCount();
+        int GetWithStatusBlockedCount();
 
         IQueryable<Compartment> GetWithStatusExpired();
 
-        Int32 GetWithStatusExpiredCount();
+        int GetWithStatusExpiredCount();
 
         bool HasAnyAllowedItem(int modelId);
 

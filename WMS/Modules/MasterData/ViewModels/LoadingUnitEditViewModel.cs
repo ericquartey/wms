@@ -22,7 +22,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private ICommand bulkAddCommand;
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
-        private Func<CompartmentDetails, CompartmentDetails, string> filterColorFunc;
+        private Func<ICompartment, ICompartment, string> filterColorFunc;
         private InputAddCompartmentViewModel inputAddVM;
         private InputBulkAddCompartmentViewModel inputBulkAddVM;
         private InputEditCompartmentViewModel inputEditVM;
@@ -66,7 +66,7 @@ namespace Ferretto.WMS.Modules.MasterData
           (this.editCommand = new DelegateCommand(this.ExecuteEditCompartmentCommand, this.CanExecuteEditCommand)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
-        public Func<CompartmentDetails, CompartmentDetails, string> FilterColorFunc
+        public Func<ICompartment, ICompartment, string> FilterColorFunc
         {
             get => this.filterColorFunc;
             set => this.SetProperty(ref this.filterColorFunc, value);
@@ -231,6 +231,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 },
                 LoadingUnitId = this.LoadingUnit.Id,
             };
+
             if (this.LoadingUnit.Compartments != null)
             {
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);

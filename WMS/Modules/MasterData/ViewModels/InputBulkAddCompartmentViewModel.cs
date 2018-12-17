@@ -84,7 +84,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected virtual void OnFinishEvent(EventArgs e)
         {
-            EventHandler handler = this.FinishEvent;
+            var handler = this.FinishEvent;
             if (handler != null)
             {
                 handler(this, e);
@@ -95,7 +95,7 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.EnableCheck)
             {
-                string error = this.Tray.CanBulkAddCompartment(this.SelectedBulkCompartmentTray, this.Tray, true);
+                var error = this.Tray.CanBulkAddCompartment(this.SelectedBulkCompartmentTray, this.Tray, true);
                 this.SetError(error);
                 return error == null || error.Trim() == "";
             }
@@ -139,7 +139,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 foreach (var compartment in newCompartments)
                 {
                     compartment.LoadingUnitId = this.tray.LoadingUnitId;
-                    compartment.CompartmentTypeId = 2;
+                    // HACK: this needs to be removed // compartment.CompartmentTypeId = 2;
                     var result = await this.compartmentProvider.Add(compartment);
                     if (!result.Success)
                     {

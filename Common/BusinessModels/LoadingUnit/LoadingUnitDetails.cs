@@ -10,7 +10,7 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
+        private readonly BindingList<ICompartment> compartments = new BindingList<ICompartment>();
         private string abcClassId;
         private int aisleId;
         private int areaId;
@@ -85,7 +85,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.code, value);
         }
 
-        public BindingList<CompartmentDetails> Compartments => this.compartments;
+        public BindingList<ICompartment> Compartments => this.compartments;
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCreationDate), ResourceType = typeof(BusinessObjects))]
         public DateTime CreationDate { get; set; }
@@ -206,7 +206,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
-        public void AddCompartment(CompartmentDetails compartmentDetails)
+        public void AddCompartment(ICompartment compartmentDetails)
         {
             if (this.CanAddCompartment(compartmentDetails))
             {
@@ -230,7 +230,7 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public bool CanAddCompartment(CompartmentDetails compartmentDetails)
+        public bool CanAddCompartment(ICompartment compartmentDetails)
         {
             //CHECK: exit from window
             var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
@@ -257,7 +257,7 @@ namespace Ferretto.Common.BusinessModels
         /// <returns>
         /// True if the specified compartments are overlapping, False otherwise.
         /// <returns>
-        private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
+        private bool HasCollision(ICompartment compartmentA, ICompartment compartmentB)
         {
             var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
             var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;

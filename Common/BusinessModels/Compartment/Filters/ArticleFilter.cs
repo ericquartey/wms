@@ -6,12 +6,16 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private static readonly Func<CompartmentDetails, CompartmentDetails, string> colorFunc = delegate (CompartmentDetails compartment, CompartmentDetails selected)
+        private static readonly Func<ICompartment, ICompartment, string> colorFunc = delegate (ICompartment compartment, ICompartment selected)
         {
+            var compartmentDetails = compartment as CompartmentDetails;
+            var selectedDetails = selected as CompartmentDetails;
             var color = "Orange";
             if (selected != null)
             {
-                if ((compartment.MaterialStatusId != 0 || compartment == selected) && compartment.MaterialStatusId == selected.MaterialStatusId)
+                if ((compartmentDetails.MaterialStatusId != 0 || compartment == selected)
+                    &&
+                    compartmentDetails.MaterialStatusId == selectedDetails.MaterialStatusId)
                 {
                     color = "#76FF03";
                 }
@@ -27,10 +31,13 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public Func<CompartmentDetails, CompartmentDetails, string> ColorFunc => colorFunc;
+        public Func<ICompartment, ICompartment, string> ColorFunc => colorFunc;
+
         public string Description => "Article";
+
         public int Id => 1;
-        public CompartmentDetails Selected { get; set; }
+
+        public ICompartment Selected { get; set; }
 
         #endregion Properties
     }

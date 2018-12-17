@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -14,7 +11,7 @@ namespace Ferretto.Common.BusinessModels
 
         public readonly int DimensionRuler = 25;
         public readonly int DOUBLE_BORDER_TRAY = 2;
-        private readonly BindingList<CompartmentDetails> compartments = new BindingList<CompartmentDetails>();
+        private readonly BindingList<ICompartment> compartments = new BindingList<ICompartment>();
         private Dimension dimension;
 
         #endregion Fields
@@ -27,7 +24,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        public BindingList<CompartmentDetails> Compartments => this.compartments;
+        public BindingList<ICompartment> Compartments => this.compartments;
 
         public Dimension Dimension
         {
@@ -43,6 +40,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public int LoadingUnitId { get; set; }
+
         public Position Origin { get; set; }
 
         public Dimension RulerSize { get; set; }
@@ -51,7 +49,7 @@ namespace Ferretto.Common.BusinessModels
 
         #region Methods
 
-        public void AddCompartment(CompartmentDetails compartmentDetails)
+        public void AddCompartment(ICompartment compartmentDetails)
         {
             if (this.CanAddCompartment(compartmentDetails))
             {
@@ -59,13 +57,13 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                throw new ArgumentException("ERROR ADD NEW COMPARTMENT: it is overlaps among other compartments or it exits from window.");
+                throw new ArgumentException("Error adding new compartment because it overlaps with other compartments or it crosses the tray's boundaries.");
             }
         }
 
-        public void AddCompartmentsRange(IList<CompartmentDetails> compartmentDetails)
+        public void AddCompartmentsRange(IList<ICompartment> compartmentDetails)
         {
-            bool error = false;
+            var error = false;
             foreach (var compartment in compartmentDetails)
             {
                 //TODO: extreme check on compartment:
@@ -80,16 +78,16 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public List<CompartmentDetails> BulkAddCompartments(BulkCompartment bulkCompartment)
+        public List<ICompartment> BulkAddCompartments(BulkCompartment bulkCompartment)
         {
-            var tempList = new List<CompartmentDetails>();
+            var tempList = new List<ICompartment>();
 
-            int widthNewCompartment = bulkCompartment.Width / bulkCompartment.Column;
-            int heightNewCompartment = bulkCompartment.Height / bulkCompartment.Row;
+            var widthNewCompartment = bulkCompartment.Width / bulkCompartment.Column;
+            var heightNewCompartment = bulkCompartment.Height / bulkCompartment.Row;
 
-            for (int i = 0; i < bulkCompartment.Row; i++)
+            for (var i = 0; i < bulkCompartment.Row; i++)
             {
-                for (int j = 0; j < bulkCompartment.Column; j++)
+                for (var j = 0; j < bulkCompartment.Column; j++)
                 {
                     var newCompartment = new CompartmentDetails()
                     {
@@ -113,7 +111,7 @@ namespace Ferretto.Common.BusinessModels
             return tempList;
         }
 
-        public bool CanAddCompartment(CompartmentDetails compartmentDetails, bool edit = false)
+        public bool CanAddCompartment(ICompartment compartmentDetails, bool edit = false)
         {
             //CHECK: exit from window
             var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
@@ -140,7 +138,7 @@ namespace Ferretto.Common.BusinessModels
 
         public string CanBulkAddCompartment(object compartment, Tray tray, bool onPropertyChange, bool edit = false)
         {
-            bool isBulkAdd = true;
+            var isBulkAdd = true;
             if (compartment is CompartmentDetails details)
             {
                 compartment = this.ConvertCompartmentDetailsToBulkCompartment(details);
@@ -192,7 +190,7 @@ namespace Ferretto.Common.BusinessModels
 
         private CompartmentDetails ConvertBulkCompartmentToCompartmentDetails(BulkCompartment bulk)
         {
-            CompartmentDetails compartment = new CompartmentDetails();
+            var compartment = new CompartmentDetails();
             int row = 1, column = 1;
             if (bulk.Row != 0)
             {
@@ -211,7 +209,7 @@ namespace Ferretto.Common.BusinessModels
 
         private BulkCompartment ConvertCompartmentDetailsToBulkCompartment(CompartmentDetails compartment)
         {
-            BulkCompartment bulk = new BulkCompartment();
+            var bulk = new BulkCompartment();
             bulk.Width = compartment.Width ?? 0;
             bulk.Height = compartment.Height ?? 0;
             bulk.XPosition = compartment.XPosition ?? 0;
@@ -226,7 +224,7 @@ namespace Ferretto.Common.BusinessModels
         /// <returns>
         /// True if the specified compartments are overlapping, False otherwise.
         /// <returns>
-        private bool HasCollision(CompartmentDetails compartmentA, CompartmentDetails compartmentB)
+        private bool HasCollision(ICompartment compartmentA, ICompartment compartmentB)
         {
             var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
             var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
@@ -260,9 +258,9 @@ namespace Ferretto.Common.BusinessModels
             return false;
         }
 
-        private string HasCollisionSingleParameter(BulkCompartment compartmentA, CompartmentDetails compartmentB, Tray tray, bool isBulkAdd)
+        private string HasCollisionSingleParameter(BulkCompartment compartmentA, ICompartment compartmentB, Tray tray, bool isBulkAdd)
         {
-            string error = "";
+            var error = "";
             if (compartmentA.XPosition == 0 && compartmentA.YPosition == 0 && compartmentA.Width == 0 && compartmentA.Height == 0)
             {
                 return null;
@@ -312,8 +310,8 @@ namespace Ferretto.Common.BusinessModels
                 return error;
             }
 
-            CompartmentDetails compartmentDetailsA = this.ConvertBulkCompartmentToCompartmentDetails(compartmentA);
-            bool areCollision = this.HasCollision(compartmentDetailsA, compartmentB);
+            var compartmentDetailsA = this.ConvertBulkCompartmentToCompartmentDetails(compartmentA);
+            var areCollision = this.HasCollision(compartmentDetailsA, compartmentB);
             if (areCollision)
             {
                 error = Errors.CompartmentOverlaps;
@@ -357,10 +355,7 @@ namespace Ferretto.Common.BusinessModels
 
             #region Properties
 
-            public CompartmentDetails Compartment
-            {
-                get { return this.compartment; }
-            }
+            public CompartmentDetails Compartment => this.compartment;
 
             #endregion Properties
         }
