@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using DevExpress.Xpf.Core;
 using DevExpress.Xpf.Docking;
 using DevExpress.Xpf.Docking.Base;
 using Ferretto.Common.Controls.Interfaces;
@@ -17,9 +19,30 @@ namespace Ferretto.Common.Controls
         private readonly IInputService inputService;
         private readonly INavigationService navigationService;
         private bool isControlPressed = false;
+        private LoadingDecorator busyIndicator;
 
         #endregion Fields
 
+        public static readonly DependencyProperty StartModuleNameProperty = DependencyProperty.Register(nameof(StartModuleName), typeof(string), typeof(WmsMainDockLayoutManager));
+        public static readonly DependencyProperty StartViewNameProperty = DependencyProperty.Register(nameof(StartViewName), typeof(string), typeof(WmsMainDockLayoutManager));
+        public static readonly DependencyProperty ShowBusyOnStartUpProperty = DependencyProperty.Register(nameof(ShowBusyOnStartUp), typeof(bool), typeof(WmsMainDockLayoutManager));
+        public bool ShowBusyOnStartUp
+        {
+            get => (bool)this.GetValue(ShowBusyOnStartUpProperty);
+            set => this.SetValue(ShowBusyOnStartUpProperty, value);
+        }
+
+        public string StartModuleName
+        {
+            get => (string)this.GetValue(StartModuleNameProperty);
+            set => this.SetValue(StartModuleNameProperty, value);
+        }
+
+        public string StartViewName
+        {
+            get => (string)this.GetValue(StartViewNameProperty);
+            set => this.SetValue(StartViewNameProperty, value);
+        }
         #region Constructors
 
         public WmsMainDockLayoutManager()
@@ -28,11 +51,31 @@ namespace Ferretto.Common.Controls
             this.DataContext = null;
             this.navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
             this.inputService = ServiceLocator.Current.GetInstance<IInputService>();
+            this.Loaded += this.WmsMainDockLayoutManager_Loaded;
             this.DockItemClosing += this.WmsMainDockLayoutManager_DockItemClosing;
             this.DockOperationCompleted += this.WmsMainDockLayoutManager_DockOperationCompleted;
             this.ClosedPanelsBarVisibility = ClosedPanelsBarVisibility.Never;
             this.inputService.BeginMouseNotify(this, this.OnMouseDown);
             this.inputService.BeginShortKeyNotify(this, (shortKey) => this.isControlPressed = (shortKey.ShortKey.ModifierKeyFirst == ModifierKeys.Control));
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            if (this.Parent is LoadingDecorator busyIndicator)
+            {
+                this.busyIndicator = busyIndicator;
+                this.busyIndicator.IsSplashScreenShown = this.ShowBusyOnStartUp;
+            }
+        }
+
+        private void WmsMainDockLayoutManager_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+        {
+            if ((string.IsNullOrEmpty(this.StartModuleName) &&
+                string.IsNullOrEmpty(this.StartViewName)) == false)
+            {
+                this.navigationService.Appear(this.StartModuleName, this.StartViewName);
+            }
         }
 
         #endregion Constructors
@@ -96,10 +139,10 @@ namespace Ferretto.Common.Controls
             newLayoutPanel.AllowFloat = false;
             newLayoutPanel.AllowHide = false;
             newLayoutPanel.IsActive = true;
+            newLayoutPanel.Loaded += this.NewLayoutPanel_Loaded;
             if (this.isControlPressed == false)
             {
-                var activePanel = this.DockController.ActiveItem as LayoutPanel;
-                if (activePanel == null)
+                if (!(this.DockController.ActiveItem is LayoutPanel activePanel))
                 {
                     // All Views closed
                     activeGroup.Add(newLayoutPanel);
@@ -120,6 +163,20 @@ namespace Ferretto.Common.Controls
             {
                 this.isControlPressed = false;
                 activeGroup.Add(newLayoutPanel);
+            }
+        }
+
+        private void NewLayoutPanel_Loaded(System.Object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (this.busyIndicator != null &&
+                this.ShowBusyOnStartUp)
+            {
+                this.ShowBusyOnStartUp = false;
+                WmsMainDockLayoutManager.IsBusy(false);
+            }
+            if (sender is LayoutPanel layoutPanel)
+            {
+                layoutPanel.Loaded -= this.NewLayoutPanel_Loaded;
             }
         }
 
@@ -168,6 +225,14 @@ namespace Ferretto.Common.Controls
                 }
 
                 this.LayoutController.Move(item, docGroup, DevExpress.Xpf.Layout.Core.MoveType.InsideGroup);
+            }
+        }
+
+        public static void IsBusy(bool isBusy)
+        {
+            if (WmsMainDockLayoutManager.Current.busyIndicator is LoadingDecorator busyIndicator)
+            {
+                busyIndicator.IsSplashScreenShown = isBusy;
             }
         }
 
