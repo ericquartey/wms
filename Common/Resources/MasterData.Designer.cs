@@ -124,7 +124,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all cell of class A.
+        ///   Looks up a localized string similar to Get all cell with class A.
         /// </summary>
         public static string CellClassADescription {
             get {
@@ -286,7 +286,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all available compartments.
+        ///   Looks up a localized string similar to Get all compartments with status available.
         /// </summary>
         public static string CompartmentStatusAvailableDescription {
             get {
@@ -304,7 +304,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all awaiting compartments.
+        ///   Looks up a localized string similar to Get all compartments with status awaiting.
         /// </summary>
         public static string CompartmentStatusAwaitingDescription {
             get {
@@ -322,7 +322,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all blocked compartments.
+        ///   Looks up a localized string similar to Get all compartments with status blocked.
         /// </summary>
         public static string CompartmentStatusBlockedDescription {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all expired compartments.
+        ///   Looks up a localized string similar to Get all compartments with status expired.
         /// </summary>
         public static string CompartmentStatusExpiredDescription {
             get {
@@ -619,7 +619,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all completed lists.
+        ///   Looks up a localized string similar to Get all lists with status completed.
         /// </summary>
         public static string ItemListViewStatusCompletedDescription {
             get {
@@ -628,7 +628,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all waiting lists.
+        ///   Looks up a localized string similar to Get all lists with status waiting.
         /// </summary>
         public static string ItemListViewStatusWaitingDescription {
             get {
@@ -637,7 +637,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all inventory lists.
+        ///   Looks up a localized string similar to Get all lists of type inventory.
         /// </summary>
         public static string ItemListViewTypeInventoryDescription {
             get {
@@ -646,7 +646,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all pick lists.
+        ///   Looks up a localized string similar to Get all lists of type pick.
         /// </summary>
         public static string ItemListViewTypePickDescription {
             get {
@@ -655,7 +655,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all put lists.
+        ///   Looks up a localized string similar to Get all lists of type put.
         /// </summary>
         public static string ItemListViewTypePutDescription {
             get {
@@ -844,7 +844,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getl all available loading units.
+        ///   Looks up a localized string similar to Getl all loading units with status available.
         /// </summary>
         public static string LoadingUnitsViewStatusAvailableDescription {
             get {
@@ -853,7 +853,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all blocked loading units.
+        ///   Looks up a localized string similar to Get all loading units with status blocked.
         /// </summary>
         public static string LoadingUnitsViewStatusBlockedDescription {
             get {
@@ -862,7 +862,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all used loading units.
+        ///   Looks up a localized string similar to Get all loading units with status in use.
         /// </summary>
         public static string LoadingUnitsViewStatusUsedDescription {
             get {
@@ -889,7 +889,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all Vertimag M.
+        ///   Looks up a localized string similar to Get all machine of type Vertimag M.
         /// </summary>
         public static string MachinesViewVertimagMDescription {
             get {
@@ -898,7 +898,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Get all Vertimag XS.
+        ///   Looks up a localized string similar to Get all machines of type Vertimag XS.
         /// </summary>
         public static string MachinesViewVertimagXSDescription {
             get {

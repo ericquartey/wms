@@ -385,7 +385,7 @@
     <value>{0} X {1} [mm]</value>
   </data>
   <data name="CellClassADescription" xml:space="preserve">
-    <value>Get all cell of class A</value>
+    <value>Get all cell with class A</value>
   </data>
   <data name="CellStatusEmptyDescription" xml:space="preserve">
     <value>Get all empty cells</value>
@@ -397,16 +397,16 @@
     <value>Get all cells</value>
   </data>
   <data name="CompartmentStatusAvailableDescription" xml:space="preserve">
-    <value>Get all available compartments</value>
+    <value>Get all compartments with status available</value>
   </data>
   <data name="CompartmentStatusAwaitingDescription" xml:space="preserve">
-    <value>Get all awaiting compartments</value>
+    <value>Get all compartments with status awaiting</value>
   </data>
   <data name="CompartmentStatusBlockedDescription" xml:space="preserve">
-    <value>Get all blocked compartments</value>
+    <value>Get all compartments with status blocked</value>
   </data>
   <data name="CompartmentStatusExpiredDescription" xml:space="preserve">
-    <value>Get all expired compartments</value>
+    <value>Get all compartments with status expired</value>
   </data>
   <data name="CompartmentsViewAllDescription" xml:space="preserve">
     <value>Get all compartments</value>
@@ -415,19 +415,19 @@
     <value>Get all lists</value>
   </data>
   <data name="ItemListViewStatusCompletedDescription" xml:space="preserve">
-    <value>Get all completed lists</value>
+    <value>Get all lists with status completed</value>
   </data>
   <data name="ItemListViewStatusWaitingDescription" xml:space="preserve">
-    <value>Get all waiting lists</value>
+    <value>Get all lists with status waiting</value>
   </data>
   <data name="ItemListViewTypeInventoryDescription" xml:space="preserve">
-    <value>Get all inventory lists</value>
+    <value>Get all lists of type inventory</value>
   </data>
   <data name="ItemListViewTypePickDescription" xml:space="preserve">
-    <value>Get all pick lists</value>
+    <value>Get all lists of type pick</value>
   </data>
   <data name="ItemListViewTypePutDescription" xml:space="preserve">
-    <value>Get all put lists</value>
+    <value>Get all lists of type put</value>
   </data>
   <data name="ItemsViewAllDescription" xml:space="preserve">
     <value>Get all Items</value>
@@ -451,21 +451,21 @@
     <value>Get all areas with Vertimag</value>
   </data>
   <data name="LoadingUnitsViewStatusAvailableDescription" xml:space="preserve">
-    <value>Getl all available loading units</value>
+    <value>Getl all loading units with status available</value>
   </data>
   <data name="LoadingUnitsViewStatusBlockedDescription" xml:space="preserve">
-    <value>Get all blocked loading units</value>
+    <value>Get all loading units with status blocked</value>
   </data>
   <data name="LoadingUnitsViewStatusUsedDescription" xml:space="preserve">
-    <value>Get all used loading units</value>
+    <value>Get all loading units with status in use</value>
   </data>
   <data name="MachinesViewAllDescription" xml:space="preserve">
     <value>Get all machines</value>
   </data>
   <data name="MachinesViewVertimagMDescription" xml:space="preserve">
-    <value>Get all Vertimag M</value>
+    <value>Get all machine of type Vertimag M</value>
   </data>
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
-    <value>Get all Vertimag XS</value>
+    <value>Get all machines of type Vertimag XS</value>
   </data>
 </root>
