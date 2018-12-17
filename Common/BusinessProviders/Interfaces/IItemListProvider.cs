@@ -18,9 +18,17 @@ namespace Ferretto.Common.BusinessProviders
 
         int GetWithStatusWaitingCount();
 
+        IQueryable<ItemList> GetWithTypeInventory();
+
+        int GetWithTypeInventoryCount();
+
         IQueryable<ItemList> GetWithTypePick();
 
         int GetWithTypePickCount();
+
+        IQueryable<ItemList> GetWithTypePut();
+
+        int GetWithTypePutCount();
 
         Task<OperationResult> ScheduleForExecution(int areaId);
 

@@ -248,7 +248,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 await this.LoadData();
                 this.SelectedCompartmentTray = model.Compartment;
-                this.SelectedCompartmentTray = null;
             }
             this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
         }
