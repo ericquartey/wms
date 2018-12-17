@@ -5,9 +5,9 @@ using System.Windows.Input;
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.ActionBlocks;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
-    internal class ResolutionCalibrationVerticalAxisViewModel : BindableBase
+    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase
     {
         #region Fields
 
