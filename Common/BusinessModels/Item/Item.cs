@@ -35,7 +35,7 @@ namespace Ferretto.Common.BusinessModels
         public int? AverageWeight
         {
             get => this.averageWeight;
-            set => this.SetIfStrictlyPositive(ref this.averageWeight, value);
+            set => this.SetProperty(ref this.averageWeight, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
@@ -51,21 +51,21 @@ namespace Ferretto.Common.BusinessModels
         public int? FifoTimePick
         {
             get => this.fifoTimePick;
-            set => this.SetIfStrictlyPositive(ref this.fifoTimePick, value);
+            set => this.SetProperty(ref this.fifoTimePick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemFifoStoreTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTimeStore
         {
             get => this.fifoTimeStore;
-            set => this.SetIfStrictlyPositive(ref this.fifoTimeStore, value);
+            set => this.SetProperty(ref this.fifoTimeStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
         public int? Height
         {
             get => this.height;
-            set => this.SetIfStrictlyPositive(ref this.height, value);
+            set => this.SetProperty(ref this.height, value);
         }
 
         public string Image
@@ -81,7 +81,7 @@ namespace Ferretto.Common.BusinessModels
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
-            set => this.SetIfStrictlyPositive(ref this.inventoryTolerance, value);
+            set => this.SetProperty(ref this.inventoryTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCategory), ResourceType = typeof(BusinessObjects))]
@@ -100,7 +100,7 @@ namespace Ferretto.Common.BusinessModels
         public int? Length
         {
             get => this.length;
-            set => this.SetIfStrictlyPositive(ref this.length, value);
+            set => this.SetProperty(ref this.length, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
@@ -113,7 +113,7 @@ namespace Ferretto.Common.BusinessModels
         public int? PickTolerance
         {
             get => this.pickTolerance;
-            set => this.SetIfStrictlyPositive(ref this.pickTolerance, value);
+            set => this.SetProperty(ref this.pickTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReorderPoint), ResourceType = typeof(BusinessObjects))]
@@ -123,49 +123,49 @@ namespace Ferretto.Common.BusinessModels
         public int? ReorderQuantity
         {
             get => this.reorderQuantity;
-            set => this.SetIfStrictlyPositive(ref this.reorderQuantity, value);
+            set => this.SetProperty(ref this.reorderQuantity, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemStoreTolerance), ResourceType = typeof(BusinessObjects))]
         public int? StoreTolerance
         {
             get => this.storeTolerance;
-            set => this.SetIfStrictlyPositive(ref this.storeTolerance, value);
+            set => this.SetProperty(ref this.storeTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
         public int TotalAvailable
         {
             get => this.totalAvailable;
-            set => this.SetIfPositive(ref this.totalAvailable, value);
+            set => this.SetProperty(ref this.totalAvailable, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReservedForPick), ResourceType = typeof(BusinessObjects))]
         public int TotalReservedForPick
         {
             get => this.totalReservedForPick;
-            set => this.SetIfPositive(ref this.totalReservedForPick, value);
+            set => this.SetProperty(ref this.totalReservedForPick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReservedToStore), ResourceType = typeof(BusinessObjects))]
         public int TotalReservedToStore
         {
             get => this.totalReservedToStore;
-            set => this.SetIfPositive(ref this.totalReservedToStore, value);
+            set => this.SetProperty(ref this.totalReservedToStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemStock), ResourceType = typeof(BusinessObjects))]
         public int TotalStock
         {
             get => this.totalStock;
-            set => this.SetIfPositive(ref this.totalStock, value);
+            set => this.SetProperty(ref this.totalStock, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemWidth), ResourceType = typeof(BusinessObjects))]
         public int? Width
         {
             get => this.width;
-            set => this.SetIfStrictlyPositive(ref this.width, value);
+            set => this.SetProperty(ref this.width, value);
         }
 
         #endregion Properties

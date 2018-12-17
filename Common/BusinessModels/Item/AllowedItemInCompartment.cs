@@ -32,7 +32,7 @@ namespace Ferretto.Common.BusinessModels
         public int? MaxCapacity
         {
             get => this.maxCapacity;
-            set => this.SetIfPositive(ref this.maxCapacity, value);
+            set => this.SetProperty(ref this.maxCapacity, value);
         }
 
         #endregion Properties
