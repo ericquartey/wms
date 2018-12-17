@@ -77,6 +77,10 @@
                 </wms:WmsGridControl.View>
 
                 <wms:WmsGridControl.Columns>
+                    <dxg:GridColumn Width="80*"
+                                    FieldName="AreaName" />
+                    <dxg:GridColumn Width="80*"
+                                    FieldName="AisleName" />
                     <dxg:GridColumn Width="100*"
                                     FieldName="Code" />
                     <dxg:GridColumn Width="250*"
@@ -85,10 +89,6 @@
                                     FieldName="LoadingUnitStatusDescription" />
                     <dxg:GridColumn Width="80*"
                                     FieldName="AbcClassDescription" />
-                    <dxg:GridColumn Width="80*"
-                                    FieldName="AreaName" />
-                    <dxg:GridColumn Width="80*"
-                                    FieldName="AisleName" />
                     <dxg:GridColumn Width="80*"
                                     FieldName="CellFloor" />
                     <dxg:GridColumn Width="80*"
@@ -102,7 +102,9 @@
                 </wms:WmsGridControl.Columns>
 
                 <wms:WmsGridControl.SortInfo>
-                    <dxg:GridSortInfo FieldName="Code"
+                    <dxg:GridSortInfo FieldName="AreaName"
+                                      SortOrder="Ascending" />
+                    <dxg:GridSortInfo FieldName="AisleName"
                                       SortOrder="Ascending" />
                 </wms:WmsGridControl.SortInfo>
 
