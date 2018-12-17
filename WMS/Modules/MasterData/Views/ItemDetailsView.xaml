@@ -116,12 +116,8 @@
                                       ItemsSource="{Binding Path=Item.AbcClassChoices}" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.FifoTimeStore, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Column="2"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.ReorderPoint, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
@@ -133,8 +129,6 @@
                                       EditValue="{Binding Path=Item.FifoTimePick, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="2"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.ReorderQuantity, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
@@ -161,44 +155,30 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.PickTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.AverageWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.Length, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.StoreTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Path=Item.InventoryTolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>

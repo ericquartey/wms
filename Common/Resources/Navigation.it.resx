@@ -186,7 +186,7 @@
   <data name="MaterialStatuses" xml:space="preserve">
     <value>Stati Materiali</value>
   </data>
-  <data name="UnitsOfMeasurement" xml:space="preserve">
+  <data name="MeasureUnits" xml:space="preserve">
     <value>Unità di Misura</value>
   </data>
   <data name="Others" xml:space="preserve">
