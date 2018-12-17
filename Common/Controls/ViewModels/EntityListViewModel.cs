@@ -35,7 +35,8 @@ namespace Ferretto.Common.Controls
             this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
             {
                 Key = filterDataSource.Key,
-                Name = filterDataSource.Name
+                Name = filterDataSource.Name,
+                Description = Resources.MasterData.ResourceManager.GetString($"{filterDataSource.Key}Description")
             }).ToList());
         }
 
@@ -75,12 +76,6 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
-        public object SelectedFilterDataSource
-        {
-            get => this.selectedFilterDataSource;
-            protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
-        }
-
         public Tile SelectedFilter
         {
             get => this.selectedFilterTile;
@@ -92,6 +87,12 @@ namespace Ferretto.Common.Controls
                     this.SelectedFilterDataSource = this.flattenDataSource ? filterDataSource.GetData() : (object)filterDataSource;
                 }
             }
+        }
+
+        public object SelectedFilterDataSource
+        {
+            get => this.selectedFilterDataSource;
+            protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
         }
 
         public object SelectedItem
