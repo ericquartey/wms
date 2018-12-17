@@ -158,7 +158,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="ItemsViewClassA" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-combo-chart-50.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/podio.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemsViewFIFO" xml:space="preserve">
@@ -430,7 +430,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="CellClassA" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-combo-chart-50.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/podio.png</value>
   </data>
   <data name="CellStatusEmpty" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-empty-box-50.png</value>
