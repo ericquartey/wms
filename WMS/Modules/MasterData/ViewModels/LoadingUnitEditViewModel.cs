@@ -174,9 +174,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
-        protected override void OnAppear()
+        protected override async void OnAppear()
         {
-            this.LoadData();
+            await this.LoadData();
             base.OnAppear();
         }
 

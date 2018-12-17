@@ -25,10 +25,10 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private bool readOnlyTray;
-
         private CompartmentDetails selectedCompartment;
         private Tray tray;
-        private Func<CompartmentDetails, CompartmentDetails, string> trayColoringFunc;
+        private Func<ICompartment, ICompartment, string> trayColoringFunc;
+        private ICommand withdrawCommand;
 
         #endregion Fields
 
@@ -82,11 +82,14 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.tray, value);
         }
 
-        public Func<CompartmentDetails, CompartmentDetails, string> TrayColoringFunc
+        public Func<ICompartment, ICompartment, string> TrayColoringFunc
         {
             get => this.trayColoringFunc;
             set => this.SetProperty(ref this.trayColoringFunc, value);
         }
+
+        public ICommand WithdrawCommand => this.withdrawCommand ??
+                                                             (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdrawCommand));
 
         #endregion Properties
 
@@ -137,6 +140,11 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteEditCommand()
         {
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.LOADINGUNITEDIT, this.Model.Id);
+        }
+
+        private void ExecuteWithdrawCommand()
+        {
+            throw new NotImplementedException();
         }
 
         private void Initialize()
