@@ -18,8 +18,14 @@ namespace Ferretto.Common.BusinessProviders
         private static readonly Expression<Func<DataModels.ItemList, bool>> StatusWaitingFilter =
             list => (char)list.Status == (char)(ItemListStatus.Waiting);
 
+        private static readonly Expression<Func<DataModels.ItemList, bool>> TypeInventoryFilter =
+            list => (char)list.ItemListType == (char)(ItemListType.Inventory);
+
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
             list => (char)list.ItemListType == (char)(ItemListType.Pick);
+
+        private static readonly Expression<Func<DataModels.ItemList, bool>> TypePutFilter =
+            list => (char)list.ItemListType == (char)(ItemListType.Put);
 
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
@@ -157,6 +163,20 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public IQueryable<ItemList> GetWithTypeInventory()
+        {
+            return GetAllListsWithAggregations(this.dataContext.Current, TypeInventoryFilter);
+        }
+
+        public Int32 GetWithTypeInventoryCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.ItemLists.AsNoTracking().Count(TypeInventoryFilter);
+            }
+        }
+
         public IQueryable<ItemList> GetWithTypePick()
         {
             return GetAllListsWithAggregations(this.dataContext.Current, TypePickFilter);
@@ -168,6 +188,20 @@ namespace Ferretto.Common.BusinessProviders
             lock (dataContext)
             {
                 return dataContext.ItemLists.AsNoTracking().Count(TypePickFilter);
+            }
+        }
+
+        public IQueryable<ItemList> GetWithTypePut()
+        {
+            return GetAllListsWithAggregations(this.dataContext.Current, TypePutFilter);
+        }
+
+        public Int32 GetWithTypePutCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.ItemLists.AsNoTracking().Count(TypePutFilter);
             }
         }
 

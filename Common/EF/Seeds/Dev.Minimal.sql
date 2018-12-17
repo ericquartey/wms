@@ -739,7 +739,7 @@ INSERT INTO CompartmentStatuses (Id, Description) VALUES (6, 'Disabled');
 SET IDENTITY_INSERT CompartmentStatuses OFF;
 
 SET IDENTITY_INSERT CompartmentTypes ON;
-INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (1, 'Full-pallet compartment type', 800, 1200);
+INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (1, 800, 1200);
 INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (2, 50, 50);
 INSERT INTO CompartmentTypes (Id, Width, Height) VALUES (3, 100, 100);
 SET IDENTITY_INSERT CompartmentTypes OFF;
