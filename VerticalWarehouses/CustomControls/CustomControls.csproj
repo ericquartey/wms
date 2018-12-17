@@ -19,7 +19,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>.\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -354,18 +354,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Resource Include="Assets\gear_icon.png" />
     <Resource Include="Assets\ic_account_circle_black_18dp.png" />
     <Resource Include="Assets\ic_account_circle_black_48dp.png" />
-    <Resource Include="Assets\White_arrow_down.svg.png" />
-    <Resource Include="Assets\brush_dark.png" />
-    <Resource Include="Assets\brush_light.png" />
     <Resource Include="Assets\ferretto_logo_dark.png" />
     <Resource Include="Assets\background_machine.png" />
-    <Resource Include="Assets\ferrettogrouplogo_dark.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\ferrettogrouplogo_light.png" />
     <Resource Include="Fonts\HelveticaNeue-LightCond.otf" />
     <Resource Include="Fonts\RobotoCondensed-Regular.ttf" />
     <None Include="packages.config" />
