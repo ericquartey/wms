@@ -77,46 +77,47 @@
                            HorizontalAlignment="Left"
                            FontStyle="Italic"
                            FontWeight="Bold"
-                           Foreground="{Binding ErrorColor}"
-                           Text="{Binding Error}"
+                           Text="{Binding Model.Error}"
                            TextWrapping="WrapWithOverflow" />
 
                 <wms:SpinEdit x:Name="WidthText"
                               Grid.Row="2"
                               Grid.Column="0"
-                              MinValue="1"
-                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
-                              EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                              AllowNullInput="True"
+                              EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                              MinValue="1" />
+
                 <wms:SpinEdit x:Name="HeightText"
                               Grid.Row="2"
                               Grid.Column="2"
-                              MinValue="1"
-                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
-                              EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                              AllowNullInput="True"
+                              EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                              MinValue="1" />
 
                 <wms:SpinEdit x:Name="PositionXText"
                               Grid.Row="3"
                               Grid.Column="0"
                               HorizontalAlignment="Stretch"
-                              MinValue="0"
                               AllowNullInput="True"
-                              EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                              EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                              MinValue="0" />
+
                 <wms:SpinEdit x:Name="PositionYText"
                               Grid.Row="3"
                               Grid.Column="2"
-                              MinValue="0"
-                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
                               HorizontalContentAlignment="Right"
-                              EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                              AllowNullInput="True"
+                              EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                              MinValue="0" />
 
                 <wms:LookUpEdit Grid.Row="4"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="3"
                                 DisplayMember="Description"
-                                EditValue="{Binding SelectedCompartmentTray.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                 PopupWidth="500"
                                 ValueMember="Id">
@@ -159,27 +160,27 @@
                 <wms:SpinEdit x:Name="QuantityText"
                               Grid.Row="5"
                               Grid.Column="0"
-                              MinValue="0"
                               MinWidth="90"
                               HorizontalAlignment="Stretch"
-                              EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                              EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              MinValue="0" />
                 <wms:SpinEdit x:Name="CapacityText"
                               Grid.Row="5"
                               Grid.Column="2"
-                              MinValue="1"
                               HorizontalAlignment="Stretch"
-                              EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                              EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              MinValue="1" />
 
                 <wms:ComboBox x:Name="MaterialStatus"
                               Grid.Row="6"
                               Grid.Column="0"
-                              EditValue="{Binding Path=SelectedCompartmentTray.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding Path=SelectedCompartmentTray.MaterialStatusChoices}" />
+                              EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
 
                 <wms:WmsCheckEdit Grid.Row="6"
                                   Grid.Column="2"
                                   Content="{x:Static res:BusinessObjects.PairingFixed}"
-                                  IsChecked="{Binding Path=SelectedCompartmentTray.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  IsChecked="{Binding Path=Model.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 <dxa:AccordionControl Grid.Row="7"
                                       Grid.ColumnSpan="3"
@@ -211,21 +212,21 @@
                             <wms:TextBox Grid.Row="0"
                                          Grid.Column="1"
                                          HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         Text="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="0"
                                          Grid.Column="3"
                                          HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         Text="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:ComboBox x:Name="PackageType"
                                           Grid.Row="1"
                                           Grid.Column="1"
-                                          EditValue="{Binding Path=SelectedCompartmentTray.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          ItemsSource="{Binding Path=SelectedCompartmentTray.PackageTypeChoices}" />
+                                          EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
 
                             <wms:TextBox Grid.Row="1"
                                          Grid.Column="3"
                                          HorizontalAlignment="Stretch"
-                                         Text="{Binding SelectedCompartmentTray.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         Text="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
 
                     </wms:AccordionItem>
