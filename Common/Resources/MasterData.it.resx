@@ -245,7 +245,7 @@
     <value>Stato in Attesa</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Tipo Picking</value>
+    <value>Picking Liste</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Informazioni sull'Ordine del Cliente</value>
@@ -300,5 +300,50 @@
   </data>
   <data name="AdvancedDetails" xml:space="preserve">
     <value>Ulteriori Dettagli</value>
+  </data>
+  <data name="ItemListsTypeInventory" xml:space="preserve">
+    <value>Inventario delle Liste</value>
+  </data>
+  <data name="ItemListsTypePut" xml:space="preserve">
+    <value>Put Liste</value>
+  </data>
+  <data name="LoadingUnitAreaManual" xml:space="preserve">
+    <value>Area Manual</value>
+  </data>
+  <data name="LoadingUnitAreaVertimag" xml:space="preserve">
+    <value>Area Vertimag</value>
+  </data>
+  <data name="LoadingUnitStatusAvailable" xml:space="preserve">
+    <value>Stato Disponibile</value>
+  </data>
+  <data name="LoadingUnitStatusBlocked" xml:space="preserve">
+    <value>Stato Bloccato</value>
+  </data>
+  <data name="LoadingUnitStatusUsed" xml:space="preserve">
+    <value>Stato Usato</value>
+  </data>
+  <data name="CellClassA" xml:space="preserve">
+    <value>Classe A</value>
+  </data>
+  <data name="CellStatusEmpty" xml:space="preserve">
+    <value>Stato Vuoto</value>
+  </data>
+  <data name="CellStatusFull" xml:space="preserve">
+    <value>Stato Pieno</value>
+  </data>
+  <data name="CompartmentStatusAvailable" xml:space="preserve">
+    <value>Stato Disponibile</value>
+  </data>
+  <data name="CompartmentStatusAwaiting" xml:space="preserve">
+    <value>Stato di Verifica in Attesa</value>
+  </data>
+  <data name="CompartmentStatusBlocked" xml:space="preserve">
+    <value>Stato Bloccato</value>
+  </data>
+  <data name="CompartmentStatusExpired" xml:space="preserve">
+    <value>Stato Scaduto</value>
+  </data>
+  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
+    <value>{0} X {1} [mm]</value>
   </data>
 </root>

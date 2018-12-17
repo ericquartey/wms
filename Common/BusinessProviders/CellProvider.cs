@@ -12,6 +12,15 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
+        private static readonly Expression<Func<DataModels.Cell, bool>> ClassAFilter =
+                   cell => cell.AbcClassId == "A";
+
+        private static readonly Expression<Func<DataModels.Cell, bool>> StatusEmptyFilter =
+cell => cell.CellStatusId == 1;
+
+        private static readonly Expression<Func<DataModels.Cell, bool>> StatusFullFilter =
+                   cell => cell.CellStatusId == 3;
+
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
@@ -120,6 +129,48 @@ namespace Ferretto.Common.BusinessProviders
                 cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
 
                 return cellDetails;
+            }
+        }
+
+        public IQueryable<Cell> GetWithClassA()
+        {
+            return GetAllCellsWithFilter(this.dataContext.Current, ClassAFilter);
+        }
+
+        public Int32 GetWithClassACount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Cells.AsNoTracking().Count(ClassAFilter);
+            }
+        }
+
+        public IQueryable<Cell> GetWithStatusEmpty()
+        {
+            return GetAllCellsWithFilter(this.dataContext.Current, StatusEmptyFilter);
+        }
+
+        public Int32 GetWithStatusEmptyCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Cells.AsNoTracking().Count(StatusEmptyFilter);
+            }
+        }
+
+        public IQueryable<Cell> GetWithStatusFull()
+        {
+            return GetAllCellsWithFilter(this.dataContext.Current, StatusFullFilter);
+        }
+
+        public Int32 GetWithStatusFullCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Cells.AsNoTracking().Count(StatusFullFilter);
             }
         }
 
