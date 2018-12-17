@@ -5,8 +5,11 @@
         #region Properties
 
         object Data { get; set; }
+
         string MapId { get; set; }
+
         string StateId { get; set; }
+
         string Token { get; set; }
 
         #endregion Properties
@@ -14,6 +17,8 @@
         #region Methods
 
         void Appear();
+
+        bool CanDisappear();
 
         void Disappear();
 
