@@ -1,9 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Ferretto.Common.Controls;
-using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils.Menu;
-using Ferretto.Common.Utils.Modules;
-using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.Layout
 {
@@ -34,9 +31,6 @@ namespace Ferretto.WMS.Modules.Layout
             {
                 this.Items.Add(new NavMenuItem(item, string.Empty));
             }
-
-            var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            navigationService.Appear(nameof(Machines), Machines.MACHINES);
         }
 
         #endregion Methods

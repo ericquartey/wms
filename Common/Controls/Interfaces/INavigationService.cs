@@ -35,6 +35,8 @@ namespace Ferretto.Common.Controls.Interfaces
 
         void StartPresentation(Action operationBefore, Action operationAfter);
 
+        void IsBusy(bool isBusy);
+
         #endregion Methods
     }
 }

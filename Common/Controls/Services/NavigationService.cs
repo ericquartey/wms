@@ -264,7 +264,7 @@ namespace Ferretto.Common.Controls.Services
                              {
                                  Application.Current.MainWindow.Show();
                                  operationAfter.Invoke();
-                             }));                      
+                             }));
                      }
                  }));
         }
@@ -408,6 +408,11 @@ namespace Ferretto.Common.Controls.Services
             region.Deactivate(viewActive);
             this.regionManager.Regions[moduleRegionName].Remove(viewActive);
             this.regionManager.Regions.Remove(moduleRegionName);
+        }
+
+        public void IsBusy(bool isBusy)
+        {
+            WmsMainDockLayoutManager.IsBusy(isBusy);
         }
 
         #endregion Methods
