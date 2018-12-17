@@ -98,7 +98,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override void OnAppear()
+        protected override async void OnAppear()
         {
             var modelId = (int?)this.Data.GetType().GetProperty("Id")?.GetValue(this.Data);
             if (!modelId.HasValue)
@@ -106,7 +106,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.ItemWithdraw.ItemDetails = this.itemProvider.GetById(modelId.Value);
+            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetById(modelId.Value);
             this.ItemWithdraw.AreaChoices = this.areaProvider.GetByItemIdAvailability(modelId.Value);
             this.itemWithdraw.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
         }

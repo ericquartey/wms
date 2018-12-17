@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -116,9 +117,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 : null;
         }
 
-        protected override void ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommand()
         {
-            this.LoadData();
+            await this.LoadData();
         }
 
         protected override void ExecuteSaveCommand()
@@ -159,16 +160,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<LoadingUnit>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<LoadingUnit>>(eventArgs => { this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<LoadingUnit>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<LoadingUnit>>(async eventArgs => { await this.LoadData(); });
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
-                    eventArgs =>
+                    async eventArgs =>
                     {
                         if (eventArgs.ModelId.HasValue)
                         {
                             this.Data = eventArgs.ModelId.Value;
-                            this.LoadData();
+                            await this.LoadData();
                         }
                         else
                         {
@@ -202,14 +203,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.TrayColoringFunc = (new FillingFilter()).ColorFunc;
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             if (!(this.Data is int modelId))
             {
                 return;
             }
 
-            this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
+            this.LoadingUnit = await this.loadingUnitProvider.GetById(modelId);
             this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
 
             this.InitializeTray();

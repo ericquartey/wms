@@ -6,6 +6,15 @@ namespace Ferretto.WMS.App
 {
     public partial class App : Application
     {
+        #region Constructors
+
+        public App()
+        {
+            System.AppDomain.CurrentDomain.UnhandledException += this.CurrentDomain_UnhandledException;
+        }
+
+        #endregion Constructors
+
         #region Methods
 
         protected override void OnExit(ExitEventArgs e)
@@ -21,18 +30,27 @@ namespace Ferretto.WMS.App
         {
             base.OnStartup(e);
 
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            try
+            {
+                var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            NLog.LogManager
-              .GetCurrentClassLogger()
-              .Info(string.Format("Starting application, version '{0}'.", versionInfo.ProductVersion));
+                NLog.LogManager
+                  .GetCurrentClassLogger()
+                  .Info(string.Format("Starting application, version '{0}'.", versionInfo.ProductVersion));
 
-            SetLanguage();
+                SetLanguage();
 
-            SplashScreenService.Show();
+                SplashScreenService.Show();
 
-            new Bootstrapper().Run();
+                new Bootstrapper().Run();
+            }
+            catch (System.Exception ex)
+            {
+                NLog.LogManager
+                    .GetCurrentClassLogger()
+                    .Error(ex, "An unhandled exception was thrown.");
+            }
         }
 
         private static void SetLanguage()
@@ -51,6 +69,13 @@ namespace Ferretto.WMS.App
                 System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
                 System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(defaultLanguage);
             }
+        }
+
+        private void CurrentDomain_UnhandledException(System.Object sender, System.UnhandledExceptionEventArgs e)
+        {
+            NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Error(e.ExceptionObject as System.Exception, "An unhandled exception was thrown.");
         }
 
         #endregion Methods

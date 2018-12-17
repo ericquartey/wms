@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using System.Transactions;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
@@ -146,67 +145,63 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public CompartmentDetails GetById(int id)
+        public async Task<CompartmentDetails> GetById(int id)
         {
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var compartmentList = dataContext.Compartments
-                   .Where(c => c.Id == id)
-                   .Include(c => c.LoadingUnit)
-                   .Include(c => c.Item)
-                   .Include(c => c.CompartmentStatus)
-                   .GroupJoin(
-                        dataContext.ItemsCompartmentTypes,
-                        cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
-                        ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
-                        (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() }
-                    )
-                   .Select(j => new CompartmentDetails
-                   {
-                       Id = j.cmp.Id,
-                       LoadingUnitCode = j.cmp.LoadingUnit.Code,
-                       CompartmentTypeId = j.cmp.CompartmentTypeId,
-                       IsItemPairingFixed = j.cmp.IsItemPairingFixed,
-                       ItemCode = j.cmp.Item.Code,
-                       ItemDescription = j.cmp.Item.Description,
-                       Sub1 = j.cmp.Sub1,
-                       Sub2 = j.cmp.Sub2,
-                       MaterialStatusId = j.cmp.MaterialStatusId,
-                       FifoTime = j.cmp.FifoTime,
-                       PackageTypeId = j.cmp.PackageTypeId,
-                       Lot = j.cmp.Lot,
-                       RegistrationNumber = j.cmp.RegistrationNumber,
-                       MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
-                       Stock = j.cmp.Stock,
-                       ReservedForPick = j.cmp.ReservedForPick,
-                       ReservedToStore = j.cmp.ReservedToStore,
-                       CompartmentStatusId = j.cmp.CompartmentStatusId,
-                       CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
-                       CreationDate = j.cmp.CreationDate,
-                       LastHandlingDate = j.cmp.LastHandlingDate,
-                       InventoryDate = j.cmp.InventoryDate,
-                       FirstStoreDate = j.cmp.FirstStoreDate,
-                       LastStoreDate = j.cmp.LastStoreDate,
-                       LastPickDate = j.cmp.LastPickDate,
-                       Width = j.cmp.Width,
-                       Height = j.cmp.Height,
-                       XPosition = j.cmp.XPosition,
-                       YPosition = j.cmp.YPosition,
-                       LoadingUnitId = j.cmp.LoadingUnitId,
-                       ItemId = j.cmp.ItemId,
-                   })
-                   .ToList();
 
-                var compartmentDetails = compartmentList.Single();
+            var compartmentDetails = await dataContext.Compartments
+               .Where(c => c.Id == id)
+               .Include(c => c.LoadingUnit)
+               .Include(c => c.Item)
+               .Include(c => c.CompartmentStatus)
+               .GroupJoin(
+                    dataContext.ItemsCompartmentTypes,
+                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
+                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
+                    (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() }
+                )
+               .Select(j => new CompartmentDetails
+               {
+                   Id = j.cmp.Id,
+                   LoadingUnitCode = j.cmp.LoadingUnit.Code,
+                   CompartmentTypeId = j.cmp.CompartmentTypeId,
+                   IsItemPairingFixed = j.cmp.IsItemPairingFixed,
+                   ItemCode = j.cmp.Item.Code,
+                   ItemDescription = j.cmp.Item.Description,
+                   Sub1 = j.cmp.Sub1,
+                   Sub2 = j.cmp.Sub2,
+                   MaterialStatusId = j.cmp.MaterialStatusId,
+                   FifoTime = j.cmp.FifoTime,
+                   PackageTypeId = j.cmp.PackageTypeId,
+                   Lot = j.cmp.Lot,
+                   RegistrationNumber = j.cmp.RegistrationNumber,
+                   MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
+                   Stock = j.cmp.Stock,
+                   ReservedForPick = j.cmp.ReservedForPick,
+                   ReservedToStore = j.cmp.ReservedToStore,
+                   CompartmentStatusId = j.cmp.CompartmentStatusId,
+                   CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
+                   CreationDate = j.cmp.CreationDate,
+                   LastHandlingDate = j.cmp.LastHandlingDate,
+                   InventoryDate = j.cmp.InventoryDate,
+                   FirstStoreDate = j.cmp.FirstStoreDate,
+                   LastStoreDate = j.cmp.LastStoreDate,
+                   LastPickDate = j.cmp.LastPickDate,
+                   Width = j.cmp.Width,
+                   Height = j.cmp.Height,
+                   XPosition = j.cmp.XPosition,
+                   YPosition = j.cmp.YPosition,
+                   LoadingUnitId = j.cmp.LoadingUnitId,
+                   ItemId = j.cmp.ItemId,
+               })
+               .SingleAsync();
 
-                compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-                compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-                compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-                compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
+            compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
+            compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+            compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
 
-                return compartmentDetails;
-            }
+            return compartmentDetails;
         }
 
         public IQueryable<Compartment> GetByItemId(int id)

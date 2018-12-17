@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -91,9 +92,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override void ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommand()
         {
-            this.LoadData();
+            await this.LoadData();
         }
 
         protected override void ExecuteSaveCommand()
@@ -108,9 +109,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        protected override void OnAppear()
+        protected override async void OnAppear()
         {
-            this.LoadData();
+            await this.LoadData();
             base.OnAppear();
         }
 
@@ -188,11 +189,12 @@ namespace Ferretto.WMS.Modules.MasterData
             //TODO
         }
 
-        private void Initialize()
+        private async Task Initialize()
         {
-            this.LoadData();
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<ItemList>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<ItemList>>(eventArgs => { this.LoadData(); });
+            await this.LoadData();
+
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<ItemList>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<ItemList>>(async eventArgs => { await this.LoadData(); });
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedEvent<ItemList>>(
                     eventArgs =>
@@ -212,11 +214,11 @@ namespace Ferretto.WMS.Modules.MasterData
                     true);
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             if ((this.Data is int modelId))
             {
-                this.ItemList = this.itemListProvider.GetById(modelId);
+                this.ItemList = await this.itemListProvider.GetById(modelId);
             }
         }
 
