@@ -181,10 +181,10 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<EnumerationString> MeasureUnitChoices { get; set; }
 
-        [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
+        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
         public string MeasureUnitDescription { get; set; }
 
-        [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
+        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
         public string MeasureUnitId
         {
             get => this.measureUnitId;

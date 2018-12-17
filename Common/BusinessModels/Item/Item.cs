@@ -106,7 +106,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
         public string ManagementTypeDescription { get; set; }
 
-        [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
+        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
         public string MeasureUnitDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemPickTolerance), ResourceType = typeof(BusinessObjects))]
