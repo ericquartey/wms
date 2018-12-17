@@ -51,16 +51,16 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Area GetById(int id)
+        public async Task<Area> GetById(int id)
         {
-            return this.dataContext.Current.Areas
+            return await this.dataContext.Current.Areas
                 .Where(a => a.Id == id)
                 .Select(a => new Area
                 {
                     Id = a.Id,
                     Name = a.Name,
                 })
-                .Single();
+                .SingleAsync();
         }
 
         public IQueryable<Area> GetByItemIdAvailability(int id)

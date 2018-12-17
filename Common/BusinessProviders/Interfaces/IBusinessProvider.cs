@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessProviders
 
         int GetAllCount();
 
-        TDetailsModel GetById(int id);
+        Task<TDetailsModel> GetById(int id);
 
         int Save(TDetailsModel model);
 

@@ -84,43 +84,41 @@ namespace Ferretto.Common.BusinessProviders
                 );
         }
 
-        public CellDetails GetById(int id)
+        public async Task<CellDetails> GetById(int id)
         {
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var cellDetails = dataContext.Cells
-                    .Where(c => c.Id == id)
-                    .Include(c => c.Aisle)
-                    .Select(c => new CellDetails
-                    {
-                        Id = c.Id,
-                        AbcClassId = c.AbcClassId,
-                        AisleId = c.AisleId,
-                        AreaId = c.Aisle.AreaId,
-                        CellStatusId = c.CellStatusId,
-                        CellTypeId = c.CellTypeId,
-                        Column = c.Column,
-                        Floor = c.Floor,
-                        Number = c.CellNumber,
-                        Priority = c.Priority,
-                        Side = (int)c.Side,
-                        XCoordinate = c.XCoordinate,
-                        YCoordinate = c.YCoordinate,
-                        ZCoordinate = c.ZCoordinate,
-                    })
-                    .Single();
 
-                cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-                cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-                cellDetails.SideChoices =
-                    ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-                cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+            var cellDetails = await dataContext.Cells
+                .Where(c => c.Id == id)
+                .Include(c => c.Aisle)
+                .Select(c => new CellDetails
+                {
+                    Id = c.Id,
+                    AbcClassId = c.AbcClassId,
+                    AisleId = c.AisleId,
+                    AreaId = c.Aisle.AreaId,
+                    CellStatusId = c.CellStatusId,
+                    CellTypeId = c.CellTypeId,
+                    Column = c.Column,
+                    Floor = c.Floor,
+                    Number = c.CellNumber,
+                    Priority = c.Priority,
+                    Side = (int)c.Side,
+                    XCoordinate = c.XCoordinate,
+                    YCoordinate = c.YCoordinate,
+                    ZCoordinate = c.ZCoordinate,
+                })
+                .SingleAsync();
 
-                return cellDetails;
-            }
+            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
+            cellDetails.SideChoices =
+                ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
+            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+
+            return cellDetails;
         }
 
         public bool HasAnyLoadingUnits(int cellId)

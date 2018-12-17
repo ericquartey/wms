@@ -48,7 +48,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Int32 Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
@@ -78,7 +78,7 @@ namespace Ferretto.Common.BusinessProviders
             return itemLists;
         }
 
-        public Int32 GetAllCount()
+        public int GetAllCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -87,12 +87,11 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public ItemListDetails GetById(Int32 id)
+        public async Task<ItemListDetails> GetById(int id)
         {
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var itemListDetails = this.dataContext.Current.ItemLists
+
+            var itemListDetails = await this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)
                .Select(l => new ItemListDetails
@@ -114,19 +113,18 @@ namespace Ferretto.Common.BusinessProviders
                    LastModificationDate = l.LastModificationDate,
                    FirstExecutionDate = l.FirstExecutionDate,
                    ExecutionEndDate = l.ExecutionEndDate,
-               }).Single();
+               }).SingleAsync();
 
-                itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
-                    Enum.GetValues(typeof(ItemListStatus)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                itemListDetails.ItemListTypeChoices = ((ItemListType[])
-                    Enum.GetValues(typeof(ItemListType)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
+                Enum.GetValues(typeof(ItemListStatus)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            itemListDetails.ItemListTypeChoices = ((ItemListType[])
+                Enum.GetValues(typeof(ItemListType)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
+            itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
 
-                return itemListDetails;
-            }
+            return itemListDetails;
         }
 
         public IQueryable<ItemList> GetWithStatusCompleted()
@@ -134,13 +132,9 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllListsWithAggregations(this.dataContext.Current, StatusCompletedFilter);
         }
 
-        public Int32 GetWithStatusCompletedCount()
+        public int GetWithStatusCompletedCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
-            }
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
         }
 
         public IQueryable<ItemList> GetWithStatusWaiting()
@@ -148,7 +142,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllListsWithAggregations(this.dataContext.Current, StatusWaitingFilter);
         }
 
-        public Int32 GetWithStatusWaitingCount()
+        public int GetWithStatusWaitingCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -162,7 +156,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllListsWithAggregations(this.dataContext.Current, TypePickFilter);
         }
 
-        public Int32 GetWithTypePickCount()
+        public int GetWithTypePickCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -171,7 +165,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Int32 Save(ItemListDetails model)
+        public int Save(ItemListDetails model)
         {
             if (model == null)
             {
