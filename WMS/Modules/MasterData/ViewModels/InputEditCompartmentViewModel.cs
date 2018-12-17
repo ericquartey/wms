@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
@@ -82,13 +83,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void Initialize(Tray tray, LoadingUnitDetails loadingUnit, int idSelectedCompartment)
+        public async void Initialize(Tray tray, LoadingUnitDetails loadingUnit, int idSelectedCompartment)
         {
             this.tray = tray;
             this.EnableInputEdit = true;
 
             this.loadingUnit = loadingUnit;
-            this.InitializeData(idSelectedCompartment);
+            await this.InitializeData(idSelectedCompartment);
         }
 
         protected virtual void OnFinishEvent(EventArgs e)
@@ -143,9 +144,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void InitializeData(int idSelectedCompartment)
+        private async Task InitializeData(int idSelectedCompartment)
         {
-            this.SelectedCompartmentTray = this.compartmentProvider.GetById(idSelectedCompartment);
+            this.SelectedCompartmentTray = await this.compartmentProvider.GetById(idSelectedCompartment);
             this.SelectedCompartmentTray.PropertyChanged += this.OnSelectedCompartmentPropertyChanged;
 
             this.ItemsDataSource = new DataSource<Item>(() => this.itemProvider.GetAll());

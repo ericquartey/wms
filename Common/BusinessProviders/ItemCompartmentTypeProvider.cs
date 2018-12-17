@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -65,7 +63,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Int32 Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
@@ -75,17 +73,17 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Int32 GetAllCount()
+        public int GetAllCount()
         {
             throw new NotImplementedException();
         }
 
-        public ItemCompartmentType GetById(Int32 id)
+        public Task<ItemCompartmentType> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Int32 Save(ItemCompartmentType model)
+        public int Save(ItemCompartmentType model)
         {
             throw new NotImplementedException();
         }
