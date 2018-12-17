@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
@@ -32,7 +33,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand RevertCommand => this.revertCommand ??
-                                                 (this.revertCommand = new DelegateCommand(this.ExecuteRevertWithPrompt, this.CanExecuteRevertCommand));
+            (this.revertCommand = new DelegateCommand(async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true), this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
                                        (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand));
@@ -78,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected abstract void ExecuteRevertCommand();
+        protected abstract Task ExecuteRevertCommand();
 
         protected abstract void ExecuteSaveCommand();
 
@@ -92,7 +93,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EvaluateCanExecuteCommands();
         }
 
-        private void ExecuteRevertWithPrompt()
+        private async Task ExecuteRevertWithPrompt()
         {
             var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
 
@@ -104,7 +105,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (result == DialogResult.Yes)
             {
-                this.ExecuteRevertCommand();
+                await this.ExecuteRevertCommand();
             }
         }
 
