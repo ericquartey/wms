@@ -375,5 +375,15 @@
   <ItemGroup>
     <Resource Include="Assets\ferretto_logo_light.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ferrettogrouplogo_dark.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ferrettogrouplogo_light.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
