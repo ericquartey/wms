@@ -106,15 +106,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.ItemWithdraw.ItemDetails = await this.itemProvider.GetById(modelId.Value);
-            this.ItemWithdraw.AreaChoices = this.areaProvider.GetByItemIdAvailability(modelId.Value);
-            this.itemWithdraw.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
+            var itemDetails = await this.itemProvider.GetById(modelId.Value).ConfigureAwait(true);
+            this.ItemWithdraw.ItemDetails = itemDetails;
         }
 
         protected override void OnDispose()
         {
             this.ItemWithdraw.PropertyChanged -= this.OnItemWithdrawPropertyChanged;
-            this.itemWithdraw.PropertyChanged -= this.OnAreaIdChanged;
             base.OnDispose();
         }
 
@@ -174,18 +172,32 @@ namespace Ferretto.WMS.Modules.MasterData
             this.ItemWithdraw = new ItemWithdraw();
         }
 
-        private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.ItemWithdraw.AreaId) &&
-                this.ItemWithdraw.AreaId.HasValue)
-            {
-                this.ItemWithdraw.BayChoices = this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value);
-            }
-        }
-
         private void OnItemWithdrawPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             ((DelegateCommand)this.RunWithdrawCommand)?.RaiseCanExecuteChanged();
+
+            if (e.PropertyName == nameof(this.ItemWithdraw.AreaId))
+            {
+                if (this.ItemWithdraw.AreaId.HasValue)
+                {
+                    this.ItemWithdraw.BayChoices = this.bayProvider.GetByAreaId(this.ItemWithdraw.AreaId.Value);
+                }
+                else
+                {
+                    this.ItemWithdraw.BayChoices = null;
+                }
+            }
+            else if (e.PropertyName == nameof(this.ItemWithdraw.ItemDetails))
+            {
+                if (this.ItemWithdraw.ItemDetails != null)
+                {
+                    this.ItemWithdraw.AreaChoices = this.areaProvider.GetByItemIdAvailability(this.ItemWithdraw.ItemDetails.Id);
+                }
+                else
+                {
+                    this.ItemWithdraw.AreaChoices = null;
+                }
+            }
         }
 
         #endregion Methods
