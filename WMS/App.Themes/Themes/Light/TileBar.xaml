@@ -3,12 +3,14 @@
                     xmlns:cs="colorscheme_ignorable_uri"
                     xmlns:dxdst="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                     xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                     mc:Ignorable="cs">
 
     <!--  converters  -->
     <wms:BoolToVisibilityConverter x:Key="BTVC" />
     <wms:IntToThousandsConverter x:Key="ITTC" />
+    <wms:ReferenceToVisibilityConverter x:Key="RTVC" />
 
     <Style x:Key="TileStyle"
            BasedOn="{StaticResource {dxdst:DefaultStyleThemeKey FullName=System.Windows.Controls.ListBoxItem,
@@ -75,7 +77,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
+        <Setter Property="ToolTip">
+            <Setter.Value>
+                <ToolTip Visibility="{Binding Description, Converter={StaticResource RTVC}}">
+                    <TextBlock Text="{Binding Description}" />
+                </ToolTip>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="TileBarStyle"

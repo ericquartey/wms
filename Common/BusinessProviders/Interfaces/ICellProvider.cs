@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -10,6 +11,18 @@ namespace Ferretto.Common.BusinessProviders
         IQueryable<Enumeration> GetByAisleId(int areaId);
 
         IQueryable<Enumeration> GetByAreaId(int areaId);
+
+        IQueryable<Cell> GetWithClassA();
+
+        Int32 GetWithClassACount();
+
+        IQueryable<Cell> GetWithStatusEmpty();
+
+        Int32 GetWithStatusEmptyCount();
+
+        IQueryable<Cell> GetWithStatusFull();
+
+        Int32 GetWithStatusFullCount();
 
         bool HasAnyLoadingUnits(int cellId);
 

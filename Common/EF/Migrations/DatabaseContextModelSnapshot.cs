@@ -489,9 +489,6 @@ namespace Ferretto.Common.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Description")
-                        .IsRequired();
-
                     b.Property<int?>("Height");
 
                     b.Property<int?>("Width");

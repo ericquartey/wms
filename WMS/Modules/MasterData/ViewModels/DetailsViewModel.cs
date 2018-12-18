@@ -1,6 +1,10 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Resources;
+using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -29,7 +33,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand RevertCommand => this.revertCommand ??
-                                         (this.revertCommand = new DelegateCommand(this.ExecuteRevertCommand, this.CanExecuteRevertCommand));
+            (this.revertCommand = new DelegateCommand(async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true), this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
                                        (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand));
@@ -37,6 +41,27 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Properties
 
         #region Methods
+
+        public override System.Boolean CanDisappear()
+        {
+            if (this.changeDetector.IsModified)
+            {
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+
+                var result = dialogService.ShowMessage(
+                    DesktopApp.AreYouSureToLeaveThePage,
+                    DesktopApp.ConfirmOperation,
+                    DialogType.Exclamation,
+                    DialogButtons.OKCancel);
+
+                if (result == DialogResult.Cancel)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         protected virtual bool CanExecuteRevertCommand()
         {
@@ -54,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.SaveCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected abstract void ExecuteRevertCommand();
+        protected abstract Task ExecuteRevertCommand();
 
         protected abstract void ExecuteSaveCommand();
 
@@ -66,6 +91,22 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ChangeDetector_ModifiedChanged(System.Object sender, System.EventArgs e)
         {
             this.EvaluateCanExecuteCommands();
+        }
+
+        private async Task ExecuteRevertWithPrompt()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+
+            var result = dialogService.ShowMessage(
+                DesktopApp.AreYouSureToRevertChanges,
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (result == DialogResult.Yes)
+            {
+                await this.ExecuteRevertCommand();
+            }
         }
 
         #endregion Methods

@@ -111,21 +111,21 @@ namespace Ferretto.Common.BusinessModels
         public int? XCoordinate
         {
             get => this.xCoordinate;
-            set => this.SetProperty(ref this.xCoordinate, value);
+            set => this.SetIfPositive(ref this.xCoordinate, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellYCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? YCoordinate
         {
             get => this.yCoordinate;
-            set => this.SetProperty(ref this.yCoordinate, value);
+            set => this.SetIfPositive(ref this.yCoordinate, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellZCoordinate), ResourceType = typeof(BusinessObjects))]
         public int? ZCoordinate
         {
             get => this.zCoordinate;
-            set => this.SetProperty(ref this.zCoordinate, value);
+            set => this.SetIfPositive(ref this.zCoordinate, value);
         }
 
         #endregion Properties

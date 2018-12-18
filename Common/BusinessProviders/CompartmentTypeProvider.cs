@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
@@ -50,7 +48,6 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
                 {
-                    Description = model.Description,
                     Height = model.Height,
                     Width = model.Width
                 });
@@ -85,7 +82,6 @@ namespace Ferretto.Common.BusinessProviders
                 if (addItemCompartmentTypeCount < 1)
                 {
                     //TODO
-                    return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(ItemCompartmentType)));
                 }
             }
 
@@ -97,7 +93,7 @@ namespace Ferretto.Common.BusinessProviders
             return this.Add(model, null, null);
         }
 
-        public Int32 Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
@@ -107,17 +103,17 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Int32 GetAllCount()
+        public int GetAllCount()
         {
             throw new NotImplementedException();
         }
 
-        public CompartmentType GetById(Int32 id)
+        public Task<CompartmentType> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Int32 Save(CompartmentType model)
+        public int Save(CompartmentType model)
         {
             throw new NotImplementedException();
         }

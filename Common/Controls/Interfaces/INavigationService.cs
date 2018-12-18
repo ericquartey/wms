@@ -1,4 +1,6 @@
-﻿namespace Ferretto.Common.Controls.Interfaces
+﻿using System;
+
+namespace Ferretto.Common.Controls.Interfaces
 {
     public interface INavigationService
     {
@@ -31,7 +33,9 @@
 
         INavigableViewModel RegisterAndGetViewModel(string viewName, string token, object data = null);
 
-        void StartPresentation(INavigableViewModel viewModel);
+        void StartPresentation(Action operationBefore, Action operationAfter);
+
+        void IsBusy(bool isBusy);
 
         #endregion Methods
     }

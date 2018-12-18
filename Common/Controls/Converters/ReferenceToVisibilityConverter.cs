@@ -26,13 +26,13 @@ namespace Ferretto.Common.Controls
 
         public bool Hide
         {
-            get => (bool) this.GetValue(HideProperty);
+            get => (bool)this.GetValue(HideProperty);
             set => this.SetValue(HideProperty, value);
         }
 
         public bool Invert
         {
-            get => (bool) this.GetValue(InvertProperty);
+            get => (bool)this.GetValue(InvertProperty);
             set => this.SetValue(InvertProperty, value);
         }
 
@@ -47,14 +47,14 @@ namespace Ferretto.Common.Controls
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToVisibilityType);
             }
 
-            bool val = value == null;
+            bool isValueNull = value == null;
 
             if (this.Invert)
             {
-                val = !val;
+                isValueNull = !isValueNull;
             }
 
-            return val ? ( this.Hide ? Visibility.Hidden : Visibility.Collapsed ) : Visibility.Visible;
+            return isValueNull ? (this.Hide ? Visibility.Hidden : Visibility.Collapsed) : Visibility.Visible;
         }
 
         public Object ConvertBack(object value, Type targetType, Object parameter, CultureInfo culture)

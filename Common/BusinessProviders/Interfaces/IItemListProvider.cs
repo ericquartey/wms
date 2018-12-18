@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
@@ -9,17 +8,29 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        IQueryable<ItemList> GetWithStatusCompleted();
+        Task<OperationResult> ExecuteImmediately(int areaId, int bayId);
 
-        int GetWithStatusCompletedCount();
+        IQueryable<ItemList> GetWithStatusCompleted(ItemListType? type);
 
-        IQueryable<ItemList> GetWithStatusWaiting();
+        int GetWithStatusCompletedCount(ItemListType? type);
 
-        int GetWithStatusWaitingCount();
+        IQueryable<ItemList> GetWithStatusWaiting(ItemListType? type);
+
+        int GetWithStatusWaitingCount(ItemListType? type);
+
+        IQueryable<ItemList> GetWithTypeInventory();
+
+        int GetWithTypeInventoryCount();
 
         IQueryable<ItemList> GetWithTypePick();
 
         int GetWithTypePickCount();
+
+        IQueryable<ItemList> GetWithTypePut();
+
+        int GetWithTypePutCount();
+
+        Task<OperationResult> ScheduleForExecution(int areaId);
 
         #endregion Methods
     }
