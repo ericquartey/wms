@@ -38,9 +38,10 @@
             <wms:ActionBar HorizontalAlignment="Left"
                            Style="{DynamicResource ActionBarOverlayedWithGrid}">
 
-                <wms:ActionBarItem Content="{x:Static res:General.Edit}"
+                <wms:ActionBarItem Command="{Binding ShowDetailsCommand}"
+                                   Content="{x:Static res:General.ShowDetails}"
                                    CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/editor/ic_mode_edit_black_24dp.png"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
                                    GlyphSize="Custom" />
                 <wms:ActionBarItem Command="{Binding WithdrawCommand}"
                                    Content="{x:Static res:MasterData.Withdraw}"
