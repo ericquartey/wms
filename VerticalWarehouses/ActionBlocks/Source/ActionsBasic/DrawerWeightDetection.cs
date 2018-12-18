@@ -62,8 +62,8 @@
             // Instantiate the drawer positioning
             this.drawerPositionController = new PositioningDrawer();
             // Subscribes the event handlers
-            this.drawerPositionController.ThrowEndEvent += new PositioningDrawerEndEventHandler(this.DrawerPositioningEndEvent);
-            this.drawerPositionController.ThrowErrorEvent += new PositioningDrawerErrorEventHandler(this.DrawerPositioningErrorEvent);
+            this.drawerPositionController.ThrowEndEvent += this.DrawerPositioningEndEvent;
+            this.drawerPositionController.ThrowErrorEvent += this.DrawerPositioningErrorEvent;
         }
 
         /// <summary>
