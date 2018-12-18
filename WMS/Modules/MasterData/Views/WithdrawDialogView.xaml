@@ -5,8 +5,9 @@
                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                   xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                   xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"                   
                    Title="{x:Static res:Navigation.ItemWithdraw}"
+                   HeaderIsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
                    Width="500"
                    Height="600"
                    d:DesignHeight="500"
@@ -14,6 +15,7 @@
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
+    
     <Grid Margin="5,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
