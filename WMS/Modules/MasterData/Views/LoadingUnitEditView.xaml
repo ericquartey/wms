@@ -20,10 +20,11 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0">
+        <Grid Grid.Column="0"
+              IsEnabled="{Binding IsSidePanelOpen, Converter={StaticResource BNC}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
@@ -33,8 +34,7 @@
             <wms:ActionBar Grid.Row="0"
                            Margin="10,10,10,0"
                            HorizontalAlignment="Right"
-                           Style="{DynamicResource ActionBarNotCustomizable}"
-                           Visibility="{Binding IsVisibleMainCommandBar, Converter={StaticResource BTVHC}}">
+                           Style="{DynamicResource ActionBarNotCustomizable}">
                 <wms:ActionBarItem Command="{Binding EditCommand}"
                                    Content="{x:Static res:MasterData.EditCompartment}"
                                    CustomGlyphSize="24,24"
@@ -55,8 +55,8 @@
             <wms:WmsTrayControl x:Name="TrayControl"
                                 Grid.Row="1"
                                 Margin="0,10,0,0"
-                                IsCompartmentSelectable="{Binding IsSelectableTray}"
-                                IsReadOnly="{Binding ReadOnlyTray}"
+                                IsCompartmentSelectable="{Binding IsSidePanelOpen}"
+                                IsReadOnly="{Binding IsSidePanelOpen}"
                                 SelectedColorFilterFunc="{Binding FilterColorFunc}"
                                 SelectedItem="{Binding SelectedCompartmentTray, Mode=TwoWay}"
                                 ShowBackground="True"
@@ -68,11 +68,10 @@
                                 MaxWidth="5000"
                                 MaxHeight="500"
                                 HorizontalAlignment="Left"
-                                IsEnabled="{Binding IsEnabledGrid}"
                                 ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
                                 SelectedBusinessObject="{Binding SelectedCompartmentTray, Mode=TwoWay}">
                 <wms:WmsGridControl.View>
-                    <dxg:TableView NavigationStyle="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.IsEnabledGrid, Converter={StaticResource BTNSC}}">
+                    <dxg:TableView NavigationStyle="Row">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="RowDoubleClick">
                                 <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedCompartmentTray.Id, Mode=OneWay}"
@@ -117,7 +116,7 @@
                       VerticalContentAlignment="Stretch"
                       ExpandDirection="Right"
                       HideToggleButton="True"
-                      IsExpanded="{Binding IsExpand}">
+                      IsExpanded="{Binding IsSidePanelOpen}">
             <ScrollViewer x:Name="ScrollView"
                           Grid.Column="1"
                           Grid.ColumnSpan="1"
@@ -131,19 +130,22 @@
 
                     <Grid x:Name="InputEdit"
                           HorizontalAlignment="Left">
-                        <masterData:InputAddCompartmentView x:Name="InputAddCompartment"
-                                                            Grid.Row="0"
-                                                            ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputAddVM, Mode=TwoWay}" />
-
-                        <masterData:InputBulkAddCompartmentView x:Name="InputBulkAddCompartment"
-                                                                Grid.Row="0"
-                                                                ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputBulkAddVM, Mode=TwoWay}" />
-
-                        <masterData:InputEditCompartmentView x:Name="InputEditCompartment"
-                                                             Grid.Row="0"
-                                                             ViewModel="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.InputEditVM, Mode=TwoWay}" />
+                        <ContentControl Content="{Binding Path=ActiveSideViewModel}">
+                            <ContentControl.Resources>
+                                <DataTemplate DataType="{x:Type masterData:CompartmentEditViewModel}">
+                                    <masterData:CompartmentEditView />
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type masterData:CompartmentAddViewModel}">
+                                    <masterData:CompartmentAddView />
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type masterData:CompartmentAddBulkViewModel}">
+                                    <masterData:CompartmentAddBulkView />
+                                </DataTemplate>
+                            </ContentControl.Resources>
+                        </ContentControl>
 
                     </Grid>
+
                 </Border>
             </ScrollViewer>
 

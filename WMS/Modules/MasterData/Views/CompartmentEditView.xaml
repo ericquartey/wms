@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.InputEditCompartmentView"
+﻿<UserControl x:Class="Ferretto.WMS.Modules.MasterData.CompartmentEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -9,12 +9,10 @@
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
 
     <Grid x:Name="Edit"
-          MinWidth="300"
-          Visibility="{Binding EnableInputEdit, Converter={StaticResource BTVC}, Mode=TwoWay}">
+          MinWidth="300">
 
         <wms:ActionBar Grid.Row="0"
                        Grid.Column="1"
@@ -48,21 +46,21 @@
                   Header="{Binding Title, Mode=OneWay}">
             <Grid VerticalAlignment="Top">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="155" />
+                    <ColumnDefinition Width="*" />
 
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto"
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"
                                    MinHeight="16" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Label Grid.Column="0"
@@ -192,21 +190,21 @@
                     <wms:AccordionItem FontSize="12"
                                        FontWeight="Normal"
                                        IsExpandButtonVisible="True"
-                                       IsExpanded="{Binding EnableInputEdit, Mode=OneWay, Converter={StaticResource BNC}}"
+                                       IsExpanded="{Binding IsOpen, Mode=OneWay, Converter={StaticResource BNC}}"
                                        IsToggleVisible="False"
                                        TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2" />
-                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="2" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
-                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="2" />
                             </Grid.RowDefinitions>
                             <wms:TextBox Grid.Row="0"
@@ -235,4 +233,4 @@
             </Grid>
         </GroupBox>
     </Grid>
-</wms:WmsView>
+</UserControl>

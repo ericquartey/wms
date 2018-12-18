@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -176,7 +177,7 @@ namespace Ferretto.WMS.Modules.MasterData
             //TODO
         }
 
-        private async Task Initialize()
+        private async void Initialize()
         {
             await this.LoadData();
 

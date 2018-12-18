@@ -1,51 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using System.Windows.Media;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
 using Ferretto.Common.Modules.BLL.Models;
-using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class InputAddCompartmentViewModel : BaseServiceNavigationViewModel
+    public class CompartmentAddViewModel : SidePanelDetailsViewModel<CompartmentEdit>
     {
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-        private ICommand cancelCommand;
+
         private CompartmentDetails compartment;
         private bool enableInputAdd;
-        private string error;
-        private string errorColor;
+
         private IDataSource<Item> itemsDataSource;
         private int loadingUnitId;
-        private ICommand saveCommand;
-        private string title = Common.Resources.MasterData.AddCompartment;
+
         private Tray tray;
 
         #endregion Fields
 
-        #region Events
+        #region Constructors
 
-        public event EventHandler FinishEvent;
+        public CompartmentAddViewModel()
+        {
+            this.Title = Common.Resources.MasterData.AddCompartment;
+        }
 
-        #endregion Events
+        #endregion Constructors
 
         #region Properties
-
-        public ICommand CancelCommand => this.cancelCommand ??
-                          (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand));
 
         public CompartmentDetails Compartment
         {
@@ -57,26 +49,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public bool EnableInputAdd
         {
-            get { return this.enableInputAdd; }
-            set { this.SetProperty(ref this.enableInputAdd, value); }
+            get => this.enableInputAdd;
+            set => this.SetProperty(ref this.enableInputAdd, value);
         }
-
-        public string Error { get => this.error; set => this.SetProperty(ref this.error, value); }
-
-        public string ErrorColor { get => this.errorColor; set => this.SetProperty(ref this.errorColor, value); }
 
         public IDataSource<Item> ItemsDataSource
         {
             get => this.itemsDataSource;
             set => this.SetProperty(ref this.itemsDataSource, value);
         }
-
-        public ICommand SaveCommand => this.saveCommand ??
-                                 (this.saveCommand = new DelegateCommand(() => this.ExecuteSaveCommand().ConfigureAwait(false), this.CanExecuteSaveCommand)
-                                 .ObservesProperty(() => this.Error)
-                                .ObservesProperty(() => this.Compartment));
-
-        public string Title { get => this.title; private set => this.SetProperty(ref this.title, value); }
 
         public Tray Tray
         {
@@ -96,12 +77,32 @@ namespace Ferretto.WMS.Modules.MasterData
             this.InitializeData();
         }
 
-        protected virtual void OnFinishEvent(EventArgs e)
+        public override void RefreshData()
         {
-            EventHandler handler = this.FinishEvent;
-            if (handler != null)
+            throw new NotImplementedException();
+        }
+
+        protected override bool CanExecuteSaveCommand()
+        {
+            if (!this.EnableCheck && this.IsNullSelectedCompartment())
             {
-                handler(this, e);
+                return false;
+            }
+            return true;
+        }
+
+        protected override Task ExecuteRevertCommand()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override async void ExecuteSaveCommand()
+        {
+            // this.SetError();
+            this.EnableCheck = true;
+            if (await this.SaveLoadingUnit())
+            {
+                this.ResetView();
             }
         }
 
@@ -109,35 +110,16 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.EnableCheck)
             {
-                string error = this.Tray.CanBulkAddCompartment(this.Compartment, this.Tray, true);
-                this.SetError(error);
+                var error = this.Tray.CanBulkAddCompartment(this.Compartment, this.Tray, true);
+                //   this.SetError(error);
                 return error != null && error.Trim() != "";
             }
             return true;
         }
 
-        private bool CanExecuteSaveCommand()
-        {
-            if (!this.EnableCheck && this.IsNullSelectedCompartment())
-            {
-                return false;
-            }
-            return (this.Error == null || this.Error.Trim() == "");
-        }
-
         private void ExecuteCancelCommand()
         {
             this.ResetView();
-        }
-
-        private async Task ExecuteSaveCommand()
-        {
-            this.SetError();
-            this.EnableCheck = true;
-            if (await this.SaveLoadingUnit())
-            {
-                this.ResetView();
-            }
         }
 
         private void InitializeData()
@@ -169,7 +151,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Reset()
         {
-            this.SetError();
             this.EnableCheck = false;
         }
 
@@ -178,7 +159,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EnableInputAdd = false;
             this.Compartment.PropertyChanged -= this.OnSelectedCompartmentPropertyChanged;
             this.Reset();
-            this.OnFinishEvent(null);
+            this.CompleteOperation();
         }
 
         private async Task<bool> SaveLoadingUnit()
@@ -194,30 +175,16 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    this.SetError(result.Description);
+                    // this.SetError(result.Description);
                 }
                 return result.Success;
             }
             else
             {
-                this.SetError(Errors.AddNoPossible);
+                //  this.SetError(Errors.AddNoPossible);
             }
 
             return false;
-        }
-
-        private void SetError(string message = null)
-        {
-            if (message == null)
-            {
-                this.Error = "";
-                this.ErrorColor = Colors.Black.ToString();
-            }
-            else
-            {
-                this.Error = message;
-                this.ErrorColor = Colors.Red.ToString();
-            }
         }
 
         #endregion Methods

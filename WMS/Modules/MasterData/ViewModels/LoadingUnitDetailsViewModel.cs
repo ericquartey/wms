@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -89,7 +90,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand WithdrawCommand => this.withdrawCommand ??
-                                                             (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdrawCommand));
+            (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdrawCommand));
 
         #endregion Properties
 
@@ -110,7 +111,6 @@ namespace Ferretto.WMS.Modules.MasterData
         protected override void ExecuteSaveCommand()
         {
             var modifiedRowCount = this.loadingUnitProvider.Save(this.Model);
-
             if (modifiedRowCount <= 0)
             {
                 return;
@@ -149,25 +149,28 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<LoadingUnit>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<LoadingUnit>>(async eventArgs => { await this.LoadData(); });
-            this.modelSelectionChangedSubscription =
-                this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
-                    async eventArgs =>
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<LoadingUnit>>(
+                async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<LoadingUnit>>(
+                async eventArgs => { await this.LoadData(); });
+
+            this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<LoadingUnit>>(
+                async eventArgs =>
+                {
+                    if (eventArgs.ModelId.HasValue)
                     {
-                        if (eventArgs.ModelId.HasValue)
-                        {
-                            this.Data = eventArgs.ModelId.Value;
-                            await this.LoadData();
-                        }
-                        else
-                        {
-                            this.Model = null;
-                        }
-                    },
-                    this.Token,
-                    true,
-                    true);
+                        this.Data = eventArgs.ModelId.Value;
+                        await this.LoadData();
+                    }
+                    else
+                    {
+                        this.Model = null;
+                    }
+                },
+                this.Token,
+                true,
+                true);
         }
 
         private void InitializeTray()

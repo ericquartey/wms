@@ -17,23 +17,18 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+        private readonly EditFilter editColoringFilter = new EditFilter();
+        private readonly EditReadOnlyFilter editReadOnlyColoringFilter = new EditReadOnlyFilter();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+        private SidePanelDetailsViewModel<CompartmentEdit> activeSideViewModel;
         private ICommand addCommand;
         private ICommand bulkAddCommand;
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
         private Func<ICompartment, ICompartment, string> filterColorFunc;
-        private InputAddCompartmentViewModel inputAddVM;
-        private InputBulkAddCompartmentViewModel inputBulkAddVM;
-        private InputEditCompartmentViewModel inputEditVM;
-        private bool isEnabledGrid;
-        private bool isExpand;
-        private bool isReadOnlyTray;
-        private bool isSelectableTray;
-        private bool isVisibleMainCommandBar;
+        private bool isSidePanelOpen;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
-        private bool readOnlyTray;
         private CompartmentDetails selectedCompartmentTray;
         private Tray tray;
 
@@ -43,18 +38,39 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public LoadingUnitEditViewModel()
         {
-            this.ShowMainViewAndHideLateralPanel();
+            this.HideSidePanel();
         }
 
         #endregion Constructors
 
         #region Properties
 
+        public SidePanelDetailsViewModel<CompartmentEdit> ActiveSideViewModel
+        {
+            get => this.activeSideViewModel;
+            set
+            {
+                var prevValue = this.activeSideViewModel;
+                if (this.SetProperty(ref this.activeSideViewModel, value))
+                {
+                    if (prevValue != null)
+                    {
+                        prevValue.OperationComplete -= this.ActiveSideViewModel_OperationComplete;
+                    }
+
+                    if (value != null)
+                    {
+                        value.OperationComplete += this.ActiveSideViewModel_OperationComplete;
+                    }
+                }
+            }
+        }
+
         public ICommand AddCommand => this.addCommand ??
-                  (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand));
+            (this.addCommand = new DelegateCommand(this.ExecuteAddCompartmentCommand));
 
         public ICommand BulkAddCommand => this.bulkAddCommand ??
-                                  (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
+            (this.bulkAddCommand = new DelegateCommand(this.ExecuteBulkAddCommand));
 
         public IEnumerable<CompartmentDetails> CompartmentsDataSource
         {
@@ -63,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand EditCommand => this.editCommand ??
-          (this.editCommand = new DelegateCommand(this.ExecuteEditCompartmentCommand, this.CanExecuteEditCommand)
+            (this.editCommand = new DelegateCommand(this.ExecuteEditCompartmentCommand, this.CanExecuteEditCommand)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
         public Func<ICompartment, ICompartment, string> FilterColorFunc
@@ -72,52 +88,19 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.filterColorFunc, value);
         }
 
-        public InputAddCompartmentViewModel InputAddVM
+        public bool IsSidePanelOpen
         {
-            get => this.inputAddVM;
-            set => this.SetProperty(ref this.inputAddVM, value);
-        }
-
-        public InputBulkAddCompartmentViewModel InputBulkAddVM
-        {
-            get => this.inputBulkAddVM;
-            set => this.SetProperty(ref this.inputBulkAddVM, value);
-        }
-
-        public InputEditCompartmentViewModel InputEditVM
-        {
-            get => this.inputEditVM;
-            set => this.SetProperty(ref this.inputEditVM, value);
-        }
-
-        public bool IsEnabledGrid
-        {
-            get => this.isEnabledGrid;
-            set => this.SetProperty(ref this.isEnabledGrid, value);
-        }
-
-        public bool IsExpand
-        {
-            get => this.isExpand;
-            set => this.SetProperty(ref this.isExpand, value);
-        }
-
-        public bool IsReadOnlyTray
-        {
-            get => this.isReadOnlyTray;
-            set => this.SetProperty(ref this.isReadOnlyTray, value);
-        }
-
-        public bool IsSelectableTray
-        {
-            get => this.isSelectableTray;
-            set => this.SetProperty(ref this.isSelectableTray, value);
-        }
-
-        public bool IsVisibleMainCommandBar
-        {
-            get => this.isVisibleMainCommandBar;
-            set => this.SetProperty(ref this.isVisibleMainCommandBar, value);
+            get => this.isSidePanelOpen;
+            set
+            {
+                if (this.SetProperty(ref this.isSidePanelOpen, value))
+                {
+                    this.FilterColorFunc = this.isSidePanelOpen ?
+                        this.editColoringFilter.ColorFunc
+                        :
+                        this.editReadOnlyColoringFilter.ColorFunc;
+                }
+            }
         }
 
         public LoadingUnitDetails LoadingUnit
@@ -137,12 +120,6 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.loadingUnitHasCompartments;
             set => this.SetProperty(ref this.loadingUnitHasCompartments, value);
-        }
-
-        public bool ReadOnlyTray
-        {
-            get => this.readOnlyTray;
-            set => this.SetProperty(ref this.readOnlyTray, value);
         }
 
         public CompartmentDetails SelectedCompartmentTray
@@ -180,44 +157,37 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
+        private void ActiveSideViewModel_OperationComplete(Object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         private bool CanExecuteEditCommand()
         {
-            return (this.selectedCompartmentTray != null && this.selectedCompartmentTray.Width != null && this.selectedCompartmentTray.Height != null
-                && this.selectedCompartmentTray.XPosition != null && this.selectedCompartmentTray.YPosition != null);
+            return this.selectedCompartmentTray != null;
         }
 
         private void ExecuteAddCompartmentCommand()
         {
-            this.SelectedCompartmentTray = new CompartmentDetails();
-            this.HideMainViewAndShowLateralPanel();
-            this.InputAddVM.Initialize(this.tray, this.loadingUnit.Id);
-            this.InputAddVM.FinishEvent += this.InputAddVM_FinishEvent;
+            this.SelectedCompartmentTray = null;
+            this.ShowSidePanel(new CompartmentAddViewModel());
         }
 
         private void ExecuteBulkAddCommand()
         {
             this.SelectedCompartmentTray = null;
-            this.HideMainViewAndShowLateralPanel();
-            this.InputBulkAddVM.Initialize(this.tray);
-            this.InputBulkAddVM.FinishEvent += this.InputBulkAddVM_FinishEvent;
+            this.ShowSidePanel(new CompartmentAddBulkViewModel());
         }
 
         private void ExecuteEditCompartmentCommand()
         {
-            this.HideMainViewAndShowLateralPanel();
-
-            this.InputEditVM.Initialize(this.tray, this.loadingUnit, this.selectedCompartmentTray.Id);
-            this.InputEditVM.FinishEvent += this.InputEditVM_FinishEvent;
+            this.ShowSidePanel(new CompartmentEditViewModel());
         }
 
-        private void HideMainViewAndShowLateralPanel()
+        private void HideSidePanel()
         {
-            this.IsExpand = true;
-            this.IsSelectableTray = false;
-            this.ReadOnlyTray = true;
-            this.IsEnabledGrid = false;
-            this.IsVisibleMainCommandBar = false;
-            this.FilterColorFunc = (new EditReadOnlyFilter()).ColorFunc;
+            this.IsSidePanelOpen = false;
+            this.ActiveSideViewModel = null;
         }
 
         private void InitializeTray()
@@ -244,25 +214,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async void InputAddVM_FinishEvent(Object sender, EventArgs e)
         {
-            this.ResetInputView();
-            if (sender is InputAddCompartmentViewModel model)
+            this.HideSidePanel();
+            if (sender is CompartmentAddViewModel model)
             {
                 await this.LoadData();
                 this.SelectedCompartmentTray = model.Compartment;
             }
-            this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
+            //   this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
         }
 
         private void InputBulkAddVM_FinishEvent(Object sender, EventArgs e)
         {
-            this.ResetInputView();
-            this.InputBulkAddVM.FinishEvent -= this.InputBulkAddVM_FinishEvent;
+            this.HideSidePanel();
+            //  this.InputBulkAddVM.FinishEvent -= this.InputBulkAddVM_FinishEvent;
         }
 
         private void InputEditVM_FinishEvent(Object sender, EventArgs e)
         {
-            this.ResetInputView();
-            this.InputEditVM.FinishEvent -= this.InputEditVM_FinishEvent;
+            this.HideSidePanel();
+            //  this.InputEditVM.FinishEvent -= this.InputEditVM_FinishEvent;
         }
 
         private async Task LoadData()
@@ -276,17 +246,13 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ResetInputView()
         {
-            this.ShowMainViewAndHideLateralPanel();
+            this.HideSidePanel();
         }
 
-        private void ShowMainViewAndHideLateralPanel()
+        private void ShowSidePanel(SidePanelDetailsViewModel<CompartmentEdit> childViewModel)
         {
-            this.IsExpand = false;
-            this.IsSelectableTray = true;
-            this.ReadOnlyTray = false;
-            this.IsEnabledGrid = true;
-            this.IsVisibleMainCommandBar = true;
-            this.FilterColorFunc = (new EditFilter()).ColorFunc;
+            this.ActiveSideViewModel = childViewModel;
+            this.IsSidePanelOpen = true;
         }
 
         #endregion Methods

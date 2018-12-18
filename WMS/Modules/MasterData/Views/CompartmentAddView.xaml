@@ -1,4 +1,4 @@
-﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.InputAddCompartmentView"
+﻿<UserControl x:Class="Ferretto.WMS.Modules.MasterData.CompartmentAddView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -84,32 +84,32 @@
                     <wms:SpinEdit x:Name="WidthText"
                                   Grid.Row="2"
                                   Grid.Column="0"
-                                  MinValue="1"
-                                  AllowNullInput="True"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding Compartment.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  AllowNullInput="True"
+                                  EditValue="{Binding Compartment.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                  MinValue="1" />
                     <wms:SpinEdit x:Name="HeightText"
                                   Grid.Row="2"
                                   Grid.Column="2"
-                                  MinValue="1"
-                                  AllowNullInput="True"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding Compartment.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  AllowNullInput="True"
+                                  EditValue="{Binding Compartment.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                  MinValue="1" />
 
                     <wms:SpinEdit x:Name="PositionXText"
                                   Grid.Row="3"
                                   Grid.Column="0"
-                                  MinValue="0"
-                                  AllowNullInput="True"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding Compartment.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  AllowNullInput="True"
+                                  EditValue="{Binding Compartment.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                  MinValue="0" />
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="3"
                                   Grid.Column="2"
-                                  MinValue="0"
-                                  AllowNullInput="True"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding Compartment.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  AllowNullInput="True"
+                                  EditValue="{Binding Compartment.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                                  MinValue="0" />
 
                     <wms:LookUpEdit Grid.Row="4"
                                     Grid.Column="0"
@@ -159,16 +159,16 @@
                     <wms:SpinEdit x:Name="QuantityText"
                                   Grid.Row="5"
                                   Grid.Column="0"
-                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding Compartment.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Compartment.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="5"
                                   Grid.Column="2"
-                                  MinValue="1"
-                                  AllowNullInput="True"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding Compartment.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  AllowNullInput="True"
+                                  EditValue="{Binding Compartment.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="1" />
 
                     <wms:ComboBox x:Name="MaterialStatus"
                                   Grid.Row="6"
@@ -235,4 +235,4 @@
             </StackPanel>
         </GroupBox>
     </Grid>
-</wms:WmsView>
+</UserControl>

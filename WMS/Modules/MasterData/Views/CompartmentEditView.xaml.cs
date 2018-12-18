@@ -1,12 +1,12 @@
-﻿using Ferretto.Common.Controls;
+﻿using System.Windows.Controls;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public partial class InputEditCompartmentView : WmsView
+    public partial class CompartmentEditView : UserControl
     {
         #region Constructors
 
-        public InputEditCompartmentView()
+        public CompartmentEditView()
         {
             this.InitializeComponent();
         }
