@@ -238,6 +238,6 @@
     <value>Liste di Prelievo</value>
   </data>
   <data name="PutLists" xml:space="preserve">
-    <value>Liste di Depoisito</value>
+    <value>Liste di Versamento</value>
   </data>
 </root>

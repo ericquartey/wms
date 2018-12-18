@@ -158,7 +158,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllListsWithAggregations(this.dataContext.Current, TypeInventoryFilter);
         }
 
-        public Int32 GetWithTypeInventoryCount()
+        public int GetWithTypeInventoryCount()
         {
             return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypeInventoryFilter);
         }
@@ -178,7 +178,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllListsWithAggregations(this.dataContext.Current, TypePutFilter);
         }
 
-        public Int32 GetWithTypePutCount()
+        public int GetWithTypePutCount()
         {
             return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
         }
