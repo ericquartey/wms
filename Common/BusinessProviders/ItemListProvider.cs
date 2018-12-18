@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -11,12 +13,6 @@ namespace Ferretto.Common.BusinessProviders
     public class ItemListProvider : IItemListProvider
     {
         #region Fields
-
-        private static readonly Expression<Func<DataModels.ItemList, bool>> StatusCompletedFilter =
-            list => (char)list.Status == (char)ItemListStatus.Completed;
-
-        private static readonly Expression<Func<DataModels.ItemList, bool>> StatusWaitingFilter =
-            list => (char)list.Status == (char)(ItemListStatus.Waiting);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypeInventoryFilter =
             list => (char)list.ItemListType == (char)(ItemListType.Inventory);
@@ -135,32 +131,28 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public IQueryable<ItemList> GetWithStatusCompleted()
+        public IQueryable<ItemList> GetWithStatusCompleted(ItemListType? type)
         {
-            return GetAllListsWithAggregations(this.dataContext.Current, StatusCompletedFilter);
+            var filter = BuildFilter(type, ItemListStatus.Completed);
+            return GetAllListsWithAggregations(this.dataContext.Current, filter);
         }
 
-        public Int32 GetWithStatusCompletedCount()
+        public Int32 GetWithStatusCompletedCount(ItemListType? type)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
-            }
+            var filter = BuildFilter(type, ItemListStatus.Completed);
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(filter);
         }
 
-        public IQueryable<ItemList> GetWithStatusWaiting()
+        public IQueryable<ItemList> GetWithStatusWaiting(ItemListType? type)
         {
-            return GetAllListsWithAggregations(this.dataContext.Current, StatusWaitingFilter);
+            var filter = BuildFilter(type, ItemListStatus.Waiting);
+            return GetAllListsWithAggregations(this.dataContext.Current, filter);
         }
 
-        public Int32 GetWithStatusWaitingCount()
+        public Int32 GetWithStatusWaitingCount(ItemListType? type)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(StatusWaitingFilter);
-            }
+            var filter = BuildFilter(type, ItemListStatus.Waiting);
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(filter);
         }
 
         public IQueryable<ItemList> GetWithTypeInventory()
@@ -170,11 +162,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public Int32 GetWithTypeInventoryCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(TypeInventoryFilter);
-            }
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypeInventoryFilter);
         }
 
         public IQueryable<ItemList> GetWithTypePick()
@@ -184,11 +172,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public Int32 GetWithTypePickCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(TypePickFilter);
-            }
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePickFilter);
         }
 
         public IQueryable<ItemList> GetWithTypePut()
@@ -198,11 +182,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public Int32 GetWithTypePutCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(TypePutFilter);
-            }
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
         }
 
         public Int32 Save(ItemListDetails model)
@@ -226,6 +206,17 @@ namespace Ferretto.Common.BusinessProviders
         public Task<OperationResult> ScheduleForExecution(int areaId)
         {
             return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+        }
+
+        private static Expression<Func<DataModels.ItemList, Boolean>> BuildFilter(ItemListType? type, ItemListStatus status)
+        {
+            var listType = type.HasValue ? (DataModels.ItemListType)type.Value : default(DataModels.ItemListType);
+            var listStatus = (DataModels.ItemListStatus)status;
+
+            return list =>
+                list.Status == listStatus
+                &&
+                (type.HasValue == false || list.ItemListType == listType);
         }
 
         private static IQueryable<ItemList> GetAllListsWithAggregations(DatabaseContext context, Expression<Func<DataModels.ItemList, bool>> whereFunc = null)

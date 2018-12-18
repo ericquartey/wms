@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -175,44 +176,90 @@ namespace Ferretto.Common.Modules.BLL.Services
                     var itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
                     var itemListCountProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
-                    return new List<FilterDataSource<ItemList>>
+                    var listFilters = new List<FilterDataSource<ItemList>>();
+                    var type = parameter;
+                    if (parameter != null && Enum.IsDefined(typeof(ItemListType), (int)(char)parameter))
                     {
-                        new FilterDataSource<ItemList>(
-                            "ItemListViewAll",
-                            Resources.MasterData.ItemListAll,
-                            () => itemListProvider.GetAll(),
-                            () => itemListCountProvider.GetAllCount()),
+                        type = (ItemListType)Enum.ToObject(typeof(ItemListType), parameter);
+                    }
+                    switch (type)
+                    {
+                        case ItemListType.Pick:
+                            listFilters.Add(
+                                new FilterDataSource<ItemList>(
+                                    "ItemListViewTypePick",
+                                    Resources.MasterData.ItemListsTypePick,
+                                    () => itemListProvider.GetWithTypePick(),
+                                    () => itemListCountProvider.GetWithTypePickCount())
+                               );
+                            break;
 
-                        new FilterDataSource<ItemList>(
-                            "ItemListViewTypePick",
-                            Resources.MasterData.ItemListsTypePick,
-                            () => itemListProvider.GetWithTypePick(),
-                            () => itemListCountProvider.GetWithTypePickCount()),
+                        case ItemListType.Put:
+                            listFilters.Add(
+                                new FilterDataSource<ItemList>(
+                                    "ItemListViewTypePut",
+                                    Resources.MasterData.ItemListsTypePut,
+                                    () => itemListProvider.GetWithTypePut(),
+                                    () => itemListCountProvider.GetWithTypePutCount())
+                               );
+                            break;
 
-                        new FilterDataSource<ItemList>(
-                            "ItemListViewTypePut",
-                            Resources.MasterData.ItemListsTypePut,
-                            () => itemListProvider.GetWithTypePut(),
-                            () => itemListCountProvider.GetWithTypePutCount()),
+                        case ItemListType.Inventory:
+                            listFilters.Add(
+                               new FilterDataSource<ItemList>(
+                                    "ItemListViewTypeInventory",
+                                    Resources.MasterData.ItemListsTypeInventory,
+                                    () => itemListProvider.GetWithTypeInventory(),
+                                    () => itemListCountProvider.GetWithTypeInventoryCount())
+                               );
+                            break;
 
-                        new FilterDataSource<ItemList>(
-                            "ItemListViewTypeInventory",
-                            Resources.MasterData.ItemListsTypeInventory,
-                            () => itemListProvider.GetWithTypeInventory(),
-                            () => itemListCountProvider.GetWithTypeInventoryCount()),
+                        default:
+                            listFilters.Add(new FilterDataSource<ItemList>(
+                                  "ItemListViewAll",
+                                  Resources.MasterData.ItemListAll,
+                                  () => itemListProvider.GetAll(),
+                                  () => itemListCountProvider.GetAllCount())
+                            );
+                            listFilters.Add(
+                                new FilterDataSource<ItemList>(
+                                    "ItemListViewTypePick",
+                                    Resources.MasterData.ItemListsTypePick,
+                                    () => itemListProvider.GetWithTypePick(),
+                                    () => itemListCountProvider.GetWithTypePickCount())
+                               );
+                            listFilters.Add(
+                                new FilterDataSource<ItemList>(
+                                    "ItemListViewTypePut",
+                                    Resources.MasterData.ItemListsTypePut,
+                                    () => itemListProvider.GetWithTypePut(),
+                                    () => itemListCountProvider.GetWithTypePutCount())
+                               );
+                            listFilters.Add(
+                               new FilterDataSource<ItemList>(
+                                    "ItemListViewTypeInventory",
+                                    Resources.MasterData.ItemListsTypeInventory,
+                                    () => itemListProvider.GetWithTypeInventory(),
+                                    () => itemListCountProvider.GetWithTypeInventoryCount())
+                               );
+                            break;
+                    }
 
+                    listFilters.Add(
                         new FilterDataSource<ItemList>(
                             "ItemListViewStatusWaiting",
                             Resources.MasterData.ItemListStatusWaiting,
-                            () => itemListProvider.GetWithStatusWaiting(),
-                            () => itemListCountProvider.GetWithStatusWaitingCount()),
+                            () => itemListProvider.GetWithStatusWaiting((ItemListType?)type),
+                            () => itemListCountProvider.GetWithStatusWaitingCount((ItemListType?)type)));
 
-                        new FilterDataSource<ItemList>(
+                    listFilters.Add(
+                       new FilterDataSource<ItemList>(
                             "ItemListViewStatusCompleted",
                             Resources.MasterData.ItemListStatusCompleted,
-                            () => itemListProvider.GetWithStatusCompleted(),
-                            () => itemListCountProvider.GetWithStatusCompletedCount()),
-                    }.Cast<IFilterDataSource<TModel>>();
+                            () => itemListProvider.GetWithStatusCompleted((ItemListType?)type),
+                            () => itemListCountProvider.GetWithStatusCompletedCount((ItemListType?)type)));
+
+                    return listFilters.Cast<IFilterDataSource<TModel>>();
 
                 default:
                     return new List<IFilterDataSource<TModel>>();

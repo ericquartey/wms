@@ -122,11 +122,11 @@
     <comment>@Invariant</comment>
   </data>
   <data name="AllLists" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_list_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-list-50.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="Cells" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/cells.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-grid-50.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CellStatuses" xml:space="preserve">
@@ -134,7 +134,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="Compartments" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/ic_view_compact_grey_24dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-view-module-50.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="CompartmentStatuses" xml:space="preserve">
@@ -238,7 +238,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="Items" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Menu/grey/items.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-stacking-50.png</value>
     <comment>@Invariant</comment>
   </data>
   <data name="UserProfile" xml:space="preserve">
@@ -453,5 +453,14 @@
   <data name="CompartmentStatusExpired" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-expired-50.png</value>
     <comment>@Invariant</comment>
+  </data>
+  <data name="InventoryLists" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/inv.png</value>
+  </data>
+  <data name="PickLists" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/up.png</value>
+  </data>
+  <data name="PutLists" xml:space="preserve">
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/down.png</value>
   </data>
 </root>
