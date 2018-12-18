@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -115,9 +116,9 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.WithdrawCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override void ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommand()
         {
-            this.LoadData();
+            await this.LoadData();
         }
 
         protected override void ExecuteSaveCommand()
@@ -132,9 +133,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        protected override void OnAppear()
+        protected override async void OnAppear()
         {
-            this.LoadData();
+            await this.LoadData();
             base.OnAppear();
         }
 
@@ -165,15 +166,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Item>>(eventArgs => this.LoadData(), this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Item>>(eventArgs => this.LoadData());
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Item>>(async eventArgs => await this.LoadData(), this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Item>>(async eventArgs => await this.LoadData());
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Item>>(
-                eventArgs =>
+                async eventArgs =>
                 {
                     if (eventArgs.ModelId.HasValue)
                     {
                         this.Data = eventArgs.ModelId.Value;
-                        this.LoadData();
+                        await this.LoadData();
                     }
                     else
                     {
@@ -185,11 +186,11 @@ namespace Ferretto.WMS.Modules.MasterData
                 true);
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             if (this.Data is int modelId)
             {
-                this.Item = this.itemProvider.GetById(modelId);
+                this.Item = await this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
             }
         }

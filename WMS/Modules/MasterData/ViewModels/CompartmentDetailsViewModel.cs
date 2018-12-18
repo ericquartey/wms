@@ -1,4 +1,5 @@
-﻿using Ferretto.Common.BLL.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls.Interfaces;
@@ -54,9 +55,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.SetProperty(ref this.compartment, value))
                 {
                     this.TakeSnapshot(this.compartment);
-
-                    var loadingUnit = this.loadingUnitProvider.GetById(this.compartment.LoadingUnitId);
-                    this.InitializeTray(loadingUnit);
                     this.SetSelectedCompartment();
                     this.RefreshData();
                 }
@@ -106,9 +104,9 @@ namespace Ferretto.WMS.Modules.MasterData
             this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(() => this.loadingUnitProvider.GetAll());
         }
 
-        protected override void ExecuteRevertCommand()
+        protected override async Task ExecuteRevertCommand()
         {
-            this.LoadData();
+            await this.LoadData();
         }
 
         protected override void ExecuteSaveCommand()
@@ -123,9 +121,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        protected override void OnAppear()
+        protected override async void OnAppear()
         {
-            this.LoadData();
+            await this.LoadData();
             base.OnAppear();
         }
 
@@ -139,15 +137,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Compartment>>(eventArgs => { this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Compartment>>(eventArgs => { this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Compartment>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Compartment>>(async eventArgs => { await this.LoadData(); });
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Compartment>>(
-                eventArgs =>
+                async eventArgs =>
                 {
                     if (eventArgs.ModelId.HasValue)
                     {
                         this.Data = eventArgs.ModelId.Value;
-                        this.LoadData();
+                        await this.LoadData();
                     }
                     else
                     {
@@ -181,11 +179,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.IsCompartmentSelectableTray));
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             if (this.Data is int modelId)
             {
-                this.Compartment = this.compartmentProvider.GetById(modelId);
+                var comp = await this.compartmentProvider.GetById(modelId);
+                var loadingUnit = await this.loadingUnitProvider.GetById(comp.LoadingUnitId);
+                this.Compartment = comp;
+                this.InitializeTray(loadingUnit);
             }
         }
 

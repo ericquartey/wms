@@ -10,6 +10,7 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
@@ -137,6 +138,7 @@ namespace Ferretto.WMS.Modules.MasterData
             if (await this.SaveLoadingUnit())
             {
                 this.ResetView();
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
             }
         }
 

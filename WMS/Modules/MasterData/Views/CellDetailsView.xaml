@@ -12,7 +12,6 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
-             Style="{DynamicResource SlideInRightToLeft}"
              mc:Ignorable="d">
 
     <Grid Margin="20"
@@ -88,7 +87,6 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       MinValue="1"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
@@ -99,6 +97,7 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       MinValue="1"
+                                      AllowNullInput="False"
                                       EditValue="{Binding Cell.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
@@ -126,13 +125,11 @@
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       MinValue="1"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
                                       MinValue="1"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.Floor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="0"
@@ -142,20 +139,14 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.XCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.YCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="0"
-                                      AllowNullInput="True"
                                       EditValue="{Binding Cell.ZCoordinate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>

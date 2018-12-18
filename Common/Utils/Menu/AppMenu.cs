@@ -92,7 +92,7 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.UnitsOfMeasurement, bgColor, nameof(Navigation.UnitsOfMeasurement), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MeasureUnits, bgColor, nameof(Navigation.MeasureUnits), string.Empty, string.Empty),
                         new MainMenuItem(Navigation.AbcClasses, bgColor, nameof(Navigation.AbcClasses), string.Empty, string.Empty),
                         new MainMenuItem(Navigation.CellStatuses, bgColor, nameof(Navigation.CellStatuses), string.Empty, string.Empty),
                         new MainMenuItem(Navigation.LoadingUnitStatuses, bgColor, nameof(Navigation.LoadingUnitStatuses), string.Empty, string.Empty),

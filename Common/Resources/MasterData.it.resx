@@ -346,4 +346,88 @@
   <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
     <value>{0} X {1} [mm]</value>
   </data>
+  <data name="CellClassADescription" xml:space="preserve">
+    <value>Restituisce tutte le celle di classe A</value>
+  </data>
+  <data name="CellStatusEmptyDescription" xml:space="preserve">
+    <value>Restituisce tutte le celle vuote</value>
+  </data>
+  <data name="CellStatusFullDescription" xml:space="preserve">
+    <value>Restituisce tutte le celle piene</value>
+  </data>
+  <data name="CellsViewAllDescription" xml:space="preserve">
+    <value>Restiuisce tutte le celle</value>
+  </data>
+  <data name="CompartmentStatusAvailableDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti in stato  disponibile</value>
+  </data>
+  <data name="CompartmentStatusAwaitingDescription" xml:space="preserve">
+    <value>Resituisce tutti gli scomparti in stato di  attesa</value>
+  </data>
+  <data name="CompartmentStatusBlockedDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti in stato di blocco</value>
+  </data>
+  <data name="CompartmentStatusExpiredDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti in stato  scaduto</value>
+  </data>
+  <data name="CompartmentsViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti</value>
+  </data>
+  <data name="ItemListViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste</value>
+  </data>
+  <data name="ItemListViewStatusCompletedDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste in stato completato</value>
+  </data>
+  <data name="ItemListViewStatusWaitingDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste in stato di attesa</value>
+  </data>
+  <data name="ItemListViewTypeInventoryDescription" xml:space="preserve">
+    <value>Restiuisce tutte le liste di inventario</value>
+  </data>
+  <data name="ItemListViewTypePickDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste di prelievo</value>
+  </data>
+  <data name="ItemListViewTypePutDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste di deposito</value>
+  </data>
+  <data name="ItemsViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutti gli articoli</value>
+    <comment>Filter - All Items</comment>
+  </data>
+  <data name="ItemsViewClassADescription" xml:space="preserve">
+    <value>Restituisce tutti gli articoli di classe A</value>
+    <comment>Filter - Items with class A</comment>
+  </data>
+  <data name="ItemsViewFIFODescription" xml:space="preserve">
+    <value>Restituisce tutti gli articoli in ordine FIFO</value>
+    <comment>Filter - Items with FIFO policy</comment>
+  </data>
+  <data name="LoadingUnitsViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC</value>
+  </data>
+  <data name="LoadingUnitsViewAreaManualDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC con aree manuali</value>
+  </data>
+  <data name="LoadingUnitsViewAreaVertimagDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC con i Vertimag</value>
+  </data>
+  <data name="LoadingUnitsViewStatusAvailableDescription" xml:space="preserve">
+    <value>Resituisce tutte le UDC in stato disponibile</value>
+  </data>
+  <data name="LoadingUnitsViewStatusBlockedDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC in stato di blocco</value>
+  </data>
+  <data name="LoadingUnitsViewStatusUsedDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC in stato di uso</value>
+  </data>
+  <data name="MachinesViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutte le macchine</value>
+  </data>
+  <data name="MachinesViewVertimagMDescription" xml:space="preserve">
+    <value>Restituisce tutte le macchine Vertimag M</value>
+  </data>
+  <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
+    <value>Restituisce tutte le macchine Vertimag XS</value>
+  </data>
 </root>

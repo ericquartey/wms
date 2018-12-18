@@ -9,7 +9,6 @@
              xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
              d:DesignHeight="450"
              d:DesignWidth="800"
-             Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
 
     <Grid x:Name="Edit"
@@ -85,14 +84,12 @@
                               Grid.Row="2"
                               Grid.Column="0"
                               MinValue="1"
-                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 <wms:SpinEdit x:Name="HeightText"
                               Grid.Row="2"
                               Grid.Column="2"
                               MinValue="1"
-                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
@@ -100,14 +97,10 @@
                               Grid.Row="3"
                               Grid.Column="0"
                               HorizontalAlignment="Stretch"
-                              MinValue="0"
-                              AllowNullInput="True"
                               EditValue="{Binding SelectedCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 <wms:SpinEdit x:Name="PositionYText"
                               Grid.Row="3"
                               Grid.Column="2"
-                              MinValue="0"
-                              AllowNullInput="True"
                               HorizontalAlignment="Stretch"
                               HorizontalContentAlignment="Right"
                               EditValue="{Binding SelectedCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
@@ -159,7 +152,7 @@
                 <wms:SpinEdit x:Name="QuantityText"
                               Grid.Row="5"
                               Grid.Column="0"
-                              MinValue="0"
+                              AllowNullInput="False"
                               MinWidth="90"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -167,6 +160,7 @@
                               Grid.Row="5"
                               Grid.Column="2"
                               MinValue="1"
+                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding SelectedCompartmentTray.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 

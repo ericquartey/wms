@@ -142,12 +142,11 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
-        public LoadingUnitDetails GetById(int id)
+        public async Task<LoadingUnitDetails> GetById(int id)
         {
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var loadingUnitDetails = dataContext.LoadingUnits
+
+            var loadingUnitDetails = await dataContext.LoadingUnits
                 .Where(l => l.Id == id)
                 .Include(l => l.AbcClass)
                 .Include(l => l.CellPosition)
@@ -189,24 +188,23 @@ namespace Ferretto.Common.BusinessProviders
                     AisleId = l.Cell.AisleId,
                     AreaId = l.Cell.Aisle.AreaId,
                 })
-                .Single();
+                .SingleAsync();
 
-                loadingUnitDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-                loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
-                loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
-                loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
-                foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
-                {
-                    loadingUnitDetails.AddCompartment(compartment);
-                }
-
-                loadingUnitDetails.ReferenceTypeChoices =
-                    ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
-                    .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
-                loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
-
-                return loadingUnitDetails;
+            loadingUnitDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            loadingUnitDetails.CellPositionChoices = this.enumerationProvider.GetAllCellPositions();
+            loadingUnitDetails.LoadingUnitStatusChoices = this.enumerationProvider.GetAllLoadingUnitStatuses();
+            loadingUnitDetails.LoadingUnitTypeChoices = this.enumerationProvider.GetAllLoadingUnitTypes();
+            foreach (var compartment in this.compartmentProvider.GetByLoadingUnitId(id))
+            {
+                loadingUnitDetails.AddCompartment(compartment);
             }
+
+            loadingUnitDetails.ReferenceTypeChoices =
+                ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
+                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
+            loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
+
+            return loadingUnitDetails;
         }
 
         public IQueryable<LoadingUnit> GetWithAreaManual()

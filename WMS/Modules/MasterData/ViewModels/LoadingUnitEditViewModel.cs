@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -240,12 +241,12 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.Tray));
         }
 
-        private void InputAddVM_FinishEvent(Object sender, EventArgs e)
+        private async void InputAddVM_FinishEvent(Object sender, EventArgs e)
         {
             this.ResetInputView();
             if (sender is InputAddCompartmentViewModel model)
             {
-                this.LoadData();
+                await this.LoadData();
                 this.SelectedCompartmentTray = model.Compartment;
             }
             this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
@@ -263,11 +264,11 @@ namespace Ferretto.WMS.Modules.MasterData
             this.InputEditVM.FinishEvent -= this.InputEditVM_FinishEvent;
         }
 
-        private void LoadData()
+        private async Task LoadData()
         {
             if (this.Data is int modelId)
             {
-                this.LoadingUnit = this.loadingUnitProvider.GetById(modelId);
+                this.LoadingUnit = await this.loadingUnitProvider.GetById(modelId);
                 this.InitializeTray();
             }
         }

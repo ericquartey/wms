@@ -3,9 +3,11 @@
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+               xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                xmlns:dxdo="http://schemas.devexpress.com/winfx/2008/xaml/docking"
                xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+               xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
                xmlns:prism="http://www.codeplex.com/prism"
                d:DesignHeight="450"
                d:DesignWidth="800"
@@ -19,21 +21,26 @@
             <ContentControl x:Name="MenuContent"
                             prism:RegionManager.RegionName="Layout.Menu" />
         </DockPanel>
-        <ctrls:WmsMainDockLayoutManager Grid.Row="1">
-            <dxdo:LayoutGroup Name="HorizLayoutGroup"
-                              Orientation="Horizontal">
-                <dxdo:LayoutGroup Name="VertLayoutGroup"
-                                  Orientation="Vertical">
-                    <dxdo:LayoutGroup Name="MainDocumentGroupLayoutGroup"
-                                      ItemHeight="0.7*"
-                                      Orientation="Horizontal">
-                        <dxdo:DocumentGroup Name="MainDocumentGroup"
-                                            DestroyOnClosingChildren="False"
-                                            MDIStyle="Tabbed" />
+        <dx:LoadingDecorator Grid.Row="1"
+                             IsSplashScreenShown="False">
+            <ctrls:WmsMainDockLayoutManager ShowBusyOnStartUp="True"
+                                            StartModuleName="{ctrls:NameOf Type={x:Type modules:Machines}}"
+                                            StartViewName="{x:Static modules:Machines.MACHINES}">
+                <dxdo:LayoutGroup Name="HorizLayoutGroup"
+                                  Orientation="Horizontal">
+                    <dxdo:LayoutGroup Name="VertLayoutGroup"
+                                      Orientation="Vertical">
+                        <dxdo:LayoutGroup Name="MainDocumentGroupLayoutGroup"
+                                          ItemHeight="0.7*"
+                                          Orientation="Horizontal">
+                            <dxdo:DocumentGroup Name="MainDocumentGroup"
+                                                DestroyOnClosingChildren="False"
+                                                MDIStyle="Tabbed" />
+                        </dxdo:LayoutGroup>
                     </dxdo:LayoutGroup>
                 </dxdo:LayoutGroup>
-            </dxdo:LayoutGroup>
-        </ctrls:WmsMainDockLayoutManager>
+            </ctrls:WmsMainDockLayoutManager>
+        </dx:LoadingDecorator>
         <!--  Preload GridControl, as mentioned in https://www.devexpress.com/Support/Center/Question/Details/Q366638/  -->
         <dxg:GridControl MaxWidth="1"
                          MaxHeight="1"
