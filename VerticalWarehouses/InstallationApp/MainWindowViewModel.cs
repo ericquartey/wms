@@ -17,6 +17,7 @@ using Ferretto.VW.ActionBlocks;
 using System.Windows.Controls.Primitives;
 using System.Windows.Controls;
 using System.Diagnostics;
+using Prism.Regions;
 
 #if CODEMAID
     // disable codemaid in this file
@@ -43,6 +44,7 @@ namespace Ferretto.VW.InstallationApp
         private BindableBase navigationRegionCurrentViewModel;
         private bool machineModeSelectionBool = false;
         private bool machineOnMarchSelectionBool = false;
+        private readonly IRegionManager regionManager;
         private bool isNavigationButtonRegionExpanded = true;
 
         #endregion Constants, Statics & Others
