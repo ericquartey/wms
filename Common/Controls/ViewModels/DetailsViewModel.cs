@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
-using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
-namespace Ferretto.WMS.Modules.MasterData
+namespace Ferretto.Common.Controls
 {
     public abstract class DetailsViewModel<T> : BaseServiceNavigationViewModel, IRefreshDataEntityViewModel
         where T : BusinessObject
@@ -16,6 +15,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
 
+        private bool isBusy;
         private T model;
         private ICommand revertCommand;
         private ICommand saveCommand;
@@ -32,6 +32,18 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
+            }
+        }
 
         public T Model
         {
@@ -82,12 +94,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected virtual bool CanExecuteRevertCommand()
         {
-            return this.changeDetector.IsModified == true;
+            return this.changeDetector.IsModified == true
+                && this.IsBusy == false;
         }
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.changeDetector.IsModified == true && string.IsNullOrWhiteSpace(this.Model.Error);
+            return this.changeDetector.IsModified == true
+                && string.IsNullOrWhiteSpace(this.Model.Error)
+                && this.IsBusy == false;
         }
 
         protected virtual void EvaluateCanExecuteCommands()
