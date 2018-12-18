@@ -91,19 +91,6 @@ namespace Ferretto.VW.VWApp
             (Current as App).Resources.MergedDictionaries.Add(skinDictionary);
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            this.InitializeComponent();
-            NavigationService.InitializeEvents();
-            DataManager.CurrentData = new DataManager();
-            NavigationService.ChangeSkinToDarkEventHandler += (Current as App).ChangeSkin;
-
-            var bootstrapper = new Bootstrapper();
-            bootstrapper.Run();
-        }
-
         private void ChangeSkinToDark() => (Current as App).ChangeSkin(Skin.Dark);
 
         private void ChangeSkinToLight() => (Current as App).ChangeSkin(Skin.Light);
