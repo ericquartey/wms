@@ -31,18 +31,19 @@ namespace Ferretto.VW.InverterDriver
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly InverterDriverState state;
-        private int ActualPositionShaft;
+        private int ActualPositionHorizontalShaft;
+        private int ActualPositionVerticalShaft;
         private Request[] BaseRequestArray;
         private bool BrakeResistanceOvertemperature;
         private BitArray CtrlWord;
         private Request currentRequest;
         private bool EmergencyStop;
+        private bool enableUpdateCurrentPositionHorizontalShaftMode;
+        private bool enableUpdateCurrentPositionVerticalShaftMode;
         private bool errorReceivedTelegram;
         private AutoResetEvent eventToSendPacket;
 
         private bool executeRequestOnRunning;
-
-        private bool getActualPositionShaftValue;
         private bool getStatusWordValue;
         private bool HeartBeat;
         private HardwareInverterStatus hwInverterState;
@@ -106,11 +107,6 @@ namespace Ferretto.VW.InverterDriver
         #region Properties
 
         /// <summary>
-        /// Get the Actual Position of controlled Shaft.
-        /// </summary>
-        public int Actual_Position_Shaft => this.ActualPositionShaft;
-
-        /// <summary>
         /// Get brake resistance overtemperature-Digital value.
         /// </summary>
         public bool Brake_Resistance_Overtemperature
@@ -120,6 +116,34 @@ namespace Ferretto.VW.InverterDriver
                 lock (lockObj)
                 {
                     return this.BrakeResistanceOvertemperature;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get the current position of controlled Shaft (horizontal axis).
+        /// </summary>
+        public int Current_Position_Horizontal_Shaft
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.ActualPositionHorizontalShaft;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Get the current position of controlled Shaft (vertical axis).
+        /// </summary>
+        public int Current_Position_Vertical_Shaft
+        {
+            get
+            {
+                lock (lockObj)
+                {
+                    return this.ActualPositionVerticalShaft;
                 }
             }
         }
@@ -139,15 +163,15 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <summary>
-        /// Enable the retrieve of Actual_Position_Shaft parameter.
+        /// Enable the automatic updating of current position shaft parameter (vertical axis).
         /// </summary>
-        public bool Get_Actual_Position_Shaft_Enable
+        public bool Enable_Update_Current_Position_Horizontal_Shaft_Mode
         {
             set
             {
                 lock (lockFlags)
                 {
-                    this.getActualPositionShaftValue = value;
+                    this.enableUpdateCurrentPositionHorizontalShaftMode = value;
                 }
             }
 
@@ -155,7 +179,30 @@ namespace Ferretto.VW.InverterDriver
             {
                 lock (lockFlags)
                 {
-                    return this.getActualPositionShaftValue;
+                    return this.enableUpdateCurrentPositionHorizontalShaftMode;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Enable the automatic updating of current position shaft parameter (vertical axis).
+        /// </summary>
+        public bool Enable_Update_Current_Position_Vertical_Shaft_Mode
+        {
+            set
+            {
+                lock (lockFlags)
+                {
+                    this.enableUpdateCurrentPositionVerticalShaftMode = value;
+                    logger.Log(LogLevel.Debug, "Set enableUpdateCurrentPositionVerticalShaftMode = {0}", value.ToString());
+                }
+            }
+
+            get
+            {
+                lock (lockFlags)
+                {
+                    return this.enableUpdateCurrentPositionVerticalShaftMode;
                 }
             }
         }
@@ -301,10 +348,11 @@ namespace Ferretto.VW.InverterDriver
             this.BaseRequestArray = new Request[3];
             this.BaseRequestArray[0] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_DIGITAL_SIGNALS, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
             this.BaseRequestArray[1] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
-            this.BaseRequestArray[2] = new Request(TypeOfRequest.SendRequest, ParameterID.ACTUAL_POSITION_SHAFT, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
+            this.BaseRequestArray[2] = new Request(TypeOfRequest.SendRequest, ParameterID.ACTUAL_POSITION_SHAFT, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int32, null);
 
             this.getStatusWordValue = false;
-            this.getActualPositionShaftValue = false;
+            this.enableUpdateCurrentPositionVerticalShaftMode = true; //false;
+            this.enableUpdateCurrentPositionHorizontalShaftMode = false;
             this.IndexOfBaseRequest = -1;
 
             // Create the requests list (for external requests)
@@ -343,24 +391,7 @@ namespace Ferretto.VW.InverterDriver
                 this.errorReceivedTelegram = this.received_telegram(telegramRead, out var paramID, out this.retParameterValue);
                 if (!this.errorReceivedTelegram)
                 {
-                    switch (this.CurrentActionType)
-                    {
-                        case ActionType.CalibrateVerticalAxis:
-                            {
-                                if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_CalibrateVerticalAxis?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
-                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
-                                break;
-                            }
-                        case ActionType.PositioningDrawer:
-                            {
-                                if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_PositioningDrawer?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
-                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_PositioningDrawer?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
-                                break;
-                            }
-                        default:
-                            break;
-                    }
-
+                    
                     // Update internal class members
                     switch (this.currentRequest.ParameterID)
                     {
@@ -375,6 +406,7 @@ namespace Ferretto.VW.InverterDriver
 
                                 break;
                             }
+
                         case ParameterID.STATUS_DIGITAL_SIGNALS:
                             {
                                 lock (lockObj)
@@ -393,6 +425,16 @@ namespace Ferretto.VW.InverterDriver
                                 break;
                             }
 
+                        case ParameterID.ACTUAL_POSITION_SHAFT:
+                            {
+                                lock (lockObj)
+                                {
+                                    this.ActualPositionVerticalShaft = Convert.ToInt32(this.retParameterValue);
+                                }
+
+                                break;
+                            }
+
                         case ParameterID.CONTROL_WORD_PARAM:
                             {
                                 if (this.currentRequest.Source == RequestSource.Internal)
@@ -405,6 +447,25 @@ namespace Ferretto.VW.InverterDriver
 
                                 break;
                             }
+                    }
+
+                    // Notify
+                    switch (this.CurrentActionType)
+                    {
+                        case ActionType.CalibrateVerticalAxis:
+                            {
+                                if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_CalibrateVerticalAxis?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                break;
+                            }
+                        case ActionType.PositioningDrawer:
+                            {
+                                if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_PositioningDrawer?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_PositioningDrawer?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
+                                break;
+                            }
+                        default:
+                            break;
                     }
                 }
                 else
@@ -454,7 +515,7 @@ namespace Ferretto.VW.InverterDriver
         }
 
         /// <summary>
-        /// Send a request to inverter to read a parameter value.
+        /// Send a request to inverter to set a value for a given parameter.
         /// </summary>
         public InverterDriverExitStatus SettingRequest(ParameterID paramID, byte systemIndex, byte dataSetIndex, object value)
         {
@@ -462,6 +523,11 @@ namespace Ferretto.VW.InverterDriver
 
             // Store the request into the list.
             var Rq = new Request(TypeOfRequest.SettingRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, valueType, value);
+
+            if (paramID == ParameterID.ACTUAL_POSITION_SHAFT)
+            {
+                logger.Log(LogLevel.Debug, String.Format("Send a request to get ACTUAL POSITION SHAFT"));
+            }
 
             BitArray bitArrayCtrlTmp = null;
             if (paramID == ParameterID.CONTROL_WORD_PARAM)
@@ -690,7 +756,7 @@ namespace Ferretto.VW.InverterDriver
                         {
                             lock (lockFlags)
                             {
-                                exit = this.getActualPositionShaftValue;
+                                exit = this.enableUpdateCurrentPositionVerticalShaftMode;
                             }
 
                             break;
@@ -768,6 +834,7 @@ namespace Ferretto.VW.InverterDriver
                 var value = BitConverter.ToInt16(bytes, 0);
                 this.currentRequest = new Request(TypeOfRequest.SettingRequest, ParameterID.CONTROL_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, value);
                 this.CtrlWord.Set(HEARTBIT, !this.CtrlWord.Get(HEARTBIT));
+
                 //logger.Log(LogLevel.Debug, String.Format("Send HeartBeat. Time elapsed: {0}", offsetTime_HeartBeat));
             }
             else
