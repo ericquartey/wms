@@ -3,10 +3,9 @@ using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
+namespace Ferretto.VW.InstallationApp
 {
-    internal class LSMTGateEngineViewModel : BindableBase
+    public class LSMTGateEngineViewModel : BindableBase
     {
-
     }
 }

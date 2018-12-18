@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using DevExpress.Mvvm.UI;
 
 namespace Ferretto.VW.CustomControls.Controls
 {
@@ -17,6 +16,7 @@ namespace Ferretto.VW.CustomControls.Controls
         public static readonly DependencyProperty HideToggleButtonProperty = DependencyProperty.RegisterAttached("HideToggleButton", typeof(bool), typeof(Expander), new FrameworkPropertyMetadata(false));
         private Grid gridHeaderSite;
         private ToggleButton toggleButton;
+        private VisualTreeAdapter visualTreeAdapterInstance;
 
         #endregion Fields
 
@@ -25,6 +25,7 @@ namespace Ferretto.VW.CustomControls.Controls
         public Expander()
         {
             this.Style = Application.Current.Resources["WmsExpanderStyle"] as Style;
+            this.visualTreeAdapterInstance = new VisualTreeAdapter(this);
         }
 
         #endregion Constructors
@@ -50,13 +51,17 @@ namespace Ferretto.VW.CustomControls.Controls
 
         private void Expander_SizeChanged(Object sender, SizeChangedEventArgs e)
         {
+            if (this.visualTreeAdapterInstance == null)
+            {
+                this.visualTreeAdapterInstance = new VisualTreeAdapter(this);
+            }
             if (!(sender is FrameworkElement parentControl))
             {
                 return;
             }
             if (this.toggleButton == null)
             {
-                var toggleButtonFound = LayoutTreeHelper.GetVisualChildren(this as DependencyObject)
+                var toggleButtonFound = this.visualTreeAdapterInstance.Children()
                  .OfType<ToggleButton>()
                  .FirstOrDefault();
                 if (toggleButtonFound != null)
@@ -66,7 +71,7 @@ namespace Ferretto.VW.CustomControls.Controls
             }
             if (this.gridHeaderSite == null)
             {
-                var gridFound = LayoutTreeHelper.GetVisualChildren(this as DependencyObject)
+                var gridFound = this.visualTreeAdapterInstance.Children()
                  .OfType<Grid>()
                  .FirstOrDefault(n => n.Name == "GridHeaderSite");
                 if (gridFound != null)

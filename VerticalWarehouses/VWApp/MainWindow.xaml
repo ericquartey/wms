@@ -11,9 +11,9 @@
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
+
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
@@ -25,6 +25,8 @@
         </Grid.RowDefinitions>
         <Image Grid.Row="0"
                Grid.Column="0"
+               Width="200"
+               Height="60"
                Margin="50,10,0,0"
                HorizontalAlignment="Left"
                Source="{DynamicResource Ferretto_Logo}"
@@ -46,7 +48,7 @@
                        Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
                        Text="{Binding SerialNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Rectangle Name="SpaceRectangle2"
-                       Height="80" />
+                       Height="150" />
             <custom:CustomInputFieldControlFocusable Width="200"
                                                      HorizontalAlignment="Left"
                                                      InputText="{Binding UserLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
@@ -57,7 +59,7 @@
                                                      InputText="{Binding PasswordLogin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                      LabelText="{x:Static res:VWApp.PasswordLogin}"
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
-            <TextBlock Height="60"
+            <TextBlock Height="160"
                        HorizontalAlignment="Left"
                        Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"
                        Text="{Binding LoginErrorMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

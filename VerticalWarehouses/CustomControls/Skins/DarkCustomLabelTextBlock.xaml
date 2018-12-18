@@ -5,7 +5,7 @@
 
     <sys:Double x:Key="VWAPP_CustomLabel_ContentTextBlock_FontSize">14</sys:Double>
     <FontFamily x:Key="VWAPP_CustomLabel_ContentTextBlock_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
-    <sys:Double x:Key="VWAPP_CustomLabel_LabelTextBlock_FontSize">10</sys:Double>
+    <sys:Double x:Key="VWAPP_CustomLabel_LabelTextBlock_FontSize">12</sys:Double>
     <FontFamily x:Key="VWAPP_CustomLabel_LabelTextBlock_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
 
     <SolidColorBrush x:Key="VWAPP_CustomLabel_ContentTextBlock_Foreground_Normal"

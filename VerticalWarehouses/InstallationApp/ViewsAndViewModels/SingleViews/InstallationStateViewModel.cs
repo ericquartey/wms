@@ -3,9 +3,9 @@ using Ferretto.VW.Utils.Source;
 using System;
 using Ferretto.VW.Navigation;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
-    internal class InstallationStateViewModel : BindableBase
+    public class InstallationStateViewModel : BindableBase
     {
         #region Fields
 
@@ -39,18 +39,31 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         #region Properties
 
         public Boolean IsBeltBurnishingDone { get => this.isBeltBurnishingDone; set => this.SetProperty(ref this.isBeltBurnishingDone, value); }
+
         public Boolean IsGate1Done { get => this.isGate1Done; set => this.SetProperty(ref this.isGate1Done, value); }
+
         public Boolean IsGate2Done { get => this.isGate2Done; set => this.SetProperty(ref this.isGate2Done, value); }
+
         public Boolean IsGate3Done { get => this.isGate3Done; set => this.SetProperty(ref this.isGate3Done, value); }
+
         public Boolean IsHorizontalHomingDone { get => this.isHorizontalHomingDone; set => this.SetProperty(ref this.isHorizontalHomingDone, value); }
+
         public Boolean IsLaserGate1Done { get => this.isLaserGate1Done; set => this.SetProperty(ref this.isLaserGate1Done, value); }
+
         public Boolean IsLaserGate2Done { get => this.isLaserGate2Done; set => this.SetProperty(ref this.isLaserGate2Done, value); }
+
         public Boolean IsLaserGate3Done { get => this.isLaserGate3Done; set => this.SetProperty(ref this.isLaserGate3Done, value); }
+
         public Boolean IsMachineDone { get => this.isMachineDone; set => this.SetProperty(ref this.isMachineDone, value); }
+
         public Boolean IsSetResolutionDone { get => this.isSetResolutionDone; set => this.SetProperty(ref this.isSetResolutionDone, value); }
+
         public Boolean IsShapeGate1Done { get => this.isShapeGate1Done; set => this.SetProperty(ref this.isShapeGate1Done, value); }
+
         public Boolean IsShapeGate2Done { get => this.isShapeGate2Done; set => this.SetProperty(ref this.isShapeGate2Done, value); }
+
         public Boolean IsShapeGate3Done { get => this.isShapeGate3Done; set => this.SetProperty(ref this.isShapeGate3Done, value); }
+
         public Boolean IsVerticalHomingDone { get => this.isVerticalHomingDone; set => this.SetProperty(ref this.isVerticalHomingDone, value); }
 
         #endregion Properties

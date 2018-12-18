@@ -1,9 +1,9 @@
 ﻿using System.Windows.Media;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
-    internal class SSVerticalAxisViewModel : BindableBase
+    public class SSVerticalAxisViewModel : BindableBase
     {
         #region Fields
 
@@ -16,7 +16,9 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         #region Properties
 
         public System.Boolean BrakeResistanceOvertemperature { get => this.brakeResistanceOvertemperature; set => this.SetProperty(ref this.brakeResistanceOvertemperature, value); }
+
         public System.Boolean EmergencyEndRun { get => this.emergencyEndRun; set => this.SetProperty(ref this.emergencyEndRun, value); }
+
         public System.Boolean ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
 
         #endregion Properties

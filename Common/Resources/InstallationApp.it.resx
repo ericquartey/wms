@@ -392,13 +392,13 @@
     <value>Cicli richiesti:</value>
   </data>
   <data name="Gate1Control" xml:space="preserve">
-    <value>Controllo Serranda 1</value>
+    <value>Controllo Barriera 1</value>
   </data>
   <data name="Gate2Control" xml:space="preserve">
-    <value>Controllo Serranda 2</value>
+    <value>Controllo Barriera 2</value>
   </data>
   <data name="Gate3Control" xml:space="preserve">
-    <value>Controllo Serranda 3</value>
+    <value>Controllo Barriera 3</value>
   </data>
   <data name="ActiveRaysQuantity" xml:space="preserve">
     <value>Raggi attivati:</value>
@@ -407,16 +407,16 @@
     <value>Altezza corrente [mm]:</value>
   </data>
   <data name="GateCalibrated" xml:space="preserve">
-    <value>Serranda calibrata.</value>
+    <value>Barriera calibrata.</value>
   </data>
   <data name="GateCorrection" xml:space="preserve">
     <value>Correzione serranda [mm]:</value>
   </data>
   <data name="GateOutOfTolerance" xml:space="preserve">
-    <value>La serranda è fuori tolleranza.</value>
+    <value>La barriera è fuori tolleranza</value>
   </data>
   <data name="Gate1HeightControl" xml:space="preserve">
-    <value>Controllo Altezza Serranda 1</value>
+    <value>Controllo altezza Barriera 1</value>
   </data>
   <data name="PanelsControl" xml:space="preserve">
     <value>Controllo Pannelli</value>
@@ -437,13 +437,13 @@
     <value>Controllo Peso</value>
   </data>
   <data name="Gate2HeightControl" xml:space="preserve">
-    <value>Controllo Altezza Serranda 2</value>
+    <value>Controllo altezza Barriera 2</value>
   </data>
   <data name="Gate3HeightControl" xml:space="preserve">
-    <value>Controllo Altezza Serranda 3</value>
+    <value>Controllo altezza Barriera 3</value>
   </data>
   <data name="GateHeightControl" xml:space="preserve">
-    <value>Controllo Altezza Serranda</value>
+    <value>Controllo altezza Barriera</value>
   </data>
   <data name="AcceptableWeightTolerance" xml:space="preserve">
     <value>Tolleranza peso accettabile [%]:</value>
@@ -521,37 +521,37 @@
     <value>Rodaggio Cinghia</value>
   </data>
   <data name="Gate1Done" xml:space="preserve">
-    <value>Serranda 1</value>
+    <value>Barriera 1</value>
   </data>
   <data name="Gate2Done" xml:space="preserve">
-    <value>Serranda 2</value>
+    <value>Barriera 2</value>
   </data>
   <data name="Gate3Done" xml:space="preserve">
-    <value>Serranda 3</value>
+    <value>Barriera 3</value>
   </data>
   <data name="HorizontalAxisHomedDone" xml:space="preserve">
     <value>Origine asse orizzontale</value>
   </data>
   <data name="Laser1Done" xml:space="preserve">
-    <value>Laser serranda 1</value>
+    <value>Lase Barriera 1</value>
   </data>
   <data name="Laser2Done" xml:space="preserve">
-    <value>Laser serranda 2</value>
+    <value>Laser Barriera 2</value>
   </data>
   <data name="Laser3Done" xml:space="preserve">
-    <value>Laser serranda 3</value>
+    <value>Laser Barriera 3</value>
   </data>
   <data name="MachineDone" xml:space="preserve">
     <value>Macchina installata completamente</value>
   </data>
   <data name="Shape1Done" xml:space="preserve">
-    <value>Sagoma Serranda 1</value>
+    <value>Sagoma Barriera 1</value>
   </data>
   <data name="Shape2Done" xml:space="preserve">
-    <value>Sagoma Serranda 2</value>
+    <value>Sagoma Barriera 2</value>
   </data>
   <data name="Shape3Done" xml:space="preserve">
-    <value>Sagoma Serranda 3</value>
+    <value>Sagoma Barriera 3</value>
   </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
     <value>Origine Asse Verticale</value>

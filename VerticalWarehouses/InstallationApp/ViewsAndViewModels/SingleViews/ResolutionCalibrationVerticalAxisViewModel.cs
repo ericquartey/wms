@@ -5,9 +5,9 @@ using Ferretto.VW.Utils.Source;
 using Prism.Commands;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
-    internal class ResolutionCalibrationVerticalAxisViewModel : BindableBase
+    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase
     {
         #region Fields
 

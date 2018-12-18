@@ -1,8 +1,8 @@
 ﻿using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
-    internal class VerticalOffsetCalibrationViewModel : BindableBase
+    public class VerticalOffsetCalibrationViewModel : BindableBase
     {
     }
 }
