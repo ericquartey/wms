@@ -107,6 +107,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.CompartmentsDataSource = this.item != null
                 ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.item.Id))
                 : null;
+
+            this.EvaluateCanExecuteCommands();
         }
 
         protected override void EvaluateCanExecuteCommands()
