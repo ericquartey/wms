@@ -77,11 +77,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.InitializeData();
         }
 
-        public override void RefreshData()
-        {
-            throw new NotImplementedException();
-        }
-
         protected override bool CanExecuteSaveCommand()
         {
             if (!this.EnableCheck && this.IsNullSelectedCompartment())

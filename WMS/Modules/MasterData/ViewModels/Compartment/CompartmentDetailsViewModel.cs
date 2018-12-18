@@ -2,14 +2,14 @@
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentDetailsViewModel : DetailsViewModel<CompartmentDetails>, IRefreshDataEntityViewModel
+    public class CompartmentDetailsViewModel : DetailsViewModel<CompartmentDetails>
     {
         #region Fields
 
@@ -17,7 +17,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
-        private CompartmentDetails compartment;
         private bool isCompartmentSelectableTray;
         private IDataSource<LoadingUnit> loadingUnitsDataSource;
         private object modelChangedEventSubscription;
@@ -45,20 +44,6 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             get => this.allowedItemsDataSource;
             set => this.SetProperty(ref this.allowedItemsDataSource, value);
-        }
-
-        public CompartmentDetails Compartment
-        {
-            get => this.compartment;
-            set
-            {
-                if (this.SetProperty(ref this.compartment, value))
-                {
-                    this.TakeSnapshot(this.compartment);
-                    this.SetSelectedCompartment();
-                    this.RefreshData();
-                }
-            }
         }
 
         public bool IsCompartmentSelectableTray
@@ -95,13 +80,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void RefreshData()
+        public override void RefreshData()
         {
-            this.AllowedItemsDataSource = this.compartment != null
-                ? new DataSource<AllowedItemInCompartment>(() => this.itemProvider.GetAllowedByCompartmentId(this.compartment.Id))
+            this.AllowedItemsDataSource = this.Model != null
+                ? new DataSource<AllowedItemInCompartment>(() => this.itemProvider.GetAllowedByCompartmentId(this.Model.Id))
                 : null;
 
             this.LoadingUnitsDataSource = new DataSource<LoadingUnit>(() => this.loadingUnitProvider.GetAll());
+
+            base.RefreshData();
         }
 
         protected override async Task ExecuteRevertCommand()
@@ -111,12 +98,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.compartmentProvider.Save(this.compartment);
+            var modifiedRowCount = this.compartmentProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
-                this.TakeSnapshot(this.compartment);
+                this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<Compartment>(this.compartment.Id));
+                this.EventService.Invoke(new ModelChangedEvent<Compartment>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
         }
@@ -149,7 +136,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     }
                     else
                     {
-                        this.Compartment = null;
+                        this.Model = null;
                     }
                 },
                 this.Token,
@@ -185,14 +172,14 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 var comp = await this.compartmentProvider.GetById(modelId);
                 var loadingUnit = await this.loadingUnitProvider.GetById(comp.LoadingUnitId);
-                this.Compartment = comp;
+                this.Model = comp;
                 this.InitializeTray(loadingUnit);
             }
         }
 
         private void SetSelectedCompartment()
         {
-            this.selectedCompartmentTray = this.Compartment;
+            this.selectedCompartmentTray = this.Model;
             this.RaisePropertyChanged(nameof(this.SelectedCompartmentTray));
         }
 

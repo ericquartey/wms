@@ -90,7 +90,10 @@ namespace Ferretto.Common.Controls
             return true;
         }
 
-        public abstract void RefreshData();
+        public virtual void RefreshData()
+        {
+            this.EvaluateCanExecuteCommands();
+        }
 
         protected virtual bool CanExecuteRevertCommand()
         {

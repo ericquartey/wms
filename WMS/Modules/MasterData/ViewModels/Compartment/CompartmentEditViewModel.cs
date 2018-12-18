@@ -54,11 +54,6 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadData(compartmentId, loadingUnit);
         }
 
-        public override void RefreshData()
-        {
-            // do nothing here
-        }
-
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -82,7 +77,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
 
-                this.OnOperationComplete(null);
+                this.CompleteOperation();
             }
         }
 
@@ -98,7 +93,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Model.LoadingUnit.Compartments.Remove(this.Model as ICompartment);
                 this.Model = null;
-                this.OnOperationComplete(null);
+                this.CompleteOperation();
             }
         }
 

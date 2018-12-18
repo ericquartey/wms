@@ -64,10 +64,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.SelectedBulkCompartmentTray.PropertyChanged += this.OnSelectedBulkCompartmentPropertyChanged;
         }
 
-        public override void RefreshData()
-        {
-            throw new NotImplementedException();
-        }
 
         protected override bool CanExecuteSaveCommand()
         {

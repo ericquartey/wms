@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Ferretto.WMS.Modules.MasterData.InputBulkAddCompartmentView"
+﻿<UserControl x:Class="Ferretto.WMS.Modules.MasterData.CompartmentAddBulkView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -75,42 +75,42 @@
                 <wms:SpinEdit x:Name="WidthText"
                               Grid.Row="2"
                               Grid.Column="0"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="HeightText"
                               Grid.Row="2"
                               Grid.Column="2"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="PositionXText"
                               Grid.Row="3"
                               Grid.Column="0"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="PositionYText"
                               Grid.Row="3"
                               Grid.Column="2"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="RowText"
                               Grid.Row="4"
                               Grid.Column="0"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Row, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 <wms:SpinEdit x:Name="ColumnText"
                               Grid.Row="4"
                               Grid.Column="2"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Column, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
             </Grid>
         </GroupBox>
