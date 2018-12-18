@@ -55,11 +55,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 if (this.SetProperty(ref this.compartment, value))
                 {
                     this.TakeSnapshot(this.compartment);
-
-                    var task = this.loadingUnitProvider.GetById(this.compartment.LoadingUnitId);
-
-                    task.RunSynchronously();
-                    this.InitializeTray(loadingUnit: task.Result);
                     this.SetSelectedCompartment();
                     this.RefreshData();
                 }
@@ -188,7 +183,10 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is int modelId)
             {
-                this.Compartment = await this.compartmentProvider.GetById(modelId);
+                var comp = await this.compartmentProvider.GetById(modelId);
+                var loadingUnit = await this.loadingUnitProvider.GetById(comp.LoadingUnitId);
+                this.Compartment = comp;
+                this.InitializeTray(loadingUnit);
             }
         }
 
