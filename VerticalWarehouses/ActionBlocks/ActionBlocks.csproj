@@ -87,6 +87,7 @@
     <Compile Include="Source\ActionManager.cs" />
     <Compile Include="Source\Actions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\ActionsBasic\CalibrateHorizontalAxis.cs" />
     <Compile Include="Source\ActionsBasic\CalibrateVerticalAxis.cs" />
     <Compile Include="Source\ActionsBasic\PositioningDrawer.cs" />
     <Compile Include="Source\IActions.cs" />

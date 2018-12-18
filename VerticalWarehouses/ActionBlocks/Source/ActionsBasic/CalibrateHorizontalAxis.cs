@@ -7,24 +7,20 @@ using NLog;
 namespace Ferretto.VW.ActionBlocks
 {
     // On [EndedEventHandler] delegate for Calibrate Vertical Axis routine
-    public delegate void CalibrateVerticalAixsEndedEventHandler(bool result);
+    public delegate void CalibrateHorizontalAixsEndedEventHandler(bool result);
 
     // On [ErrorEventHandler] delegate for Calibrate Vertical Axis routine
-    public delegate void CalibrateVerticalAxisErrorEventHandler(CalibrationStatus ErrorDescription);
+    public delegate void CalibrateHorizontalAxisErrorEventHandler(CalibrationStatus ErrorDescription);
 
-    /// <summary>
-    /// Calibrate Vertical Axis class.
-    /// This class handles the automation for Calibrate vertical axis routine.
-    /// </summary>
-    public class CalibrateVerticalAxis : ICalibrateVerticalAxis
+    public class CalibrateHorizontalAxis
     {
         #region Fields
 
-        private const int DELAY_TIME = 500;             // Delay time: 250 msec
+        private const int DELAY_TIME = 500;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", "2", "3", "4", "5", "6" };
+        private readonly string[] calibrateHorizontalAxisSteps = new string[] { "1", "2", "3", "4", "5", "6" };
 
         private string calibrateOperation;
 
@@ -59,10 +55,10 @@ namespace Ferretto.VW.ActionBlocks
         #region Events
 
         // [Ended] event
-        public event CalibrateVerticalAixsEndedEventHandler ThrowEndEvent;
+        public event CalibrateHorizontalAixsEndedEventHandler ThrowEndEvent;
 
         // [Error] event
-        public event CalibrateVerticalAxisErrorEventHandler ThrowErrorEvent;
+        public event CalibrateHorizontalAxisErrorEventHandler ThrowErrorEvent;
 
         #endregion Events
 
@@ -77,6 +73,7 @@ namespace Ferretto.VW.ActionBlocks
         }
 
         #endregion Properties
+
 
         #region Methods
 
@@ -222,6 +219,7 @@ namespace Ferretto.VW.ActionBlocks
                 case "2":
                     {
                         // No check
+                        statusWordValue = true;
                         break;
                     }
 
@@ -278,7 +276,7 @@ namespace Ferretto.VW.ActionBlocks
                 // The StatusWord is corret, we can go on with another step of Engine Movement
                 this.i++;
 
-                if (this.i < this.calibrateVerticalAxisSteps.Length)
+                if (this.i < this.calibrateHorizontalAxisSteps.Length)
                 {
                     this.stepExecution();
                 }
@@ -311,11 +309,11 @@ namespace Ferretto.VW.ActionBlocks
         /// </summary>
         private void SelectTelegram(object sender, SelectTelegramDoneEventArgs eventArgs)
         {
-            logger.Log(LogLevel.Debug, "Condition = " + (this.calibrateVerticalAxisSteps.Length < this.i).ToString());
+            logger.Log(LogLevel.Debug, "Condition = " + (this.calibrateHorizontalAxisSteps.Length < this.i).ToString());
 
-            if (this.calibrateVerticalAxisSteps.Length > this.i)
+            if (this.calibrateHorizontalAxisSteps.Length > this.i)
             {
-                logger.Log(LogLevel.Debug, "Calibrate Vertical Operation = " + this.calibrateOperation);
+                logger.Log(LogLevel.Debug, "Calibrate Horizontal Operation = " + this.calibrateOperation);
 
                 // In the case of Command Engine we have to check the StatusWord
                 if (this.calibrateOperation == "1" || this.calibrateOperation == "3" || this.calibrateOperation == "4" || this.calibrateOperation == "5" || this.calibrateOperation == "6")
@@ -342,58 +340,27 @@ namespace Ferretto.VW.ActionBlocks
         /// </summary>
         private void stepExecution()
         {
-            var idExitStatus = InverterDriverExitStatus.Success;
+            // var idExitStatus = InverterDriverExitStatus.Success;
 
             // Select the operation
-            this.calibrateOperation = this.calibrateVerticalAxisSteps[this.i];
+            this.calibrateOperation = this.calibrateHorizontalAxisSteps[this.i];
 
             switch (this.calibrateOperation)
             {
-                // 1) Set parameters
-                case "1.1":
-                    {
-                        this.paramID = ParameterID.HOMING_MODE_PARAM;
-                        this.dataSetIndex = 0x06;
-                        this.valParam = this.m;
-                        break;
-                    }
-
-                case "1.2":
-                    {
-                        this.paramID = ParameterID.HOMING_OFFSET_PARAM;
-                        this.dataSetIndex = 0x05;
-                        this.valParam = (int)0;
-                        break;
-                    }
-
-                case "1.3":
-                    {
-                        this.paramID = ParameterID.HOMING_FAST_SPEED_PARAM;
-                        this.valParam = (int)this.vFast;
-                        break;
-                    }
-
-                case "1.4":
-                    {
-                        this.paramID = ParameterID.HOMING_CREEP_SPEED_PARAM;
-                        this.valParam = (int)this.vCreep;
-                        break;
-                    }
-
                 // 2) Homing mode sequence
                 case "1":
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x00; // 0000 0000
+                        this.valParam = (short)0x80; // 0000 0000
                         break;
                     }
 
                 case "2":
                     {
-                        this.dataSetIndex = 0x01; // The DataSet to set the Operating Mode for Vertical Homing is 1, 2 for the Horizontal
+                        this.dataSetIndex = 0x05; // The DataSet to set the Operating Mode for Vertical Homing is 1, 2 for the Horizontal Homing
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
-                        this.valParam = 6; // 0000 0110 per Homeing Verticale
+                        this.valParam = 1; // 0000 0001 per Homeing Verticale
                         break;
                     }
 
@@ -401,7 +368,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x06; // 0000 0110
+                        this.valParam = (short)0x86; // 1000 0110
                         break;
                     }
 
@@ -409,7 +376,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x07; // 0000 0111
+                        this.valParam = (short)0x87; // 1000 0111
                         break;
                     }
 
@@ -417,7 +384,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x0F; // 0000 1111
+                        this.valParam = (short)0x8F; // 1000 1111
                         break;
                     }
 
@@ -428,7 +395,7 @@ namespace Ferretto.VW.ActionBlocks
 
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x1F; // 0001 1111
+                        this.valParam = (short)0x9F; // 1001 1111
                         break;
                     }
 
@@ -441,7 +408,7 @@ namespace Ferretto.VW.ActionBlocks
             }
 
             // Set request to inverter
-            idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, this.dataSetIndex, this.valParam);
+            var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, this.dataSetIndex, this.valParam);
             this.checkExistStatus(idExitStatus);
         }
 
