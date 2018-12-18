@@ -10,6 +10,7 @@ using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
 using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.MathLib;
+using Ferretto.VW.InstallationApp;
 
 namespace Ferretto.VW.VWApp
 {

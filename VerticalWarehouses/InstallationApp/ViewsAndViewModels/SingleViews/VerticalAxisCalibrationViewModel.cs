@@ -11,9 +11,9 @@ using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
-    internal class VerticalAxisCalibrationViewModel : BindableBase
+    public class VerticalAxisCalibrationViewModel : BindableBase
     {
         #region Fields
 

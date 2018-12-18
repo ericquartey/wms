@@ -52,7 +52,7 @@ namespace Ferretto.Common.BusinessModels
         public int? AverageWeight
         {
             get => this.averageWeight;
-            set => this.SetIfPositive(ref this.averageWeight, value);
+            set => this.SetIfStrictlyPositive(ref this.averageWeight, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
@@ -82,21 +82,21 @@ namespace Ferretto.Common.BusinessModels
         public int? FifoTimePick
         {
             get => this.fifoTimePick;
-            set => this.SetIfPositive(ref this.fifoTimePick, value);
+            set => this.SetIfStrictlyPositive(ref this.fifoTimePick, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemFifoStoreTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTimeStore
         {
             get => this.fifoTimeStore;
-            set => this.SetIfPositive(ref this.fifoTimeStore, value);
+            set => this.SetIfStrictlyPositive(ref this.fifoTimeStore, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemHeight), ResourceType = typeof(BusinessObjects))]
         public int? Height
         {
             get => this.height;
-            set => this.SetIfPositive(ref this.height, value);
+            set => this.SetIfStrictlyPositive(ref this.height, value);
         }
 
         public string Image
@@ -116,7 +116,7 @@ namespace Ferretto.Common.BusinessModels
         public int? InventoryTolerance
         {
             get => this.inventoryTolerance;
-            set => this.SetIfPositive(ref this.inventoryTolerance, value);
+            set => this.SetIfStrictlyPositive(ref this.inventoryTolerance, value);
         }
 
         public IEnumerable<Enumeration> ItemCategoryChoices { get; set; }
@@ -153,7 +153,7 @@ namespace Ferretto.Common.BusinessModels
         public int? Length
         {
             get => this.length;
-            set => this.SetIfPositive(ref this.length, value);
+            set => this.SetIfStrictlyPositive(ref this.length, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
@@ -181,10 +181,10 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<EnumerationString> MeasureUnitChoices { get; set; }
 
-        [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
+        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
         public string MeasureUnitDescription { get; set; }
 
-        [Display(Name = nameof(General.UnitOfMeasurement), ResourceType = typeof(General))]
+        [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]
         public string MeasureUnitId
         {
             get => this.measureUnitId;
@@ -202,28 +202,28 @@ namespace Ferretto.Common.BusinessModels
         public int? PickTolerance
         {
             get => this.pickTolerance;
-            set => this.SetIfPositive(ref this.pickTolerance, value);
+            set => this.SetIfStrictlyPositive(ref this.pickTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReorderPoint), ResourceType = typeof(BusinessObjects))]
         public int? ReorderPoint
         {
             get => this.reorderPoint;
-            set => this.SetIfPositive(ref this.reorderPoint, value);
+            set => this.SetIfStrictlyPositive(ref this.reorderPoint, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemReorderQuantity), ResourceType = typeof(BusinessObjects))]
         public int? ReorderQuantity
         {
             get => this.reorderQuantity;
-            set => this.SetIfPositive(ref this.reorderQuantity, value);
+            set => this.SetIfStrictlyPositive(ref this.reorderQuantity, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemStoreTolerance), ResourceType = typeof(BusinessObjects))]
         public int? StoreTolerance
         {
             get => this.storeTolerance;
-            set => this.SetIfPositive(ref this.storeTolerance, value);
+            set => this.SetIfStrictlyPositive(ref this.storeTolerance, value);
         }
 
         [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
@@ -237,7 +237,7 @@ namespace Ferretto.Common.BusinessModels
         public int? Width
         {
             get => this.width;
-            set => this.SetIfPositive(ref this.width, value);
+            set => this.SetIfStrictlyPositive(ref this.width, value);
         }
 
         #endregion Properties

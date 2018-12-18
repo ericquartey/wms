@@ -16,7 +16,7 @@ namespace Ferretto.WMS.Modules.Layout
     {
         #region Fields
 
-        private readonly IUserProvider uerProvider = ServiceLocator.Current.GetInstance<IUserProvider>();
+        private readonly IUserProvider userProvider = ServiceLocator.Current.GetInstance<IUserProvider>();
         private bool isBusy;
         private bool isEnabled;
         private string loginCheck;
@@ -122,16 +122,16 @@ namespace Ferretto.WMS.Modules.Layout
 
         private async Task ExecuteLogin()
         {
-           this.ValidationError = this.uerProvider.IsValid(this.User);
-           if (string.IsNullOrEmpty(this.ValidationError) == false)
+            this.ValidationError = this.userProvider.IsValid(this.User);
+            if (string.IsNullOrEmpty(this.ValidationError) == false)
             {
                 return;
             }
 
-           await Task.Run(() =>
-           {
-               this.AccessGranted();
-           });         
+            await Task.Run(() =>
+            {
+                this.AccessGranted();
+            });
         }
 
         private void NotifyAccess()

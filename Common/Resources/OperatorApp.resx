@@ -169,12 +169,8 @@
     <value>Dispatched quantity:</value>
     <comment>Label text</comment>
   </data>
-  <data name="FEFOPeriod" xml:space="preserve">
-    <value>FEFO Period:</value>
-    <comment>Label text</comment>
-  </data>
   <data name="FIFOPeriod" xml:space="preserve">
-    <value>FIFO Perdiod:</value>
+    <value>FIFO Period:</value>
     <comment>Label text</comment>
   </data>
   <data name="InstantArticle" xml:space="preserve">

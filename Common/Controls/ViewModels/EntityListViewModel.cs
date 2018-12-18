@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly IEnumerable<IFilterDataSource<TModel>> filterDataSources;
+        private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
         private IEnumerable<Tile> filterTiles;
         private bool flattenDataSource;
         private object modelChangedEventSubscription;
@@ -29,14 +29,7 @@ namespace Ferretto.Common.Controls
 
         protected EntityListViewModel()
         {
-            var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name);
             this.InitializeEvent();
-            this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
-            {
-                Key = filterDataSource.Key,
-                Name = filterDataSource.Name
-            }).ToList());
         }
 
         #endregion Constructors
@@ -75,12 +68,6 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
-        public object SelectedFilterDataSource
-        {
-            get => this.selectedFilterDataSource;
-            protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
-        }
-
         public Tile SelectedFilter
         {
             get => this.selectedFilterTile;
@@ -92,6 +79,12 @@ namespace Ferretto.Common.Controls
                     this.SelectedFilterDataSource = this.flattenDataSource ? filterDataSource.GetData() : (object)filterDataSource;
                 }
             }
+        }
+
+        public object SelectedFilterDataSource
+        {
+            get => this.selectedFilterDataSource;
+            protected set => this.SetProperty(ref this.selectedFilterDataSource, value);
         }
 
         public object SelectedItem
@@ -131,6 +124,15 @@ namespace Ferretto.Common.Controls
         protected override async void OnAppear()
         {
             base.OnAppear();
+
+            var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+            this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name, this.Data);
+            this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
+            {
+                Key = filterDataSource.Key,
+                Name = filterDataSource.Name
+            }).ToList());
+
             await this.UpdateFilterTilesCountsAsync();
         }
 

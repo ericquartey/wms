@@ -1,8 +1,8 @@
 ﻿using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
-    internal class SSNavigationButtonsViewModel : BindableBase
+    public class SSNavigationButtonsViewModel : BindableBase
     {
     }
 }

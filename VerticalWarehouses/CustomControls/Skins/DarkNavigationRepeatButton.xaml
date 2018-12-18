@@ -5,8 +5,8 @@
 
     <SolidColorBrush x:Key="VWAPP_NavigationRepeatButton_Foreground_Normal"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <sys:Double x:Key="VWAPP_NavigationRepeatButton_Width_Normal">200</sys:Double>
-    <sys:Double x:Key="VWAPP_NavigationRepeatButton_Height_Normal">60</sys:Double>
+    <sys:Double x:Key="VWAPP_NavigationRepeatButton_Width_Normal">250</sys:Double>
+    <sys:Double x:Key="VWAPP_NavigationRepeatButton_Height_Normal">65</sys:Double>
 
     <SolidColorBrush x:Key="VWAPP_NavigationRepeatButton_Foreground_Pressed"
                      Color="{DynamicResource EDBGrayC}" />

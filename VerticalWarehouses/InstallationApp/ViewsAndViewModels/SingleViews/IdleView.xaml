@@ -5,6 +5,7 @@
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
     <Grid>
-        <Image Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
+        <Image Margin="50"
+               Source="pack://application:,,,/Ferretto.VW.CustomControls;Component/Assets/background_machine.png" />
     </Grid>
 </UserControl>

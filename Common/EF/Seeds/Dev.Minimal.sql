@@ -595,6 +595,11 @@ INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('U', 'Used');
 INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('B', 'Blocked');
 INSERT INTO LoadingUnitStatuses (Id, Description) VALUES ('A', 'Available');
 
+SET IDENTITY_INSERT LoadingUnitRanges ON;
+INSERT INTO LoadingUnitRanges (Id, AreaId, MinValue, MaxValue, ActualValue) VALUES (1, 1, 100000, 200000, 100001);
+INSERT INTO LoadingUnitRanges (Id, AreaId, MinValue, MaxValue, ActualValue) VALUES (2, 2, 1001, 99999, NULL);
+SET IDENTITY_INSERT LoadingUnitRanges OFF;
+
 SET IDENTITY_INSERT LoadingUnitWeightClasses ON;
 INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (1, 'Pallet 1000kg weight max', 0, 1000);
 INSERT INTO LoadingUnitWeightClasses (Id, Description, MinWeight, MaxWeight) VALUES (2, 'Pallet 500kg weight max - Vertimag', 0, 500);
@@ -665,53 +670,53 @@ INSERT INTO CellConfigurationCellPositionLoadingUnitTypes (CellPositionId, CellC
 
 SET IDENTITY_INSERT LoadingUnits ON;
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (1, 'UDC1', 1, 0, 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 3, 6, 9);
+VALUES (1, '100000', 1, 0, 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 3, 6, 9);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (2, 'UDC2', 2, 0, 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 4, 8, 12);
+VALUES (2, '100001', 2, 0, 1, 1, 1600, 900, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 4, 8, 12);
 
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (3, 'VERTIMAG1.1', 301, 0, 2, 15, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
+VALUES (3, '01001', 301, 0, 2, 15, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (4, 'VERTIMAG1.2', 302, 0, 2, 15, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
+VALUES (4, '01002', 302, 0, 2, 15, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (5, 'VERTIMAG1.3', 303, 0, 2, 15, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
+VALUES (5, '01003', 303, 0, 2, 15, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (6, 'VERTIMAG1.4', 304, 0, 2, 15, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
+VALUES (6, '01004', 304, 0, 2, 15, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (7, 'VERTIMAG1.5', 305, 0, 2, 15, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
+VALUES (7, '01005', 305, 0, 2, 15, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (8, 'VERTIMAG2.1', 321, 0, 2, 5, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
+VALUES (8, '02001', 321, 0, 2, 5, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (9, 'VERTIMAG2.2', 322, 0, 2, 5, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
+VALUES (9, '02002', 322, 0, 2, 5, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (10, 'VERTIMAG2.3', 323, 0, 2, 5, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
+VALUES (10, '02003', 323, 0, 2, 5, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (11, 'VERTIMAG2.4', 324, 0, 2, 5, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
+VALUES (11, '02004', 324, 0, 2, 5, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (12, 'VERTIMAG2.5', 325, 0, 2, 5, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
+VALUES (12, '02005', 325, 0, 2, 5, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (13, 'VERTIMAG3.1', 341, 0, 2, 10, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
+VALUES (13, '03001', 341, 0, 2, 10, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (14, 'VERTIMAG3.2', 342, 0, 2, 10, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
+VALUES (14, '03002', 342, 0, 2, 10, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (15, 'VERTIMAG3.3', 343, 0, 2, 10, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
+VALUES (15, '03003', 343, 0, 2, 10, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (16, 'VERTIMAG3.4', 344, 0, 2, 10, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
+VALUES (16, '03004', 344, 0, 2, 10, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (17, 'VERTIMAG3.5', 345, 0, 2, 10, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
+VALUES (17, '03005', 345, 0, 2, 10, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (18, 'VERTIMAG4.1', 361, 0, 2, 13, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
+VALUES (18, '04001', 361, 0, 2, 13, 800, 400, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 5, 10, 15);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (19, 'VERTIMAG4.2', 362, 0, 2, 13, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
+VALUES (19, '04002', 362, 0, 2, 13, 700, 350, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 6, 12, 18);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (20, 'VERTIMAG4.3', 363, 0, 2, 13, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
+VALUES (20, '04003', 363, 0, 2, 13, 600, 300, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 7, 14, 21);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (21, 'VERTIMAG4.4', 364, 0, 2, 13, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
+VALUES (21, '04004', 364, 0, 2, 13, 500, 250, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 8, 16, 24);
 INSERT INTO LoadingUnits (Id, Code, CellId, IsCellPairingFixed, CellPositionId, LoadingUnitTypeId, Height, Weight, LoadingUnitStatusId, Reference, AbcClassId, CreationDate, LastHandlingDate, InventoryDate, LastPickDate, LastStoreDate, InCycleCount, OutCycleCount, OtherCycleCount)
-VALUES (22, 'VERTIMAG4.5', 365, 0, 2, 13, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
+VALUES (22, '04005', 365, 0, 2, 13, 400, 200, 'U', 'M', 'A', '2018-11-16 12:33:14', '2017-10-05 14:16:00', '2017-05-01 09:57:00', '2016-06-06 15:20:00', '2017-05-01 09:57:00', 9, 18, 27);
 SET IDENTITY_INSERT LoadingUnits OFF;
 
 -- Compartments

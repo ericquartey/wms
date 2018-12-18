@@ -38,7 +38,7 @@ namespace Ferretto.Common.BusinessModels
         public int Stock
         {
             get => this.stock;
-            set => this.SetIfPositive(ref this.stock, value);
+            set => this.SetProperty(ref this.stock, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
