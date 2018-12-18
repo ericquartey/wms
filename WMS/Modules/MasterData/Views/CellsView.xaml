@@ -13,7 +13,6 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
-             Style="{DynamicResource SlideInLeftToRight}"
              mc:Ignorable="d">
 
     <Grid>
