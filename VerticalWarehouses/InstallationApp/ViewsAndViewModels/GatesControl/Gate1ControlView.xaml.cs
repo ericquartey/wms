@@ -13,7 +13,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl
         public Gate1ControlView()
         {
             this.InitializeComponent();
-            this.DataContext = new Gate1ControlViewModel();
+            this.DataContext = ViewModels.Gate1ControlVMInstance;
             if (DataManager.CurrentData.GeneralInfo.Type_Bay1 == 1)
             {
                 this.SensorRegionContentControl.Content = new CustomControls.Controls.CustomGateControlSensorsTwoPositions();

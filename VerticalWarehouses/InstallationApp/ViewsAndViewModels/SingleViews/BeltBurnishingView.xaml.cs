@@ -13,7 +13,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public BeltBurnishingView()
         {
             this.InitializeComponent();
-            this.DataContext = new BeltBurnishingViewModel();
+            this.DataContext = ViewModels.BeltBurnishingVMInstance;
         }
 
         #endregion Constructors
