@@ -47,7 +47,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         private float vMax = 1;
 
         // Temporary assigned to constant value, they will become variable with new funcionalities
-        // Temporary assigned to constant value, they will become variable with new funcionalities
         private float w = 1;
 
         private decimal x;
@@ -190,6 +189,8 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
             this.IsMesuredLenghtTextInputActive = false;
             this.IsMoveButtonActive = false;
             this.IsSetPositionButtonActive = true;
+
+            ActionManager.PositioningDrawerInstance.Stop();
         }
 
         private void CheckMesuredInitialPositionCorrectness(string input)
@@ -271,11 +272,6 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
                 ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
                 ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
                 ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
-
-                // Inizio modifica
-                //this.IsMesuredInitialPositionTextInputActive = true;
-                //this.IsMesuredInitialPositionHighlighted = true;
-                // Fine modifica
             }
             // End changes for the initial positioning
         }
