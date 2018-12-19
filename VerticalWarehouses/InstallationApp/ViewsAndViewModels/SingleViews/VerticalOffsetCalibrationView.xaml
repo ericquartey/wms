@@ -64,19 +64,27 @@
                                                      Style="{StaticResource VWAPP_CustomInputFieldControlFocusableStyle}" />
             <Button Grid.Row="1"
                     Grid.Column="2"
+                    Command="{Binding SetPositionButtonCommand}"
                     Content="{x:Static res:InstallationApp.SetPosition}"
+                    IsEnabled="{Binding IsSetPositionButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="3"
                     Grid.Column="2"
+                    Command="{Binding StepUpButtonCommand}"
                     Content="{x:Static res:InstallationApp.StepUp}"
+                    IsEnabled="{Binding IsStepUpButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="4"
                     Grid.Column="2"
+                    Command="{Binding StepDownButtonCommand}"
                     Content="{x:Static res:InstallationApp.StepDown}"
+                    IsEnabled="{Binding IsStepDownButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Row="6"
                     Grid.Column="2"
+                    Command="{Binding CorrectOffsetButtonCommand}"
                     Content="{x:Static res:InstallationApp.DoCorrectOffset}"
+                    IsEnabled="{Binding IsCorrectOffsetButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>
