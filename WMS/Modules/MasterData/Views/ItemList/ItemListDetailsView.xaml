@@ -238,9 +238,10 @@
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel Margin="0,10,0,0">
-                        <wms:WmsGridControl MinHeight="280"
+                        <wms:WmsGridControl MinHeight="62"                            
                                             MaxWidth="2000"
-                                            MaxHeight="280"
+                                            MaxHeight="2000"
+                                            VerticalAlignment="Stretch"
                                             CurrentItem="{Binding SelectedItemListRow, Mode=TwoWay}"
                                             ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}">
                             <!--TODO wms:WmsGridControl.View>
