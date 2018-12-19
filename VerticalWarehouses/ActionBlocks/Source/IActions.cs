@@ -49,12 +49,12 @@
         /// <summary>
         /// Set positioning interface.
         /// </summary>
-        PositioningDrawer SetPositioningInterface { set; }
+        PositioningDrawer SetPositioningDrawerInterface { set; }
 
         /// <summary>
-        /// Get the weight of drawer.
+        /// Get/Set the weight of drawer.
         /// </summary>
-        float Weight { get; }
+        float Weight { get; set; }
 
         #endregion Properties
 

@@ -21,9 +21,10 @@
         #region Fields
 
         private PositioningDrawer drawerPositionController;
-        private float weight;
 
         #endregion Fields
+
+        //private float weight;
 
         #region Constructors
 
@@ -51,15 +52,15 @@
         /// <summary>
         /// Set the positioning interface.
         /// </summary>
-        public PositioningDrawer SetPositioningInterface
+        public PositioningDrawer SetPositioningDrawerInterface
         {
             set => this.drawerPositionController = value;
         }
 
         /// <summary>
-        /// Get the weight of drawer.
+        /// Get/Set the weight of drawer.
         /// </summary>
-        public float Weight => this.weight;
+        public float Weight { get; set; }
 
         /// <summary>
         /// Set the inverter driver interface.
@@ -78,7 +79,7 @@
         /// </summary>
         public void Initialize()
         {
-            this.weight = -1.0f;
+            this.Weight = -1.0f;
 
             // Subscribes the event handlers
             if (this.drawerPositionController != null)
@@ -135,7 +136,7 @@
         {
             if (result)
             {
-                this.weight = this.ConvertToWeight(this.drawerPositionController.MaxAnalogIc);
+                this.Weight = this.ConvertToWeight(this.drawerPositionController.MaxAnalogIc);
             }
 
             // notify with success only if routine has been done and weight has been cached
