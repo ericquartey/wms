@@ -3,9 +3,9 @@ using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
 using System;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
+namespace Ferretto.VW.InstallationApp
 {
-    internal class MainWindowNavigationButtonsViewModel : BindableBase
+    public class MainWindowNavigationButtonsViewModel : BindableBase
     {
         #region Fields
 

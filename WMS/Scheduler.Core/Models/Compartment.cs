@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Ferretto.WMS.Scheduler.Core
 {
@@ -33,8 +32,6 @@ namespace Ferretto.WMS.Scheduler.Core
         public int Availability => this.stock - this.reservedForPick + this.reservedToStore;
 
         public int CellId { get; set; }
-
-        public string Code { get; set; }
 
         public int? FifoTime
         {

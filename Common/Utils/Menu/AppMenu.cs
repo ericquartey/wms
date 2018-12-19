@@ -57,7 +57,10 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.AllLists, bgColor, nameof(Navigation.AllLists), nameof(Modules.MasterData), Modules.MasterData.ITEMLISTS)
+                        new MainMenuItem(Navigation.AllLists, bgColor, nameof(Navigation.AllLists), nameof(Modules.MasterData), Modules.MasterData.ITEMLISTS),
+                        new MainMenuItem(Navigation.PickLists, bgColor, nameof(Navigation.PickLists), nameof(Modules.MasterData), Modules.MasterData.ITEMLISTS, Modules.MasterData.ITEMLISTSPICK),
+                        new MainMenuItem(Navigation.PutLists, bgColor, nameof(Navigation.PutLists), nameof(Modules.MasterData), Modules.MasterData.ITEMLISTS, Modules.MasterData.ITEMLISTSPUT),
+                        new MainMenuItem(Navigation.InventoryLists, bgColor, nameof(Navigation.InventoryLists), nameof(Modules.MasterData), Modules.MasterData.ITEMLISTS, Modules.MasterData.ITEMLISTSINVENTORY)
                     }
                 }
             );
@@ -89,7 +92,7 @@ namespace Ferretto.Common.Utils.Menu
                 {
                     Children = new List<MainMenuItem>
                     {
-                        new MainMenuItem(Navigation.UnitsOfMeasurement, bgColor, nameof(Navigation.UnitsOfMeasurement), string.Empty, string.Empty),
+                        new MainMenuItem(Navigation.MeasureUnits, bgColor, nameof(Navigation.MeasureUnits), string.Empty, string.Empty),
                         new MainMenuItem(Navigation.AbcClasses, bgColor, nameof(Navigation.AbcClasses), string.Empty, string.Empty),
                         new MainMenuItem(Navigation.CellStatuses, bgColor, nameof(Navigation.CellStatuses), string.Empty, string.Empty),
                         new MainMenuItem(Navigation.LoadingUnitStatuses, bgColor, nameof(Navigation.LoadingUnitStatuses), string.Empty, string.Empty),

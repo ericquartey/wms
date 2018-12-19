@@ -78,7 +78,8 @@ namespace Ferretto.Common.BusinessProviders
         {
             return this.dataContext.CompartmentTypes
                 .AsNoTracking()
-                .Select(x => new Enumeration(x.Id, x.Description));
+                .OrderBy(x => x.Width * x.Height)
+                .Select(x => new Enumeration(x.Id, string.Format(Resources.MasterData.CompartmentTypeListFormat, x.Width, x.Height)));
         }
 
         public IQueryable<Enumeration> GetAllItemCategories()

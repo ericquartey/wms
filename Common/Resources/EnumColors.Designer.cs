@@ -61,7 +61,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to #00C853.
+        ///   Looks up a localized string similar to #57A639.
         /// </summary>
         public static string ItemListStatusCompleted {
             get {

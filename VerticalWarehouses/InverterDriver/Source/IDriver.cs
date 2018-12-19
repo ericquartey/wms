@@ -10,14 +10,19 @@ namespace Ferretto.VW.InverterDriver
         #region Properties
 
         /// <summary>
-        /// Get the Actual Position of controlled Shaft.
-        /// </summary>
-        int Actual_Position_Shaft { get; }
-
-        /// <summary>
         /// Get brake resistance overtemperature-Digital value.
         /// </summary>
         bool Brake_Resistance_Overtemperature { get; }
+
+        /// <summary>
+        /// Get the current position of controlled Shaft (horizontal axis).
+        /// </summary>
+        int Current_Position_Horizontal_Shaft { get; }
+
+        /// <summary>
+        /// Get the current position of controlled Shaft (vertical axis).
+        /// </summary>
+        int Current_Position_Vertical_Shaft { get; }
 
         /// <summary>
         /// Get Emergency Stop-Digital value.
@@ -25,9 +30,14 @@ namespace Ferretto.VW.InverterDriver
         bool Emergency_Stop { get; }
 
         /// <summary>
-        /// Enable the retrieve of Actual_Position_Shaft parameter.
+        /// Enable the automatic updating of current position shaft parameter (horizontal axis).
         /// </summary>
-        bool Get_Actual_Position_Shaft_Enable { get; set; }
+        bool Enable_Update_Current_Position_Horizontal_Shaft_Mode { get; set; }
+
+        /// <summary>
+        /// Enable the automatic updating of current position shaft parameter (vertical axis).
+        /// </summary>
+        bool Enable_Update_Current_Position_Vertical_Shaft_Mode { get; set; }
 
         /// <summary>
         /// Enable the retrieve of StatusWord parameter value.

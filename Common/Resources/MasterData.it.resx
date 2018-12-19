@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -245,7 +245,7 @@
     <value>Stato in Attesa</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Tipo Picking</value>
+    <value>Picking Liste</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Informazioni sull'Ordine del Cliente</value>
@@ -291,5 +291,143 @@
   </data>
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Panoramica Scomparti</value>
+  </data>
+  <data name="ListRequestAccepted" xml:space="preserve">
+    <value>Richiesta sulla lista accettata </value>
+  </data>
+  <data name="CompartmentTypeListFormat" xml:space="preserve">
+    <value>{0} X {1} ( Larghezza [mm] X Altezza [mm] )</value>
+  </data>
+  <data name="AdvancedDetails" xml:space="preserve">
+    <value>Ulteriori Dettagli</value>
+  </data>
+  <data name="ItemListsTypeInventory" xml:space="preserve">
+    <value>Inventario delle Liste</value>
+  </data>
+  <data name="ItemListsTypePut" xml:space="preserve">
+    <value>Put Liste</value>
+  </data>
+  <data name="LoadingUnitAreaManual" xml:space="preserve">
+    <value>Area Manual</value>
+  </data>
+  <data name="LoadingUnitAreaVertimag" xml:space="preserve">
+    <value>Area Vertimag</value>
+  </data>
+  <data name="LoadingUnitStatusAvailable" xml:space="preserve">
+    <value>Stato Disponibile</value>
+  </data>
+  <data name="LoadingUnitStatusBlocked" xml:space="preserve">
+    <value>Stato Bloccato</value>
+  </data>
+  <data name="LoadingUnitStatusUsed" xml:space="preserve">
+    <value>Stato Usato</value>
+  </data>
+  <data name="CellClassA" xml:space="preserve">
+    <value>Classe A</value>
+  </data>
+  <data name="CellStatusEmpty" xml:space="preserve">
+    <value>Stato Vuoto</value>
+  </data>
+  <data name="CellStatusFull" xml:space="preserve">
+    <value>Stato Pieno</value>
+  </data>
+  <data name="CompartmentStatusAvailable" xml:space="preserve">
+    <value>Stato Disponibile</value>
+  </data>
+  <data name="CompartmentStatusAwaiting" xml:space="preserve">
+    <value>Stato di Verifica in Attesa</value>
+  </data>
+  <data name="CompartmentStatusBlocked" xml:space="preserve">
+    <value>Stato Bloccato</value>
+  </data>
+  <data name="CompartmentStatusExpired" xml:space="preserve">
+    <value>Stato Scaduto</value>
+  </data>
+  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
+    <value>{0} X {1} [mm]</value>
+  </data>
+  <data name="CellClassADescription" xml:space="preserve">
+    <value>Restituisce tutte le celle di classe A</value>
+  </data>
+  <data name="CellStatusEmptyDescription" xml:space="preserve">
+    <value>Restituisce tutte le celle vuote</value>
+  </data>
+  <data name="CellStatusFullDescription" xml:space="preserve">
+    <value>Restituisce tutte le celle piene</value>
+  </data>
+  <data name="CellsViewAllDescription" xml:space="preserve">
+    <value>Restiuisce tutte le celle</value>
+  </data>
+  <data name="CompartmentStatusAvailableDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti in stato  disponibile</value>
+  </data>
+  <data name="CompartmentStatusAwaitingDescription" xml:space="preserve">
+    <value>Resituisce tutti gli scomparti in stato di  attesa</value>
+  </data>
+  <data name="CompartmentStatusBlockedDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti in stato di blocco</value>
+  </data>
+  <data name="CompartmentStatusExpiredDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti in stato  scaduto</value>
+  </data>
+  <data name="CompartmentsViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutti gli scomparti</value>
+  </data>
+  <data name="ItemListViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste</value>
+  </data>
+  <data name="ItemListViewStatusCompletedDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste in stato completato</value>
+  </data>
+  <data name="ItemListViewStatusWaitingDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste in stato di attesa</value>
+  </data>
+  <data name="ItemListViewTypeInventoryDescription" xml:space="preserve">
+    <value>Restiuisce tutte le liste di inventario</value>
+  </data>
+  <data name="ItemListViewTypePickDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste di prelievo</value>
+  </data>
+  <data name="ItemListViewTypePutDescription" xml:space="preserve">
+    <value>Restituisce tutte le liste di deposito</value>
+  </data>
+  <data name="ItemsViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutti gli articoli</value>
+    <comment>Filter - All Items</comment>
+  </data>
+  <data name="ItemsViewClassADescription" xml:space="preserve">
+    <value>Restituisce tutti gli articoli di classe A</value>
+    <comment>Filter - Items with class A</comment>
+  </data>
+  <data name="ItemsViewFIFODescription" xml:space="preserve">
+    <value>Restituisce tutti gli articoli in ordine FIFO</value>
+    <comment>Filter - Items with FIFO policy</comment>
+  </data>
+  <data name="LoadingUnitsViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC</value>
+  </data>
+  <data name="LoadingUnitsViewAreaManualDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC con aree manuali</value>
+  </data>
+  <data name="LoadingUnitsViewAreaVertimagDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC con i Vertimag</value>
+  </data>
+  <data name="LoadingUnitsViewStatusAvailableDescription" xml:space="preserve">
+    <value>Resituisce tutte le UDC in stato disponibile</value>
+  </data>
+  <data name="LoadingUnitsViewStatusBlockedDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC in stato di blocco</value>
+  </data>
+  <data name="LoadingUnitsViewStatusUsedDescription" xml:space="preserve">
+    <value>Restituisce tutte le UDC in stato di uso</value>
+  </data>
+  <data name="MachinesViewAllDescription" xml:space="preserve">
+    <value>Restituisce tutte le macchine</value>
+  </data>
+  <data name="MachinesViewVertimagMDescription" xml:space="preserve">
+    <value>Restituisce tutte le macchine Vertimag M</value>
+  </data>
+  <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
+    <value>Restituisce tutte le macchine Vertimag XS</value>
   </data>
 </root>

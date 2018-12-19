@@ -13,9 +13,6 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.CompartmentCode), ResourceType = typeof(BusinessObjects))]
-        public string Code { get; set; }
-
         [Display(Name = nameof(BusinessObjects.CompartmentStatus), ResourceType = typeof(BusinessObjects))]
         public string CompartmentStatusDescription { get; set; }
 
@@ -41,7 +38,7 @@ namespace Ferretto.Common.BusinessModels
         public int Stock
         {
             get => this.stock;
-            set => this.SetIfPositive(ref this.stock, value);
+            set => this.SetProperty(ref this.stock, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]

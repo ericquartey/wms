@@ -12,6 +12,15 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
+        private static readonly Expression<Func<DataModels.Cell, bool>> ClassAFilter =
+                   cell => cell.AbcClassId == "A";
+
+        private static readonly Expression<Func<DataModels.Cell, bool>> StatusEmptyFilter =
+cell => cell.CellStatusId == 1;
+
+        private static readonly Expression<Func<DataModels.Cell, bool>> StatusFullFilter =
+                   cell => cell.CellStatusId == 3;
+
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
 
@@ -31,7 +40,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(CellDetails model)
+        public Task<OperationResult> Add(CellDetails model)
         {
             throw new NotImplementedException();
         }
@@ -84,42 +93,82 @@ namespace Ferretto.Common.BusinessProviders
                 );
         }
 
-        public CellDetails GetById(int id)
+        public async Task<CellDetails> GetById(int id)
+        {
+            var dataContext = this.dataContext.Current;
+
+            var cellDetails = await dataContext.Cells
+                .Where(c => c.Id == id)
+                .Include(c => c.Aisle)
+                .Select(c => new CellDetails
+                {
+                    Id = c.Id,
+                    AbcClassId = c.AbcClassId,
+                    AisleId = c.AisleId,
+                    AreaId = c.Aisle.AreaId,
+                    CellStatusId = c.CellStatusId,
+                    CellTypeId = c.CellTypeId,
+                    Column = c.Column,
+                    Floor = c.Floor,
+                    Number = c.CellNumber,
+                    Priority = c.Priority,
+                    Side = (int)c.Side,
+                    XCoordinate = c.XCoordinate,
+                    YCoordinate = c.YCoordinate,
+                    ZCoordinate = c.ZCoordinate,
+                })
+                .SingleAsync();
+
+            cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
+            cellDetails.SideChoices =
+                ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
+            cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+
+            return cellDetails;
+        }
+
+        public IQueryable<Cell> GetWithClassA()
+        {
+            return GetAllCellsWithFilter(this.dataContext.Current, ClassAFilter);
+        }
+
+        public Int32 GetWithClassACount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
             {
-                var cellDetails = dataContext.Cells
-                    .Where(c => c.Id == id)
-                    .Include(c => c.Aisle)
-                    .Select(c => new CellDetails
-                    {
-                        Id = c.Id,
-                        AbcClassId = c.AbcClassId,
-                        AisleId = c.AisleId,
-                        AreaId = c.Aisle.AreaId,
-                        CellStatusId = c.CellStatusId,
-                        CellTypeId = c.CellTypeId,
-                        Column = c.Column,
-                        Floor = c.Floor,
-                        Number = c.CellNumber,
-                        Priority = c.Priority,
-                        Side = (int)c.Side,
-                        XCoordinate = c.XCoordinate,
-                        YCoordinate = c.YCoordinate,
-                        ZCoordinate = c.ZCoordinate,
-                    })
-                    .Single();
+                return dataContext.Cells.AsNoTracking().Count(ClassAFilter);
+            }
+        }
 
-                cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-                cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-                cellDetails.SideChoices =
-                    ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
-                cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
+        public IQueryable<Cell> GetWithStatusEmpty()
+        {
+            return GetAllCellsWithFilter(this.dataContext.Current, StatusEmptyFilter);
+        }
 
-                return cellDetails;
+        public Int32 GetWithStatusEmptyCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Cells.AsNoTracking().Count(StatusEmptyFilter);
+            }
+        }
+
+        public IQueryable<Cell> GetWithStatusFull()
+        {
+            return GetAllCellsWithFilter(this.dataContext.Current, StatusFullFilter);
+        }
+
+        public Int32 GetWithStatusFullCount()
+        {
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                return dataContext.Cells.AsNoTracking().Count(StatusFullFilter);
             }
         }
 

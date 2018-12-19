@@ -40,7 +40,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(ItemDetails model)
+        public Task<OperationResult> Add(ItemDetails model)
         {
             throw new NotImplementedException();
         }
@@ -92,83 +92,81 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
-        public ItemDetails GetById(int id)
+        public async Task<ItemDetails> GetById(int id)
         {
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var itemDetails = dataContext.Items
-                .Include(i => i.MeasureUnit)
-                .Where(i => i.Id == id)
-                .GroupJoin(
-                    dataContext.Compartments
-                        .AsNoTracking()
-                        .Where(c => c.ItemId != null)
-                        .GroupBy(c => c.ItemId)
-                        .Select(j => new
-                        {
-                            ItemId = j.Key,
-                            TotalStock = j.Sum(x => x.Stock),
-                            TotalReservedForPick = j.Sum(x => x.ReservedForPick),
-                            TotalReservedToStore = j.Sum(x => x.ReservedToStore)
-                        }),
-                    i => i.Id,
-                    c => c.ItemId,
-                    (i, c) => new
+
+            var itemDetails = await dataContext.Items
+            .Include(i => i.MeasureUnit)
+            .Where(i => i.Id == id)
+            .GroupJoin(
+                dataContext.Compartments
+                    .AsNoTracking()
+                    .Where(c => c.ItemId != null)
+                    .GroupBy(c => c.ItemId)
+                    .Select(j => new
                     {
-                        Item = i,
-                        CompartmentsAggregation = c
-                    })
-                .SelectMany(
-                    temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
-                    (a, b) => new ItemDetails
-                    {
-                        Id = a.Item.Id,
-                        Code = a.Item.Code,
-                        Description = a.Item.Description,
-                        ItemCategoryId = a.Item.ItemCategoryId,
-                        Note = a.Item.Note,
+                        ItemId = j.Key,
+                        TotalStock = j.Sum(x => x.Stock),
+                        TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                        TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                    }),
+                i => i.Id,
+                c => c.ItemId,
+                (i, c) => new
+                {
+                    Item = i,
+                    CompartmentsAggregation = c
+                })
+            .SelectMany(
+                temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                (a, b) => new ItemDetails
+                {
+                    Id = a.Item.Id,
+                    Code = a.Item.Code,
+                    Description = a.Item.Description,
+                    ItemCategoryId = a.Item.ItemCategoryId,
+                    Note = a.Item.Note,
 
-                        AbcClassId = a.Item.AbcClassId,
-                        MeasureUnitId = a.Item.MeasureUnitId,
-                        MeasureUnitDescription = a.Item.MeasureUnit.Description,
-                        ManagementType = (ItemManagementType)a.Item.ManagementType,
-                        FifoTimePick = a.Item.FifoTimePick,
-                        FifoTimeStore = a.Item.FifoTimeStore,
-                        ReorderPoint = a.Item.ReorderPoint,
-                        ReorderQuantity = a.Item.ReorderQuantity,
+                    AbcClassId = a.Item.AbcClassId,
+                    MeasureUnitId = a.Item.MeasureUnitId,
+                    MeasureUnitDescription = a.Item.MeasureUnit.Description,
+                    ManagementType = (ItemManagementType)a.Item.ManagementType,
+                    FifoTimePick = a.Item.FifoTimePick,
+                    FifoTimeStore = a.Item.FifoTimeStore,
+                    ReorderPoint = a.Item.ReorderPoint,
+                    ReorderQuantity = a.Item.ReorderQuantity,
 
-                        Height = a.Item.Height,
-                        Length = a.Item.Length,
-                        Width = a.Item.Width,
-                        PickTolerance = a.Item.PickTolerance,
-                        StoreTolerance = a.Item.StoreTolerance,
-                        InventoryTolerance = a.Item.InventoryTolerance,
-                        AverageWeight = a.Item.AverageWeight,
+                    Height = a.Item.Height,
+                    Length = a.Item.Length,
+                    Width = a.Item.Width,
+                    PickTolerance = a.Item.PickTolerance,
+                    StoreTolerance = a.Item.StoreTolerance,
+                    InventoryTolerance = a.Item.InventoryTolerance,
+                    AverageWeight = a.Item.AverageWeight,
 
-                        Image = a.Item.Image,
+                    Image = a.Item.Image,
 
-                        CreationDate = a.Item.CreationDate,
-                        InventoryDate = a.Item.InventoryDate,
-                        LastModificationDate = a.Item.LastModificationDate,
-                        LastPickDate = a.Item.LastPickDate,
-                        LastStoreDate = a.Item.LastStoreDate,
+                    CreationDate = a.Item.CreationDate,
+                    InventoryDate = a.Item.InventoryDate,
+                    LastModificationDate = a.Item.LastModificationDate,
+                    LastPickDate = a.Item.LastPickDate,
+                    LastStoreDate = a.Item.LastStoreDate,
 
-                        TotalAvailable = b != null
-                            ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
-                            : 0,
-                    }
-                )
-                .AsNoTracking()
-                .Single();
+                    TotalAvailable = b != null
+                        ? (b.TotalStock + b.TotalReservedToStore - b.TotalReservedForPick)
+                        : 0,
+                }
+            )
+            .AsNoTracking()
+            .SingleAsync();
 
-                itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
-                itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
-                itemDetails.ManagementTypeChoices = this.enumerationProvider.GetAllItemManagementTypes();
-                itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
+            itemDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
+            itemDetails.MeasureUnitChoices = this.enumerationProvider.GetAllMeasureUnits();
+            itemDetails.ManagementTypeChoices = this.enumerationProvider.GetAllItemManagementTypes();
+            itemDetails.ItemCategoryChoices = this.enumerationProvider.GetAllItemCategories();
 
-                return itemDetails;
-            }
+            return itemDetails;
         }
 
         public IQueryable<Item> GetWithAClass()
@@ -252,7 +250,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, ex.Message);
+                return new OperationResult(false, description: ex.Message);
             }
         }
 

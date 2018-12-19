@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -21,6 +20,8 @@ namespace Ferretto.Common.BusinessModels
         private IEnumerable<ItemListRow> itemListRows;
         private ItemListStatus itemListStatus;
         private int itemListType;
+        private IEnumerable<Enumeration> itemListTypeChoices;
+        private String itemListTypeDescription;
         private string job;
         private int priority;
         private bool shipmentUnitAssociated;
@@ -32,22 +33,46 @@ namespace Ferretto.Common.BusinessModels
         #region Properties
 
         [Display(Name = nameof(BusinessObjects.ItemListAreaName), ResourceType = typeof(BusinessObjects))]
-        public string AreaName { get => this.areaName; set => this.SetProperty(ref this.areaName, value); }
+        public string AreaName
+        {
+            get => this.areaName;
+            set => this.SetProperty(ref this.areaName, value);
+        }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
-        public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
+        public string Code
+        {
+            get => this.code;
+            set => this.SetProperty(ref this.code, value);
+        }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
-        public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
+        public DateTime CreationDate
+        {
+            get => this.creationDate;
+            set => this.SetProperty(ref this.creationDate, value);
+        }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
-        public string CustomerOrderCode { get => this.customerOrderCode; set => this.SetProperty(ref this.customerOrderCode, value); }
+        public string CustomerOrderCode
+        {
+            get => this.customerOrderCode;
+            set => this.SetProperty(ref this.customerOrderCode, value);
+        }
 
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
-        public string CustomerOrderDescription { get => this.customerOrderDescription; set => this.SetProperty(ref this.customerOrderDescription, value); }
+        public string CustomerOrderDescription
+        {
+            get => this.customerOrderDescription;
+            set => this.SetProperty(ref this.customerOrderDescription, value);
+        }
 
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
-        public string Description { get => this.description; set => this.SetProperty(ref this.description, value); }
+        public string Description
+        {
+            get => this.description;
+            set => this.SetProperty(ref this.description, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemListExecutionEndDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? ExecutionEndDate { get; set; }
@@ -69,13 +94,14 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowsCount), ResourceType = typeof(BusinessObjects))]
-        public int ItemListRowsCount
-        {
-            get => this.itemListRows.Count();
-        }
+        public int ItemListRowsCount => this.itemListRows.Count();
 
         [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
-        public ItemListStatus ItemListStatus { get => this.itemListStatus; set => this.SetProperty(ref this.itemListStatus, value); }
+        public ItemListStatus ItemListStatus
+        {
+            get => this.itemListStatus;
+            set => this.SetProperty(ref this.itemListStatus, value);
+        }
 
         public IEnumerable<Enumeration> ItemListStatusChoices { get; set; }
 
@@ -83,29 +109,81 @@ namespace Ferretto.Common.BusinessModels
         public int ItemListType
         {
             get => this.itemListType;
-            set => this.SetProperty(ref this.itemListType, value);
+            set
+            {
+                if (this.SetProperty(ref this.itemListType, value))
+                {
+                    this.SetItemListDescription();
+                }
+            }
         }
 
-        public IEnumerable<Enumeration> ItemListTypeChoices { get; set; }
+        public IEnumerable<Enumeration> ItemListTypeChoices
+        {
+            get => this.itemListTypeChoices;
+            set
+            {
+                if (this.SetProperty(ref this.itemListTypeChoices, value))
+                {
+                    this.SetItemListDescription();
+                }
+            }
+        }
+
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        public string ItemListTypeDescription
+        {
+            get => this.itemListTypeDescription;
+            set => this.SetProperty(ref this.itemListTypeDescription, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemListJob), ResourceType = typeof(BusinessObjects))]
-        public string Job { get => this.job; set => this.SetProperty(ref this.job, value); }
+        public string Job
+        {
+            get => this.job;
+            set => this.SetProperty(ref this.job, value);
+        }
 
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
         public DateTime? LastModificationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListPriority), ResourceType = typeof(BusinessObjects))]
-        public int Priority { get => this.priority; set => this.SetProperty(ref this.priority, value); }
+        public int Priority
+        {
+            get => this.priority;
+            set => this.SetIfStrictlyPositive(ref this.priority, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitAssociated), ResourceType = typeof(BusinessObjects))]
-        public bool ShipmentUnitAssociated { get => this.shipmentUnitAssociated; set => this.SetProperty(ref this.shipmentUnitAssociated, value); }
+        public bool ShipmentUnitAssociated
+        {
+            get => this.shipmentUnitAssociated;
+            set => this.SetProperty(ref this.shipmentUnitAssociated, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.ItemListShipmentUnitCode), ResourceType = typeof(BusinessObjects))]
-        public string ShipmentUnitCode { get => this.shipmentUnitCode; set => this.SetProperty(ref this.shipmentUnitCode, value); }
+        public string ShipmentUnitCode
+        {
+            get => this.shipmentUnitCode;
+            set => this.SetProperty(ref this.shipmentUnitCode, value);
+        }
 
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
-        public string ShipmentUnitDescription { get => this.shipmentUnitDescription; set => this.SetProperty(ref this.shipmentUnitDescription, value); }
+        public string ShipmentUnitDescription
+        {
+            get => this.shipmentUnitDescription;
+            set => this.SetProperty(ref this.shipmentUnitDescription, value);
+        }
 
         #endregion Properties
+
+        #region Methods
+
+        private void SetItemListDescription()
+        {
+            this.ItemListTypeDescription = this.ItemListTypeChoices?.SingleOrDefault(c => c.Id == this.ItemListType)?.Description;
+        }
+
+        #endregion Methods
     }
 }

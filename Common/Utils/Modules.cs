@@ -48,6 +48,9 @@
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMLISTDETAILS = "ItemListDetailsViewModel";
         public const string ITEMLISTS = "ItemListsViewModel";
+        public const char ITEMLISTSINVENTORY = 'I';
+        public const char ITEMLISTSPICK = 'P';
+        public const char ITEMLISTSPUT = 'U';
         public const string ITEMS = "ItemsViewModel";
         public const string LOADINGUNITDETAILS = "LoadingUnitDetailsViewModel";
         public const string LOADINGUNITEDIT = "LoadingUnitEditViewModel";

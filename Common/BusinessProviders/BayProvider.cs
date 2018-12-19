@@ -27,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<int> Add(Bay model)
+        public Task<OperationResult> Add(Bay model)
         {
             throw new NotImplementedException();
         }
@@ -68,9 +68,9 @@ namespace Ferretto.Common.BusinessProviders
                 });
         }
 
-        public Bay GetById(int id)
+        public async Task<Bay> GetById(int id)
         {
-            return this.dataContext.Current.Bays
+            return await this.dataContext.Current.Bays
                    .Include(b => b.BayType)
                    .Include(b => b.Area)
                    .Include(b => b.Machine)
@@ -87,7 +87,7 @@ namespace Ferretto.Common.BusinessProviders
                        MachineId = b.MachineId,
                        MachineNickname = b.Machine.Nickname,
                    })
-                   .Single();
+                   .SingleAsync();
         }
 
         public int Save(Bay model)

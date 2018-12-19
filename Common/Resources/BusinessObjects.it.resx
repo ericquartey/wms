@@ -127,10 +127,10 @@
     <value>Area</value>
   </data>
   <data name="ItemHeight" xml:space="preserve">
-    <value>Altezza</value>
+    <value>Altezza [mm]</value>
   </data>
   <data name="ItemLength" xml:space="preserve">
-    <value>Lunghezza</value>
+    <value>Lunghezza [mm]</value>
   </data>
   <data name="ItemLastInventoryDate" xml:space="preserve">
     <value>Data Ultimo Inventario</value>
@@ -145,7 +145,7 @@
     <value>Giacenza</value>
   </data>
   <data name="ItemWidth" xml:space="preserve">
-    <value>Larghezza</value>
+    <value>Larghezza [mm]</value>
   </data>
   <data name="LoadingUnit" xml:space="preserve">
     <value>Unità di Carico</value>
@@ -175,13 +175,13 @@
     <value>Disponibilità</value>
   </data>
   <data name="CompartmentWidth" xml:space="preserve">
-    <value>Larghezza</value>
+    <value>Larghezza [mm]</value>
   </data>
   <data name="CompartmentXPosition" xml:space="preserve">
-    <value>Posizione X</value>
+    <value>Posizione X [mm]</value>
   </data>
   <data name="CompartmentYPosition" xml:space="preserve">
-    <value>Posizione Y</value>
+    <value>Posizione Y [mm]</value>
   </data>
   <data name="CellColumn" xml:space="preserve">
     <value>Colonna</value>
@@ -213,9 +213,6 @@
   <data name="CellSide_extended" xml:space="preserve">
     <value>Lato Cella</value>
   </data>
-  <data name="CompartmentCode" xml:space="preserve">
-    <value>Codice</value>
-  </data>
   <data name="CompartmentFifoTime" xml:space="preserve">
     <value>Tempo FIFO</value>
   </data>
@@ -223,7 +220,7 @@
     <value>Data di Primo Versamento</value>
   </data>
   <data name="CompartmentHeight" xml:space="preserve">
-    <value>Altezza</value>
+    <value>Altezza [mm]</value>
   </data>
   <data name="CompartmentLastInventoryDate" xml:space="preserve">
     <value>Data Ultimo Inventario</value>
@@ -253,7 +250,7 @@
     <value>Descrizione Tipo Scomparto</value>
   </data>
   <data name="ItemAverageWeight" xml:space="preserve">
-    <value>Peso Medio</value>
+    <value>Peso Medio [kg]</value>
   </data>
   <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
     <value>Capacità Massima</value>
@@ -283,10 +280,10 @@
     <value>Codice Articolo</value>
   </data>
   <data name="LoadingUnitWidth" xml:space="preserve">
-    <value>Larghezza</value>
+    <value>Larghezza [mm]</value>
   </data>
   <data name="LoadingUnitLength" xml:space="preserve">
-    <value>Lunghezza</value>
+    <value>Lunghezza [mm]</value>
   </data>
   <data name="CompartmentLastHandlingDate" xml:space="preserve">
     <value>Data Ultima Movimentazione</value>
@@ -316,7 +313,7 @@
     <value>Tipo gestione</value>
   </data>
   <data name="ItemReorderPoint" xml:space="preserve">
-    <value>Quantita’ Minima Giacenza</value>
+    <value>Quantità Minima Giacenza</value>
   </data>
   <data name="ItemReorderQuantity" xml:space="preserve">
     <value>Quantità Minima di Riordino</value>
@@ -346,13 +343,13 @@
     <value>Abbinamento Celle</value>
   </data>
   <data name="LoadingUnitWeight" xml:space="preserve">
-    <value>Peso</value>
+    <value>Peso [kg]</value>
   </data>
   <data name="LoadingUnitHeight" xml:space="preserve">
-    <value>Altezza</value>
+    <value>Altezza [mm]</value>
   </data>
   <data name="LoadingUnitHandlingParametersCorrection" xml:space="preserve">
-    <value>Correzione velocità</value>
+    <value>Correzione velocità [%]</value>
   </data>
   <data name="LoadingUnitInventoryDate" xml:space="preserve">
     <value>Data Ultimo Inventario</value>
@@ -388,13 +385,13 @@
     <value>Tipo</value>
   </data>
   <data name="CellXCoordinate" xml:space="preserve">
-    <value>Coordinata X</value>
+    <value>Coordinata X [mm]</value>
   </data>
   <data name="CellYCoordinate" xml:space="preserve">
-    <value>Coordinata Y</value>
+    <value>Coordinata Y [mm]</value>
   </data>
   <data name="CellZCoordinate" xml:space="preserve">
-    <value>Coordinata Z</value>
+    <value>Coordinata Z [mm]</value>
   </data>
   <data name="LoadingUnitCurrentCell" xml:space="preserve">
     <value>Cella Corrente</value>
@@ -403,10 +400,10 @@
     <value>Macchina</value>
   </data>
   <data name="MachineActualWeight" xml:space="preserve">
-    <value>Peso Effettivo</value>
+    <value>Peso Effettivo [kg]</value>
   </data>
   <data name="MachineTotalMaxWeight" xml:space="preserve">
-    <value>Peso Massimo Totale</value>
+    <value>Peso Massimo Totale [kg]</value>
   </data>
   <data name="MachineTestDate" xml:space="preserve">
     <value>Data di Test</value>

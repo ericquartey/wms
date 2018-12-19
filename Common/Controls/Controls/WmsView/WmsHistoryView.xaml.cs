@@ -125,7 +125,20 @@ namespace Ferretto.Common.Controls
 
         private void BackViewClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-            this.Previous();
+            if (this.Content is WmsView wmsView
+                &&
+                wmsView.DataContext is INavigableViewModel viewModel)
+            {
+                e.Handled = true;
+                if (viewModel.CanDisappear())
+                {
+                    this.Previous();
+                }
+            }
+            else
+            {
+                this.Previous();
+            }
         }
 
         private void CheckBackVisibility()

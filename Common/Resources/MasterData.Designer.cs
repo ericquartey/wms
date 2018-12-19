@@ -70,6 +70,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Advanced Details.
+        /// </summary>
+        public static string AdvancedDetails {
+            get {
+                return ResourceManager.GetString("AdvancedDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Advanced Withdraw.
         /// </summary>
         public static string AdvancedWithdraw {
@@ -106,6 +115,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Class A.
+        /// </summary>
+        public static string CellClassA {
+            get {
+                return ResourceManager.GetString("CellClassA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all cell with class A.
+        /// </summary>
+        public static string CellClassADescription {
+            get {
+                return ResourceManager.GetString("CellClassADescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell Information.
         /// </summary>
         public static string CellInformation {
@@ -129,6 +156,51 @@ namespace Ferretto.Common.Resources {
         public static string CellSavedSuccessfully {
             get {
                 return ResourceManager.GetString("CellSavedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Empty Status.
+        /// </summary>
+        public static string CellStatusEmpty {
+            get {
+                return ResourceManager.GetString("CellStatusEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all empty cells.
+        /// </summary>
+        public static string CellStatusEmptyDescription {
+            get {
+                return ResourceManager.GetString("CellStatusEmptyDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full Status.
+        /// </summary>
+        public static string CellStatusFull {
+            get {
+                return ResourceManager.GetString("CellStatusFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all full cells.
+        /// </summary>
+        public static string CellStatusFullDescription {
+            get {
+                return ResourceManager.GetString("CellStatusFullDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all cells.
+        /// </summary>
+        public static string CellsViewAllDescription {
+            get {
+                return ResourceManager.GetString("CellsViewAllDescription", resourceCulture);
             }
         }
         
@@ -201,6 +273,105 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentsLayoutOverview {
             get {
                 return ResourceManager.GetString("CompartmentsLayoutOverview", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Available Status.
+        /// </summary>
+        public static string CompartmentStatusAvailable {
+            get {
+                return ResourceManager.GetString("CompartmentStatusAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all compartments with status available.
+        /// </summary>
+        public static string CompartmentStatusAvailableDescription {
+            get {
+                return ResourceManager.GetString("CompartmentStatusAvailableDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Awaiting Verification Status.
+        /// </summary>
+        public static string CompartmentStatusAwaiting {
+            get {
+                return ResourceManager.GetString("CompartmentStatusAwaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all compartments with status awaiting.
+        /// </summary>
+        public static string CompartmentStatusAwaitingDescription {
+            get {
+                return ResourceManager.GetString("CompartmentStatusAwaitingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blocked Status.
+        /// </summary>
+        public static string CompartmentStatusBlocked {
+            get {
+                return ResourceManager.GetString("CompartmentStatusBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all compartments with status blocked.
+        /// </summary>
+        public static string CompartmentStatusBlockedDescription {
+            get {
+                return ResourceManager.GetString("CompartmentStatusBlockedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expired Status.
+        /// </summary>
+        public static string CompartmentStatusExpired {
+            get {
+                return ResourceManager.GetString("CompartmentStatusExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all compartments with status expired.
+        /// </summary>
+        public static string CompartmentStatusExpiredDescription {
+            get {
+                return ResourceManager.GetString("CompartmentStatusExpiredDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all compartments.
+        /// </summary>
+        public static string CompartmentsViewAllDescription {
+            get {
+                return ResourceManager.GetString("CompartmentsViewAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} X {1} ( Width [mm] X Height [mm] ).
+        /// </summary>
+        public static string CompartmentTypeListFormat {
+            get {
+                return ResourceManager.GetString("CompartmentTypeListFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} X {1} [mm].
+        /// </summary>
+        public static string CompartmentTypeListFormatReduced {
+            get {
+                return ResourceManager.GetString("CompartmentTypeListFormatReduced", resourceCulture);
             }
         }
         
@@ -313,6 +484,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Execute Immediately.
+        /// </summary>
+        public static string ItemListExecuteImmediately {
+            get {
+                return ResourceManager.GetString("ItemListExecuteImmediately", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Execute List Options.
         /// </summary>
         public static string ItemListExecuteOptions {
@@ -403,11 +583,83 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick Type.
+        ///   Looks up a localized string similar to Inventory Lists.
+        /// </summary>
+        public static string ItemListsTypeInventory {
+            get {
+                return ResourceManager.GetString("ItemListsTypeInventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pick Lists.
         /// </summary>
         public static string ItemListsTypePick {
             get {
                 return ResourceManager.GetString("ItemListsTypePick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put Lists.
+        /// </summary>
+        public static string ItemListsTypePut {
+            get {
+                return ResourceManager.GetString("ItemListsTypePut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all lists.
+        /// </summary>
+        public static string ItemListViewAllDescription {
+            get {
+                return ResourceManager.GetString("ItemListViewAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all lists with status completed.
+        /// </summary>
+        public static string ItemListViewStatusCompletedDescription {
+            get {
+                return ResourceManager.GetString("ItemListViewStatusCompletedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all lists with status waiting.
+        /// </summary>
+        public static string ItemListViewStatusWaitingDescription {
+            get {
+                return ResourceManager.GetString("ItemListViewStatusWaitingDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all lists of type inventory.
+        /// </summary>
+        public static string ItemListViewTypeInventoryDescription {
+            get {
+                return ResourceManager.GetString("ItemListViewTypeInventoryDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all lists of type pick.
+        /// </summary>
+        public static string ItemListViewTypePickDescription {
+            get {
+                return ResourceManager.GetString("ItemListViewTypePickDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all lists of type put.
+        /// </summary>
+        public static string ItemListViewTypePutDescription {
+            get {
+                return ResourceManager.GetString("ItemListViewTypePutDescription", resourceCulture);
             }
         }
         
@@ -430,6 +682,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Get all Items.
+        /// </summary>
+        public static string ItemsViewAllDescription {
+            get {
+                return ResourceManager.GetString("ItemsViewAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all items with Class A.
+        /// </summary>
+        public static string ItemsViewClassADescription {
+            get {
+                return ResourceManager.GetString("ItemsViewClassADescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all items with FIFO order.
+        /// </summary>
+        public static string ItemsViewFIFODescription {
+            get {
+                return ResourceManager.GetString("ItemsViewFIFODescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item withdrawal commenced.
         /// </summary>
         public static string ItemWithdrawCommenced {
@@ -448,11 +727,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List request accepted.
+        /// </summary>
+        public static string ListRequestAccepted {
+            get {
+                return ResourceManager.GetString("ListRequestAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string LoadingUnitAll {
             get {
                 return ResourceManager.GetString("LoadingUnitAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manual Area.
+        /// </summary>
+        public static string LoadingUnitAreaManual {
+            get {
+                return ResourceManager.GetString("LoadingUnitAreaManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vertimag Area.
+        /// </summary>
+        public static string LoadingUnitAreaVertimag {
+            get {
+                return ResourceManager.GetString("LoadingUnitAreaVertimag", resourceCulture);
             }
         }
         
@@ -484,11 +790,119 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Available Status.
+        /// </summary>
+        public static string LoadingUnitStatusAvailable {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatusAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Blocked Status.
+        /// </summary>
+        public static string LoadingUnitStatusBlocked {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatusBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Used Status.
+        /// </summary>
+        public static string LoadingUnitStatusUsed {
+            get {
+                return ResourceManager.GetString("LoadingUnitStatusUsed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all loading units.
+        /// </summary>
+        public static string LoadingUnitsViewAllDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all areas manual.
+        /// </summary>
+        public static string LoadingUnitsViewAreaManualDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewAreaManualDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all areas with Vertimag.
+        /// </summary>
+        public static string LoadingUnitsViewAreaVertimagDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewAreaVertimagDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getl all loading units with status available.
+        /// </summary>
+        public static string LoadingUnitsViewStatusAvailableDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewStatusAvailableDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all loading units with status blocked.
+        /// </summary>
+        public static string LoadingUnitsViewStatusBlockedDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewStatusBlockedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all loading units with status in use.
+        /// </summary>
+        public static string LoadingUnitsViewStatusUsedDescription {
+            get {
+                return ResourceManager.GetString("LoadingUnitsViewStatusUsedDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This loading unit has no compartments..
         /// </summary>
         public static string LoadingUnitWithNoCompartment {
             get {
                 return ResourceManager.GetString("LoadingUnitWithNoCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all machines.
+        /// </summary>
+        public static string MachinesViewAllDescription {
+            get {
+                return ResourceManager.GetString("MachinesViewAllDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all machine of type Vertimag M.
+        /// </summary>
+        public static string MachinesViewVertimagMDescription {
+            get {
+                return ResourceManager.GetString("MachinesViewVertimagMDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Get all machines of type Vertimag XS.
+        /// </summary>
+        public static string MachinesViewVertimagXSDescription {
+            get {
+                return ResourceManager.GetString("MachinesViewVertimagXSDescription", resourceCulture);
             }
         }
         

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -12,14 +14,14 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private static readonly Expression<Func<DataModels.ItemList, bool>> StatusCompletedFilter =
-            list => (char)list.Status == (char)ItemListStatus.Completed;
-
-        private static readonly Expression<Func<DataModels.ItemList, bool>> StatusWaitingFilter =
-            list => (char)list.Status == (char)(ItemListStatus.Waiting);
+        private static readonly Expression<Func<DataModels.ItemList, bool>> TypeInventoryFilter =
+            list => (char)list.ItemListType == (char)(ItemListType.Inventory);
 
         private static readonly Expression<Func<DataModels.ItemList, bool>> TypePickFilter =
             list => (char)list.ItemListType == (char)(ItemListType.Pick);
+
+        private static readonly Expression<Func<DataModels.ItemList, bool>> TypePutFilter =
+            list => (char)list.ItemListType == (char)(ItemListType.Put);
 
         private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
@@ -43,14 +45,19 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<Int32> Add(ItemListDetails model)
+        public Task<OperationResult> Add(ItemListDetails model)
         {
             throw new NotImplementedException();
         }
 
-        public Int32 Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public Task<OperationResult> ExecuteImmediately(int areaId, int bayId)
+        {
+            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
         }
 
         public IQueryable<ItemList> GetAll()
@@ -73,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
             return itemLists;
         }
 
-        public Int32 GetAllCount()
+        public int GetAllCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -82,12 +89,11 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public ItemListDetails GetById(Int32 id)
+        public async Task<ItemListDetails> GetById(int id)
         {
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var itemListDetails = this.dataContext.Current.ItemLists
+
+            var itemListDetails = await this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)
                .Select(l => new ItemListDetails
@@ -109,47 +115,52 @@ namespace Ferretto.Common.BusinessProviders
                    LastModificationDate = l.LastModificationDate,
                    FirstExecutionDate = l.FirstExecutionDate,
                    ExecutionEndDate = l.ExecutionEndDate,
-               }).Single();
+               }).SingleAsync();
 
-                itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
-                    Enum.GetValues(typeof(ItemListStatus)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-                itemListDetails.ItemListTypeChoices = ((ItemListType[])
-                    Enum.GetValues(typeof(ItemListType)))
-                    .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
+                Enum.GetValues(typeof(ItemListStatus)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
+            itemListDetails.ItemListTypeChoices = ((ItemListType[])
+                Enum.GetValues(typeof(ItemListType)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
-                itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
+            itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
 
-                return itemListDetails;
-            }
+            return itemListDetails;
         }
 
-        public IQueryable<ItemList> GetWithStatusCompleted()
+        public IQueryable<ItemList> GetWithStatusCompleted(ItemListType? type)
         {
-            return GetAllListsWithAggregations(this.dataContext.Current, StatusCompletedFilter);
+            var filter = BuildFilter(type, ItemListStatus.Completed);
+            return GetAllListsWithAggregations(this.dataContext.Current, filter);
         }
 
-        public Int32 GetWithStatusCompletedCount()
+        public int GetWithStatusCompletedCount(ItemListType? type)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(StatusCompletedFilter);
-            }
+            var filter = BuildFilter(type, ItemListStatus.Completed);
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(filter);
         }
 
-        public IQueryable<ItemList> GetWithStatusWaiting()
+        public IQueryable<ItemList> GetWithStatusWaiting(ItemListType? type)
         {
-            return GetAllListsWithAggregations(this.dataContext.Current, StatusWaitingFilter);
+            var filter = BuildFilter(type, ItemListStatus.Waiting);
+            return GetAllListsWithAggregations(this.dataContext.Current, filter);
         }
 
-        public Int32 GetWithStatusWaitingCount()
+        public int GetWithStatusWaitingCount(ItemListType? type)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(StatusWaitingFilter);
-            }
+            var filter = BuildFilter(type, ItemListStatus.Waiting);
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(filter);
+        }
+
+        public IQueryable<ItemList> GetWithTypeInventory()
+        {
+            return GetAllListsWithAggregations(this.dataContext.Current, TypeInventoryFilter);
+        }
+
+        public int GetWithTypeInventoryCount()
+        {
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypeInventoryFilter);
         }
 
         public IQueryable<ItemList> GetWithTypePick()
@@ -157,16 +168,22 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllListsWithAggregations(this.dataContext.Current, TypePickFilter);
         }
 
-        public Int32 GetWithTypePickCount()
+        public int GetWithTypePickCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                return dataContext.ItemLists.AsNoTracking().Count(TypePickFilter);
-            }
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePickFilter);
         }
 
-        public Int32 Save(ItemListDetails model)
+        public IQueryable<ItemList> GetWithTypePut()
+        {
+            return GetAllListsWithAggregations(this.dataContext.Current, TypePutFilter);
+        }
+
+        public int GetWithTypePutCount()
+        {
+            return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
+        }
+
+        public int Save(ItemListDetails model)
         {
             if (model == null)
             {
@@ -182,6 +199,22 @@ namespace Ferretto.Common.BusinessProviders
 
                 return dataContext.SaveChanges();
             }
+        }
+
+        public Task<OperationResult> ScheduleForExecution(int areaId)
+        {
+            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+        }
+
+        private static Expression<Func<DataModels.ItemList, Boolean>> BuildFilter(ItemListType? type, ItemListStatus status)
+        {
+            var listType = type.HasValue ? (DataModels.ItemListType)type.Value : default(DataModels.ItemListType);
+            var listStatus = (DataModels.ItemListStatus)status;
+
+            return list =>
+                list.Status == listStatus
+                &&
+                (type.HasValue == false || list.ItemListType == listType);
         }
 
         private static IQueryable<ItemList> GetAllListsWithAggregations(DatabaseContext context, Expression<Func<DataModels.ItemList, bool>> whereFunc = null)

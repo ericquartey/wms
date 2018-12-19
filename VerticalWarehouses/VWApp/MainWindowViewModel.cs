@@ -8,8 +8,9 @@ using Ferretto.VW.Navigation;
 using System.ComponentModel;
 using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
-using Ferretto.VW.ActionBlocks.Source;
 using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.MathLib;
+using Ferretto.VW.InstallationApp;
 
 namespace Ferretto.VW.VWApp
 {
@@ -142,7 +143,9 @@ namespace Ferretto.VW.VWApp
             {
                 ActionManager.PositioningDrawerInstance = new PositioningDrawer();
                 ActionManager.PositioningDrawerInstance.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
-                ActionManager.PositioningDrawerInstance.Initialize();
+                ActionManager.PositioningDrawerInstance.Initialize();  // 1024 is the default value
+                ActionManager.ConverterInstance = new Converter();
+                ActionManager.ConverterInstance.ManageResolution = 1024;
             }
         }
 

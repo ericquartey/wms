@@ -87,6 +87,6 @@
 
 
     <Style TargetType="{x:Type wms:BusyIndicator}">
-        <Setter Property="BusyStyle" Value="{StaticResource BusyIndicatorCircleMedStyle}" />
+        <Setter Property="BusyStyle" Value="{StaticResource BusyIndicatorCircleMinStyle}" />
     </Style>
 </ResourceDictionary>

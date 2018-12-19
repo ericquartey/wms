@@ -277,7 +277,7 @@
     <value>Waiting Status</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Pick Type</value>
+    <value>Pick Lists</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Customer Order Information</value>
@@ -325,5 +325,147 @@
   <data name="CompartmentsLayoutOverview" xml:space="preserve">
     <value>Layout Overview</value>
     <comment>Label - Grouping</comment>
+  </data>
+  <data name="ItemListExecuteImmediately" xml:space="preserve">
+    <value>Execute Immediately</value>
+  </data>
+  <data name="ListRequestAccepted" xml:space="preserve">
+    <value>List request accepted</value>
+    <comment>Notification - request accepted</comment>
+  </data>
+  <data name="CompartmentTypeListFormat" xml:space="preserve">
+    <value>{0} X {1} ( Width [mm] X Height [mm] )</value>
+  </data>
+  <data name="AdvancedDetails" xml:space="preserve">
+    <value>Advanced Details</value>
+  </data>
+  <data name="ItemListsTypeInventory" xml:space="preserve">
+    <value>Inventory Lists</value>
+  </data>
+  <data name="ItemListsTypePut" xml:space="preserve">
+    <value>Put Lists</value>
+  </data>
+  <data name="LoadingUnitAreaManual" xml:space="preserve">
+    <value>Manual Area</value>
+  </data>
+  <data name="LoadingUnitAreaVertimag" xml:space="preserve">
+    <value>Vertimag Area</value>
+  </data>
+  <data name="LoadingUnitStatusAvailable" xml:space="preserve">
+    <value>Available Status</value>
+  </data>
+  <data name="LoadingUnitStatusBlocked" xml:space="preserve">
+    <value>Blocked Status</value>
+  </data>
+  <data name="LoadingUnitStatusUsed" xml:space="preserve">
+    <value>Used Status</value>
+  </data>
+  <data name="CellClassA" xml:space="preserve">
+    <value>Class A</value>
+  </data>
+  <data name="CellStatusEmpty" xml:space="preserve">
+    <value>Empty Status</value>
+  </data>
+  <data name="CellStatusFull" xml:space="preserve">
+    <value>Full Status</value>
+  </data>
+  <data name="CompartmentStatusAvailable" xml:space="preserve">
+    <value>Available Status</value>
+  </data>
+  <data name="CompartmentStatusAwaiting" xml:space="preserve">
+    <value>Awaiting Verification Status</value>
+  </data>
+  <data name="CompartmentStatusBlocked" xml:space="preserve">
+    <value>Blocked Status</value>
+  </data>
+  <data name="CompartmentStatusExpired" xml:space="preserve">
+    <value>Expired Status</value>
+  </data>
+  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
+    <value>{0} X {1} [mm]</value>
+  </data>
+  <data name="CellClassADescription" xml:space="preserve">
+    <value>Get all cell with class A</value>
+  </data>
+  <data name="CellStatusEmptyDescription" xml:space="preserve">
+    <value>Get all empty cells</value>
+  </data>
+  <data name="CellStatusFullDescription" xml:space="preserve">
+    <value>Get all full cells</value>
+  </data>
+  <data name="CellsViewAllDescription" xml:space="preserve">
+    <value>Get all cells</value>
+  </data>
+  <data name="CompartmentStatusAvailableDescription" xml:space="preserve">
+    <value>Get all compartments with status available</value>
+  </data>
+  <data name="CompartmentStatusAwaitingDescription" xml:space="preserve">
+    <value>Get all compartments with status awaiting</value>
+  </data>
+  <data name="CompartmentStatusBlockedDescription" xml:space="preserve">
+    <value>Get all compartments with status blocked</value>
+  </data>
+  <data name="CompartmentStatusExpiredDescription" xml:space="preserve">
+    <value>Get all compartments with status expired</value>
+  </data>
+  <data name="CompartmentsViewAllDescription" xml:space="preserve">
+    <value>Get all compartments</value>
+  </data>
+  <data name="ItemListViewAllDescription" xml:space="preserve">
+    <value>Get all lists</value>
+  </data>
+  <data name="ItemListViewStatusCompletedDescription" xml:space="preserve">
+    <value>Get all lists with status completed</value>
+  </data>
+  <data name="ItemListViewStatusWaitingDescription" xml:space="preserve">
+    <value>Get all lists with status waiting</value>
+  </data>
+  <data name="ItemListViewTypeInventoryDescription" xml:space="preserve">
+    <value>Get all lists of type inventory</value>
+  </data>
+  <data name="ItemListViewTypePickDescription" xml:space="preserve">
+    <value>Get all lists of type pick</value>
+  </data>
+  <data name="ItemListViewTypePutDescription" xml:space="preserve">
+    <value>Get all lists of type put</value>
+  </data>
+  <data name="ItemsViewAllDescription" xml:space="preserve">
+    <value>Get all Items</value>
+    <comment>Filter - All Items</comment>
+  </data>
+  <data name="ItemsViewClassADescription" xml:space="preserve">
+    <value>Get all items with Class A</value>
+    <comment>Filter - Items with class A</comment>
+  </data>
+  <data name="ItemsViewFIFODescription" xml:space="preserve">
+    <value>Get all items with FIFO order</value>
+    <comment>Filter - Items with FIFO policy</comment>
+  </data>
+  <data name="LoadingUnitsViewAllDescription" xml:space="preserve">
+    <value>Get all loading units</value>
+  </data>
+  <data name="LoadingUnitsViewAreaManualDescription" xml:space="preserve">
+    <value>Get all areas manual</value>
+  </data>
+  <data name="LoadingUnitsViewAreaVertimagDescription" xml:space="preserve">
+    <value>Get all areas with Vertimag</value>
+  </data>
+  <data name="LoadingUnitsViewStatusAvailableDescription" xml:space="preserve">
+    <value>Getl all loading units with status available</value>
+  </data>
+  <data name="LoadingUnitsViewStatusBlockedDescription" xml:space="preserve">
+    <value>Get all loading units with status blocked</value>
+  </data>
+  <data name="LoadingUnitsViewStatusUsedDescription" xml:space="preserve">
+    <value>Get all loading units with status in use</value>
+  </data>
+  <data name="MachinesViewAllDescription" xml:space="preserve">
+    <value>Get all machines</value>
+  </data>
+  <data name="MachinesViewVertimagMDescription" xml:space="preserve">
+    <value>Get all machine of type Vertimag M</value>
+  </data>
+  <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
+    <value>Get all machines of type Vertimag XS</value>
   </data>
 </root>

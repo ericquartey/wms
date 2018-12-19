@@ -196,6 +196,15 @@ namespace Ferretto.Common.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Inventory Lists.
+        /// </summary>
+        public static string InventoryLists {
+            get {
+                return ResourceManager.GetString("InventoryLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item Details.
         /// </summary>
         public static string ItemDetails {
@@ -385,6 +394,24 @@ namespace Ferretto.Common.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Pick Lists.
+        /// </summary>
+        public static string PickLists {
+            get {
+                return ResourceManager.GetString("PickLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Put Lists.
+        /// </summary>
+        public static string PutLists {
+            get {
+                return ResourceManager.GetString("PutLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Understock Items.
         /// </summary>
         public static string UnderStockItems {
@@ -394,11 +421,11 @@ namespace Ferretto.Common.Resources {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Units of Measurement.
+        ///   Looks up a localized string similar to Measure Units.
         /// </summary>
-        public static string UnitsOfMeasurement {
+        public static string MeasureUnits {
             get {
-                return ResourceManager.GetString("UnitsOfMeasurement", resourceCulture);
+                return ResourceManager.GetString("MeasureUnits", resourceCulture);
             }
         }
     }

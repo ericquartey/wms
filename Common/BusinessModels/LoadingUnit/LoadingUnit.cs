@@ -28,21 +28,21 @@ namespace Ferretto.Common.BusinessModels
         public int? CellColumn
         {
             get => this.cellColumn;
-            set => this.SetIfStrictlyPositive(ref this.cellColumn, value);
+            set => this.SetProperty(ref this.cellColumn, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellFloor_extended), ResourceType = typeof(BusinessObjects))]
         public int? CellFloor
         {
             get => this.cellFloor;
-            set => this.SetIfStrictlyPositive(ref this.cellFloor, value);
+            set => this.SetProperty(ref this.cellFloor, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellNumber_extended), ResourceType = typeof(BusinessObjects))]
         public int? CellNumber
         {
             get => this.cellNumber;
-            set => this.SetIfStrictlyPositive(ref this.cellNumber, value);
+            set => this.SetProperty(ref this.cellNumber, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CellPositionDescription), ResourceType = typeof(BusinessObjects))]

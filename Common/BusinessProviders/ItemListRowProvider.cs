@@ -30,12 +30,12 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<Int32> Add(ItemListRowDetails model)
+        public Task<OperationResult> Add(ItemListRowDetails model)
         {
             throw new NotImplementedException();
         }
 
-        public Int32 Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
@@ -45,17 +45,17 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Int32 GetAllCount()
+        public int GetAllCount()
         {
             throw new NotImplementedException();
         }
 
-        public ItemListRowDetails GetById(Int32 id)
+        public Task<ItemListRowDetails> GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<ItemListRow> GetByItemListId(Int32 id)
+        public IQueryable<ItemListRow> GetByItemListId(int id)
         {
             lock (this.dataContext)
             {
@@ -79,7 +79,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Int32 Save(ItemListRowDetails model)
+        public int Save(ItemListRowDetails model)
         {
             throw new NotImplementedException();
         }

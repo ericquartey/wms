@@ -1,9 +1,9 @@
 ﻿using System;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl
+namespace Ferretto.VW.InstallationApp
 {
-    internal class Gate2HeightControlViewModel : BindableBase
+    public class Gate2HeightControlViewModel : BindableBase
     {
         #region Fields
 
@@ -20,11 +20,17 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl
         #region Properties
 
         public Int32 ActiveRaysQuantity { get => this.activeRaysQuantity; set => this.SetProperty(ref this.activeRaysQuantity, value); }
+
         public Double CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
+
         public Double GateCorrection { get => this.gateCorrection; set => this.SetProperty(ref this.gateCorrection, value); }
+
         public String NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
+
         public Int32 Speed { get => this.speed; set => this.SetProperty(ref this.speed, value); }
+
         public Double SystemError { get => this.systemError; set => this.SetProperty(ref this.systemError, value); }
+
         public Double Tolerance { get => this.tolerance; set => this.SetProperty(ref this.tolerance, value); }
 
         #endregion Properties

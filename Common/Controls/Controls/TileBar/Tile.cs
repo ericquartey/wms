@@ -16,6 +16,8 @@
             set => this.SetProperty(ref this.count, value);
         }
 
+        public string Description { get; set; }
+
         public string Image => this.Key;
 
         public string Key { get; set; }

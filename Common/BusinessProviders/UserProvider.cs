@@ -9,12 +9,12 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        public Task<Int32> Add(User model)
+        public Task<OperationResult> Add(User model)
         {
             throw new NotImplementedException();
         }
 
-        public Int32 Delete(Int32 id)
+        public int Delete(int id)
         {
             throw new NotImplementedException();
         }
@@ -24,12 +24,12 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Int32 GetAllCount()
+        public int GetAllCount()
         {
             throw new NotImplementedException();
         }
 
-        public User GetById(Int32 id)
+        public Task<User> GetById(int id)
         {
             throw new NotImplementedException();
         }
@@ -39,7 +39,7 @@ namespace Ferretto.Common.BusinessProviders
             return string.Empty;
         }
 
-        public Int32 Save(User model)
+        public int Save(User model)
         {
             throw new NotImplementedException();
         }

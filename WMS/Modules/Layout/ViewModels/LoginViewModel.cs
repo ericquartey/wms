@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
@@ -15,7 +16,7 @@ namespace Ferretto.WMS.Modules.Layout
     {
         #region Fields
 
-        private readonly IUserProvider uerProvider = ServiceLocator.Current.GetInstance<IUserProvider>();
+        private readonly IUserProvider userProvider = ServiceLocator.Current.GetInstance<IUserProvider>();
         private bool isBusy;
         private bool isEnabled;
         private string loginCheck;
@@ -59,9 +60,8 @@ namespace Ferretto.WMS.Modules.Layout
             set => this.SetProperty(ref this.loginCheck, value);
         }
 
-        public ICommand LoginCommand => this.loginCommand ??
-                                                      (this.loginCommand = new DelegateCommand(this.ExecuteLogin,
-                                              this.CanLogin));
+        public ICommand LoginCommand => this.loginCommand ?? (this.loginCommand = new DelegateCommand(async () => await this.ExecuteLogin().ConfigureAwait(true)
+                                                            , this.CanLogin));
 
         public string Status
         {
@@ -107,11 +107,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         private void AccessGranted()
         {
-            this.IsBusy = true;
-            this.IsEnabled = false;
-            this.Status = Icons.ResourceManager.GetString(nameof(Icons.NavigationCheck));
-            this.LoginCheck = Common.Resources.Layout.Ok;
-            this.NavigationService.StartPresentation(this);
+            this.NavigationService.StartPresentation(() => this.NotifyAccess(), () => this.Disappear());
         }
 
         private bool CanLogin()
@@ -124,15 +120,26 @@ namespace Ferretto.WMS.Modules.Layout
             return true;
         }
 
-        private void ExecuteLogin()
+        private async Task ExecuteLogin()
         {
-            this.ValidationError = this.uerProvider.IsValid(this.User);
+            this.ValidationError = this.userProvider.IsValid(this.User);
             if (string.IsNullOrEmpty(this.ValidationError) == false)
             {
                 return;
             }
 
-            this.AccessGranted();
+            await Task.Run(() =>
+            {
+                this.AccessGranted();
+            });
+        }
+
+        private void NotifyAccess()
+        {
+            this.IsBusy = true;
+            this.IsEnabled = false;
+            this.Status = Icons.ResourceManager.GetString(nameof(Icons.NavigationCheck));
+            this.LoginCheck = Common.Resources.Layout.Ok;
         }
 
         private void OnItemPropertyChanged(Object sender, PropertyChangedEventArgs e)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Threading;
+using DevExpress.Mvvm.Native;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Core;
 using Ferretto.Common.Controls.Interfaces;
@@ -14,6 +14,10 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(nameof(FocusedStart), typeof(string), typeof(WmsDialogView), new FrameworkPropertyMetadata(default(string), null));
+
+        public static readonly DependencyProperty HeaderIsEnabledProperty = DependencyProperty.Register(nameof(HeaderIsEnabled), typeof(bool),
+           typeof(WmsDialogView),
+           new FrameworkPropertyMetadata(false, OnHeaderIsEnabledChanged));
 
         private readonly INavigationService
                     navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
@@ -44,6 +48,12 @@ namespace Ferretto.Common.Controls
         {
             get => (string)this.GetValue(FocusedStartProperty);
             set => this.SetValue(FocusedStartProperty, value);
+        }
+
+        public bool HeaderIsEnabled
+        {
+            get => (bool)this.GetValue(HeaderIsEnabledProperty);
+            set => this.SetValue(HeaderIsEnabledProperty, value);
         }
 
         public bool IsClosed { get; set; }
@@ -106,6 +116,23 @@ namespace Ferretto.Common.Controls
             base.OnClose();
 
             this.Disappear();
+        }
+
+        private static void EnableControls(WmsDialogView dialogView, Boolean isEnabled)
+        {
+            var childrenToCheck = LayoutTreeHelper.GetVisualChildren(dialogView).OfType<IEnabled>();
+            if (childrenToCheck != null)
+            {
+                childrenToCheck.ForEach(c => c.IsEnabled = isEnabled);
+            }
+        }
+
+        private static void OnHeaderIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is WmsDialogView dialogView && e.NewValue is bool isEnabled)
+            {
+                EnableControls(dialogView, isEnabled);
+            }
         }
 
         private void CheckDataContext()

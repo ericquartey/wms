@@ -60,6 +60,12 @@ namespace Ferretto.VW.InstallationApp
 
         public void RaiseFinishedMachineOnMarchChangeStateEvent() => FinishedMachineOnMarchChangeStateEventHandler();
 
+        protected override void OnClosed(EventArgs e)
+        {
+            this.UnsubscribeEvents();
+            base.OnClosed(e);
+        }
+
         private async void SetMachineMode()
         {
             var ca = new ColorAnimation();
@@ -88,6 +94,12 @@ namespace Ferretto.VW.InstallationApp
             this.MachineOnMarchControl.RectangleBrush.BeginAnimation(SolidColorBrush.ColorProperty, null);
             this.MachineOnMarchControl.RectangleBrush = (!this.MachineOnMarchControl.MachineOnMarchState) ? (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_On"] : (SolidColorBrush)Application.Current.Resources["VWAPP_MainWindowCustomComboBoxMachineOnMarch_Off"];
             this.RaiseFinishedMachineOnMarchChangeStateEvent();
+        }
+
+        private void UnsubscribeEvents()
+        {
+            MainWindow.FinishedMachineModeChangeStateEventHandler = null;
+            MainWindow.FinishedMachineOnMarchChangeStateEventHandler = null;
         }
 
         #endregion Methods

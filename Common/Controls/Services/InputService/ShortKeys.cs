@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
+using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Utils;
 using Microsoft.Practices.ServiceLocation;
@@ -60,6 +62,21 @@ namespace Ferretto.Common.Controls.Services
             }));
             // **************************
             // ENDMAIN
+
+            #region ******* LOGINVIEW
+
+            var logiView = new List<ShortKey>();
+            logiView.Add(new ShortKey(Key.Enter, false, (v) => {
+                if (v.ShortKey.Key == Key.Enter &&
+                    LayoutTreeHelper.GetVisualParents(v.Element as UIElement).OfType<INavigableView>().FirstOrDefault() is WmsDialogView view &&
+                    LayoutTreeHelper.GetVisualChildren(view).OfType<ActionBar>().FirstOrDefault() is ActionBar actionBar)
+                {
+                    actionBar.Focus();
+                }
+            }));
+            ViewShortKeys.Add(MvvmNaming.GetViewModelName(nameof(Utils.Modules.Layout), Utils.Modules.Layout.LOGINVIEW), logiView);
+
+            #endregion ******* LOGINVIEW
 
             #region ******* ITEMDETAILS
 

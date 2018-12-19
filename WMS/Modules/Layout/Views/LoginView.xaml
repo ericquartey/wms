@@ -58,18 +58,24 @@
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding ValidationError}" />
 
-        <wms:ActionBar Grid.Row="2"
-                       Grid.Column="1"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Center"
-                       HorizontalContentAlignment="Right"
-                       Style="{DynamicResource ActionBarNotCustomizable}">
-            <wms:ActionBarItem Command="{Binding LoginCommand}"
-                               Content="{Binding LoginCheck}"
-                               CustomGlyphSize="24,24"
-                               Glyph="{Binding Status}"
-                               GlyphSize="Small" />
-        </wms:ActionBar>
+        <wms:BusyIndicator Grid.Row="2"
+                           Grid.Column="1"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Center"
+                           BusyHorizontalAlignment="Center"
+                           BusyVerticalAlignment="Top"
+                           IsBusy="{Binding IsBusy}"
+                           ShowMode="CircleMin">
+            <wms:ActionBar Name="LoginAB"
+                           HorizontalContentAlignment="Right"
+                           Style="{DynamicResource ActionBarNotCustomizable}">
+                <wms:ActionBarItem Command="{Binding LoginCommand, Delay=25}"
+                                   Content="{Binding LoginCheck}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="{Binding Status}"
+                                   GlyphSize="Small" />
+            </wms:ActionBar>
+        </wms:BusyIndicator>
     </Grid>
 
 </wms:WmsDialogView>
