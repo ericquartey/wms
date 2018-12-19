@@ -241,7 +241,7 @@
                         <wms:WmsGridControl MinHeight="280"
                                             MaxWidth="2000"
                                             MaxHeight="280"
-                                            CurrentItem="{Binding SelectedItemListRow, Mode=TwoWay}"
+                                            SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}"
                                             ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}">
                             <!--TODO wms:WmsGridControl.View>
                                 <dxg:TableView>
