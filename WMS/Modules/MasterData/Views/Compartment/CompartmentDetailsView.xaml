@@ -242,15 +242,15 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="1"
                                       EditValue="{Binding Compartment.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      IsEnabled="False"
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
-                                      MinValue="1"
                                       EditValue="{Binding Compartment.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      IsEnabled="False" />
+                                      IsEnabled="False"
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
@@ -279,8 +279,8 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="1"
-                                      EditValue="{Binding Compartment.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Compartment.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -303,7 +303,8 @@
 
                 <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="3"
-                          Header="{x:Static res:MasterData.CompartmentPosition}">
+                          Header="{x:Static res:MasterData.CompartmentPosition}"
+                          Visibility="{Binding Tray.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
 
                     <wms:WmsTrayControl Margin="0,0,0,0"
                                         IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"
