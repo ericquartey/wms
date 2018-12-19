@@ -295,7 +295,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments..
+        ///   Looks up a localized string similar to Unable to add the specified compartment (id={0}) to the loading unit (id={1}) because it overlaps with one or more existing compartments..
         /// </summary>
         public static string LoadingUnitOverlappingCompartment {
             get {

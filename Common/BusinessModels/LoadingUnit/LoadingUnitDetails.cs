@@ -214,7 +214,7 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, this.Id));
+                throw new ArgumentException(string.Format(Resources.Errors.LoadingUnitOverlappingCompartment, compartmentDetails.Id, this.Id));
             }
         }
 
@@ -259,6 +259,11 @@ namespace Ferretto.Common.BusinessModels
         /// <returns>
         private bool HasCollision(ICompartment compartmentA, ICompartment compartmentB)
         {
+            if (compartmentA.Id == compartmentB.Id)
+            {
+                return false;
+            }
+
             var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
             var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
 

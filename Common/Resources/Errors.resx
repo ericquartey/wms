@@ -162,15 +162,19 @@
   </data>
   <data name="ConverterCanConvertOnlyToNavigationStyleType" xml:space="preserve">
     <value>Converter can only convert to value of type GridViewNavigationStyle.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ConverterCanConvertOnlyToStringType" xml:space="preserve">
     <value>Converter can only convert to value of type string.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ConverterCanConvertOnlyToTextWrappingType" xml:space="preserve">
     <value>Converter can only convert to value of type TextWrapping.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Converter can only convert to value of type Visibility.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="EditNoPossible" xml:space="preserve">
     <value>Error: it is no possible to Edit this Compartment.</value>
@@ -193,6 +197,7 @@
   </data>
   <data name="PropertyDescriptionConverterCheckParameterError" xml:space="preserve">
     <value>In order to work in xaml Multibinding with two parameters Self, and Self.DataContext must be specificed.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="SpecifiedPathNotInConfiguredImageFolder" xml:space="preserve">
     <value>The specified path is not contained in the image directory.</value>
@@ -206,12 +211,14 @@
   </data>
   <data name="ConverterCanConvertOnlyToBrushType" xml:space="preserve">
     <value>Converter can only convert to value of type Brush.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ConverterParameterMustBeType" xml:space="preserve">
     <value>Converter parameter must be a type</value>
   </data>
   <data name="ConverterCanConvertOnlyToDoubleType" xml:space="preserve">
     <value>Converter can only convert to value of type Double.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="ConverterParameterMustBeBool" xml:space="preserve">
     <value>Converter parameter must be bool</value>
@@ -220,7 +227,7 @@
     <value>No Changes found.</value>
   </data>
   <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
-    <value>Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments.</value>
+    <value>Unable to add the specified compartment (id={0}) to the loading unit (id={1}) because it overlaps with one or more existing compartments.</value>
   </data>
   <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
     <value>Style '{0}' for '{1}' not found.</value>
