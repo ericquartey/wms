@@ -27,8 +27,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private bool readOnlyTray;
-
         private CompartmentDetails selectedCompartment;
+        private string subTitle;
         private Tray tray;
         private Func<CompartmentDetails, CompartmentDetails, string> trayColoringFunc;
 
@@ -94,13 +94,7 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
-        public string SubTitle
-        {
-            get
-            {
-                return Common.Resources.Title.LoadingUnitDetailsView;
-            }
-        }
+        public string SubTitle { get => this.subTitle; set => this.SetProperty(ref this.subTitle, value); }
 
         public Tray Tray
         {
@@ -140,6 +134,8 @@ namespace Ferretto.WMS.Modules.MasterData
             }
 
             this.TakeSnapshot(this.loadingUnit);
+
+            this.SubTitle = this.loadingUnit.Code;
 
             this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.loadingUnit.Id));
 
@@ -220,8 +216,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.LoadingUnit = await this.loadingUnitProvider.GetById(modelId);
             this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
-
             this.InitializeTray();
+            this.SubTitle = this.loadingUnit.Code;
         }
 
         #endregion Methods

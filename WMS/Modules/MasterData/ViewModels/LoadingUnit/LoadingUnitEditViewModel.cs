@@ -35,7 +35,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool loadingUnitHasCompartments;
         private bool readOnlyTray;
         private CompartmentDetails selectedCompartmentTray;
-        private string subTitle;
         private Tray tray;
 
         #endregion Fields
@@ -158,12 +157,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public string SubTitle
-        {
-            get => this.subTitle;
-            set => this.SetProperty(ref this.subTitle, value);
-        }
-
         public Tray Tray
         {
             get => this.tray;
@@ -277,7 +270,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.LoadingUnit = await this.loadingUnitProvider.GetById(modelId);
                 this.InitializeTray();
-                this.SubTitle = string.Format(Common.Resources.Title.LoadingUnitEditView, this.loadingUnit.Code);
             }
         }
 
