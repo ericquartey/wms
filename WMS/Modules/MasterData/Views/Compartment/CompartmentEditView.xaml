@@ -83,13 +83,12 @@
                               Grid.Column="0"
                               HorizontalAlignment="Stretch"
                               EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-MinValue="1" 
-                               />
+                              MinValue="1" />
 
                 <wms:SpinEdit x:Name="HeightText"
                               Grid.Row="2"
                               Grid.Column="2"
-                              HorizontalAlignment="Stretch"      
+                              HorizontalAlignment="Stretch"
                               EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                               MinValue="1" />
 
@@ -97,18 +96,14 @@ MinValue="1"
                               Grid.Row="3"
                               Grid.Column="0"
                               HorizontalAlignment="Stretch"
-                              
-                              EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                               />
+                              EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="PositionYText"
                               Grid.Row="3"
                               Grid.Column="2"
                               HorizontalAlignment="Stretch"
                               HorizontalContentAlignment="Right"
-                              
-                              EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                               />
+                              EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:LookUpEdit Grid.Row="4"
                                 Grid.Column="0"
@@ -157,16 +152,15 @@ MinValue="1"
                 <wms:SpinEdit x:Name="QuantityText"
                               Grid.Row="5"
                               Grid.Column="0"
-AllowNullInput="False"
                               MinWidth="90"
                               HorizontalAlignment="Stretch"
-                              EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              />
+                              AllowNullInput="False"
+                              EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <wms:SpinEdit x:Name="CapacityText"
                               Grid.Row="5"
                               Grid.Column="2"
-AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               MinValue="1" />
 
