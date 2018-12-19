@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -12,8 +10,6 @@ namespace Ferretto.Common.BusinessProviders
         IQueryable<Compartment> GetByItemId(int id);
 
         IQueryable<CompartmentDetails> GetByLoadingUnitId(int id);
-
-        Task<CompartmentEdit> GetEditableById(int id);
 
         CompartmentDetails GetNewCompartmentDetails();
 

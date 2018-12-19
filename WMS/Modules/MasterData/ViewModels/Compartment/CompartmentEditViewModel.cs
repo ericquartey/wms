@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentEditViewModel : SidePanelDetailsViewModel<CompartmentEdit>
+    public class CompartmentEditViewModel : SidePanelDetailsViewModel<CompartmentDetails>
     {
         #region Fields
 
@@ -49,11 +49,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public async void Initialize(int compartmentId, LoadingUnitDetails loadingUnit)
-        {
-            await this.LoadData(compartmentId, loadingUnit);
-        }
-
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -69,7 +64,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
-            var affectedRowsCount = this.loadingUnitProvider.Save(this.Model.LoadingUnit);
+            var affectedRowsCount = this.compartmentProvider.Save(this.Model);
             if (affectedRowsCount > 0)
             {
                 this.TakeModelSnapshot();
@@ -95,12 +90,6 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Model = null;
                 this.CompleteOperation();
             }
-        }
-
-        private async Task LoadData(int compartmentId, LoadingUnitDetails loadingUnit)
-        {
-            this.Model = await this.compartmentProvider.GetEditableById(compartmentId);
-            this.Model.LoadingUnit = loadingUnit;
         }
 
         #endregion Methods

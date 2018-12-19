@@ -130,6 +130,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.CompartmentLastStoreDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastStoreDate { get; set; }
 
+        public LoadingUnitDetails LoadingUnit { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode_extended), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitCode
         {

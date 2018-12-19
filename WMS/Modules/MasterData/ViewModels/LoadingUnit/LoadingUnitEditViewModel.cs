@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly Func<ICompartment, ICompartment, string> filterColorFunc = new EditFilter().ColorFunc;
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private SidePanelDetailsViewModel<CompartmentEdit> activeSideViewModel;
+        private SidePanelDetailsViewModel<CompartmentDetails> activeSideViewModel;
         private ICommand addCommand;
         private ICommand bulkAddCommand;
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public SidePanelDetailsViewModel<CompartmentEdit> ActiveSideViewModel
+        public SidePanelDetailsViewModel<CompartmentDetails> ActiveSideViewModel
         {
             get => this.activeSideViewModel;
             set
@@ -232,9 +232,14 @@ namespace Ferretto.WMS.Modules.MasterData
             this.HideSidePanel();
         }
 
-        private void ShowSidePanel(SidePanelDetailsViewModel<CompartmentEdit> childViewModel)
+        private async void ShowSidePanel(SidePanelDetailsViewModel<CompartmentDetails> childViewModel)
         {
+            var model = await this.compartmentProvider.GetById(this.selectedCompartmentTray.Id);
+            model.LoadingUnit = this.loadingUnit;
+            childViewModel.Model = model;
+
             this.ActiveSideViewModel = childViewModel;
+
             this.IsSidePanelOpen = true;
         }
 

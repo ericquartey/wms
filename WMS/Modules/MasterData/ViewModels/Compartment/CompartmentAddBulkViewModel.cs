@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentAddBulkViewModel : SidePanelDetailsViewModel<CompartmentEdit>
+    public class CompartmentAddBulkViewModel : SidePanelDetailsViewModel<CompartmentDetails>
     {
         #region Fields
 
@@ -63,7 +63,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.EnableInputBulkAdd = true;
             this.SelectedBulkCompartmentTray.PropertyChanged += this.OnSelectedBulkCompartmentPropertyChanged;
         }
-
 
         protected override bool CanExecuteSaveCommand()
         {

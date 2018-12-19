@@ -275,62 +275,6 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
-        public async Task<CompartmentEdit> GetEditableById(int id)
-        {
-            var dataContext = this.dataContext.Current;
-
-            var compartment = await dataContext.Compartments
-               .Where(c => c.Id == id)
-               .Include(c => c.LoadingUnit)
-               .ThenInclude(l => l.Compartments)
-               .Include(c => c.Item)
-               .Include(c => c.CompartmentStatus)
-               .GroupJoin(
-                    dataContext.ItemsCompartmentTypes,
-                    cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
-                    ict => new { CompartmentTypeId = ict.CompartmentTypeId, ItemId = ict.ItemId },
-                    (cmp, ict) => new { cmp, ict = ict.DefaultIfEmpty() }
-                )
-               .Select(j => new CompartmentEdit
-               {
-                   Id = j.cmp.Id,
-                   CompartmentTypeId = j.cmp.CompartmentTypeId,
-                   IsItemPairingFixed = j.cmp.IsItemPairingFixed,
-                   Sub1 = j.cmp.Sub1,
-                   Sub2 = j.cmp.Sub2,
-                   MaterialStatusId = j.cmp.MaterialStatusId,
-                   FifoTime = j.cmp.FifoTime,
-                   PackageTypeId = j.cmp.PackageTypeId,
-                   Lot = j.cmp.Lot,
-                   RegistrationNumber = j.cmp.RegistrationNumber,
-                   MaxCapacity = j.ict.SingleOrDefault().MaxCapacity,
-                   Stock = j.cmp.Stock,
-                   ReservedForPick = j.cmp.ReservedForPick,
-                   ReservedToStore = j.cmp.ReservedToStore,
-                   CompartmentStatusId = j.cmp.CompartmentStatusId,
-                   CompartmentStatusDescription = j.cmp.CompartmentStatus.Description,
-                   CreationDate = j.cmp.CreationDate,
-                   LastHandlingDate = j.cmp.LastHandlingDate,
-                   InventoryDate = j.cmp.InventoryDate,
-                   FirstStoreDate = j.cmp.FirstStoreDate,
-                   LastStoreDate = j.cmp.LastStoreDate,
-                   LastPickDate = j.cmp.LastPickDate,
-                   Width = j.cmp.Width,
-                   Height = j.cmp.Height,
-                   XPosition = j.cmp.XPosition,
-                   YPosition = j.cmp.YPosition,
-                   ItemId = j.cmp.ItemId,
-               })
-               .SingleAsync();
-
-            compartment.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-            compartment.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-            compartment.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-            compartment.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-
-            return compartment;
-        }
-
         public CompartmentDetails GetNewCompartmentDetails()
         {
             var compartmentDetails = new CompartmentDetails();

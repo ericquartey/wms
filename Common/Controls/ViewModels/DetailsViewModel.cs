@@ -103,7 +103,8 @@ namespace Ferretto.Common.Controls
 
         protected virtual bool CanExecuteSaveCommand()
         {
-            return this.changeDetector.IsModified == true
+            return this.Model != null
+                && this.changeDetector.IsModified == true
                 && string.IsNullOrWhiteSpace(this.Model.Error)
                 && this.IsBusy == false;
         }

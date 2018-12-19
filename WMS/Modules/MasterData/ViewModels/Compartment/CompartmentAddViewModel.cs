@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CompartmentAddViewModel : SidePanelDetailsViewModel<CompartmentEdit>
+    public class CompartmentAddViewModel : SidePanelDetailsViewModel<CompartmentDetails>
     {
         #region Fields
 
