@@ -2,7 +2,25 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class CellsPanelsControlViewModel : BindableBase
+    public class CellsPanelsControlViewModel : BindableBase, IViewModel
     {
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }

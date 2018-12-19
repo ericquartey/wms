@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public ResolutionCalibrationVerticalAxisView()
         {
             this.InitializeComponent();
-            this.DataContext = new ResolutionCalibrationVerticalAxisViewModel();
+            this.DataContext = ViewModels.ResolutionCalibrationVerticalAxisVMInstance;
         }
 
         #endregion Constructors

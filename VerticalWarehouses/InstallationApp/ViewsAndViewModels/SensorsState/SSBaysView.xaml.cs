@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSBaysView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSBaysViewModel();
+            this.DataContext = ViewModels.SSBaysVMInstance;
         }
 
         #endregion Constructors

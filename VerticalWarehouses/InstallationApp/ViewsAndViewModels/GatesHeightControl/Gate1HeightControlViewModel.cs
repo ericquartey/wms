@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class Gate1HeightControlViewModel : BindableBase
+    public class Gate1HeightControlViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -34,5 +34,24 @@ namespace Ferretto.VW.InstallationApp
         public Double Tolerance { get => this.tolerance; set => this.SetProperty(ref this.tolerance, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }

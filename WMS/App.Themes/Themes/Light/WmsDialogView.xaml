@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                     xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
-                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys">
+                    xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core/themekeys"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
 
     <DataTemplate x:Key="{dxt:FloatingContainerThemeKey ThemeName=Office2016White, ResourceKey=FloatingContainerTemplate}">
         <Grid Background="{DynamicResource CommonSecondaryMedium}"
@@ -40,24 +41,24 @@
                                           UseLayoutRounding="True">
 
                                 <dxc:ThemedWindowHeaderItemsControl x:Name="PART_HeaderCustomItems"
-                                                                  IsTabStop="False"      
+                                                                    IsTabStop="False"                                                                   
                                                                     Style="{DynamicResource {dxt:DXTabbedWindowThemeKey ResourceKey=ControlContainerStyle}}" />
 
-                                <dxc:HeaderItemControl x:Name="PART_Minimize"
-                                                     IsTabStop="False"  
+                                <wms:WmsHeaderItemControl x:Name="PART_Minimize"
+                                                       IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}" />
-                                <dxc:HeaderItemControl x:Name="PART_Restore"
-                                                  IsTabStop="False"  
+                                <wms:WmsHeaderItemControl x:Name="PART_Restore"
+                                                       IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=False}, RelativeSource={RelativeSource Self}}" />
-                                <dxc:HeaderItemControl x:Name="PART_Maximize"
+                                <wms:WmsHeaderItemControl x:Name="PART_Maximize"
                                                        IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderButtonStyle}}"
                                                        Visibility="{Binding Path=(dx:FloatingContainer.IsMaximized), Converter={dx:BooleanToVisibilityConverter Invert=True}, RelativeSource={RelativeSource Self}}" />
-                                <dxc:HeaderItemControl x:Name="PART_CloseButton"
+                                <wms:WmsHeaderItemControl x:Name="PART_CloseButton"
                                                      IsTabStop="False"  
                                                        Foreground="{DynamicResource OnCommonSecondaryMedium}"
                                                        Style="{DynamicResource {dxt:FloatingContainerThemeKey ResourceKey=FloatingContainerHeaderCloseButtonStyle}}" />

@@ -26,7 +26,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSVerticalAxisView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSVerticalAxisViewModel();
+            this.DataContext = ViewModels.SSVerticalAxisVMInstance;
         }
 
         #endregion Constructors
