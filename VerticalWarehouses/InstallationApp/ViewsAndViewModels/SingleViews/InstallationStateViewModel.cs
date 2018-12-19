@@ -5,7 +5,7 @@ using Ferretto.VW.Navigation;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class InstallationStateViewModel : BindableBase
+    public class InstallationStateViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -69,6 +69,21 @@ namespace Ferretto.VW.InstallationApp
         #endregion Properties
 
         #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
 
         private void UpdateData()
         {

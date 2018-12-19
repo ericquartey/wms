@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSGateViewModel : BindableBase
+    public class SSGateViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -18,5 +18,24 @@ namespace Ferretto.VW.InstallationApp
         public System.Boolean GateSensorB { get => this.gateSensorB; set => this.SetProperty(ref this.gateSensorB, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }
