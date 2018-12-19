@@ -8,17 +8,28 @@
     <ContentControl.Template>
         <ControlTemplate TargetType="wms:WmsHistoryView">
             <Grid>
-                <wms:ActionBar x:Name="actionBarHsitoryView"
-                               Margin="7,12,0,0"
-                               HorizontalAlignment="Left"
-                               Panel.ZIndex="100"
-                               Style="{DynamicResource ActionBarNotCustomizable}">
-                    <wms:ActionBarItem CustomGlyphSize="24,24"
-                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
-                                       GlyphSize="Custom"
-                                       ItemClick="BackViewClick" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
 
-                </wms:ActionBar>
+                    <wms:ActionBar x:Name="actionBarHsitoryView"
+                                   Margin="7,12,0,0"
+                                   HorizontalAlignment="Left"
+                                   Panel.ZIndex="100"
+                                   Style="{DynamicResource ActionBarNotCustomizable}">
+                        <wms:ActionBarItem CustomGlyphSize="24,24"
+                                           Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_arrow_back_black_24dp.png"
+                                           GlyphSize="Custom"
+                                           ItemClick="BackViewClick" />
+                    </wms:ActionBar>
+                    <Label Grid.Column="1"
+                           Margin="7,12,0,0"
+                           Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsHistoryView}}, Path=Content.SubTitle}"
+                           FontSize="{DynamicResource FontSizeMedium}" />
+                </Grid>
                 <ContentPresenter />
             </Grid>
         </ControlTemplate>
