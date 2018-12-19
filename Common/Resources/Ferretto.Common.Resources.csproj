@@ -69,6 +69,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>OperatorApp.resx</DependentUpon>
     </Compile>
+    <Compile Update="Title.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Title.resx</DependentUpon>
+    </Compile>
     <Compile Update="VWApp.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -124,6 +129,10 @@
     <EmbeddedResource Update="OperatorApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>OperatorApp.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Title.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Title.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Update="VWApp.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

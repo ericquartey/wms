@@ -94,6 +94,14 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.selectedCompartment, value);
         }
 
+        public string SubTitle
+        {
+            get
+            {
+                return Common.Resources.Title.LoadingUnitDetailsView;
+            }
+        }
+
         public Tray Tray
         {
             get => this.tray;
