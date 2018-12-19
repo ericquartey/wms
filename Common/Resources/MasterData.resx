@@ -1,0 +1,471 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ItemInformation" xml:space="preserve">
+    <value>Item Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="Compartments" xml:space="preserve">
+    <value>Compartments</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="PhysicalInformation" xml:space="preserve">
+    <value>Physical Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="WarehousingInformation" xml:space="preserve">
+    <value>Warehousing Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="Withdraw" xml:space="preserve">
+    <value>Withdraw</value>
+    <comment>Command - Withdraw the selected Item from the warehouse</comment>
+  </data>
+  <data name="ItemAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Items</comment>
+  </data>
+  <data name="ItemClassA" xml:space="preserve">
+    <value>Class A</value>
+    <comment>Filter - Items with class A</comment>
+  </data>
+  <data name="ItemFIFO" xml:space="preserve">
+    <value>FIFO</value>
+    <comment>Filter - Items with FIFO policy</comment>
+  </data>
+  <data name="ItemsMasterData" xml:space="preserve">
+    <value>Items Master Data</value>
+    <comment>Label - Items Page Title</comment>
+  </data>
+  <data name="ItemSavedSuccessfully" xml:space="preserve">
+    <value>Item saved sucessfully</value>
+    <comment>Notification - item saved</comment>
+  </data>
+  <data name="CompartmentAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Compartments</comment>
+  </data>
+  <data name="CompartmentSavedSuccessfully" xml:space="preserve">
+    <value>Compartment saved sucessfully</value>
+    <comment>Notification - compartment saved</comment>
+  </data>
+  <data name="AllowedItems" xml:space="preserve">
+    <value>Allowed Items</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CompartmentInformation" xml:space="preserve">
+    <value>Compartment Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CompartmentPosition" xml:space="preserve">
+    <value>Position</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="ContentInformation" xml:space="preserve">
+    <value>Content Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CurrentItemInformation" xml:space="preserve">
+    <value>Current Item Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="LoadingUnitSavedSuccessfully" xml:space="preserve">
+    <value>Loading Unit saved sucessfully</value>
+    <comment>Notification - loading unit saved</comment>
+  </data>
+  <data name="LoadingUnitAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Loading Units</comment>
+  </data>
+  <data name="ItemIsAllocatedInNoCompartment" xml:space="preserve">
+    <value>This item is not allocated in any compartments.</value>
+  </data>
+  <data name="CurrentCellInformation" xml:space="preserve">
+    <value>Current Cell Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="LoadingUnitInformation" xml:space="preserve">
+    <value>Loading Unit Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="OtherInformation" xml:space="preserve">
+    <value>Other Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CellAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All Cells</comment>
+  </data>
+  <data name="LoadingUnitWithNoCompartment" xml:space="preserve">
+    <value>This loading unit has no compartments.</value>
+  </data>
+  <data name="CompartmentHasNoAllowedItems" xml:space="preserve">
+    <value>This compartment has no allowed items.</value>
+  </data>
+  <data name="CellSavedSuccessfully" xml:space="preserve">
+    <value>Cell saved successfully</value>
+    <comment>Notification - cell saved</comment>
+  </data>
+  <data name="CellInformation" xml:space="preserve">
+    <value>Cell Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CellLocationInformation" xml:space="preserve">
+    <value>Cell Location Information</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="LoadingUnits" xml:space="preserve">
+    <value>Loading Units</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="CellWithNoLoadingUnits" xml:space="preserve">
+    <value>This cell has no loading units.</value>
+  </data>
+  <data name="WithdrawOptions" xml:space="preserve">
+    <value>Withdraw Options</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="RunItemWithdraw" xml:space="preserve">
+    <value>Run Item Withdraw</value>
+    <comment>Button</comment>
+  </data>
+  <data name="AdvancedWithdraw" xml:space="preserve">
+    <value>Advanced Withdraw</value>
+    <comment>Button</comment>
+  </data>
+  <data name="SimpleWithdraw" xml:space="preserve">
+    <value>Simple Withdraw</value>
+    <comment>Button</comment>
+  </data>
+  <data name="ItemWithdrawCommenced" xml:space="preserve">
+    <value>Item withdrawal commenced</value>
+    <comment>Notification - Item withdrawal commenced</comment>
+  </data>
+  <data name="BulkAddCompartment" xml:space="preserve">
+    <value>Bulk Add</value>
+  </data>
+  <data name="AddCompartment" xml:space="preserve">
+    <value>Add Compartment</value>
+  </data>
+  <data name="EditCompartment" xml:space="preserve">
+    <value>Edit Compartment</value>
+  </data>
+  <data name="ItemListAll" xml:space="preserve">
+    <value>All</value>
+    <comment>Filter - All ItemLists</comment>
+  </data>
+  <data name="ItemListStatusCompleted" xml:space="preserve">
+    <value>Completed Status</value>
+  </data>
+  <data name="ItemListStatusWaiting" xml:space="preserve">
+    <value>Waiting Status</value>
+  </data>
+  <data name="ItemListsTypePick" xml:space="preserve">
+    <value>Pick Lists</value>
+  </data>
+  <data name="CustomerOrderInformation" xml:space="preserve">
+    <value>Customer Order Information</value>
+  </data>
+  <data name="ExecutionDetails" xml:space="preserve">
+    <value>Execution Details</value>
+  </data>
+  <data name="ItemListInformation" xml:space="preserve">
+    <value>List Information</value>
+  </data>
+  <data name="ShipmentUnitInformation" xml:space="preserve">
+    <value>Shipment Unit Information</value>
+  </data>
+  <data name="ItemListRowInformation" xml:space="preserve">
+    <value>List Rows Information</value>
+  </data>
+  <data name="ItemListSavedSuccessfully" xml:space="preserve">
+    <value>Item list saved sucessfully</value>
+    <comment>Notification - item saved</comment>
+  </data>
+  <data name="ListExecute" xml:space="preserve">
+    <value>Execute List</value>
+  </data>
+  <data name="ItemListExecuteOptions" xml:space="preserve">
+    <value>Execute List Options</value>
+  </data>
+  <data name="RunItemList" xml:space="preserve">
+    <value>Execute List</value>
+  </data>
+  <data name="ItemListRowAdd" xml:space="preserve">
+    <value>Add New Row List</value>
+  </data>
+  <data name="ItemListRowShowDetails" xml:space="preserve">
+    <value>Show Details Row List</value>
+  </data>
+  <data name="ItemListRowExecute" xml:space="preserve">
+    <value>Execute Row List</value>
+  </data>
+  <data name="ItemListRowExecuteOptions" xml:space="preserve">
+    <value>Execute List Row Options</value>
+  </data>
+  <data name="RunItemListRow" xml:space="preserve">
+    <value>Execute Row List</value>
+  </data>
+  <data name="CompartmentsLayoutOverview" xml:space="preserve">
+    <value>Layout Overview</value>
+    <comment>Label - Grouping</comment>
+  </data>
+  <data name="ItemListExecuteImmediately" xml:space="preserve">
+    <value>Execute Immediately</value>
+  </data>
+  <data name="ListRequestAccepted" xml:space="preserve">
+    <value>List request accepted</value>
+    <comment>Notification - request accepted</comment>
+  </data>
+  <data name="CompartmentTypeListFormat" xml:space="preserve">
+    <value>{0} X {1} ( Width [mm] X Height [mm] )</value>
+  </data>
+  <data name="AdvancedDetails" xml:space="preserve">
+    <value>Advanced Details</value>
+  </data>
+  <data name="ItemListsTypeInventory" xml:space="preserve">
+    <value>Inventory Lists</value>
+  </data>
+  <data name="ItemListsTypePut" xml:space="preserve">
+    <value>Put Lists</value>
+  </data>
+  <data name="LoadingUnitAreaManual" xml:space="preserve">
+    <value>Manual Area</value>
+  </data>
+  <data name="LoadingUnitAreaVertimag" xml:space="preserve">
+    <value>Vertimag Area</value>
+  </data>
+  <data name="LoadingUnitStatusAvailable" xml:space="preserve">
+    <value>Available Status</value>
+  </data>
+  <data name="LoadingUnitStatusBlocked" xml:space="preserve">
+    <value>Blocked Status</value>
+  </data>
+  <data name="LoadingUnitStatusUsed" xml:space="preserve">
+    <value>Used Status</value>
+  </data>
+  <data name="CellClassA" xml:space="preserve">
+    <value>Class A</value>
+  </data>
+  <data name="CellStatusEmpty" xml:space="preserve">
+    <value>Empty Status</value>
+  </data>
+  <data name="CellStatusFull" xml:space="preserve">
+    <value>Full Status</value>
+  </data>
+  <data name="CompartmentStatusAvailable" xml:space="preserve">
+    <value>Available Status</value>
+  </data>
+  <data name="CompartmentStatusAwaiting" xml:space="preserve">
+    <value>Awaiting Verification Status</value>
+  </data>
+  <data name="CompartmentStatusBlocked" xml:space="preserve">
+    <value>Blocked Status</value>
+  </data>
+  <data name="CompartmentStatusExpired" xml:space="preserve">
+    <value>Expired Status</value>
+  </data>
+  <data name="CompartmentTypeListFormatReduced" xml:space="preserve">
+    <value>{0} X {1} [mm]</value>
+  </data>
+  <data name="CellClassADescription" xml:space="preserve">
+    <value>Get all cell with class A</value>
+  </data>
+  <data name="CellStatusEmptyDescription" xml:space="preserve">
+    <value>Get all empty cells</value>
+  </data>
+  <data name="CellStatusFullDescription" xml:space="preserve">
+    <value>Get all full cells</value>
+  </data>
+  <data name="CellsViewAllDescription" xml:space="preserve">
+    <value>Get all cells</value>
+  </data>
+  <data name="CompartmentStatusAvailableDescription" xml:space="preserve">
+    <value>Get all compartments with status available</value>
+  </data>
+  <data name="CompartmentStatusAwaitingDescription" xml:space="preserve">
+    <value>Get all compartments with status awaiting</value>
+  </data>
+  <data name="CompartmentStatusBlockedDescription" xml:space="preserve">
+    <value>Get all compartments with status blocked</value>
+  </data>
+  <data name="CompartmentStatusExpiredDescription" xml:space="preserve">
+    <value>Get all compartments with status expired</value>
+  </data>
+  <data name="CompartmentsViewAllDescription" xml:space="preserve">
+    <value>Get all compartments</value>
+  </data>
+  <data name="ItemListViewAllDescription" xml:space="preserve">
+    <value>Get all lists</value>
+  </data>
+  <data name="ItemListViewStatusCompletedDescription" xml:space="preserve">
+    <value>Get all lists with status completed</value>
+  </data>
+  <data name="ItemListViewStatusWaitingDescription" xml:space="preserve">
+    <value>Get all lists with status waiting</value>
+  </data>
+  <data name="ItemListViewTypeInventoryDescription" xml:space="preserve">
+    <value>Get all lists of type inventory</value>
+  </data>
+  <data name="ItemListViewTypePickDescription" xml:space="preserve">
+    <value>Get all lists of type pick</value>
+  </data>
+  <data name="ItemListViewTypePutDescription" xml:space="preserve">
+    <value>Get all lists of type put</value>
+  </data>
+  <data name="ItemsViewAllDescription" xml:space="preserve">
+    <value>Get all Items</value>
+    <comment>Filter - All Items</comment>
+  </data>
+  <data name="ItemsViewClassADescription" xml:space="preserve">
+    <value>Get all items with Class A</value>
+    <comment>Filter - Items with class A</comment>
+  </data>
+  <data name="ItemsViewFIFODescription" xml:space="preserve">
+    <value>Get all items with FIFO order</value>
+    <comment>Filter - Items with FIFO policy</comment>
+  </data>
+  <data name="LoadingUnitsViewAllDescription" xml:space="preserve">
+    <value>Get all loading units</value>
+  </data>
+  <data name="LoadingUnitsViewAreaManualDescription" xml:space="preserve">
+    <value>Get all areas manual</value>
+  </data>
+  <data name="LoadingUnitsViewAreaVertimagDescription" xml:space="preserve">
+    <value>Get all areas with Vertimag</value>
+  </data>
+  <data name="LoadingUnitsViewStatusAvailableDescription" xml:space="preserve">
+    <value>Getl all loading units with status available</value>
+  </data>
+  <data name="LoadingUnitsViewStatusBlockedDescription" xml:space="preserve">
+    <value>Get all loading units with status blocked</value>
+  </data>
+  <data name="LoadingUnitsViewStatusUsedDescription" xml:space="preserve">
+    <value>Get all loading units with status in use</value>
+  </data>
+  <data name="MachinesViewAllDescription" xml:space="preserve">
+    <value>Get all machines</value>
+  </data>
+  <data name="MachinesViewVertimagMDescription" xml:space="preserve">
+    <value>Get all machine of type Vertimag M</value>
+  </data>
+  <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
+    <value>Get all machines of type Vertimag XS</value>
+  </data>
+</root>

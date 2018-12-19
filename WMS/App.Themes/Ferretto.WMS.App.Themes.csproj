@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Page Include="**\*.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Remove="Icons\**\*.png" />
+    <Content Remove="Images\**\*.png" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Resource Include="Icons\**\*.png" />
+    <Resource Include="Images\**\*.png" />
+  </ItemGroup>  
+  
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\Common\Controls\Ferretto.Common.Controls.csproj" />
+  </ItemGroup>  
+  
+  <ItemGroup>
+    <None Update="Themes\Light\BusyIndicator.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Themes\Light\PasswordBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+ 
+</Project>

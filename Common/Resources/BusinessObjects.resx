@@ -1,0 +1,863 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbcClass" xml:space="preserve">
+    <value>ABC Class</value>
+    <comment>ABC Class</comment>
+  </data>
+  <data name="Aisle" xml:space="preserve">
+    <value>Aisle</value>
+    <comment>Aisle</comment>
+  </data>
+  <data name="Area" xml:space="preserve">
+    <value>Area</value>
+    <comment>Area</comment>
+  </data>
+  <data name="CellColumn" xml:space="preserve">
+    <value>Column</value>
+    <comment>Cell - Column</comment>
+  </data>
+  <data name="CellColumn_extended" xml:space="preserve">
+    <value>Cell Column</value>
+    <comment>Cell - Column (extended)</comment>
+  </data>
+  <data name="CellFloor" xml:space="preserve">
+    <value>Floor</value>
+    <comment>Cell - Floor</comment>
+  </data>
+  <data name="CellFloor_extended" xml:space="preserve">
+    <value>Cell Floor</value>
+    <comment>Cell - Floor (extended)</comment>
+  </data>
+  <data name="CellNumber" xml:space="preserve">
+    <value>Number</value>
+    <comment>Cell - Number</comment>
+  </data>
+  <data name="CellNumber_extended" xml:space="preserve">
+    <value>Cell Number</value>
+    <comment>Cell - Number (extended)</comment>
+  </data>
+  <data name="CellPosition" xml:space="preserve">
+    <value>Cell Position</value>
+    <comment>Cell Position</comment>
+  </data>
+  <data name="CellPositionDescription" xml:space="preserve">
+    <value>Cell Position Description</value>
+    <comment>Cell Position - Description</comment>
+  </data>
+  <data name="CellSide" xml:space="preserve">
+    <value>Side</value>
+    <comment>Cell - Side</comment>
+  </data>
+  <data name="CellSide_extended" xml:space="preserve">
+    <value>Cell Side</value>
+    <comment>Cell - Side (extended)</comment>
+  </data>
+  <data name="CompartmentFifoTime" xml:space="preserve">
+    <value>FIFO Time [days]</value>
+    <comment>Compartment - FIFO Time</comment>
+  </data>
+  <data name="CompartmentFirstStoreDate" xml:space="preserve">
+    <value>First Store Date</value>
+    <comment>Compartment - First Store Date</comment>
+  </data>
+  <data name="CompartmentLastHandlingDate" xml:space="preserve">
+    <value>Last Handling Date</value>
+    <comment>Compartment - Last Handling Date</comment>
+  </data>
+  <data name="CompartmentHeight" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Compartment - Height</comment>
+  </data>
+  <data name="CompartmentLastInventoryDate" xml:space="preserve">
+    <value>Last Inventory Date</value>
+    <comment>Compartment - Last Inventory Date</comment>
+  </data>
+  <data name="CompartmentLastPickDate" xml:space="preserve">
+    <value>Last Pick Date</value>
+    <comment>Compartment - Last Pick Date</comment>
+  </data>
+  <data name="CompartmentLastStoreDate" xml:space="preserve">
+    <value>Last Store Date</value>
+    <comment>Compartment - Last Store Date</comment>
+  </data>
+  <data name="CompartmentLot" xml:space="preserve">
+    <value>Lot</value>
+    <comment>Compartment - Lot</comment>
+  </data>
+  <data name="CompartmentMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+    <comment>Compartment - Max Capacity</comment>
+  </data>
+  <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
+    <value>Item Pairing</value>
+    <comment>Compartment - Fixed Pairing</comment>
+  </data>
+  <data name="CompartmentReservedForPick" xml:space="preserve">
+    <value>Reserved for Pick</value>
+    <comment>Compartment - Reserved for Pick</comment>
+  </data>
+  <data name="CompartmentReservedToStore" xml:space="preserve">
+    <value>Reserved to Store</value>
+    <comment>Compartment - Reserved To Store</comment>
+  </data>
+  <data name="CompartmentStatus" xml:space="preserve">
+    <value>Compartment Status</value>
+    <comment>Compartment - Status</comment>
+  </data>
+  <data name="CompartmentStock" xml:space="preserve">
+    <value>Stock</value>
+    <comment>Compartment - Stock</comment>
+  </data>
+  <data name="CompartmentSub1" xml:space="preserve">
+    <value>Sub 1</value>
+    <comment>Compartment - Sub 1</comment>
+  </data>
+  <data name="CompartmentSub2" xml:space="preserve">
+    <value>Sub 2</value>
+    <comment>Compartment - Sub 2</comment>
+  </data>
+  <data name="CompartmentType" xml:space="preserve">
+    <value>Compartment Type</value>
+    <comment>Compartment Type</comment>
+  </data>
+  <data name="CompartmentTypeDescription" xml:space="preserve">
+    <value>Compartment Type Description</value>
+    <comment>Compartment Type - Description</comment>
+  </data>
+  <data name="CompartmentWidth" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Compartment - Width</comment>
+  </data>
+  <data name="CompartmentXPosition" xml:space="preserve">
+    <value>X Position [mm]</value>
+    <comment>Compartment - X Position</comment>
+  </data>
+  <data name="CompartmentYPosition" xml:space="preserve">
+    <value>Y Position [mm]</value>
+    <comment>Compartment - Y Position</comment>
+  </data>
+  <data name="ItemAvailable" xml:space="preserve">
+    <value>Available</value>
+    <comment>Item - Available (calculated)</comment>
+  </data>
+  <data name="ItemAverageWeight" xml:space="preserve">
+    <value>Average Weight [kg]</value>
+    <comment>Item - Average Weight</comment>
+  </data>
+  <data name="ItemCategory" xml:space="preserve">
+    <value>Category</value>
+    <comment>Item - Category</comment>
+  </data>
+  <data name="ItemClass" xml:space="preserve">
+    <value>Class</value>
+    <comment>Item - Class</comment>
+  </data>
+  <data name="ItemCode" xml:space="preserve">
+    <value>Code</value>
+    <comment>Item - Code</comment>
+  </data>
+  <data name="ItemCode_extended" xml:space="preserve">
+    <value>Item Code</value>
+    <comment>Item - Code (extended)</comment>
+  </data>
+  <data name="ItemDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Item - Description</comment>
+  </data>
+  <data name="ItemDescription_extended" xml:space="preserve">
+    <value>Item Description</value>
+    <comment>Item - Description (extended)</comment>
+  </data>
+  <data name="ItemFifoPickTime" xml:space="preserve">
+    <value>FIFO Pick Time [days]</value>
+    <comment>Item - FIFO Pick Time</comment>
+  </data>
+  <data name="ItemFifoStoreTime" xml:space="preserve">
+    <value>FIFO Store Time [days]</value>
+    <comment>Item - FIFO Store Time</comment>
+  </data>
+  <data name="ItemHeight" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Item - Height</comment>
+  </data>
+  <data name="AllowedItemInCompartmentMaxCapacity" xml:space="preserve">
+    <value>Max Capacity</value>
+    <comment>Allowed Item In Compartment - Max Capacity</comment>
+  </data>
+  <data name="ItemInventoryTolerance" xml:space="preserve">
+    <value>Inventory Tolerance</value>
+    <comment>Item - Last Inventory Date</comment>
+  </data>
+  <data name="ItemLastInventoryDate" xml:space="preserve">
+    <value>Last Inventory Date</value>
+    <comment>Item - Last Inventory Date</comment>
+  </data>
+  <data name="ItemLastPickDate" xml:space="preserve">
+    <value>Last Pick Date</value>
+    <comment>Item - Last Pick Date</comment>
+  </data>
+  <data name="ItemLastStoreDate" xml:space="preserve">
+    <value>Last Store Date</value>
+    <comment>Item - Last Store Date</comment>
+  </data>
+  <data name="ItemLength" xml:space="preserve">
+    <value>Length [mm]</value>
+    <comment>Item - Length</comment>
+  </data>
+  <data name="ItemManagementType" xml:space="preserve">
+    <value>Management Type</value>
+    <comment>Item - Management Type</comment>
+  </data>
+  <data name="ItemNotes" xml:space="preserve">
+    <value>Notes</value>
+    <comment>Item - Notes</comment>
+  </data>
+  <data name="ItemPickTolerance" xml:space="preserve">
+    <value>Pick Tolerance</value>
+    <comment>Item - Pick Tolerance</comment>
+  </data>
+  <data name="ItemReorderPoint" xml:space="preserve">
+    <value>Reorder Point</value>
+    <comment>Item - Reorder Point</comment>
+  </data>
+  <data name="ItemReorderQuantity" xml:space="preserve">
+    <value>Reorder Quantity</value>
+    <comment>Item - Reorder Quantity</comment>
+  </data>
+  <data name="ItemReservedForPick" xml:space="preserve">
+    <value>Reserved for Pick</value>
+    <comment>Item - Reserved for Pick (calculated)</comment>
+  </data>
+  <data name="ItemReservedToStore" xml:space="preserve">
+    <value>Reserved to Store</value>
+    <comment>Item - Reserved to Store (calculated)</comment>
+  </data>
+  <data name="ItemStock" xml:space="preserve">
+    <value>Stock</value>
+    <comment>Item - Stock (calculated)</comment>
+  </data>
+  <data name="ItemStoreTolerance" xml:space="preserve">
+    <value>Store Tolerance</value>
+    <comment>Item - Store Tolerance</comment>
+  </data>
+  <data name="ItemWidth" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Item - Width</comment>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Loading Unit</value>
+    <comment>Loading Unit</comment>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Code</value>
+    <comment>Loading Unit - Code</comment>
+  </data>
+  <data name="LoadingUnitCode_extended" xml:space="preserve">
+    <value>Loading Unit Code</value>
+    <comment>Loading Unit - Code (extended)</comment>
+  </data>
+  <data name="LoadingUnitLength" xml:space="preserve">
+    <value>Length [mm]</value>
+    <comment>Loading Unit - Length</comment>
+  </data>
+  <data name="LoadingUnitStatus" xml:space="preserve">
+    <value>Loading Unit Status</value>
+    <comment>Loading Unit - Status</comment>
+  </data>
+  <data name="LoadingUnitType" xml:space="preserve">
+    <value>Loading Unit Type</value>
+    <comment>Loading Unit Type</comment>
+  </data>
+  <data name="LoadingUnitTypeDescription" xml:space="preserve">
+    <value>Loading Unit Type Description</value>
+    <comment>Loading Unit Type - Description</comment>
+  </data>
+  <data name="LoadingUnitWidth" xml:space="preserve">
+    <value>Width [mm]</value>
+    <comment>Loading Unit - Width</comment>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Material Status</value>
+    <comment>Material Status</comment>
+  </data>
+  <data name="PackageType" xml:space="preserve">
+    <value>Package Type</value>
+    <comment>Package Type</comment>
+  </data>
+  <data name="RegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Item In Compartment - Registration Number</comment>
+  </data>
+  <data name="LoadingUnitNotes" xml:space="preserve">
+    <value>Notes</value>
+    <comment>Loading Unit - Notes</comment>
+  </data>
+  <data name="LoadingUnitReferenceType" xml:space="preserve">
+    <value>Reference Type</value>
+    <comment>Loading Unit - Reference Type</comment>
+  </data>
+  <data name="LoadingUnitIsCellPairingFixed" xml:space="preserve">
+    <value>Cell Pairing</value>
+    <comment>Loading Unit - Cell Pairing</comment>
+  </data>
+  <data name="LoadingUnitWeight" xml:space="preserve">
+    <value>Weight [kg]</value>
+    <comment>Loading Unit - Weight</comment>
+  </data>
+  <data name="LoadingUnitHeight" xml:space="preserve">
+    <value>Height [mm]</value>
+    <comment>Loading Unit - Height</comment>
+  </data>
+  <data name="LoadingUnitHandlingParametersCorrection" xml:space="preserve">
+    <value>Speed Correction [%]</value>
+    <comment>Loading Unit - Speed Correction</comment>
+  </data>
+  <data name="LoadingUnitCreationDate" xml:space="preserve">
+    <value>Creation Date</value>
+    <comment>Loading Unit - Creation Date</comment>
+  </data>
+  <data name="LoadingUnitLastHandlingDate" xml:space="preserve">
+    <value>Last Handling Date</value>
+    <comment>Loading Unit - </comment>
+  </data>
+  <data name="LoadingUnitInventoryDate" xml:space="preserve">
+    <value>Inventory Date</value>
+    <comment>Loading Unit - Last Handling Date</comment>
+  </data>
+  <data name="LoadingUnitLastPickDate" xml:space="preserve">
+    <value>Last Pick Date</value>
+    <comment>Loading Unit - Last Pick Date</comment>
+  </data>
+  <data name="LoadingUnitLastStoreDate" xml:space="preserve">
+    <value>Last Store Date</value>
+    <comment>Loading Unit - Last Store Date</comment>
+  </data>
+  <data name="LoadingUnitInCycleCount" xml:space="preserve">
+    <value>In Cycle Count</value>
+    <comment>Loading Unit - In Cycle Count</comment>
+  </data>
+  <data name="LoadingUnitOutCycleCount" xml:space="preserve">
+    <value>Out Cycle Count</value>
+    <comment>Loading Unit - Out Cycle Count</comment>
+  </data>
+  <data name="LoadingUnitOtherCycleCount" xml:space="preserve">
+    <value>Other Cycle Count</value>
+    <comment>Loading Unit - Other Cycle Count</comment>
+  </data>
+  <data name="CellPriority" xml:space="preserve">
+    <value>Priority</value>
+    <comment>Cell - Priority</comment>
+  </data>
+  <data name="CellStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>Cell - Status</comment>
+  </data>
+  <data name="CellType" xml:space="preserve">
+    <value>Type</value>
+    <comment>Cell - Type</comment>
+  </data>
+  <data name="CellXCoordinate" xml:space="preserve">
+    <value>X Coordinate [mm]</value>
+    <comment>Cell - X Coordinate</comment>
+  </data>
+  <data name="CellYCoordinate" xml:space="preserve">
+    <value>Y Coordinate [mm]</value>
+    <comment>Cell - Y Coordinate</comment>
+  </data>
+  <data name="CellZCoordinate" xml:space="preserve">
+    <value>Z Coordinate [mm]</value>
+    <comment>Cell - Z Coordinate</comment>
+  </data>
+  <data name="LoadingUnitCurrentCell" xml:space="preserve">
+    <value>Current Cell</value>
+    <comment>Loading Unit - Current Cell</comment>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Machine</value>
+    <comment>Machine</comment>
+  </data>
+  <data name="MachineActualWeight" xml:space="preserve">
+    <value>Actual Weight [kg]</value>
+    <comment>Machine - Actual Weight</comment>
+  </data>
+  <data name="MachineAisle" xml:space="preserve">
+    <value>Aisle</value>
+    <comment>Machine - Aisle</comment>
+  </data>
+  <data name="MachineAutomaticTime" xml:space="preserve">
+    <value>Automatic Time</value>
+    <comment>Machine - Automatic Time</comment>
+  </data>
+  <data name="MachineBuildDate" xml:space="preserve">
+    <value>Build Date</value>
+    <comment>Machine - Build Date</comment>
+  </data>
+  <data name="MachineCradlesCount" xml:space="preserve">
+    <value>Cradles Count</value>
+    <comment>Machine - Cradles Count</comment>
+  </data>
+  <data name="MachineCustomerAddress" xml:space="preserve">
+    <value>Customer Address</value>
+    <comment>Machine - Customer Address</comment>
+  </data>
+  <data name="MachineCustomerCity" xml:space="preserve">
+    <value>Customer City</value>
+    <comment>Machine - Customer City</comment>
+  </data>
+  <data name="MachineCustomerCode" xml:space="preserve">
+    <value>Customer Code</value>
+    <comment>Machine - Customer Code</comment>
+  </data>
+  <data name="MachineCustomerCountry" xml:space="preserve">
+    <value>Customer Country</value>
+    <comment>Machine - Customer Country</comment>
+  </data>
+  <data name="MachineCustomerName" xml:space="preserve">
+    <value>Customer Name</value>
+    <comment>Machine - Customer Name</comment>
+  </data>
+  <data name="MachineErrorTime" xml:space="preserve">
+    <value>Error Time</value>
+    <comment>Machine - Error Time</comment>
+  </data>
+  <data name="MachineImage" xml:space="preserve">
+    <value>Image</value>
+    <comment>Machine - Image</comment>
+  </data>
+  <data name="MachineInputLoadingUnitsCount" xml:space="preserve">
+    <value>Input Loading Units Count</value>
+    <comment>Machine - Input Loading Units Count</comment>
+  </data>
+  <data name="MachineInstallationDate" xml:space="preserve">
+    <value>Installation Date</value>
+    <comment>Machine - Installation Date</comment>
+  </data>
+  <data name="MachineLastPowerOn" xml:space="preserve">
+    <value>Last Power On</value>
+    <comment>Machine - Last Power On</comment>
+  </data>
+  <data name="MachineLastServiceDate" xml:space="preserve">
+    <value>Last Service Date</value>
+    <comment>Machine - Last Service Date</comment>
+  </data>
+  <data name="MachineLatitude" xml:space="preserve">
+    <value>Latitude</value>
+    <comment>Machine - Latitude</comment>
+  </data>
+  <data name="MachineLoadingUnitsPerCradle" xml:space="preserve">
+    <value>Loading Units Per Cradle</value>
+    <comment>Machine - Loading Units Per Cradle</comment>
+  </data>
+  <data name="MachineLongitude" xml:space="preserve">
+    <value>Longitude</value>
+    <comment>Machine - Longitude</comment>
+  </data>
+  <data name="MachineManualTime" xml:space="preserve">
+    <value>Manual Time</value>
+    <comment>Machine - Manual Time</comment>
+  </data>
+  <data name="MachineMissionTime" xml:space="preserve">
+    <value>Mission Time</value>
+    <comment>Machine - Mission Time</comment>
+  </data>
+  <data name="MachineMovedLoadingUnitsCount" xml:space="preserve">
+    <value>Moved Loading Units Count</value>
+    <comment>Machine - Moved Loading Units Count</comment>
+  </data>
+  <data name="MachineNextServiceDate" xml:space="preserve">
+    <value>Next Service Date</value>
+    <comment>Machine - Next Service Date</comment>
+  </data>
+  <data name="MachineTypeDescription" xml:space="preserve">
+    <value>Type</value>
+    <comment>Machine - Type</comment>
+  </data>
+  <data name="MachineNickname" xml:space="preserve">
+    <value>Nickname</value>
+    <comment>Machine - Nickname</comment>
+  </data>
+  <data name="MachineOutputLoadingUnitsCount" xml:space="preserve">
+    <value>OutputLoadingUnitsCount</value>
+    <comment>Machine - Output Loading Units Count</comment>
+  </data>
+  <data name="MachinePowerOnTime" xml:space="preserve">
+    <value>Power On Time</value>
+    <comment>Machine - Power On Time</comment>
+  </data>
+  <data name="MachineRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Machine - Registration Number</comment>
+  </data>
+  <data name="MachineTestDate" xml:space="preserve">
+    <value>Test Date</value>
+    <comment>Machine - Test Date</comment>
+  </data>
+  <data name="MachineTotalMaxWeight" xml:space="preserve">
+    <value>Total Max Weight [kg]</value>
+    <comment>Machine - Total Max Weight</comment>
+  </data>
+  <data name="MachineModel" xml:space="preserve">
+    <value>Model</value>
+    <comment>Machine - Model</comment>
+  </data>
+  <data name="MachineArea" xml:space="preserve">
+    <value>Area</value>
+    <comment>Machine - Area</comment>
+  </data>
+  <data name="CellLoadingUnitsCount" xml:space="preserve">
+    <value>Loading Units Count</value>
+    <comment>Cell - Loading Units Count (calculated)</comment>
+  </data>
+  <data name="CellLoadingUnitsDescription" xml:space="preserve">
+    <value>Loading Units Description</value>
+    <comment>Cell - Loading Units Description (calculated)</comment>
+  </data>
+  <data name="ItemWithdrawItem" xml:space="preserve">
+    <value>Selected Item</value>
+    <comment>Item Withdraw - Item</comment>
+  </data>
+  <data name="AreaDescription" xml:space="preserve">
+    <value>Area</value>
+    <comment>Area - Description</comment>
+  </data>
+  <data name="BayType" xml:space="preserve">
+    <value>Bay Type</value>
+    <comment>Bay Type</comment>
+  </data>
+  <data name="BayDescription" xml:space="preserve">
+    <value>Description</value>
+    <comment>Bay - Description</comment>
+  </data>
+  <data name="BayLoadingUnitsBufferSize" xml:space="preserve">
+    <value>Loading Units Buffer Size</value>
+    <comment>Bay - Loading Units Buffer Size</comment>
+  </data>
+  <data name="ItemWithdrawArea" xml:space="preserve">
+    <value>Area</value>
+    <comment>Item Withdraw - Area</comment>
+  </data>
+  <data name="ItemWithdrawBay" xml:space="preserve">
+    <value>Bay</value>
+    <comment>Item Withdraw - Bay</comment>
+  </data>
+  <data name="ItemWithdrawQuantity" xml:space="preserve">
+    <value>Quantity</value>
+    <comment>Item Withdraw - Quantity</comment>
+  </data>
+  <data name="MeasureUnitDescription" xml:space="preserve">
+    <value>Measure Unit</value>
+    <comment>Measure Unit - Description</comment>
+  </data>
+  <data name="ItemWithdrawLot" xml:space="preserve">
+    <value>Lot</value>
+    <comment>Item Withdraw - Lot</comment>
+  </data>
+  <data name="ItemWithdrawRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+    <comment>Item Withdraw - Registration Number</comment>
+  </data>
+  <data name="ItemWithdrawSub1" xml:space="preserve">
+    <value>Sub1</value>
+    <comment>Item Withdraw - Sub1</comment>
+  </data>
+  <data name="ItemWithdrawSub2" xml:space="preserve">
+    <value>Sub2</value>
+    <comment>Item Withdraw - Sub2</comment>
+  </data>
+  <data name="ItemWithdrawQuantityInvalidError" xml:space="preserve">
+    <value>Invalid Quantity</value>
+    <comment>Item Withdraw - Quantity Invalid Error</comment>
+  </data>
+  <data name="ItemWithdrawAreaInvalidError" xml:space="preserve">
+    <value>Invalid Area</value>
+    <comment>Item Withdraw - Area Invalid Error</comment>
+  </data>
+  <data name="ItemWithdrawBayInvalidError" xml:space="preserve">
+    <value>Invalid Bay</value>
+    <comment>Item Withdraw - Bay Invalid Error</comment>
+  </data>
+  <data name="ItemWithdrawItemDetailsInvalidError" xml:space="preserve">
+    <value>ItemDetails Invalid</value>
+    <comment>Item Withdraw - ItemDetails Invalid Error</comment>
+  </data>
+  <data name="CompartmentItem" xml:space="preserve">
+    <value>Item</value>
+    <comment>Compartment - Item</comment>
+  </data>
+  <data name="ItemImage" xml:space="preserve">
+    <value>Image</value>
+    <comment>Item - Image</comment>
+  </data>
+  <data name="BulkCompartmentColumn" xml:space="preserve">
+    <value>Column</value>
+  </data>
+  <data name="BulkCompartmentRow" xml:space="preserve">
+    <value>Row</value>
+  </data>
+  <data name="ItemListAreaName" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemListItemsCount" xml:space="preserve">
+    <value>Items Count</value>
+  </data>
+  <data name="ItemListPriority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="ItemListRowsCount" xml:space="preserve">
+    <value>Rows Count</value>
+    <comment>ItemListRow - Count</comment>
+  </data>
+  <data name="ItemListStatus" xml:space="preserve">
+    <value>Status</value>
+    <comment>ItemList - Status</comment>
+  </data>
+  <data name="ItemListExecutionEndDate" xml:space="preserve">
+    <value>End Execution</value>
+    <comment>Item List - End Execution</comment>
+  </data>
+  <data name="ItemListFirstExecutionDate" xml:space="preserve">
+    <value>First Execution</value>
+    <comment>Item List - First Execution</comment>
+  </data>
+  <data name="ItemListJob" xml:space="preserve">
+    <value>Job</value>
+    <comment>Item List - Job</comment>
+  </data>
+  <data name="ItemListRowItemDescription" xml:space="preserve">
+    <value>Item</value>
+    <comment>List Row - Item</comment>
+  </data>
+  <data name="ItemListRowPriority" xml:space="preserve">
+    <value>Priority</value>
+    <comment>List Row - Priority</comment>
+  </data>
+  <data name="ItemListRowRequiredQuantity" xml:space="preserve">
+    <value>Required Quantity</value>
+    <comment>List Row - Required Quantity</comment>
+  </data>
+  <data name="ItemListRowStatusDescription" xml:space="preserve">
+    <value>Status</value>
+    <comment>List Row - Status</comment>
+  </data>
+  <data name="ItemListShipmentUnitAssociated" xml:space="preserve">
+    <value>Associated Shipment Unit</value>
+    <comment>Item List - Is Associated Shipment Unit</comment>
+  </data>
+  <data name="ItemListShipmentUnitCode" xml:space="preserve">
+    <value>Code</value>
+    <comment>Item List - Code</comment>
+  </data>
+  <data name="ItemListExecutionRequestArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
+    <value>Area not valid</value>
+  </data>
+  <data name="ListToExecuteBayInvalidError" xml:space="preserve">
+    <value>Bay not valid</value>
+  </data>
+  <data name="ItemListExecutionRequestBay" xml:space="preserve">
+    <value>Bay</value>
+  </data>
+  <data name="MachineMaintenanceStatus" xml:space="preserve">
+    <value>Maintenance Status</value>
+    <comment>Machine - Maintenance Status</comment>
+  </data>
+  <data name="MachineFillRate" xml:space="preserve">
+    <value>Fill Rate</value>
+    <comment>Machine - Fill Rate</comment>
+  </data>
+  <data name="MachineStatusAutomatic" xml:space="preserve">
+    <value>Automatic</value>
+    <comment>Machine Status - Automatic</comment>
+  </data>
+  <data name="MachineStatusError" xml:space="preserve">
+    <value>Error</value>
+    <comment>Machine Status - Error</comment>
+  </data>
+  <data name="MachineStatusManual" xml:space="preserve">
+    <value>Manual</value>
+    <comment>Machine Status - Manual</comment>
+  </data>
+  <data name="MachineStatusOffline" xml:space="preserve">
+    <value>Offline</value>
+    <comment>Machine Status - Offline</comment>
+  </data>
+  <data name="MachineMaintenanceStatusValid" xml:space="preserve">
+    <value>Valid</value>
+    <comment>Machine - Maintenance Status - Valid</comment>
+  </data>
+  <data name="MachineMaintenanceStatusExpiring" xml:space="preserve">
+    <value>Expiring</value>
+    <comment>Machine - Maintenance Status - Expiring</comment>
+  </data>
+  <data name="MachineMaintenanceStatusExpired" xml:space="preserve">
+    <value>Expired</value>
+    <comment>Machine - Maintenance Status - Expired</comment>
+  </data>
+  <data name="MachineStatus" xml:space="preserve">
+    <value>Machine Status</value>
+    <comment>Machine Status</comment>
+  </data>
+  <data name="ItemListStatusWaiting" xml:space="preserve">
+    <value>Waiting</value>
+    <comment>Item List Status - Waiting</comment>
+  </data>
+  <data name="ItemListStatusExecuting" xml:space="preserve">
+    <value>Executing</value>
+    <comment>Item List Status - Executing</comment>
+  </data>
+  <data name="ItemListStatusCompleted" xml:space="preserve">
+    <value>Completed</value>
+    <comment>Item List Status - Completed</comment>
+  </data>
+  <data name="ItemListStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+    <comment>Item List Status - Incomplete</comment>
+  </data>
+  <data name="ItemListStatusSuspended" xml:space="preserve">
+    <value>Suspended</value>
+    <comment>Item List Status - Suspended</comment>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Username</value>
+    <comment>Credential - Username</comment>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+    <comment>Password</comment>
+  </data>
+  <data name="AccountAccessError" xml:space="preserve">
+    <value>Account access error</value>
+    <comment>Credentials - Account access error</comment>
+  </data>
+  <data name="PairingFixed" xml:space="preserve">
+    <value>Fixed</value>
+    <comment>Pairing - Fixed</comment>
+  </data>
+  <data name="ItemListRowDispatchedQuantity" xml:space="preserve">
+    <value>Dispatched Quantity</value>
+    <comment>List Row - Dispatched Quantity</comment>
+  </data>
+  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
+    <value>Run Immediately</value>
+    <comment>List Execution Request - Run Immediately</comment>
+  </data>
+</root>

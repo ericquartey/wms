@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:ctrls="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+                    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm">
+
+    <!--  converters  -->
+    <ctrls:BoolToVisibilityConverter x:Key="BTVC" />
+    <ctrls:BoolToVisibilityConverter x:Key="BTVIC"
+                                     Invert="True" />
+    <ctrls:BoolToVisibilityConverter x:Key="BTVHC"
+                                     Hide="True" />
+
+    <ctrls:ReferenceToVisibilityConverter x:Key="RTVC" />
+    <ctrls:ReferenceToVisibilityConverter x:Key="RTVHC"
+                                          Hide="True" />
+
+    <ctrls:BoolToNavigationStyleConverter x:Key="BTNSC" />
+
+    <ctrls:EnumToBrushConverter x:Key="ETBC" />
+    <dxmvvm:BooleanNegationConverter x:Key="BNC" />
+
+
+</ResourceDictionary>

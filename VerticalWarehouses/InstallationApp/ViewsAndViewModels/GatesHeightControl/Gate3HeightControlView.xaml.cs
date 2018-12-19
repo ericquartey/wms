@@ -1,0 +1,20 @@
+﻿using System.Windows.Controls;
+
+namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl
+{
+    /// <summary>
+    /// Interaction logic for Gate3HeightControlView.xaml
+    /// </summary>
+    public partial class Gate3HeightControlView : UserControl
+    {
+        #region Constructors
+
+        public Gate3HeightControlView()
+        {
+            this.InitializeComponent();
+            this.DataContext = new Gate3HeightControlViewModel();
+        }
+
+        #endregion Constructors
+    }
+}

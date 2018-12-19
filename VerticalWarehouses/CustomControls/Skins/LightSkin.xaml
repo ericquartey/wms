@@ -1,0 +1,20 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinGeneral.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightVarious.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightSkinImages.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightActionButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightNavigationButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightNavigationRepeatButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightMainWindowUserComboBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomControlInputFieldFocusable.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomControlSensor.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomLabelTextBlock.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomMainWindowErrorButton.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/LightCustomMainWindowToggleButton.xaml" />
+
+        <ResourceDictionary Source="/Ferretto.VW.CustomControls;Component/Skins/Shared.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

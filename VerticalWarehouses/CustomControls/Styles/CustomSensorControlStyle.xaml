@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
+    <Style x:Key="VWAPP_CustomSensorControlStyle"
+           TargetType="{x:Type custom:CustomSensorControl}">
+        <Style.Triggers>
+            <Trigger Property="SensorState" Value="true">
+                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_CustomControlSensor_BulletBrush_Up}" />
+            </Trigger>
+            <Trigger Property="SensorState" Value="false">
+                <Setter Property="BulletColor" Value="{DynamicResource VWAPP_CustomControlSensor_BulletBrush_Down}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="VWAPP_CustomControlSensor_TextBlockStyle"
+           TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_FontSize}" />
+        <Setter Property="FontFamily" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_FontFamily}" />
+        <Setter Property="Foreground" Value="{DynamicResource VWAPP_CustomControlSensor_TextBlock_Foreground_Normal}" />
+    </Style>
+</ResourceDictionary>

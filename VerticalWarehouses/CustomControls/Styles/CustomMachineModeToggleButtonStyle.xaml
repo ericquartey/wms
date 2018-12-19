@@ -1,0 +1,18 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Styles">
+    <Style x:Key="VWAPP_CustomMachineModeToggleButtonStyle"
+           TargetType="{x:Type custom:CustomMachineModeToggleButton}">
+        <Style.Triggers>
+            <Trigger Property="MachineModeState" Value="true">
+                <Setter Property="RectangleBrush" Value="Blue" />
+                <Setter Property="MachineModeString" Value="Auto" />
+            </Trigger>
+            <Trigger Property="MachineModeState" Value="false">
+                <Setter Property="RectangleBrush" Value="Green" />
+                <Setter Property="MachineModeString" Value="Manu" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

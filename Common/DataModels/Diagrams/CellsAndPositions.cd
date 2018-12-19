@@ -1,0 +1,295 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Ferretto.Common.DataModels.Area">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <Members>
+      <Property Name="Aisles" Hidden="true" />
+      <Property Name="AreaItems" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="ItemLists" Hidden="true" />
+      <Property Name="LoadingUnitRanges" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AgACAAAAAAAAAAAAAAAAgAQAAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Area.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.Aisle">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <Members>
+      <Property Name="AisleCellsTypes" Hidden="true" />
+      <Property Name="AisleLoadingUnitTypes" Hidden="true" />
+      <Property Name="AreaId" Hidden="true" />
+      <Property Name="Cells" Hidden="true" />
+      <Property Name="CellTotals" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AEACADAAAAAAAAgAAAJAAAQAAAAAAAAAIAAAAQgAAAA=</HashCode>
+      <FileName>Aisle.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Area" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.Cell">
+    <Position X="5.5" Y="0.5" Width="1.75" />
+    <Members>
+      <Property Name="AisleId" Hidden="true" />
+      <Property Name="CellStatusId" Hidden="true" />
+      <Property Name="CellTypeId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+    </Members>
+    <AssociationLine Name="CellType" Type="Ferretto.Common.DataModels.CellType">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.854" Y="0.074" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AIQCAAQgAAAAgQgEgAJAAAAgAgAAAAAAAAkQAAAAAAg=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Aisle" />
+      <Property Name="CellType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellType">
+    <Position X="5.5" Y="6.75" Width="1.75" />
+    <Members>
+      <Property Name="CellConfigurationCellTypes" Hidden="true" />
+      <Property Name="CellHeightClassId" Hidden="true" />
+      <Property Name="Cells" Hidden="true" />
+      <Property Name="CellSizeClassId" Hidden="true" />
+      <Property Name="CellTotals" Hidden="true" />
+      <Property Name="CellTypeAisles" Hidden="true" />
+      <Property Name="CellWeightClassId" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <AssociationLine Name="CellHeightClass" Type="Ferretto.Common.DataModels.CellHeightClass" FixedFromPoint="true">
+      <Path>
+        <Point X="5.5" Y="7.438" />
+        <Point X="4" Y="7.438" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CellWeightClass" Type="Ferretto.Common.DataModels.CellWeightClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.938" Y="6.75" />
+        <Point X="5.938" Y="4.125" />
+        <Point X="4" Y="4.125" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="CellSizeClass" Type="Ferretto.Common.DataModels.CellSizeClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="5.5" Y="7.062" />
+        <Point X="5.125" Y="7.062" />
+        <Point X="5.125" Y="5.494" />
+        <Point X="4" Y="5.494" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>IAACAAAAAABgBABAAApAAAAAAAAAACgAAAAAAAAAAAA=</HashCode>
+      <FileName>CellType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CellHeightClass" />
+      <Property Name="CellWeightClass" />
+      <Property Name="CellSizeClass" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellHeightClass">
+    <Position X="2.5" Y="6.5" Width="1.5" />
+    <Members>
+      <Property Name="CellTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIACAAAAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>CellHeightClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellSizeClass">
+    <Position X="2.5" Y="4.75" Width="1.5" />
+    <Members>
+      <Property Name="CellTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAAAgAAAAAAAAAEBAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellSizeClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellWeightClass">
+    <Position X="2.5" Y="3" Width="1.5" />
+    <Members>
+      <Property Name="CellTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CIACACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellWeightClass.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellConfigurationCellType">
+    <Position X="8.25" Y="6.75" Width="2" />
+    <Members>
+      <Property Name="CellConfigurationId" Hidden="true" />
+      <Property Name="CellTypeId" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIAAACAAAAAAAAAEAAAAAAAgAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellConfigurationCellType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CellConfiguration" />
+      <Property Name="CellType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitHeightClass">
+    <Position X="17" Y="5" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAEAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAECA=</HashCode>
+      <FileName>LoadingUnitHeightClass.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitTypes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitSizeClass">
+    <Position X="17" Y="2.25" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAkAAAAAgAAAEBAAAAAAAAAACAAAAAAACI=</HashCode>
+      <FileName>LoadingUnitSizeClass.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitTypes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitWeightClass">
+    <Position X="17" Y="0.5" Width="2" />
+    <Members>
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitTypes" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>CAACACAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>LoadingUnitWeightClass.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitTypes" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellPosition">
+    <Position X="11.75" Y="2.75" Width="1.75" />
+    <Members>
+      <Property Name="CellConfigurationCellPositionLoadingUnitTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAgQAAgAAAAAAAAAQAAAAAAADAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellPosition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnit">
+    <Position X="8" Y="0.5" Width="2.5" />
+    <Members>
+      <Property Name="CellId" Hidden="true" />
+      <Property Name="CellPositionId" Hidden="true" />
+      <Property Name="Compartments" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitStatusId" Hidden="true" />
+      <Property Name="LoadingUnitTypeId" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>wAAKBAKEBAAAAQACQEhwQCAAAGAAAAAAAESQAAEAAAA=</HashCode>
+      <FileName>LoadingUnit.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Cell" />
+      <Property Name="CellPosition" />
+      <Property Name="LoadingUnitType" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellConfiguration">
+    <Position X="11.75" Y="6.75" Width="2.25" />
+    <Members>
+      <Property Name="CellConfigurationCellPositionLoadingUnitTypes" Hidden="true" />
+      <Property Name="CellConfigurationCellTypes" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAgAAAAAAgAAQAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellConfiguration.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.LoadingUnitType">
+    <Position X="12" Y="0.5" Width="3" />
+    <Members>
+      <Property Name="CellConfigurationCellPositionLoadingUnitTypes" Hidden="true" />
+      <Property Name="DefaultLoadingUnits" Hidden="true" />
+      <Property Name="Id" Hidden="true" />
+      <Property Name="LoadingUnitHeightClassId" Hidden="true" />
+      <Property Name="LoadingUnits" Hidden="true" />
+      <Property Name="LoadingUnitSizeClassId" Hidden="true" />
+      <Property Name="LoadingUnitTypeAisles" Hidden="true" />
+      <Property Name="LoadingUnitWeightClassId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="LoadingUnitHeightClass" Type="Ferretto.Common.DataModels.LoadingUnitHeightClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="14.438" Y="1.604" />
+        <Point X="14.438" Y="5.744" />
+        <Point X="17" Y="5.744" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="LoadingUnitSizeClass" Type="Ferretto.Common.DataModels.LoadingUnitSizeClass" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15" Y="1.139" />
+        <Point X="15.375" Y="1.139" />
+        <Point X="15.375" Y="3.379" />
+        <Point X="17" Y="3.379" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AgACAAggAACgAAAAAAAAAQAgAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>LoadingUnitType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LoadingUnitHeightClass" />
+      <Property Name="LoadingUnitWeightClass" />
+      <Property Name="LoadingUnitSizeClass" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Ferretto.Common.DataModels.CellConfigurationCellPositionLoadingUnitType">
+    <Position X="11" Y="5" Width="3.25" />
+    <Members>
+      <Property Name="CellConfigurationId" Hidden="true" />
+      <Property Name="CellPositionId" Hidden="true" />
+      <Property Name="LoadingUnitTypeId" Hidden="true" />
+    </Members>
+    <AssociationLine Name="CellConfiguration" Type="Ferretto.Common.DataModels.CellConfiguration">
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.157" Y="0.096" Height="0.182" Width="1.329" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAIACIAAAAAAAAEAAAQQAAAAAACAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CellConfigurationCellPositionLoadingUnitType.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CellPosition" />
+      <Property Name="CellConfiguration" />
+      <Property Name="LoadingUnitType" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

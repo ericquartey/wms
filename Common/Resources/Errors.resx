@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddNoPossible" xml:space="preserve">
+    <value>Error: it is no possible to Add new Compartment.</value>
+  </data>
+  <data name="BulkAddNoPossible" xml:space="preserve">
+    <value>Error: it is no possible to Add Bulk Compartments.</value>
+  </data>
+  <data name="BulkCompartmentColumn" xml:space="preserve">
+    <value>Column's number of new Compartment cannot be equal or less than 0.</value>
+  </data>
+  <data name="BulkCompartmentRow" xml:space="preserve">
+    <value>Row's number of new Compartment cannot be equal or less than 0.</value>
+  </data>
+  <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
+    <value>Error retrieving document group from the Main Layout Manager.</value>
+  </data>
+  <data name="CompartmentHeightLess" xml:space="preserve">
+    <value>Compartment's Height cannot be equal or less than 0.</value>
+  </data>
+  <data name="CompartmentHeightMore" xml:space="preserve">
+    <value>Compartment's height cannot be more than Tray's height</value>
+  </data>
+  <data name="CompartmentOverlaps" xml:space="preserve">
+    <value>New Compartment's size are overlaps with another compartment.</value>
+    <comment>Err</comment>
+  </data>
+  <data name="CompartmentSizeHMore" xml:space="preserve">
+    <value>Compartment's size cannote be more than Tray's height.</value>
+  </data>
+  <data name="CompartmentSizeWMore" xml:space="preserve">
+    <value>Compartment's size cannote be more than Tray's width,</value>
+  </data>
+  <data name="CompartmentWidthLess" xml:space="preserve">
+    <value>Compartment's Width cannot be equal or less than 0.</value>
+  </data>
+  <data name="CompartmentWidthMore" xml:space="preserve">
+    <value>Compartment's width cannot be more than Tray's width.</value>
+  </data>
+  <data name="CompartmentXPosition" xml:space="preserve">
+    <value>XPosition cannot be more than Tray's width.</value>
+  </data>
+  <data name="CompartmentYPosition" xml:space="preserve">
+    <value>YPosition cannot be more than Tray's height</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToNavigationStyleType" xml:space="preserve">
+    <value>Converter can only convert to value of type GridViewNavigationStyle.</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToStringType" xml:space="preserve">
+    <value>Converter can only convert to value of type string.</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToTextWrappingType" xml:space="preserve">
+    <value>Converter can only convert to value of type TextWrapping.</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
+    <value>Converter can only convert to value of type Visibility.</value>
+  </data>
+  <data name="EditNoPossible" xml:space="preserve">
+    <value>Error: it is no possible to Edit this Compartment.</value>
+  </data>
+  <data name="ItemTypeWasNotSpecified" xml:space="preserve">
+    <value>ItemType was not specified.</value>
+  </data>
+  <data name="MarkupNameOfSyntax" xml:space="preserve">
+    <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="ParameterCannotBeNullOrWhitespace" xml:space="preserve">
+    <value>The parameter cannot be null or whitespace.</value>
+  </data>
+  <data name="ParameterMustBePositive" xml:space="preserve">
+    <value>Parameter must be positive.</value>
+  </data>
+  <data name="ParameterMustBeStrictlyPositive" xml:space="preserve">
+    <value>Parameter must be strictly positive.</value>
+  </data>
+  <data name="PropertyDescriptionConverterCheckParameterError" xml:space="preserve">
+    <value>In order to work in xaml Multibinding with two parameters Self, and Self.DataContext must be specificed.</value>
+  </data>
+  <data name="SpecifiedPathNotInConfiguredImageFolder" xml:space="preserve">
+    <value>The specified path is not contained in the image directory.</value>
+  </data>
+  <data name="WmsHistoryViewAppearSyntax" xml:space="preserve">
+    <value>Syntax for WmsHistoryViewAppear is StartModuleName={&lt;module name&gt;}  StartViewName={&lt;view name&gt;}  optional Id={&lt;item id&gt;} .</value>
+    <comment>@Invariant</comment>
+  </data>
+  <data name="UnableToConnectToDatabase" xml:space="preserve">
+    <value>Unable to connect to database</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToBrushType" xml:space="preserve">
+    <value>Converter can only convert to value of type Brush.</value>
+  </data>
+  <data name="ConverterParameterMustBeType" xml:space="preserve">
+    <value>Converter parameter must be a type</value>
+  </data>
+  <data name="ConverterCanConvertOnlyToDoubleType" xml:space="preserve">
+    <value>Converter can only convert to value of type Double.</value>
+  </data>
+  <data name="ConverterParameterMustBeBool" xml:space="preserve">
+    <value>Converter parameter must be bool</value>
+  </data>
+  <data name="NoChangesFound" xml:space="preserve">
+    <value>No Changes found.</value>
+  </data>
+  <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
+    <value>Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments.</value>
+  </data>
+  <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
+    <value>Style '{0}' for '{1}' not found.</value>
+  </data>
+  <data name="BusyIndicatorInvalidIndex" xml:space="preserve">
+    <value>Invalid index</value>
+  </data>
+  <data name="NotAddDB" xml:space="preserve">
+    <value>Not add {0} to database.</value>
+  </data>
+</root>

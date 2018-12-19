@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\DataModels\Ferretto.Common.DataModels.csproj" />
+    <ProjectReference Include="..\..\Common\EF\Ferretto.Common.EF.csproj" />
+    <ProjectReference Include="..\..\Common\Utils\Ferretto.Common.Utils.csproj" />
+    <ProjectReference Include="..\Scheduler.Drivers.Vertimag\Ferretto.WMS.Scheduler.Drivers.Vertimag.csproj" />
+  </ItemGroup>
+
+</Project>
