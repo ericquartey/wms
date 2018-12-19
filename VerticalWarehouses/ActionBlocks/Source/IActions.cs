@@ -47,9 +47,9 @@
         #region Properties
 
         /// <summary>
-        /// Set Inverter driver.
+        /// Set positioning interface.
         /// </summary>
-        InverterDriver.InverterDriver SetInverterDriverInterface { set; }
+        PositioningDrawer SetPositioningInterface { set; }
 
         /// <summary>
         /// Get the weight of drawer.
@@ -72,7 +72,7 @@
         /// <param name="v">Speed</param>
         /// <param name="acc">Acceleration</param>
         /// <param name="dec">Deceleration</param>
-        void Run(long d, float v, float acc, float dec);
+        void Run(decimal d, float v, float acc, float dec);
 
         /// <summary>
         /// Terminate the weight detection routine.

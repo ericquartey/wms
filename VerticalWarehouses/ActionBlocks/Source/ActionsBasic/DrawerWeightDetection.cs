@@ -9,12 +9,14 @@
     /// <summary>
     /// Drawer weight detection class.
     /// This class handles the weight detection routine. It uses the PositioningDrawer class.
+    /// The weight is related to the absorption current Ic during the movement
     /// </summary>
     public class DrawerWeightDetection : IDrawerWeightDetection
     {
-        // Controller for the drawer positioning movement
-        // Set a movement relative - target position: 10 cm - enable the analog signal sampling (current Ic) -
-        // store the Ic value in a internal member of class - get the value via class Property
+        // Routine for detect the weight of drawer:
+        // 1. Set a movement relative - target position - enable the analog signal sampling (current Ic)
+        // 2. Make the movement along vertical axis
+        // 3. Store the Ic value in a internal member of class - get the value via class Property
 
         #region Fields
 
@@ -22,6 +24,17 @@
         private float weight;
 
         #endregion Fields
+
+        #region Constructors
+
+        /// <summary>
+        /// Default c-tor.
+        /// </summary>
+        public DrawerWeightDetection()
+        {
+        }
+
+        #endregion Constructors
 
         #region Events
 
@@ -36,17 +49,25 @@
         #region Properties
 
         /// <summary>
-        /// Set the inverter driver interface.
+        /// Set the positioning interface.
         /// </summary>
-        public InverterDriver.InverterDriver SetInverterDriverInterface
+        public PositioningDrawer SetPositioningInterface
         {
-            set => this.drawerPositionController.SetInverterDriverInterface = value;
+            set => this.drawerPositionController = value;
         }
 
         /// <summary>
         /// Get the weight of drawer.
         /// </summary>
         public float Weight => this.weight;
+
+        /// <summary>
+        /// Set the inverter driver interface.
+        /// </summary>
+        private InverterDriver.InverterDriver SetInverterDriverInterface
+        {
+            set => this.drawerPositionController.SetInverterDriverInterface = value;
+        }
 
         #endregion Properties
 
@@ -59,24 +80,25 @@
         {
             this.weight = -1.0f;
 
-            // Instantiate the drawer positioning
-            this.drawerPositionController = new PositioningDrawer();
             // Subscribes the event handlers
-            this.drawerPositionController.ThrowEndEvent += this.DrawerPositioningEndEvent;
-            this.drawerPositionController.ThrowErrorEvent += this.DrawerPositioningErrorEvent;
+            if (this.drawerPositionController != null)
+            {
+                this.drawerPositionController.ThrowEndEvent += this.DrawerPositioningEndEvent;
+                this.drawerPositionController.ThrowErrorEvent += this.DrawerPositioningErrorEvent;
+            }
         }
 
         /// <summary>
         /// Run the routine to detect the weight.
         /// </summary>
-        public void Run(long d, float v, float acc, float dec)
+        public void Run(decimal d, float v, float acc, float dec)
         {
             // Set properties of movement
-            // this.drawerPositionController.AbsoluteMovement = false;    // set relative mode positioning
+            this.drawerPositionController.AbsoluteMovement = false;    // set relative mode positioning
             this.drawerPositionController.EnableReadMaxAnalogIc = true;   // enable the countinuous sampling for current Ic
 
             // Start the movement
-            this.drawerPositionController.MoveAlongVerticalAxisToPoint((short)d, v, acc, dec, -1, 0);
+            this.drawerPositionController?.MoveAlongVerticalAxisToPoint(d, v, acc, dec, -1, 0);
         }
 
         /// <summary>
@@ -84,9 +106,16 @@
         /// </summary>
         public void Terminate()
         {
-            this.drawerPositionController.Stop();
-            this.drawerPositionController.ThrowEndEvent -= this.DrawerPositioningEndEvent;
-            this.drawerPositionController.ThrowErrorEvent -= this.DrawerPositioningErrorEvent;
+            // Invoke a stop to positioning object
+            this.drawerPositionController?.Stop();
+
+            // Unsubscribes the event handlers
+            if (this.drawerPositionController != null)
+            {
+                // Unsubscribes the event handlers
+                this.drawerPositionController.ThrowEndEvent -= this.DrawerPositioningEndEvent;
+                this.drawerPositionController.ThrowErrorEvent -= this.DrawerPositioningErrorEvent;
+            }
         }
 
         /// <summary>
@@ -94,6 +123,8 @@
         /// </summary>
         private float ConvertToWeight(long value)
         {
+            // TODO: Use a mathematical formula to get the weight from the Ic current
+            // Actually this formula is not provided
             return value;
         }
 
@@ -102,16 +133,9 @@
         /// </summary>
         private void DrawerPositioningEndEvent(bool result)
         {
-            // request the weight to the inverter
-            //var exitStatus = this.driver?.SendRequest(InverterDriver.ParameterID.ANALOG_IC_PARAM, 0, 0x04);   // ? Maybe it can be deleted
-            //if (exitStatus == InverterDriver.InverterDriverExitStatus.Success)
-            //{
-            //    this.routineDone = true;
-            //}
-
             if (result)
             {
-                this.weight = this.ConvertToWeight(this.drawerPositionController.MaxAnalogIc);        // Specify a property for the ANALOG_IC_PARAM value
+                this.weight = this.ConvertToWeight(this.drawerPositionController.MaxAnalogIc);
             }
 
             // notify with success only if routine has been done and weight has been cached
@@ -128,27 +152,5 @@
         }
 
         #endregion Methods
-
-        /**/
-
-        /// <summary>
-        /// Occurs when inverter driver receives a response by the inverter for a submitted SendRequest operation.  // It can be deleted
-        /// </summary>
-        //private void EnquiryTelegram(System.Object sender, InverterDriver.EnquiryTelegramDoneEventArgs eventArgs)
-        //{
-        //    if (eventArgs.ParamID == InverterDriver.ParameterID.ANALOG_IC_PARAM)
-        //    {
-        //        // cache value of weight
-        //        var type = eventArgs.Type;
-        //        var value = eventArgs.Value;
-
-        //        this.weight = Convert.ToInt16(value);
-        //    }
-
-        //    // notify with success only if routine has been done and weight has been cached
-        //    this.EndEvent?.Invoke((this.weight != -1.0) && this.routineDone);
-        //}
-
-        /**/
     }
 }
