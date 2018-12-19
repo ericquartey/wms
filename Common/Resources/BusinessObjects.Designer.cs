@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -754,11 +754,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completion Date.
+        /// </summary>
+        public static string ItemListRowCompletionDate {
+            get {
+                return ResourceManager.GetString("ItemListRowCompletionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Dispatched Quantity.
         /// </summary>
         public static string ItemListRowDispatchedQuantity {
             get {
                 return ResourceManager.GetString("ItemListRowDispatchedQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Execution Date.
+        /// </summary>
+        public static string ItemListRowExecutionDate {
+            get {
+                return ResourceManager.GetString("ItemListRowExecutionDate", resourceCulture);
             }
         }
         
@@ -772,11 +790,65 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item Id.
+        /// </summary>
+        public static string ItemListRowItemId {
+            get {
+                return ResourceManager.GetString("ItemListRowItemId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Modification Date.
+        /// </summary>
+        public static string ItemListRowLastModificationDate {
+            get {
+                return ResourceManager.GetString("ItemListRowLastModificationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string ItemListRowLot {
+            get {
+                return ResourceManager.GetString("ItemListRowLot", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material Status Id.
+        /// </summary>
+        public static string ItemListRowMaterialStatusId {
+            get {
+                return ResourceManager.GetString("ItemListRowMaterialStatusId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Package Type Id.
+        /// </summary>
+        public static string ItemListRowPackageTypeId {
+            get {
+                return ResourceManager.GetString("ItemListRowPackageTypeId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Priority.
         /// </summary>
         public static string ItemListRowPriority {
             get {
                 return ResourceManager.GetString("ItemListRowPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registration Number.
+        /// </summary>
+        public static string ItemListRowRegistrationNumber {
+            get {
+                return ResourceManager.GetString("ItemListRowRegistrationNumber", resourceCulture);
             }
         }
         
@@ -804,6 +876,24 @@ namespace Ferretto.Common.Resources {
         public static string ItemListRowStatusDescription {
             get {
                 return ResourceManager.GetString("ItemListRowStatusDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub 1.
+        /// </summary>
+        public static string ItemListRowSub1 {
+            get {
+                return ResourceManager.GetString("ItemListRowSub1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sub 2.
+        /// </summary>
+        public static string ItemListRowSub2 {
+            get {
+                return ResourceManager.GetString("ItemListRowSub2", resourceCulture);
             }
         }
         
