@@ -118,5 +118,9 @@
                                 Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Expander>
         </Grid>
+        <Expander Name="BackToMainWindowButtonRegion"
+                  Grid.Row="2"
+                  IsExpanded="{Binding IsBackToMainWindowButtonRegionExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{StaticResource WmsExpanderStyle}" />
     </Grid>
 </Window>
