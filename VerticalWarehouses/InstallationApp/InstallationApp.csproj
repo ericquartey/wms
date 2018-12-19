@@ -177,6 +177,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MainWindow.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MainWindowViewModel.cs" />
     <Compile Include="ServiceUtilities\ISensorsStatesHubClient.cs" />
     <Compile Include="ServiceUtilities\SensorsStatesEventArgs.cs" />
@@ -286,8 +291,9 @@
     </Compile>
     <Compile Include="ViewsAndViewModels\SingleViews\WeightControlViewModel.cs" />
     <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
+      <Generator>SettingsSingleFileGenerator</Generator>
       <SubType>Designer</SubType>
+      <LastGenOutput>MainWindow.Designer.cs</LastGenOutput>
     </Page>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
