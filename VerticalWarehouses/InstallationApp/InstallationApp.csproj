@@ -6,8 +6,6 @@
     <OutputType>Library</OutputType>
     <StartupObject />
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <AssemblyName>Ferretto.VW.InstallationApp</AssemblyName>
-    <RootNamespace>Ferretto.VW.InstallationApp</RootNamespace>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
