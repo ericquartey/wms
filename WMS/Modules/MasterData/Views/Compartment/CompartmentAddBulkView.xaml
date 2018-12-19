@@ -10,8 +10,7 @@
              mc:Ignorable="d">
 
     <Grid x:Name="AddBulk"
-          MinWidth="300"
-          Visibility="{Binding EnableInputBulkAdd, Converter={StaticResource BTVC}, Mode=TwoWay}">
+          MinWidth="300">
 
         <wms:ActionBar Grid.Row="0"
                        Grid.Column="1"
