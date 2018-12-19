@@ -1,8 +1,8 @@
 ﻿using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
+namespace Ferretto.VW.InstallationApp
 {
-    internal class LSMTVerticalEngineViewModel : BindableBase
+    public class LSMTVerticalEngineViewModel : BindableBase
     {
     }
 }

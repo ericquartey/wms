@@ -10,13 +10,13 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<OperationResult> ExecuteImmediately(int areaId, int bayId);
 
-        IQueryable<ItemList> GetWithStatusCompleted();
+        IQueryable<ItemList> GetWithStatusCompleted(ItemListType? type);
 
-        int GetWithStatusCompletedCount();
+        int GetWithStatusCompletedCount(ItemListType? type);
 
-        IQueryable<ItemList> GetWithStatusWaiting();
+        IQueryable<ItemList> GetWithStatusWaiting(ItemListType? type);
 
-        int GetWithStatusWaitingCount();
+        int GetWithStatusWaitingCount(ItemListType? type);
 
         IQueryable<ItemList> GetWithTypeInventory();
 

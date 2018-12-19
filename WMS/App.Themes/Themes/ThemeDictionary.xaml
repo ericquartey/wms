@@ -8,7 +8,6 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/DXWindow.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Error.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/InfoText.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/SlideInView.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ScrollViewer.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/NavMenuTouch.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/DockLayoutManager.xaml" />

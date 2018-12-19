@@ -14,7 +14,7 @@ namespace Ferretto.Common.Controls
     {
         #region Fields
 
-        private readonly IEnumerable<IFilterDataSource<TModel>> filterDataSources;
+        private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
         private IEnumerable<Tile> filterTiles;
         private bool flattenDataSource;
         private object modelChangedEventSubscription;
@@ -29,15 +29,7 @@ namespace Ferretto.Common.Controls
 
         protected EntityListViewModel()
         {
-            var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
-            this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name);
             this.InitializeEvent();
-            this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
-            {
-                Key = filterDataSource.Key,
-                Name = filterDataSource.Name,
-                Description = Resources.MasterData.ResourceManager.GetString($"{filterDataSource.Key}Description")
-            }).ToList());
         }
 
         #endregion Constructors
@@ -132,6 +124,15 @@ namespace Ferretto.Common.Controls
         protected override async void OnAppear()
         {
             base.OnAppear();
+
+            var dataSourceService = ServiceLocator.Current.GetInstance<IDataSourceService>();
+            this.filterDataSources = dataSourceService.GetAllFilters<TModel>(this.GetType().Name, this.Data);
+            this.filterTiles = new BindingList<Tile>(this.filterDataSources.Select(filterDataSource => new Tile
+            {
+                Key = filterDataSource.Key,
+                Name = filterDataSource.Name
+            }).ToList());
+
             await this.UpdateFilterTilesCountsAsync();
         }
 

@@ -1,8 +1,8 @@
 ﻿using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
+namespace Ferretto.VW.InstallationApp
 {
-    internal class LSMTNavigationButtonsViewModel : BindableBase
+    public class LSMTNavigationButtonsViewModel : BindableBase
     {
     }
 }
