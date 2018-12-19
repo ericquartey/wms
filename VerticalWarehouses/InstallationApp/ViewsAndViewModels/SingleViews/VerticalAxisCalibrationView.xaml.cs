@@ -26,7 +26,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public VerticalAxisCalibrationView()
         {
             this.InitializeComponent();
-            this.DataContext = new VerticalAxisCalibrationViewModel();
+            this.DataContext = ViewModels.VerticalAxisCalibrationVMInstance;
         }
 
         #endregion Constructors

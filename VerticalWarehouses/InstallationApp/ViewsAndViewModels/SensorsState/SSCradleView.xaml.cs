@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSCradleView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSCradleViewModel();
+            this.DataContext = ViewModels.SSCradleVMInstance;
         }
 
         #endregion Constructors
