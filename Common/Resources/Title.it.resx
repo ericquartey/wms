@@ -118,21 +118,21 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CellDetailsView" xml:space="preserve">
-    <value>Cell Details</value>
+    <value>Dettagli della Cella</value>
   </data>
   <data name="CompartmentDetailsView" xml:space="preserve">
-    <value>Compartment Details</value>
+    <value>Dettagli dello Scomparto</value>
   </data>
   <data name="ItemDetailsView" xml:space="preserve">
-    <value>Item Details : {0}</value>
+    <value>Dettaglio dell'Articolo : {0}</value>
   </data>
   <data name="ItemListDetailsView" xml:space="preserve">
-    <value>{0} List: {1}</value>
+    <value>Lista di {0} : {1}</value>
   </data>
   <data name="LoadingUnitDetailsView" xml:space="preserve">
-    <value>Loading Unit Details : {0}</value>
+    <value>Dettagli della UDC : {0}</value>
   </data>
   <data name="LoadingUnitEditView" xml:space="preserve">
-    <value>Loading Unit : {0}</value>
+    <value>UDC : {0}</value>
   </data>
 </root>

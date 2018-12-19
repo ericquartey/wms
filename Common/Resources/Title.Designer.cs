@@ -61,7 +61,43 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading Unit Details.
+        ///   Looks up a localized string similar to Cell Details.
+        /// </summary>
+        public static string CellDetailsView {
+            get {
+                return ResourceManager.GetString("CellDetailsView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment Details.
+        /// </summary>
+        public static string CompartmentDetailsView {
+            get {
+                return ResourceManager.GetString("CompartmentDetailsView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item Details : {0}.
+        /// </summary>
+        public static string ItemDetailsView {
+            get {
+                return ResourceManager.GetString("ItemDetailsView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} List: {1}.
+        /// </summary>
+        public static string ItemListDetailsView {
+            get {
+                return ResourceManager.GetString("ItemListDetailsView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Unit Details : {0}.
         /// </summary>
         public static string LoadingUnitDetailsView {
             get {
