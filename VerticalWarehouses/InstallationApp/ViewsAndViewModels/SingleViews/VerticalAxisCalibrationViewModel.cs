@@ -83,13 +83,11 @@ namespace Ferretto.VW.InstallationApp
         public void SubscribeMethodToEvent()
         {
             throw new NotImplementedException();
-            ActionManager.CalibrateVerticalAxisInstance.ThrowEndEvent += this.Calibration;
         }
 
         public void UnSubscribeMethodFromEvent()
         {
             throw new NotImplementedException();
-            ActionManager.CalibrateVerticalAxisInstance.ThrowEndEvent -= this.Calibration;
         }
 
         private void Calibration(bool result)
@@ -136,6 +134,7 @@ namespace Ferretto.VW.InstallationApp
                 this.IsStopButtonActive = true;
                 await Task.Delay(2000);
 
+                ActionManager.CalibrateVerticalAxisInstance.ThrowEndEvent += this.Calibration;
                 this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
                 ActionManager.CalibrateVerticalAxisInstance.SetVAxisOrigin(m, ofs, vFast, vCreep);
                 this.NoteString = "Homing Done.";
@@ -146,8 +145,6 @@ namespace Ferretto.VW.InstallationApp
         {
             this.NoteString = Common.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted;
             this.originProcedureCanceled = true;
-
-            UnSubscribeMethodFromEvent();
         }
 
         #endregion Methods
