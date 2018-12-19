@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public WeightControlView()
         {
             this.InitializeComponent();
-            this.DataContext = new WeightControlViewModel();
+            this.DataContext = ViewModels.WeightControlVMInstance;
         }
 
         #endregion Constructors

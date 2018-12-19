@@ -19,7 +19,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         public MainWindowNavigationButtonsView()
         {
             this.InitializeComponent();
-            this.DataContext = new MainWindowNavigationButtonsViewModel();
+            this.DataContext = ViewModels.MainWindowNavigationButtonsVMInstance;
             this.NavigationButtonScrollViewer.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(this.CheckVerticalOffset), true);
         }
 

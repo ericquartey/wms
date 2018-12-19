@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSVariousInputsViewModel : BindableBase
+    public class SSVariousInputsViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -44,6 +44,21 @@ namespace Ferretto.VW.InstallationApp
         #endregion Properties
 
         #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new System.NotImplementedException();
+        }
 
         private void ChangeSensors()
         {
