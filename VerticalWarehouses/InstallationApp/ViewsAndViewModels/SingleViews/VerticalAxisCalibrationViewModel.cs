@@ -11,9 +11,9 @@ using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InverterDriver.Source;
 using System.Diagnostics;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
-    internal class VerticalAxisCalibrationViewModel : BindableBase
+    public class VerticalAxisCalibrationViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -74,6 +74,21 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         #endregion Properties
 
         #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
 
         private void Calibration(bool result)
         {

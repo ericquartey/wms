@@ -1,12 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;net471</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;net471</TargetFrameworks>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="log4net" Version="2.0.8" />
-  </ItemGroup>
   
   <ItemGroup>
     <Compile Update="BusinessObjects.Designer.cs">

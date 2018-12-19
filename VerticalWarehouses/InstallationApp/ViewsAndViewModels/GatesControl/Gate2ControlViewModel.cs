@@ -5,9 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl
+namespace Ferretto.VW.InstallationApp
 {
-    internal class Gate2ControlViewModel : BindableBase
+    public class Gate2ControlViewModel : BindableBase, IViewModel
     {
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }

@@ -4,7 +4,7 @@
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
     <sys:Double x:Key="VWAPP_CustomInputFieldControlFocusable_TextBox_FontSize">14</sys:Double>
-    <sys:Double x:Key="VWAPP_CustomInputFieldControlFocusable_TextBlock_FontSize">10</sys:Double>
+    <sys:Double x:Key="VWAPP_CustomInputFieldControlFocusable_TextBlock_FontSize">12</sys:Double>
     <FontFamily x:Key="VWAPP_CustomInputFieldControlFocusable_TextBox_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <FontFamily x:Key="VWAPP_CustomInputFieldControlFocusable_TextBlock_FontFamily">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
     <Thickness x:Key="VWAPP_CustomInputFieldControlFocusable_TextBox_BorderThickness">1,1,1,1</Thickness>

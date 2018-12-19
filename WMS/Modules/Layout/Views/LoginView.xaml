@@ -69,7 +69,7 @@
             <wms:ActionBar Name="LoginAB"
                            HorizontalContentAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding LoginCommand, IsAsync=True}"
+                <wms:ActionBarItem Command="{Binding LoginCommand, Delay=25}"
                                    Content="{Binding LoginCheck}"
                                    CustomGlyphSize="24,24"
                                    Glyph="{Binding Status}"

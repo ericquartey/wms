@@ -1,8 +1,8 @@
 ﻿using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
-    internal class SSVariousInputsViewModel : BindableBase
+    public class SSVariousInputsViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -44,6 +44,21 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         #endregion Properties
 
         #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new System.NotImplementedException();
+        }
 
         private void ChangeSensors()
         {

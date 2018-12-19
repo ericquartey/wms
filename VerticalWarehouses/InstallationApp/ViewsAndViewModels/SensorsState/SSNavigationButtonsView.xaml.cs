@@ -15,7 +15,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSNavigationButtonsView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSNavigationButtonsViewModel();
+            this.DataContext = ViewModels.SSNavigationButtonsVMInstance;
         }
 
         #endregion Constructors

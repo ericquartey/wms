@@ -56,12 +56,6 @@ namespace Ferretto.Common.BusinessModels
             }.Where(s => !String.IsNullOrEmpty(s))
         );
 
-        [Display(Name = nameof(BusinessObjects.ItemCode), ResourceType = typeof(BusinessObjects))]
-        public string ItemCode => this.ItemDetails?.Code;
-
-        [Display(Name = nameof(BusinessObjects.ItemDescription), ResourceType = typeof(BusinessObjects))]
-        public string ItemDescription => this.ItemDetails?.Description;
-
         [Display(Name = nameof(BusinessObjects.ItemWithdrawItem), ResourceType = typeof(BusinessObjects))]
         public ItemDetails ItemDetails
         {
@@ -69,14 +63,8 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.itemDetails, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ItemManagementTypeDescription => this.ItemDetails?.ManagementTypeDescription;
-
         [Display(Name = nameof(BusinessObjects.ItemWithdrawLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.MeasureUnitDescription), ResourceType = typeof(BusinessObjects))]
-        public string MeasureUnitDescription => this.ItemDetails?.MeasureUnitDescription;
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawQuantity), ResourceType = typeof(BusinessObjects))]
         public int Quantity
@@ -93,9 +81,6 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.ItemWithdrawSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.ItemAvailable), ResourceType = typeof(BusinessObjects))]
-        public int? TotalAvailable => this.ItemDetails?.TotalAvailable;
 
         #endregion Properties
 
@@ -124,7 +109,7 @@ namespace Ferretto.Common.BusinessModels
                         break;
 
                     case nameof(this.Quantity):
-                        if (this.Quantity <= 0 || this.Quantity > this.TotalAvailable)
+                        if (this.Quantity <= 0 || this.Quantity > this.ItemDetails?.TotalAvailable)
                         {
                             return Resources.BusinessObjects.ItemWithdrawQuantityInvalidError;
                         }

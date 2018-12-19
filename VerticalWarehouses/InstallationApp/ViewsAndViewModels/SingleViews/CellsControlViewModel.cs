@@ -1,8 +1,26 @@
 ﻿using Prism.Mvvm;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
-    internal class CellsControlViewModel : BindableBase
+    public class CellsControlViewModel : BindableBase, IViewModel
     {
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }

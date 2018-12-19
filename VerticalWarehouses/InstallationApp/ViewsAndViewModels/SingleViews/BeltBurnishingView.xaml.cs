@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
 {
@@ -12,7 +13,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public BeltBurnishingView()
         {
             this.InitializeComponent();
-            this.DataContext = new BeltBurnishingViewModel();
+            this.DataContext = ViewModels.BeltBurnishingVMInstance;
         }
 
         #endregion Constructors

@@ -26,11 +26,12 @@ namespace Ferretto.Common.Controls
             }
 
             this.DisplayName = item.Name;
-            this.BackColor = ( (SolidColorBrush) System.Windows.Application.Current.Resources[item.BackgroundColor] )
+            this.BackColor = ((SolidColorBrush)System.Windows.Application.Current.Resources[item.BackgroundColor])
                 .Color.ToString();
             this.Image = item.Image;
             this.ModuleName = item.ModuleName;
             this.ViewName = item.ViewName;
+            this.Data = item.Data;
             this.IsRootLevel = string.IsNullOrEmpty(currBreadCrumb);
             this.AddChild(item.Children, currBreadCrumb);
         }
@@ -45,11 +46,13 @@ namespace Ferretto.Common.Controls
 
         public ICommand Command { get; set; }
 
+        public object Data { get; set; }
+
         public string DisplayName { get; set; }
 
-        public bool HasChildren => ( this.Child != null &&
+        public bool HasChildren => (this.Child != null &&
                                      this.Child.Children != null &&
-                                     this.Child.Children.Count > 0 );
+                                     this.Child.Children.Count > 0);
 
         public string Image { get; set; }
 
@@ -66,7 +69,7 @@ namespace Ferretto.Common.Controls
         public void CommandAction()
         {
             var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-            navigationService.Appear(this.ModuleName, this.ViewName);
+            navigationService.Appear(this.ModuleName, this.ViewName, this.Data);
         }
 
         private void AddChild(ICollection<MainMenuItem> children, string currBreadCrumb)
