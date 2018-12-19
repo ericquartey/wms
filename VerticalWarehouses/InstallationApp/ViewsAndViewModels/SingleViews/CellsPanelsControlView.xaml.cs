@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public CellsPanelsControlView()
         {
             this.InitializeComponent();
-            this.DataContext = new CellsPanelsControlViewModel();
+            this.DataContext = ViewModels.CellsPanelControlVMInsance;
         }
 
         #endregion Constructors

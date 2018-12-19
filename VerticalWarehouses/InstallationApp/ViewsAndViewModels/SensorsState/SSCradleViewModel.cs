@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSCradleViewModel : BindableBase
+    public class SSCradleViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -21,5 +21,24 @@ namespace Ferretto.VW.InstallationApp
         public System.Boolean ZeroPawlSensor { get => this.zeroPawlSensor; set => this.SetProperty(ref this.zeroPawlSensor, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }

@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSVariousInputsView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSVariousInputsViewModel();
+            this.DataContext = ViewModels.SSVariousInputsVMInstance;
         }
 
         #endregion Constructors

@@ -3,7 +3,7 @@ using System;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class WeightControlViewModel : BindableBase
+    public class WeightControlViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -31,5 +31,24 @@ namespace Ferretto.VW.InstallationApp
         public Int32 TestRun { get => this.testRun; set => this.SetProperty(ref this.testRun, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion Methods
     }
 }

@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase
+    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -117,6 +117,11 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
+        public void ExitFromViewMethod()
+        {
+            throw new NotImplementedException();
+        }
+
         public void PositioningDone(bool result)
         {
             var message = "";
@@ -153,6 +158,16 @@ namespace Ferretto.VW.InstallationApp
             ActionManager.PositioningDrawerInstance.Stop();
 
             ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+        }
+
+        public void SubscribeMethodToEvent()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            throw new NotImplementedException();
         }
 
         private void AcceptButtonMethod()
