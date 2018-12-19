@@ -17,15 +17,13 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
-        private readonly EditFilter editColoringFilter = new EditFilter();
-        private readonly EditReadOnlyFilter editReadOnlyColoringFilter = new EditReadOnlyFilter();
+        private readonly Func<ICompartment, ICompartment, string> filterColorFunc = new EditFilter().ColorFunc;
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
         private SidePanelDetailsViewModel<CompartmentEdit> activeSideViewModel;
         private ICommand addCommand;
         private ICommand bulkAddCommand;
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
         private ICommand editCommand;
-        private Func<ICompartment, ICompartment, string> filterColorFunc;
         private bool isSidePanelOpen;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
@@ -82,25 +80,12 @@ namespace Ferretto.WMS.Modules.MasterData
             (this.editCommand = new DelegateCommand(this.ExecuteEditCompartmentCommand, this.CanExecuteEditCommand)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
-        public Func<ICompartment, ICompartment, string> FilterColorFunc
-        {
-            get => this.filterColorFunc;
-            set => this.SetProperty(ref this.filterColorFunc, value);
-        }
+        public Func<ICompartment, ICompartment, string> FilterColorFunc => this.filterColorFunc;
 
         public bool IsSidePanelOpen
         {
             get => this.isSidePanelOpen;
-            set
-            {
-                if (this.SetProperty(ref this.isSidePanelOpen, value))
-                {
-                    this.FilterColorFunc = this.isSidePanelOpen ?
-                        this.editColoringFilter.ColorFunc
-                        :
-                        this.editReadOnlyColoringFilter.ColorFunc;
-                }
-            }
+            set => this.SetProperty(ref this.isSidePanelOpen, value);
         }
 
         public LoadingUnitDetails LoadingUnit
@@ -159,7 +144,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ActiveSideViewModel_OperationComplete(Object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            this.HideSidePanel();
         }
 
         private bool CanExecuteEditCommand()
@@ -206,8 +191,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.tray.AddCompartmentsRange(this.LoadingUnit.Compartments);
             }
-
-            this.FilterColorFunc = (new EditFilter()).ColorFunc;
 
             this.RaisePropertyChanged(nameof(this.Tray));
         }
