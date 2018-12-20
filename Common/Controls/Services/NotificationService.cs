@@ -52,7 +52,7 @@ namespace Ferretto.Common.Controls.Services
 
                 NLog.LogManager
                    .GetCurrentClassLogger()
-                   .Error(string.Format("Connection failed. Retrying in {0} seconds...", reconnectionTime / 1000));
+                   .Warn($"Connection failed. Retrying in {reconnectionTime / 1000} seconds...");
 
                 await Task.Delay(reconnectionTime);
 
