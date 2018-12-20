@@ -87,7 +87,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.executionRequest.ItemListDetails = await this.itemListProvider.GetById(modelId.Value);
             this.executionRequest.AreaChoices = this.areaProvider.GetAll();
-            this.executionRequest.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
+            this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
         private bool CanExecuteListCommand()

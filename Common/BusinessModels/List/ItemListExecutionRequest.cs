@@ -101,7 +101,7 @@ namespace Ferretto.Common.BusinessModels
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return Resources.BusinessObjects.ListToExecuteAreaInvalidError;
+                            return BusinessObjects.ItemListExecutionAreaInvalidError;
                         }
                         break;
 
@@ -109,7 +109,7 @@ namespace Ferretto.Common.BusinessModels
                         if ((this.bayId.HasValue == false ||
                             this.bayId.Value == 0) && this.runImmediately)
                         {
-                            return Resources.BusinessObjects.ListToExecuteBayInvalidError;
+                            return BusinessObjects.ItemListExecutionBayInvalidError;
                         }
                         break;
                 }
