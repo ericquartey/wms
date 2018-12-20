@@ -304,7 +304,7 @@
                 <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="3"
                           Header="{x:Static res:MasterData.CompartmentPosition}"
-                          Visibility="{Binding Tray.LoadingUnitTypeHasCompartments, Converter={StaticResource BTVC}}">
+                          Visibility="{Binding Compartment.LoadingUnitHasCompartments, Converter={StaticResource BTVC}}">
 
                     <wms:WmsTrayControl Margin="0,0,0,0"
                                         IsCompartmentSelectable="{Binding IsCompartmentSelectableTray, Mode=OneWay}"

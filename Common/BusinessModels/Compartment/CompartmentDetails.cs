@@ -137,6 +137,8 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.loadingUnitCode, value);
         }
 
+        public bool LoadingUnitHasCompartments { get; set; }
+
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
         public int LoadingUnitId
         {

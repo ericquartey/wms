@@ -173,7 +173,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.tray.AddCompartmentsRange(loadingUnit.Compartments);
             }
-            this.tray.LoadingUnitTypeHasCompartments = loadingUnit.LoadingUnitTypeHasCompartments;
             this.RaisePropertyChanged(nameof(this.Tray));
 
             this.readOnlyTray = true;
