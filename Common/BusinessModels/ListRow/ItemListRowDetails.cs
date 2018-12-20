@@ -17,11 +17,11 @@ namespace Ferretto.Common.BusinessModels
         private int itemId;
         private ItemListRowStatus itemListRowStatus;
         private string lot;
-
-        //private int materialStatusId;
-        //private int packageTypeId;
+        private IEnumerable<Enumeration> materialStatusChoices;
+        private int? materialStatusId;
+        private IEnumerable<Enumeration> packageTypeChoices;
+        private int? packageTypeId;
         private string registrationNumber;
-
         private int requiredQuantity;
         private int rowPriority;
         private string sub1;
@@ -61,11 +61,23 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
 
-        //[Display(Name = nameof(BusinessObjects.ItemListRowMaterialStatusId), ResourceType = typeof(BusinessObjects))]
-        //public int? MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
+        public IEnumerable<Enumeration> MaterialStatusChoices
+        {
+            get => this.materialStatusChoices;
+            set => this.SetProperty(ref this.materialStatusChoices, value);
+        }
 
-        //[Display(Name = nameof(BusinessObjects.ItemListRowPackageTypeId), ResourceType = typeof(BusinessObjects))]
-        //public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
+        [Display(Name = nameof(BusinessObjects.ItemListRowMaterialStatusId), ResourceType = typeof(BusinessObjects))]
+        public int? MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
+
+        public IEnumerable<Enumeration> PackageTypeChoices
+        {
+            get => this.packageTypeChoices;
+            set => this.SetProperty(ref this.packageTypeChoices, value);
+        }
+
+        [Display(Name = nameof(BusinessObjects.ItemListRowPackageTypeId), ResourceType = typeof(BusinessObjects))]
+        public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }

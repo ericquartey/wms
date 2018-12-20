@@ -8,40 +8,31 @@ namespace Ferretto.Common.BusinessModels
 {
     public class ItemListRow : BusinessObject
     {
-        #region Fields
-
-        private string code;
-        private DateTime creationDate;
-        private int dispatchedQuantity;
-        private string itemDescription;
-        private ItemListRowStatus itemListRowStatus;
-        private int requiredQUantity;
-        private int rowPriority;
-
-        #endregion Fields
-
         #region Properties
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
-        public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
+        public string Code { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
-        public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
+        public DateTime CreationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowDispatchedQuantity), ResourceType = typeof(BusinessObjects))]
-        public int DispatchedQuantity { get => this.dispatchedQuantity; set => this.SetProperty(ref this.dispatchedQuantity, value); }
+        public int DispatchedQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
-        public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
+        public string ItemDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
+        public ItemListRowStatus ItemListRowStatus { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
+        public string MaterialStatusDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRequiredQuantity), ResourceType = typeof(BusinessObjects))]
-        public int RequiredQuantity { get => this.requiredQUantity; set => this.SetProperty(ref this.requiredQUantity, value); }
+        public int RequiredQuantity { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
-        public int RowPriority { get => this.rowPriority; set => this.SetProperty(ref this.rowPriority, value); }
+        public int RowPriority { get; set; }
 
         #endregion Properties
     }

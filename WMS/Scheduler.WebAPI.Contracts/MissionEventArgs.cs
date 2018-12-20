@@ -6,7 +6,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     {
         #region Constructors
 
-        public MissionEventArgs(Mission mission)
+        public MissionEventArgs(Core.Mission mission)
         {
             this.Mission = mission;
         }
@@ -15,7 +15,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
 
         #region Properties
 
-        public Mission Mission { get; private set; }
+        public Core.Mission Mission { get; private set; }
 
         #endregion Properties
     }

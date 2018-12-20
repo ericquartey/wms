@@ -9,6 +9,8 @@ namespace Ferretto.WMS.Scheduler.Core
 
         Task<IEnumerable<SchedulerRequest>> PrepareListForExecutionAsync(int listId, int areaId, int? bayId);
 
+        Task<IEnumerable<SchedulerRequest>> PrepareListRowForExecutionAsync(int listId, int areaId, int? bayId);
+
         Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request);
 
         #endregion Methods

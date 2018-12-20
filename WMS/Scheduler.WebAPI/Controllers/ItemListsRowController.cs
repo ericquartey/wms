@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         public ItemListRowsController(
             IServiceProvider serviceProvider,
-            ILogger<ItemsController> logger,
+            ILogger<ItemListRowsController> logger,
             Core.IWarehouse warehouse)
         {
             this.logger = logger;
@@ -51,7 +51,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
             try
             {
-                var acceptedRequest = await this.warehouse.PrepareListForExecutionAsync(request.ListId, request.AreaId, request.BayId);
+                var acceptedRequest = await this.warehouse.PrepareListRowForExecutionAsync(request.ListId, request.AreaId, request.BayId);
                 if (acceptedRequest == null)
                 {
                     this.logger.LogWarning($"Request of execution for list row (id={request.ListId}) could not be processed.");
@@ -86,9 +86,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                             Id = i.Id,
                             Code = i.Code,
                             CreationDate = i.CreationDate,
-                            //Description = i.Description,
-                            //ItemListRowsCount = i.ItemListRows.Count(),
-                            //ItemListItemsCount = i.ItemListRows.Sum(r => r.RequiredQuantity),
+                            ItemDescription = i.Item.Description,
                             RowPriority = i.Priority
                         }
                         ).ToListAsync();
@@ -114,28 +112,24 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 using (var dbContext = (DatabaseContext)this.serviceProvider.GetService(typeof(DatabaseContext)))
                 {
                     var listRow = await dbContext.ItemListRows
-                       //.Include(l => l.ItemListRows)
                        .Include(r => r.Item)
                        .Where(l => l.Id == id)
                        .Select(l => new ItemListRowDetails
                        {
                            Id = l.Id,
                            Code = l.Code,
-                           //Description = l.Description,
+                           ItemDescription = l.Item.Description,
                            RowPriority = l.Priority,
                            ItemListRowStatus = (ItemListRowStatus)l.Status,
                            DispatchedQuantity = l.DispatchedQuantity,
                            ItemId = l.ItemId,
-                           //ItemListType = (int)((ItemListRowType)l.ItemListType),
-                           //ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                            CreationDate = l.CreationDate,
                            LastModificationDate = l.LastModificationDate,
                            CompletionDate = l.CompletionDate,
                            LastExecutionDate = l.LastExecutionDate,
-                           ItemDescription = l.Item.Description,
                            Lot = l.Lot,
-                           //MaterialStatusId = l.MaterialStatusId,
-                           //PackageTypeId = l.PackageTypeId,
+                           MaterialStatusId = l.MaterialStatusId,
+                           PackageTypeId = l.PackageTypeId,
                            RegistrationNumber = l.RegistrationNumber,
                            RequiredQuantity = l.RequiredQuantity,
                            Sub1 = l.Sub1,
@@ -162,7 +156,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"An error occurred while retrieving the list (id={id}).");
+                this.logger.LogError(ex, $"An error occurred while retrieving the list row (id={id}).");
                 return this.BadRequest(ex.Message);
             }
         }
