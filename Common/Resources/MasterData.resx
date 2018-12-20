@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -277,7 +277,7 @@
     <value>Waiting Status</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Pick Lists</value>
+    <value>Picking Lists</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Customer Order Information</value>

@@ -221,4 +221,8 @@
     <value>Up</value>
     <comment>Button text</comment>
   </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Loading</value>
+    <comment>Busy Indicator Content</comment>
+  </data>
 </root>
