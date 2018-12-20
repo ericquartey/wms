@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.MathLib;
+﻿using Ferretto.VW.MathLib;
 
 namespace Ferretto.VW.ActionBlocks
 {
@@ -13,8 +7,9 @@ namespace Ferretto.VW.ActionBlocks
         #region Fields
 
         public static CalibrateVerticalAxis CalibrateVerticalAxisInstance;
-        public static PositioningDrawer PositioningDrawerInstance;
         public static Converter ConverterInstance;
+        public static DrawerWeightDetection DrawerWeightDetectionInstance;
+        public static PositioningDrawer PositioningDrawerInstance;
 
         #endregion Fields
     }
