@@ -33,7 +33,6 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ToggleSwitch.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/WmsCheckEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/BusyIndicator.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Title.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 

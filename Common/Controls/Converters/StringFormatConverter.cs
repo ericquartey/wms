@@ -15,11 +15,11 @@ namespace Ferretto.Common.Controls
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null || values.Length < 3)
+            if (values == null || values.Length < 2)
             {
                 throw new InvalidOperationException(Errors.ConverterCanConvertOnlyToDoubleType);
             }
-            return string.Format(values[0].ToString(), values[1], values[2]);
+            return string.Format(values[0].ToString(), values.Skip(1).ToArray());
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
