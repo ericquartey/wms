@@ -21,6 +21,7 @@ namespace Ferretto.VW.VWApp
 
         protected override void OnClosed(EventArgs e)
         {
+            ActionManager.DrawerWeightDetectionInstance?.Terminate();
             ActionManager.PositioningDrawerInstance?.Terminate();
             ActionManager.CalibrateVerticalAxisInstance?.Terminate();
             InverteDriverManager.InverterDriverStaticInstance?.Terminate();
