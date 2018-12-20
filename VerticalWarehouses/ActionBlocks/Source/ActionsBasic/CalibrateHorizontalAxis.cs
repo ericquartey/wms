@@ -12,7 +12,7 @@ namespace Ferretto.VW.ActionBlocks
     // On [ErrorEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateHorizontalAxisErrorEventHandler(CalibrationStatus ErrorDescription);
 
-    public class CalibrateHorizontalAxis
+    public class CalibrateHorizontalAxis : ICalibrateHorizontalAxis
     {
         #region Fields
 
@@ -90,7 +90,7 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Start Calibrate Vertical Axis routine.
         /// </summary>
-        public void SetVAxisOrigin(int m, short ofs, short vFast, short vCreep)
+        public void SetHAxisOrigin(int m, short ofs, short vFast, short vCreep)
         {
             // Assign the parameters
             this.m = m;

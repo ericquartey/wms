@@ -137,4 +137,25 @@
 
         #endregion Methods
     }
+
+    public interface ICalibrateHorizontalAxis
+    { 
+        #region Properties
+
+        InverterDriver.InverterDriver SetInverterDriverInterface { set; }
+
+        #endregion Properties
+
+        #region Methods
+
+        void Initialize();
+
+        void SetHAxisOrigin(int m, short ofs, short vFast, short vCreep);
+
+        void StopInverter();
+
+        void Terminate();
+
+        #endregion Methods
+    }
 }

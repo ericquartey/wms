@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UICVATest.Models
+namespace Ferretto.VW.ActionBlocks
 {
-    class SampleModel
+    public class CalibrateAxes
     {
+
     }
 }
