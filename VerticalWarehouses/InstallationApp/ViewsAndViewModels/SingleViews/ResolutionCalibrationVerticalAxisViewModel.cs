@@ -119,7 +119,10 @@ namespace Ferretto.VW.InstallationApp
         public void ExitFromViewMethod()
         {
             ViewModels.ResolutionCalibrationVerticalAxisVMInstance.UnSubscribeMethodFromEvent();
-            ActionManager.PositioningDrawerInstance.Stop();
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.Stop();
+            }
         }
 
         public void PositioningDone(bool result)
@@ -159,12 +162,18 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+            }
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+            }
         }
 
         private void AcceptButtonMethod()
@@ -203,7 +212,10 @@ namespace Ferretto.VW.InstallationApp
             this.IsMoveButtonActive = false;
             this.IsSetPositionButtonActive = true;
 
-            ActionManager.PositioningDrawerInstance.Stop();
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.Stop();
+            }
         }
 
         private void CheckMesuredInitialPositionCorrectness(string input)

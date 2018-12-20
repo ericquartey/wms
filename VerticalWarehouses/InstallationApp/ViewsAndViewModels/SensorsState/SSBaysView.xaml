@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             Width="1024"
+             Height="620"
              mc:Ignorable="d">
     <DockPanel>
         <Grid>

@@ -227,7 +227,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        private static Expression<Func<DataModels.ItemList, Boolean>> BuildFilter(ItemListType? type, ItemListStatus status)
+        private static Expression<Func<DataModels.ItemList, bool>> BuildFilter(ItemListType? type, ItemListStatus status)
         {
             var listType = type.HasValue ? (DataModels.ItemListType)type.Value : default(DataModels.ItemListType);
             var listStatus = (DataModels.ItemListStatus)status;
