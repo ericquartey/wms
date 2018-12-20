@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -15,7 +13,7 @@ namespace Ferretto.Common.BusinessModels
         private int dispatchedQuantity;
         private string itemDescription;
         private ItemListRowStatus itemListRowStatus;
-        private int requiredQUantity;
+        private int requiredQuantity;
         private int rowPriority;
 
         #endregion Fields
@@ -38,7 +36,7 @@ namespace Ferretto.Common.BusinessModels
         public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRequiredQuantity), ResourceType = typeof(BusinessObjects))]
-        public int RequiredQuantity { get => this.requiredQUantity; set => this.SetProperty(ref this.requiredQUantity, value); }
+        public int RequiredQuantity { get => this.requiredQuantity; set => this.SetProperty(ref this.requiredQuantity, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
         public int RowPriority { get => this.rowPriority; set => this.SetProperty(ref this.rowPriority, value); }
