@@ -55,9 +55,10 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Task<OperationResult> ExecuteImmediately(int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediately(int areaId, int bayId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+            await Task.Delay(1000);
+            return new OperationResult(false, description: "not implemented");
         }
 
         public IQueryable<ItemList> GetAll()
@@ -201,12 +202,13 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Task<OperationResult> ScheduleForExecution(int areaId)
+        public async Task<OperationResult> ScheduleForExecution(int areaId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+            await Task.Delay(1000);
+            return new OperationResult(false, description: "not implemented");
         }
 
-        private static Expression<Func<DataModels.ItemList, Boolean>> BuildFilter(ItemListType? type, ItemListStatus status)
+        private static Expression<Func<DataModels.ItemList, bool>> BuildFilter(ItemListType? type, ItemListStatus status)
         {
             var listType = type.HasValue ? (DataModels.ItemListType)type.Value : default(DataModels.ItemListType);
             var listStatus = (DataModels.ItemListStatus)status;

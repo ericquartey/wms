@@ -203,7 +203,7 @@
                         <wms:WmsGridControl MinHeight="280"
                                             MaxWidth="2000"
                                             MaxHeight="280"
-                                            CurrentItem="{Binding SelectedCompartment, Mode=TwoWay}"
+                                            SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"
                                             ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
                                             Visibility="{Binding ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
