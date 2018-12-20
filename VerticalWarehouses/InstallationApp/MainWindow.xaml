@@ -10,7 +10,6 @@
         Height="768"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen"
-        WindowState="Maximized"
         WindowStyle="None"
         mc:Ignorable="d">
 
@@ -119,5 +118,12 @@
                                 Content="{Binding NavigationRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </Expander>
         </Grid>
+        <Expander Name="ExitViewButtonRegion"
+                  Grid.Row="2"
+                  Height="auto"
+                  IsExpanded="{Binding IsExitViewButtonRegionExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Style="{StaticResource WmsExpanderStyle}">
+            <ContentControl Content="{Binding ExitViewButtonRegionCurrentViewModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        </Expander>
     </Grid>
 </Window>

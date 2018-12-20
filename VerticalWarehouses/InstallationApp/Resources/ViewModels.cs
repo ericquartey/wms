@@ -19,7 +19,9 @@
         public static readonly LSMTHorizontalEngineViewModel LSMTHorizontalEngineVMInstance;
         public static readonly LSMTNavigationButtonsViewModel LSMTNavigationButtonsVMInstance;
         public static readonly LSMTVerticalEngineViewModel LSMTVerticalEngineVMInstance;
+        public static readonly MainWindowBackToIAPPButtonViewModel MainWindowBackToIAPPButtonVMInstance;
         public static readonly MainWindowNavigationButtonsViewModel MainWindowNavigationButtonsVMInstance;
+        public static readonly MainWindowViewModel MainWindowVMInstance;
         public static readonly ResolutionCalibrationVerticalAxisViewModel ResolutionCalibrationVerticalAxisVMInstance;
         public static readonly SSBaysViewModel SSBaysVMInstance;
         public static readonly SSCradleViewModel SSCradleVMInstance;
@@ -63,6 +65,8 @@
             VerticalAxisCalibrationVMInstance = new VerticalAxisCalibrationViewModel();
             VerticalOffsetCalibrationVMInstance = new VerticalOffsetCalibrationViewModel();
             WeightControlVMInstance = new WeightControlViewModel();
+            MainWindowBackToIAPPButtonVMInstance = new MainWindowBackToIAPPButtonViewModel();
+            MainWindowVMInstance = new MainWindowViewModel();
         }
 
         #endregion Constructors
