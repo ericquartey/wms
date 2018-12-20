@@ -6,8 +6,8 @@
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-             d:DesignHeight="610"
-             d:DesignWidth="730"
+             Width="1024"
+             Height="620"
              mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>

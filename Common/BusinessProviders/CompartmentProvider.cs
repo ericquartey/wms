@@ -152,6 +152,7 @@ namespace Ferretto.Common.BusinessProviders
             var compartmentDetails = await dataContext.Compartments
                .Where(c => c.Id == id)
                .Include(c => c.LoadingUnit)
+               .ThenInclude(l => l.LoadingUnitType)
                .Include(c => c.Item)
                .Include(c => c.CompartmentStatus)
                .GroupJoin(
@@ -193,6 +194,7 @@ namespace Ferretto.Common.BusinessProviders
                    YPosition = j.cmp.YPosition,
                    LoadingUnitId = j.cmp.LoadingUnitId,
                    ItemId = j.cmp.ItemId,
+                   LoadingUnitHasCompartments = j.cmp.LoadingUnit.LoadingUnitType.HasCompartments
                })
                .SingleAsync();
 
@@ -234,6 +236,7 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContext.Current.Compartments
                 .Where(c => c.LoadingUnitId == id)
                 .Include(c => c.LoadingUnit)
+                .ThenInclude(l => l.LoadingUnitType)
                 .Include(c => c.Item)
                 .Include(c => c.CompartmentStatus)
                 .Include(c => c.CompartmentType)
@@ -271,6 +274,7 @@ namespace Ferretto.Common.BusinessProviders
                     LoadingUnitId = c.LoadingUnitId,
                     ItemId = c.ItemId,
                     IsItemPairingFixed = c.IsItemPairingFixed,
+                    LoadingUnitHasCompartments = c.LoadingUnit.LoadingUnitType.HasCompartments
                 })
                 .AsNoTracking();
         }
