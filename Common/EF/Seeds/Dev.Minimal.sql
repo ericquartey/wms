@@ -829,10 +829,10 @@ INSERT INTO BayTypes (Id, Description) VALUES (@BayTypes_Vertimag, 'Vertimag Bay
 
 SET IDENTITY_INSERT Bays ON;
 INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (1, @BayTypes_Picking, 1, 'Single Pick Bay', @manual_area, null);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (2, @BayTypes_Vertimag, 1, 'Vertimag Bay', @vrtmag_area, 1);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (3, @BayTypes_Vertimag, 1, 'Vertimag Bay', @vrtmag_area, 2);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (4, @BayTypes_Vertimag, 1, 'Vertimag Bay', @vrtmag_area, 3);
-INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (5, @BayTypes_Vertimag, 1, 'Vertimag Bay', @vrtmag_area, 4);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (2, @BayTypes_Vertimag, 1, 'Vertimag 1 Bay 1', @vrtmag_area, 1);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (3, @BayTypes_Vertimag, 1, 'Vertimag 2 Bay 1', @vrtmag_area, 2);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (4, @BayTypes_Vertimag, 1, 'Vertimag 3 Bay 1', @vrtmag_area, 3);
+INSERT INTO Bays (Id, BayTypeId, LoadingUnitsBufferSize, Description, AreaId, MachineId) VALUES (5, @BayTypes_Vertimag, 1, 'Vertimag 4 Bay 1', @vrtmag_area, 4);
 SET IDENTITY_INSERT Bays OFF;
 
 -- Operation Types
