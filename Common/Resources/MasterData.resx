@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -467,5 +467,12 @@
   </data>
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
     <value>Get all machines of type Vertimag XS</value>
+  </data>
+  <data name="ListRowRequestAccepted" xml:space="preserve">
+    <value>List Row request accepted</value>
+    <comment>Notification - request accepted</comment>
+  </data>
+  <data name="ItemListRows" xml:space="preserve">
+    <value>List Rows</value>
   </data>
 </root>
