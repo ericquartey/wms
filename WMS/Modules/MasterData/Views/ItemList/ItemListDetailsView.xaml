@@ -109,9 +109,9 @@
                                           SelectedItem="Pick" />
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
-                                          MinValue="1"
                                           AllowNullInput="False"
-                                          EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          MinValue="1" />
                         </Grid>
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
@@ -241,8 +241,8 @@
                         <wms:WmsGridControl MinHeight="280"
                                             MaxWidth="2000"
                                             MaxHeight="280"
-                                            SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}"
-                                            ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}">
+                                            ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}"
+                                            SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}">
                             <!--TODO wms:WmsGridControl.View>
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
@@ -268,6 +268,8 @@
                                                 FieldName="DispatchedQuantity" />
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="ItemListRowStatus" />
+                                <dxg:GridColumn Width="120*"
+                                                FieldName="MaterialStatusDescription" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>
