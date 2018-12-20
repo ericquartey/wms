@@ -12,21 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp
+namespace InstallationApp
 {
     /// <summary>
-    /// Interaction logic for LSMTNavigationButtonsView.xaml
+    /// Interaction logic for DEVELOP_MAINWINDOW.xaml
     /// </summary>
-    public partial class LSMTNavigationButtonsView : BaseView
+    public partial class DEVELOP_MAINWINDOW : Window
     {
         #region Constructors
 
-        public LSMTNavigationButtonsView()
+        public DEVELOP_MAINWINDOW()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.LSMTNavigationButtonsVMInstance;
         }
 
         #endregion Constructors
