@@ -124,37 +124,38 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                            //Description = l.Description,
                            RowPriority = l.Priority,
                            ItemListRowStatus = (ItemListRowStatus)l.Status,
+                           DispatchedQuantity = l.DispatchedQuantity,
+                           ItemId = l.ItemId,
                            //ItemListType = (int)((ItemListRowType)l.ItemListType),
                            //ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                            CreationDate = l.CreationDate,
                            LastModificationDate = l.LastModificationDate,
-                           //ExecutionDate = l.ExecutionDate,
+                           CompletionDate = l.CompletionDate,
+                           LastExecutionDate = l.LastExecutionDate,
                            ItemDescription = l.Item.Description,
-                           //ItemListRows = l.ItemListRows.Select(r => new ItemListRow
-                           //{
-                           //    Id = r.Id,
-                           //    Code = r.Code,
-                           //    CreationDate = r.CreationDate,
-                           //    ItemDescription = r.Item.Description,
-                           //    RequiredQuantity = r.RequiredQuantity,
-                           //    RowPriority = r.Priority
-                           //})
+                           Lot = l.Lot,
+                           //MaterialStatusId = l.MaterialStatusId,
+                           //PackageTypeId = l.PackageTypeId,
+                           RegistrationNumber = l.RegistrationNumber,
+                           RequiredQuantity = l.RequiredQuantity,
+                           Sub1 = l.Sub1,
+                           Sub2 = l.Sub2
                        })
                        .SingleOrDefaultAsync();
 
                     if (listRow == null)
                     {
-                        this.logger.LogError($"No List with (id={id}) exists.");
+                        this.logger.LogError($"No List row with (id={id}) exists.");
                         return this.NotFound();
                     }
 
-                    listRow.ItemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
-                        .Select(i => new Enumeration((int)i, i.ToString()))
-                        .ToList();
+                    //listRow.ItemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
+                    //    .Select(i => new Enumeration((int)i, i.ToString()))
+                    //    .ToList();
 
-                    listRow.ItemListTypeChoices = ((ItemListType[])Enum.GetValues(typeof(ItemListType)))
-                        .Select(i => new Enumeration((int)i, i.ToString()))
-                        .ToList();
+                    //listRow.ItemListTypeChoices = ((ItemListType[])Enum.GetValues(typeof(ItemListType)))
+                    //    .Select(i => new Enumeration((int)i, i.ToString()))
+                    //    .ToList();
 
                     return this.Ok(listRow);
                 }

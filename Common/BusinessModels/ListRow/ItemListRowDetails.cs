@@ -11,18 +11,17 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string code;
-        private DateTime completionDate;
         private DateTime creationDate;
         private int dispatchedQuantity;
         private string itemDescription;
         private int itemId;
         private ItemListRowStatus itemListRowStatus;
-        private DateTime lastExecutionDate;
-        private DateTime lastModificationDate;
         private string lot;
-        private int materialStatusId;
-        private int packageTypeId;
+
+        //private int materialStatusId;
+        //private int packageTypeId;
         private string registrationNumber;
+
         private int requiredQuantity;
         private int rowPriority;
         private string sub1;
@@ -36,7 +35,7 @@ namespace Ferretto.Common.BusinessModels
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowCompletionDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime CompletionDate { get => this.completionDate; set => this.SetProperty(ref this.completionDate, value); }
+        public DateTime? CompletionDate { get; set; }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
@@ -54,19 +53,19 @@ namespace Ferretto.Common.BusinessModels
         public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowExecutionDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime LastExecutionDate { get => this.lastExecutionDate; set => this.SetProperty(ref this.lastExecutionDate, value); }
+        public DateTime? LastExecutionDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowLastModificationDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime LastModificationDate { get => this.lastModificationDate; set => this.SetProperty(ref this.lastModificationDate, value); }
+        public DateTime? LastModificationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowMaterialStatusId), ResourceType = typeof(BusinessObjects))]
-        public int MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
+        //[Display(Name = nameof(BusinessObjects.ItemListRowMaterialStatusId), ResourceType = typeof(BusinessObjects))]
+        //public int? MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowPackageTypeId), ResourceType = typeof(BusinessObjects))]
-        public int PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
+        //[Display(Name = nameof(BusinessObjects.ItemListRowPackageTypeId), ResourceType = typeof(BusinessObjects))]
+        //public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRegistrationNumber), ResourceType = typeof(BusinessObjects))]
         public string RegistrationNumber { get => this.registrationNumber; set => this.SetProperty(ref this.registrationNumber, value); }
