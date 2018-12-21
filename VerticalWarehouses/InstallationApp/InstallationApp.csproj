@@ -43,7 +43,9 @@
 
   <ItemGroup>
     <None Remove="MainWindowBackToIAPPButtonView.xaml" />
+    <None Remove="ViewsAndViewModels\LowSpeedMovements\LSMTMainView.xaml" />
     <None Remove="ViewsAndViewModels\MainWindowBackToIAPPButtonView.xaml" />
+    <None Remove="ViewsAndViewModels\SensorsState\SSMainView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
