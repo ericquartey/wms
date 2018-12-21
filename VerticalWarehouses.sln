@@ -44,7 +44,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackgroundService", "Vertic
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathLib", "VerticalWarehouses\MathLib\MathLib.csproj", "{2F188460-AF20-4B52-A19D-1A01941756D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIVHATest", "VerticalWarehouses\UIVHATest\UIVHATest.csproj", "{E156B4C9-5020-4CA7-A00C-DC53578D3C2E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UICHATest", "VerticalWarehouses\UIVHATest\UICHATest.csproj", "{E156B4C9-5020-4CA7-A00C-DC53578D3C2E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

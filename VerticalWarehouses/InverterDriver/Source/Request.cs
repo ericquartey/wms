@@ -50,6 +50,8 @@ namespace Ferretto.VW.InverterDriver
         /// </summary>
         Int16,
 
+        UInt16,
+
         /// <summary>
         /// int data type (4 bytes)
         /// </summary>

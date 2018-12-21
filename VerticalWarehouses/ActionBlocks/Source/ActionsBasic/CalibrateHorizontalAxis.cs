@@ -20,7 +20,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] calibrateHorizontalAxisSteps = new string[] { "1", "2", "3", "4", "5", "6" };
+        private readonly string[] calibrateHorizontalAxisSteps = new string[] { "1", /*"2",*/ "3", "4", "5", "6" };
 
         private string calibrateOperation;
 
@@ -106,11 +106,21 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Stop the routine.
         /// </summary>
-        public void StopInverter()
+        public bool StopInverter()
         {
-            this.paramID = ParameterID.CONTROL_WORD_PARAM;
-            this.valParam = (short)0x00; // 0000 0000
-            this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, this.dataSetIndex, this.valParam);
+            bool result = true;
+
+            try { 
+                this.paramID = ParameterID.CONTROL_WORD_PARAM;
+                this.valParam = 0x8000; // 1000 0000
+                this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, this.dataSetIndex, this.valParam);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -174,9 +184,9 @@ namespace Ferretto.VW.ActionBlocks
 
             switch (type)
             {
-                case ValueDataType.Int16:
+                case ValueDataType.UInt16: // Verif.
                     {
-                        var value = Convert.ToInt16(eventArgs.Value);
+                        var value = Convert.ToUInt16(eventArgs.Value); // Verif.
                         statusWord = new byte[sizeof(short)];
                         statusWord = BitConverter.GetBytes(value);
 
@@ -208,7 +218,8 @@ namespace Ferretto.VW.ActionBlocks
             {
                 case "1":
                     {
-                        // 0x0050
+                        // 0x1650
+                        // if (statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
                         if (statusWordBA01[4] && statusWordBA01[6])
                         {
                             statusWordValue = true;
@@ -225,7 +236,8 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "3":
                     {
-                        // 0x0031
+                        // 0x01631
+                        // if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[3] && statusWordBA01[4] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
                         if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -235,7 +247,8 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "4":
                     {
-                        // 51 Dec = 0x0033
+                        // 51 Dec = 0x1633
+                        // if (statusWordBA01[0] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -245,7 +258,8 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "5":
                     {
-                        // Filter: 0xnn37
+                        // Filter: 0x1637
+                        // if (statusWordBA01[0] && statusWordBA01[2] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -255,8 +269,9 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "6":
                     {
-                        // 0x1n37
+                        // 0x1637
                         // Filter
+                        // if (statusWordBA01[0] && statusWordBA01[2] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[12])
                         {
                             statusWordValue = true;
@@ -282,7 +297,7 @@ namespace Ferretto.VW.ActionBlocks
                 }
                 else
                 {
-                    // The calibrate vertical axis routine is ended
+                    // The calibrate horizontal axis routine is ended
                     ThrowEndEvent?.Invoke(true);
 
                     // End the motion control of inverter
@@ -340,8 +355,6 @@ namespace Ferretto.VW.ActionBlocks
         /// </summary>
         private void stepExecution()
         {
-            // var idExitStatus = InverterDriverExitStatus.Success;
-
             // Select the operation
             this.calibrateOperation = this.calibrateHorizontalAxisSteps[this.i];
 
@@ -352,15 +365,15 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x80; // 0000 0000
+                        this.valParam = 0x8000; // 1000 0000 0000 0000
                         break;
                     }
 
                 case "2":
                     {
-                        this.dataSetIndex = 0x05; // The DataSet to set the Operating Mode for Vertical Homing is 1, 2 for the Horizontal Homing
+                        this.dataSetIndex = 0x02; // The DataSet to set the Operating Mode for Vertical Homing is 1, 2 for the Horizontal Homing
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
-                        this.valParam = 1; // 0000 0001 per Homeing Verticale
+                        this.valParam = 0x0001; // 0000 0000 0000 0001 per Homing Orizzontale
                         break;
                     }
 
@@ -368,7 +381,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x86; // 1000 0110
+                        this.valParam = 0x8006; // 1000 0000 0000 0110
                         break;
                     }
 
@@ -376,7 +389,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x87; // 1000 0111
+                        this.valParam = 0x8007; // 1000 0000 0000 0111
                         break;
                     }
 
@@ -384,7 +397,7 @@ namespace Ferretto.VW.ActionBlocks
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x8F; // 1000 1111
+                        this.valParam = 0x800F; // 1000 0000 0000 1111
                         break;
                     }
 
@@ -395,7 +408,7 @@ namespace Ferretto.VW.ActionBlocks
 
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = (short)0x9F; // 1001 1111
+                        this.valParam = 0x801F; // 1000 0000 0001 1111
                         break;
                     }
 

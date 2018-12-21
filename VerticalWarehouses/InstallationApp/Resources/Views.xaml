@@ -86,4 +86,7 @@
     <DataTemplate DataType="{x:Type local:MainWindowNavigationButtonsViewModel}">
         <viewsAndViewModels:MainWindowNavigationButtonsView />
     </DataTemplate>
+    <DataTemplate DataType="{x:Type local:MainWindowBackToIAPPButtonViewModel}">
+        <viewsAndViewModels:MainWindowBackToIAPPButtonView />
+    </DataTemplate>
 </ResourceDictionary>

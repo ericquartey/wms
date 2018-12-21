@@ -43,6 +43,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         public int LoadingUnitId { get; set; }
+
         public Position Origin { get; set; }
 
         public Dimension RulerSize { get; set; }
