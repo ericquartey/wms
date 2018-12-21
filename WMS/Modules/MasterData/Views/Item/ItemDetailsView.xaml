@@ -232,7 +232,7 @@
                                                 FieldName="Stock" />
                                 <dxg:GridColumn Width="200*"
                                                 FieldName="IsItemPairingFixed"
-                                                Style="{DynamicResource BooleanCellTemplate}" />
+                                                CellDisplayTemplate="{DynamicResource BooleanCellTemplate}" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
