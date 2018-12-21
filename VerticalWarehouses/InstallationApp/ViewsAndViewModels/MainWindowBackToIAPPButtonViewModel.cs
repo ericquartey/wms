@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -32,7 +33,17 @@ namespace Ferretto.VW.InstallationApp
             this.BackButtonCommand = null;
         }
 
-        public void InitializeBottomButtons()
+        public void InitializeLowSpeedMovementsViewBottomButtons() => this.InitializeMultiViewBottomButtons(ViewModels.MainWindowVMInstance.LowSpeedMovementsTestButtonCommand);
+
+        public void InitializeMultiViewBottomButtons(ICommand command)
+        {
+            this.BackButtonCommand = new CompositeCommand();
+            this.BackButtonCommand.RegisterCommand(command);
+        }
+
+        public void InitializeSensorsStatesViewBottomButtons() => this.InitializeMultiViewBottomButtons(ViewModels.MainWindowVMInstance.SSNavigationButtonsButtonCommand);
+
+        public void InitializeSingleViewBottomButtons()
         {
             this.BackButtonCommand = new CompositeCommand();
             this.BackButtonCommand.RegisterCommand(ViewModels.MainWindowVMInstance.BackToMainWindowNavigationButtonsViewButtonCommand);

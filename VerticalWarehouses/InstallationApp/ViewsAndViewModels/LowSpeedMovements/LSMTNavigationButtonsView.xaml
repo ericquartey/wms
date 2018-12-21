@@ -15,19 +15,15 @@
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1">
-            <Button Command="{Binding DataContext.LSMTVerticalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding VerticalEngineButtonCommand}"
                     Content="{x:Static res:InstallationApp.LSMTVerticalEngineButton}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding DataContext.LSMTHorizontalEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding HorizontalEngineButtonCommand}"
                     Content="{x:Static res:InstallationApp.LSMTHorizontalEngineButton}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding DataContext.LSMTGateEngineButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding GateEngineButtonCommand}"
                     Content="{x:Static res:InstallationApp.LSMTGateEngineButton}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
         </StackPanel>
-        <Button Grid.Row="2"
-                Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                Content="{x:Static res:General.Back}"
-                Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
     </Grid>
 </myType:BaseView>

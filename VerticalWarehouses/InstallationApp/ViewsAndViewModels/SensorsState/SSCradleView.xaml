@@ -17,7 +17,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80" />
+                <RowDefinition Height="120" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
@@ -33,21 +33,21 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="20" />
+                    <RowDefinition Height="50" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="2"
                             Grid.Column="0">
-                    <custom:CustomSensorControl Margin="10"
+                    <custom:CustomSensorControl Margin="0,20"
                                                 LabelText="{x:Static res:InstallationApp.ZeroPawlSensor}"
                                                 SensorState="{Binding ZeroPawlSensor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-                    <custom:CustomSensorControl Margin="10"
+                    <custom:CustomSensorControl Margin="0,20"
                                                 LabelText="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}"
                                                 SensorState="{Binding LuPresentInOperatorSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-                    <custom:CustomSensorControl Margin="10"
+                    <custom:CustomSensorControl Margin="0,20"
                                                 LabelText="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}"
                                                 SensorState="{Binding LuPresentInMachineSide, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource VWAPP_CustomSensorControlStyle}" />

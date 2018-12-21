@@ -15,25 +15,21 @@
             <RowDefinition Height="70" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="1">
-            <Button Command="{Binding DataContext.SsVerticalAxisButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding VerticalButtonCommand}"
                     Content="{x:Static res:InstallationApp.VerticalAxis}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding DataContext.SsCradleButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding CradleButtonCommand}"
                     Content="{x:Static res:InstallationApp.Cradle}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding DataContext.SsBaysButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding BaysButtonCommand}"
                     Content="{x:Static res:InstallationApp.Bays}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding DataContext.SsGateButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding GateButtonCommand}"
                     Content="{x:Static res:InstallationApp.Gate}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
-            <Button Command="{Binding DataContext.SsVariousInputsButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            <Button Command="{Binding VariousButtonCommand}"
                     Content="{x:Static res:InstallationApp.VariousInputs}"
                     Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
         </StackPanel>
-        <Button Grid.Row="2"
-                Command="{Binding DataContext.BackToMainWindowNavigationButtonsViewButtonCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                Content="{x:Static res:General.Back}"
-                Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}" />
     </Grid>
 </myType:BaseView>

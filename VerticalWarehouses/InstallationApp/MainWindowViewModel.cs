@@ -102,7 +102,7 @@ namespace Ferretto.VW.InstallationApp
 
         #region Commands Properties
 
-        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = ViewModels.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = ViewModels.IdleVMInstance; NavigationService.RaiseExitViewEvent(); ViewModels.ResolutionCalibrationVerticalAxisVMInstance.ExitFromViewMethod(); }));
+        public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = ViewModels.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = ViewModels.IdleVMInstance; NavigationService.RaiseExitViewEvent(); }));
 
         public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.BeltBurnishingVMInstance; }));
 
@@ -128,7 +128,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand InstallationStateButtonCommand => this.installationStateButtonCommand ?? (this.installationStateButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.InstallationStateVMInstance; }));
 
-        public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = ViewModels.LSMTNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
+        public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.LSMTMainVMInstance; }));
 
         public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.LSMTGateEngineVMInstance; }));
 
@@ -144,7 +144,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSGateVMInstance; }));
 
-        public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = ViewModels.SSNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
+        public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSMainVMInstance; }));
 
         public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSVariousInputsVMInstance; }));
 
@@ -224,7 +224,7 @@ namespace Ferretto.VW.InstallationApp
         {
             NavigationService.GoToViewEventHandler += () => this.IsNavigationButtonRegionExpanded = false;
             NavigationService.GoToViewEventHandler += () => this.IsExitViewButtonRegionExpanded = true;
-            NavigationService.GoToViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.InitializeBottomButtons;
+            NavigationService.GoToViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.InitializeSingleViewBottomButtons;
             NavigationService.ExitViewEventHandler += () => this.IsNavigationButtonRegionExpanded = true;
             NavigationService.ExitViewEventHandler += () => this.IsExitViewButtonRegionExpanded = false;
             NavigationService.ExitViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.FinalizeBottomButtons;

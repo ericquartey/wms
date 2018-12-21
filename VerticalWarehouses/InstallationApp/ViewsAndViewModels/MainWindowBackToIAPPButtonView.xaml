@@ -12,7 +12,7 @@
             <ColumnDefinition Width="auto" />
         </Grid.ColumnDefinitions>
         <StackPanel Grid.Column="1"
-                    Margin="0,4"
+                    Margin="0,5,0,10"
                     FlowDirection="RightToLeft"
                     Orientation="Horizontal">
             <Button Margin="2,0"

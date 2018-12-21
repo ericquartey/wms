@@ -17,6 +17,7 @@
         public static readonly InstallationStateViewModel InstallationStateVMInstance;
         public static readonly LSMTGateEngineViewModel LSMTGateEngineVMInstance;
         public static readonly LSMTHorizontalEngineViewModel LSMTHorizontalEngineVMInstance;
+        public static readonly LSMTMainViewModel LSMTMainVMInstance;
         public static readonly LSMTNavigationButtonsViewModel LSMTNavigationButtonsVMInstance;
         public static readonly LSMTVerticalEngineViewModel LSMTVerticalEngineVMInstance;
         public static readonly MainWindowBackToIAPPButtonViewModel MainWindowBackToIAPPButtonVMInstance;
@@ -26,6 +27,7 @@
         public static readonly SSBaysViewModel SSBaysVMInstance;
         public static readonly SSCradleViewModel SSCradleVMInstance;
         public static readonly SSGateViewModel SSGateVMInstance;
+        public static readonly SSMainViewModel SSMainVMInstance;
         public static readonly SSNavigationButtonsViewModel SSNavigationButtonsVMInstance;
         public static readonly SSVariousInputsViewModel SSVariousInputsVMInstance;
         public static readonly SSVerticalAxisViewModel SSVerticalAxisVMInstance;
@@ -67,6 +69,8 @@
             WeightControlVMInstance = new WeightControlViewModel();
             MainWindowBackToIAPPButtonVMInstance = new MainWindowBackToIAPPButtonViewModel();
             MainWindowVMInstance = new MainWindowViewModel();
+            LSMTMainVMInstance = new LSMTMainViewModel();
+            SSMainVMInstance = new SSMainViewModel();
         }
 
         #endregion Constructors

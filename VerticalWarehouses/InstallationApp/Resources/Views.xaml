@@ -1,12 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:custom="clr-namespace:Ferretto.VW.CustomControls.Controls;assembly=Ferretto.VW.CustomControls"
-                    xmlns:gatesHeightControl="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesHeightControl"
-                    xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
-                    xmlns:lowSpeedMovements="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements"
-                    xmlns:sensorsState="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState"
-                    xmlns:singleViews="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews"
-                    xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.InstallationApp.ViewsAndViewModels">
+                    xmlns:local="clr-namespace:Ferretto.VW.InstallationApp">
     <DataTemplate DataType="{x:Type local:SSNavigationButtonsViewModel}">
         <local:SSNavigationButtonsView />
     </DataTemplate>
@@ -87,5 +82,11 @@
     </DataTemplate>
     <DataTemplate DataType="{x:Type local:MainWindowBackToIAPPButtonViewModel}">
         <local:MainWindowBackToIAPPButtonView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:LSMTMainViewModel}">
+        <local:LSMTMainView />
+    </DataTemplate>
+    <DataTemplate DataType="{x:Type local:SSMainViewModel}">
+        <local:SSMainView />
     </DataTemplate>
 </ResourceDictionary>
