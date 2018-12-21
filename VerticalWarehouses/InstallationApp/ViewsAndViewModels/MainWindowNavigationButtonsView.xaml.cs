@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for MainWindowNavigationButtonsView.xaml

@@ -391,7 +391,6 @@ namespace Ferretto.VW.InverterDriver
                 this.errorReceivedTelegram = this.received_telegram(telegramRead, out var paramID, out this.retParameterValue);
                 if (!this.errorReceivedTelegram)
                 {
-                    
                     // Update internal class members
                     switch (this.currentRequest.ParameterID)
                     {
@@ -523,11 +522,6 @@ namespace Ferretto.VW.InverterDriver
 
             // Store the request into the list.
             var Rq = new Request(TypeOfRequest.SettingRequest, paramID, RequestSource.External, systemIndex, dataSetIndex, valueType, value);
-
-            if (paramID == ParameterID.ACTUAL_POSITION_SHAFT)
-            {
-                logger.Log(LogLevel.Debug, String.Format("Send a request to get ACTUAL POSITION SHAFT"));
-            }
 
             BitArray bitArrayCtrlTmp = null;
             if (paramID == ParameterID.CONTROL_WORD_PARAM)

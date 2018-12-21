@@ -1,16 +1,13 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using System;
+﻿using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
-using Ferretto.VW.Utils.Source;
-using Ferretto.VW.Navigation;
-using System.ComponentModel;
-using Ferretto.VW.InverterDriver.Source;
-using System.Diagnostics;
 using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.InverterDriver.Source;
 using Ferretto.VW.MathLib;
-using Ferretto.VW.InstallationApp;
+using Ferretto.VW.Utils.Source;
+using Prism.Commands;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.VWApp
 {
@@ -66,10 +63,7 @@ namespace Ferretto.VW.VWApp
 
         public Boolean CustomComboBoxStateBool { get => this.customComboBoxStateBool; set => this.SetProperty(ref this.customComboBoxStateBool, value); }
 
-        public string Error
-        {
-            get { return null; }
-        }
+        public string Error => null;
 
         public ICommand LoginButtonCommand => this.loginButtonCommand ?? (this.loginButtonCommand = new DelegateCommand(this.ExecuteLoginButtonCommand));
 
@@ -144,6 +138,11 @@ namespace Ferretto.VW.VWApp
                 ActionManager.PositioningDrawerInstance = new PositioningDrawer();
                 ActionManager.PositioningDrawerInstance.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
                 ActionManager.PositioningDrawerInstance.Initialize();  // 1024 is the default value
+
+                ActionManager.DrawerWeightDetectionInstance = new DrawerWeightDetection();
+                ActionManager.DrawerWeightDetectionInstance.SetPositioningDrawerInterface = ActionManager.PositioningDrawerInstance;
+                ActionManager.DrawerWeightDetectionInstance.Initialize();
+
                 ActionManager.ConverterInstance = new Converter();
                 ActionManager.ConverterInstance.ManageResolution = 1024;
             }

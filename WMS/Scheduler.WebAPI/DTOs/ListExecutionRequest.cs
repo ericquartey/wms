@@ -9,7 +9,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         [Required]
         public int AreaId { get; set; }
 
-        public int BayId { get; set; }
+        public int? BayId { get; set; }
 
         [Required]
         public int ListId { get; set; }

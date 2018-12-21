@@ -80,7 +80,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            var breadCrumb = $"{currBreadCrumb}\\{this.DisplayName}";
+            var breadCrumb = currBreadCrumb != string.Empty ? $"{currBreadCrumb} >> {this.DisplayName}" : this.DisplayName;
             this.Child = new TileNavMenuChildItem(breadCrumb);
             foreach (var child in children)
             {

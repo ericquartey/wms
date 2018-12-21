@@ -37,9 +37,13 @@ namespace Ferretto.VW.Utils.Source
         #region Properties
 
         public List<CellBlock> CellBlocks { get => this.cellBlocks; set { this.cellBlocks = value; this.RaiseCellBlocksChangedEvent(); } }
+
         public List<Cell> Cells { get => this.cells; set { this.cells = value; this.RaiseCellsChangedEvent(); } }
+
         public List<Drawer> Drawers { get => this.drawers; set { this.drawers = value; this.RaiseDrawersChangedEvent(); } }
+
         public General_Info GeneralInfo { get; set; }
+
         public Installation_Info InstallationInfo { get => this.installationInfo; set { this.installationInfo = value; this.RaiseInstallationInfoChangedEvent(); } }
 
         #endregion Properties
@@ -54,6 +58,11 @@ namespace Ferretto.VW.Utils.Source
                 var jsonII = File.ReadAllText(this.JSON_INSTALLATION_INFO_PATH);
                 this.GeneralInfo = JsonConvert.DeserializeObject<General_Info>(jsonGI);
                 this.InstallationInfo = JsonConvert.DeserializeObject<Installation_Info>(jsonII);
+            }
+            else
+            {
+                this.GeneralInfo = new General_Info();
+                this.InstallationInfo = new Installation_Info();
             }
         }
 
