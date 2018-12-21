@@ -15,44 +15,6 @@
                                                                 ThemeName=Office2016White}}"
            TargetType="wms:DateEdit">
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type wms:DateEdit}">
-                    <Grid x:Name="GridDateEdit">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label Style="{DynamicResource ControlLabelStyle}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource DNC}">
-                                    <Binding RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="DataContext"
-                                             RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
-                        <dxe:DateEdit x:Name="InnerDateEdit"
-                                      Grid.Row="1"
-                                      MinWidth="100"
-                                      AllowDefaultButton="False"
-                                      EditValue="{Binding Path=EditValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      Mask="{TemplateBinding Mask}"
-                                      MaskType="{TemplateBinding MaskType}">
-                            <dxe:DateEdit.Buttons>
-                                <dxe:ButtonInfo IsDefaultButton="True"
-                                                Template="{DynamicResource DateEditCustomButtonTemplate}" />
-                            </dxe:DateEdit.Buttons>
-                        </dxe:DateEdit>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="InnerDateEdit" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InnerDateEdit}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <DataTemplate x:Key="DateEditCustomButtonTemplate">

@@ -27,21 +27,7 @@
 
     <ControlTemplate x:Key="SpinEditButtonEditStyle"
                      TargetType="{x:Type dxe:ButtonEdit}">
-        <Grid x:Name="GridSpinEdit">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <Label Style="{DynamicResource ControlLabelStyle}">
-                <Label.Content>
-                    <MultiBinding Converter="{StaticResource DNC}">
-                        <Binding RelativeSource="{RelativeSource Self}" />
-                        <Binding Path="DataContext"
-                                 RelativeSource="{RelativeSource Self}" />
-                    </MultiBinding>
-                </Label.Content>
-            </Label>
-            <ContentControl x:Name="PART_Root"
+        <ContentControl x:Name="PART_Root"
                             Grid.Row="1"
                             MaxHeight="52"
                             HorizontalContentAlignment="Stretch"
@@ -52,47 +38,46 @@
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Template="{TemplateBinding ActualBorderTemplate}">
-                <Grid x:Name="ButtonEditGrid"
+            <Grid x:Name="ButtonEditGrid"
                       SnapsToDevicePixels="True">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <dxe:ErrorControl x:Name="PART_ErrorPresenter" />
-                    <dxe:ButtonsControl x:Name="PART_LeftButtons"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <dxe:ErrorControl x:Name="PART_ErrorPresenter" />
+                <dxe:ButtonsControl x:Name="PART_LeftButtons"
                                         Grid.Column="1"
                                         ItemsSource="{TemplateBinding LeftButtons}">
-                        <dxe:ButtonsControl.Visibility>
-                            <Binding Path="ActualShowLeftButtons"
+                    <dxe:ButtonsControl.Visibility>
+                        <Binding Path="ActualShowLeftButtons"
                                      RelativeSource="{RelativeSource TemplatedParent}">
-                                <Binding.Converter>
-                                    <dx:BoolToVisibilityConverter />
-                                </Binding.Converter>
-                            </Binding>
-                        </dxe:ButtonsControl.Visibility>
-                    </dxe:ButtonsControl>
-                    <dxe:EditorControl x:Name="PART_Content"
+                            <Binding.Converter>
+                                <dx:BoolToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </dxe:ButtonsControl.Visibility>
+                </dxe:ButtonsControl>
+                <dxe:EditorControl x:Name="PART_Content"
                                        Grid.Column="2"
                                        VerticalAlignment="Stretch"
                                        dx:FocusHelper2.Focusable="False"
                                        Template="{TemplateBinding ActualEditorControlTemplate}" />
-                    <dxe:ButtonsControl x:Name="PART_RightButtons"
+                <dxe:ButtonsControl x:Name="PART_RightButtons"
                                         Grid.Column="3"
                                         ItemsSource="{TemplateBinding RightButtons}">
-                        <dxe:ButtonsControl.Visibility>
-                            <Binding Path="ActualShowRightButtons"
+                    <dxe:ButtonsControl.Visibility>
+                        <Binding Path="ActualShowRightButtons"
                                      RelativeSource="{RelativeSource TemplatedParent}">
-                                <Binding.Converter>
-                                    <dx:BoolToVisibilityConverter />
-                                </Binding.Converter>
-                            </Binding>
-                        </dxe:ButtonsControl.Visibility>
-                    </dxe:ButtonsControl>
-                </Grid>
-            </ContentControl>
-        </Grid>
+                            <Binding.Converter>
+                                <dx:BoolToVisibilityConverter />
+                            </Binding.Converter>
+                        </Binding>
+                    </dxe:ButtonsControl.Visibility>
+                </dxe:ButtonsControl>
+            </Grid>
+        </ContentControl>
         <ControlTemplate.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
