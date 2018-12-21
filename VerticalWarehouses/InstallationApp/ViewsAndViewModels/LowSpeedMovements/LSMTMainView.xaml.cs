@@ -2,14 +2,14 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public partial class MainWindowBackToIAPPButtonView : UserControl
+    public partial class LSMTMainView : UserControl
     {
         #region Constructors
 
-        public MainWindowBackToIAPPButtonView()
+        public LSMTMainView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.MainWindowBackToIAPPButtonVMInstance;
+            this.DataContext = ViewModels.LSMTMainVMInstance;
         }
 
         #endregion Constructors

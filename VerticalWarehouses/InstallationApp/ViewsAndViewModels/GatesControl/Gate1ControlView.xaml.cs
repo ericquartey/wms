@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for Gate1ControlView.xaml
