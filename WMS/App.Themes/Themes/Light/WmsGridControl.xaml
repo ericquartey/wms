@@ -657,21 +657,15 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="BooleanCellTemplate" TargetType="{x:Type dxg:GridColumn}">
-        <Setter Property="CellTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <Grid VerticalAlignment="Center">
-                        <wms:WmsIcon Width="18"
-                            Height="18"
-                            ColorizeBrush="{DynamicResource CommonSecondaryDark}"
-                            SymbolName="PairingFixed"
-                            Visibility="{Binding Path=Data.IsItemPairingFixed, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    <DataTemplate x:Key="BooleanCellTemplate">
+        <Grid VerticalAlignment="Center">
+            <wms:WmsIcon Width="18"
+                         Height="18"
+                         ColorizeBrush="{DynamicResource CommonSecondaryDark}"
+                         SymbolName="PairingFixed"
+                         Visibility="{Binding Path=Data.IsItemPairingFixed, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-                    </Grid>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
+        </Grid>
+    </DataTemplate>
 
 </ResourceDictionary>
