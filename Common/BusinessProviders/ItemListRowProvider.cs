@@ -64,8 +64,8 @@ namespace Ferretto.Common.BusinessProviders
                     CreationDate = lr.CreationDate,
                     ItemListCode = lr.ItemList.Code,
                     ItemListDescription = lr.ItemList.Description,
-                    ItemListType = ((ItemListType)lr.ItemList.ItemListType),
-                    ItemListStatus = ((ItemListStatus)lr.ItemList.Status),
+                    ItemListType = (ItemListType)lr.ItemList.ItemListType,
+                    ItemListStatus = (ItemListStatus)lr.ItemList.Status,
                 }).SingleAsync();
 
             return itemListRowDetails;
