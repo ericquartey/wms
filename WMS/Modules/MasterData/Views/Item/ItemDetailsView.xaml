@@ -204,14 +204,14 @@
                     <StackPanel Margin="0,10,0,0">
                         <TextBlock Text="{x:Static res:MasterData.ItemIsAllocatedInNoCompartment}"
                                    Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.ItemHasCompartments, Converter={StaticResource BTVIC}}" />
-                        <wms:WmsGridControl MinHeight="280"
+                        <wms:WmsGridControl MinHeight="62"
                                             MaxWidth="2000"
-                                            MaxHeight="280"
+                                            MaxHeight="2000"
                                             ItemsSource="{Binding CompartmentsDataSource, Mode=OneWay}"
                                             SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"
                                             Visibility="{Binding ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
-                                <dxg:TableView>
+                                <dxg:TableView >
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
