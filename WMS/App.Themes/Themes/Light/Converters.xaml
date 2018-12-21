@@ -19,5 +19,7 @@
     <ctrls:EnumToBrushConverter x:Key="ETBC" />
     <dxmvvm:BooleanNegationConverter x:Key="BNC" />
 
+    <ctrls:StringFormatConverter x:Key="SFC" />
+
 
 </ResourceDictionary>
