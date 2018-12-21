@@ -21,6 +21,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool isBusy;
         private ICommand runListExecuteCommand;
 
+        private string validationError;
+
         #endregion Fields
 
         #region Constructors
@@ -65,6 +67,12 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand RunListExecuteCommand => this.runListExecuteCommand ??
                             (this.runListExecuteCommand = new DelegateCommand(this.ExecuteListCommand, this.CanExecuteListCommand));
 
+        public string ValidationError
+        {
+            get => this.validationError;
+            set => this.SetProperty(ref this.validationError, value);
+        }
+
         #endregion Properties
 
         #region Methods
@@ -97,11 +105,11 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue);
 
-                result = await this.itemListProvider.ExecuteImmediately(this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+                result = await this.itemListProvider.ExecuteImmediately(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
             }
             else
             {
-                result = await this.itemListProvider.ScheduleForExecution(this.executionRequest.AreaId.Value);
+                result = await this.itemListProvider.ScheduleForExecution(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value);
             }
 
             this.IsBusy = false;
@@ -109,10 +117,12 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ListRequestAccepted, StatusType.Success));
+                this.Disappear();
             }
             else
             {
                 this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
+                this.ValidationError = result.Description;
             }
         }
 
