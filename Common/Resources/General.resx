@@ -221,4 +221,8 @@
     <value>Up</value>
     <comment>Button text</comment>
   </data>
+  <data name="SearchText" xml:space="preserve">
+    <value></value>
+    <comment>Search text on WmsGridControl</comment>
+  </data>
 </root>

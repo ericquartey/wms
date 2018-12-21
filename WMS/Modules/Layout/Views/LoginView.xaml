@@ -43,11 +43,10 @@
                        FontWeight="Bold"
                        Text="{x:Static res:Layout.UserLogin}" />
             <wms:TextBox Name="LoginTB"
-                         MaxLength="20"
-                         Text="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <wms:PasswordBox IsTabStop="False"
-                             MaxLength="20"
-                             Text="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                         EditValue="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         MaxLength="20" />
+            <wms:PasswordBox EditValue="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="20" />
         </StackPanel>
 
         <TextBlock Grid.Row="2"

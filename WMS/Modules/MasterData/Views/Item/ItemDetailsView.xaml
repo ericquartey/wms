@@ -81,19 +81,20 @@
                             <ColumnDefinition />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <wms:TextBox Text="{Binding Path=Item.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:TextBox EditValue="{Binding Path=Item.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
-                                     Text="{Binding Path=Item.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Item.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="2"
                                       EditValue="{Binding Path=Item.ItemCategoryId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=Item.ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
-                                     Margin="20,0,0,0"
-                                     VerticalAlignment="Stretch"
+                                    
+                                     Margin="20,0,0,0"                                     
                                      VerticalContentAlignment="Stretch"
+                                      
                                      IsMultiline="True"
-                                     Text="{Binding Path=Item.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Item.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
                 </GroupBox>
 

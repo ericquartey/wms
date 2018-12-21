@@ -14,56 +14,6 @@
         <Setter Property="DisplayMember" Value="Description" />
         <Setter Property="ValueMember" Value="Id" />
         <Setter Property="Validation.ErrorTemplate" Value="{DynamicResource ValidationErrorTemplateStyle}" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type wms:ComboBox}">
-                    <Grid Name="gridComboBox">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Label Style="{DynamicResource ControlLabelStyle}">
-                            <Label.Content>
-                                <MultiBinding Converter="{StaticResource DNC}">
-                                    <Binding RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="DataContext"
-                                             RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </Label.Content>
-                        </Label>
-                        <dxe:ComboBoxEdit Name="InnerComboBoxEdit"
-                                          Grid.Row="1"
-                                          AllowDefaultButton="False"
-                                          AllowNullInput="{TemplateBinding AllowNullInput}"
-                                          AssignNullValueOnClearingEditText="False"
-                                          AutoComplete="{TemplateBinding AutoComplete}"
-                                          CausesValidation="False"
-                                          ClearSelectionOnBackspace="True"
-                                          DisplayMember="{TemplateBinding DisplayMember}"
-                                          EditValue="{Binding Path=EditValue, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          ImmediatePopup="True"
-                                          IncrementalFiltering="True"
-                                          IsManipulationEnabled="True"
-                                          IsTextEditable="{TemplateBinding IsTextEditable}"
-                                          ItemsSource="{Binding Path=ItemsSource, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          ShowCustomItems="False"
-                                          ValidateOnEnterKeyPressed="False"
-                                          ValidateOnTextInput="False"
-                                          ValueMember="{TemplateBinding ValueMember}">
-                            <dxe:ComboBoxEdit.Buttons>
-                                <dxe:ButtonInfo IsDefaultButton="True"
-                                                Template="{DynamicResource ComboBoxEditCustomButtonTemplate}" />
-                            </dxe:ComboBoxEdit.Buttons>
-                        </dxe:ComboBoxEdit>
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsFocused" Value="True">
-                            <Setter TargetName="InnerComboBoxEdit" Property="FocusManager.FocusedElement" Value="{Binding ElementName=InnerComboBoxEdit}" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
     </Style>
 
     <DataTemplate x:Key="ComboBoxEditCustomButtonTemplate">

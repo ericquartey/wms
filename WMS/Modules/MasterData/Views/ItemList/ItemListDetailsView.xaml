@@ -91,11 +91,11 @@
                         <wms:TextBox Grid.Row="0"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Grid Grid.Row="0"
                               Grid.Column="1">
                             <Grid.ColumnDefinitions>
@@ -116,7 +116,7 @@
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
                     </Grid>
@@ -133,9 +133,8 @@
                                               Template="{DynamicResource WmsToggleSwitch}"
                                               ToggleSwitchHeight="20"
                                               ToggleSwitchWidth="30" />
-                            <TextBox x:Name="TitleLabel"
-                                     Margin="40,0,0,0"
-                                     BorderThickness="0"
+                            <TextBlock x:Name="TitleLabel"
+                                     Margin="40,0,0,0"                                     
                                      FontSize="14.666"
                                      FontWeight="SemiBold"
                                      Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
@@ -156,11 +155,11 @@
                             <wms:TextBox Grid.Row="1"
                                          Margin="0,0,20,0"
                                          IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="2"
                                          Margin="0,0,20,0"
                                          IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Text="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
                 </GroupBox>
@@ -180,10 +179,10 @@
                         </Grid.RowDefinitions>
                         <wms:TextBox Grid.Row="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                 </GroupBox>

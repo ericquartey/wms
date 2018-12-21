@@ -1,15 +1,19 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal"
                     xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
                     xmlns:dxeh="http://schemas.devexpress.com/winfx/2008/xaml/editors/internal"
                     xmlns:dxet="http://schemas.devexpress.com/winfx/2008/xaml/editors/themekeys"
-                    xmlns:dxn="http://schemas.devexpress.com/winfx/2008/xaml/core/internal">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls">
+
+     <wms:PropertyDescriptionConverter x:Key="DNC"                                     
+                                      Property="{x:Static dxe:BaseEdit.EditValueProperty}" />
 
     <dxn:RenderTemplate x:Key="{dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}">
         <dxn:RenderPanel Name="PART_Root">
             <dxn:RenderPanel Name="PART_Border">
-                <dxn:RenderBorder Background="#FFFFFFFF"
+                <dxn:RenderBorder Background="White"
                                   BorderBrush="#7F5C5C5C"
                                   BorderThickness="1" />
             </dxn:RenderPanel>
@@ -32,12 +36,26 @@
                                                    ThemeName=Office2016White}"
                      TargetType="ContentControl">
         <Grid>
-            <dxn:Chrome RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}}" />
-            <ContentPresenter Margin="{StaticResource ResourceKey={dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderThickness}}" />
-            <dxn:Chrome dxeh:ControlHelper.ShowFocusedState="{Binding Path=(dxeh:ControlHelper.ShowFocusedState), RelativeSource={RelativeSource TemplatedParent}}"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Label Style="{DynamicResource ControlLabelStyle}" >
+                <Label.Content>
+                    <MultiBinding Converter="{StaticResource DNC}">
+                        <Binding RelativeSource="{RelativeSource Self}" />
+                        <Binding Path="DataContext"
+                                             RelativeSource="{RelativeSource Self}" />
+                    </MultiBinding>
+                </Label.Content>
+            </Label>
+            <dxn:Chrome Grid.Row="1" RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderTemplate}}" />
+            <ContentPresenter Grid.Row="1" Margin="{StaticResource ResourceKey={dxet:InplaceBaseEditThemeKey ResourceKey=TextEditBorderThickness}}" />
+            <dxn:Chrome Grid.Row="1" dxeh:ControlHelper.ShowFocusedState="{Binding Path=(dxeh:ControlHelper.ShowFocusedState), RelativeSource={RelativeSource TemplatedParent}}"
                         IsHitTestVisible="False"
                         RenderTemplate="{StaticResource {dxet:InplaceBaseEditThemeKey ResourceKey=HoverBorderTemplate}}" />
             <Border Name="MouseOverBorder"
+                    Grid.Row="1"
                     BorderThickness="1"
                     Visibility="Collapsed" />
         </Grid>
