@@ -224,7 +224,7 @@ namespace Ferretto.VW.InstallationApp
         {
             NavigationService.GoToViewEventHandler += () => this.IsNavigationButtonRegionExpanded = false;
             NavigationService.GoToViewEventHandler += () => this.IsExitViewButtonRegionExpanded = true;
-            NavigationService.GoToViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.InitializeSingleViewBottomButtons;
+            NavigationService.GoToViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.InitializeBottomButtons;
             NavigationService.ExitViewEventHandler += () => this.IsNavigationButtonRegionExpanded = true;
             NavigationService.ExitViewEventHandler += () => this.IsExitViewButtonRegionExpanded = false;
             NavigationService.ExitViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.FinalizeBottomButtons;
