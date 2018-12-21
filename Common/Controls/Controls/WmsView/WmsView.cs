@@ -15,6 +15,7 @@ namespace Ferretto.Common.Controls
 
         public static readonly DependencyProperty FocusedStartProperty = DependencyProperty.Register(nameof(FocusedStart), typeof(string), typeof(WmsView), new FrameworkPropertyMetadata(default(string), null));
 
+        public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(nameof(SubTitle), typeof(string), typeof(WmsView));
         public static readonly DependencyProperty ViewModelProperty = DependencyProperty.Register(nameof(ViewModel), typeof(INavigableViewModel), typeof(WmsView));
 
         private readonly INavigationService
@@ -54,6 +55,12 @@ namespace Ferretto.Common.Controls
         public bool IsClosed { get; set; }
 
         public string MapId { get; set; }
+
+        public string SubTitle
+        {
+            get => (string)this.GetValue(SubTitleProperty);
+            set => this.SetValue(SubTitleProperty, value);
+        }
 
         public string Title { get; set; }
 

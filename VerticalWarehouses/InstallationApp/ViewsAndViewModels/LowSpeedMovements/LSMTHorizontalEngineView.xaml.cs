@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for LSMTHorizontalEngineView.xaml
