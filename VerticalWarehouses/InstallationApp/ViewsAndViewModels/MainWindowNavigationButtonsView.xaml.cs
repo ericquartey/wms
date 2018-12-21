@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for MainWindowNavigationButtonsView.xaml
@@ -19,7 +19,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels
         public MainWindowNavigationButtonsView()
         {
             this.InitializeComponent();
-            this.DataContext = new MainWindowNavigationButtonsViewModel();
+            this.DataContext = ViewModels.MainWindowNavigationButtonsVMInstance;
             this.NavigationButtonScrollViewer.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(this.CheckVerticalOffset), true);
         }
 

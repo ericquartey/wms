@@ -12,6 +12,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
+             SubTitle="{x:Static res:Title.CellDetailsView}"
              mc:Ignorable="d">
 
     <Grid Margin="20"
@@ -86,8 +87,8 @@
                         <wms:SpinEdit Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="1"
-                                      EditValue="{Binding Cell.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Cell.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -96,9 +97,9 @@
                         <wms:SpinEdit Grid.Row="3"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="1"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Cell.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Cell.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
                         <wms:ComboBox Grid.Row="3"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -124,13 +125,13 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="1"
-                                      EditValue="{Binding Cell.Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Cell.Column, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      MinValue="1"
-                                      EditValue="{Binding Cell.Floor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Cell.Floor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
                         <wms:ComboBox Grid.Row="2"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
@@ -163,7 +164,7 @@
                         <wms:WmsGridControl MinHeight="200"
                                             MaxWidth="2000"
                                             MaxHeight="1000"
-                                            CurrentItem="{Binding SelectedLoadingUnit, Mode=TwoWay}"
+                                            SelectedBusinessObject="{Binding SelectedLoadingUnit, Mode=TwoWay}"
                                             ItemsSource="{Binding LoadingUnitsDataSource, Mode=OneWay}"
                                             Visibility="{Binding CellHasLoadingUnits, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>

@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase
+    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IViewModel
     {
         #region Fields
 
@@ -46,7 +46,6 @@ namespace Ferretto.VW.InstallationApp
         private ICommand setPositionButtonCommand;
         private float vMax = 1;
 
-        // Temporary assigned to constant value, they will become variable with new funcionalities
         // Temporary assigned to constant value, they will become variable with new funcionalities
         private float w = 1;
 
@@ -117,6 +116,15 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
+        public void ExitFromViewMethod()
+        {
+            ViewModels.ResolutionCalibrationVerticalAxisVMInstance.UnSubscribeMethodFromEvent();
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.Stop();
+            }
+        }
+
         public void PositioningDone(bool result)
         {
             var message = "";
@@ -150,9 +158,22 @@ namespace Ferretto.VW.InstallationApp
             }
 
             this.NoteString = message;
-            ActionManager.PositioningDrawerInstance.Stop();
+        }
 
-            ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+        public void SubscribeMethodToEvent()
+        {
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+            }
+        }
+
+        public void UnSubscribeMethodFromEvent()
+        {
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+            }
         }
 
         private void AcceptButtonMethod()
@@ -190,6 +211,11 @@ namespace Ferretto.VW.InstallationApp
             this.IsMesuredLenghtTextInputActive = false;
             this.IsMoveButtonActive = false;
             this.IsSetPositionButtonActive = true;
+
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.Stop();
+            }
         }
 
         private void CheckMesuredInitialPositionCorrectness(string input)
@@ -257,25 +283,15 @@ namespace Ferretto.VW.InstallationApp
 
         private void SetPositionButtonMethod()
         {
-            // Begin changes for the initial positioning
-            bool conversionInitialPosition;
-
-            conversionInitialPosition = decimal.TryParse(this.desiredInitialPosition, out this.desiredInitialPositionDec);
-            if (conversionInitialPosition)
+            if (decimal.TryParse(this.desiredInitialPosition, out this.desiredInitialPositionDec))
             {
                 this.operation = true;
                 this.x = this.desiredInitialPositionDec;
                 this.IsSetPositionButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
 
-                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
                 ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
                 ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
-
-                // Inizio modifica
-                //this.IsMesuredInitialPositionTextInputActive = true;
-                //this.IsMesuredInitialPositionHighlighted = true;
-                // Fine modifica
             }
             // End changes for the initial positioning
         }

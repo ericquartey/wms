@@ -27,7 +27,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private bool readOnlyTray;
-
         private CompartmentDetails selectedCompartment;
         private Tray tray;
         private Func<CompartmentDetails, CompartmentDetails, string> trayColoringFunc;
@@ -212,7 +211,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.LoadingUnit = await this.loadingUnitProvider.GetById(modelId);
             this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
-
             this.InitializeTray();
         }
 

@@ -3,24 +3,15 @@ using Prism.Mvvm;
 using System.Windows.Input;
 using Prism.Commands;
 using Ferretto.VW.Navigation;
-using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Utils.Source;
-using Ferretto.VW.InverterDriver;
 using System.Net;
 using System.IO;
 using System.Configuration;
-using System.Windows.Media.Animation;
-using System.Windows.Media;
-using System.Windows;
-using Ferretto.VW.ActionBlocks;
-using System.Windows.Controls.Primitives;
-using System.Windows.Controls;
 using System.Diagnostics;
-using Prism.Regions;
 
 #if CODEMAID
-    // disable codemaid in this file
+    // disable codemaid region messer in this file
 #endif
 
 namespace Ferretto.VW.InstallationApp
@@ -42,10 +33,11 @@ namespace Ferretto.VW.InstallationApp
         private SensorsStatesHubClient client;
         private BindableBase contentRegionCurrentViewModel;
         private BindableBase navigationRegionCurrentViewModel;
+        private BindableBase exitViewButtonRegionCurrentViewModel;
         private bool machineModeSelectionBool = false;
         private bool machineOnMarchSelectionBool = false;
-        private readonly IRegionManager regionManager;
         private bool isNavigationButtonRegionExpanded = true;
+        private bool isExitViewButtonRegionExpanded = false;
 
         #endregion Constants, Statics & Others
 
@@ -90,15 +82,10 @@ namespace Ferretto.VW.InstallationApp
         public MainWindowViewModel()
         {
             this.NavigationRegionCurrentViewModel = ViewModels.MainWindowNavigationButtonsVMInstance;
+            this.ExitViewButtonRegionCurrentViewModel = ViewModels.MainWindowBackToIAPPButtonVMInstance;
             this.ContentRegionCurrentViewModel = ViewModels.IdleVMInstance;
             this.ConnectMethod();
-            NavigationService.GoToViewEventHandler += this.HideNavigationButtonRegion;
-            NavigationService.ExitViewEventHandler += this.ShowNavigationButtonRegion;
-            MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
-            MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
-            ClickedOnMachineModeEventHandler += () => { };
-            ClickedOnMachineOnMarchEventHandler += () => { };
-            SensorsStatesChangedEventHandler += () => { };
+            this.InitializeEvents();
         }
 
         #endregion Constructors
@@ -117,63 +104,63 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand BackToMainWindowNavigationButtonsViewButtonCommand => this.backToMainWindowNavigationButtonsViewCommand ?? (this.backToMainWindowNavigationButtonsViewCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = ViewModels.MainWindowNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = ViewModels.IdleVMInstance; NavigationService.RaiseExitViewEvent(); }));
 
-        public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.BeltBurnishingVMInstance; ViewModels.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
+        public ICommand BeltBurnishingButtonCommand => this.beltBurnishingButtonCommand ?? (this.beltBurnishingButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.BeltBurnishingVMInstance; }));
 
-        public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.CellsControlVMInstance));
+        public ICommand CellsControlButtonCommand => this.cellsControlButtonCommand ?? (this.cellsControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.CellsControlVMInstance; }));
 
-        public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.CellsPanelControlVMInsance; ViewModels.MainWindowNavigationButtonsVMInstance.SetAllNavigationButtonDisabled(); }));
+        public ICommand CellsPanelControlButtonCommand => this.cellsPanelControlButtonCommand ?? (this.cellsPanelControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.CellsPanelControlVMInsance; }));
 
-        public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate1HeightControlVMInstance));
+        public ICommand Gate1HeightControlNavigationButtonCommand => this.gate1HeightControlNavigationButtonCommand ?? (this.gate1HeightControlNavigationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate1HeightControlVMInstance; }));
 
-        public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate2HeightControlVMInstance));
+        public ICommand Gate2HeightControlNavigationButtonCommand => this.gate2HeightControlNavigationButtonCommand ?? (this.gate2HeightControlNavigationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate2HeightControlVMInstance; }));
 
-        public ICommand Gate3HeightControlNavigationButtonCommand => this.gate3HeightControlNavigationButtonCommand ?? (this.gate3HeightControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate3HeightControlVMInstance));
+        public ICommand Gate3HeightControlNavigationButtonCommand => this.gate3HeightControlNavigationButtonCommand ?? (this.gate3HeightControlNavigationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate3HeightControlVMInstance; }));
 
-        public ICommand GateHeightControlButtonCommand => this.gateHeightControlButtonCommand ?? (this.gateHeightControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate2HeightControlVMInstance));
+        public ICommand GateHeightControlButtonCommand => this.gateHeightControlButtonCommand ?? (this.gateHeightControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate2HeightControlVMInstance; }));
 
-        public ICommand Gates1ControlNavigationButtonCommand => this.gates1ControlNavigationButtonCommand ?? (this.gates1ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate1ControlVMInstance));
+        public ICommand Gates1ControlNavigationButtonCommand => this.gates1ControlNavigationButtonCommand ?? (this.gates1ControlNavigationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate1ControlVMInstance; }));
 
-        public ICommand Gates2ControlNavigationButtonCommand => this.gates2ControlNavigationButtonCommand ?? (this.gates2ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate2ControlVMInstance));
+        public ICommand Gates2ControlNavigationButtonCommand => this.gates2ControlNavigationButtonCommand ?? (this.gates2ControlNavigationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate2ControlVMInstance; }));
 
-        public ICommand Gates3ControlNavigationButtonCommand => this.gates3ControlNavigationButtonCommand ?? (this.gates3ControlNavigationButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate3ControlVMInstance));
+        public ICommand Gates3ControlNavigationButtonCommand => this.gates3ControlNavigationButtonCommand ?? (this.gates3ControlNavigationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate3ControlVMInstance; }));
 
-        public ICommand GatesControlButtonCommand => this.gatesControlButtonCommand ?? (this.gatesControlButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.Gate2ControlVMInstance));
+        public ICommand GatesControlButtonCommand => this.gatesControlButtonCommand ?? (this.gatesControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.Gate2ControlVMInstance; }));
 
-        public ICommand InstallationStateButtonCommand => this.installationStateButtonCommand ?? (this.installationStateButtonCommand = new DelegateCommand(() => this.ContentRegionCurrentViewModel = ViewModels.InstallationStateVMInstance));
+        public ICommand InstallationStateButtonCommand => this.installationStateButtonCommand ?? (this.installationStateButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.InstallationStateVMInstance; }));
 
-        public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = ViewModels.LSMTNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
+        public ICommand LowSpeedMovementsTestButtonCommand => this.lowSpeedMovementsTestButtonCommand ?? (this.lowSpeedMovementsTestButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.LSMTMainVMInstance; }));
 
-        public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.LSMTGateEngineVMInstance; }));
+        public ICommand LSMTGateEngineButtonCommand => this.lsmtGateEngineButtonCommand ?? (this.lsmtGateEngineButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.LSMTGateEngineVMInstance; }));
 
-        public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.LSMTHorizontalEngineVMInstance; }));
+        public ICommand LSMTHorizontalEngineButtonCommand => this.lsmtHorizontalEngineButtonCommand ?? (this.lsmtHorizontalEngineButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.LSMTHorizontalEngineVMInstance; }));
 
-        public ICommand LSMTVerticalEngineButtonCommand => this.lsmtVerticalEngineButtonCommand ?? (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.LSMTVerticalEngineVMInstance; }));
+        public ICommand LSMTVerticalEngineButtonCommand => this.lsmtVerticalEngineButtonCommand ?? (this.lsmtVerticalEngineButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.LSMTVerticalEngineVMInstance; }));
 
-        public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.ResolutionCalibrationVerticalAxisVMInstance; }));
+        public ICommand ResolutionCalibrationVerticalAxisButtonCommand => this.resolutionCalibrationVerticalAxisButtonCommand ?? (this.resolutionCalibrationVerticalAxisButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.ResolutionCalibrationVerticalAxisVMInstance; ViewModels.ResolutionCalibrationVerticalAxisVMInstance.SubscribeMethodToEvent(); }));
 
-        public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.SSBaysVMInstance; }));
+        public ICommand SsBaysButtonCommand => this.ssBaysButtonCommand ?? (this.ssBaysButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSBaysVMInstance; }));
 
-        public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.SSCradleVMInstance; }));
+        public ICommand SsCradleButtonCommand => this.ssCradleButtonCommand ?? (this.ssCradleButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSCradleVMInstance; }));
 
-        public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.SSGateVMInstance; }));
+        public ICommand SsGateButtonCommand => this.ssGateButtonCommand ?? (this.ssGateButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSGateVMInstance; }));
 
-        public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() => { this.NavigationRegionCurrentViewModel = ViewModels.SSNavigationButtonsVMInstance; this.ContentRegionCurrentViewModel = null; }));
+        public ICommand SSNavigationButtonsButtonCommand => this.ssNavigationButtonsButtonCommand ?? (this.ssNavigationButtonsButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSMainVMInstance; }));
 
-        public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.SSVariousInputsVMInstance; }));
+        public ICommand SsVariousInputsButtonCommand => this.ssVariousInputsButtonCommand ?? (this.ssVariousInputsButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSVariousInputsVMInstance; }));
 
-        public ICommand SsVerticalAxisButtonCommand => this.ssVerticalAxisButtonCommand ?? (this.ssVerticalAxisButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.SSVerticalAxisVMInstance; }));
+        public ICommand SsVerticalAxisButtonCommand => this.ssVerticalAxisButtonCommand ?? (this.ssVerticalAxisButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.SSVerticalAxisVMInstance; }));
 
-        public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.VerticalAxisCalibrationVMInstance; }));
+        public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.VerticalAxisCalibrationVMInstance; }));
 
-        public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.VerticalOffsetCalibrationVMInstance; }));
+        public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.VerticalOffsetCalibrationVMInstance; }));
 
-        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { this.ContentRegionCurrentViewModel = ViewModels.WeightControlVMInstance; }));
+        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.WeightControlVMInstance; }));
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
-        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => { NavigationService.RaiseBackToVWAppEvent(); MainWindowViewModel.ClickedOnMachineModeEventHandler = null; MainWindowViewModel.ClickedOnMachineOnMarchEventHandler = null; }));
+        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => { NavigationService.RaiseBackToVWAppEvent(); ClickedOnMachineModeEventHandler = null; ClickedOnMachineOnMarchEventHandler = null; }));
 
         public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() => { Debug.Print("TODO: IMPLEMENT ERROR SYSTEM"); }));
 
@@ -190,6 +177,10 @@ namespace Ferretto.VW.InstallationApp
         public BindableBase NavigationRegionCurrentViewModel { get => this.navigationRegionCurrentViewModel; set => this.SetProperty(ref this.navigationRegionCurrentViewModel, value); }
 
         public Boolean IsNavigationButtonRegionExpanded { get => this.isNavigationButtonRegionExpanded; set => this.SetProperty(ref this.isNavigationButtonRegionExpanded, value); }
+
+        public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
+
+        public Boolean IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
 
         #endregion Other Properties
 
@@ -229,14 +220,19 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private void HideNavigationButtonRegion()
+        private void InitializeEvents()
         {
-            this.IsNavigationButtonRegionExpanded = false;
-        }
-
-        private void ShowNavigationButtonRegion()
-        {
-            this.IsNavigationButtonRegionExpanded = true;
+            NavigationService.GoToViewEventHandler += () => this.IsNavigationButtonRegionExpanded = false;
+            NavigationService.GoToViewEventHandler += () => this.IsExitViewButtonRegionExpanded = true;
+            NavigationService.GoToViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.InitializeBottomButtons;
+            NavigationService.ExitViewEventHandler += () => this.IsNavigationButtonRegionExpanded = true;
+            NavigationService.ExitViewEventHandler += () => this.IsExitViewButtonRegionExpanded = false;
+            NavigationService.ExitViewEventHandler += ViewModels.MainWindowBackToIAPPButtonVMInstance.FinalizeBottomButtons;
+            MainWindow.FinishedMachineModeChangeStateEventHandler += () => { this.MachineModeSelectionBool = !this.MachineModeSelectionBool; };
+            MainWindow.FinishedMachineOnMarchChangeStateEventHandler += () => { this.MachineOnMarchSelectionBool = !this.MachineOnMarchSelectionBool; };
+            ClickedOnMachineModeEventHandler += () => { };
+            ClickedOnMachineOnMarchEventHandler += () => { };
+            SensorsStatesChangedEventHandler += () => { };
         }
 
         private void RaiseSensorsStatesChangedEvent() => SensorsStatesChangedEventHandler();
