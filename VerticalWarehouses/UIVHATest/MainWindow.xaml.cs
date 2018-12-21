@@ -33,7 +33,7 @@ namespace UIVHATest
             var success = this.inverterDriver.Initialize();
         }
 
-        private void BtnSend_Click(Object sender, RoutedEventArgs e)
+        private void BtnStart_Click(Object sender, RoutedEventArgs e)
         {
             // At this time 1 is the default value for each variable
             int m = 5;
@@ -49,8 +49,6 @@ namespace UIVHATest
             this.calibrateHA = new CalibrateHorizontalAxis();
             this.calibrateHA.SetInverterDriverInterface = this.inverterDriver;
             this.calibrateHA.Initialize();
-            //this.calibrateHA.ThrowEndEvent += new CalibrateHorizontalAixsEndedEventHandler(this.Calibration);
-            //this.calibrateHA.ThrowErrorEvent += new CalibrateHorizontalAxisErrorEventHandler(this.CatchError);
 
             this.calibrateHA.ThrowErrorEvent += this.CatchError;
             this.calibrateHA.ThrowEndEvent += this.CalibrationEnded;

@@ -15,8 +15,11 @@
                 Margin="85,160,0,0"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Click="BtnSend_Click"
-                Content="Send" />
+                Background="Red"
+                Click="BtnStart_Click"
+                Content="START"
+                FontWeight="Bold"
+                Foreground="White" />
         <Button x:Name="btnCreateHorizontalAxisClass"
                 Width="166"
                 Height="30"
@@ -35,7 +38,7 @@
                 Content="Connect inverter" />
         <Label x:Name="lbStateConnection"
                Width="145"
-               Margin="133,84,0,0"
+               Margin="129,84,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Content="Not Connected" />
@@ -55,11 +58,13 @@
                 Background="Red"
                 Click="btnStop_Click"
                 Content="STOP"
+                FontWeight="Bold"
                 Foreground="White" />
         <Label Width="43"
                Margin="85,84,0,0"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
-               Content="State: " />
+               Content="State: "
+               FontWeight="Bold" />
     </Grid>
 </Window>
