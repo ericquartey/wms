@@ -1,14 +1,14 @@
 ﻿using System;
-using Prism.Mvvm;
-using System.Windows.Input;
-using Prism.Commands;
-using Ferretto.VW.Navigation;
-using Ferretto.VW.InstallationApp.ServiceUtilities;
-using Ferretto.VW.Utils.Source;
-using System.Net;
-using System.IO;
 using System.Configuration;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
+using System.Windows.Input;
+using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.Navigation;
+using Ferretto.VW.Utils.Source;
+using Prism.Commands;
+using Prism.Mvvm;
 
 #if CODEMAID
     // disable codemaid region messer in this file
@@ -154,7 +154,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.VerticalOffsetCalibrationVMInstance; }));
 
-        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.WeightControlVMInstance; }));
+        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.WeightControlVMInstance; ViewModels.WeightControlVMInstance.SubscribeMethodToEvent(); }));
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 

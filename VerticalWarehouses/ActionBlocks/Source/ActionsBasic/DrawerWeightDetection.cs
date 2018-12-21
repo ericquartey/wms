@@ -20,11 +20,14 @@
 
         #region Fields
 
+        private float acc;
+        private float dec;
         private PositioningDrawer drawerPositionController;
+        private bool executeWeighting;
+        private float speed;
+        private decimal target;
 
         #endregion Fields
-
-        //private float weight;
 
         #region Constructors
 
@@ -33,6 +36,11 @@
         /// </summary>
         public DrawerWeightDetection()
         {
+            this.target = 0;
+            this.speed = 0.0f;
+            this.acc = 0.0f;
+            this.dec = 0.0f;
+            this.executeWeighting = false;
         }
 
         #endregion Constructors
@@ -90,6 +98,19 @@
         }
 
         /// <summary>
+        /// Restore at the position before the weight procedure.
+        /// </summary>
+        public void RestorePosition()
+        {
+            this.drawerPositionController.EnableReadMaxAnalogIc = false;   // disable the countinuous sampling for current Ic
+
+            this.executeWeighting = false;
+
+            // Start the movement (in opposite direction)
+            this.drawerPositionController?.MoveAlongVerticalAxisToPoint(-this.target, this.speed, this.acc, this.dec, -1, 0);
+        }
+
+        /// <summary>
         /// Run the routine to detect the weight.
         /// </summary>
         public void Run(decimal d, float v, float acc, float dec)
@@ -98,8 +119,23 @@
             this.drawerPositionController.AbsoluteMovement = false;    // set relative mode positioning
             this.drawerPositionController.EnableReadMaxAnalogIc = true;   // enable the countinuous sampling for current Ic
 
+            this.target = d;
+            this.speed = v;
+            this.acc = acc;
+            this.dec = dec;
+
+            this.executeWeighting = true;
+
             // Start the movement
             this.drawerPositionController?.MoveAlongVerticalAxisToPoint(d, v, acc, dec, -1, 0);
+        }
+
+        /// <summary>
+        /// Stop the movement.
+        /// </summary>
+        public void Stop()
+        {
+            this.drawerPositionController?.Stop();
         }
 
         /// <summary>
@@ -134,8 +170,9 @@
         /// </summary>
         private void DrawerPositioningEndEvent(bool result)
         {
-            if (result)
+            if (result && this.executeWeighting)
             {
+                // retrieve the weight value
                 this.Weight = this.ConvertToWeight(this.drawerPositionController.MaxAnalogIc);
             }
 
