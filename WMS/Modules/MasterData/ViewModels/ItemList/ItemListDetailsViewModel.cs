@@ -25,7 +25,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelSelectionChangedSubscription;
         private ItemListRow selectedItemListRow;
         private ICommand showDetailsListRowCommand;
-        private string subTitle;
 
         #endregion Fields
 
@@ -88,8 +87,6 @@ namespace Ferretto.WMS.Modules.MasterData
                   (this.showDetailsListRowCommand = new DelegateCommand(this.ExecuteShowDetailsListRowCommand,
                        this.CanExecuteShowDetailsListRowCommand)
              .ObservesProperty(() => this.SelectedItemListRow));
-
-        public string SubTitle { get => this.subTitle; set => this.SetProperty(ref this.subTitle, value); }
 
         #endregion Properties
 

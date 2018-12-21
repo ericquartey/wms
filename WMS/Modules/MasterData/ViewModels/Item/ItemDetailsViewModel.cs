@@ -25,7 +25,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private object modelRefreshSubscription;
         private object modelSelectionChangedSubscription;
         private object selectedCompartment;
-        private string subTitle;
         private ICommand withdrawCommand;
 
         #endregion Fields
@@ -95,8 +94,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public string SubTitle { get => this.subTitle; set => this.SetProperty(ref this.subTitle, value); }
-
         public ICommand WithdrawCommand => this.withdrawCommand ??
                                           (this.withdrawCommand = new DelegateCommand(this.ExecuteWithdraw,
                                               this.CanExecuteWithdraw));
@@ -132,7 +129,6 @@ namespace Ferretto.WMS.Modules.MasterData
             if (modifiedRowCount > 0)
             {
                 this.TakeSnapshot(this.Item);
-                this.SubTitle = this.Item.Code;
 
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
@@ -198,7 +194,6 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.Item = await this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
-                this.SubTitle = this.Item.Code;
             }
         }
 
