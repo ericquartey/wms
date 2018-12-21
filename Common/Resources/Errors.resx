@@ -193,6 +193,7 @@
   </data>
   <data name="PropertyDescriptionConverterCheckParameterError" xml:space="preserve">
     <value>In order to work in xaml Multibinding with two parameters Self, and Self.DataContext must be specificed.</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="SpecifiedPathNotInConfiguredImageFolder" xml:space="preserve">
     <value>The specified path is not contained in the image directory.</value>

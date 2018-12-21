@@ -199,8 +199,6 @@
 
                 </GroupBox>
 
-
-
                 <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="4">
                     <GroupBox.Header>
@@ -221,7 +219,7 @@
                                      BorderThickness="0"
                                      FontSize="14.666"
                                      FontWeight="SemiBold"
-                                     Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+                                     Text="{x:Static res:MasterData.ItemListRows}" />
 
                             <wms:ActionBar Grid.Row="0"
                                            Grid.ColumnSpan="4"
