@@ -40,7 +40,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Label Style="{DynamicResource ControlLabelStyle}" >
+            <Label  Style="{DynamicResource ControlLabelStyle}" >
                 <Label.Content>
                     <MultiBinding Converter="{StaticResource DNC}">
                         <Binding RelativeSource="{RelativeSource Self}" />
