@@ -162,9 +162,9 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <wms:SpinEdit Margin="0,0,20,0"
-                                      MinValue="1"
                                       AllowNullInput="False"
-                                      EditValue="{Binding Path=LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      EditValue="{Binding Path=LoadingUnit.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
                         <wms:SpinEdit Grid.Column="1"
                                       Margin="0,0,20,0"
                                       AllowNullInput="False"
@@ -235,8 +235,8 @@
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="MaxCapacity" />
                                 <dxg:GridColumn Width="200*"
-                                                FieldName="IsItemPairingFixed"
-                                                Style="{DynamicResource BooleanCellTemplate}" />
+                                                CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
+                                                FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
