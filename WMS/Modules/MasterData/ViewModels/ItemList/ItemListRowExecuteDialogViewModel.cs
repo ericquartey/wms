@@ -39,19 +39,19 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.executionRequest;
             set
             {
-                if (this.executionRequest == value)
-                {
-                    return;
-                }
-
-                if (this.executionRequest != null)
-                {
-                    this.executionRequest.PropertyChanged -= this.OnItemListRowPropertyChanged;
-                }
+                var oldExecutionRequest = this.executionRequest;
 
                 if (this.SetProperty(ref this.executionRequest, value))
                 {
-                    this.ExecutionRequest.PropertyChanged += this.OnItemListRowPropertyChanged;
+                    if (oldExecutionRequest != null)
+                    {
+                        oldExecutionRequest.PropertyChanged -= this.OnItemListRowPropertyChanged;
+                    }
+
+                    if (this.executionRequest != null)
+                    {
+                        this.executionRequest.PropertyChanged += this.OnItemListRowPropertyChanged;
+                    }
                 }
             }
         }
