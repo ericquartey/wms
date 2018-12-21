@@ -67,8 +67,6 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.isCompartmentSelectableTray, value);
         }
 
-        public bool LoadingUnitHasCompartment { get; set; }
-
         public IDataSource<LoadingUnit> LoadingUnitsDataSource
         {
             get => this.loadingUnitsDataSource;
