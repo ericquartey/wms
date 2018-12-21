@@ -154,7 +154,13 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.VerticalOffsetCalibrationVMInstance; }));
 
-        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = ViewModels.WeightControlVMInstance; ViewModels.WeightControlVMInstance.SubscribeMethodToEvent(); }));
+        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.RaiseGoToViewEvent();
+            this.ContentRegionCurrentViewModel = ViewModels.WeightControlVMInstance;
+            ViewModels.WeightControlVMInstance.SubscribeMethodToEvent();
+            ViewModels.MainWindowBackToIAPPButtonVMInstance.BackButtonCommand.RegisterCommand(ViewModels.WeightControlVMInstance.ExitFromViewCommand);
+        }));
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 

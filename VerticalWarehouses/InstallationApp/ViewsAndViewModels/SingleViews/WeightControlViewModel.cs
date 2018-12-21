@@ -13,6 +13,7 @@ namespace Ferretto.VW.InstallationApp
 
         private int acceptableWeightTolerance;
         private bool executeWeightRun;
+        private ICommand exitFromViewCommand;
         private int feedRate;
         private int insertedWeight;
         private bool isSetBeginButtonActive = true;
@@ -38,6 +39,8 @@ namespace Ferretto.VW.InstallationApp
         #region Properties
 
         public Int32 AcceptableWeightTolerance { get => this.acceptableWeightTolerance; set => this.SetProperty(ref this.acceptableWeightTolerance, value); }
+
+        public ICommand ExitFromViewCommand => this.exitFromViewCommand ?? (this.exitFromViewCommand = new DelegateCommand(this.ExitFromViewMethod));
 
         public Int32 FeedRate { get => this.feedRate; set => this.SetProperty(ref this.feedRate, value); }
 
@@ -65,6 +68,8 @@ namespace Ferretto.VW.InstallationApp
         {
             // Ensure to stop the movement
             ActionManager.DrawerWeightDetectionInstance.Stop();
+            // Unsubscribe methods
+            this.UnSubscribeMethodFromEvent();
         }
 
         public void SubscribeMethodToEvent()
