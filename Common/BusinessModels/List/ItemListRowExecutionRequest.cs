@@ -16,7 +16,7 @@ namespace Ferretto.Common.BusinessModels
         private IEnumerable<Bay> bayChoices;
         private int? bayId;
         private ItemListRowDetails itemListRowDetails;
-        private bool runImmediately;
+        private bool schedule;
 
         #endregion Fields
 
@@ -74,13 +74,13 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.itemListRowDetails, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestRunImmediately), ResourceType = typeof(BusinessObjects))]
-        public bool RunImmediately
+        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestSchedule), ResourceType = typeof(BusinessObjects))]
+        public bool Schedule
         {
-            get => this.runImmediately;
+            get => this.schedule;
             set
             {
-                if (this.SetProperty(ref this.runImmediately, value))
+                if (!this.SetProperty(ref this.schedule, value))
                 {
                     this.BayId = null;
                 }
@@ -107,7 +107,7 @@ namespace Ferretto.Common.BusinessModels
 
                     case nameof(this.BayId):
                         if ((this.bayId.HasValue == false ||
-                            this.bayId.Value == 0) && this.runImmediately)
+                            this.bayId.Value == 0) && !this.schedule)
                         {
                             return Resources.BusinessObjects.ItemListExecutionBayInvalidError;
                         }

@@ -17,7 +17,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IAreaProvider areaProvider = ServiceLocator.Current.GetInstance<IAreaProvider>();
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
-        private ItemListExecutionRequest executionRequest;
+        private ItemListRowExecutionRequest executionRequest;
         private bool isBusy;
         private ICommand runListRowExecuteCommand;
 
@@ -93,15 +93,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
             OperationResult result = null;
-            if (this.executionRequest.RunImmediately)
+            if (!this.executionRequest.Schedule)
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue);
 
-//                result = await this.itemListRowProvider.ExecuteImmediately(this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+                //                result = await this.itemListRowProvider.ExecuteImmediately(this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
             }
             else
             {
-//                result = await this.itemListRowProvider.ScheduleForExecution(this.executionRequest.AreaId.Value);
+                //                result = await this.itemListRowProvider.ScheduleForExecution(this.executionRequest.AreaId.Value);
             }
 
             this.IsBusy = false;
