@@ -10,8 +10,8 @@
 
 namespace Ferretto.Common.Resources {
     using System;
-
-
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,15 @@ namespace Ferretto.Common.Resources {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class General {
-
+        
         private static global::System.Resources.ResourceManager resourceMan;
-
+        
         private static global::System.Globalization.CultureInfo resourceCulture;
-
+        
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal General() {
         }
-
+        
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace Ferretto.Common.Resources {
                 return resourceMan;
             }
         }
-
+        
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace Ferretto.Common.Resources {
                 resourceCulture = value;
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Accept.
         /// </summary>
@@ -68,7 +68,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Accept", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
@@ -77,7 +77,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Add", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
@@ -86,7 +86,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Back", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Bottom.
         /// </summary>
@@ -95,7 +95,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Bottom", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
@@ -104,7 +104,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Cancel", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Code.
         /// </summary>
@@ -113,7 +113,16 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Code", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Completion Date.
+        /// </summary>
+        public static string CompletionDate {
+            get {
+                return ResourceManager.GetString("CompletionDate", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
@@ -122,7 +131,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("CreationDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
@@ -131,7 +140,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Delete", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
@@ -140,7 +149,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Description", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Down.
         /// </summary>
@@ -149,7 +158,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Down", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
@@ -158,7 +167,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Edit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Execute.
         /// </summary>
@@ -167,7 +176,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Execute", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to File.
         /// </summary>
@@ -176,7 +185,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("File", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Front.
         /// </summary>
@@ -185,7 +194,16 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Front", resourceCulture);
             }
         }
-
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Execution Date.
+        /// </summary>
+        public static string LastExecutionDate {
+            get {
+                return ResourceManager.GetString("LastExecutionDate", resourceCulture);
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to Last Modification Date.
         /// </summary>
@@ -194,7 +212,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("LastModificationDate", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Loading.
         /// </summary>
@@ -203,7 +221,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Loading", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
@@ -212,7 +230,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Login", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Measure Unit.
         /// </summary>
@@ -221,7 +239,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("MeasureUnit", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to M.
         /// </summary>
@@ -230,7 +248,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("MillionsSymbol", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Next.
         /// </summary>
@@ -239,7 +257,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Next", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Open.
         /// </summary>
@@ -248,7 +266,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Open", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
@@ -257,7 +275,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Refresh", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Revert.
         /// </summary>
@@ -266,7 +284,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Revert", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
@@ -275,7 +293,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Save", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Search.
         /// </summary>
@@ -284,7 +302,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Search", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
@@ -293,7 +311,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("SearchText", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Show Details.
         /// </summary>
@@ -302,7 +320,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("ShowDetails", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Switch Off.
         /// </summary>
@@ -311,7 +329,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("SwitchOff", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to k.
         /// </summary>
@@ -320,7 +338,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("ThousandsSymbol", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Top.
         /// </summary>
@@ -329,7 +347,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Top", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Type.
         /// </summary>
@@ -338,7 +356,7 @@ namespace Ferretto.Common.Resources {
                 return ResourceManager.GetString("Type", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to Up.
         /// </summary>

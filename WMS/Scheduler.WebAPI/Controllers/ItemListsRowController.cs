@@ -122,7 +122,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                            RowPriority = l.Priority,
                            ItemListRowStatus = (ItemListRowStatus)l.Status,
                            DispatchedQuantity = l.DispatchedQuantity,
-                           ItemId = l.ItemId,
+                           //ItemId = l.ItemId,
                            CreationDate = l.CreationDate,
                            LastModificationDate = l.LastModificationDate,
                            CompletionDate = l.CompletionDate,

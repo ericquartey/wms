@@ -13,9 +13,9 @@ namespace Ferretto.Common.BusinessModels
         private int dispatchedQuantity;
         private string itemDescription;
         private ItemListRowStatus itemListRowStatus;
+        private string materialStatusDescription;
         private int requiredQuantity;
         private int rowPriority;
-        private string materialStatusDescription;
 
         #endregion Fields
 
@@ -34,7 +34,7 @@ namespace Ferretto.Common.BusinessModels
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
-        public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value);; }
+        public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public string MaterialStatusDescription { get => this.materialStatusDescription; set => this.SetProperty(ref this.materialStatusDescription, value); }

@@ -895,7 +895,6 @@
     <value>Inventory</value>
     <comment>Item List Type - Inventory</comment>
   </data>
-</root>
   <data name="ItemListRowCompletionDate" xml:space="preserve">
     <value>Completion Date</value>
   </data>

@@ -11,16 +11,16 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
+        private readonly IDatabaseContextService dataContext;
         private readonly EnumerationProvider enumerationProvider;
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService;
-        private readonly IDatabaseContextService dataContext;
 
         #endregion Fields
 
         #region Constructors
 
         public ItemListRowProvider(
-            IDatabaseContextService dataContext)
+            IDatabaseContextService dataContext,
             EnumerationProvider enumerationProvider,
             WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService)
         {
@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = lr.Item.Description,
                     RequiredQuantity = lr.RequiredQuantity,
                     DispatchedQuantity = lr.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus) lr.Status,
+                    ItemListRowStatus = (ItemListRowStatus)lr.Status,
                     CreationDate = lr.CreationDate,
                     ItemListCode = lr.ItemList.Code,
                     ItemListDescription = lr.ItemList.Description,
@@ -105,7 +105,7 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = l.Item.Description,
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus) l.Status,
+                    ItemListRowStatus = (ItemListRowStatus)l.Status,
                     MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate
                 }).AsNoTracking();

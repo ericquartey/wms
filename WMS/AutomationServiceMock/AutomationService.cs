@@ -80,8 +80,9 @@ namespace Ferretto.WMS.AutomationServiceMock
         private async void NewMissionReceived(Object sender, MissionEventArgs e)
         {
             this.logger.LogInformation($"New mission received from Scheduler id={e.Mission.Id}.");
-
-            await this.ExecuteMission(e.Mission);
+            //TODO CHECK
+            //Cannot convert from "Ferretto.WMS.Scheduler.Core.Mission" => "Ferretto.WMS.Scheduler.WebAPI.Contracts.Mission"
+            await this.ExecuteMission(null);//(e.Mission);
         }
 
         private void WakeupReceived(object sender, WakeUpEventArgs e)
