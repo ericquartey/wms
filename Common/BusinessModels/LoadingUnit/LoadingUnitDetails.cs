@@ -25,7 +25,7 @@ namespace Ferretto.Common.BusinessModels
         private string loadingUnitStatusId;
         private int loadingUnitTypeId;
         private string note;
-        private string referenceType;
+        private int referenceType;
         private int weight;
         private int width;
 
@@ -180,7 +180,7 @@ namespace Ferretto.Common.BusinessModels
         public int OutCycleCount { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitReferenceType), ResourceType = typeof(BusinessObjects))]
-        public string ReferenceType
+        public int ReferenceType
         {
             get => this.referenceType;
             set => this.SetProperty(ref this.referenceType, value);

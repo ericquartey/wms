@@ -112,7 +112,7 @@ cell => cell.CellStatusId == 1;
                     Floor = c.Floor,
                     Number = c.CellNumber,
                     Priority = c.Priority,
-                    Side = (int)c.Side,
+                    Side = (int)((Side)c.Side),
                     XCoordinate = c.XCoordinate,
                     YCoordinate = c.YCoordinate,
                     ZCoordinate = c.ZCoordinate,
@@ -121,8 +121,8 @@ cell => cell.CellStatusId == 1;
 
             cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
             cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-            cellDetails.SideChoices =
-                ((DataModels.Side[])Enum.GetValues(typeof(DataModels.Side)))
+            cellDetails.SideChoices = ((Side[])
+                Enum.GetValues(typeof(Side)))
                 .Select(i => new Enumeration((int)i, i.ToString())).ToList();
             cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
             cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
@@ -240,7 +240,7 @@ cell => cell.CellStatusId == 1;
                         Floor = a.Cell.Floor,
                         Number = a.Cell.CellNumber,
                         Priority = a.Cell.Priority,
-                        SideDescription = a.Cell.Side.ToString(),
+                        Side = (Side)a.Cell.Side,
                         Status = a.Cell.CellStatus.Description,
                         Type = a.Cell.CellType.Description,
                         XCoordinate = a.Cell.XCoordinate,

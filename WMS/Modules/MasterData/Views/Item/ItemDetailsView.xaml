@@ -94,12 +94,10 @@
                                       ItemsSource="{Binding Path=Item.ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
-                                    
-                                     Margin="20,0,0,0"                                     
+                                     Margin="20,0,0,0"
                                      VerticalContentAlignment="Stretch"
-                                      
-                                     IsMultiline="True"
-                                     EditValue="{Binding Path=Item.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Item.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsMultiline="True" />
                     </Grid>
                 </GroupBox>
 
@@ -129,7 +127,7 @@
                         <wms:ComboBox Grid.Row="1"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Item.MeasureUnitChoices}" />
+                                      ItemsSource="{Binding Path=Item.MeasureUnitChoices, Converter={StaticResource ESC}}" />
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -142,7 +140,7 @@
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Path=Item.ManagementTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Item.ManagementTypeChoices}" />
+                                      ItemsSource="{Binding Path=Item.ManagementTypeChoices, Converter={StaticResource ESC}}" />
                     </Grid>
                 </GroupBox>
 
@@ -212,7 +210,7 @@
                                             SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"
                                             Visibility="{Binding ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
-                                <dxg:TableView >
+                                <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
@@ -237,8 +235,8 @@
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Stock" />
                                 <dxg:GridColumn Width="200*"
-                                                FieldName="IsItemPairingFixed"
-                                                CellDisplayTemplate="{DynamicResource BooleanCellTemplate}" />
+                                                CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
+                                                FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
