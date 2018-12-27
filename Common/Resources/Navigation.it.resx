@@ -211,10 +211,10 @@
     <value>Dettaglio delle liste</value>
   </data>
   <data name="ItemListExecution" xml:space="preserve">
-    <value>Esecuzione della Lista</value>
+    <value>Esecuzione Lista</value>
   </data>
   <data name="ItemListRowExecution" xml:space="preserve">
-    <value>Esecuzione della Riga della Lista</value>
+    <value>Esecuzione Riga Lista</value>
   </data>
   <data name="CellDetails" xml:space="preserve">
     <value>Dettagli Cella</value>

@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
+using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.Common.Controls
@@ -67,6 +69,9 @@ namespace Ferretto.Common.Controls
             get => this.flattenDataSource;
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
+
+        [Display(Name = nameof(General.SearchText), ResourceType = typeof(General))]
+        public string SearchText { get; set; }
 
         public Tile SelectedFilter
         {

@@ -14,7 +14,10 @@ namespace Ferretto.Common.BusinessModels
         private DateTime creationDate;
         private int dispatchedQuantity;
         private string itemDescription;
-        private int itemId;
+        private string itemListCode;
+        private string itemListDescription;
+        private ItemListType itemListType;
+        private ItemListStatus itemListStatus;
         private ItemListRowStatus itemListRowStatus;
         private string lot;
         private IEnumerable<Enumeration> materialStatusChoices;
@@ -34,9 +37,6 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowCompletionDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? CompletionDate { get; set; }
-
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
 
@@ -46,17 +46,20 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
 
-        [Display(Name = nameof(BusinessObjects.ItemListRowItemId), ResourceType = typeof(BusinessObjects))]
-        public int ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
+        [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
+        public string ItemListCode { get => this.itemListCode; set => this.SetProperty(ref this.itemListCode, value); }
+
+        [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
+        public string ItemListDescription { get => this.itemListDescription; set => this.SetProperty(ref this.itemListDescription, value); }
+
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
+        public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemListStatus), ResourceType = typeof(BusinessObjects))]
+        public ItemListStatus ItemListStatus { get => this.itemListStatus; set => this.SetProperty(ref this.itemListStatus, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
-
-        [Display(Name = nameof(BusinessObjects.ItemListRowExecutionDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastExecutionDate { get; set; }
-
-        [Display(Name = nameof(BusinessObjects.ItemListRowLastModificationDate), ResourceType = typeof(BusinessObjects))]
-        public DateTime? LastModificationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowLot), ResourceType = typeof(BusinessObjects))]
         public string Lot { get => this.lot; set => this.SetProperty(ref this.lot, value); }

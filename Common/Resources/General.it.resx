@@ -195,9 +195,6 @@
   <data name="Type" xml:space="preserve">
     <value>Tipo</value>
   </data>
-  <data name="NotAddDB" xml:space="preserve">
-    <value>Non aggiunto {0} al database.</value>
-  </data>
   <data name="Down" xml:space="preserve">
     <value>Giù</value>
   </data>
@@ -209,5 +206,8 @@
   </data>
   <data name="Top" xml:space="preserve">
     <value>Superiore</value>
+  </data>
+  <data name="Loading" xml:space="preserve">
+    <value>Caricamento</value>
   </data>
 </root>

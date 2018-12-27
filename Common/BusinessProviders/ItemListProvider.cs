@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -24,7 +22,6 @@ namespace Ferretto.Common.BusinessProviders
             list => (char)list.ItemListType == (char)(ItemListType.Put);
 
         private readonly IDatabaseContextService dataContext;
-        private readonly EnumerationProvider enumerationProvider;
         private readonly ItemListRowProvider itemListRowProvider;
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService;
 
@@ -34,12 +31,10 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemListProvider(
             IDatabaseContextService dataContext,
-            EnumerationProvider enumerationProvider,
             ItemListRowProvider itemListRowProvider,
             WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService)
         {
             this.dataContext = dataContext;
-            this.enumerationProvider = enumerationProvider;
             this.itemListRowProvider = itemListRowProvider;
             this.itemListService = itemListService;
         }
@@ -103,8 +98,6 @@ namespace Ferretto.Common.BusinessProviders
 
         public async Task<ItemListDetails> GetById(int id)
         {
-            var dataContext = this.dataContext.Current;
-
             var itemListDetails = await this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)

@@ -713,6 +713,7 @@
   </data>
   <data name="ItemListAreaName" xml:space="preserve">
     <value>Area</value>
+    <comment>Item List - Area</comment>
   </data>
   <data name="ItemListItemsCount" xml:space="preserve">
     <value>Items Count</value>
@@ -766,15 +767,17 @@
   </data>
   <data name="ItemListExecutionRequestArea" xml:space="preserve">
     <value>Area</value>
+    <comment>List Execution Request - Area</comment>
   </data>
-  <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
+  <data name="ItemListExecutionAreaInvalidError" xml:space="preserve">
     <value>Area not valid</value>
   </data>
-  <data name="ListToExecuteBayInvalidError" xml:space="preserve">
+  <data name="ItemListExecutionBayInvalidError" xml:space="preserve">
     <value>Bay not valid</value>
   </data>
   <data name="ItemListExecutionRequestBay" xml:space="preserve">
     <value>Bay</value>
+    <comment>List Execution Request - Bay</comment>
   </data>
   <data name="MachineMaintenanceStatus" xml:space="preserve">
     <value>Maintenance Status</value>
@@ -860,6 +863,39 @@
     <value>Run Immediately</value>
     <comment>List Execution Request - Run Immediately</comment>
   </data>
+  <data name="ItemListRowStatusWaiting" xml:space="preserve">
+    <value>Waiting</value>
+    <comment>Item List Row Status - Waiting</comment>
+  </data>
+  <data name="ItemListRowStatusExecuting" xml:space="preserve">
+    <value>Executing</value>
+    <comment>Item List Row Status - Executing</comment>
+  </data>
+  <data name="ItemListRowStatusCompleted" xml:space="preserve">
+    <value>Completed</value>
+    <comment>Item List Row Status - Completed</comment>
+  </data>
+  <data name="ItemListRowStatusIncomplete" xml:space="preserve">
+    <value>Incomplete</value>
+    <comment>Item List Row Status - Incomplete</comment>
+  </data>
+  <data name="ItemListRowStatusSuspended" xml:space="preserve">
+    <value>Suspended</value>
+    <comment>Item List Row Status - Suspended</comment>
+  </data>
+  <data name="ItemListTypePick" xml:space="preserve">
+    <value>Pick</value>
+    <comment>Item List Type - Pick</comment>
+  </data>
+  <data name="ItemListTypePut" xml:space="preserve">
+    <value>Put</value>
+    <comment>Item List Type - Put</comment>
+  </data>
+  <data name="ItemListTypeInventory" xml:space="preserve">
+    <value>Inventory</value>
+    <comment>Item List Type - Inventory</comment>
+  </data>
+</root>
   <data name="ItemListRowCompletionDate" xml:space="preserve">
     <value>Completion Date</value>
   </data>
