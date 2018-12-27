@@ -18,7 +18,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IBayProvider bayProvider = ServiceLocator.Current.GetInstance<IBayProvider>();
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
 
-        private ItemListExecutionRequest listRowToExecute;
+        private ItemListExecutionRequest executionRequest;
 
         private ICommand runListRowExecuteCommand;
 
@@ -35,18 +35,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public ItemListExecutionRequest ListRowToExecute
+        public ItemListExecutionRequest ExecutionRequest
         {
-            get => this.listRowToExecute;
+            get => this.executionRequest;
             set
             {
-                if (this.ListRowToExecute != null && value != this.ListRowToExecute)
+                if (this.executionRequest != null && value != this.executionRequest)
                 {
-                    this.ListRowToExecute.PropertyChanged -= this.OnItemListRowPropertyChanged;
+                    this.executionRequest.PropertyChanged -= this.OnItemListRowPropertyChanged;
                 }
-                if (this.SetProperty(ref this.listRowToExecute, value))
+                if (this.SetProperty(ref this.executionRequest, value))
                 {
-                    this.ListRowToExecute.PropertyChanged += this.OnItemListRowPropertyChanged;
+                    this.executionRequest.PropertyChanged += this.OnItemListRowPropertyChanged;
                 }
             }
         }
@@ -66,9 +66,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 return;
             }
 
-            this.ListRowToExecute.ItemListDetails = new ItemListDetails(); 
-            this.ListRowToExecute.AreaChoices = this.areaProvider.GetAll();
-            this.ListRowToExecute.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
+            this.executionRequest.ItemListDetails = new ItemListDetails();
+            this.executionRequest.AreaChoices = this.areaProvider.GetAll();
+            this.executionRequest.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
         }
 
         private void ExecuteListRowCommand()
@@ -78,15 +78,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.ListRowToExecute = new ItemListExecutionRequest();
+            this.ExecutionRequest = new ItemListExecutionRequest();
         }
 
         private void OnAreaIdChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.ListRowToExecute.AreaId) &&
-                this.ListRowToExecute.AreaId.HasValue)
+            if (e.PropertyName == nameof(this.ExecutionRequest.AreaId) &&
+                this.ExecutionRequest.AreaId.HasValue)
             {
-                this.ListRowToExecute.BayChoices = this.bayProvider.GetByAreaId(this.ListRowToExecute.AreaId.Value);
+                this.ExecutionRequest.BayChoices = this.bayProvider.GetByAreaId(this.ExecutionRequest.AreaId.Value);
             }
         }
 
