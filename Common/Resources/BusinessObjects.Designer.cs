@@ -1780,6 +1780,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mono Reference.
+        /// </summary>
+        public static string MonoReference {
+            get {
+                return ResourceManager.GetString("MonoReference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Package Type.
         /// </summary>
         public static string PackageType {
@@ -1807,11 +1816,56 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pluri Reference.
+        /// </summary>
+        public static string PluriReference {
+            get {
+                return ResourceManager.GetString("PluriReference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Registration Number.
         /// </summary>
         public static string RegistrationNumber {
             get {
                 return ResourceManager.GetString("RegistrationNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string SideBack {
+            get {
+                return ResourceManager.GetString("SideBack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Front.
+        /// </summary>
+        public static string SideFront {
+            get {
+                return ResourceManager.GetString("SideFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Left.
+        /// </summary>
+        public static string SideLeft {
+            get {
+                return ResourceManager.GetString("SideLeft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Right.
+        /// </summary>
+        public static string SideRight {
+            get {
+                return ResourceManager.GetString("SideRight", resourceCulture);
             }
         }
         
