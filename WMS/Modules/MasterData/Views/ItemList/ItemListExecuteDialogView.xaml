@@ -76,14 +76,11 @@
                                   IsTextEditable="False"
                                   ItemsSource="{Binding ExecutionRequest.BayChoices}"
                                   Visibility="{Binding ExecutionRequest.Schedule, Converter={StaticResource BTVIC}}" />
-                    <!--  Visibility="{Binding ExecutionRequest.RunImmediately, Converter={StaticResource BTVC}}" />  -->
                 </Grid>
                 <StackPanel Orientation="Horizontal">
-                    <!--  IsEnabled="{Binding ExecutionRequest.AreaIdHasValue}"  -->
                     <dxe:ToggleSwitch Margin="0,20,10,0"
                                       IsChecked="{Binding ExecutionRequest.Schedule}"
                                       Template="{DynamicResource WmsToggleSwitch}" />
-                    <!--  IsChecked="{Binding ExecutionRequest.RunImmediately}"  -->
                     <Label Margin="0,20,0,0"
                            Content="{x:Static res:BusinessObjects.ItemListExecutionRequestSchedule}" />
                 </StackPanel>
