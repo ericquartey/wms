@@ -69,12 +69,12 @@ namespace Ferretto.VW.RemoteIODriver.Source
             return this.Inputs;
         }
 
-        public void WriteData()
+        public void WriteData(bool [] DigitalOutput)
         {
-            var tmp = new bool[] { false, false, false, false, false };
-            if (tmp.Length != 0)
+           
+            if (DigitalOutput.Length != 0)
             {
-                this.master.WriteMultipleCoils(OUTPUT_ORIGIN, tmp);
+                this.master.WriteMultipleCoils(OUTPUT_ORIGIN, DigitalOutput);
             }
         }
 

@@ -277,7 +277,7 @@
     <value>Waiting Status</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Pick Lists</value>
+    <value>Picking Lists</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Customer Order Information</value>
@@ -467,5 +467,12 @@
   </data>
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
     <value>Get all machines of type Vertimag XS</value>
+  </data>
+  <data name="ListRowRequestAccepted" xml:space="preserve">
+    <value>List Row request accepted</value>
+    <comment>Notification - request accepted</comment>
+  </data>
+  <data name="ItemListRows" xml:space="preserve">
+    <value>List Rows</value>
   </data>
 </root>

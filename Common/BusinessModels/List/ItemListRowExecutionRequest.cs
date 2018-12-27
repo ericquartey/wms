@@ -6,7 +6,7 @@ using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class ItemListExecutionRequest : BusinessObject
+    public class ItemListRowExecutionRequest : BusinessObject
     {
         #region Fields
 
@@ -15,8 +15,8 @@ namespace Ferretto.Common.BusinessModels
         private bool areaIdHasValue;
         private IEnumerable<Bay> bayChoices;
         private int? bayId;
-        private ItemListDetails itemListDetails;
-        private bool schedule;
+        private ItemListRowDetails itemListRowDetails;
+        private bool runImmediately;
 
         #endregion Fields
 
@@ -62,25 +62,25 @@ namespace Ferretto.Common.BusinessModels
 
         public override string Error => String.Join(Environment.NewLine, new[]
             {
-                this[nameof(this.ItemListDetails)],
+                this[nameof(this.ItemListRowDetails)],
                 this[nameof(this.AreaId)],
                 this[nameof(this.BayId)],
             }.Where(s => !String.IsNullOrEmpty(s))
         );
 
-        public ItemListDetails ItemListDetails
+        public ItemListRowDetails ItemListRowDetails
         {
-            get => this.itemListDetails;
-            set => this.SetProperty(ref this.itemListDetails, value);
+            get => this.itemListRowDetails;
+            set => this.SetProperty(ref this.itemListRowDetails, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestSchedule), ResourceType = typeof(BusinessObjects))]
-        public bool Schedule
+        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestRunImmediately), ResourceType = typeof(BusinessObjects))]
+        public bool RunImmediately
         {
-            get => this.schedule;
+            get => this.runImmediately;
             set
             {
-                if (!this.SetProperty(ref this.schedule, value))
+                if (this.SetProperty(ref this.runImmediately, value))
                 {
                     this.BayId = null;
                 }
@@ -101,20 +101,20 @@ namespace Ferretto.Common.BusinessModels
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return BusinessObjects.ItemListExecutionAreaInvalidError;
+                            return Resources.BusinessObjects.ItemListExecutionAreaInvalidError;
                         }
                         break;
 
                     case nameof(this.BayId):
                         if ((this.bayId.HasValue == false ||
-                            this.bayId.Value == 0) && !this.schedule)
+                            this.bayId.Value == 0) && this.runImmediately)
                         {
-                            return BusinessObjects.ItemListExecutionBayInvalidError;
+                            return Resources.BusinessObjects.ItemListExecutionBayInvalidError;
                         }
                         break;
                 }
 
-                return String.Empty;
+                return string.Empty;
             }
         }
 

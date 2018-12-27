@@ -41,19 +41,19 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.executionRequest;
             set
             {
-                if (this.executionRequest == value)
-                {
-                    return;
-                }
-
-                if (this.executionRequest != null)
-                {
-                    this.executionRequest.PropertyChanged -= this.OnItemListPropertyChanged;
-                }
+                var oldExecutionRequest = this.executionRequest;
 
                 if (this.SetProperty(ref this.executionRequest, value))
                 {
-                    this.ExecutionRequest.PropertyChanged += this.OnItemListPropertyChanged;
+                    if (oldExecutionRequest != null)
+                    {
+                        oldExecutionRequest.PropertyChanged -= this.OnItemListPropertyChanged;
+                    }
+
+                    if (this.executionRequest != null)
+                    {
+                        this.executionRequest.PropertyChanged += this.OnItemListPropertyChanged;
+                    }
                 }
             }
         }
@@ -87,7 +87,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.executionRequest.ItemListDetails = await this.itemListProvider.GetById(modelId.Value);
             this.executionRequest.AreaChoices = this.areaProvider.GetAll();
-            this.executionRequest.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
+            this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
         private bool CanExecuteListCommand()

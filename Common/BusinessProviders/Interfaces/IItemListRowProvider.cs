@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -10,7 +7,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        IQueryable<ItemListRow> GetByItemListId(Int32 id);
+        IQueryable<ItemListRow> GetByItemListId(int id);
 
         #endregion Methods
     }

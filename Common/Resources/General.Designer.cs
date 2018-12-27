@@ -196,11 +196,29 @@ namespace Ferretto.Common.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Loading.
+        /// </summary>
+        public static string Loading {
+            get {
+                return ResourceManager.GetString("Loading", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string Login {
             get {
                 return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Measure Unit.
+        /// </summary>
+        public static string MeasureUnit {
+            get {
+                return ResourceManager.GetString("MeasureUnit", resourceCulture);
             }
         }
 
@@ -268,6 +286,15 @@ namespace Ferretto.Common.Resources {
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SearchText {
+            get {
+                return ResourceManager.GetString("SearchText", resourceCulture);
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Show Details.
         /// </summary>
         public static string ShowDetails {
@@ -309,15 +336,6 @@ namespace Ferretto.Common.Resources {
         public static string Type {
             get {
                 return ResourceManager.GetString("Type", resourceCulture);
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Measure Unit.
-        /// </summary>
-        public static string MeasureUnit {
-            get {
-                return ResourceManager.GetString("MeasureUnit", resourceCulture);
             }
         }
 
