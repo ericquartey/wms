@@ -80,7 +80,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                 using (var dbContext = (DatabaseContext)this.serviceProvider.GetService(typeof(DatabaseContext)))
                 {
                     var result = await dbContext.ItemListRows
-                        //.Include(l => l.ItemListRows)
                         .Select(i => new ItemListRowDetails
                         {
                             Id = i.Id,
@@ -122,7 +121,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                            RowPriority = l.Priority,
                            ItemListRowStatus = (ItemListRowStatus)l.Status,
                            DispatchedQuantity = l.DispatchedQuantity,
-                           //ItemId = l.ItemId,
                            CreationDate = l.CreationDate,
                            LastModificationDate = l.LastModificationDate,
                            CompletionDate = l.CompletionDate,
@@ -142,14 +140,6 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                         this.logger.LogError($"No List row with (id={id}) exists.");
                         return this.NotFound();
                     }
-
-                    //listRow.ItemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
-                    //    .Select(i => new Enumeration((int)i, i.ToString()))
-                    //    .ToList();
-
-                    //listRow.ItemListTypeChoices = ((ItemListType[])Enum.GetValues(typeof(ItemListType)))
-                    //    .Select(i => new Enumeration((int)i, i.ToString()))
-                    //    .ToList();
 
                     return this.Ok(listRow);
                 }

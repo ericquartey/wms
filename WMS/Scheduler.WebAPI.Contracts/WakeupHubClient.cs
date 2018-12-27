@@ -23,7 +23,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
               .Build();
 
             this.connection.On<string, string>(WakeUpMessageName, this.OnWakeUp_MessageReceived);
-            this.connection.On<Core.Mission>(NotifyNewMissionMessageName, this.OnNotifyNewMission_MessageReceived);
+            this.connection.On<Mission>(NotifyNewMissionMessageName, this.OnNotifyNewMission_MessageReceived);
 
             this.connection.Closed += async (error) =>
             {
@@ -50,7 +50,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             await this.connection.StartAsync();
         }
 
-        private void OnNotifyNewMission_MessageReceived(Core.Mission mission)
+        private void OnNotifyNewMission_MessageReceived(Mission mission)
         {
             this.NewMissionReceived?.Invoke(this, new MissionEventArgs(mission));
         }

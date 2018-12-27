@@ -82,7 +82,7 @@ namespace Ferretto.WMS.AutomationServiceMock
             this.logger.LogInformation($"New mission received from Scheduler id={e.Mission.Id}.");
             //TODO CHECK
             //Cannot convert from "Ferretto.WMS.Scheduler.Core.Mission" => "Ferretto.WMS.Scheduler.WebAPI.Contracts.Mission"
-            await this.ExecuteMission(null);//(e.Mission);
+            await this.ExecuteMission(e.Mission);
         }
 
         private void WakeupReceived(object sender, WakeUpEventArgs e)
