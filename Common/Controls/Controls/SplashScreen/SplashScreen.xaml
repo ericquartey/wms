@@ -24,30 +24,38 @@
             <Grid x:Name="Content_Area"
                   Margin="12">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+
+                <TextBlock x:Name="Timing"
+                           Grid.Row="1"/>
+
                 <Image x:Name="Image"
-                       Source="Image.png"
-                       Stretch="None" />
-                <TextBlock x:Name="Timing" />
+                       Grid.Row="2"
+                       Width="140"
+                       Focusable="False"
+                       Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo_narrow.png" />
+                <!--  Source="Image.png"  -->
                 <TextBlock x:Name="Info"
-                           Grid.Row="1"
+                           Grid.Row="3"
                            Margin="12,12,12,0"
                            Foreground="#FF2D2D2D"
                            Text="{Binding State}"
                            TextWrapping="Wrap" />
                 <ProgressBar x:Name="progressBar"
-                             Grid.Row="2"
+                             Grid.Row="4"
                              Height="12"
                              Margin="12"
                              IsIndeterminate="{Binding IsIndeterminate}"
                              Maximum="{Binding MaxProgress}"
                              Value="{Binding Progress}" />
                 <DockPanel x:Name="Footer"
-                           Grid.Row="3"
+                           Grid.Row="5"
                            Margin="12,20,12,4">
                     <TextBlock x:Name="Footer_Text"
                                HorizontalAlignment="Left"
@@ -60,7 +68,8 @@
                            HorizontalAlignment="Right"
                            DockPanel.Dock="Right"
                            Source="Logo.png"
-                           Stretch="None" />
+                           Stretch="None"
+                           Visibility="Collapsed" />
                 </DockPanel>
             </Grid>
         </Grid>

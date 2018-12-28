@@ -97,7 +97,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     public partial class ListExecutionRequest : System.ComponentModel.INotifyPropertyChanged
     {
         private int _areaId;
-        private int _bayId;
+        private int? _bayId;
         private int _listId;
     
         [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
@@ -114,8 +114,8 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
-        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
-        public int BayId
+        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? BayId
         {
             get { return _bayId; }
             set 
