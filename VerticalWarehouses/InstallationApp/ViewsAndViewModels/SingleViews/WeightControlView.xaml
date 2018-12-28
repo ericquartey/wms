@@ -72,9 +72,13 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Button Content="{x:Static res:InstallationApp.Start}"
+                    Command="{Binding SetBeginButtonCommand}"
+                    IsEnabled="{Binding IsSetBeginButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
             <Button Grid.Column="2"
                     Content="{x:Static res:InstallationApp.Stop}"
+                    Command="{Binding SetStopButtonCommand}"
+                    IsEnabled="{Binding IsSetStopButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
         </Grid>
     </Grid>

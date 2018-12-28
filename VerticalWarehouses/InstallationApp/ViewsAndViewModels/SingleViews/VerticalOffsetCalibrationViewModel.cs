@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
+using Ferretto.VW.ActionBlocks;
 using Prism.Commands;
 using Prism.Mvvm;
-using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -27,6 +26,7 @@ namespace Ferretto.VW.InstallationApp
         private ICommand correctOffsetButtonCommand;
         private string currentHeight;
         private int currentOffset;
+        private ICommand exitFromViewCommand;
         private bool isCorrectOffsetButtonActive = false;
         private bool isSetPositionButtonActive = true;
         private bool isStepDownButtonActive = false;
@@ -41,9 +41,6 @@ namespace Ferretto.VW.InstallationApp
         private string stepValue;
 
         #endregion Fields
-
-        //Temporary constant value.
-        //Temporary constant value.
 
         #region Constructors
 
@@ -63,6 +60,8 @@ namespace Ferretto.VW.InstallationApp
         public string CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
 
         public int CurrentOffset { get => this.currentOffset; set => this.SetProperty(ref this.currentOffset, value); }
+
+        public ICommand ExitFromViewCommand => this.exitFromViewCommand ?? (this.exitFromViewCommand = new DelegateCommand(this.ExitFromViewMethod));
 
         public Boolean IsCorrectOffsetButtonActive { get => this.isCorrectOffsetButtonActive; set => this.SetProperty(ref this.isCorrectOffsetButtonActive, value); }
 
@@ -100,7 +99,8 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            throw new System.NotImplementedException();
+            // Unsubscribe methods
+            this.UnSubscribeMethodFromEvent();
         }
 
         public void PositioningDone(bool result)
@@ -133,7 +133,6 @@ namespace Ferretto.VW.InstallationApp
             this.NoteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
 
             ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
-            ActionManager.PositioningDrawerInstance.ThrowEndEvent += new PositioningDrawerEndEventHandler(this.PositioningDone);
             ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
         }
 
@@ -152,19 +151,32 @@ namespace Ferretto.VW.InstallationApp
             short.TryParse(this.StepValue, out var x);
 
             ActionManager.PositioningDrawerInstance.AbsoluteMovement = false;
-            ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
+            ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint((short)(-1 * x), this.vMax, this.acc, this.dec, this.w, this.offset);
 
-            this.CurrentOffset = this.CurrentOffset + x;
+            this.CurrentOffset = this.CurrentOffset + (short)(-1 * x);
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new System.NotImplementedException();
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+                ActionManager.PositioningDrawerInstance.ThrowErrorEvent += this.PositioningError;
+            }
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new System.NotImplementedException();
+            if (ActionManager.PositioningDrawerInstance != null)
+            {
+                ActionManager.PositioningDrawerInstance.ThrowErrorEvent -= this.PositioningError;
+                ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+            }
+        }
+
+        private void PositioningError(String error_Message)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Methods

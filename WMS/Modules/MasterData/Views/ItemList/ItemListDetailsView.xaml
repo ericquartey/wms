@@ -17,6 +17,18 @@
              d:DesignWidth="800"
              EnableHistoryView="True"
              mc:Ignorable="d">
+    <wms:WmsView.Resources>
+        <wms:StringFormatConverter x:Key="SFC" />
+    </wms:WmsView.Resources>
+    <wms:WmsView.SubTitle>
+        <MultiBinding Converter="{StaticResource SFC}">
+            <Binding Source="{x:Static res:Title.ItemListDetailsView}" />
+            <Binding Path="ItemList.ItemListTypeDescription"
+                     TargetNullValue="" />
+            <Binding Path="ItemList.Code"
+                     TargetNullValue="" />
+        </MultiBinding>
+    </wms:WmsView.SubTitle>
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
@@ -91,11 +103,11 @@
                         <wms:TextBox Grid.Row="0"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Grid Grid.Row="0"
                               Grid.Column="1">
                             <Grid.ColumnDefinitions>
@@ -109,14 +121,14 @@
                                           SelectedItem="Pick" />
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
-                                          MinValue="1"
                                           AllowNullInput="False"
-                                          EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                          EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          MinValue="1" />
                         </Grid>
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
                     </Grid>
@@ -133,9 +145,8 @@
                                               Template="{DynamicResource WmsToggleSwitch}"
                                               ToggleSwitchHeight="20"
                                               ToggleSwitchWidth="30" />
-                            <TextBox x:Name="TitleLabel"
-                                     Margin="40,0,0,0"
-                                     BorderThickness="0"
+                            <TextBlock x:Name="TitleLabel"
+                                     Margin="40,0,0,0"                                     
                                      FontSize="14.666"
                                      FontWeight="SemiBold"
                                      Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
@@ -156,11 +167,11 @@
                             <wms:TextBox Grid.Row="1"
                                          Margin="0,0,20,0"
                                          IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Text="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="2"
                                          Margin="0,0,20,0"
                                          IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         Text="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
                 </GroupBox>
@@ -180,15 +191,13 @@
                         </Grid.RowDefinitions>
                         <wms:TextBox Grid.Row="0"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Path=ItemList.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=ItemList.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                 </GroupBox>
-
-
 
                 <GroupBox Grid.Row="2"
                           Grid.ColumnSpan="4">
@@ -210,7 +219,7 @@
                                      BorderThickness="0"
                                      FontSize="14.666"
                                      FontWeight="SemiBold"
-                                     Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+                                     Text="{x:Static res:MasterData.ItemListRows}" />
 
                             <wms:ActionBar Grid.Row="0"
                                            Grid.ColumnSpan="4"
@@ -238,9 +247,9 @@
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel Margin="0,10,0,0">
-                        <wms:WmsGridControl MinHeight="280"
+                        <wms:WmsGridControl MinHeight="62"
                                             MaxWidth="2000"
-                                            MaxHeight="280"
+                                            MaxHeight="2000"
                                             SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}"
                                             ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}">
                             <!--TODO wms:WmsGridControl.View>

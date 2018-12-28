@@ -63,6 +63,51 @@ namespace Ferretto.Common.Resources {
         /// <summary>
         ///   Looks up a localized string similar to #57A639.
         /// </summary>
+        public static string ItemListRowStatusCompleted {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #0D47A1.
+        /// </summary>
+        public static string ItemListRowStatusExecuting {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusExecuting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #D50000.
+        /// </summary>
+        public static string ItemListRowStatusIncomplete {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusIncomplete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #FFB300.
+        /// </summary>
+        public static string ItemListRowStatusSuspended {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusSuspended", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #00BCD4.
+        /// </summary>
+        public static string ItemListRowStatusWaiting {
+            get {
+                return ResourceManager.GetString("ItemListRowStatusWaiting", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to #57A639.
+        /// </summary>
         public static string ItemListStatusCompleted {
             get {
                 return ResourceManager.GetString("ItemListStatusCompleted", resourceCulture);

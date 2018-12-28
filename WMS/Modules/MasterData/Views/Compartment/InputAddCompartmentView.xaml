@@ -204,11 +204,11 @@
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="1"
                                              HorizontalAlignment="Stretch"
-                                             Text="{Binding Compartment.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Compartment.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="3"
                                              HorizontalAlignment="Stretch"
-                                             Text="{Binding Compartment.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Compartment.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <wms:ComboBox x:Name="PackageType"
                                               Grid.Row="1"
                                               Grid.Column="1"
@@ -218,7 +218,7 @@
                                 <wms:TextBox Grid.Row="1"
                                              Grid.Column="3"
                                              HorizontalAlignment="Stretch"
-                                             Text="{Binding Compartment.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Compartment.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 
                         </wms:AccordionItem>

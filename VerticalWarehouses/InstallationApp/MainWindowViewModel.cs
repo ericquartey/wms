@@ -1,15 +1,19 @@
 ﻿using System;
-using Prism.Mvvm;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
 using System.Windows.Input;
-using Prism.Commands;
-using Ferretto.VW.Navigation;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
+using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
 using System.Net;
 using System.IO;
 using System.Configuration;
 using System.Diagnostics;
 using Microsoft.Practices.Unity;
+using Prism.Commands;
+using Prism.Mvvm;
 
 #if CODEMAID
     // disable codemaid region messer in this file
@@ -137,9 +141,21 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand VerticalAxisCalibrationButtonCommand => this.verticalAxisCalibrationButtonCommand ?? (this.verticalAxisCalibrationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = (VerticalAxisCalibrationViewModel)this.Container.Resolve<IVerticalAxisCalibrationViewModel>(); }));
 
-        public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = (VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>(); }));
+        public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.RaiseGoToViewEvent();
+            this.ContentRegionCurrentViewModel = (VerticalOffsetCalibrationViewModel) this.Container.Resolve<IVerticalOffsetCalibrationViewModel>();
+            ((VerticalOffsetCalibrationViewModel) this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).SubscribeMethodToEvent();
+            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand( ((VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).ExitFromViewCommand);
+        }));
 
-        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() => { NavigationService.RaiseGoToViewEvent(); this.ContentRegionCurrentViewModel = (WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>(); }));
+        public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
+        {
+            NavigationService.RaiseGoToViewEvent();
+            this.ContentRegionCurrentViewModel = (WeightControlViewModel) this.Container.Resolve<IWeightControlViewModel>();
+            ((WeightControlViewModel) this.Container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
+            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
+        }));
 
         public ICommand MachineModeCustomCommand => this.machineModeCustomCommand ?? (this.machineModeCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineModeEvent()));
 

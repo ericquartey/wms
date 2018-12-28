@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -117,116 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Accept" xml:space="preserve">
-    <value>Accept</value>
+  <data name="CellDetailsView" xml:space="preserve">
+    <value>Cell Details</value>
   </data>
-  <data name="Add" xml:space="preserve">
-    <value>Add</value>
-    <comment>Command - Add an element to current page</comment>
+  <data name="CompartmentDetailsView" xml:space="preserve">
+    <value>Compartment Details</value>
   </data>
-  <data name="Back" xml:space="preserve">
-    <value>Back</value>
-    <comment>Command - Navigation to previous page</comment>
+  <data name="ItemDetailsView" xml:space="preserve">
+    <value>Item Details : {0}</value>
   </data>
-  <data name="Bottom" xml:space="preserve">
-    <value>Bottom</value>
-    <comment>Button text</comment>
+  <data name="ItemListDetailsView" xml:space="preserve">
+    <value>{0} List: {1}</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="LoadingUnitDetailsView" xml:space="preserve">
+    <value>Loading Unit Details : {0}</value>
   </data>
-  <data name="Code" xml:space="preserve">
-    <value>Code</value>
-  </data>
-  <data name="CreationDate" xml:space="preserve">
-    <value>Creation Date</value>
-  </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Description</value>
-  </data>
-  <data name="Down" xml:space="preserve">
-    <value>Down</value>
-    <comment>Button text</comment>
-  </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="Execute" xml:space="preserve">
-    <value>Execute</value>
-  </data>
-  <data name="File" xml:space="preserve">
-    <value>File</value>
-  </data>
-  <data name="Front" xml:space="preserve">
-    <value>Front</value>
-  </data>
-  <data name="LastModificationDate" xml:space="preserve">
-    <value>Last Modification Date</value>
-  </data>
-  <data name="Login" xml:space="preserve">
-    <value>Login</value>
-    <comment>Button</comment>
-  </data>
-  <data name="MillionsSymbol" xml:space="preserve">
-    <value>M</value>
-    <comment>Symbol for millions</comment>
-  </data>
-  <data name="Next" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="Open" xml:space="preserve">
-    <value>Open</value>
-  </data>
-  <data name="Refresh" xml:space="preserve">
-    <value>Refresh</value>
-    <comment>Command - Update the contents of the current page</comment>
-  </data>
-  <data name="Revert" xml:space="preserve">
-    <value>Revert</value>
-    <comment>Command - Revert modified data on the current page</comment>
-  </data>
-  <data name="Save" xml:space="preserve">
-    <value>Save</value>
-    <comment>Command - Save modified data on the current page</comment>
-  </data>
-  <data name="Search" xml:space="preserve">
-    <value>Search</value>
-    <comment>Label - Search</comment>
-  </data>
-  <data name="ShowDetails" xml:space="preserve">
-    <value>Show Details</value>
-  </data>
-  <data name="SwitchOff" xml:space="preserve">
-    <value>Switch Off</value>
-    <comment>Button </comment>
-  </data>
-  <data name="ThousandsSymbol" xml:space="preserve">
-    <value>k</value>
-    <comment>Symbol for thousands</comment>
-  </data>
-  <data name="Top" xml:space="preserve">
-    <value>Top</value>
-    <comment>Button text</comment>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Type</value>
-  </data>
-  <data name="MeasureUnit" xml:space="preserve">
-    <value>Measure Unit</value>
-  </data>
-  <data name="Up" xml:space="preserve">
-    <value>Up</value>
-    <comment>Button text</comment>
-  </data>
-  <data name="Loading" xml:space="preserve">
-    <value>Loading</value>
-    <comment>Busy Indicator Content</comment>
-  </data>
-  <data name="SearchText" xml:space="preserve">
-    <value></value>
-    <comment>Search text on WmsGridControl</comment>
+  <data name="LoadingUnitEditView" xml:space="preserve">
+    <value>Loading Unit : {0}</value>
   </data>
 </root>

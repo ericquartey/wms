@@ -160,10 +160,10 @@
     <value>Informazioni Scomparto</value>
   </data>
   <data name="ContentInformation" xml:space="preserve">
-    <value>Informazioni sul Contenuto</value>
+    <value>Informazioni Contenuto</value>
   </data>
   <data name="CurrentItemInformation" xml:space="preserve">
-    <value>Informazioni sull'Articolo Corrente</value>
+    <value>Informazioni Articolo Corrente</value>
   </data>
   <data name="LoadingUnitSavedSuccessfully" xml:space="preserve">
     <value>Unità di Carico salvata con successo</value>
@@ -178,10 +178,10 @@
     <value>Articolo salvato con successo</value>
   </data>
   <data name="LoadingUnitInformation" xml:space="preserve">
-    <value>Informazioni sulla Unità di Carico</value>
+    <value>Informazioni Unità di Carico</value>
   </data>
   <data name="CurrentCellInformation" xml:space="preserve">
-    <value>Informazioni sulla Cella Corrente</value>
+    <value>Informazioni Cella Corrente</value>
   </data>
   <data name="OtherInformation" xml:space="preserve">
     <value>Altre Informazioni</value>
@@ -245,22 +245,22 @@
     <value>Stato in Attesa</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Picking Liste</value>
+    <value>Liste di Prelievo</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
-    <value>Informazioni sull'Ordine del Cliente</value>
+    <value>Informazioni Ordine Cliente</value>
   </data>
   <data name="ExecutionDetails" xml:space="preserve">
     <value>Dettagli sull'Esecuzione</value>
   </data>
   <data name="ItemListInformation" xml:space="preserve">
-    <value>Informazione sulle Liste</value>
+    <value>Informazioni Lista</value>
   </data>
   <data name="ShipmentUnitInformation" xml:space="preserve">
-    <value>Informazioni su Unità di Spedizione</value>
+    <value>Informazioni Unità di Spedizione</value>
   </data>
   <data name="ItemListRowInformation" xml:space="preserve">
-    <value>Informazioni sulle righe della Lista</value>
+    <value>Informazioni Riga Lista</value>
   </data>
   <data name="ItemListSavedSuccessfully" xml:space="preserve">
     <value>Lista salvata con successo</value>
@@ -269,7 +269,7 @@
     <value>Esegui Lista</value>
   </data>
   <data name="ItemListExecuteOptions" xml:space="preserve">
-    <value>Opzioni di Esecuzione Lista</value>
+    <value>Opzioni Esecuzione Lista</value>
   </data>
   <data name="RunItemList" xml:space="preserve">
     <value>Esegui Lista</value>
@@ -278,13 +278,13 @@
     <value>Aggiungi Nuova Riga Lista</value>
   </data>
   <data name="ItemListRowShowDetails" xml:space="preserve">
-    <value>Mostra Dettagli sulla Riga della Lista</value>
+    <value>Dettagli Riga Lista</value>
   </data>
   <data name="ItemListRowExecute" xml:space="preserve">
     <value>Esegui Riga della Lista</value>
   </data>
   <data name="ItemListRowExecuteOptions" xml:space="preserve">
-    <value>Opzioni di Esecuzione Riga della Lista</value>
+    <value>Opzioni Esecuzione Riga Lista</value>
   </data>
   <data name="RunItemListRow" xml:space="preserve">
     <value>Esegui Riga della Lista</value>
@@ -302,10 +302,10 @@
     <value>Ulteriori Dettagli</value>
   </data>
   <data name="ItemListsTypeInventory" xml:space="preserve">
-    <value>Inventario delle Liste</value>
+    <value>Liste di Inventario</value>
   </data>
   <data name="ItemListsTypePut" xml:space="preserve">
-    <value>Put Liste</value>
+    <value>Liste di Versamento</value>
   </data>
   <data name="LoadingUnitAreaManual" xml:space="preserve">
     <value>Area Manual</value>
@@ -429,5 +429,14 @@
   </data>
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
     <value>Restituisce tutte le macchine Vertimag XS</value>
+  </data>
+  <data name="ItemListExecuteImmediately" xml:space="preserve">
+    <value>Esegui immediatamente</value>
+  </data>
+  <data name="ListRowRequestAccepted" xml:space="preserve">
+    <value>Richiesta sulla riga lista accettata</value>
+  </data>
+  <data name="ItemListRows" xml:space="preserve">
+    <value>Righe Lista</value>
   </data>
 </root>
