@@ -112,7 +112,7 @@ cell => cell.CellStatusId == 1;
                     Floor = c.Floor,
                     Number = c.CellNumber,
                     Priority = c.Priority,
-                    Side = (int)((Side)c.Side),
+                    Side = (Side)c.Side,
                     XCoordinate = c.XCoordinate,
                     YCoordinate = c.YCoordinate,
                     ZCoordinate = c.ZCoordinate,

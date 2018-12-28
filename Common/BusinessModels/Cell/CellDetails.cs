@@ -17,7 +17,7 @@ namespace Ferretto.Common.BusinessModels
         private int? floor;
         private int? number;
         private int priority;
-        private int side;
+        private Side side;
         private int? xCoordinate;
         private int? yCoordinate;
         private int? zCoordinate;
@@ -99,7 +99,7 @@ namespace Ferretto.Common.BusinessModels
         }
 
         [Display(Name = nameof(BusinessObjects.CellSide), ResourceType = typeof(BusinessObjects))]
-        public int Side
+        public Side Side
         {
             get => this.side;
             set => this.SetProperty(ref this.side, value);

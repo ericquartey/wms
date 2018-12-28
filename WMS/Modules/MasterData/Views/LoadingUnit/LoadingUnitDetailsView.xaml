@@ -1,8 +1,11 @@
 ﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:bm="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
@@ -111,13 +114,30 @@
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding LoadingUnit.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding LoadingUnit.ReferenceTypeChoices}" />
+                                      ItemsSource="{Binding LoadingUnit.ReferenceTypeChoices}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type bm:ReferenceType}"
+                                                                SortMode="DisplayName" />
+                            </dxmvvm:Interaction.Behaviors>
+                            <wms:ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </wms:ComboBox.ItemTemplate>
+                        </wms:ComboBox>
+
                         <wms:TextBox Grid.Row="3"
                                      Grid.ColumnSpan="3"
                                      Height="100"
                                      Margin="0,0,20,0"
-                                     IsMultiline="True"
-                                     EditValue="{Binding LoadingUnit.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding LoadingUnit.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     IsMultiline="True" />
                     </Grid>
                 </GroupBox>
 

@@ -1870,6 +1870,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FIFO.
+        /// </summary>
+        public static string TypeFIFO {
+            get {
+                return ResourceManager.GetString("TypeFIFO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        public static string TypeVolume {
+            get {
+                return ResourceManager.GetString("TypeVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username.
         /// </summary>
         public static string Username {

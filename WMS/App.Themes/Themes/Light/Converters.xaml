@@ -20,7 +20,6 @@
     <dxmvvm:BooleanNegationConverter x:Key="BNC" />
 
     <ctrls:StringFormatConverter x:Key="SFC" />
-    <ctrls:EnumToStringConverter x:Key="ESC" />
 
 
 </ResourceDictionary>

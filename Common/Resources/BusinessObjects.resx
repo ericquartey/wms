@@ -913,4 +913,10 @@
   <data name="SideRight" xml:space="preserve">
     <value>Right</value>
   </data>
+  <data name="TypeFIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="TypeVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
 </root>
