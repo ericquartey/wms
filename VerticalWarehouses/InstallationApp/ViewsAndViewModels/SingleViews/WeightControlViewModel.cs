@@ -74,14 +74,20 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            ActionManager.DrawerWeightDetectionInstance.EndEvent += this.WeightDetectionDone;
-            ActionManager.DrawerWeightDetectionInstance.ErrorEvent += this.WeightDetectionError;
+            if (ActionManager.DrawerWeightDetectionInstance != null)
+            {
+                ActionManager.DrawerWeightDetectionInstance.EndEvent += this.WeightDetectionDone;
+                ActionManager.DrawerWeightDetectionInstance.ErrorEvent += this.WeightDetectionError;
+            }
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            ActionManager.DrawerWeightDetectionInstance.ErrorEvent -= this.WeightDetectionError;
-            ActionManager.DrawerWeightDetectionInstance.EndEvent -= this.WeightDetectionDone;
+            if (ActionManager.DrawerWeightDetectionInstance != null)
+            {
+                ActionManager.DrawerWeightDetectionInstance.ErrorEvent -= this.WeightDetectionError;
+                ActionManager.DrawerWeightDetectionInstance.EndEvent -= this.WeightDetectionDone;
+            }
         }
 
         private void createWaitThreadForRestorePosition()
@@ -90,7 +96,7 @@ namespace Ferretto.VW.InstallationApp
             this.regWaitForRestorePositionThread = ThreadPool.RegisterWaitForSingleObject(this.raiseRestorePositionEvent, this.onManageRestorePosition, null, -1, false);
         }
 
-        private void destroyWaitThreadForRestorePosition()
+        private void DestroyWaitThreadForRestorePosition()
         {
             this.regWaitForRestorePositionThread?.Unregister(this.raiseRestorePositionEvent);
         }
@@ -121,7 +127,7 @@ namespace Ferretto.VW.InstallationApp
 
         private void SetStopButtonCommandMethod()
         {
-            this.destroyWaitThreadForRestorePosition();
+            this.DestroyWaitThreadForRestorePosition();
 
             // Stop to movement
             ActionManager.DrawerWeightDetectionInstance.Stop();
@@ -150,7 +156,7 @@ namespace Ferretto.VW.InstallationApp
             }
             else
             {
-                this.destroyWaitThreadForRestorePosition();
+                this.DestroyWaitThreadForRestorePosition();
 
                 // restore interface
                 this.IsSetBeginButtonActive = true;

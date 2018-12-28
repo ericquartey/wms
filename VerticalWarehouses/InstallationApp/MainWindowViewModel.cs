@@ -7,10 +7,6 @@ using System.Windows.Input;
 using Ferretto.VW.InstallationApp.ServiceUtilities;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
-using System.Net;
-using System.IO;
-using System.Configuration;
-using System.Diagnostics;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -144,16 +140,16 @@ namespace Ferretto.VW.InstallationApp
         public ICommand VerticalOffsetCalibrationButtonCommand => this.verticalOffsetCalibrationButtonCommand ?? (this.verticalOffsetCalibrationButtonCommand = new DelegateCommand(() =>
         {
             NavigationService.RaiseGoToViewEvent();
-            this.ContentRegionCurrentViewModel = (VerticalOffsetCalibrationViewModel) this.Container.Resolve<IVerticalOffsetCalibrationViewModel>();
-            ((VerticalOffsetCalibrationViewModel) this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).SubscribeMethodToEvent();
-            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand( ((VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).ExitFromViewCommand);
+            this.ContentRegionCurrentViewModel = (VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>();
+            ((VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).SubscribeMethodToEvent();
+            ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((VerticalOffsetCalibrationViewModel)this.Container.Resolve<IVerticalOffsetCalibrationViewModel>()).ExitFromViewCommand);
         }));
 
         public ICommand WeightControlButtonCommand => this.weightControlButtonCommand ?? (this.weightControlButtonCommand = new DelegateCommand(() =>
         {
             NavigationService.RaiseGoToViewEvent();
-            this.ContentRegionCurrentViewModel = (WeightControlViewModel) this.Container.Resolve<IWeightControlViewModel>();
-            ((WeightControlViewModel) this.Container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
+            this.ContentRegionCurrentViewModel = (WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>();
+            ((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).SubscribeMethodToEvent();
             ((MainWindowBackToIAPPButtonViewModel)this.Container.Resolve<IMainWindowBackToIAPPButtonViewModel>()).BackButtonCommand.RegisterCommand(((WeightControlViewModel)this.Container.Resolve<IWeightControlViewModel>()).ExitFromViewCommand);
         }));
 

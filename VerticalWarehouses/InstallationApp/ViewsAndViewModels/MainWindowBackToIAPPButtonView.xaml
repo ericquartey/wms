@@ -26,7 +26,8 @@
                     Command="{Binding CancelButtonCommand}"
                     Content="{x:Static res:General.Cancel}"
                     IsEnabled="{Binding IsCancelButtonActive, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}" />
+                    Template="{StaticResource VWAPP_ActionButton_ControlTemplate}"
+                    Visibility="{Binding CancelButtonVisibility, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
     </Grid>
 </UserControl>
