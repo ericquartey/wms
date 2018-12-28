@@ -1,13 +1,15 @@
 ﻿using System;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class MainWindowBackToIAPPButtonViewModel : BindableBase
+    public class MainWindowBackToIAPPButtonViewModel : BindableBase, IMainWindowBackToIAPPButtonViewModel, IViewModelRequiresContainer
     {
         #region Fields
 
+        private IUnityContainer container;
         private bool isBackButtonActive = true;
         private bool isCancelButtonActive;
 
@@ -35,7 +37,12 @@ namespace Ferretto.VW.InstallationApp
         public void InitializeBottomButtons()
         {
             this.BackButtonCommand = new CompositeCommand();
-            this.BackButtonCommand.RegisterCommand(ViewModels.MainWindowVMInstance.BackToMainWindowNavigationButtonsViewButtonCommand);
+            this.BackButtonCommand.RegisterCommand(((MainWindowViewModel)this.container.Resolve<IMainWindowViewModel>()).BackToMainWindowNavigationButtonsViewButtonCommand);
+        }
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.container = _container;
         }
 
         #endregion Methods

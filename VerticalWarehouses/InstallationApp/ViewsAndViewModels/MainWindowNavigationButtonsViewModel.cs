@@ -5,7 +5,7 @@ using System;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class MainWindowNavigationButtonsViewModel : BindableBase
+    public class MainWindowNavigationButtonsViewModel : BindableBase, IMainWindowNavigationButtonsViewModel
     {
         #region Fields
 

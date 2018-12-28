@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public SSVariousInputsView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.SSVariousInputsVMInstance;
         }
 
         #endregion Constructors

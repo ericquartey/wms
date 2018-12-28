@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class LSMTVerticalEngineViewModel : BindableBase, IViewModel
+    public class LSMTVerticalEngineViewModel : BindableBase, IViewModel, ILSMTVerticalEngineViewModel
     {
         #region Methods
 

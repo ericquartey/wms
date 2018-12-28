@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public VerticalOffsetCalibrationView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.VerticalOffsetCalibrationVMInstance;
         }
 
         #endregion Constructors

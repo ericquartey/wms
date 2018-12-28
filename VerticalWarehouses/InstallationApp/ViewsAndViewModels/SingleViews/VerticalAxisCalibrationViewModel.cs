@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class VerticalAxisCalibrationViewModel : BindableBase, IViewModel
+    public class VerticalAxisCalibrationViewModel : BindableBase, IViewModel, IVerticalAxisCalibrationViewModel
     {
         #region Fields
 

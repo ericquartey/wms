@@ -27,7 +27,6 @@ namespace Ferretto.VW.InstallationApp
         public LSMTGateEngineView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.LSMTGateEngineVMInstance;
         }
 
         #endregion Constructors

@@ -3,9 +3,11 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.InstallationApp;
 using Ferretto.VW.InverterDriver.Source;
 using Ferretto.VW.MathLib;
 using Ferretto.VW.Utils.Source;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -15,10 +17,9 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
-        private readonly bool installation_completed;
+        public IUnityContainer Container;
+        private readonly bool installationCompleted;
         private ICommand changeSkin;
-        private int currentSelection;
-        private bool customComboBoxStateBool = false;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string machineModel;
@@ -33,7 +34,7 @@ namespace Ferretto.VW.VWApp
 
         public MainWindowViewModel()
         {
-            this.installation_completed = DataManager.CurrentData.InstallationInfo.Machine_Ok;
+            this.installationCompleted = DataManager.CurrentData.InstallationInfo.Machine_Ok;
             this.machineModel = DataManager.CurrentData.GeneralInfo.Model;
             this.serialNumber = DataManager.CurrentData.GeneralInfo.Serial;
         }
@@ -43,25 +44,6 @@ namespace Ferretto.VW.VWApp
         #region Properties
 
         public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => (Application.Current as App).ChangeSkin()));
-
-        public Int32 CurrentSelection
-        {
-            get => this.currentSelection;
-            set
-            {
-                this.SetProperty(ref this.currentSelection, value);
-                if (this.CurrentSelection == 0)
-                {
-                    this.CustomComboBoxStateBool = true;
-                }
-                else
-                {
-                    this.CustomComboBoxStateBool = false;
-                }
-            }
-        }
-
-        public Boolean CustomComboBoxStateBool { get => this.customComboBoxStateBool; set => this.SetProperty(ref this.customComboBoxStateBool, value); }
 
         public string Error => null;
 
@@ -103,12 +85,13 @@ namespace Ferretto.VW.VWApp
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).InstallationAppMainWindowInstance = new InstallationApp.MainWindow();
+                        ((App)Application.Current).InstallationAppMainWindowInstance = (InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>();
+                        ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = (InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>();
                         ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         break;
 
                     case "Operator":
-                        if (this.installation_completed)
+                        if (this.installationCompleted)
                         {
                             ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
                             ((App)Application.Current).OperatorMainWindowInstance.Show();
@@ -160,7 +143,6 @@ namespace Ferretto.VW.VWApp
                     }
                     break;
             }
-
             return validationMessage;
         }
 

@@ -14,7 +14,7 @@ namespace Ferretto.VW.InstallationApp
 
     public delegate void FinishedMachineOnMarchChangeStateEvent();
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainWindow
     {
         #region Constructors
 
@@ -26,7 +26,6 @@ namespace Ferretto.VW.InstallationApp
             FinishedMachineOnMarchChangeStateEventHandler += () => { };
             MainWindowViewModel.ClickedOnMachineModeEventHandler += this.SetMachineMode;
             MainWindowViewModel.ClickedOnMachineOnMarchEventHandler += this.SetMachineOn;
-            this.DataContext = ViewModels.MainWindowVMInstance;
         }
 
         #endregion Constructors

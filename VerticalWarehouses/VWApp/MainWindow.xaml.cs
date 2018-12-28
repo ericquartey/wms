@@ -5,7 +5,7 @@ using Ferretto.VW.InverterDriver.Source;
 
 namespace Ferretto.VW.VWApp
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainWindow
     {
         #region Constructors
 

@@ -3,7 +3,7 @@ using System;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class WeightControlViewModel : BindableBase, IViewModel
+    public class WeightControlViewModel : BindableBase, IViewModel, IWeightControlViewModel
     {
         #region Fields
 

@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using Ferretto.VW.Utils.Source;
 
 namespace Ferretto.VW.InstallationApp
@@ -13,7 +14,6 @@ namespace Ferretto.VW.InstallationApp
         public Gate1ControlView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.Gate1ControlVMInstance;
             if (DataManager.CurrentData.GeneralInfo.Type_Bay1 == 1)
             {
                 this.SensorRegionContentControl.Content = new CustomControls.Controls.CustomGateControlSensorsTwoPositions();

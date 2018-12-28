@@ -20,7 +20,6 @@ namespace Ferretto.VW.InstallationApp
         public Gate2ControlView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.Gate2ControlVMInstance;
             if (DataManager.CurrentData.GeneralInfo.Type_Bay2 == 1)
             {
                 this.SensorRegionContentControl.Content = new CustomControls.Controls.CustomGateControlSensorsTwoPositions();

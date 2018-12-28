@@ -2,12 +2,13 @@
 using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.Utils.Source;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IViewModel
+    public class ResolutionCalibrationVerticalAxisViewModel : BindableBase, IViewModel, IResolutionCalibrationVerticalAxisViewModel, IViewModelRequiresContainer
     {
         #region Fields
 
@@ -17,6 +18,7 @@ namespace Ferretto.VW.InstallationApp
         private float acc = 1;
         private ICommand acceptButtonCommand;
         private ICommand cancelButtonCommand;
+        private IUnityContainer container;
         private string currentResolution;
 
         // Temporary assigned to constant value, they will become variable with new funcionalities
@@ -118,11 +120,16 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            ViewModels.ResolutionCalibrationVerticalAxisVMInstance.UnSubscribeMethodFromEvent();
+            ((ResolutionCalibrationVerticalAxisViewModel)this.container.Resolve<IResolutionCalibrationVerticalAxisViewModel>()).UnSubscribeMethodFromEvent();
             if (ActionManager.PositioningDrawerInstance != null)
             {
                 ActionManager.PositioningDrawerInstance.Stop();
             }
+        }
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.container = _container;
         }
 
         public void PositioningDone(bool result)
@@ -289,9 +296,11 @@ namespace Ferretto.VW.InstallationApp
                 this.x = this.desiredInitialPositionDec;
                 this.IsSetPositionButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
-
-                ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
-                ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
+                if (ActionManager.PositioningDrawerInstance != null)
+                {
+                    ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
+                    ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
+                }
             }
             // End changes for the initial positioning
         }
