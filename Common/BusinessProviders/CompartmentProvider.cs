@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace Ferretto.Common.BusinessProviders
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            //TODO: use Transaction
+            // TODO: add transaction management
 
             try
             {
@@ -100,6 +101,27 @@ namespace Ferretto.Common.BusinessProviders
             {
                 return new OperationResult(false, description: ex.Message);
             }
+        }
+
+        public async Task<OperationResult> AddRange(IEnumerable<ICompartment> compartments)
+        {
+            if (compartments == null)
+            {
+                throw new ArgumentNullException(nameof(compartments));
+            }
+
+            // TODO: add transaction management
+            foreach (var compartment in compartments.Cast<CompartmentDetails>())
+            {
+                var result = await this.Add(compartment);
+
+                if (result.Success == false)
+                {
+                    return result;
+                }
+            }
+
+            return new OperationResult(true);
         }
 
         public int Delete(int id)
