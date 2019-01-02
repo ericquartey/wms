@@ -61,8 +61,10 @@
 
             <wms:TextBox Name="LoginTB"
                          EditValue="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Foreground="White"
                          MaxLength="20" />
             <wms:PasswordBox EditValue="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             Foreground="White"
                              MaxLength="20" />
         </StackPanel>
 
