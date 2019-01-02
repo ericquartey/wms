@@ -1,4 +1,6 @@
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -6,6 +8,10 @@ namespace Ferretto.Common.BusinessProviders
     public interface ICompartmentProvider : IBusinessProvider<Compartment, CompartmentDetails>
     {
         #region Methods
+
+        Task<OperationResult> AddRange(IEnumerable<ICompartment> compartments);
+
+        Task<int> DeleteAsync(int id);
 
         IQueryable<Compartment> GetByItemId(int id);
 

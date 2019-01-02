@@ -97,16 +97,22 @@ namespace Ferretto.Common.BusinessProviders
 
         public int Delete(int id)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            var task = this.DeleteAsync(id);
+            task.RunSynchronously();
+
+            return task.Result;
+        }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            var dataContext = this.dataContextService.Current;
+
+            var existingModel = dataContext.Compartments.Find(id);
+            if (existingModel != null)
             {
-                var existingModel = dataContext.Compartments.Find(id);
-                if (existingModel != null)
-                {
-                    dataContext.Remove(existingModel);
-                }
-                return dataContext.SaveChanges();
+                dataContext.Remove(existingModel);
             }
+            return await dataContext.SaveChangesAsync();
         }
 
         public IQueryable<Compartment> GetAll()
