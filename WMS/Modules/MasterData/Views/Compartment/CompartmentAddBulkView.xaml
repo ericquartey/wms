@@ -9,19 +9,19 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 
-    <Grid x:Name="AddBulk"
-          MinWidth="300">
+    <Grid MinWidth="300"
+          Margin="10">
 
-        <wms:ActionBar Grid.Row="0"
-                       Grid.Column="1"
-                       Margin="0,5,10,10"
-                       HorizontalAlignment="Right"
-                       Panel.ZIndex="9999"
-                       ShowBackground="False"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <wms:ActionBar HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand, Mode=OneWay}"
-                               CommandParameter="BulkAdd"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
@@ -34,84 +34,66 @@
                                GlyphSize="Custom" />
         </wms:ActionBar>
 
-        <GroupBox Grid.Row="1"
-                  Margin="10,30"
-                  Header="{Binding Title, Mode=OneWay}">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="155" />
-                    <ColumnDefinition Width="10"
-                                      MaxWidth="10" />
-                    <ColumnDefinition Width="155" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto"
-                                   MinHeight="16" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="auto" />
-                </Grid.RowDefinitions>
+        <ScrollViewer x:Name="ScrollView"
+                      Grid.Row="1">
+            <GroupBox Header="{Binding Title, Mode=OneWay}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Label Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       HorizontalAlignment="Left"
-                       Content="Compartment Details" />
+                    <wms:SpinEdit Grid.Row="0"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                <TextBlock x:Name="ErrorText"
-                           Grid.Row="1"
-                           Grid.ColumnSpan="3"
-                           Width="200"
-                           MinWidth="270"
-                           HorizontalAlignment="Left"
-                           FontStyle="Italic"
-                           FontWeight="Bold"
-                           Foreground="{Binding ErrorColor}"
-                           Text="{Binding Error}"
-                           TextWrapping="WrapWithOverflow" />
+                    <wms:SpinEdit Grid.Row="0"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
+                    <wms:SpinEdit Grid.Row="1"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                <wms:SpinEdit x:Name="WidthText"
-                              Grid.Row="2"
-                              Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding SelectedBulkCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <wms:SpinEdit Grid.Row="1"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                <wms:SpinEdit x:Name="HeightText"
-                              Grid.Row="2"
-                              Grid.Column="2"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding SelectedBulkCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                    <wms:SpinEdit Grid.Row="2"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
-                <wms:SpinEdit x:Name="PositionXText"
-                              Grid.Row="3"
-                              Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding SelectedBulkCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                <wms:SpinEdit x:Name="PositionYText"
-                              Grid.Row="3"
-                              Grid.Column="2"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding SelectedBulkCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                <wms:SpinEdit x:Name="RowText"
-                              Grid.Row="4"
-                              Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding SelectedBulkCompartmentTray.Row, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-                <wms:SpinEdit x:Name="ColumnText"
-                              Grid.Row="4"
-                              Grid.Column="2"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding SelectedBulkCompartmentTray.Column, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-            </Grid>
-        </GroupBox>
+                    <wms:SpinEdit Grid.Row="2"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                </Grid>
+            </GroupBox>
+        </ScrollViewer>
+        <TextBlock Grid.Row="2"
+                   Grid.ColumnSpan="3"
+                   MaxWidth="300"
+                   Style="{DynamicResource TextBlockErrorMessageStyle}"
+                   Text="{Binding Model.Error}"
+                   Visibility="{Binding IsValidationEnabled, Converter={StaticResource BTVC}}" />
     </Grid>
 </UserControl>
