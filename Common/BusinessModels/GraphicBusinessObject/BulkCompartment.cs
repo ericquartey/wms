@@ -1,20 +1,24 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
-    public class BulkCompartment : BusinessObject
+    public class BulkCompartment : BusinessObject, ICompartment
     {
         #region Fields
 
-        private int columns;
-        private int height;
-        private int rows;
-        private int width;
-        private int xPosition;
-        private int yPosition;
+        private const int MinGridSize = 1;
+
+        private int columns = MinGridSize;
+        private int? height;
+        private int loadingUnitId;
+        private int rows = MinGridSize;
+        private int? width;
+        private int? xPosition;
+        private int? yPosition;
 
         #endregion Fields
 
@@ -27,49 +31,189 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.columns, value);
         }
 
+        public override string Error => string.Join(Environment.NewLine, new[]
+            {
+                this[nameof(this.XPosition)],
+                this[nameof(this.YPosition)],
+                this[nameof(this.Columns)],
+                this[nameof(this.Rows)],
+                this[nameof(this.Width)],
+                this[nameof(this.Height)]
+            }
+          .Distinct()
+          .Where(s => !string.IsNullOrEmpty(s))
+      );
+
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
-        public int Height
+        public int? Height
         {
             get => this.height;
-            set => this.SetIfStrictlyPositive(ref this.height, value);
+            set
+            {
+                if (this.SetProperty(ref this.height, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public LoadingUnitDetails LoadingUnit { get; set; }
+
+        public int LoadingUnitId
+        {
+            get => this.loadingUnitId;
+            set => this.SetProperty(ref this.loadingUnitId, value);
+        }
 
         [Display(Name = nameof(BusinessObjects.BulkCompartmentRows), ResourceType = typeof(BusinessObjects))]
         public int Rows
         {
             get => this.rows;
-            set => this.SetIfStrictlyPositive(ref this.rows, value);
+            set
+            {
+                if (this.SetProperty(ref this.rows, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
-        public int Width
+        public int? Width
         {
             get => this.width;
-            set => this.SetIfStrictlyPositive(ref this.width, value);
+            set
+            {
+                if (this.SetProperty(ref this.width, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
-        public int XPosition
+        public int? XPosition
         {
             get => this.xPosition;
-            set => this.SetIfPositive(ref this.xPosition, value);
+            set
+            {
+                if (this.SetProperty(ref this.xPosition, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
-        public int YPosition
+        public int? YPosition
         {
             get => this.yPosition;
-            set => this.SetIfPositive(ref this.yPosition, value);
+            set
+            {
+                if (this.SetProperty(ref this.yPosition, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
+        private bool CanAddToLoadingUnit => this.LoadingUnit == null || this.LoadingUnit.CanAddCompartment(this);
+
         #endregion Properties
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.XPosition):
+                        if (this.XPosition < 0)
+                        {
+                            return "X Position cannot be negative.";
+                        }
+
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return "The specified area cannot be inserted in the loading unit.";
+                        }
+
+                        break;
+
+                    case nameof(this.YPosition):
+                        if (this.YPosition < 0)
+                        {
+                            return "Y Position cannot be negative.";
+                        }
+
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return "The specified area cannot be inserted in the loading unit.";
+                        }
+
+                        break;
+
+                    case nameof(this.Width):
+                        if (this.Width <= 0)
+                        {
+                            return "Width must be strinctly positive.";
+                        }
+
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return "The specified area cannot be inserted in the loading unit.";
+                        }
+
+                        break;
+
+                    case nameof(this.Height):
+                        if (this.Height <= 0)
+                        {
+                            return "Height must be strinctly positive.";
+                        }
+
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return "The specified area cannot be inserted in the loading unit.";
+                        }
+
+                        break;
+
+                    case nameof(this.Rows):
+                        if (this.Rows < MinGridSize)
+                        {
+                            return "A minimum of 1 row needs to be specified.";
+                        }
+                        break;
+
+                    case nameof(this.Columns):
+                        if (this.Columns < MinGridSize)
+                        {
+                            return "A minimum of 1 column needs to be specified.";
+                        }
+                        break;
+
+                    default:
+                        return string.Empty;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        #endregion Indexers
 
         #region Methods
 
         public IEnumerable<ICompartment> CreateBulk()
         {
+            if (this.rows == 0 || this.columns == 0)
+            {
+                throw new InvalidOperationException();
+            }
+
             var compartments = new List<ICompartment>();
 
             var widthNewCompartment = this.width / this.columns;
@@ -85,6 +229,7 @@ namespace Ferretto.Common.BusinessModels
                         Height = heightNewCompartment,
                         XPosition = this.XPosition + (c * widthNewCompartment),
                         YPosition = this.YPosition + (r * heightNewCompartment),
+                        LoadingUnitId = this.LoadingUnitId
                     };
 
                     if (this.LoadingUnit.CanAddCompartment(compartment))
