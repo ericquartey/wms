@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
 namespace Ferretto.VW.InstallationApp
@@ -47,7 +46,6 @@ namespace Ferretto.VW.InstallationApp
 
         public InstallationAppModule(IUnityContainer _container)
         {
-            Debug.Print("Module ctor begin...\n");
             this.container = _container;
             this.mainWindowInstance = new MainWindow();
             this.beltBurnishingVMInstance = new BeltBurnishingViewModel();
@@ -120,7 +118,6 @@ namespace Ferretto.VW.InstallationApp
             this.SSMainVMInstance.InitializeViewModel(this.container);
             this.SSNavigationButtonsVMInstance.InitializeViewModel(this.container);
             this.MainWindowVMInstance.InitializeViewModel(this.container);
-            Debug.Print("Module ctor ended...\n");
         }
 
         #endregion Constructors
@@ -129,52 +126,8 @@ namespace Ferretto.VW.InstallationApp
 
         public void Initialize()
         {
-            Debug.Print("Module initialize method called...\n");
         }
 
         #endregion Methods
-
-        //public void Initialize()
-        //{
-        //    this.container.RegisterInstance<IMainWindow>(this.mainWindowInstance);
-        //    this.container.RegisterInstance<IBeltBurnishingViewModel>(this.beltBurnishingVMInstance);
-        //    this.container.RegisterInstance<ICellsControlViewModel>(this.cellsControlVMInstance);
-        //    this.container.RegisterInstance<ICellsPanelsControlViewModel>(this.cellsPanelsControlVMInstance);
-        //    this.container.RegisterInstance<IGate1ControlViewModel>(this.gate1ControlVMInstance);
-        //    this.container.RegisterInstance<IGate2ControlViewModel>(this.gate2ControlVMInstance);
-        //    this.container.RegisterInstance<IGate3ControlViewModel>(this.gate3ControlVMInstance);
-        //    this.container.RegisterInstance<IGate1HeightControlViewModel>(this.gate1HeightControlVMInstance);
-        //    this.container.RegisterInstance<IGate2HeightControlViewModel>(this.gate2HeightControlVMInstance);
-        //    this.container.RegisterInstance<IGate3HeightControlViewModel>(this.gate3HeightControlVMInstance);
-        //    this.container.RegisterInstance<IIdleViewModel>(this.IdleVMInstance);
-        //    this.container.RegisterInstance<IInstallationStateViewModel>(this.InstallationStateVMInstance);
-        //    this.container.RegisterInstance<ILSMTGateEngineViewModel>(this.LSMTGateEngineVMInstance);
-        //    this.container.RegisterInstance<ILSMTHorizontalEngineViewModel>(this.LSMTHorizontalEngineVMInstance);
-        //    this.container.RegisterInstance<ILSMTMainViewModel>(this.LSMTMainVMInstance);
-        //    this.container.RegisterInstance<ILSMTNavigationButtonsViewModel>(this.LSMTNavigationButtonsVMInstance);
-        //    this.container.RegisterInstance<ILSMTVerticalEngineViewModel>(this.LSMTVerticalEngineVMInstance);
-        //    this.container.RegisterInstance<IMainWindowBackToIAPPButtonViewModel>(this.MainWindowBackToIAPPButtonVMInstance);
-        //    this.container.RegisterInstance<IMainWindowNavigationButtonsViewModel>(this.MainWindowNavigationButtonsVMInstance);
-        //    this.container.RegisterInstance<IResolutionCalibrationVerticalAxisViewModel>(this.ResolutionCalibrationVerticalAxisVMInstance);
-        //    this.container.RegisterInstance<ISSBaysViewModel>(this.SSBaysVMInstance);
-        //    this.container.RegisterInstance<ISSCradleViewModel>(this.SSCradleVMInstance);
-        //    this.container.RegisterInstance<ISSGateViewModel>(this.SSGateVMInstance);
-        //    this.container.RegisterInstance<ISSMainViewModel>(this.SSMainVMInstance);
-        //    this.container.RegisterInstance<ISSNavigationButtonsViewModel>(this.SSNavigationButtonsVMInstance);
-        //    this.container.RegisterInstance<ISSVariousInputsViewModel>(this.SSVariousInputsVMInstance);
-        //    this.container.RegisterInstance<ISSVerticalAxisViewModel>(this.SSVerticalAxisVMInstance);
-        //    this.container.RegisterInstance<IVerticalAxisCalibrationViewModel>(this.VerticalAxisCalibrationVMInstance);
-        //    this.container.RegisterInstance<IVerticalOffsetCalibrationViewModel>(this.VerticalOffsetCalibrationVMInstance);
-        //    this.container.RegisterInstance<IWeightControlViewModel>(this.WeightControlVMInstance);
-        //    this.container.RegisterInstance<IMainWindowViewModel>(this.MainWindowVMInstance);
-
-        //    this.LSMTNavigationButtonsVMInstance.InitializeViewModel(this.container);
-        //    this.LSMTMainVMInstance.InitializeViewModel(this.container);
-        //    this.MainWindowBackToIAPPButtonVMInstance.InitializeViewModel(this.container);
-        //    this.ResolutionCalibrationVerticalAxisVMInstance.InitializeViewModel(this.container);
-        //    this.SSMainVMInstance.InitializeViewModel(this.container);
-        //    this.SSNavigationButtonsVMInstance.InitializeViewModel(this.container);
-        //    this.MainWindowVMInstance.InitializeViewModel(this.container);
-        //}
     }
 }
