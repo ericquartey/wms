@@ -70,54 +70,135 @@
                       IsTabStop="True">
 
             <Grid>
-                <wms:TextBox Grid.Row="0"
-                             Grid.Column="1"
-                             HorizontalAlignment="Stretch"
-                             EditValue="Lot" />
-                <!--  EditValue="{Binding Compartment.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />  -->
-                <wms:SpinEdit Grid.Column="1"
-                              Margin="0,0,20,0"
-                              AllowNullInput="False"
-                              EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              MinValue="1" />
-                <wms:TextBox Grid.Row="0"
-                             Grid.Column="1"
-                             HorizontalAlignment="Stretch"
-                             EditValue="{Binding Compartment.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <wms:TextBox Grid.Row="0"
-                             Grid.Column="3"
-                             HorizontalAlignment="Stretch"
-                             EditValue="{Binding Compartment.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <wms:ComboBox x:Name="MaterialStatus"
-                              Grid.Row="5"
-                              Grid.Column="0"
-                              EditValue="{Binding Path=Compartment.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding Path=Compartment.MaterialStatusChoices}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                <wms:ComboBox x:Name="PackageType"
-                              Grid.Row="1"
-                              Grid.Column="1"
-                              EditValue="{Binding Path=Compartment.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding Path=Compartment.PackageTypeChoices}" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"
+                                      MinWidth="200" />
+                    <ColumnDefinition Width="*"
+                                      MinWidth="600" />
 
-                <wms:TextBox Grid.Row="1"
-                             Grid.Column="3"
-                             HorizontalAlignment="Stretch"
-                             EditValue="{Binding Compartment.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid.ColumnDefinitions>
 
-                <wms:SpinEdit x:Name="QuantityText"
-                              Grid.Row="4"
-                              Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding Compartment.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <wms:SpinEdit x:Name="CapacityText"
-                              Grid.Row="4"
-                              Grid.Column="2"
-                              HorizontalAlignment="Stretch"
-                              EditValue="{Binding Compartment.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              MinValue="1" />
+                <GroupBox Grid.Row="0"
+                          Grid.Column="0"
+                          Margin="0"
+                          Header="{x:Static res:MasterData.ItemListInformation}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <wms:TextBox Grid.Row="0"
+                                     Grid.Column="0"
+                                     HorizontalAlignment="Stretch"
+                                     EditValue="{Binding ItemListRow.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="0"
+                                     HorizontalAlignment="Stretch"
+                                     EditValue="{Binding ItemListRow.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="1"
+                          Grid.Column="0"
+                          Margin="0"
+                          Header="{x:Static res:MasterData.ItemListInformation}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <wms:SpinEdit Grid.Row="0"
+                                      Grid.Column="0"
+                                      HorizontalAlignment="Stretch"
+                                      AllowNullInput="False"
+                                      EditValue="{Binding Path=ItemListRow.RowPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
+                        <wms:ComboBox x:Name="ItemListRowStatus"
+                                      Grid.Row="1"
+                                      Grid.Column="0"
+                                      EditValue="{Binding Path=ItemListRow.ItemListRowStatus, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=ItemListRow.ItemListRowStatusChoice}" />
+
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Grid.Row="0"
+                          Grid.RowSpan="2"
+                          Grid.Column="1"
+                          Margin="0"
+                          Header="{x:Static res:MasterData.ItemListInformation}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <wms:TextBox Grid.Row="0"
+                                     Grid.Column="0"
+                                     Margin="0,0,20,0"
+                                     HorizontalAlignment="Stretch"
+                                     EditValue="{Binding ItemListRow.Lot, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:TextBox Grid.Row="1"
+                                     Grid.Column="0"
+                                     Margin="0,0,20,0"
+                                     HorizontalAlignment="Stretch"
+                                     EditValue="{Binding ItemListRow.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:TextBox Grid.Row="2"
+                                     Grid.Column="0"
+                                     Margin="0,0,20,0"
+                                     HorizontalAlignment="Stretch"
+                                     EditValue="{Binding ItemListRow.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+
+                        <wms:ComboBox x:Name="MaterialStatus"
+                                      Grid.Row="0"
+                                      Grid.Column="1"
+                                      Margin="0,0,20,0"
+                                      EditValue="{Binding Path=ItemListRow.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=ItemListRow.MaterialStatusChoices}" />
+
+                        <wms:ComboBox x:Name="PackageType"
+                                      Grid.Row="1"
+                                      Grid.Column="1"
+                                      Margin="0,0,20,0"
+                                      EditValue="{Binding Path=ItemListRow.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemsSource="{Binding Path=ItemListRow.PackageTypeChoices}" />
+
+
+                        <wms:SpinEdit x:Name="QuantityText"
+                                      Grid.Row="0"
+                                      Grid.Column="2"
+                                      Margin="0,0,20,0"
+                                      HorizontalAlignment="Stretch"
+                                      AllowNullInput="False"
+                                      EditValue="{Binding ItemListRow.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <wms:SpinEdit x:Name="CapacityText"
+                                      Grid.Row="1"
+                                      Grid.Column="2"
+                                      Margin="0,0,20,0"
+                                      HorizontalAlignment="Stretch"
+                                      EditValue="{Binding ItemListRow.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      MinValue="1" />
+                    </Grid>
+                </GroupBox>
             </Grid>
         </ScrollViewer>
 
@@ -146,16 +227,16 @@
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.CreationDate}" />
+                                          Content="{Binding Path=ItemListRow.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.LastModificationDate}" />
+                                          Content="{Binding Path=ItemListRow.LastModificationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.FirstExecutionDate}" />
+                                          Content="{Binding Path=ItemListRow.FirstExecutionDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.ExecutionEndDate}" />
+                                          Content="{Binding Path=ItemListRow.ExecutionEndDate}" />
                         </StackPanel>
 
                     </GroupBox>
