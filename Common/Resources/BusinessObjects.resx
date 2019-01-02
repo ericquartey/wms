@@ -859,9 +859,9 @@
     <value>Dispatched Quantity</value>
     <comment>List Row - Dispatched Quantity</comment>
   </data>
-  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
-    <value>Run Immediately</value>
-    <comment>List Execution Request - Run Immediately</comment>
+  <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
+    <value>Schedule</value>
+    <comment>List Execution Request - Schedule</comment>
   </data>
   <data name="ItemListRowStatusWaiting" xml:space="preserve">
     <value>Waiting</value>

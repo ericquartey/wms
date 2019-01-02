@@ -117,7 +117,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private Boolean CanExecuteAddListRowCommand()
         {
-            return this.selectedItemListRow != null;
+            return this.ItemList != null && this.itemList.ItemListStatus == ItemListStatus.Completed;
         }
 
         private bool CanExecuteListCommand()

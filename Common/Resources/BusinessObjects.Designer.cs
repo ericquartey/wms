@@ -727,11 +727,11 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Run Immediately.
+        ///   Looks up a localized string similar to Schedule.
         /// </summary>
-        public static string ItemListExecutionRequestRunImmediately {
+        public static string ItemListExecutionRequestSchedule {
             get {
-                return ResourceManager.GetString("ItemListExecutionRequestRunImmediately", resourceCulture);
+                return ResourceManager.GetString("ItemListExecutionRequestSchedule", resourceCulture);
             }
         }
         

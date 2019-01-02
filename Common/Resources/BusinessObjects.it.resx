@@ -735,4 +735,8 @@
   <data name="ItemManagementTypeVolume" xml:space="preserve">
     <value>Volume</value>
   </data>
+  <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
+    <value>Pianifica</value>
+    <comment>List Execution Request - Schedule</comment>
+  </data>
 </root>
