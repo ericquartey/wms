@@ -10,6 +10,7 @@ using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
+using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.VWApp
 {
@@ -34,9 +35,9 @@ namespace Ferretto.VW.VWApp
 
         public MainWindowViewModel()
         {
-            this.installationCompleted = DataManager.CurrentData.InstallationInfo.Machine_Ok;
-            this.machineModel = DataManager.CurrentData.GeneralInfo.Model;
-            this.serialNumber = DataManager.CurrentData.GeneralInfo.Serial;
+            this.installationCompleted = ((DataManager)this.Container.Resolve<IDataManager>()).InstallationInfo.Machine_Ok;
+            this.machineModel = ((DataManager)this.Container.Resolve<IDataManager>()).GeneralInfo.Model;
+            this.serialNumber = ((DataManager)this.Container.Resolve<IDataManager>()).GeneralInfo.Serial;
         }
 
         #endregion Constructors
@@ -115,19 +116,19 @@ namespace Ferretto.VW.VWApp
 
         private void InitializeInverterConnection()
         {
-            InverteDriverManager.InverterDriverStaticInstance = new InverterDriver.InverterDriver();
-            if (InverteDriverManager.InverterDriverStaticInstance.Initialize())
+            var inverter = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+            if (inverter.Initialize())
             {
-                ActionManager.PositioningDrawerInstance = new PositioningDrawer();
-                ActionManager.PositioningDrawerInstance.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
-                ActionManager.PositioningDrawerInstance.Initialize();  // 1024 is the default value
+                var positioning = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
+                positioning.SetInverterDriverInterface = inverter;
+                positioning.Initialize();  // 1024 is the default value
 
-                ActionManager.DrawerWeightDetectionInstance = new DrawerWeightDetection();
-                ActionManager.DrawerWeightDetectionInstance.SetPositioningDrawerInterface = ActionManager.PositioningDrawerInstance;
-                ActionManager.DrawerWeightDetectionInstance.Initialize();
+                var drawerWeight = (DrawerWeightDetection)this.Container.Resolve<IDrawerWeightDetection>();
+                drawerWeight.SetPositioningDrawerInterface = positioning;
+                drawerWeight.Initialize();
 
-                ActionManager.ConverterInstance = new Converter();
-                ActionManager.ConverterInstance.ManageResolution = 1024;
+                var converter = (Converter)this.Container.Resolve<IConverter>();
+                converter.ManageResolution = 1024;
             }
         }
 

@@ -16,7 +16,7 @@ namespace Ferretto.VW.InverterDriver
     /// This class has an internal thread to manage the basic automation for the inverter.
     /// (see System.Net.Sockets.Socket class for the implementation details).
     /// </summary>
-    public class InverterDriver : IDriverBase, IDriver, IDisposable
+    public class InverterDriver : IDriverBase, IDriver, IDisposable, IInverterDriver
     {
         #region Fields
 

@@ -5,7 +5,10 @@ using Prism.Modularity;
 using Ferretto.VW.InstallationApp;
 using Ferretto.VW.Navigation;
 using Ferretto.VW.Utils.Source;
+using Ferretto.VW.InverterDriver;
 using Prism.Mvvm;
+using Ferretto.VW.ActionBlocks;
+using Ferretto.VW.MathLib;
 
 namespace Ferretto.VW.VWApp
 {
@@ -61,11 +64,11 @@ namespace Ferretto.VW.VWApp
         protected override DependencyObject CreateShell()
         {
             NavigationService.InitializeEvents();
-            DataManager.CurrentData = new DataManager();
             NavigationService.ChangeSkinToDarkEventHandler += (Application.Current as App).ChangeSkin;
-
-            var MainWindowVInstance = new MainWindow();
-            this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);
+            this.InitializeMainWindow();
+            this.InitializeData();
+            this.InitializeInverter();
+            this.InitializeActions();
 
             return (MainWindow)this.Container.Resolve<IMainWindow>();
         }
@@ -74,6 +77,41 @@ namespace Ferretto.VW.VWApp
         {
             ((MainWindowViewModel)((App)Application.Current).MainWindow.DataContext).Container = this.Container;
             Application.Current.MainWindow.Show();
+        }
+
+        private void InitializeActions()
+        {
+            var positioning = new PositioningDrawer();
+            var drawerWeightDetection = new DrawerWeightDetection();
+            var converter = new Converter();
+            var calibrateVertical = new CalibrateVerticalAxis();
+
+            this.Container.RegisterInstance<IPositioningDrawer>(positioning);
+            this.Container.RegisterInstance<IDrawerWeightDetection>(drawerWeightDetection);
+            this.Container.RegisterInstance<IConverter>(converter);
+            this.Container.RegisterInstance<ICalibrateVerticalAxis>(calibrateVertical);
+        }
+
+        private void InitializeData()
+        {
+            var data = new DataManager();
+            this.Container.RegisterInstance<IDataManager>(data);
+        }
+
+        private void InitializeInverter()
+        {
+            var inverter = new InverterDriver.InverterDriver();
+            this.Container.RegisterInstance<IInverterDriver>(inverter);
+        }
+
+        private void InitializeIODevice()
+        {
+        }
+
+        private void InitializeMainWindow()
+        {
+            var MainWindowVInstance = new MainWindow();
+            this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);
         }
 
         #endregion Methods
