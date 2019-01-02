@@ -37,18 +37,18 @@
 
                 <wms:InfoText Grid.Column="0"
                               Content="{Binding ExecutionRequest.ItemListDetails.Code}" />
-                <wms:InfoText Grid.Column="0"
-                              Grid.Row="1"
+                <wms:InfoText Grid.Row="1"
+                              Grid.Column="0"
                               Content="{Binding ExecutionRequest.ItemListDetails.Description}" />
-                <wms:InfoText Grid.Column="1"
-                              Grid.Row="0"
+                <wms:InfoText Grid.Row="0"
+                              Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListDetails.ItemListTypeDescription}" />
-                <wms:InfoText Grid.Column="1"
-                              Grid.Row="1"
+                <wms:InfoText Grid.Row="1"
+                              Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListDetails.ItemListStatus}"
                               IsPillVisible="True" />
-                <wms:InfoText Grid.Column="2"
-                              Grid.Row="0"
+                <wms:InfoText Grid.Row="0"
+                              Grid.Column="2"
                               Content="{Binding ExecutionRequest.ItemListDetails.ItemListItemsCount}" />
             </Grid>
         </GroupBox>
@@ -58,27 +58,34 @@
                   Header="{x:Static res:MasterData.ItemListExecuteOptions}">
 
             <StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <wms:ComboBox x:Name="SelectedArea"
+                                  DisplayMember="Name"
+                                  EditValue="{Binding ExecutionRequest.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  IsTextEditable="False"
+                                  ItemsSource="{Binding ExecutionRequest.AreaChoices}" />
 
-                <wms:ComboBox x:Name="SelectedArea"
-                              DisplayMember="Name"
-                              EditValue="{Binding ExecutionRequest.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              IsTextEditable="False"
-                              ItemsSource="{Binding ExecutionRequest.AreaChoices}" />
-
-                <StackPanel IsEnabled="{Binding ExecutionRequest.AreaIdHasValue}"
-                            Orientation="Horizontal">
+                    <wms:ComboBox x:Name="SelectedBay"
+                                  Grid.Column="2"
+                                  EditValue="{Binding ExecutionRequest.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  IsTextEditable="False"
+                                  ItemsSource="{Binding ExecutionRequest.BayChoices}"
+                                  Visibility="{Binding ExecutionRequest.Schedule, Converter={StaticResource BTVIC}}" />
+                </Grid>
+                <StackPanel Orientation="Horizontal">
                     <dxe:ToggleSwitch Margin="0,20,10,0"
-                                      IsChecked="{Binding ExecutionRequest.RunImmediately}"
+                                      IsChecked="{Binding ExecutionRequest.Schedule}"
                                       Template="{DynamicResource WmsToggleSwitch}" />
                     <Label Margin="0,20,0,0"
-                           Content="{x:Static res:BusinessObjects.ItemListExecutionRequestRunImmediately}" />
+                           Content="{x:Static res:BusinessObjects.ItemListExecutionRequestSchedule}" />
                 </StackPanel>
 
-                <wms:ComboBox x:Name="SelectedBay"
-                              EditValue="{Binding ExecutionRequest.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              IsTextEditable="False"
-                              ItemsSource="{Binding ExecutionRequest.BayChoices}"
-                              Visibility="{Binding ExecutionRequest.RunImmediately, Converter={StaticResource BTVC}}" />
+
 
             </StackPanel>
         </GroupBox>

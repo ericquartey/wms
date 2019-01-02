@@ -86,7 +86,7 @@
                     <dxg:GridColumn Width="50*"
                                     FieldName="Column" />
                     <dxg:GridColumn Width="50*"
-                                    FieldName="SideDescription" />
+                                    FieldName="Side" />
                     <dxg:GridColumn Width="50*"
                                     FieldName="AbcClassDescription" />
                     <dxg:GridColumn Width="50*"

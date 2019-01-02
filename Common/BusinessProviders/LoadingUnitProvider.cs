@@ -80,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
-                    CellSide = l.Cell.Side.ToString(),
+                    CellSide = (Side)l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
                 }).AsNoTracking();
@@ -122,7 +122,7 @@ namespace Ferretto.Common.BusinessProviders
                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
                     Note = l.Note,
                     IsCellPairingFixed = l.IsCellPairingFixed,
-                    ReferenceType = l.Reference.ToString(),
+                    ReferenceType = (ReferenceType)l.Reference,
                     Height = l.Height,
                     Weight = l.Weight,
                     HandlingParametersCorrection = l.HandlingParametersCorrection,
@@ -171,7 +171,7 @@ namespace Ferretto.Common.BusinessProviders
                     Length = l.LoadingUnitType.LoadingUnitSizeClass.Length,
                     Note = l.Note,
                     IsCellPairingFixed = l.IsCellPairingFixed,
-                    ReferenceType = l.Reference.ToString(),
+                    ReferenceType = (ReferenceType)l.Reference,
                     Height = l.Height,
                     Weight = l.Weight,
                     HandlingParametersCorrection = l.HandlingParametersCorrection,
@@ -198,10 +198,6 @@ namespace Ferretto.Common.BusinessProviders
             {
                 loadingUnitDetails.AddCompartment(compartment);
             }
-
-            loadingUnitDetails.ReferenceTypeChoices =
-                ((DataModels.ReferenceType[])Enum.GetValues(typeof(DataModels.ReferenceType)))
-                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
             loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
 
             return loadingUnitDetails;
@@ -331,7 +327,7 @@ namespace Ferretto.Common.BusinessProviders
                     AisleName = l.Cell.Aisle.Name,
                     CellFloor = l.Cell.Floor,
                     CellColumn = l.Cell.Column,
-                    CellSide = l.Cell.Side.ToString(),
+                    CellSide = (Side)l.Cell.Side,
                     CellNumber = l.Cell.CellNumber,
                     CellPositionDescription = l.CellPosition.Description,
                 }).AsNoTracking();

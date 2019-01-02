@@ -93,7 +93,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
             OperationResult result = null;
-            if (this.executionRequest.RunImmediately)
+            if (!this.executionRequest.Schedule)
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue);
 

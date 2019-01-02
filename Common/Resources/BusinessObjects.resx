@@ -202,7 +202,7 @@
     <comment>Compartment - Lot</comment>
   </data>
   <data name="CompartmentMaxCapacity" xml:space="preserve">
-    <value>Max Capacity</value>
+    <value>Max Capacity [pieces]</value>
     <comment>Compartment - Max Capacity</comment>
   </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
@@ -210,11 +210,11 @@
     <comment>Compartment - Fixed Pairing</comment>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
-    <value>Reserved for Pick</value>
+    <value>Reserved for Pick [pieces]</value>
     <comment>Compartment - Reserved for Pick</comment>
   </data>
   <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Reserved to Store</value>
+    <value>Reserved to Store [pieces]</value>
     <comment>Compartment - Reserved To Store</comment>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
@@ -222,7 +222,7 @@
     <comment>Compartment - Status</comment>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
-    <value>Stock</value>
+    <value>Stock [pieces]</value>
     <comment>Compartment - Stock</comment>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
@@ -234,7 +234,7 @@
     <comment>Compartment - Sub 2</comment>
   </data>
   <data name="CompartmentType" xml:space="preserve">
-    <value>Compartment Type</value>
+    <value>Compartment Type [mm] x [mm]</value>
     <comment>Compartment Type</comment>
   </data>
   <data name="CompartmentTypeDescription" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>Allowed Item In Compartment - Max Capacity</comment>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
-    <value>Inventory Tolerance</value>
+    <value>Inventory Tolerance [pieces]</value>
     <comment>Item - Last Inventory Date</comment>
   </data>
   <data name="ItemLastInventoryDate" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Item - Notes</comment>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
-    <value>Pick Tolerance</value>
+    <value>Pick Tolerance [pieces]</value>
     <comment>Item - Pick Tolerance</comment>
   </data>
   <data name="ItemReorderPoint" xml:space="preserve">
@@ -354,7 +354,7 @@
     <comment>Item - Stock (calculated)</comment>
   </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Store Tolerance</value>
+    <value>Store Tolerance [pieces]</value>
     <comment>Item - Store Tolerance</comment>
   </data>
   <data name="ItemWidth" xml:space="preserve">
@@ -859,9 +859,9 @@
     <value>Dispatched Quantity</value>
     <comment>List Row - Dispatched Quantity</comment>
   </data>
-  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
-    <value>Run Immediately</value>
-    <comment>List Execution Request - Run Immediately</comment>
+  <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
+    <value>Schedule</value>
+    <comment>List Execution Request - Schedule</comment>
   </data>
   <data name="ItemListRowStatusWaiting" xml:space="preserve">
     <value>Waiting</value>
@@ -894,6 +894,30 @@
   <data name="ItemListTypeInventory" xml:space="preserve">
     <value>Inventory</value>
     <comment>Item List Type - Inventory</comment>
+  </data>
+  <data name="MonoReference" xml:space="preserve">
+    <value>Mono Reference</value>
+  </data>
+  <data name="PluriReference" xml:space="preserve">
+    <value>Multi Reference</value>
+  </data>
+  <data name="SideBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="SideFront" xml:space="preserve">
+    <value>Front</value>
+  </data>
+  <data name="SideLeft" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="SideRight" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="ItemManagementTypeFIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementTypeVolume" xml:space="preserve">
+    <value>Volume</value>
   </data>
   <data name="ItemListRowCompletionDate" xml:space="preserve">
     <value>Completion Date</value>

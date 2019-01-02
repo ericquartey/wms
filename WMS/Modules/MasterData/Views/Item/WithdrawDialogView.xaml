@@ -5,17 +5,17 @@
                    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
-                   xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"                   
+                   xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                    Title="{x:Static res:Navigation.ItemWithdraw}"
-                   HeaderIsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
                    Width="500"
                    Height="600"
                    d:DesignHeight="500"
                    d:DesignWidth="500"
+                   HeaderIsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}"
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
-    
+
     <Grid Margin="5,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -43,7 +43,7 @@
                               Content="{Binding ItemWithdraw.ItemDetails.MeasureUnitDescription}" />
                 <wms:InfoText Grid.Row="1"
                               Grid.Column="1"
-                              Content="{Binding ItemWithdraw.ItemDetails.ManagementTypeDescription}" />
+                              Content="{Binding ItemWithdraw.ItemDetails.ManagementType}" />
             </Grid>
         </GroupBox>
 
