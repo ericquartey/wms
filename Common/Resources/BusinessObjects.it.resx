@@ -735,6 +735,37 @@
   <data name="ItemManagementTypeVolume" xml:space="preserve">
     <value>Volume</value>
   </data>
+  <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
+    <value>Pianifica</value>
+    <comment>List Execution Request - Schedule</comment>
+  </data>
+  <data name="ItemListRowCompletionDate" xml:space="preserve">
+    <value>Data di completamento</value>
+  </data>
+  <data name="ItemListRowExecutionDate" xml:space="preserve">
+    <value>Data di esecuzione</value>
+  </data>
+  <data name="ItemListRowLastModificationDate" xml:space="preserve">
+    <value>Data di ultima modifica</value>
+  </data>
+  <data name="ItemListRowLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="ItemListRowRegistrationNumber" xml:space="preserve">
+    <value>Numero di registrazione</value>
+  </data>
+  <data name="ItemListRowSub1" xml:space="preserve">
+    <value>Sub 1</value>
+  </data>
+  <data name="ItemListRowSub2" xml:space="preserve">
+    <value>Sub 2</value>
+  </data>
+  <data name="CompletionDate" xml:space="preserve">
+    <value>Data di completamento</value>
+  </data>
+  <data name="LastExecutionDate" xml:space="preserve">
+    <value>Data Ultima Esecuzione</value>
+  </data>
   <data name="ItemListRowLot" xml:space="preserve">
     <value>Lotto</value>
   </data>

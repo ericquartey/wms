@@ -859,9 +859,9 @@
     <value>Dispatched Quantity</value>
     <comment>List Row - Dispatched Quantity</comment>
   </data>
-  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
-    <value>Run Immediately</value>
-    <comment>List Execution Request - Run Immediately</comment>
+  <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
+    <value>Schedule</value>
+    <comment>List Execution Request - Schedule</comment>
   </data>
   <data name="ItemListRowStatusWaiting" xml:space="preserve">
     <value>Waiting</value>
@@ -918,6 +918,33 @@
   </data>
   <data name="ItemManagementTypeVolume" xml:space="preserve">
     <value>Volume</value>
+  </data>
+  <data name="ItemListRowCompletionDate" xml:space="preserve">
+    <value>Completion Date</value>
+  </data>
+  <data name="ItemListRowExecutionDate" xml:space="preserve">
+    <value>Execution Date</value>
+  </data>
+  <data name="ItemListRowLastModificationDate" xml:space="preserve">
+    <value>Last Modification Date</value>
+  </data>
+  <data name="ItemListRowLot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="ItemListRowRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+  </data>
+  <data name="ItemListRowSub1" xml:space="preserve">
+    <value>Sub 1</value>
+  </data>
+  <data name="ItemListRowSub2" xml:space="preserve">
+    <value>Sub 2</value>
+  </data>
+  <data name="CompletionDate" xml:space="preserve">
+    <value>Completion Date</value>
+  </data>
+  <data name="LastExecutionDate" xml:space="preserve">
+    <value>Last Execution Date</value>
   </data>
   <data name="ItemListRowRegistrationNumber" xml:space="preserve">
     <value>Registration Number</value>

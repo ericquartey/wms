@@ -203,9 +203,6 @@
                           Grid.ColumnSpan="4">
                     <GroupBox.Header>
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="4*" />
@@ -223,6 +220,7 @@
 
                             <wms:ActionBar Grid.Row="0"
                                            Grid.ColumnSpan="4"
+                                           Height="28"
                                            HorizontalAlignment="Right"
                                            Style="{DynamicResource ActionBarNotCustomizable}">
 
@@ -277,6 +275,8 @@
                                                 FieldName="DispatchedQuantity" />
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="ItemListRowStatus" />
+                                <dxg:GridColumn Width="120*"
+                                                FieldName="MaterialStatusDescription" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>

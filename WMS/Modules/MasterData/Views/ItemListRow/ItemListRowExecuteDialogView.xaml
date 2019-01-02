@@ -38,14 +38,14 @@
 
                 <wms:InfoText Grid.Column="0"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListCode}" />
-                <wms:InfoText Grid.Column="0"
-                              Grid.Row="1"
+                <wms:InfoText Grid.Row="1"
+                              Grid.Column="0"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListDescription}" />
-                <wms:InfoText Grid.Column="1"
-                              Grid.Row="0"
+                <wms:InfoText Grid.Row="0"
+                              Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListType}" />
-                <wms:InfoText Grid.Column="1"
-                              Grid.Row="1"
+                <wms:InfoText Grid.Row="1"
+                              Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListStatus}"
                               IsPillVisible="True" />
             </Grid>
@@ -66,14 +66,14 @@
 
                 <wms:InfoText Grid.Column="0"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.Code}" />
-                <wms:InfoText Grid.Column="0"
-                              Grid.Row="1"
+                <wms:InfoText Grid.Row="1"
+                              Grid.Column="0"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemDescription}" />
-                <wms:InfoText Grid.Column="1"
-                              Grid.Row="0"
+                <wms:InfoText Grid.Row="0"
+                              Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.RequiredQuantity}" />
-                <wms:InfoText Grid.Column="1"
-                              Grid.Row="1"
+                <wms:InfoText Grid.Row="1"
+                              Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListRowStatus}"
                               IsPillVisible="True" />
             </Grid>
@@ -84,27 +84,33 @@
                   Header="{x:Static res:MasterData.ItemListRowExecuteOptions}">
 
             <StackPanel>
-
-                <wms:ComboBox x:Name="SelectedArea"
-                              DisplayMember="Name"
-                              EditValue="{Binding ExecutionRequest.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              IsTextEditable="False"
-                              ItemsSource="{Binding ExecutionRequest.AreaChoices}" />
-
-                <StackPanel IsEnabled="{Binding ExecutionRequest.AreaIdHasValue}"
-                            Orientation="Horizontal">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <wms:ComboBox x:Name="SelectedArea"
+                                  Grid.Row="0"
+                                  DisplayMember="Name"
+                                  EditValue="{Binding ExecutionRequest.AreaId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  IsTextEditable="False"
+                                  ItemsSource="{Binding ExecutionRequest.AreaChoices}" />
+                    <wms:ComboBox x:Name="SelectedBay"
+                                  Grid.Column="2"
+                                  EditValue="{Binding ExecutionRequest.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  IsTextEditable="False"
+                                  ItemsSource="{Binding ExecutionRequest.BayChoices}"
+                                  Visibility="{Binding ExecutionRequest.Schedule, Converter={StaticResource BTVIC}}" />
+                </Grid>
+                <StackPanel Orientation="Horizontal">
                     <dxe:ToggleSwitch Margin="0,20,10,0"
-                                      IsChecked="{Binding ExecutionRequest.RunImmediately}"
+                                      IsChecked="{Binding ExecutionRequest.Schedule}"
                                       Template="{DynamicResource WmsToggleSwitch}" />
                     <Label Margin="0,20,0,0"
-                           Content="{x:Static res:BusinessObjects.ItemListExecutionRequestRunImmediately}" />
+                           Content="{x:Static res:BusinessObjects.ItemListExecutionRequestSchedule}" />
                 </StackPanel>
 
-                <wms:ComboBox x:Name="SelectedBay"
-                              EditValue="{Binding ExecutionRequest.BayId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              IsTextEditable="False"
-                              ItemsSource="{Binding ExecutionRequest.BayChoices}"
-                              Visibility="{Binding ExecutionRequest.RunImmediately, Converter={StaticResource BTVC}}" />
 
             </StackPanel>
         </GroupBox>
@@ -114,28 +120,28 @@
                            IsBusy="{Binding IsBusy}"
                            ShowMode="CircleMin">
             <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Margin="5"
-                       Style="{DynamicResource TextBlockErrorMessageStyle}"
-                       Text="{Binding ValidationError}" />
+                <TextBlock Margin="5"
+                           Style="{DynamicResource TextBlockErrorMessageStyle}"
+                           Text="{Binding ValidationError}" />
 
-            <wms:ActionBar Grid.Column="1"
-                           Margin="5"
-                           HorizontalAlignment="Right"
-                           VerticalAlignment="Bottom"
-                           Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding RunListRowExecuteCommand}"
-                                   Content="{x:Static res:MasterData.RunItemListRow}"
-                                   CustomGlyphSize="24,24"
-                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"
-                                   GlyphSize="Custom" />
-            </wms:ActionBar>
+                <wms:ActionBar Grid.Column="1"
+                               Margin="5"
+                               HorizontalAlignment="Right"
+                               VerticalAlignment="Bottom"
+                               Style="{DynamicResource ActionBarNotCustomizable}">
+                    <wms:ActionBarItem Command="{Binding RunListRowExecuteCommand}"
+                                       Content="{x:Static res:MasterData.RunItemListRow}"
+                                       CustomGlyphSize="24,24"
+                                       Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/av/ic_play_circle_outline_black_24dp.png"
+                                       GlyphSize="Custom" />
+                </wms:ActionBar>
 
-        </Grid>
+            </Grid>
         </wms:BusyIndicator>
     </Grid>
 

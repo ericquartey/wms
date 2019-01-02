@@ -12,15 +12,21 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly IDatabaseContextService dataContext;
+        private readonly EnumerationProvider enumerationProvider;
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService;
 
         #endregion Fields
 
         #region Constructors
 
         public ItemListRowProvider(
-            IDatabaseContextService dataContext)
+            IDatabaseContextService dataContext,
+            EnumerationProvider enumerationProvider,
+            WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService)
         {
             this.dataContext = dataContext;
+            this.enumerationProvider = enumerationProvider;
+            this.itemListRowService = itemListRowService;
         }
 
         #endregion Constructors
@@ -35,6 +41,20 @@ namespace Ferretto.Common.BusinessProviders
         public int Delete(int id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<OperationResult> ExecuteImmediately(int listId, int areaId, int bayId)
+        {
+            try
+            {
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListId = listId, AreaId = areaId, BayId = bayId });
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
         public IQueryable<ItemListRow> GetAll()
@@ -60,7 +80,7 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = lr.Item.Description,
                     RequiredQuantity = lr.RequiredQuantity,
                     DispatchedQuantity = lr.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus) lr.Status,
+                    ItemListRowStatus = (ItemListRowStatus)lr.Status,
                     CreationDate = lr.CreationDate,
                     ItemListCode = lr.ItemList.Code,
                     ItemListDescription = lr.ItemList.Description,
@@ -85,7 +105,8 @@ namespace Ferretto.Common.BusinessProviders
                     ItemDescription = l.Item.Description,
                     RequiredQuantity = l.RequiredQuantity,
                     DispatchedQuantity = l.DispatchedQuantity,
-                    ItemListRowStatus = (ItemListRowStatus) l.Status,
+                    ItemListRowStatus = (ItemListRowStatus)l.Status,
+                    MaterialStatusDescription = l.MaterialStatus.Description,
                     CreationDate = l.CreationDate
                 }).AsNoTracking();
 
@@ -95,6 +116,20 @@ namespace Ferretto.Common.BusinessProviders
         public int Save(ItemListRowDetails model)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<OperationResult> ScheduleForExecution(int listId, int areaId)
+        {
+            try
+            {
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListId = listId, AreaId = areaId });
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
         #endregion Methods
