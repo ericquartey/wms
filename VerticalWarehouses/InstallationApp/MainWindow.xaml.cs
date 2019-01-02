@@ -21,7 +21,7 @@ namespace Ferretto.VW.InstallationApp
         public MainWindow()
         {
             this.InitializeComponent();
-            NavigationService.BackToVWAppEventHandler += () => this.Close();
+            NavigationService.BackToVWAppEventHandler += () => this.HideAndUnsubscribe();
             FinishedMachineModeChangeStateEventHandler += () => { };
             FinishedMachineOnMarchChangeStateEventHandler += () => { };
             MainWindowViewModel.ClickedOnMachineModeEventHandler += this.SetMachineMode;
@@ -48,6 +48,12 @@ namespace Ferretto.VW.InstallationApp
         {
             this.UnsubscribeEvents();
             base.OnClosed(e);
+        }
+
+        private void HideAndUnsubscribe()
+        {
+            this.UnsubscribeEvents();
+            this.Hide();
         }
 
         private async void SetMachineMode()

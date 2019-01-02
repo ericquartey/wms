@@ -39,6 +39,8 @@ namespace Ferretto.VW.InstallationApp
         private bool machineOnMarchSelectionBool = false;
         private bool isNavigationButtonRegionExpanded = true;
         private bool isExitViewButtonRegionExpanded = false;
+        private bool isPopupOpen = false;
+        private ICommand openClosePopupCommand;
         public IUnityContainer Container;
 
         #endregion Constants, Statics & Others
@@ -157,7 +159,7 @@ namespace Ferretto.VW.InstallationApp
 
         public ICommand MachineOnMarchCustomCommand => this.machineOnMarchCustomCommand ?? (this.machineOnMarchCustomCommand = new DelegateCommand(() => this.RaiseClickedOnMachineOnMarchEvent()));
 
-        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => { NavigationService.RaiseBackToVWAppEvent(); ClickedOnMachineModeEventHandler = null; ClickedOnMachineOnMarchEventHandler = null; }));
+        public ICommand BackToVWAPPCommand => this.backToVWAPPCommand ?? (this.backToVWAPPCommand = new DelegateCommand(() => { this.IsPopupOpen = false; NavigationService.RaiseBackToVWAppEvent(); ClickedOnMachineModeEventHandler = null; ClickedOnMachineOnMarchEventHandler = null; }));
 
         public ICommand ErrorButtonCommand => this.errorButtonCommand ?? (this.errorButtonCommand = new DelegateCommand(() => { Debug.Print("TODO: IMPLEMENT ERROR SYSTEM"); }));
 
@@ -178,6 +180,10 @@ namespace Ferretto.VW.InstallationApp
         public BindableBase ExitViewButtonRegionCurrentViewModel { get => this.exitViewButtonRegionCurrentViewModel; set => this.SetProperty(ref this.exitViewButtonRegionCurrentViewModel, value); }
 
         public Boolean IsExitViewButtonRegionExpanded { get => this.isExitViewButtonRegionExpanded; set => this.SetProperty(ref this.isExitViewButtonRegionExpanded, value); }
+
+        public Boolean IsPopupOpen { get => this.isPopupOpen; set => this.SetProperty(ref this.isPopupOpen, value); }
+
+        public ICommand OpenClosePopupCommand => this.openClosePopupCommand ?? (this.openClosePopupCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
 
         #endregion Other Properties
 
