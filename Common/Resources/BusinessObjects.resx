@@ -901,20 +901,11 @@
   <data name="ItemListRowExecutionDate" xml:space="preserve">
     <value>Execution Date</value>
   </data>
-  <data name="ItemListRowItemId" xml:space="preserve">
-    <value>Item Id</value>
-  </data>
   <data name="ItemListRowLastModificationDate" xml:space="preserve">
     <value>Last Modification Date</value>
   </data>
   <data name="ItemListRowLot" xml:space="preserve">
     <value>Lot</value>
-  </data>
-  <data name="ItemListRowMaterialStatusId" xml:space="preserve">
-    <value>Material Status Id</value>
-  </data>
-  <data name="ItemListRowPackageTypeId" xml:space="preserve">
-    <value>Package Type Id</value>
   </data>
   <data name="ItemListRowRegistrationNumber" xml:space="preserve">
     <value>Registration Number</value>
@@ -924,5 +915,11 @@
   </data>
   <data name="ItemListRowSub2" xml:space="preserve">
     <value>Sub 2</value>
+  </data>
+  <data name="CompletionDate" xml:space="preserve">
+    <value>Completion Date</value>
+  </data>
+  <data name="LastExecutionDate" xml:space="preserve">
+    <value>Last Execution Date</value>
   </data>
 </root>

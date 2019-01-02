@@ -229,10 +229,4 @@
     <value />
     <comment>Search text on WmsGridControl</comment>
   </data>
-  <data name="CompletionDate" xml:space="preserve">
-    <value>Completion Date</value>
-  </data>
-  <data name="LastExecutionDate" xml:space="preserve">
-    <value>Last Execution Date</value>
-  </data>
 </root>

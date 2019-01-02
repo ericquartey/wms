@@ -115,15 +115,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Completion Date.
-        /// </summary>
-        public static string CompletionDate {
-            get {
-                return ResourceManager.GetString("CompletionDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
         public static string CreationDate {
@@ -192,15 +183,6 @@ namespace Ferretto.Common.Resources {
         public static string Front {
             get {
                 return ResourceManager.GetString("Front", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Last Execution Date.
-        /// </summary>
-        public static string LastExecutionDate {
-            get {
-                return ResourceManager.GetString("LastExecutionDate", resourceCulture);
             }
         }
         

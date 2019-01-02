@@ -520,6 +520,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Completion Date.
+        /// </summary>
+        public static string CompletionDate {
+            get {
+                return ResourceManager.GetString("CompletionDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available.
         /// </summary>
         public static string ItemAvailable {
@@ -808,15 +817,6 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item Id.
-        /// </summary>
-        public static string ItemListRowItemId {
-            get {
-                return ResourceManager.GetString("ItemListRowItemId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Last Modification Date.
         /// </summary>
         public static string ItemListRowLastModificationDate {
@@ -831,24 +831,6 @@ namespace Ferretto.Common.Resources {
         public static string ItemListRowLot {
             get {
                 return ResourceManager.GetString("ItemListRowLot", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Material Status Id.
-        /// </summary>
-        public static string ItemListRowMaterialStatusId {
-            get {
-                return ResourceManager.GetString("ItemListRowMaterialStatusId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Package Type Id.
-        /// </summary>
-        public static string ItemListRowPackageTypeId {
-            get {
-                return ResourceManager.GetString("ItemListRowPackageTypeId", resourceCulture);
             }
         }
         
@@ -1254,6 +1236,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemWithdrawSub2 {
             get {
                 return ResourceManager.GetString("ItemWithdrawSub2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Last Execution Date.
+        /// </summary>
+        public static string LastExecutionDate {
+            get {
+                return ResourceManager.GetString("LastExecutionDate", resourceCulture);
             }
         }
         

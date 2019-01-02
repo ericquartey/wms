@@ -51,19 +51,19 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
             try
             {
-                var acceptedRequest = await this.warehouse.PrepareListRowForExecutionAsync(request.ListId, request.AreaId, request.BayId);
+                var acceptedRequest = await this.warehouse.PrepareListRowForExecutionAsync(request.ListRowId, request.AreaId, request.BayId);
                 if (acceptedRequest == null)
                 {
-                    this.logger.LogWarning($"Request of execution for list row (id={request.ListId}) could not be processed.");
+                    this.logger.LogWarning($"Request of execution for list row (id={request.ListRowId}) could not be processed.");
 
                     return this.UnprocessableEntity(this.ModelState);
                 }
 
-                this.logger.LogInformation($"Request of execution for list row (id={request.ListId}) was accepted.");
+                this.logger.LogInformation($"Request of execution for list row (id={request.ListRowId}) was accepted.");
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"An error occurred while processing the execution request for list row (id={request.ListId}).");
+                this.logger.LogError(ex, $"An error occurred while processing the execution request for list row (id={request.ListRowId}).");
                 return this.BadRequest(ex.Message);
             }
 

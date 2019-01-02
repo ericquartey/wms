@@ -12,7 +12,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI
         public int? BayId { get; set; }
 
         [Required]
-        public int ListId { get; set; }
+        public int ListRowId { get; set; }
 
         #endregion Properties
     }
