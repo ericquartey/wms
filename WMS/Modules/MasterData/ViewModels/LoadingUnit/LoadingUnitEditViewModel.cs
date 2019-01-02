@@ -53,12 +53,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     if (prevValue != null)
                     {
-                        (prevValue as SidePanelDetailsViewModel<BusinessObject>).OperationComplete -= this.ActiveSideViewModel_OperationComplete;
+                        (prevValue as ICompletable).OperationComplete -= this.ActiveSideViewModel_OperationComplete;
                     }
 
                     if (value != null)
                     {
-                        (value as SidePanelDetailsViewModel<BusinessObject>).OperationComplete += this.ActiveSideViewModel_OperationComplete;
+                        (value as ICompletable).OperationComplete += this.ActiveSideViewModel_OperationComplete;
                     }
                 }
             }

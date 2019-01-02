@@ -5,7 +5,7 @@ using Prism.Commands;
 
 namespace Ferretto.Common.Controls
 {
-    public abstract class SidePanelDetailsViewModel<T> : DetailsViewModel<T>
+    public abstract class SidePanelDetailsViewModel<T> : DetailsViewModel<T>, ICompletable
         where T : BusinessObject
     {
         #region Fields
