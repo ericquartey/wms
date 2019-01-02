@@ -40,5 +40,10 @@
     </Style>
     <!--    -->
 
+    <!--  Combo box template translation  -->
+    <DataTemplate x:Key="ComboBoxEditTranslation">
+        <TextBlock Text="{Binding Name}" />
+    </DataTemplate>
+
 
 </ResourceDictionary>

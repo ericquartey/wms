@@ -715,7 +715,7 @@
     <value>Mono Referenza</value>
   </data>
   <data name="PluriReference" xml:space="preserve">
-    <value>Pluri Referenze</value>
+    <value>Multi Referenza</value>
   </data>
   <data name="SideBack" xml:space="preserve">
     <value>Posteriore</value>
@@ -729,10 +729,10 @@
   <data name="SideRight" xml:space="preserve">
     <value>Destro</value>
   </data>
-  <data name="TypeFIFO" xml:space="preserve">
+  <data name="ItemManagementTypeFIFO" xml:space="preserve">
     <value>FIFO</value>
   </data>
-  <data name="TypeVolume" xml:space="preserve">
+  <data name="ItemManagementTypeVolume" xml:space="preserve">
     <value>Volume</value>
   </data>
 </root>

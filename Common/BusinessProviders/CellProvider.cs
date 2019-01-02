@@ -121,9 +121,6 @@ cell => cell.CellStatusId == 1;
 
             cellDetails.AbcClassChoices = this.enumerationProvider.GetAllAbcClasses();
             cellDetails.AisleChoices = this.enumerationProvider.GetAislesByAreaId(cellDetails.AreaId);
-            cellDetails.SideChoices = ((Side[])
-                Enum.GetValues(typeof(Side)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
             cellDetails.CellStatusChoices = this.enumerationProvider.GetAllCellStatuses();
             cellDetails.CellTypeChoices = this.enumerationProvider.GetAllCellTypes();
 

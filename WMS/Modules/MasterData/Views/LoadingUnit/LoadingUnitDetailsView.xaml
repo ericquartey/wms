@@ -114,22 +114,11 @@
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding LoadingUnit.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding LoadingUnit.ReferenceTypeChoices}">
+                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type bm:ReferenceType}"
                                                                 SortMode="DisplayName" />
                             </dxmvvm:Interaction.Behaviors>
-                            <wms:ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding Name}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </wms:ComboBox.ItemTemplate>
                         </wms:ComboBox>
 
                         <wms:TextBox Grid.Row="3"

@@ -139,22 +139,11 @@
                                       MinWidth="120"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Cell.Side, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Cell.SideChoices}">
+                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <dxmvvm:Interaction.Behaviors>
                                 <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type bm:Side}"
                                                                 SortMode="DisplayName" />
                             </dxmvvm:Interaction.Behaviors>
-                            <wms:ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding Name}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </wms:ComboBox.ItemTemplate>
                         </wms:ComboBox>
 
                         <wms:SpinEdit Grid.Row="0"

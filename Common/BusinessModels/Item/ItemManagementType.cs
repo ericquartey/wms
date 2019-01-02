@@ -5,10 +5,10 @@ namespace Ferretto.Common.BusinessModels
 {
     public enum ItemManagementType
     {
-        [Display(Name = nameof(BusinessObjects.TypeFIFO), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemManagementTypeFIFO), ResourceType = typeof(BusinessObjects))]
         FIFO = 'F',
 
-        [Display(Name = nameof(BusinessObjects.TypeVolume), ResourceType = typeof(BusinessObjects))]
+        [Display(Name = nameof(BusinessObjects.ItemManagementTypeVolume), ResourceType = typeof(BusinessObjects))]
         Volume = 'V'
     }
 }

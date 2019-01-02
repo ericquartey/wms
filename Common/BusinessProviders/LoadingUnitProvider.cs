@@ -198,10 +198,6 @@ namespace Ferretto.Common.BusinessProviders
             {
                 loadingUnitDetails.AddCompartment(compartment);
             }
-
-            loadingUnitDetails.ReferenceTypeChoices =
-                ((ReferenceType[])Enum.GetValues(typeof(ReferenceType)))
-                .Select(i => new EnumerationString(i.ToString(), i.ToString())).ToList();
             loadingUnitDetails.CellChoices = this.cellProvider.GetByAreaId(loadingUnitDetails.AreaId);
 
             return loadingUnitDetails;

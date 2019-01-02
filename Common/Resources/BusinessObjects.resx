@@ -899,7 +899,7 @@
     <value>Mono Reference</value>
   </data>
   <data name="PluriReference" xml:space="preserve">
-    <value>Pluri Reference</value>
+    <value>Multi Reference</value>
   </data>
   <data name="SideBack" xml:space="preserve">
     <value>Back</value>
@@ -913,10 +913,10 @@
   <data name="SideRight" xml:space="preserve">
     <value>Right</value>
   </data>
-  <data name="TypeFIFO" xml:space="preserve">
+  <data name="ItemManagementTypeFIFO" xml:space="preserve">
     <value>FIFO</value>
   </data>
-  <data name="TypeVolume" xml:space="preserve">
+  <data name="ItemManagementTypeVolume" xml:space="preserve">
     <value>Volume</value>
   </data>
 </root>

@@ -979,6 +979,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to FIFO.
+        /// </summary>
+        public static string ItemManagementTypeFIFO {
+            get {
+                return ResourceManager.GetString("ItemManagementTypeFIFO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        public static string ItemManagementTypeVolume {
+            get {
+                return ResourceManager.GetString("ItemManagementTypeVolume", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string ItemNotes {
@@ -1816,7 +1834,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pluri Reference.
+        ///   Looks up a localized string similar to Multi Reference.
         /// </summary>
         public static string PluriReference {
             get {
@@ -1866,24 +1884,6 @@ namespace Ferretto.Common.Resources {
         public static string SideRight {
             get {
                 return ResourceManager.GetString("SideRight", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to FIFO.
-        /// </summary>
-        public static string TypeFIFO {
-            get {
-                return ResourceManager.GetString("TypeFIFO", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Volume.
-        /// </summary>
-        public static string TypeVolume {
-            get {
-                return ResourceManager.GetString("TypeVolume", resourceCulture);
             }
         }
         

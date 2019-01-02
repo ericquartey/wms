@@ -142,22 +142,11 @@
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Path=Item.ManagementType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Item.ManagementTypeChoices}">
+                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                             <mvvm:Interaction.Behaviors>
                                 <mvvm:EnumItemsSourceBehavior EnumType="{x:Type bm:ItemManagementType}"
                                                               SortMode="DisplayName" />
                             </mvvm:Interaction.Behaviors>
-                            <wms:ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition />
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Text="{Binding Name}" />
-                                    </Grid>
-                                </DataTemplate>
-                            </wms:ComboBox.ItemTemplate>
                         </wms:ComboBox>
                     </Grid>
                 </GroupBox>
