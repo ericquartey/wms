@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -230,25 +231,19 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public bool CanAddCompartment(ICompartment compartmentDetails)
+        public bool CanAddCompartment(ICompartment compartment)
         {
-            //CHECK: exit from window
-            var xPositionFinal = compartmentDetails.XPosition + compartmentDetails.Width;
-            var yPositionFinal = compartmentDetails.YPosition + compartmentDetails.Height;
-            if (xPositionFinal > this.Width || yPositionFinal > this.Length)
+            if (compartment == null)
             {
-                return false;
+                throw new ArgumentNullException(nameof(compartment));
             }
 
-            foreach (var compartment in this.compartments)
-            {
-                var areCollisions = this.HasCollision(compartmentDetails, compartment);
-                if (areCollisions)
-                {
-                    return false;
-                }
-            }
-            return true;
+            return
+                compartment.XPosition + compartment.Width <= this.Width
+                &&
+                compartment.YPosition + compartment.Height <= this.Length
+                &&
+                !this.compartments.Any(c => this.HasCollision(c, compartment));
         }
 
         /// <summary>
@@ -257,42 +252,55 @@ namespace Ferretto.Common.BusinessModels
         /// <returns>
         /// True if the specified compartments are overlapping, False otherwise.
         /// <returns>
-        private bool HasCollision(ICompartment compartmentA, ICompartment compartmentB)
+        private bool HasCollision(ICompartment c1, ICompartment c2)
         {
-            if (compartmentA.Id == compartmentB.Id)
+            if (c1.Id == c2.Id)
             {
                 return false;
             }
 
-            var xAPositionFinal = compartmentA.XPosition + compartmentA.Width;
-            var yAPositionFinal = compartmentA.YPosition + compartmentA.Height;
+            var xAPositionFinal = c1.XPosition + c1.Width;
+            var yAPositionFinal = c1.YPosition + c1.Height;
 
-            var xBPositionFinal = compartmentB.XPosition + compartmentB.Width;
-            var yBPositionFinal = compartmentB.YPosition + compartmentB.Height;
+            var xBPositionFinal = c2.XPosition + c2.Width;
+            var yBPositionFinal = c2.YPosition + c2.Height;
+
             //A: Top-Left
-            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
-                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            if (c1.XPosition >= c2.XPosition
+                && c1.XPosition < xBPositionFinal
+                && c1.YPosition >= c2.YPosition
+                && c1.YPosition < yBPositionFinal)
             {
                 return true;
             }
+
             //B: Top-Right
-            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
-                && compartmentA.YPosition >= compartmentB.YPosition && compartmentA.YPosition < yBPositionFinal)
+            if (xAPositionFinal > c2.XPosition
+                && xAPositionFinal <= xBPositionFinal
+                && c1.YPosition >= c2.YPosition
+                && c1.YPosition < yBPositionFinal)
             {
                 return true;
             }
+
             //C: Bottom-Left
-            if (compartmentA.XPosition >= compartmentB.XPosition && compartmentA.XPosition < xBPositionFinal
-                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            if (c1.XPosition >= c2.XPosition
+                && c1.XPosition < xBPositionFinal
+                && yAPositionFinal > c2.YPosition
+                && yAPositionFinal <= yBPositionFinal)
             {
                 return true;
             }
+
             //D: Bottom-Right
-            if (xAPositionFinal > compartmentB.XPosition && xAPositionFinal <= xBPositionFinal
-                && yAPositionFinal > compartmentB.YPosition && yAPositionFinal <= yBPositionFinal)
+            if (xAPositionFinal > c2.XPosition
+                && xAPositionFinal <= xBPositionFinal
+                && yAPositionFinal > c2.YPosition
+                && yAPositionFinal <= yBPositionFinal)
             {
                 return true;
             }
+
             return false;
         }
 
