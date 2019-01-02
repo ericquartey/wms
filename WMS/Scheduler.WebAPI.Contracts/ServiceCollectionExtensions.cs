@@ -11,6 +11,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         {
             serviceCollection.AddTransient<IItemsService>(s => new ItemsService(baseUrl));
             serviceCollection.AddTransient<IItemListsService>(s => new ItemListsService(baseUrl));
+            serviceCollection.AddTransient<IItemListRowsService>(s => new ItemListRowsService(baseUrl));
             serviceCollection.AddTransient<IMissionsService>(s => new MissionsService(baseUrl));
             serviceCollection.AddTransient<IBaysService>(s => new BaysService(baseUrl));
 

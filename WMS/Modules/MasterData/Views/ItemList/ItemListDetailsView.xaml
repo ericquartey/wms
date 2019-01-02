@@ -275,6 +275,8 @@
                                                 FieldName="DispatchedQuantity" />
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="ItemListRowStatus" />
+                                <dxg:GridColumn Width="120*"
+                                                FieldName="MaterialStatusDescription" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>
