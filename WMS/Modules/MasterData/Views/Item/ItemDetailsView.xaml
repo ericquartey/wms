@@ -1,6 +1,7 @@
 <wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.ItemDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:bm="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/core"
@@ -94,12 +95,10 @@
                                       ItemsSource="{Binding Path=Item.ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
-                                    
-                                     Margin="20,0,0,0"                                     
+                                     Margin="20,0,0,0"
                                      VerticalContentAlignment="Stretch"
-                                      
-                                     IsMultiline="True"
-                                     EditValue="{Binding Path=Item.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Item.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
+                                     IsMultiline="True" />
                     </Grid>
                 </GroupBox>
 
@@ -130,6 +129,7 @@
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Path=Item.MeasureUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       ItemsSource="{Binding Path=Item.MeasureUnitChoices}" />
+
                         <wms:SpinEdit Grid.Row="1"
                                       Grid.Column="1"
                                       Margin="0,0,20,0"
@@ -141,8 +141,13 @@
                                       MinValue="1" />
                         <wms:ComboBox Grid.Row="2"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Path=Item.ManagementTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Path=Item.ManagementTypeChoices}" />
+                                      EditValue="{Binding Path=Item.ManagementType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
+                            <mvvm:Interaction.Behaviors>
+                                <mvvm:EnumItemsSourceBehavior EnumType="{x:Type bm:ItemManagementType}"
+                                                              SortMode="DisplayName" />
+                            </mvvm:Interaction.Behaviors>
+                        </wms:ComboBox>
                     </Grid>
                 </GroupBox>
 
@@ -212,7 +217,7 @@
                                             SelectedBusinessObject="{Binding SelectedCompartment, Mode=TwoWay}"
                                             Visibility="{Binding ItemHasCompartments, Converter={StaticResource BTVC}}">
                             <wms:WmsGridControl.View>
-                                <dxg:TableView >
+                                <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
@@ -237,8 +242,8 @@
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Stock" />
                                 <dxg:GridColumn Width="200*"
-                                                FieldName="IsItemPairingFixed"
-                                                CellDisplayTemplate="{DynamicResource BooleanCellTemplate}" />
+                                                CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
+                                                FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>
