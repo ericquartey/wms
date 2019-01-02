@@ -11,15 +11,14 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
 
-    <Grid x:Name="Edit"
-          MinWidth="300">
-
-        <wms:ActionBar Grid.Row="0"
-                       Grid.Column="1"
-                       Margin="0,5,10,10"
-                       HorizontalAlignment="Right"
-                       Panel.ZIndex="9999"
-                       ShowBackground="False"
+    <Grid MinWidth="300"
+          Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <wms:ActionBar HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
             <wms:ActionBarItem Command="{Binding SaveCommand}"
@@ -28,7 +27,7 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"
                                GlyphSize="Custom" />
 
-            <wms:ActionBarItem Command="{Binding DeleteCommand}"
+            <wms:ActionBarItem Command="{Binding DeleteCommand, IsAsync=True}"
                                Content="{x:Static res:General.Delete}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_delete_black_24dp.png"
@@ -40,192 +39,177 @@
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_cancel_black_24dp.png"
                                GlyphSize="Custom" />
         </wms:ActionBar>
+        <ScrollViewer x:Name="ScrollView"
+                      Grid.Row="1">
 
-        <GroupBox Grid.Row="1"
-                  Margin="10,30"
-                  Header="{Binding Title, Mode=OneWay}">
-            <Grid VerticalAlignment="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="*" />
+            <GroupBox Header="{Binding Title, Mode=OneWay}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="10" />
+                        <ColumnDefinition Width="*" />
 
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto"
-                                   MinHeight="16" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <Label Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       HorizontalAlignment="Left"
-                       Content="Compartment Details" />
+                    <wms:SpinEdit x:Name="PositionXText"
+                                  Grid.Row="0"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
-                <TextBlock x:Name="ErrorText"
-                           Grid.Row="1"
-                           Grid.ColumnSpan="3"
-                           MinWidth="270"
-                           HorizontalAlignment="Left"
-                           FontStyle="Italic"
-                           FontWeight="Bold"
-                           Text="{Binding Model.Error}"
-                           TextWrapping="WrapWithOverflow" />
-
-                <wms:SpinEdit x:Name="WidthText"
-                              Grid.Row="2"
-                              Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                              MinValue="1" />
-
-                <wms:SpinEdit x:Name="HeightText"
-                              Grid.Row="2"
-                              Grid.Column="2"
-                              HorizontalAlignment="Stretch"
-                              EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
-                              MinValue="1" />
-
-                <wms:SpinEdit x:Name="PositionXText"
-                              Grid.Row="3"
-                              Grid.Column="0"
-                              HorizontalAlignment="Stretch"
-                              EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                <wms:SpinEdit x:Name="PositionYText"
-                              Grid.Row="3"
-                              Grid.Column="2"
-                              HorizontalAlignment="Stretch"
-                              HorizontalContentAlignment="Right"
-                              EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-
-                <wms:LookUpEdit Grid.Row="4"
-                                Grid.Column="0"
-                                Grid.ColumnSpan="3"
-                                DisplayMember="Description"
-                                EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
-                                PopupWidth="500"
-                                ValueMember="Id">
-                    <wms:LookUpEdit.PopupContentTemplate>
-                        <ControlTemplate>
-                            <wms:WmsGridControl x:Name="PART_GridControl">
-                                <wms:WmsGridControl.Columns>
-                                    <dxg:GridColumn Width="10*"
-                                                    FieldName="Code" />
-                                    <dxg:GridColumn Width="20*"
-                                                    FieldName="Description" />
-                                    <dxg:GridColumn Width="10*"
-                                                    FieldName="Image">
-                                        <dxg:GridColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Margin="2"
-                                                            HorizontalAlignment="Center">
-                                                    <wms:WmsImage MaxWidth="100"
-                                                                  MaxHeight="100"
-                                                                  BorderBrush="{DynamicResource CommonSecondaryLight}"
-                                                                  BorderThickness="1"
-                                                                  Path="{Binding Data.Image}" />
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </dxg:GridColumn.CellTemplate>
-                                    </dxg:GridColumn>
-                                </wms:WmsGridControl.Columns>
-                                <wms:WmsGridControl.View>
-                                    <dxg:TableView RowStyle="{DynamicResource AutoHeightRowControlStyle}" />
-                                </wms:WmsGridControl.View>
-                                <wms:WmsGridControl.SortInfo>
-                                    <dxg:GridSortInfo FieldName="Code"
-                                                      SortOrder="Ascending" />
-                                </wms:WmsGridControl.SortInfo>
-                            </wms:WmsGridControl>
-                        </ControlTemplate>
-                    </wms:LookUpEdit.PopupContentTemplate>
-                </wms:LookUpEdit>
-
-                <wms:SpinEdit x:Name="QuantityText"
-                              Grid.Row="5"
-                              Grid.Column="0"
-                              MinWidth="90"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <wms:SpinEdit x:Name="CapacityText"
-                              Grid.Row="5"
-                              Grid.Column="2"
-                              HorizontalAlignment="Stretch"
-                              AllowNullInput="False"
-                              EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              MinValue="1" />
-
-                <wms:ComboBox x:Name="MaterialStatus"
-                              Grid.Row="6"
-                              Grid.Column="0"
-                              EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                              ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
-
-                <wms:WmsCheckEdit Grid.Row="6"
+                    <wms:SpinEdit x:Name="PositionYText"
+                                  Grid.Row="0"
                                   Grid.Column="2"
-                                  Content="{x:Static res:BusinessObjects.PairingFixed}"
-                                  IsChecked="{Binding Path=Model.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  HorizontalAlignment="Stretch"
+                                  HorizontalContentAlignment="Right"
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:SpinEdit x:Name="WidthText"
+                                  Grid.Row="1"
+                                  Grid.Column="0"
+                                  HorizontalAlignment="Stretch"
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="1" />
 
-                <dxa:AccordionControl Grid.Row="7"
-                                      Grid.ColumnSpan="3"
-                                      Margin="0,10,0,0"
-                                      Background="Transparent"
-                                      BorderThickness="0"
-                                      IsCollapseButtonVisible="False"
-                                      RootItemExpandButtonPosition="Left">
-                    <wms:AccordionItem FontSize="12"
-                                       FontWeight="Normal"
-                                       IsExpandButtonVisible="True"
-                                       IsExpanded="{Binding IsOpen, Mode=OneWay, Converter={StaticResource BNC}}"
-                                       IsToggleVisible="False"
-                                       TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="10" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="2" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="2" />
-                            </Grid.RowDefinitions>
-                            <wms:TextBox Grid.Row="0"
-                                         Grid.Column="1"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:TextBox Grid.Row="0"
-                                         Grid.Column="3"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <wms:ComboBox x:Name="PackageType"
-                                          Grid.Row="1"
-                                          Grid.Column="1"
-                                          EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
+                    <wms:SpinEdit x:Name="HeightText"
+                                  Grid.Row="1"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="1" />
+                    <wms:LookUpEdit Grid.Row="2"
+                                    Grid.Column="0"
+                                    Grid.ColumnSpan="3"
+                                    AllowNullInput="True"
+                                    DisplayMember="Description"
+                                    EditValue="{Binding Model.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
+                                    PopupWidth="500"
+                                    ValueMember="Id">
+                        <wms:LookUpEdit.PopupContentTemplate>
+                            <ControlTemplate>
+                                <wms:WmsGridControl x:Name="PART_GridControl">
+                                    <wms:WmsGridControl.Columns>
+                                        <dxg:GridColumn Width="10*"
+                                                        FieldName="Code" />
+                                        <dxg:GridColumn Width="20*"
+                                                        FieldName="Description" />
+                                        <dxg:GridColumn Width="10*"
+                                                        FieldName="Image">
+                                            <dxg:GridColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Margin="2"
+                                                                HorizontalAlignment="Center">
+                                                        <wms:WmsImage MaxWidth="100"
+                                                                      MaxHeight="100"
+                                                                      BorderBrush="{DynamicResource CommonSecondaryLight}"
+                                                                      BorderThickness="1"
+                                                                      Path="{Binding Data.Image}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </dxg:GridColumn.CellTemplate>
+                                        </dxg:GridColumn>
+                                    </wms:WmsGridControl.Columns>
+                                    <wms:WmsGridControl.View>
+                                        <dxg:TableView RowStyle="{DynamicResource AutoHeightRowControlStyle}" />
+                                    </wms:WmsGridControl.View>
+                                    <wms:WmsGridControl.SortInfo>
+                                        <dxg:GridSortInfo FieldName="Code"
+                                                          SortOrder="Ascending" />
+                                    </wms:WmsGridControl.SortInfo>
+                                </wms:WmsGridControl>
+                            </ControlTemplate>
+                        </wms:LookUpEdit.PopupContentTemplate>
+                    </wms:LookUpEdit>
 
-                            <wms:TextBox Grid.Row="1"
-                                         Grid.Column="3"
-                                         HorizontalAlignment="Stretch"
-                                         Text="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </Grid>
+                    <wms:SpinEdit x:Name="QuantityText"
+                                  Grid.Row="3"
+                                  Grid.Column="0"
+                                  MinWidth="90"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <wms:SpinEdit x:Name="CapacityText"
+                                  Grid.Row="3"
+                                  Grid.Column="2"
+                                  HorizontalAlignment="Stretch"
+                                  AllowNullInput="False"
+                                  EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="1" />
 
-                    </wms:AccordionItem>
-                </dxa:AccordionControl>
+                    <wms:ComboBox x:Name="MaterialStatus"
+                                  Grid.Row="4"
+                                  Grid.Column="0"
+                                  EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
 
-            </Grid>
-        </GroupBox>
+                    <wms:WmsCheckEdit Grid.Row="4"
+                                      Grid.Column="2"
+                                      Content="{x:Static res:BusinessObjects.PairingFixed}"
+                                      IsChecked="{Binding Path=Model.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                    <dxa:AccordionControl Grid.Row="5"
+                                          Grid.ColumnSpan="3"
+                                          Margin="0,10,0,0"
+                                          Background="Transparent"
+                                          BorderThickness="0"
+                                          IsCollapseButtonVisible="False"
+                                          RootItemExpandButtonPosition="Left">
+                        <wms:AccordionItem FontSize="12"
+                                           FontWeight="Normal"
+                                           IsExpandButtonVisible="True"
+                                           IsToggleVisible="False"
+                                           TitleHeader="{x:Static res:MasterData.AdvancedDetails}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="10" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <wms:TextBox Grid.Row="0"
+                                             Grid.Column="0"
+                                             Text="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <wms:TextBox Grid.Row="0"
+                                             Grid.Column="2"
+                                             Text="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+                                <wms:ComboBox x:Name="PackageType"
+                                              Grid.Row="1"
+                                              Grid.Column="0"
+                                              EditValue="{Binding Path=Model.PackageTypeId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              ItemsSource="{Binding Path=Model.PackageTypeChoices}" />
+
+                                <wms:TextBox Grid.Row="1"
+                                             Grid.Column="2"
+                                             Text="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </Grid>
+
+                        </wms:AccordionItem>
+                    </dxa:AccordionControl>
+
+                </Grid>
+            </GroupBox>
+
+        </ScrollViewer>
+        <TextBlock Grid.Row="2"
+                   Grid.ColumnSpan="3"
+                   MaxWidth="300"
+                   Style="{DynamicResource TextBlockErrorMessageStyle}"
+                   Text="{Binding Model.Error}" />
     </Grid>
 </UserControl>

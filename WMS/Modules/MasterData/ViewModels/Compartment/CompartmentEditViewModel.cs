@@ -4,8 +4,10 @@ using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Interfaces;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
+using Ferretto.Common.Resources;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
 
@@ -37,7 +39,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Properties
 
         public ICommand DeleteCommand => this.deleteCommand ??
-            (this.deleteCommand = new DelegateCommand(this.ExecuteDeleteCommand, this.CanExecuteDeleteCommand));
+            (this.deleteCommand = new DelegateCommand(async () => await this.ExecuteDeleteCommand(), this.CanExecuteDeleteCommand));
 
         public IDataSource<Item> ItemsDataSource
         {
@@ -70,9 +72,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully, StatusType.Success));
 
                 this.CompleteOperation();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
             }
         }
 
@@ -81,14 +87,36 @@ namespace Ferretto.WMS.Modules.MasterData
             return this.Model != null;
         }
 
-        private void ExecuteDeleteCommand()
+        private async Task ExecuteDeleteCommand()
         {
-            var affectedRowsCount = this.compartmentProvider.Delete(this.Model.Id);
-            if (affectedRowsCount > 0)
+            var result = this.DialogService.ShowMessage(
+                DesktopApp.AreYouSureToDeleteCompartment,
+                DesktopApp.ConfirmOperation,
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (result == DialogResult.Yes)
             {
-                this.Model.LoadingUnit.Compartments.Remove(this.Model as ICompartment);
-                this.Model = null;
-                this.CompleteOperation();
+                this.IsBusy = true;
+
+                var loadingUnit = this.Model.LoadingUnit;
+                var affectedRowsCount = await this.compartmentProvider.DeleteAsync(this.Model.Id);
+                if (affectedRowsCount > 0)
+                {
+                    loadingUnit.Compartments.Remove(this.Model as ICompartment);
+
+                    this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentDeletedSuccessfully, StatusType.Success));
+
+                    this.IsBusy = false;
+                    this.Model = null;
+                    this.CompleteOperation();
+                }
+                else
+                {
+                    this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
+                }
+
+                this.IsBusy = false;
             }
         }
 
