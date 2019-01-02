@@ -1,23 +1,25 @@
 ﻿using System;
-using Ferretto.Common.BusinessModels;
+using Ferretto.Common.BLL.Interfaces;
 
 namespace Ferretto.Common.Controls
 {
-    public class OperationEventArgs<T> : EventArgs
-        where T : BusinessObject
+    public class OperationEventArgs : EventArgs
     {
         #region Constructors
 
-        public OperationEventArgs(T model)
+        public OperationEventArgs(IBusinessObject model, bool isCanceled)
         {
             this.Model = model;
+            this.IsCanceled = isCanceled;
         }
 
         #endregion Constructors
 
         #region Properties
 
-        public T Model { get; private set; }
+        public Boolean IsCanceled { get; }
+
+        public IBusinessObject Model { get; }
 
         #endregion Properties
     }
