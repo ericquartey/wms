@@ -47,6 +47,7 @@
         public const string EXECUTELISTROWDIALOG = "ItemListRowExecuteDialogViewModel";
         public const string ITEMDETAILS = "ItemDetailsViewModel";
         public const string ITEMLISTDETAILS = "ItemListDetailsViewModel";
+        public const string ITEMLISTROWDETAILS = "ItemListRowDetailsViewModel";
         public const string ITEMLISTS = "ItemListsViewModel";
         public const char ITEMLISTSINVENTORY = 'I';
         public const char ITEMLISTSPICK = 'P';

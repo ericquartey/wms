@@ -31,5 +31,9 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="Views\ItemListRow\ItemListRowDetailsView.xaml" />
+  </ItemGroup>
 
 </Project>
