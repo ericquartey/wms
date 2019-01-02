@@ -53,9 +53,19 @@ namespace Ferretto.Common.Controls
             get => this.model;
             set
             {
+                if (this.model != null)
+                {
+                    this.model.PropertyChanged -= this.Model_PropertyChanged;
+                }
+
                 if (this.SetProperty(ref this.model, value))
                 {
                     this.changeDetector.TakeSnapshot(this.model);
+
+                    if (this.model != null)
+                    {
+                        this.model.PropertyChanged += this.Model_PropertyChanged;
+                    }
 
                     this.RefreshData();
                 }
@@ -142,6 +152,11 @@ namespace Ferretto.Common.Controls
             {
                 await this.ExecuteRevertCommand();
             }
+        }
+
+        private void Model_PropertyChanged(System.Object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            this.EvaluateCanExecuteCommands();
         }
 
         #endregion Methods
