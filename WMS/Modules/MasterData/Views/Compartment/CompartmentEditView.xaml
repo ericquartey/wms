@@ -63,12 +63,14 @@
                     <wms:SpinEdit x:Name="PositionXText"
                                   Grid.Row="0"
                                   Grid.Column="0"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="0"
                                   Grid.Column="2"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Right"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -134,6 +136,7 @@
                                   Grid.Row="3"
                                   Grid.Column="0"
                                   MinWidth="90"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

@@ -18,6 +18,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        
         <wms:ActionBar HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
 
@@ -56,11 +57,13 @@
                     <wms:SpinEdit x:Name="PositionXText"
                                   Grid.Row="0"
                                   Grid.Column="0"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="0"
+                                  MinValue="0"
                                   Grid.Column="2"
                                   HorizontalAlignment="Stretch"
                                   EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -126,6 +129,7 @@
                     <wms:SpinEdit x:Name="QuantityText"
                                   Grid.Row="3"
                                   Grid.Column="0"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

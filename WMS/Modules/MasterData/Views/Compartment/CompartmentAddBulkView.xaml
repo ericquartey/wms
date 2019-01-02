@@ -53,39 +53,46 @@
 
                     <wms:SpinEdit Grid.Row="0"
                                   Grid.Column="0"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="0"
                                   Grid.Column="2"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="0"
+                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Model.Width, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="1"
                                   Grid.Column="2"
+                                  MinValue="0"
+                                  
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="0"
+                                  MinValue="1"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Model.Rows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                     <wms:SpinEdit Grid.Row="2"
                                   Grid.Column="2"
+                                  MinValue="1"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                                  EditValue="{Binding Model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </GroupBox>
         </ScrollViewer>
