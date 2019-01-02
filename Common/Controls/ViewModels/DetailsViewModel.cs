@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
@@ -17,6 +17,7 @@ namespace Ferretto.Common.Controls
 
         private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
         private bool isBusy;
+        private bool isValidationEnabled;
         private T model;
         private ICommand revertCommand;
         private ICommand saveCommand;
@@ -42,6 +43,18 @@ namespace Ferretto.Common.Controls
             set
             {
                 if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.EvaluateCanExecuteCommands();
+                }
+            }
+        }
+
+        public bool IsValidationEnabled
+        {
+            get => this.isValidationEnabled;
+            set
+            {
+                if (this.SetProperty(ref this.isValidationEnabled, value))
                 {
                     this.EvaluateCanExecuteCommands();
                 }
@@ -116,7 +129,7 @@ namespace Ferretto.Common.Controls
         {
             return this.Model != null
                 && this.changeDetector.IsModified == true
-                && string.IsNullOrWhiteSpace(this.Model.Error)
+                && (this.isValidationEnabled == false || string.IsNullOrWhiteSpace(this.Model.Error))
                 && this.IsBusy == false;
         }
 
