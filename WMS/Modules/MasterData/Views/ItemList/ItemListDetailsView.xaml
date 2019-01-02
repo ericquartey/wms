@@ -203,9 +203,6 @@
                           Grid.ColumnSpan="4">
                     <GroupBox.Header>
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="29" />
-                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="4*" />
@@ -223,7 +220,7 @@
 
                             <wms:ActionBar Grid.Row="0"
                                            Grid.ColumnSpan="4"
-                                           Height="auto"
+                                           Height="29"
                                            HorizontalAlignment="Right"
                                            Style="{DynamicResource ActionBarNotCustomizable}">
 
