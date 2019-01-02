@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
@@ -15,6 +15,7 @@ namespace Ferretto.Common.Controls
 
         private readonly ChangeDetector<T> changeDetector = new ChangeDetector<T>();
 
+        private readonly IDialogService dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
         private bool isBusy;
         private T model;
         private ICommand revertCommand;
@@ -32,6 +33,8 @@ namespace Ferretto.Common.Controls
         #endregion Constructors
 
         #region Properties
+
+        public IDialogService DialogService => this.dialogService;
 
         public bool IsBusy
         {
@@ -73,9 +76,7 @@ namespace Ferretto.Common.Controls
         {
             if (this.changeDetector.IsModified)
             {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-
-                var result = dialogService.ShowMessage(
+                var result = this.DialogService.ShowMessage(
                     DesktopApp.AreYouSureToLeaveThePage,
                     DesktopApp.ConfirmOperation,
                     DialogType.Exclamation,
@@ -131,9 +132,7 @@ namespace Ferretto.Common.Controls
 
         private async Task ExecuteRevertWithPrompt()
         {
-            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-
-            var result = dialogService.ShowMessage(
+            var result = this.DialogService.ShowMessage(
                 DesktopApp.AreYouSureToRevertChanges,
                 DesktopApp.ConfirmOperation,
                 DialogType.Question,
