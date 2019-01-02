@@ -204,7 +204,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.Model = await this.loadingUnitProvider.GetById(modelId);
             this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
-
             this.InitializeTray();
         }
 

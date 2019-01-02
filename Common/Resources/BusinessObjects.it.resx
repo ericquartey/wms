@@ -136,7 +136,7 @@
     <value>Data Ultimo Inventario</value>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
-    <value>Tolleranza di Inventario</value>
+    <value>Tolleranza di Inventario [pezzi]</value>
   </data>
   <data name="ItemNotes" xml:space="preserve">
     <value>Note</value>
@@ -154,7 +154,7 @@
     <value>Codice</value>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
-    <value>Tolleranza in Prelievo</value>
+    <value>Tolleranza in Prelievo [pezzi]</value>
   </data>
   <data name="ItemCode" xml:space="preserve">
     <value>Codice</value>
@@ -235,16 +235,16 @@
     <value>Lotto</value>
   </data>
   <data name="CompartmentMaxCapacity" xml:space="preserve">
-    <value>Capacità Massima</value>
+    <value>Capacità Massima [pezzi]</value>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
     <value>Stato Scomparto</value>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
-    <value>Giacenza</value>
+    <value>Giacenza [pezzi]</value>
   </data>
   <data name="CompartmentType" xml:space="preserve">
-    <value>Tipo Scomparto</value>
+    <value>Tipo Scomparto [mm] x [mm]</value>
   </data>
   <data name="CompartmentTypeDescription" xml:space="preserve">
     <value>Descrizione Tipo Scomparto</value>
@@ -292,10 +292,10 @@
     <value>Abbinamento Articolo</value>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
-    <value>Impegnato in Prelievo</value>
+    <value>Impegnato in Prelievo [pezzi]</value>
   </data>
   <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Impegnato in Versamento</value>
+    <value>Impegnato in Versamento [pezzi]</value>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
     <value>Sub 1</value>
@@ -319,7 +319,7 @@
     <value>Quantità Minima di Riordino</value>
   </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Tolleranza in Versamento</value>
+    <value>Tolleranza in Versamento [pezzi]</value>
   </data>
   <data name="ItemReservedForPick" xml:space="preserve">
     <value>Impegnato in Prelievo</value>
@@ -612,10 +612,7 @@
   <data name="ItemListShipmentUnitCode" xml:space="preserve">
     <value>Codice</value>
   </data>
-  <data name="ListToExecuteArea" xml:space="preserve">
-    <value>Area</value>
-  </data>
-  <data name="ListToExecuteAreaInvalidError" xml:space="preserve">
+  <data name="ItemListExecutionAreaInvalidError" xml:space="preserve">
     <value>Area non valida</value>
   </data>
   <data name="MachineStatusAutomatic" xml:space="preserve">
@@ -648,11 +645,8 @@
   <data name="MachineStatus" xml:space="preserve">
     <value>Stato Macchina</value>
   </data>
-  <data name="ListToExecuteBayInvalidError" xml:space="preserve">
+  <data name="ItemListExecutionBayInvalidError" xml:space="preserve">
     <value>Baia non valida</value>
-  </data>
-  <data name="ListToExecuteBayOptional" xml:space="preserve">
-    <value>Baia [Opzionale]</value>
   </data>
   <data name="ItemListStatusCompleted" xml:space="preserve">
     <value>Completata</value>
@@ -683,5 +677,93 @@
   </data>
   <data name="PairingFixed" xml:space="preserve">
     <value>Fisso</value>
+  </data>
+  <data name="ItemListExecutionRequestArea" xml:space="preserve">
+    <value>Area</value>
+  </data>
+  <data name="ItemListExecutionRequestBay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
+  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
+    <value>Esegui immediatamente</value>
+  </data>
+  <data name="ItemListRowStatusWaiting" xml:space="preserve">
+    <value>In Attesa</value>
+  </data>
+  <data name="ItemListRowStatusSuspended" xml:space="preserve">
+    <value>Sospesa</value>
+  </data>
+  <data name="ItemListRowStatusIncomplete" xml:space="preserve">
+    <value>Incompleta</value>
+  </data>
+  <data name="ItemListRowStatusExecuting" xml:space="preserve">
+    <value>In Esecuzione</value>
+  </data>
+  <data name="ItemListRowStatusCompleted" xml:space="preserve">
+    <value>Completata</value>
+  </data>
+  <data name="ItemListTypeInventory" xml:space="preserve">
+    <value>Inventario</value>
+  </data>
+  <data name="ItemListTypePick" xml:space="preserve">
+    <value>Prelievo</value>
+  </data>
+  <data name="ItemListTypePut" xml:space="preserve">
+    <value>Versamento</value>
+  </data>
+  <data name="MonoReference" xml:space="preserve">
+    <value>Mono Referenza</value>
+  </data>
+  <data name="PluriReference" xml:space="preserve">
+    <value>Multi Referenza</value>
+  </data>
+  <data name="SideBack" xml:space="preserve">
+    <value>Posteriore</value>
+  </data>
+  <data name="SideFront" xml:space="preserve">
+    <value>Frontale</value>
+  </data>
+  <data name="SideLeft" xml:space="preserve">
+    <value>Sinistro</value>
+  </data>
+  <data name="SideRight" xml:space="preserve">
+    <value>Destro</value>
+  </data>
+  <data name="ItemManagementTypeFIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementTypeVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
+    <value>Pianifica</value>
+    <comment>List Execution Request - Schedule</comment>
+  </data>
+  <data name="ItemListRowCompletionDate" xml:space="preserve">
+    <value>Data di completamento</value>
+  </data>
+  <data name="ItemListRowExecutionDate" xml:space="preserve">
+    <value>Data di esecuzione</value>
+  </data>
+  <data name="ItemListRowLastModificationDate" xml:space="preserve">
+    <value>Data di ultima modifica</value>
+  </data>
+  <data name="ItemListRowLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="ItemListRowRegistrationNumber" xml:space="preserve">
+    <value>Numero di registrazione</value>
+  </data>
+  <data name="ItemListRowSub1" xml:space="preserve">
+    <value>Sub 1</value>
+  </data>
+  <data name="ItemListRowSub2" xml:space="preserve">
+    <value>Sub 2</value>
+  </data>
+  <data name="CompletionDate" xml:space="preserve">
+    <value>Data di completamento</value>
+  </data>
+  <data name="LastExecutionDate" xml:space="preserve">
+    <value>Data Ultima Esecuzione</value>
   </data>
 </root>

@@ -3,7 +3,7 @@ using Ferretto.VW.Navigation;
 using System.Windows.Input;
 using System.Windows;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for SSNavigationButtonsView.xaml
@@ -15,7 +15,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
         public SSNavigationButtonsView()
         {
             this.InitializeComponent();
-            this.DataContext = new SSNavigationButtonsViewModel();
+            this.DataContext = ViewModels.SSNavigationButtonsVMInstance;
         }
 
         #endregion Constructors

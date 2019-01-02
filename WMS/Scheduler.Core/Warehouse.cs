@@ -89,7 +89,6 @@ namespace Ferretto.WMS.Scheduler.Core
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 list.Status = bayId.HasValue ? ListStatus.Executing : ListStatus.Waiting;
-
                 requests = list.Rows.Select(row =>
                     {
                         row.Status = bayId.HasValue ? ListRowStatus.Executing : ListRowStatus.Waiting;
@@ -136,8 +135,13 @@ namespace Ferretto.WMS.Scheduler.Core
                         return task.Result;
                     }
                 )
-                .Where(r => r != null)
-                .ToList();  // remark: some qualified requests may be null
+                .Where(r => r != null) // remark: some qualified requests may be null
+                .ToList();
+
+                if (!requests.Any())
+                {
+                    list.Status = ListStatus.Suspended;
+                }
 
                 this.dataProvider.Update(list);
                 this.dataProvider.AddRange(requests);
@@ -148,6 +152,11 @@ namespace Ferretto.WMS.Scheduler.Core
             await this.CreateMissionsForPendingRequests();
 
             return requests;
+        }
+
+        public Task<IEnumerable<SchedulerRequest>> PrepareListRowForExecutionAsync(int listRowId, int areaId, int? bayId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)

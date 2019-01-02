@@ -63,17 +63,18 @@
                     <wms:SpinEdit x:Name="PositionXText"
                                   Grid.Row="0"
                                   Grid.Column="0"
-                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
-                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.XPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
 
                     <wms:SpinEdit x:Name="PositionYText"
                                   Grid.Row="0"
                                   Grid.Column="2"
-                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Right"
-                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.YPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
+
                     <wms:SpinEdit x:Name="WidthText"
                                   Grid.Row="1"
                                   Grid.Column="0"
@@ -87,6 +88,7 @@
                                   HorizontalAlignment="Stretch"
                                   EditValue="{Binding Model.Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   MinValue="1" />
+
                     <wms:LookUpEdit Grid.Row="2"
                                     Grid.Column="0"
                                     Grid.ColumnSpan="3"
@@ -136,10 +138,10 @@
                                   Grid.Row="3"
                                   Grid.Column="0"
                                   MinWidth="90"
-                                  MinValue="0"
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
-                                  EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                  EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  MinValue="0" />
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="3"
                                   Grid.Column="2"
@@ -185,11 +187,11 @@
 
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="0"
-                                             Text="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Path=Model.Sub1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <wms:TextBox Grid.Row="0"
                                              Grid.Column="2"
-                                             Text="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Path=Model.Sub2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                                 <wms:ComboBox x:Name="PackageType"
                                               Grid.Row="1"
@@ -199,7 +201,7 @@
 
                                 <wms:TextBox Grid.Row="1"
                                              Grid.Column="2"
-                                             Text="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                             EditValue="{Binding Path=Model.RegistrationNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </Grid>
 
                         </wms:AccordionItem>

@@ -26,7 +26,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
 
         public ItemListsController(
             IServiceProvider serviceProvider,
-            ILogger<ItemsController> logger,
+            ILogger<ItemListsController> logger,
             Core.IWarehouse warehouse)
         {
             this.logger = logger;

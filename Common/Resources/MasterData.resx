@@ -277,7 +277,7 @@
     <value>Waiting Status</value>
   </data>
   <data name="ItemListsTypePick" xml:space="preserve">
-    <value>Pick Lists</value>
+    <value>Picking Lists</value>
   </data>
   <data name="CustomerOrderInformation" xml:space="preserve">
     <value>Customer Order Information</value>
@@ -334,7 +334,7 @@
     <comment>Notification - request accepted</comment>
   </data>
   <data name="CompartmentTypeListFormat" xml:space="preserve">
-    <value>{0} X {1} ( Width [mm] X Height [mm] )</value>
+    <value>{0} X {1} (Width X Height)</value>
   </data>
   <data name="AdvancedDetails" xml:space="preserve">
     <value>Advanced Details</value>
@@ -470,5 +470,12 @@
   </data>
   <data name="CompartmentDeletedSuccessfully" xml:space="preserve">
     <value>Compartment deleted successfully</value>
+  </data>
+  <data name="ListRowRequestAccepted" xml:space="preserve">
+    <value>List Row request accepted</value>
+    <comment>Notification - request accepted</comment>
+  </data>
+  <data name="ItemListRows" xml:space="preserve">
+    <value>List Rows</value>
   </data>
 </root>

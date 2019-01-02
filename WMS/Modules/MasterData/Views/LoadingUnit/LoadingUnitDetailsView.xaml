@@ -1,8 +1,11 @@
 ﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitDetailsView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:bm="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
@@ -12,6 +15,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
+             SubTitle="{Binding LoadingUnit.Code, StringFormat={x:Static res:Title.LoadingUnitDetailsView}}"
              mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch"
@@ -91,7 +95,7 @@
                         </Grid.ColumnDefinitions>
                         <wms:TextBox Grid.ColumnSpan="3"
                                      Margin="0,0,20,0"
-                                     Text="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:ComboBox Grid.Row="1"
                                       Grid.ColumnSpan="3"
                                       Margin="0,0,20,0"
@@ -110,13 +114,19 @@
                                       Grid.Column="2"
                                       Margin="0,0,20,0"
                                       EditValue="{Binding Model.ReferenceType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                      ItemsSource="{Binding Model.ReferenceTypeChoices}" />
+                                      ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
+                            <dxmvvm:Interaction.Behaviors>
+                                <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type bm:ReferenceType}"
+                                                                SortMode="DisplayName" />
+                            </dxmvvm:Interaction.Behaviors>
+                        </wms:ComboBox>
+
                         <wms:TextBox Grid.Row="3"
                                      Grid.ColumnSpan="3"
                                      Height="100"
                                      Margin="0,0,20,0"
-                                     IsMultiline="True"
-                                     Text="{Binding Model.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Model.Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                     IsMultiline="True" />
                     </Grid>
                 </GroupBox>
 
@@ -220,8 +230,6 @@
                             </wms:WmsGridControl.View>
 
                             <wms:WmsGridControl.Columns>
-                                <dxg:GridColumn Width="200*"
-                                                FieldName="LoadingUnitCode" />
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="Sub1" />
                                 <dxg:GridColumn Width="100*"
@@ -235,8 +243,8 @@
                                 <dxg:GridColumn Width="100*"
                                                 FieldName="MaxCapacity" />
                                 <dxg:GridColumn Width="200*"
-                                                FieldName="IsItemPairingFixed"
-                                                Style="{DynamicResource BooleanCellTemplate}" />
+                                                CellDisplayTemplate="{DynamicResource BooleanCellTemplate}"
+                                                FieldName="IsItemPairingFixed" />
                             </wms:WmsGridControl.Columns>
 
                             <wms:WmsGridControl.SortInfo>

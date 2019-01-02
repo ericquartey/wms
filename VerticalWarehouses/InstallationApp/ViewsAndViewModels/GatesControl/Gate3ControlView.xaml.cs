@@ -1,7 +1,7 @@
 ﻿using System.Windows.Controls;
 using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for Gate3ControlView.xaml
@@ -13,7 +13,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.GatesControl
         public Gate3ControlView()
         {
             this.InitializeComponent();
-            this.DataContext = new Gate3ControlViewModel();
+            this.DataContext = ViewModels.Gate3ControlVMInstance;
             if (DataManager.CurrentData.GeneralInfo.Type_Bay3 == 1)
             {
                 this.SensorRegionContentControl.Content = new CustomControls.Controls.CustomGateControlSensorsTwoPositions();

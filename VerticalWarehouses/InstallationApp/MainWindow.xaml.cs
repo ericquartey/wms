@@ -26,7 +26,7 @@ namespace Ferretto.VW.InstallationApp
             FinishedMachineOnMarchChangeStateEventHandler += () => { };
             MainWindowViewModel.ClickedOnMachineModeEventHandler += this.SetMachineMode;
             MainWindowViewModel.ClickedOnMachineOnMarchEventHandler += this.SetMachineOn;
-            this.DataContext = new MainWindowViewModel();
+            this.DataContext = ViewModels.MainWindowVMInstance;
         }
 
         #endregion Constructors
@@ -40,21 +40,6 @@ namespace Ferretto.VW.InstallationApp
         #endregion Events
 
         #region Methods
-
-        public void ChangeSkinToDark(object sender, MouseButtonEventArgs e)
-        {
-            NavigationService.RaiseChangeSkinToDarkEvent();
-        }
-
-        public void ChangeSkinToLight(object sender, MouseButtonEventArgs e)
-        {
-            NavigationService.RaiseChangeSkinToLightEvent();
-        }
-
-        public void ChangeSkinToMedium(object sender, MouseButtonEventArgs e)
-        {
-            NavigationService.RaiseChangeSkinToMediumEvent();
-        }
 
         public void RaiseFinishedMachineModeChangeStateEvent() => FinishedMachineModeChangeStateEventHandler();
 

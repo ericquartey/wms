@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
     public partial class IdleView : UserControl
     {
@@ -22,7 +22,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
         public IdleView()
         {
             this.InitializeComponent();
-            this.DataContext = new IdleViewModel();
+            this.DataContext = ViewModels.IdleVMInstance;
         }
 
         #endregion Constructors

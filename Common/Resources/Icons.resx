@@ -398,7 +398,7 @@
     <comment>@Invariant</comment>
   </data>
   <data name="PairingFree" xml:space="preserve">
-    <value />
+    <value></value>
     <comment>@Invariant</comment>
   </data>
   <data name="ItemListViewTypeInventory" xml:space="preserve">
@@ -431,12 +431,15 @@
   </data>
   <data name="CellClassA" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/podio.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="CellStatusEmpty" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-empty-box-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="CellStatusFull" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-open-box-50.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="CompartmentStatusAvailable" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-data-quality-50.png</value>
@@ -456,11 +459,14 @@
   </data>
   <data name="InventoryLists" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/inv.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="PickLists" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/up.png</value>
+    <comment>@Invariant</comment>
   </data>
   <data name="PutLists" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/down.png</value>
+    <comment>@Invariant</comment>
   </data>
 </root>

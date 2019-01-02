@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for LSMTHorizontalEngineView.xaml
@@ -12,7 +12,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
         public LSMTHorizontalEngineView()
         {
             this.InitializeComponent();
-            this.DataContext = new LSMTHorizontalEngineViewModel();
+            this.DataContext = ViewModels.LSMTHorizontalEngineVMInstance;
         }
 
         #endregion Constructors

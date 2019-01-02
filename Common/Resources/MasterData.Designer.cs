@@ -367,7 +367,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} X {1} ( Width [mm] X Height [mm] ).
+        ///   Looks up a localized string similar to {0} X {1} (Width X Height).
         /// </summary>
         public static string CompartmentTypeListFormat {
             get {
@@ -556,6 +556,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List Rows.
+        /// </summary>
+        public static string ItemListRows {
+            get {
+                return ResourceManager.GetString("ItemListRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Details Row List.
         /// </summary>
         public static string ItemListRowShowDetails {
@@ -601,7 +610,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick Lists.
+        ///   Looks up a localized string similar to Picking Lists.
         /// </summary>
         public static string ItemListsTypePick {
             get {
@@ -741,6 +750,15 @@ namespace Ferretto.Common.Resources {
         public static string ListRequestAccepted {
             get {
                 return ResourceManager.GetString("ListRequestAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List Row request accepted.
+        /// </summary>
+        public static string ListRowRequestAccepted {
+            get {
+                return ResourceManager.GetString("ListRowRequestAccepted", resourceCulture);
             }
         }
         

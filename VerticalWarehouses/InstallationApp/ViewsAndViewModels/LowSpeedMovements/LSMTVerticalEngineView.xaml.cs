@@ -2,7 +2,7 @@
 using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.Utils.Source;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for LSMTVerticalEngineView.xaml
@@ -14,7 +14,7 @@ namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.LowSpeedMovements
         public LSMTVerticalEngineView()
         {
             this.InitializeComponent();
-            this.DataContext = new LSMTVerticalEngineViewModel();
+            this.DataContext = ViewModels.LSMTVerticalEngineVMInstance;
         }
 
         #endregion Constructors

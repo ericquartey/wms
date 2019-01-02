@@ -21,6 +21,8 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool isBusy;
         private ICommand runListExecuteCommand;
 
+        private string validationError;
+
         #endregion Fields
 
         #region Constructors
@@ -39,19 +41,19 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.executionRequest;
             set
             {
-                if (this.executionRequest == value)
-                {
-                    return;
-                }
-
-                if (this.executionRequest != null)
-                {
-                    this.executionRequest.PropertyChanged -= this.OnItemListPropertyChanged;
-                }
+                var oldExecutionRequest = this.executionRequest;
 
                 if (this.SetProperty(ref this.executionRequest, value))
                 {
-                    this.ExecutionRequest.PropertyChanged += this.OnItemListPropertyChanged;
+                    if (oldExecutionRequest != null)
+                    {
+                        oldExecutionRequest.PropertyChanged -= this.OnItemListPropertyChanged;
+                    }
+
+                    if (this.executionRequest != null)
+                    {
+                        this.executionRequest.PropertyChanged += this.OnItemListPropertyChanged;
+                    }
                 }
             }
         }
@@ -64,6 +66,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand RunListExecuteCommand => this.runListExecuteCommand ??
                             (this.runListExecuteCommand = new DelegateCommand(this.ExecuteListCommand, this.CanExecuteListCommand));
+
+        public string ValidationError
+        {
+            get => this.validationError;
+            set => this.SetProperty(ref this.validationError, value);
+        }
 
         #endregion Properties
 
@@ -79,7 +87,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.executionRequest.ItemListDetails = await this.itemListProvider.GetById(modelId.Value);
             this.executionRequest.AreaChoices = this.areaProvider.GetAll();
-            this.executionRequest.PropertyChanged += new PropertyChangedEventHandler(this.OnAreaIdChanged);
+            this.executionRequest.PropertyChanged += this.OnAreaIdChanged;
         }
 
         private bool CanExecuteListCommand()
@@ -93,15 +101,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
             this.IsBusy = true;
             OperationResult result = null;
-            if (this.executionRequest.RunImmediately)
+            if (!this.executionRequest.Schedule)
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue);
 
-                result = await this.itemListProvider.ExecuteImmediately(this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+                result = await this.itemListProvider.ExecuteImmediately(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
             }
             else
             {
-                result = await this.itemListProvider.ScheduleForExecution(this.executionRequest.AreaId.Value);
+                result = await this.itemListProvider.ScheduleForExecution(this.executionRequest.ItemListDetails.Id, this.executionRequest.AreaId.Value);
             }
 
             this.IsBusy = false;
@@ -109,10 +117,12 @@ namespace Ferretto.WMS.Modules.MasterData
             if (result.Success)
             {
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ListRequestAccepted, StatusType.Success));
+                this.Disappear();
             }
             else
             {
                 this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
+                this.ValidationError = result.Description;
             }
         }
 

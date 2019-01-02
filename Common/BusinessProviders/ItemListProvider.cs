@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -24,8 +22,8 @@ namespace Ferretto.Common.BusinessProviders
             list => (char)list.ItemListType == (char)(ItemListType.Put);
 
         private readonly IDatabaseContextService dataContext;
-        private readonly EnumerationProvider enumerationProvider;
         private readonly ItemListRowProvider itemListRowProvider;
+        private readonly WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService;
 
         #endregion Fields
 
@@ -33,12 +31,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public ItemListProvider(
             IDatabaseContextService dataContext,
-            EnumerationProvider enumerationProvider,
-            ItemListRowProvider itemListRowProvider)
+            ItemListRowProvider itemListRowProvider,
+            WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService)
         {
             this.dataContext = dataContext;
-            this.enumerationProvider = enumerationProvider;
             this.itemListRowProvider = itemListRowProvider;
+            this.itemListService = itemListService;
         }
 
         #endregion Constructors
@@ -55,9 +53,18 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Task<OperationResult> ExecuteImmediately(int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediately(int listId, int areaId, int bayId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+            try
+            {
+                await this.itemListService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListExecutionRequest { ListId = listId, AreaId = areaId, BayId = bayId });
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
         public IQueryable<ItemList> GetAll()
@@ -91,8 +98,6 @@ namespace Ferretto.Common.BusinessProviders
 
         public async Task<ItemListDetails> GetById(int id)
         {
-            var dataContext = this.dataContext.Current;
-
             var itemListDetails = await this.dataContext.Current.ItemLists
                .Include(l => l.ItemListRows)
                .Where(l => l.Id == id)
@@ -201,12 +206,21 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public Task<OperationResult> ScheduleForExecution(int areaId)
+        public async Task<OperationResult> ScheduleForExecution(int listId, int areaId)
         {
-            return new Task<OperationResult>(() => new OperationResult(false, description: "not implemented"));
+            try
+            {
+                await this.itemListService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListExecutionRequest { ListId = listId, AreaId = areaId });
+
+                return new OperationResult(true);
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(false, description: ex.Message);
+            }
         }
 
-        private static Expression<Func<DataModels.ItemList, Boolean>> BuildFilter(ItemListType? type, ItemListStatus status)
+        private static Expression<Func<DataModels.ItemList, bool>> BuildFilter(ItemListType? type, ItemListStatus status)
         {
             var listType = type.HasValue ? (DataModels.ItemListType)type.Value : default(DataModels.ItemListType);
             var listStatus = (DataModels.ItemListStatus)status;

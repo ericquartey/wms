@@ -7,6 +7,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Common.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/DXWindow.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Error.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/TextEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/InfoText.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ScrollViewer.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/NavMenuTouch.xaml" />
@@ -17,7 +18,6 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ComboBoxEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/GroupBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/WmsGridControl.xaml" />
-        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/TextEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/TextBox.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Expander.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/TileBar.xaml" />
@@ -33,6 +33,7 @@
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/ToggleSwitch.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/WmsCheckEdit.xaml" />
         <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/BusyIndicator.xaml" />
+        <ResourceDictionary Source="/Ferretto.WMS.App.Themes;component/Themes/Light/Dialog.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
