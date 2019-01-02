@@ -144,13 +144,13 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.SelectedCompartmentTray = null;
                 await this.LoadData();
 
-                if (e.Model is ICompartment compartment)
-                {
-                    this.SelectedCompartmentTray = compartment;
-                }
-                else if (e.Model is BulkCompartment bulk)
+                if (e.Model is BulkCompartment bulk)
                 {
                     this.SelectedCompartmentTray = bulk.LoadingUnit.Compartments.FirstOrDefault();
+                }
+                else if (e.Model is ICompartment compartment)
+                {
+                    this.SelectedCompartmentTray = compartment;
                 }
             }
         }
@@ -176,6 +176,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.SelectedCompartmentTray = null;
 
             var model = new BulkCompartment();
+            model.LoadingUnitId = this.loadingUnit.Id;
             model.LoadingUnit = this.loadingUnit;
 
             this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
