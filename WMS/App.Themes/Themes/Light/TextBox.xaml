@@ -41,7 +41,11 @@
                                       VerticalContentAlignment="Top"
                                       dx:ScrollBarExtensions.ScrollBarMode="TouchOverlap"
                                       AcceptsReturn="{TemplateBinding IsMultiline}"
-                                      Text="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      AllowNullInput="{TemplateBinding AllowNullInput}"
+                                      NullText="{TemplateBinding NullText}"
+                                      NullValue="{TemplateBinding NullValue}"
+                                      EditValue="{Binding Path=Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+    
                                       TextWrapping="{TemplateBinding IsMultiline,
                                                                      Converter={StaticResource BTTWC}}"
                                       VerticalScrollBarVisibility="Auto" />
