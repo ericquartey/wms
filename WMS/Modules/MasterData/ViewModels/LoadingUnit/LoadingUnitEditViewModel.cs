@@ -19,7 +19,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
         private readonly Func<ICompartment, ICompartment, string> filterColorFunc = new EditFilter().ColorFunc;
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private SidePanelDetailsViewModel<CompartmentDetails> activeSideViewModel;
+        private BaseNavigationViewModel activeSideViewModel;
         private ICommand addCommand;
         private ICommand bulkAddCommand;
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
@@ -27,7 +27,7 @@ namespace Ferretto.WMS.Modules.MasterData
         private bool isSidePanelOpen;
         private LoadingUnitDetails loadingUnit;
         private bool loadingUnitHasCompartments;
-        private CompartmentDetails selectedCompartmentTray;
+        private ICompartment selectedCompartmentTray;
         private Tray tray;
 
         #endregion Fields
@@ -43,7 +43,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public SidePanelDetailsViewModel<CompartmentDetails> ActiveSideViewModel
+        public BaseNavigationViewModel ActiveSideViewModel
         {
             get => this.activeSideViewModel;
             set
@@ -53,12 +53,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     if (prevValue != null)
                     {
-                        prevValue.OperationComplete -= this.ActiveSideViewModel_OperationComplete;
+                        (prevValue as SidePanelDetailsViewModel<BusinessObject>).OperationComplete -= this.ActiveSideViewModel_OperationComplete;
                     }
 
                     if (value != null)
                     {
-                        value.OperationComplete += this.ActiveSideViewModel_OperationComplete;
+                        (value as SidePanelDetailsViewModel<BusinessObject>).OperationComplete += this.ActiveSideViewModel_OperationComplete;
                     }
                 }
             }
@@ -77,7 +77,7 @@ namespace Ferretto.WMS.Modules.MasterData
         }
 
         public ICommand EditCommand => this.editCommand ??
-            (this.editCommand = new DelegateCommand(this.ExecuteEditCompartmentCommand, this.CanExecuteEditCommand)
+            (this.editCommand = new DelegateCommand(async () => await this.ExecuteEditCompartmentCommand(), this.CanExecuteEditCommand)
             .ObservesProperty(() => this.SelectedCompartmentTray));
 
         public Func<ICompartment, ICompartment, string> FilterColorFunc => this.filterColorFunc;
@@ -93,11 +93,10 @@ namespace Ferretto.WMS.Modules.MasterData
             get => this.loadingUnit;
             set
             {
-                if (!this.SetProperty(ref this.loadingUnit, value))
+                if (this.SetProperty(ref this.loadingUnit, value))
                 {
-                    return;
+                    this.RefreshData();
                 }
-                this.RefreshData();
             }
         }
 
@@ -107,16 +106,10 @@ namespace Ferretto.WMS.Modules.MasterData
             set => this.SetProperty(ref this.loadingUnitHasCompartments, value);
         }
 
-        public CompartmentDetails SelectedCompartmentTray
+        public ICompartment SelectedCompartmentTray
         {
             get => this.selectedCompartmentTray;
-            set
-            {
-                if (value != null)
-                {
-                    this.SetProperty(ref this.selectedCompartmentTray, value);
-                }
-            }
+            set => this.SetProperty(ref this.selectedCompartmentTray, value);
         }
 
         public Tray Tray
@@ -142,9 +135,24 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
-        private void ActiveSideViewModel_OperationComplete(Object sender, EventArgs e)
+        private async void ActiveSideViewModel_OperationComplete(Object sender, OperationEventArgs e)
         {
             this.HideSidePanel();
+
+            if (e.IsCanceled == false)
+            {
+                this.SelectedCompartmentTray = null;
+                await this.LoadData();
+
+                if (e.Model is ICompartment compartment)
+                {
+                    this.SelectedCompartmentTray = compartment;
+                }
+                else if (e.Model is BulkCompartment bulk)
+                {
+                    this.SelectedCompartmentTray = bulk.LoadingUnit.Compartments.FirstOrDefault();
+                }
+            }
         }
 
         private bool CanExecuteEditCommand()
@@ -155,18 +163,30 @@ namespace Ferretto.WMS.Modules.MasterData
         private void ExecuteAddCompartmentCommand()
         {
             this.SelectedCompartmentTray = null;
-            this.ShowSidePanel(new CompartmentAddViewModel());
+
+            var model = this.compartmentProvider.GetNew();
+            model.LoadingUnitId = this.loadingUnit.Id;
+            model.LoadingUnit = this.loadingUnit;
+
+            this.ShowSidePanel(new CompartmentAddViewModel { Model = model });
         }
 
         private void ExecuteBulkAddCommand()
         {
             this.SelectedCompartmentTray = null;
-            this.ShowSidePanel(new CompartmentAddBulkViewModel());
+
+            var model = new BulkCompartment();
+            model.LoadingUnit = this.loadingUnit;
+
+            this.ShowSidePanel(new CompartmentAddBulkViewModel { Model = model });
         }
 
-        private void ExecuteEditCompartmentCommand()
+        private async Task ExecuteEditCompartmentCommand()
         {
-            this.ShowSidePanel(new CompartmentEditViewModel());
+            var model = await this.compartmentProvider.GetById(this.selectedCompartmentTray.Id);
+            model.LoadingUnit = this.loadingUnit;
+
+            this.ShowSidePanel(new CompartmentEditViewModel { Model = model });
         }
 
         private void HideSidePanel()
@@ -195,29 +215,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.RaisePropertyChanged(nameof(this.Tray));
         }
 
-        private async void InputAddVM_FinishEvent(Object sender, EventArgs e)
-        {
-            this.HideSidePanel();
-            if (sender is CompartmentAddViewModel model)
-            {
-                await this.LoadData();
-                this.SelectedCompartmentTray = model.Compartment;
-            }
-            //   this.InputAddVM.FinishEvent -= this.InputAddVM_FinishEvent;
-        }
-
-        private void InputBulkAddVM_FinishEvent(Object sender, EventArgs e)
-        {
-            this.HideSidePanel();
-            //  this.InputBulkAddVM.FinishEvent -= this.InputBulkAddVM_FinishEvent;
-        }
-
-        private void InputEditVM_FinishEvent(Object sender, EventArgs e)
-        {
-            this.HideSidePanel();
-            //  this.InputEditVM.FinishEvent -= this.InputEditVM_FinishEvent;
-        }
-
         private async Task LoadData()
         {
             if (this.Data is int modelId)
@@ -227,19 +224,9 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        private void ResetInputView()
+        private void ShowSidePanel(BaseNavigationViewModel childViewModel)
         {
-            this.HideSidePanel();
-        }
-
-        private async void ShowSidePanel(SidePanelDetailsViewModel<CompartmentDetails> childViewModel)
-        {
-            var model = await this.compartmentProvider.GetById(this.selectedCompartmentTray.Id);
-            model.LoadingUnit = this.loadingUnit;
-            childViewModel.Model = model;
-
             this.ActiveSideViewModel = childViewModel;
-
             this.IsSidePanelOpen = true;
         }
 

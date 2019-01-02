@@ -1,4 +1,4 @@
-<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitEditView"
+﻿<wms:WmsView x:Class="Ferretto.WMS.Modules.MasterData.LoadingUnitEditView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:businessModels="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
@@ -34,7 +34,7 @@
                            Margin="10,10,10,0"
                            HorizontalAlignment="Right"
                            Style="{DynamicResource ActionBarNotCustomizable}">
-                <wms:ActionBarItem Command="{Binding EditCommand}"
+                <wms:ActionBarItem Command="{Binding EditCommand, IsAsync=True}"
                                    Content="{x:Static res:MasterData.EditCompartment}"
                                    CustomGlyphSize="24,24"
                                    Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/image/ic_edit_black_24dp.png"
