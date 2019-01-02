@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
@@ -103,9 +102,9 @@ namespace Ferretto.WMS.Modules.MasterData
             base.OnAppear();
         }
 
-        private Boolean CanExecuteAddListRowCommand()
+        private bool CanExecuteAddListRowCommand()
         {
-            return this.ItemList != null && this.itemList.ItemListStatus == ItemListStatus.Completed;
+            return this.Model != null && this.Model.ItemListStatus == ItemListStatus.Completed;
         }
 
         private bool CanExecuteListCommand()

@@ -47,7 +47,12 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListId = listId, AreaId = areaId, BayId = bayId });
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest
+                {
+                    ListRowId = listId,
+                    AreaId = areaId,
+                    BayId = bayId
+                });
 
                 return new OperationResult(true);
             }
@@ -118,11 +123,15 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResult> ScheduleForExecution(int listId, int areaId)
+        public async Task<OperationResult> ScheduleForExecution(int listRowId, int areaId)
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListId = listId, AreaId = areaId });
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest
+                {
+                    ListRowId = listRowId,
+                    AreaId = areaId
+                });
 
                 return new OperationResult(true);
             }
