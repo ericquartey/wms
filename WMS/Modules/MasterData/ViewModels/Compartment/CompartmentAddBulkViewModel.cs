@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
 using Ferretto.Common.Controls;
+using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
@@ -51,39 +52,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
                 this.CompleteOperation();
             }
-        }
-
-        private async Task<bool> GenerateBulkCompartments()
-        {
-            /*   try
-               {
-                   var newCompartments = this.tray.BulkAddCompartments(this.SelectedBulkCompartmentTray);
-                   if (newCompartments == null || newCompartments.Count <= 0)
-                   {
-                       return false;
-                   }
-                   var addAll = true;
-                   foreach (var compartment in newCompartments)
-                   {
-                       compartment.LoadingUnitId = this.tray.LoadingUnitId;
-                       // HACK: this needs to be removed // compartment.CompartmentTypeId = 2;
-                       var result = await this.compartmentProvider.Add(compartment as CompartmentDetails);
-                       if (!result.Success)
-                       {
-                           addAll = false;
-                       }
-                   }
-                   if (addAll)
-                   {
-                       return true;
-                   }
-               }
-               catch (Exception ex)
-               {
-                   //TODO: validation error
-                   // this.SetError(Errors.BulkAddNoPossible + " " + ex.InnerException);
-               }*/
-            return false;
         }
 
         #endregion Methods
