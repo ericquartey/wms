@@ -430,4 +430,7 @@
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
     <value>Restituisce tutte le macchine Vertimag XS</value>
   </data>
+  <data name="CompartmentDeletedSuccessfully" xml:space="preserve">
+    <value>Scomparto rimosso con successo.</value>
+  </data>
 </root>

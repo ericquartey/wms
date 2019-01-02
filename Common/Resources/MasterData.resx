@@ -468,4 +468,7 @@
   <data name="MachinesViewVertimagXSDescription" xml:space="preserve">
     <value>Get all machines of type Vertimag XS</value>
   </data>
+  <data name="CompartmentDeletedSuccessfully" xml:space="preserve">
+    <value>Compartment deleted successfully</value>
+  </data>
 </root>

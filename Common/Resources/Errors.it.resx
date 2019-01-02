@@ -166,7 +166,7 @@
     <value>L'altezza non può essere maggiore dell'altezza del cassetto.</value>
   </data>
   <data name="CompartmentOverlaps" xml:space="preserve">
-    <value>Le dimensioni sono in sovrapposizione con un altro scomparto.</value>
+    <value>Lo scomparto si sovrappone ad altri scomparti esistenti.</value>
   </data>
   <data name="CompartmentSizeHMore" xml:space="preserve">
     <value>La dimensione del nuovo Scomparto non può essere maggiore dell'altezza del cassetto.</value>

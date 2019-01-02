@@ -142,7 +142,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Compartment&apos;s size are overlaps with another compartment..
+        ///   Looks up a localized string similar to Compartment&apos;s size/position overlaps with other compartments..
         /// </summary>
         public static string CompartmentOverlaps {
             get {

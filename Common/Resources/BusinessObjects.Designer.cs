@@ -19,7 +19,7 @@ namespace Ferretto.Common.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class BusinessObjects {
@@ -142,20 +142,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Column.
+        ///   Looks up a localized string similar to Columns.
         /// </summary>
-        public static string BulkCompartmentColumn {
+        public static string BulkCompartmentColumns {
             get {
-                return ResourceManager.GetString("BulkCompartmentColumn", resourceCulture);
+                return ResourceManager.GetString("BulkCompartmentColumns", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Row.
+        ///   Looks up a localized string similar to Rows.
         /// </summary>
-        public static string BulkCompartmentRow {
+        public static string BulkCompartmentRows {
             get {
-                return ResourceManager.GetString("BulkCompartmentRow", resourceCulture);
+                return ResourceManager.GetString("BulkCompartmentRows", resourceCulture);
             }
         }
         

@@ -139,8 +139,7 @@
     <value>Compartment's height cannot be more than Tray's height</value>
   </data>
   <data name="CompartmentOverlaps" xml:space="preserve">
-    <value>New Compartment's size are overlaps with another compartment.</value>
-    <comment>Err</comment>
+    <value>Compartment's size/position overlaps with other compartments.</value>
   </data>
   <data name="CompartmentSizeHMore" xml:space="preserve">
     <value>Compartment's size cannote be more than Tray's height.</value>
