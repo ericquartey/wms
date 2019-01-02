@@ -358,7 +358,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {0} X {1} ( Width [mm] X Height [mm] ).
+        ///   Looks up a localized string similar to {0} X {1} (Width X Height).
         /// </summary>
         public static string CompartmentTypeListFormat {
             get {

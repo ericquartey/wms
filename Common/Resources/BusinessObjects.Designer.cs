@@ -412,7 +412,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max Capacity.
+        ///   Looks up a localized string similar to Max Capacity [pieces].
         /// </summary>
         public static string CompartmentMaxCapacity {
             get {
@@ -421,7 +421,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reserved for Pick.
+        ///   Looks up a localized string similar to Reserved for Pick [pieces].
         /// </summary>
         public static string CompartmentReservedForPick {
             get {
@@ -430,7 +430,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reserved to Store.
+        ///   Looks up a localized string similar to Reserved to Store [pieces].
         /// </summary>
         public static string CompartmentReservedToStore {
             get {
@@ -448,7 +448,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stock.
+        ///   Looks up a localized string similar to Stock [pieces].
         /// </summary>
         public static string CompartmentStock {
             get {
@@ -475,7 +475,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Compartment Type.
+        ///   Looks up a localized string similar to Compartment Type [mm] x [mm].
         /// </summary>
         public static string CompartmentType {
             get {
@@ -628,7 +628,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inventory Tolerance.
+        ///   Looks up a localized string similar to Inventory Tolerance [pieces].
         /// </summary>
         public static string ItemInventoryTolerance {
             get {
@@ -988,7 +988,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pick Tolerance.
+        ///   Looks up a localized string similar to Pick Tolerance [pieces].
         /// </summary>
         public static string ItemPickTolerance {
             get {
@@ -1042,7 +1042,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Store Tolerance.
+        ///   Looks up a localized string similar to Store Tolerance [pieces].
         /// </summary>
         public static string ItemStoreTolerance {
             get {
