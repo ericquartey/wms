@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -7,9 +9,9 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Fields
 
-        private int column;
+        private int columns;
         private int height;
-        private int row;
+        private int rows;
         private int width;
         private int xPosition;
         private int yPosition;
@@ -18,11 +20,11 @@ namespace Ferretto.Common.BusinessModels
 
         #region Properties
 
-        [Display(Name = nameof(BusinessObjects.BulkCompartmentColumn), ResourceType = typeof(BusinessObjects))]
-        public int Column
+        [Display(Name = nameof(BusinessObjects.BulkCompartmentColumns), ResourceType = typeof(BusinessObjects))]
+        public int Columns
         {
-            get => this.column;
-            set => this.SetIfStrictlyPositive(ref this.column, value);
+            get => this.columns;
+            set => this.SetIfStrictlyPositive(ref this.columns, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentHeight), ResourceType = typeof(BusinessObjects))]
@@ -32,11 +34,13 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetIfStrictlyPositive(ref this.height, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.BulkCompartmentRow), ResourceType = typeof(BusinessObjects))]
-        public int Row
+        public LoadingUnitDetails LoadingUnit { get; set; }
+
+        [Display(Name = nameof(BusinessObjects.BulkCompartmentRows), ResourceType = typeof(BusinessObjects))]
+        public int Rows
         {
-            get => this.row;
-            set => this.SetIfStrictlyPositive(ref this.row, value);
+            get => this.rows;
+            set => this.SetIfStrictlyPositive(ref this.rows, value);
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentWidth), ResourceType = typeof(BusinessObjects))]
@@ -61,5 +65,42 @@ namespace Ferretto.Common.BusinessModels
         }
 
         #endregion Properties
+
+        #region Methods
+
+        public IEnumerable<ICompartment> CreateBulk()
+        {
+            var compartments = new List<ICompartment>();
+
+            var widthNewCompartment = this.width / this.columns;
+            var heightNewCompartment = this.height / this.rows;
+
+            for (var r = 0; r < this.rows; r++)
+            {
+                for (var c = 0; c < this.columns; c++)
+                {
+                    var compartment = new CompartmentDetails
+                    {
+                        Width = widthNewCompartment,
+                        Height = heightNewCompartment,
+                        XPosition = this.XPosition + (c * widthNewCompartment),
+                        YPosition = this.YPosition + (r * heightNewCompartment),
+                    };
+
+                    if (this.LoadingUnit.CanAddCompartment(compartment))
+                    {
+                        compartments.Add(compartment);
+                    }
+                    else
+                    {
+                        throw new Exception(Errors.BulkAddNoPossible);
+                    }
+                }
+            }
+
+            return compartments;
+        }
+
+        #endregion Methods
     }
 }

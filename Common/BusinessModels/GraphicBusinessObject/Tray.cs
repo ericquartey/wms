@@ -78,39 +78,6 @@ namespace Ferretto.Common.BusinessModels
             }
         }
 
-        public List<ICompartment> BulkAddCompartments(BulkCompartment bulkCompartment)
-        {
-            var tempList = new List<ICompartment>();
-
-            var widthNewCompartment = bulkCompartment.Width / bulkCompartment.Column;
-            var heightNewCompartment = bulkCompartment.Height / bulkCompartment.Row;
-
-            for (var i = 0; i < bulkCompartment.Row; i++)
-            {
-                for (var j = 0; j < bulkCompartment.Column; j++)
-                {
-                    var newCompartment = new CompartmentDetails()
-                    {
-                        Width = widthNewCompartment,
-                        Height = heightNewCompartment,
-                        XPosition = bulkCompartment.XPosition + (j * widthNewCompartment),
-                        YPosition = bulkCompartment.YPosition + (i * heightNewCompartment),
-                    };
-                    if (this.CanAddCompartment(newCompartment))
-                    {
-                        tempList.Add(newCompartment);
-                    }
-                    else
-                    {
-                        throw new Exception(Errors.BulkAddNoPossible);
-                    }
-                }
-            }
-
-            this.AddCompartmentsRange(tempList);
-            return tempList;
-        }
-
         public bool CanAddCompartment(ICompartment compartmentDetails, bool edit = false)
         {
             //CHECK: exit from window
@@ -144,6 +111,7 @@ namespace Ferretto.Common.BusinessModels
                 compartment = this.ConvertCompartmentDetailsToBulkCompartment(details);
                 isBulkAdd = false;
             }
+
             if (compartment is BulkCompartment bulkCompartment)
             {
                 if (onPropertyChange)
@@ -192,13 +160,13 @@ namespace Ferretto.Common.BusinessModels
         {
             var compartment = new CompartmentDetails();
             int row = 1, column = 1;
-            if (bulk.Row != 0)
+            if (bulk.Rows != 0)
             {
-                row = bulk.Row;
+                row = bulk.Rows;
             }
-            if (bulk.Column != 0)
+            if (bulk.Columns != 0)
             {
-                column = bulk.Column;
+                column = bulk.Columns;
             }
             compartment.Width = bulk.Width * column;
             compartment.Height = bulk.Height * row;
@@ -318,12 +286,12 @@ namespace Ferretto.Common.BusinessModels
                 return error;
             }
 
-            if (compartmentA.Row == 0 && isBulkAdd)
+            if (compartmentA.Rows == 0 && isBulkAdd)
             {
                 error = Errors.BulkCompartmentRow;
                 return error;
             }
-            if (compartmentA.Column == 0 && isBulkAdd)
+            if (compartmentA.Columns == 0 && isBulkAdd)
             {
                 error = Errors.BulkCompartmentColumn;
                 return error;
