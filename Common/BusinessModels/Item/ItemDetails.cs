@@ -165,20 +165,6 @@ namespace Ferretto.Common.BusinessModels
 
         public IEnumerable<Enumeration> ManagementTypeChoices { get; set; }
 
-        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public string ManagementTypeDescription => this.ManagementType.ToString();
-
-        [Display(Name = nameof(BusinessObjects.ItemManagementType), ResourceType = typeof(BusinessObjects))]
-        public int ManagementTypeId
-        {
-            get => (int)this.managementType;
-            set
-            {
-                var enumValue = (ItemManagementType)Enum.ToObject(typeof(ItemManagementType), value);
-                this.SetProperty(ref this.managementType, enumValue);
-            }
-        }
-
         public IEnumerable<EnumerationString> MeasureUnitChoices { get; set; }
 
         [Display(Name = nameof(General.MeasureUnit), ResourceType = typeof(General))]

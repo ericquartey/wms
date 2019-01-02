@@ -49,7 +49,7 @@ namespace Ferretto.Common.BusinessModels
         public string CellPositionDescription { get; set; }
 
         [Display(Name = nameof(BusinessObjects.CellSide_extended), ResourceType = typeof(BusinessObjects))]
-        public string CellSide { get; set; }
+        public Side CellSide { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnitCode), ResourceType = typeof(BusinessObjects))]
         public string Code { get; set; }
