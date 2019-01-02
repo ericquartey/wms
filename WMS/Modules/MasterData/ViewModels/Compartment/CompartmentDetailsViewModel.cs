@@ -124,8 +124,12 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void Initialize()
         {
-            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Compartment>>(async eventArgs => { await this.LoadData(); }, this.Token, true, true);
-            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Compartment>>(async eventArgs => { await this.LoadData(); });
+            this.modelRefreshSubscription = this.EventService.Subscribe<RefreshModelsEvent<Compartment>>(
+                async eventArgs => { await this.LoadData(); }, this.Token, true, true);
+
+            this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<Compartment>>(
+                async eventArgs => { await this.LoadData(); });
+
             this.modelSelectionChangedSubscription = this.EventService.Subscribe<ModelSelectionChangedEvent<Compartment>>(
                 async eventArgs =>
                 {
@@ -154,10 +158,12 @@ namespace Ferretto.WMS.Modules.MasterData
                     Width = loadingUnit.Width
                 }
             };
+
             if (loadingUnit.Compartments != null)
             {
                 this.tray.AddCompartmentsRange(loadingUnit.Compartments);
             }
+
             this.RaisePropertyChanged(nameof(this.Tray));
 
             this.readOnlyTray = true;
@@ -170,9 +176,9 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             if (this.Data is int modelId)
             {
-                var comp = await this.compartmentProvider.GetById(modelId);
-                var loadingUnit = await this.loadingUnitProvider.GetById(comp.LoadingUnitId);
-                this.Model = comp;
+                var compartment = await this.compartmentProvider.GetById(modelId);
+                var loadingUnit = await this.loadingUnitProvider.GetById(compartment.LoadingUnitId);
+                this.Model = compartment;
                 this.InitializeTray(loadingUnit);
             }
         }
