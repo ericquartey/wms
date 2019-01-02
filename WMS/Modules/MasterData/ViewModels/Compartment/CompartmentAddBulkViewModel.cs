@@ -21,6 +21,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public CompartmentAddBulkViewModel()
         {
             this.Title = Common.Resources.MasterData.BulkAddCompartment;
+            this.IsValidationEnabled = false;
         }
 
         #endregion Constructors
@@ -48,9 +49,16 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.LoadingUnit.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(
+                    Common.Resources.MasterData.LoadingUnitSavedSuccessfully,
+                    StatusType.Success
+                    ));
 
                 this.CompleteOperation();
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
             }
         }
 
