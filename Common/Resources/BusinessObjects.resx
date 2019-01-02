@@ -895,4 +895,28 @@
     <value>Inventory</value>
     <comment>Item List Type - Inventory</comment>
   </data>
+  <data name="MonoReference" xml:space="preserve">
+    <value>Mono Reference</value>
+  </data>
+  <data name="PluriReference" xml:space="preserve">
+    <value>Multi Reference</value>
+  </data>
+  <data name="SideBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="SideFront" xml:space="preserve">
+    <value>Front</value>
+  </data>
+  <data name="SideLeft" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="SideRight" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="ItemManagementTypeFIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementTypeVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
 </root>

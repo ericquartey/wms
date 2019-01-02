@@ -711,4 +711,28 @@
   <data name="ItemListTypePut" xml:space="preserve">
     <value>Versamento</value>
   </data>
+  <data name="MonoReference" xml:space="preserve">
+    <value>Mono Referenza</value>
+  </data>
+  <data name="PluriReference" xml:space="preserve">
+    <value>Multi Referenza</value>
+  </data>
+  <data name="SideBack" xml:space="preserve">
+    <value>Posteriore</value>
+  </data>
+  <data name="SideFront" xml:space="preserve">
+    <value>Frontale</value>
+  </data>
+  <data name="SideLeft" xml:space="preserve">
+    <value>Sinistro</value>
+  </data>
+  <data name="SideRight" xml:space="preserve">
+    <value>Destro</value>
+  </data>
+  <data name="ItemManagementTypeFIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementTypeVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
 </root>
