@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<CompartmentDetails> GetByLoadingUnitId(int id);
 
-        CompartmentDetails GetNewCompartmentDetails();
+        CompartmentDetails GetNew();
 
         IQueryable<Compartment> GetWithStatusAvailable();
 

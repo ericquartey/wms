@@ -275,18 +275,15 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
-        public CompartmentDetails GetNewCompartmentDetails()
+        public CompartmentDetails GetNew()
         {
-            var compartmentDetails = new CompartmentDetails();
-
-            compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-            compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-            compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-            compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-
-            compartmentDetails.MaterialStatusId = compartmentDetails.MaterialStatusChoices.FirstOrDefault()?.Id;
-
-            return compartmentDetails;
+            return new CompartmentDetails
+            {
+                CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses(),
+                CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes(),
+                MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses(),
+                PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes()
+            };
         }
 
         public IQueryable<Compartment> GetWithStatusAvailable()
