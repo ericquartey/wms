@@ -12,14 +12,13 @@ namespace Ferretto.Common.Controls
 
         private ICommand cancelCommand;
 
-        private bool isOpen;
         private string title;
 
         #endregion Fields
 
         #region Events
 
-        public event EventHandler<OperationEventArgs<T>> OperationComplete;
+        public event EventHandler<OperationEventArgs> OperationComplete;
 
         #endregion Events
 
@@ -27,12 +26,6 @@ namespace Ferretto.Common.Controls
 
         public ICommand CancelCommand => this.cancelCommand ??
                                   (this.cancelCommand = new DelegateCommand(this.ExecuteCancelCommand));
-
-        public bool IsOpen
-        {
-            get => this.isOpen;
-            set => this.SetProperty(ref this.isOpen, value);
-        }
 
         public string Title
         {
@@ -44,24 +37,14 @@ namespace Ferretto.Common.Controls
 
         #region Methods
 
-        public void Hide()
+        protected virtual void CompleteOperation(bool isCanceled = false)
         {
-            this.IsOpen = false;
-        }
-
-        public void Show()
-        {
-            this.IsOpen = true;
-        }
-
-        protected virtual void CompleteOperation()
-        {
-            this.OperationComplete?.Invoke(this, new OperationEventArgs<T>(this.Model));
+            this.OperationComplete?.Invoke(this, new OperationEventArgs(this.Model, isCanceled));
         }
 
         private void ExecuteCancelCommand()
         {
-            this.CompleteOperation();
+            this.CompleteOperation(isCanceled: true);
         }
 
         #endregion Methods
