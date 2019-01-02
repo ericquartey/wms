@@ -220,7 +220,7 @@
 
                             <wms:ActionBar Grid.Row="0"
                                            Grid.ColumnSpan="4"
-                                           Height="29"
+                                           Height="28"
                                            HorizontalAlignment="Right"
                                            Style="{DynamicResource ActionBarNotCustomizable}">
 
