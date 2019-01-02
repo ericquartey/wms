@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -58,11 +58,16 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var dataContext = this.dataContextService.Current;
 
-                var typeId = await this.compartmentTypeProvider.Add(new CompartmentType
+                var result = await this.compartmentTypeProvider.Add(new CompartmentType
                 {
                     Width = model.Width,
                     Height = model.Height
                 }, model.ItemId, model.MaxCapacity);
+
+                if (result.Success == false)
+                {
+                    return new OperationResult(false);
+                }
 
                 var entry = dataContext.Compartments.Add(new DataModels.Compartment
                 {
@@ -71,7 +76,7 @@ namespace Ferretto.Common.BusinessProviders
                     XPosition = model.XPosition,
                     YPosition = model.YPosition,
                     LoadingUnitId = model.LoadingUnitId,
-                    CompartmentTypeId = typeId.EntityId.Value,
+                    CompartmentTypeId = result.EntityId.Value,
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     Stock = model.Stock,
                     ReservedForPick = model.ReservedForPick,
@@ -86,6 +91,8 @@ namespace Ferretto.Common.BusinessProviders
                 {
                     model.Id = entry.Entity.Id;
                 }
+
+                model.LoadingUnit?.Compartments.Add(model);
 
                 return new OperationResult(true);
             }
