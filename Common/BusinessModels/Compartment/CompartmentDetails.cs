@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -73,6 +74,19 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get; set; }
 
+        public override string Error => string.Join(Environment.NewLine, new[]
+                            {
+                this[nameof(this.XPosition)],
+                this[nameof(this.YPosition)],
+                this[nameof(this.Width)],
+                this[nameof(this.Height)],
+                this[nameof(this.MaxCapacity)],
+                this[nameof(this.Stock)],
+            }
+            .Distinct()
+            .Where(s => !string.IsNullOrEmpty(s))
+        );
+
         [Display(Name = nameof(BusinessObjects.CompartmentFifoTime), ResourceType = typeof(BusinessObjects))]
         public int? FifoTime
         {
@@ -87,7 +101,14 @@ namespace Ferretto.Common.BusinessModels
         public int? Height
         {
             get => this.height;
-            set => this.SetIfStrictlyPositive(ref this.height, value);
+
+            set
+            {
+                if (this.SetIfStrictlyPositive(ref this.height, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentLastInventoryDate), ResourceType = typeof(BusinessObjects))]
@@ -156,7 +177,13 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> MaterialStatusChoices
         {
             get => this.materialStatusChoices;
-            set => this.SetProperty(ref this.materialStatusChoices, value);
+            set
+            {
+                if (this.SetProperty(ref this.materialStatusChoices, value))
+                {
+                    this.MaterialStatusId = this.MaterialStatusChoices.FirstOrDefault()?.Id;
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
@@ -170,7 +197,13 @@ namespace Ferretto.Common.BusinessModels
         public int? MaxCapacity
         {
             get => this.maxCapacity;
-            set => this.SetIfStrictlyPositive(ref this.maxCapacity, value);
+            set
+            {
+                if (this.SetIfStrictlyPositive(ref this.maxCapacity, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         public IEnumerable<Enumeration> PackageTypeChoices
@@ -211,7 +244,13 @@ namespace Ferretto.Common.BusinessModels
         public int Stock
         {
             get => this.stock;
-            set => this.SetIfPositive(ref this.stock, value);
+            set
+            {
+                if (this.SetIfPositive(ref this.stock, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentSub1), ResourceType = typeof(BusinessObjects))]
@@ -232,23 +271,122 @@ namespace Ferretto.Common.BusinessModels
         public int? Width
         {
             get => this.width;
-            set => this.SetIfStrictlyPositive(ref this.width, value);
+            set
+            {
+                if (this.SetIfStrictlyPositive(ref this.width, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentXPosition), ResourceType = typeof(BusinessObjects))]
         public int? XPosition
         {
             get => this.xPosition;
-            set => this.SetIfPositive(ref this.xPosition, value);
+            set
+            {
+                if (this.SetIfPositive(ref this.xPosition, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
         [Display(Name = nameof(BusinessObjects.CompartmentYPosition), ResourceType = typeof(BusinessObjects))]
         public int? YPosition
         {
             get => this.yPosition;
-            set => this.SetIfPositive(ref this.yPosition, value);
+            set
+            {
+                if (this.SetIfPositive(ref this.yPosition, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.Error));
+                }
+            }
         }
 
+        private bool CanAddToLoadingUnit => this.LoadingUnit == null || this.LoadingUnit.CanAddCompartment(this);
+
         #endregion Properties
+
+        #region Indexers
+
+        public override string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.XPosition):
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return Errors.CompartmentOverlaps;
+                        }
+
+                        if (this.XPosition.HasValue == false)
+                        {
+                            return "Compartment position must be specified.";
+                        }
+
+                        break;
+
+                    case nameof(this.YPosition):
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return Errors.CompartmentOverlaps;
+                        }
+
+                        if (this.YPosition.HasValue == false)
+                        {
+                            return "Compartment position must be specified.";
+                        }
+                        break;
+
+                    case nameof(this.Width):
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return Errors.CompartmentOverlaps;
+                        }
+
+                        if (this.Width.HasValue == false)
+                        {
+                            return "Compartment size must be specified.";
+                        }
+
+                        break;
+
+                    case nameof(this.Height):
+                        if (this.CanAddToLoadingUnit == false)
+                        {
+                            return Errors.CompartmentOverlaps;
+                        }
+
+                        if (this.Height.HasValue == false)
+                        {
+                            return "Compartment size must be specified.";
+                        }
+                        break;
+
+                    case nameof(this.MaxCapacity):
+                        if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
+                        {
+                            return "Item stock in the compartment cannot be greater that compartment's maximum capacity.";
+                        }
+                        break;
+
+                    case nameof(this.Stock):
+                        if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
+                        {
+                            return "Item stock in the compartment cannot be greater that compartment's maximum capacity.";
+                        }
+                        break;
+                }
+
+                return string.Empty;
+            }
+        }
+
+        #endregion Indexers
     }
 }
