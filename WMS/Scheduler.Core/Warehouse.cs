@@ -154,6 +154,11 @@ namespace Ferretto.WMS.Scheduler.Core
             return requests;
         }
 
+        public Task<IEnumerable<SchedulerRequest>> PrepareListRowForExecutionAsync(int listRowId, int areaId, int? bayId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<SchedulerRequest> WithdrawAsync(SchedulerRequest request)
         {
             SchedulerRequest qualifiedRequest = null;

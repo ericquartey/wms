@@ -97,11 +97,11 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 Debug.Assert(this.executionRequest.BayId.HasValue);
 
-                //                result = await this.itemListRowProvider.ExecuteImmediately(this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
+                result = await this.itemListRowProvider.ExecuteImmediately(this.executionRequest.ItemListRowDetails.Id, this.executionRequest.AreaId.Value, this.executionRequest.BayId.Value);
             }
             else
             {
-                //                result = await this.itemListRowProvider.ScheduleForExecution(this.executionRequest.AreaId.Value);
+                result = await this.itemListRowProvider.ScheduleForExecution(this.executionRequest.ItemListRowDetails.Id, this.executionRequest.AreaId.Value);
             }
 
             this.IsBusy = false;
