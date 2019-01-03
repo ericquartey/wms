@@ -123,8 +123,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
             base.OnAppear();
+            await this.LoadData();
         }
 
         protected override void OnDispose()
