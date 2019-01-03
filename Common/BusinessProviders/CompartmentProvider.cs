@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -74,8 +74,6 @@ namespace Ferretto.Common.BusinessProviders
 
                 var entry = dataContext.Compartments.Add(new DataModels.Compartment
                 {
-                    Width = model.Width,
-                    Height = model.Height,
                     XPosition = model.XPosition,
                     YPosition = model.YPosition,
                     LoadingUnitId = model.LoadingUnitId,
@@ -158,7 +156,10 @@ namespace Ferretto.Common.BusinessProviders
                {
                    Id = c.Id,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
-                   CompartmentTypeDescription = string.Format(Resources.MasterData.CompartmentTypeListFormatReduced, c.Width, c.Height),
+                   CompartmentTypeDescription = string.Format(
+                       Resources.MasterData.CompartmentTypeListFormatReduced,
+                       c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
+                       c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width),
                    ItemDescription = c.Item.Description,
                    IsItemPairingFixed = c.IsItemPairingFixed,
                    LoadingUnitCode = c.LoadingUnit.Code,
@@ -191,6 +192,7 @@ namespace Ferretto.Common.BusinessProviders
                .ThenInclude(l => l.LoadingUnitType)
                .Include(c => c.Item)
                .Include(c => c.CompartmentStatus)
+               .Include(c => c.CompartmentType)
                .GroupJoin(
                     dataContext.ItemsCompartmentTypes,
                     cmp => new { CompartmentTypeId = cmp.CompartmentTypeId, ItemId = cmp.ItemId.Value },
@@ -224,8 +226,8 @@ namespace Ferretto.Common.BusinessProviders
                    FirstStoreDate = j.cmp.FirstStoreDate,
                    LastStoreDate = j.cmp.LastStoreDate,
                    LastPickDate = j.cmp.LastPickDate,
-                   Width = j.cmp.Width,
-                   Height = j.cmp.Height,
+                   Width = j.cmp.HasRotation ? j.cmp.CompartmentType.Height : j.cmp.CompartmentType.Width,
+                   Height = j.cmp.HasRotation ? j.cmp.CompartmentType.Width : j.cmp.CompartmentType.Height,
                    XPosition = j.cmp.XPosition,
                    YPosition = j.cmp.YPosition,
                    LoadingUnitId = j.cmp.LoadingUnitId,
@@ -303,8 +305,8 @@ namespace Ferretto.Common.BusinessProviders
                     FirstStoreDate = c.FirstStoreDate,
                     LastStoreDate = c.LastStoreDate,
                     LastPickDate = c.LastPickDate,
-                    Width = c.Width,
-                    Height = c.Height,
+                    Width = c.HasRotation ? c.CompartmentType.Height : c.CompartmentType.Width,
+                    Height = c.HasRotation ? c.CompartmentType.Width : c.CompartmentType.Height,
                     XPosition = c.XPosition,
                     YPosition = c.YPosition,
                     LoadingUnitId = c.LoadingUnitId,
@@ -404,15 +406,29 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContextService.Current;
-            lock (dataContext)
+            var result = this.compartmentTypeProvider.Add(new CompartmentType
             {
-                var existingModel = dataContext.Compartments.Find(model.Id);
+                Width = model.Width,
+                Height = model.Height
+            }, model.ItemId, model.MaxCapacity).Result;
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-                return dataContext.SaveChanges();
+            if (result.Success == false)
+            {
+                return 0;
             }
+
+            var dataContext = this.dataContextService.Current;
+            var compartmentType = dataContext.CompartmentTypes.Find(result.EntityId);
+            var existingModel = dataContext.Compartments.Find(model.Id);
+
+            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            existingModel.HasRotation =
+                compartmentType.Height == model.Width
+                &&
+                compartmentType.Width == model.Height;
+
+            return dataContext.SaveChanges();
         }
 
         private static IQueryable<Compartment> GetAllCompartmentsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Compartment, bool>> whereFunc = null)
@@ -431,7 +447,10 @@ namespace Ferretto.Common.BusinessProviders
                {
                    Id = c.Id,
                    CompartmentStatusDescription = c.CompartmentStatus.Description,
-                   CompartmentTypeDescription = string.Format(Resources.MasterData.CompartmentTypeListFormat, c.Width, c.Height),
+                   CompartmentTypeDescription = string.Format(
+                       Resources.MasterData.CompartmentTypeListFormat,
+                       c.CompartmentType.Width,
+                       c.CompartmentType.Height),
                    ItemDescription = c.Item.Description,
                    IsItemPairingFixed = c.IsItemPairingFixed,
                    LoadingUnitCode = c.LoadingUnit.Code,

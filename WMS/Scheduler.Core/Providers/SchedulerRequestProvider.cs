@@ -181,7 +181,6 @@ namespace Ferretto.WMS.Scheduler.Core
                     LoadingUnitId = c.LoadingUnitId,
                     Lot = c.Lot,
                     MaterialStatusId = c.MaterialStatusId,
-                    MaxCapacity = c.MaxCapacity,
                     PackageTypeId = c.PackageTypeId,
                     RegistrationNumber = c.RegistrationNumber,
                     ReservedForPick = c.ReservedForPick,
