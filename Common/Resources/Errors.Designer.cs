@@ -160,11 +160,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment size is not specified..
+        /// </summary>
+        public static string CompartmentSizeIsNotSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentSizeIsNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s size cannote be more than Tray&apos;s width,.
         /// </summary>
         public static string CompartmentSizeWMore {
             get {
                 return ResourceManager.GetString("CompartmentSizeWMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item stock in the compartment cannot be greater that compartment&apos;s maximum capacity..
+        /// </summary>
+        public static string CompartmentStockGreaterThanMaxCapacity {
+            get {
+                return ResourceManager.GetString("CompartmentStockGreaterThanMaxCapacity", resourceCulture);
             }
         }
         
@@ -196,11 +214,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s X position is not specified..
+        /// </summary>
+        public static string CompartmentXPositionIsNotSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentXPositionIsNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to YPosition cannot be more than Tray&apos;s height.
         /// </summary>
         public static string CompartmentYPosition {
             get {
                 return ResourceManager.GetString("CompartmentYPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s Y position is not specified..
+        /// </summary>
+        public static string CompartmentYPositionIsNotSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentYPositionIsNotSpecified", resourceCulture);
             }
         }
         

@@ -117,118 +117,103 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConverterCanConvertOnlyToStringType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo stringa.</value>
+  <data name="Article" xml:space="preserve">
+    <value>Articolo</value>
   </data>
-  <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo Visibility.</value>
+  <data name="ArticleDescription" xml:space="preserve">
+    <value>Descrizione Articolo:</value>
   </data>
-  <data name="ConverterCanConvertOnlyToTextWrappingType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo TextWrapping.</value>
+  <data name="ArticleLable" xml:space="preserve">
+    <value>Articolo:</value>
   </data>
-  <data name="ItemTypeWasNotSpecified" xml:space="preserve">
-    <value>Tipo articolo non specificato.</value>
+  <data name="Articles" xml:space="preserve">
+    <value>Articoli</value>
   </data>
-  <data name="ParameterCannotBeNullOrWhitespace" xml:space="preserve">
-    <value>Il parametro non può essere nullo o vuoto.</value>
+  <data name="ArticlesDetails" xml:space="preserve">
+    <value>Dettagli Articolo</value>
   </data>
-  <data name="ParameterMustBePositive" xml:space="preserve">
-    <value>Il parametro deve essere positivo.</value>
+  <data name="ArticleState" xml:space="preserve">
+    <value>Stato Articolo:</value>
   </data>
-  <data name="ParameterMustBeStrictlyPositive" xml:space="preserve">
-    <value>Il parametro deve essere strettamente positivo.</value>
+  <data name="Availability" xml:space="preserve">
+    <value>Disponibilità [unità]:</value>
   </data>
-  <data name="SpecifiedPathNotInConfiguredImageFolder" xml:space="preserve">
-    <value>Il percorso indicato non è contenuto nella directory delle immagini.</value>
+  <data name="Confirm" xml:space="preserve">
+    <value>Conferma</value>
   </data>
-  <data name="CannotRetrieveDocumentGroupFromLayoutManager" xml:space="preserve">
-    <value>Errore recuperando il document group dal Main Layout Manager.</value>
+  <data name="Details" xml:space="preserve">
+    <value>Dettagli</value>
   </data>
-  <data name="BulkAddNoPossible" xml:space="preserve">
-    <value>Errore: non è stato possibile eseguire la Scompartizione Dinamica.</value>
+  <data name="DispatchedQuantity" xml:space="preserve">
+    <value>Quantità Evasa:</value>
   </data>
-  <data name="AddNoPossible" xml:space="preserve">
-    <value>Errore: non è stato possibile aggiungere un nuovo Scomparto.</value>
+  <data name="FIFOPeriod" xml:space="preserve">
+    <value>Periodo FIFO:</value>
   </data>
-  <data name="ConverterCanConvertOnlyToNavigationStyleType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo GridViewNavigationStyle.</value>
+  <data name="InstantArticle" xml:space="preserve">
+    <value>Immediato Articolo</value>
   </data>
-  <data name="BulkCompartmentColumn" xml:space="preserve">
-    <value>Il numero di colonne del nuovo Bulk Compartment non può essere minore o uguale a 0.</value>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
   </data>
-  <data name="BulkCompartmentRow" xml:space="preserve">
-    <value>Il numero di righe del nuovo Bulk Compartment non può essere minore o uguale a 0.</value>
+  <data name="Lists" xml:space="preserve">
+    <value>Liste</value>
   </data>
-  <data name="CompartmentHeightLess" xml:space="preserve">
-    <value>L'altezza del nuovo Scomparto non può essere minore o uguale a 0.</value>
+  <data name="Machine" xml:space="preserve">
+    <value>Macchina</value>
   </data>
-  <data name="CompartmentHeightMore" xml:space="preserve">
-    <value>L'altezza non può essere maggiore dell'altezza del cassetto.</value>
+  <data name="Machines" xml:space="preserve">
+    <value>Macchine</value>
   </data>
-  <data name="CompartmentOverlaps" xml:space="preserve">
-    <value>Lo scomparto si sovrappone ad altri scomparti esistenti.</value>
+  <data name="Notes" xml:space="preserve">
+    <value>Note:</value>
   </data>
-  <data name="CompartmentSizeHMore" xml:space="preserve">
-    <value>La dimensione del nuovo Scomparto non può essere maggiore dell'altezza del cassetto.</value>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Tipo di Packaging:</value>
   </data>
-  <data name="CompartmentSizeWMore" xml:space="preserve">
-    <value>La dimensione del nuovo Scomparto non può essere maggiore della larghezza del cassetto.</value>
+  <data name="Position" xml:space="preserve">
+    <value>Posizione:</value>
   </data>
-  <data name="CompartmentWidthLess" xml:space="preserve">
-    <value>La larghezza del nuovo Scomparto non può essere minore o uguale a 0.</value>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Data di Produzione:</value>
   </data>
-  <data name="CompartmentWidthMore" xml:space="preserve">
-    <value>La larghezza non può essere maggiore della larghezza del cassetto.</value>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantità</value>
   </data>
-  <data name="CompartmentXPosition" xml:space="preserve">
-    <value>XPosition non può essere maggiore della larghezza del cassetto.</value>
+  <data name="RequestedQuantity" xml:space="preserve">
+    <value>Quantità Richiesta:</value>
   </data>
-  <data name="CompartmentYPosition" xml:space="preserve">
-    <value>YPosition non può essere maggiore dell'altezza del cassetto.</value>
+  <data name="SearchCode" xml:space="preserve">
+    <value>Cerca per Codice:</value>
   </data>
-  <data name="EditNoPossible" xml:space="preserve">
-    <value>Errore: non è stato possibile editare questo scomparto.</value>
+  <data name="Search" xml:space="preserve">
+    <value>Cerca</value>
   </data>
-  <data name="UnableToConnectToDatabase" xml:space="preserve">
-    <value>Impossibile connettersi al database</value>
+  <data name="ExecutableListsRows" xml:space="preserve">
+    <value>Righe Eseguibili delle Liste</value>
   </data>
-  <data name="ConverterCanConvertOnlyToBrushType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo Brush.</value>
+  <data name="Batch" xml:space="preserve">
+    <value>Batch:</value>
   </data>
-  <data name="ConverterParameterMustBeType" xml:space="preserve">
-    <value>Il parametro del converter deve essere un Type</value>
+  <data name="Description" xml:space="preserve">
+    <value>Descrizione</value>
   </data>
-  <data name="ConverterCanConvertOnlyToDoubleType" xml:space="preserve">
-    <value>Questo converter può convertire solo valori di tipo Double.</value>
+  <data name="DescriptionLable" xml:space="preserve">
+    <value>Descrizione:</value>
   </data>
-  <data name="ConverterParameterMustBeBool" xml:space="preserve">
-    <value>Il parametro del converter deve essere un bool</value>
+  <data name="LIFOPeriod" xml:space="preserve">
+    <value>Periodo LIFO:</value>
   </data>
-  <data name="NoChangesFound" xml:space="preserve">
-    <value>Non ho trovato modifiche da apportare.</value>
+  <data name="ListDescription" xml:space="preserve">
+    <value>Descrizione Lista:</value>
   </data>
-  <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
-    <value>Impossibile aggiungere lo scomparto (id={0}) specificato alla loading unit con id={1} perchè si sovrappone a uno o più scomparti esistenti.</value>
+  <data name="ListLabel" xml:space="preserve">
+    <value>Lista:</value>
   </data>
-  <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
-    <value>Stile '{0}' per '{1}' non trovato.</value>
+  <data name="Management" xml:space="preserve">
+    <value>Gestione:</value>
   </data>
-  <data name="BusyIndicatorInvalidIndex" xml:space="preserve">
-    <value>Indice invalido</value>
-  </data>
-  <data name="NotAddDB" xml:space="preserve">
-    <value>Non aggiunto {0} al database.</value>
-  </data>
-  <data name="CompartmentSizeIsNotSpecified" xml:space="preserve">
-    <value>La dimensione dello scomparto non è specificata.</value>
-  </data>
-  <data name="CompartmentStockGreaterThanMaxCapacity" xml:space="preserve">
-    <value>La quantità in magazzino dell'articolo non può superare la capacità massima dello scomparto.</value>
-  </data>
-  <data name="CompartmentXPositionIsNotSpecified" xml:space="preserve">
-    <value>La posizione X dello scomparto non è specificata</value>
-  </data>
-  <data name="CompartmentYPositionIsNotSpecified" xml:space="preserve">
-    <value>La posizione Y dello scomparto non è specificata.</value>
+  <data name="Picking" xml:space="preserve">
+    <value>Picking</value>
   </data>
 </root>

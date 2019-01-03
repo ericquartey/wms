@@ -565,4 +565,25 @@
   <data name="CellCorrection" xml:space="preserve">
     <value>Correzione Cella[mm]:</value>
   </data>
+  <data name="MesuredInitialPosition" xml:space="preserve">
+    <value>Posizione iniziale misurata [mm]:</value>
+  </data>
+  <data name="MoveToInitialPosition" xml:space="preserve">
+    <value>Sposta nella posizione iniziale.</value>
+  </data>
+  <data name="InsertMesuredInitialPosition" xml:space="preserve">
+    <value>Inserisci posizione iniziale misurata.</value>
+  </data>
+  <data name="MoveToPosition" xml:space="preserve">
+    <value>Sposta nella posizione.</value>
+  </data>
+  <data name="ConfirmResolution" xml:space="preserve">
+    <value>Conferma nuova risoluzione o cancella l'operazione.</value>
+  </data>
+  <data name="MovingToDesiredPosition" xml:space="preserve">
+    <value>Spostamento nella posizione desiderata ...</value>
+  </data>
+  <data name="SettingInitialPosition" xml:space="preserve">
+    <value>Impostazione della posizione iniziale ...</value>
+  </data>
 </root>

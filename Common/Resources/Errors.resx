@@ -161,19 +161,19 @@
   </data>
   <data name="ConverterCanConvertOnlyToNavigationStyleType" xml:space="preserve">
     <value>Converter can only convert to value of type GridViewNavigationStyle.</value>
-    <comment>@Invariant</comment>
+    
   </data>
   <data name="ConverterCanConvertOnlyToStringType" xml:space="preserve">
     <value>Converter can only convert to value of type string.</value>
-    <comment>@Invariant</comment>
+    
   </data>
   <data name="ConverterCanConvertOnlyToTextWrappingType" xml:space="preserve">
     <value>Converter can only convert to value of type TextWrapping.</value>
-    <comment>@Invariant</comment>
+    
   </data>
   <data name="ConverterCanConvertOnlyToVisibilityType" xml:space="preserve">
     <value>Converter can only convert to value of type Visibility.</value>
-    <comment>@Invariant</comment>
+    
   </data>
   <data name="EditNoPossible" xml:space="preserve">
     <value>Error: it is no possible to Edit this Compartment.</value>
@@ -210,14 +210,14 @@
   </data>
   <data name="ConverterCanConvertOnlyToBrushType" xml:space="preserve">
     <value>Converter can only convert to value of type Brush.</value>
-    <comment>@Invariant</comment>
+    
   </data>
   <data name="ConverterParameterMustBeType" xml:space="preserve">
     <value>Converter parameter must be a type</value>
   </data>
   <data name="ConverterCanConvertOnlyToDoubleType" xml:space="preserve">
     <value>Converter can only convert to value of type Double.</value>
-    <comment>@Invariant</comment>
+    
   </data>
   <data name="ConverterParameterMustBeBool" xml:space="preserve">
     <value>Converter parameter must be bool</value>
@@ -236,5 +236,17 @@
   </data>
   <data name="NotAddDB" xml:space="preserve">
     <value>Not add {0} to database.</value>
+  </data>
+  <data name="CompartmentSizeIsNotSpecified" xml:space="preserve">
+    <value>Compartment size is not specified.</value>
+  </data>
+  <data name="CompartmentStockGreaterThanMaxCapacity" xml:space="preserve">
+    <value>Item stock in the compartment cannot be greater that compartment's maximum capacity.</value>
+  </data>
+  <data name="CompartmentXPositionIsNotSpecified" xml:space="preserve">
+    <value>Compartment's X position is not specified.</value>
+  </data>
+  <data name="CompartmentYPositionIsNotSpecified" xml:space="preserve">
+    <value>Compartment's Y position is not specified.</value>
   </data>
 </root>

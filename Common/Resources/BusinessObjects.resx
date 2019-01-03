@@ -946,4 +946,7 @@
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Last Execution Date</value>
   </data>
+  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
+    <value>Run Immediately</value>
+  </data>
 </root>
