@@ -16,7 +16,7 @@ namespace Ferretto.Common.BusinessModels
         private IEnumerable<Bay> bayChoices;
         private int? bayId;
         private ItemListDetails itemListDetails;
-        private bool runImmediately;
+        private bool schedule;
 
         #endregion Fields
 
@@ -74,13 +74,13 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.itemListDetails, value);
         }
 
-        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestRunImmediately), ResourceType = typeof(BusinessObjects))]
-        public bool RunImmediately
+        [Display(Name = nameof(BusinessObjects.ItemListExecutionRequestSchedule), ResourceType = typeof(BusinessObjects))]
+        public bool Schedule
         {
-            get => this.runImmediately;
+            get => this.schedule;
             set
             {
-                if (this.SetProperty(ref this.runImmediately, value))
+                if (!this.SetProperty(ref this.schedule, value))
                 {
                     this.BayId = null;
                 }
@@ -101,15 +101,15 @@ namespace Ferretto.Common.BusinessModels
                         if (this.areaId.HasValue == false ||
                             this.areaId.Value == 0)
                         {
-                            return Resources.BusinessObjects.ListToExecuteAreaInvalidError;
+                            return BusinessObjects.ItemListExecutionAreaInvalidError;
                         }
                         break;
 
                     case nameof(this.BayId):
                         if ((this.bayId.HasValue == false ||
-                            this.bayId.Value == 0) && this.runImmediately)
+                            this.bayId.Value == 0) && !this.schedule)
                         {
-                            return Resources.BusinessObjects.ListToExecuteBayInvalidError;
+                            return BusinessObjects.ItemListExecutionBayInvalidError;
                         }
                         break;
                 }

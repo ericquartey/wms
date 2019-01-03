@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessModels
         private ItemListStatus itemListStatus;
         private int itemListType;
         private IEnumerable<Enumeration> itemListTypeChoices;
-        private String itemListTypeDescription;
+        private string itemListTypeDescription;
         private string job;
         private int priority;
         private bool shipmentUnitAssociated;

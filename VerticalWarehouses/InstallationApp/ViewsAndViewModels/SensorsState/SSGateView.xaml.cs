@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SensorsState
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for SSGateView.xaml

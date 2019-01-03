@@ -94,7 +94,9 @@
     <Compile Include="Source\ActionsBasic\ICalibrateVerticalAxis.cs" />
     <Compile Include="Source\ActionsBasic\IDrawerWeightDetection.cs" />
     <Compile Include="Source\ActionsBasic\IPositioningDrawer.cs" />
+    <Compile Include="Source\ActionsBasic\ISwitchMotors.cs" />
     <Compile Include="Source\ActionsBasic\PositioningDrawer.cs" />
+    <Compile Include="Source\ActionsBasic\SwitchMotors.cs" />
     <Compile Include="Source\Support.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +107,10 @@
     <ProjectReference Include="..\MathLib\MathLib.csproj">
       <Project>{2f188460-af20-4b52-a19d-1a01941756d2}</Project>
       <Name>MathLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RemoteIODriver\RemoteIODriver.csproj">
+      <Project>{65b277ef-77fd-4a89-b550-086df53be54c}</Project>
+      <Name>RemoteIODriver</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{eaeeeb73-e9e7-4cdf-b100-a433a33562e3}</Project>

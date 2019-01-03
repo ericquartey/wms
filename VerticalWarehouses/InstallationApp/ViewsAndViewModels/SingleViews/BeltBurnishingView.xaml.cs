@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Windows.Controls;
 
-namespace Ferretto.VW.InstallationApp.ViewsAndViewModels.SingleViews
+namespace Ferretto.VW.InstallationApp
 {
     /// <summary>
     /// Interaction logic for BeltBurnishingView.xaml
