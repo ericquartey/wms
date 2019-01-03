@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -175,11 +175,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContextService.Current;
-            lock (dataContext)
-            {
-                return dataContext.Compartments.Count();
-            }
+            return this.dataContextService.Current.Compartments.Count();
         }
 
         public async Task<CompartmentDetails> GetById(int id)
@@ -335,11 +331,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusAvailableCount()
         {
-            var dataContext = this.dataContextService.Current;
-            lock (dataContext)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusAvailableFilter);
-            }
+            return this.dataContextService.Current.Compartments.AsNoTracking().Count(StatusAvailableFilter);
         }
 
         public IQueryable<Compartment> GetWithStatusAwaiting()
@@ -349,11 +341,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusAwaitingCount()
         {
-            var dataContext = this.dataContextService.Current;
-            lock (dataContext)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusAwaitingFilter);
-            }
+            return this.dataContextService.Current.Compartments.AsNoTracking().Count(StatusAwaitingFilter);
         }
 
         public IQueryable<Compartment> GetWithStatusBlocked()
@@ -363,11 +351,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusBlockedCount()
         {
-            var dataContext = this.dataContextService.Current;
-            lock (dataContext)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusBlockedFilter);
-            }
+            return this.dataContextService.Current.Compartments.AsNoTracking().Count(StatusBlockedFilter);
         }
 
         public IQueryable<Compartment> GetWithStatusExpired()
@@ -377,26 +361,20 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusExpiredCount()
         {
-            var dataContext = this.dataContextService.Current;
-            lock (dataContext)
-            {
-                return dataContext.Compartments.AsNoTracking().Count(StatusExpiredFilter);
-            }
+            return this.dataContextService.Current.Compartments.AsNoTracking().Count(StatusExpiredFilter);
         }
 
         public bool HasAnyAllowedItem(int modelId)
         {
             var dataContext = this.dataContextService.Current;
-            lock (dataContext)
-            {
-                return dataContext.Compartments
-                    .Where(c => c.Id == modelId)
-                    .Include(c => c.CompartmentType)
-                    .ThenInclude(ct => ct.ItemsCompartmentTypes)
-                    .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
-                    .AsNoTracking()
-                    .Any();
-            }
+
+            return dataContext.Compartments
+                .Where(c => c.Id == modelId)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .SelectMany(c => c.CompartmentType.ItemsCompartmentTypes)
+                .AsNoTracking()
+                .Any();
         }
 
         public int Save(CompartmentDetails model)
