@@ -107,9 +107,6 @@ namespace Ferretto.Common.BusinessProviders
 
             itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
             itemListRowDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-            itemListRowDetails.ItemListTypeChoices = ((ItemListType[])
-                Enum.GetValues(typeof(ItemListType)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
             return itemListRowDetails;
         }

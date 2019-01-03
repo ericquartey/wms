@@ -12,29 +12,49 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private string code;
+
         private DateTime? completionDate;
+
         private DateTime creationDate;
+
         private int dispatchedQuantity;
+
         private string itemDescription;
+
         private int itemId;
+
         private string itemListCode;
+
         private string itemListDescription;
+
         private ItemListRowStatus itemListRowStatus;
+
         private ItemListStatus itemListStatus;
+
         private ItemListType itemListType;
-        private IEnumerable<Enumeration> itemListTypeChoices;
-        private string itemListTypeDescription;
+
         private DateTime? lastExecutionDate;
+
         private DateTime? lastModificationDate;
+
         private string lot;
+
         private IEnumerable<Enumeration> materialStatusChoices;
+
         private int? materialStatusId;
+
         private IEnumerable<Enumeration> packageTypeChoices;
+
         private int? packageTypeId;
+
         private string registrationNumber;
+
         private int requiredQuantity;
+
         private int rowPriority;
+
         private string sub1;
+
         private string sub2;
 
         #endregion Fields
@@ -73,14 +93,6 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
-
-        public IEnumerable<Enumeration> ItemListTypeChoices
-        {
-            get => this.itemListTypeChoices;
-            set => this.SetProperty(ref this.itemListTypeChoices, value);
-        }
-
-        public string ItemListTypeDescription { get => this.itemListTypeDescription; set => this.SetProperty(ref this.itemListTypeDescription, value); }
 
         [Display(Name = nameof(BusinessObjects.LastExecutionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastExecutionDate { get => this.lastExecutionDate; set => this.SetProperty(ref this.lastExecutionDate, value); }
