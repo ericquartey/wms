@@ -17,8 +17,8 @@ namespace Ferretto.Common.BusinessModels
         private int dispatchedQuantity;
         private string itemDescription;
         private int itemId;
-        private string itemListRowCode;
-        private string itemListRowDescription;
+        private string itemListCode;
+        private string itemListDescription;
         private ItemListRowStatus itemListRowStatus;
         private ItemListStatus itemListStatus;
         private ItemListType itemListType;
@@ -60,10 +60,10 @@ namespace Ferretto.Common.BusinessModels
         public int ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
-        public string ItemListRowCode { get => this.itemListRowCode; set => this.SetProperty(ref this.itemListRowCode, value); }
+        public string ItemListCode { get => this.itemListCode; set => this.SetProperty(ref this.itemListCode, value); }
 
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
-        public string ItemListRowDescription { get => this.itemListRowDescription; set => this.SetProperty(ref this.itemListRowDescription, value); }
+        public string ItemListDescription { get => this.itemListDescription; set => this.SetProperty(ref this.itemListDescription, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowStatusDescription), ResourceType = typeof(BusinessObjects))]
         public ItemListRowStatus ItemListRowStatus { get => this.itemListRowStatus; set => this.SetProperty(ref this.itemListRowStatus, value); }
