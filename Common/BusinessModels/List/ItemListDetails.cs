@@ -19,7 +19,7 @@ namespace Ferretto.Common.BusinessModels
         private int itemListItemsCount;
         private IEnumerable<ItemListRow> itemListRows;
         private ItemListStatus itemListStatus;
-        private int itemListType;
+        private ItemListType itemListType;
         private IEnumerable<Enumeration> itemListTypeChoices;
         private string itemListTypeDescription;
         private string job;
@@ -106,28 +106,16 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> ItemListStatusChoices { get; set; }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public int ItemListType
+        public ItemListType ItemListType
         {
             get => this.itemListType;
-            set
-            {
-                if (this.SetProperty(ref this.itemListType, value))
-                {
-                    this.SetItemListDescription();
-                }
-            }
+            set => this.SetProperty(ref this.itemListType, value);
         }
 
         public IEnumerable<Enumeration> ItemListTypeChoices
         {
             get => this.itemListTypeChoices;
-            set
-            {
-                if (this.SetProperty(ref this.itemListTypeChoices, value))
-                {
-                    this.SetItemListDescription();
-                }
-            }
+            set => this.SetProperty(ref this.itemListTypeChoices, value);
         }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
@@ -176,14 +164,5 @@ namespace Ferretto.Common.BusinessModels
         }
 
         #endregion Properties
-
-        #region Methods
-
-        private void SetItemListDescription()
-        {
-            this.ItemListTypeDescription = this.ItemListTypeChoices?.SingleOrDefault(c => c.Id == this.ItemListType)?.Description;
-        }
-
-        #endregion Methods
     }
 }

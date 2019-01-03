@@ -21,7 +21,7 @@
     <wms:WmsView.SubTitle>
         <MultiBinding Converter="{StaticResource SFC}">
             <Binding Source="{x:Static res:Title.ItemListRowDetailsView}" />
-            <Binding Path="ItemListRow.ItemListTypeDescription"
+            <Binding Path="ItemListRow.ItemListType"
                      TargetNullValue="" />
             <Binding Path="ItemListRow.Code"
                      TargetNullValue="" />

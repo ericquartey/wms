@@ -108,7 +108,7 @@ namespace Ferretto.Common.BusinessProviders
                    Description = l.Description,
                    Priority = l.Priority,
                    ItemListStatus = (ItemListStatus)l.Status,
-                   ItemListType = (int)((ItemListType)l.ItemListType),
+                   ItemListType = (ItemListType)l.ItemListType,
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate,
                    Job = l.Job,

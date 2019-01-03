@@ -77,13 +77,7 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> ItemListTypeChoices
         {
             get => this.itemListTypeChoices;
-            set
-            {
-                if (this.SetProperty(ref this.itemListTypeChoices, value))
-                {
-                    this.SetItemListDescription();
-                }
-            }
+            set => this.SetProperty(ref this.itemListTypeChoices, value);
         }
 
         public string ItemListTypeDescription { get => this.itemListTypeDescription; set => this.SetProperty(ref this.itemListTypeDescription, value); }
@@ -131,14 +125,5 @@ namespace Ferretto.Common.BusinessModels
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
         #endregion Properties
-
-        #region Methods
-
-        private void SetItemListDescription()
-        {
-            this.ItemListTypeDescription = this.ItemListTypeChoices?.SingleOrDefault(c => c.Id == (int)this.ItemListType)?.Description;
-        }
-
-        #endregion Methods
     }
 }

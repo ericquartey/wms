@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -23,7 +24,7 @@
     <wms:WmsView.SubTitle>
         <MultiBinding Converter="{StaticResource SFC}">
             <Binding Source="{x:Static res:Title.ItemListDetailsView}" />
-            <Binding Path="ItemList.ItemListTypeDescription"
+            <Binding Path="ItemList.ItemListType"
                      TargetNullValue="" />
             <Binding Path="ItemList.Code"
                      TargetNullValue="" />
@@ -117,8 +118,12 @@
                             <wms:ComboBox Grid.Column="0"
                                           Margin="0,0,20,0"
                                           EditValue="{Binding Path=ItemList.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          ItemsSource="{Binding Path=ItemList.ItemListTypeChoices}"
-                                          SelectedItem="Pick" />
+                                          ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListType}"
+                                                                    SortMode="DisplayName" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </wms:ComboBox>
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
                                           AllowNullInput="False"
