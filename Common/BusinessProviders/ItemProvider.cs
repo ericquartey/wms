@@ -92,6 +92,33 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
+        public IQueryable<AllowedItemInList> GetAllowedByList()
+        {
+            return this.dataContext.Current.Compartments
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .ThenInclude(ict => ict.Item)
+                .ThenInclude(i => i.AbcClass)
+                .Include(c => c.CompartmentType)
+                .ThenInclude(ct => ct.ItemsCompartmentTypes)
+                .ThenInclude(ict => ict.Item)
+                .ThenInclude(i => i.ItemCategory)
+                .SelectMany(
+                    c => c.CompartmentType.ItemsCompartmentTypes,
+                    (c, ict) => new AllowedItemInList
+                    {
+                        Id = ict.Item.Id,
+                        Code = ict.Item.Code,
+                        Description = ict.Item.Description,
+                        MaxCapacity = ict.MaxCapacity,
+                        AbcClassDescription = ict.Item.AbcClass.Description,
+                        ItemCategoryDescription = ict.Item.ItemCategory.Description,
+                        Image = ict.Item.Image,
+                    }
+                )
+                .AsNoTracking();
+        }
+
         public async Task<ItemDetails> GetById(int id)
         {
             var dataContext = this.dataContext.Current;
