@@ -123,4 +123,10 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="PasswordLogin" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="UserLogin" xml:space="preserve">
+    <value>Nome Utente:</value>
+  </data>
 </root>

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls;
 using Prism.Commands;
@@ -24,7 +23,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        private Boolean CanShowDetailsCommand()
+        private bool CanShowDetailsCommand()
         {
             return this.CurrentItem != null;
         }

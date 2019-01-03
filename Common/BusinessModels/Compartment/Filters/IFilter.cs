@@ -6,10 +6,13 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        Func<CompartmentDetails, CompartmentDetails, string> ColorFunc { get; }
+        Func<ICompartment, ICompartment, string> ColorFunc { get; }
+
         string Description { get; }
+
         int Id { get; }
-        CompartmentDetails Selected { get; set; }
+
+        ICompartment Selected { get; set; }
 
         #endregion Properties
     }

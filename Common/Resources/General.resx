@@ -225,8 +225,4 @@
     <value>Loading</value>
     <comment>Busy Indicator Content</comment>
   </data>
-  <data name="SearchText" xml:space="preserve">
-    <value />
-    <comment>Search text on WmsGridControl</comment>
-  </data>
 </root>

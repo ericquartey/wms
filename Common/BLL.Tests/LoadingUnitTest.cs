@@ -60,15 +60,15 @@ namespace Feretto.Common.BLL.Tests
         public void AddAllOverlapsCompartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100 };
-            var compartment1 = new CompartmentDetails { XPosition = 30, YPosition = 30, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { XPosition = 39, YPosition = 30, Width = 10, Height = 10 };
-            var compartment3 = new CompartmentDetails { XPosition = 39, YPosition = 39, Width = 10, Height = 10 };
-            var compartment4 = new CompartmentDetails { XPosition = 30, YPosition = 29, Width = 10, Height = 10 };
-            var compartment5 = new CompartmentDetails { XPosition = 21, YPosition = 39, Width = 10, Height = 10 };
-            var compartment6 = new CompartmentDetails { XPosition = 21, YPosition = 30, Width = 10, Height = 10 };
-            var compartment7 = new CompartmentDetails { XPosition = 21, YPosition = 21, Width = 10, Height = 10 };
-            var compartment8 = new CompartmentDetails { XPosition = 30, YPosition = 21, Width = 10, Height = 10 };
-            var compartment9 = new CompartmentDetails { XPosition = 39, YPosition = 21, Width = 10, Height = 10 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 30, YPosition = 30, Width = 10, Height = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 39, YPosition = 30, Width = 10, Height = 10 };
+            var compartment3 = new CompartmentDetails { Id = 3, XPosition = 39, YPosition = 39, Width = 10, Height = 10 };
+            var compartment4 = new CompartmentDetails { Id = 4, XPosition = 30, YPosition = 29, Width = 10, Height = 10 };
+            var compartment5 = new CompartmentDetails { Id = 5, XPosition = 21, YPosition = 39, Width = 10, Height = 10 };
+            var compartment6 = new CompartmentDetails { Id = 6, XPosition = 21, YPosition = 30, Width = 10, Height = 10 };
+            var compartment7 = new CompartmentDetails { Id = 7, XPosition = 21, YPosition = 21, Width = 10, Height = 10 };
+            var compartment8 = new CompartmentDetails { Id = 8, XPosition = 30, YPosition = 21, Width = 10, Height = 10 };
+            var compartment9 = new CompartmentDetails { Id = 9, XPosition = 39, YPosition = 21, Width = 10, Height = 10 };
 
             loadingUnit.AddCompartment(compartment1);
             Assert.IsFalse(loadingUnit.CanAddCompartment(compartment2));
@@ -117,8 +117,8 @@ namespace Feretto.Common.BLL.Tests
         public void AddOverlappingCompartments()
         {
             var loadingUnit = new LoadingUnitDetails { Length = 100, Width = 100 };
-            var compartment1 = new CompartmentDetails { XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
-            var compartment2 = new CompartmentDetails { XPosition = 0, YPosition = 9, Width = 10, Height = 10 };
+            var compartment1 = new CompartmentDetails { Id = 1, XPosition = 0, YPosition = 0, Width = 10, Height = 10 };
+            var compartment2 = new CompartmentDetails { Id = 2, XPosition = 0, YPosition = 9, Width = 10, Height = 10 };
 
             loadingUnit.AddCompartment(compartment1);
             Assert.IsFalse(loadingUnit.CanAddCompartment(compartment2));

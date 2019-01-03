@@ -15,7 +15,7 @@
         <Setter Property="BarItemDisplayMode" Value="ContentAndGlyph" />
         <Setter Property="BarItemHorizontalIndent" Value="10" />
         <Setter Property="GlyphSize" Value="Small" />
-        <Setter Property="Background" Value="#00FFFFFF" />
+        <Setter Property="ShowBackground" Value="False" />
     </Style>
 
     <Style x:Key="ActionBarOverlayedWithGrid"
