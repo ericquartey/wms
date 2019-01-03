@@ -17,12 +17,19 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private IEnumerable<IFilterDataSource<TModel>> filterDataSources;
+
         private IEnumerable<Tile> filterTiles;
+
         private bool flattenDataSource;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object selectedFilterDataSource;
+
         private Tile selectedFilterTile;
+
         private object selectedItem;
 
         #endregion Fields
@@ -70,7 +77,7 @@ namespace Ferretto.Common.Controls
             protected set => this.SetProperty(ref this.flattenDataSource, value);
         }
 
-        [Display(Name = nameof(General.SearchText), ResourceType = typeof(General))]
+        [Display(Name = nameof(General.Search), ResourceType = typeof(General))]
         public string SearchText { get; set; }
 
         public Tile SelectedFilter
