@@ -9,11 +9,9 @@ using System.Configuration;
 
 namespace Ferretto.VW.Utils.Source
 {
-    public class DataManager
+    public class DataManager : IDataManager
     {
         #region Fields
-
-        public static DataManager CurrentData;
 
         private readonly string JSON_GENERAL_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["GeneralInfoFilePath"]);
         private readonly string JSON_INSTALLATION_INFO_PATH = string.Concat(Environment.CurrentDirectory, ConfigurationManager.AppSettings["InstallationInfoFilePath"]);

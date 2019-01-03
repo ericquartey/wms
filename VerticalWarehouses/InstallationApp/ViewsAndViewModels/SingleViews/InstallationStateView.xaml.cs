@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public InstallationStateView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.InstallationStateVMInstance;
         }
 
         #endregion Constructors

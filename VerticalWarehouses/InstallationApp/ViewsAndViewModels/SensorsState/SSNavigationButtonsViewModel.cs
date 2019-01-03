@@ -1,14 +1,16 @@
 ﻿using System.Windows.Input;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSNavigationButtonsViewModel : BindableBase, IViewModel
+    public class SSNavigationButtonsViewModel : BindableBase, IViewModel, ISSNavigationButtonsViewModel, IViewModelRequiresContainer
     {
         #region Fields
 
         private ICommand baysButtonCommand;
+        private IUnityContainer container;
         private ICommand cradleButtonCommand;
         private ICommand gateButtonCommand;
         private ICommand variousButtonCommand;
@@ -18,15 +20,15 @@ namespace Ferretto.VW.InstallationApp
 
         #region Properties
 
-        public ICommand BaysButtonCommand => this.baysButtonCommand ?? (this.baysButtonCommand = new DelegateCommand(() => ViewModels.SSMainVMInstance.SSContentRegionCurrentViewModel = ViewModels.SSBaysVMInstance));
+        public ICommand BaysButtonCommand => this.baysButtonCommand ?? (this.baysButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSBaysViewModel)this.container.Resolve<ISSBaysViewModel>()));
 
-        public ICommand CradleButtonCommand => this.cradleButtonCommand ?? (this.cradleButtonCommand = new DelegateCommand(() => ViewModels.SSMainVMInstance.SSContentRegionCurrentViewModel = ViewModels.SSCradleVMInstance));
+        public ICommand CradleButtonCommand => this.cradleButtonCommand ?? (this.cradleButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSCradleViewModel)this.container.Resolve<ISSCradleViewModel>()));
 
-        public ICommand GateButtonCommand => this.gateButtonCommand ?? (this.gateButtonCommand = new DelegateCommand(() => ViewModels.SSMainVMInstance.SSContentRegionCurrentViewModel = ViewModels.SSGateVMInstance));
+        public ICommand GateButtonCommand => this.gateButtonCommand ?? (this.gateButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSGateViewModel)this.container.Resolve<ISSGateViewModel>()));
 
-        public ICommand VariousButtonCommand => this.variousButtonCommand ?? (this.variousButtonCommand = new DelegateCommand(() => ViewModels.SSMainVMInstance.SSContentRegionCurrentViewModel = ViewModels.SSVariousInputsVMInstance));
+        public ICommand VariousButtonCommand => this.variousButtonCommand ?? (this.variousButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSVariousInputsViewModel)this.container.Resolve<ISSVariousInputsViewModel>()));
 
-        public ICommand VerticalButtonCommand => this.verticalButtonCommand ?? (this.verticalButtonCommand = new DelegateCommand(() => ViewModels.SSMainVMInstance.SSContentRegionCurrentViewModel = ViewModels.SSVerticalAxisVMInstance));
+        public ICommand VerticalButtonCommand => this.verticalButtonCommand ?? (this.verticalButtonCommand = new DelegateCommand(() => ((SSMainViewModel)this.container.Resolve<ISSMainViewModel>()).SSContentRegionCurrentViewModel = (SSVerticalAxisViewModel)this.container.Resolve<ISSVerticalAxisViewModel>()));
 
         #endregion Properties
 
@@ -35,6 +37,11 @@ namespace Ferretto.VW.InstallationApp
         public void ExitFromViewMethod()
         {
             throw new System.NotImplementedException();
+        }
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.container = _container;
         }
 
         public void SubscribeMethodToEvent()

@@ -9,7 +9,6 @@ namespace Ferretto.VW.InstallationApp
         public LSMTMainView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.LSMTMainVMInstance;
         }
 
         #endregion Constructors

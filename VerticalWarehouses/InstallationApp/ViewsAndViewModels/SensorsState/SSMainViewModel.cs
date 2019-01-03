@@ -1,11 +1,13 @@
-﻿using Prism.Mvvm;
+﻿using Microsoft.Practices.Unity;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSMainViewModel : BindableBase
+    public class SSMainViewModel : BindableBase, ISSMainViewModel, IViewModelRequiresContainer
     {
         #region Fields
 
+        private IUnityContainer container;
         private BindableBase sSContentRegionCurrentViewModel;
         private BindableBase sSNavigationRegionCurrentViewModel;
 
@@ -16,7 +18,7 @@ namespace Ferretto.VW.InstallationApp
         public SSMainViewModel()
         {
             this.SSContentRegionCurrentViewModel = null;
-            this.SSNavigationRegionCurrentViewModel = ViewModels.SSNavigationButtonsVMInstance;
+            this.SSNavigationRegionCurrentViewModel = null;
         }
 
         #endregion Constructors
@@ -28,5 +30,15 @@ namespace Ferretto.VW.InstallationApp
         public BindableBase SSNavigationRegionCurrentViewModel { get => this.sSNavigationRegionCurrentViewModel; set => this.SetProperty(ref this.sSNavigationRegionCurrentViewModel, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.container = _container;
+            this.SSNavigationRegionCurrentViewModel = (SSNavigationButtonsViewModel)this.container.Resolve<ISSNavigationButtonsViewModel>();
+        }
+
+        #endregion Methods
     }
 }

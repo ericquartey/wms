@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public SSBaysView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.SSBaysVMInstance;
         }
 
         #endregion Constructors

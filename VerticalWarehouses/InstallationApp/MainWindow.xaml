@@ -9,6 +9,7 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
+        WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         mc:Ignorable="d">
@@ -43,7 +44,7 @@
                     BorderThickness="0">
                 <StackPanel FlowDirection="RightToLeft"
                             Orientation="Horizontal">
-                    <ComboBox Name="userComboBox"
+                    <!--<ComboBox Name="userComboBox"
                               Width="150"
                               Margin="20,15,0,5"
                               HorizontalContentAlignment="Right"
@@ -77,7 +78,11 @@
                                                                             CustomCommand="{Binding BackToVWAPPCommand}"
                                                                             LabelText="{x:Static res:InstallationApp.LogOff}" />
                         </ComboBoxItem>
-                    </ComboBox>
+                    </ComboBox>-->
+                    <custom:CustomControlLoggedUser IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    LogOffCommand="{Binding BackToVWAPPCommand}"
+                                                    OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
+                                                    UserText="Installer" />
                     <Image Height="30"
                            Margin="2,10,20,2"
                            Source="/Ferretto.VW.CustomControls;Component/Assets/ic_account_circle_black_48dp.png" />
