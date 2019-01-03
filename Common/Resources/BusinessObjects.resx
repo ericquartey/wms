@@ -946,13 +946,4 @@
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Last Execution Date</value>
   </data>
-  <data name="ItemListRowRegistrationNumber" xml:space="preserve">
-    <value>Registration Number</value>
-  </data>
-  <data name="ItemListRowSub1" xml:space="preserve">
-    <value>Sub 1</value>
-  </data>
-  <data name="ItemListRowSub2" xml:space="preserve">
-    <value>Sub 2</value>
-  </data>
 </root>

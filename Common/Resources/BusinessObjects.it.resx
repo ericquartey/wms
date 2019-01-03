@@ -769,13 +769,4 @@
   <data name="ItemListRowLot" xml:space="preserve">
     <value>Lotto</value>
   </data>
-  <data name="ItemListRowRegistrationNumber" xml:space="preserve">
-    <value>Numero Registrazione</value>
-  </data>
-  <data name="ItemListRowSub1" xml:space="preserve">
-    <value>Sub 1</value>
-  </data>
-  <data name="ItemListRowSub2" xml:space="preserve">
-    <value>Sub 2</value>
-  </data>
 </root>

@@ -817,6 +817,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Last Modification Date.
+        /// </summary>
+        public static string ItemListRowLastModificationDate {
+            get {
+                return ResourceManager.GetString("ItemListRowLastModificationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lot.
         /// </summary>
         public static string ItemListRowLot {
