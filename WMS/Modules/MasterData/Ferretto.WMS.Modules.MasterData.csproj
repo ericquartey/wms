@@ -31,12 +31,7 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  
-  <ItemGroup>
-    <None Update="Views\ItemListRow\ItemListRowDetailsView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
+ 
 
 
 </Project>
