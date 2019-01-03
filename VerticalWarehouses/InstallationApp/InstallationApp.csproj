@@ -39,7 +39,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Remove="MainWindow.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -151,6 +150,12 @@
     <None Update="ViewsAndViewModels\SingleViews\WeightControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="ViewsAndViewModels\SensorsState\SSMainView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
 </Project>
