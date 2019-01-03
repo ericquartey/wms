@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -59,7 +60,7 @@ namespace Ferretto.Common.BusinessModels
             }
             else
             {
-                throw new ArgumentException("Error adding new compartment because it overlaps with other compartments or it crosses the tray's boundaries.");
+                throw new ArgumentException(Errors.CompartmentCannotBeInsertedInLoadingUnit);
             }
         }
 
@@ -76,7 +77,7 @@ namespace Ferretto.Common.BusinessModels
 
             if (error)
             {
-                throw new ArgumentException("ERROR ADD NEW RANGE OF COMPARTMENTS: it is overlaps among other compartments or it exits from window.");
+                throw new ArgumentException(Errors.CompartmentCannotBeInsertedInLoadingUnit);
             }
         }
 

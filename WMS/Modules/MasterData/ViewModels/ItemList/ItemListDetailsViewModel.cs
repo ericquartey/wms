@@ -15,14 +15,23 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+
         private ICommand addListRowCommand;
+
         private IEnumerable<ItemListRow> itemListRowDataSource;
+
         private ICommand listExecuteCommand;
+
         private ICommand listRowExecuteCommand;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private ItemListRow selectedItemListRow;
+
         private ICommand showDetailsListRowCommand;
 
         #endregion Fields
@@ -98,8 +107,9 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
             base.OnAppear();
+
+            await this.LoadData();
         }
 
         private bool CanExecuteAddListRowCommand()
@@ -144,11 +154,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteAddListRowCommand()
         {
+            this.IsBusy = true;
+
             //TODO
+
+            this.IsBusy = false;
         }
 
         private void ExecuteListCommand()
         {
+            this.IsBusy = true;
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.EXECUTELISTDIALOG,
@@ -157,10 +173,14 @@ namespace Ferretto.WMS.Modules.MasterData
                     Id = this.Model.Id
                 }
             );
+
+            this.IsBusy = false;
         }
 
         private void ExecuteListRowCommand()
         {
+            this.IsBusy = true;
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
@@ -169,6 +189,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     Id = this.SelectedItemListRow.Id
                 }
             );
+
+            this.IsBusy = false;
         }
 
         private void ExecuteShowDetailsListRowCommand()
@@ -203,10 +225,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
+            this.IsBusy = true;
+
             if ((this.Data is int modelId))
             {
                 this.Model = await this.itemListProvider.GetById(modelId);
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

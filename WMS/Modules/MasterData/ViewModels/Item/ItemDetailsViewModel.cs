@@ -17,13 +17,21 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
         private IDataSource<Compartment> compartmentsDataSource;
+
         private bool itemHasCompartments;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private object selectedCompartment;
+
         private ICommand withdrawCommand;
 
         #endregion Fields
@@ -108,6 +116,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
+            this.IsBusy = true;
+
             var modifiedRowCount = this.itemProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
@@ -116,12 +126,15 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
+
+            this.IsBusy = false;
         }
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
             base.OnAppear();
+
+            await this.LoadData();
         }
 
         protected override void OnDispose()
@@ -139,6 +152,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteWithdraw()
         {
+            this.IsBusy = true;
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
@@ -147,6 +162,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     Id = this.Model.Id
                 }
             );
+
+            this.IsBusy = false;
         }
 
         private void Initialize()
@@ -173,11 +190,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
+            this.IsBusy = true;
+
             if (this.Data is int modelId)
             {
                 this.Model = await this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

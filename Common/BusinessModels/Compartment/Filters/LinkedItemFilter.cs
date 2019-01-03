@@ -12,7 +12,7 @@ namespace Ferretto.Common.BusinessModels
             var selectedDetails = selected as CompartmentDetails;
 
             var color = "Blue";
-            if (selected != null)
+            if (selectedDetails != null && compartmentDetails != null)
             {
                 if (compartment == selected
                     &&

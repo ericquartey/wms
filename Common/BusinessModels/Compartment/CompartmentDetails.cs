@@ -11,31 +11,57 @@ namespace Ferretto.Common.BusinessModels
         #region Fields
 
         private IEnumerable<Enumeration> compartmentStatusChoices;
+
         private int? compartmentStatusId;
+
         private IEnumerable<Enumeration> compartmentTypeChoices;
+
         private int compartmentTypeId;
+
         private int? fifoTime;
+
         private int? height;
+
         private bool isItemPairingFixed;
+
         private string itemCode;
+
         private string itemDescription;
+
         private int? itemId;
+
         private string loadingUnitCode;
+
         private int loadingUnitId;
+
         private string lot;
+
         private IEnumerable<Enumeration> materialStatusChoices;
+
         private int? materialStatusId;
+
         private int? maxCapacity;
+
         private IEnumerable<Enumeration> packageTypeChoices;
+
         private int? packageTypeId;
+
         private string registrationNumber;
+
         private int reservedForPick;
+
         private int reservedToStore;
+
         private int stock;
+
         private string sub1;
+
         private string sub2;
+
         private int? width;
+
         private int? xPosition;
+
         private int? yPosition;
 
         #endregion Fields
@@ -183,7 +209,7 @@ namespace Ferretto.Common.BusinessModels
             {
                 if (this.SetProperty(ref this.materialStatusChoices, value))
                 {
-                    this.MaterialStatusId = this.MaterialStatusChoices.FirstOrDefault()?.Id;
+                    this.MaterialStatusId = this.MaterialStatusId ?? this.MaterialStatusChoices.FirstOrDefault()?.Id;
                 }
             }
         }

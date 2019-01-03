@@ -14,12 +14,19 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICellProvider cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
+
         private readonly ILoadingUnitProvider loadingUnitsProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
         private bool cellHasLoadingUnits;
+
         private IDataSource<LoadingUnitDetails> loadingUnitsDataSource;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private object selectedLoadingUnit;
 
         #endregion Fields
@@ -91,6 +98,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
+            this.IsBusy = true;
+
             var modifiedRowCount = this.cellProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
@@ -99,6 +108,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new ModelChangedEvent<Cell>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CellSavedSuccessfully));
             }
+
+            this.IsBusy = false;
         }
 
         protected override async void OnAppear()
@@ -139,11 +150,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
+            this.IsBusy = true;
+
             if (this.Data is int modelId)
             {
                 this.Model = await this.cellProvider.GetById(modelId);
                 this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

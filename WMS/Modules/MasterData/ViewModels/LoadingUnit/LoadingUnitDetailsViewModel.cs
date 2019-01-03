@@ -17,18 +17,31 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
         private IEnumerable<CompartmentDetails> compartmentsDataSource;
+
         private ICommand editCommand;
+
         private bool isCompartmentSelectableTray;
+
         private bool loadingUnitHasCompartments;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private bool readOnlyTray;
+
         private CompartmentDetails selectedCompartment;
+
         private Tray tray;
+
         private Func<ICompartment, ICompartment, string> trayColoringFunc;
+
         private ICommand withdrawCommand;
 
         #endregion Fields
@@ -110,16 +123,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
+            this.IsBusy = true;
+
             var modifiedRowCount = this.loadingUnitProvider.Save(this.Model);
-            if (modifiedRowCount <= 0)
+            if (modifiedRowCount > 0)
             {
-                return;
+                this.TakeModelSnapshot();
+
+                this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.Id));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
             }
 
-            this.TakeModelSnapshot();
-
-            this.EventService.Invoke(new ModelChangedEvent<LoadingUnit>(this.Model.Id));
-            this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.LoadingUnitSavedSuccessfully));
+            this.IsBusy = false;
         }
 
         protected override async void OnAppear()
@@ -197,14 +212,16 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
-            if (!(this.Data is int modelId))
+            this.IsBusy = true;
+
+            if (this.Data is int modelId)
             {
-                return;
+                this.Model = await this.loadingUnitProvider.GetById(modelId);
+                this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
+                this.InitializeTray();
             }
 
-            this.Model = await this.loadingUnitProvider.GetById(modelId);
-            this.LoadingUnitHasCompartments = this.loadingUnitProvider.HasAnyCompartments(modelId);
-            this.InitializeTray();
+            this.IsBusy = false;
         }
 
         #endregion Methods

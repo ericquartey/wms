@@ -12,7 +12,9 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService;
 
         #endregion Fields
@@ -43,13 +45,13 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResult> ExecuteImmediately(int listId, int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediately(int listRowId, int areaId, int bayId)
         {
             try
             {
                 await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest
                 {
-                    ListRowId = listId,
+                    ListRowId = listRowId,
                     AreaId = areaId,
                     BayId = bayId
                 });

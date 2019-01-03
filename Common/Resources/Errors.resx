@@ -258,4 +258,7 @@
   <data name="CompartmentSizeMustBeStrictlyPositive" xml:space="preserve">
     <value>Compartment size must be strictly positive.</value>
   </data>
+  <data name="CompartmentCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>Error adding new compartment because it overlaps with other compartments or it crosses the tray's boundaries.</value>
+  </data>
 </root>

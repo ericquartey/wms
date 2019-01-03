@@ -142,6 +142,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error adding new compartment because it overlaps with other compartments or it crosses the tray&apos;s boundaries..
+        /// </summary>
+        public static string CompartmentCannotBeInsertedInLoadingUnit {
+            get {
+                return ResourceManager.GetString("CompartmentCannotBeInsertedInLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s Height cannot be equal or less than 0..
         /// </summary>
         public static string CompartmentHeightLess {

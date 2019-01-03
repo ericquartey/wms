@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessModels
             var compartmentDetails = compartment as CompartmentDetails;
             var selectedDetails = selected as CompartmentDetails;
             var color = "Orange";
-            if (selected != null)
+            if (selectedDetails != null && compartmentDetails != null)
             {
                 if ((compartmentDetails.MaterialStatusId != 0 || compartment == selected)
                     &&

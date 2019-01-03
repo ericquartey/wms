@@ -238,7 +238,7 @@ namespace Ferretto.Common.Controls
                 return;
             }
 
-            viewModel.SelectedCompartment = (CompartmentDetails)e.NewValue;
+            viewModel.SelectedCompartment = (ICompartment)e.NewValue;
         }
 
         private static void OnShowBackgroundChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

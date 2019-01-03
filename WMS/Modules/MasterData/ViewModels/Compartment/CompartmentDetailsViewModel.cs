@@ -14,17 +14,27 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
+
         private IDataSource<AllowedItemInCompartment> allowedItemsDataSource;
+
         private bool isCompartmentSelectableTray;
+
         private IDataSource<LoadingUnit> loadingUnitsDataSource;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private bool readOnlyTray;
 
         private CompartmentDetails selectedCompartmentTray;
+
         private Tray tray;
 
         #endregion Fields
@@ -98,6 +108,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
+            this.IsBusy = true;
+
             var modifiedRowCount = this.compartmentProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
@@ -106,6 +118,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.EventService.Invoke(new ModelChangedEvent<Compartment>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CompartmentSavedSuccessfully));
             }
+
+            this.IsBusy = false;
         }
 
         protected override async void OnAppear()
@@ -174,6 +188,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
+            this.IsBusy = true;
+
             if (this.Data is int modelId)
             {
                 var compartment = await this.compartmentProvider.GetById(modelId);
@@ -181,6 +197,8 @@ namespace Ferretto.WMS.Modules.MasterData
                 this.Model = compartment;
                 this.InitializeTray(loadingUnit);
             }
+
+            this.IsBusy = false;
         }
 
         private void SetSelectedCompartment()
