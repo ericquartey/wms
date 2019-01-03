@@ -15,16 +15,27 @@ namespace Ferretto.Common.Controls
         #region Fields
 
         private double heightTrayPixel;
+
         private bool isCompartmentSelectable = true;
+
         private ObservableCollection<WmsBaseCompartment> items;
+
         private int left;
+
         private SolidColorBrush penBrush;
+
         private int penThickness;
+
         private Func<ICompartment, ICompartment, string> selectedColorFilterFunc;
+
         private ICompartment selectedCompartment;
+
         private WmsBaseCompartment selectedItem;
+
         private int top;
+
         private Tray tray;
+
         private double widthTrayPixel;
 
         #endregion Fields
@@ -253,7 +264,7 @@ namespace Ferretto.Common.Controls
             }
         }
 
-        protected void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -278,7 +289,7 @@ namespace Ferretto.Common.Controls
             return null;
         }
 
-        private void Compartments_ListChanged(Object sender, ListChangedEventArgs e)
+        private void Compartments_ListChanged(object sender, ListChangedEventArgs e)
         {
             if (e.ListChangedType == ListChangedType.ItemDeleted)
             {
@@ -300,7 +311,7 @@ namespace Ferretto.Common.Controls
             this.NotifyPropertyChanged(nameof(this.Items));
         }
 
-        private void LoadingUnitDetails_AddedCompartmentEvent(Object sender, EventArgs e)
+        private void LoadingUnitDetails_AddedCompartmentEvent(object sender, EventArgs e)
         {
             this.UpdateCompartments(this.Tray.Compartments);
         }
@@ -387,7 +398,7 @@ namespace Ferretto.Common.Controls
             this.ResizeCompartment(this.widthTrayPixel, this.heightTrayPixel, this.selectedItem);
         }
 
-        private void Tray_CompartmentChangedEvent(Object sender, Tray.CompartmentEventArgs e)
+        private void Tray_CompartmentChangedEvent(object sender, CompartmentEventArgs e)
         {
             this.SelectedCompartment = e.Compartment;
         }
