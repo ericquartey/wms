@@ -179,7 +179,7 @@ namespace Ferretto.VW.ActionBlocks
             {
                 case ValueDataType.Int16:
                     {
-                        var value = Convert.ToInt16(eventArgs.Value);
+                        var value = Convert.ToUInt16(eventArgs.Value);
                         statusWord = new byte[sizeof(short)];
                         statusWord = BitConverter.GetBytes(value);
 
