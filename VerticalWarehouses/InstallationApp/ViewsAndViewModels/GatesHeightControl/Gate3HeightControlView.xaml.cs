@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public Gate3HeightControlView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.Gate3HeightControlVMInstance;
         }
 
         #endregion Constructors

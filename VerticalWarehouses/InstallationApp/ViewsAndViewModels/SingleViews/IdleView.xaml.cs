@@ -22,7 +22,6 @@ namespace Ferretto.VW.InstallationApp
         public IdleView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.IdleVMInstance;
         }
 
         #endregion Constructors

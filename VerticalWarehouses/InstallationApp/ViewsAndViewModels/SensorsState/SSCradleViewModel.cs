@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSCradleViewModel : BindableBase, IViewModel
+    public class SSCradleViewModel : BindableBase, IViewModel, ISSCradleViewModel
     {
         #region Fields
 

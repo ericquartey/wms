@@ -14,19 +14,18 @@ namespace Ferretto.VW.InstallationApp
 
     public delegate void FinishedMachineOnMarchChangeStateEvent();
 
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IMainWindow
     {
         #region Constructors
 
         public MainWindow()
         {
             this.InitializeComponent();
-            NavigationService.BackToVWAppEventHandler += () => this.Close();
+            NavigationService.BackToVWAppEventHandler += () => this.HideAndUnsubscribe();
             FinishedMachineModeChangeStateEventHandler += () => { };
             FinishedMachineOnMarchChangeStateEventHandler += () => { };
             MainWindowViewModel.ClickedOnMachineModeEventHandler += this.SetMachineMode;
             MainWindowViewModel.ClickedOnMachineOnMarchEventHandler += this.SetMachineOn;
-            this.DataContext = ViewModels.MainWindowVMInstance;
         }
 
         #endregion Constructors
@@ -49,6 +48,12 @@ namespace Ferretto.VW.InstallationApp
         {
             this.UnsubscribeEvents();
             base.OnClosed(e);
+        }
+
+        private void HideAndUnsubscribe()
+        {
+            this.UnsubscribeEvents();
+            this.Hide();
         }
 
         private async void SetMachineMode()

@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public LSMTNavigationButtonsView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.LSMTNavigationButtonsVMInstance;
         }
 
         #endregion Constructors

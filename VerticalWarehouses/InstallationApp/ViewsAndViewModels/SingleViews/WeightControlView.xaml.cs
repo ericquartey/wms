@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public WeightControlView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.WeightControlVMInstance;
         }
 
         #endregion Constructors

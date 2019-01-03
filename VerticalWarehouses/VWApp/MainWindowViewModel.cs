@@ -3,11 +3,13 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver.Source;
+using Ferretto.VW.InstallationApp;
 using Ferretto.VW.MathLib;
 using Ferretto.VW.Utils.Source;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
+using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.VWApp
 {
@@ -15,10 +17,15 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
-        private readonly bool installation_completed;
+        public CalibrateVerticalAxis CalibrateVerticalAxis;
+        public IUnityContainer Container;
+        public DataManager Data;
+        public DrawerWeightDetection DrawerWeightDetection;
+        public InverterDriver.InverterDriver Inverter;
+        public PositioningDrawer PositioningDrawer;
         private ICommand changeSkin;
-        private int currentSelection;
-        private bool customComboBoxStateBool = false;
+        private Converter converter;
+        private bool installationCompleted;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string machineModel;
@@ -33,9 +40,6 @@ namespace Ferretto.VW.VWApp
 
         public MainWindowViewModel()
         {
-            this.installation_completed = DataManager.CurrentData.InstallationInfo.Machine_Ok;
-            this.machineModel = DataManager.CurrentData.GeneralInfo.Model;
-            this.serialNumber = DataManager.CurrentData.GeneralInfo.Serial;
         }
 
         #endregion Constructors
@@ -43,25 +47,6 @@ namespace Ferretto.VW.VWApp
         #region Properties
 
         public ICommand ChangeSkin => this.changeSkin ?? (this.changeSkin = new DelegateCommand(() => (Application.Current as App).ChangeSkin()));
-
-        public Int32 CurrentSelection
-        {
-            get => this.currentSelection;
-            set
-            {
-                this.SetProperty(ref this.currentSelection, value);
-                if (this.CurrentSelection == 0)
-                {
-                    this.CustomComboBoxStateBool = true;
-                }
-                else
-                {
-                    this.CustomComboBoxStateBool = false;
-                }
-            }
-        }
-
-        public Boolean CustomComboBoxStateBool { get => this.customComboBoxStateBool; set => this.SetProperty(ref this.customComboBoxStateBool, value); }
 
         public string Error => null;
 
@@ -89,6 +74,15 @@ namespace Ferretto.VW.VWApp
 
         #region Methods
 
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.Data = (DataManager)this.Container.Resolve<IDataManager>();
+            this.installationCompleted = this.Data.InstallationInfo.Machine_Ok;
+            this.machineModel = this.Data.GeneralInfo.Model;
+            this.serialNumber = this.Data.GeneralInfo.Serial;
+        }
+
         private bool CheckInputCorrectness(string user, string password)
         {
             //TODO implement correct input procedure once the user login structure is defined
@@ -103,12 +97,13 @@ namespace Ferretto.VW.VWApp
                 switch (this.UserLogin)
                 {
                     case "Installer":
-                        ((App)Application.Current).InstallationAppMainWindowInstance = new InstallationApp.MainWindow();
+                        ((App)Application.Current).InstallationAppMainWindowInstance = (InstallationApp.MainWindow)this.Container.Resolve<InstallationApp.IMainWindow>();
+                        ((App)Application.Current).InstallationAppMainWindowInstance.DataContext = (InstallationApp.MainWindowViewModel)this.Container.Resolve<IMainWindowViewModel>();
                         ((App)Application.Current).InstallationAppMainWindowInstance.Show();
                         break;
 
                     case "Operator":
-                        if (this.installation_completed)
+                        if (this.installationCompleted)
                         {
                             ((App)Application.Current).OperatorMainWindowInstance = new OperatorApp.MainWindow();
                             ((App)Application.Current).OperatorMainWindowInstance.Show();
@@ -132,20 +127,20 @@ namespace Ferretto.VW.VWApp
 
         private void InitializeInverterConnection()
         {
-            InverteDriverManager.InverterDriverStaticInstance = new InverterDriver.InverterDriver();
-            if (InverteDriverManager.InverterDriverStaticInstance.Initialize())
-            {
-                ActionManager.PositioningDrawerInstance = new PositioningDrawer();
-                ActionManager.PositioningDrawerInstance.SetInverterDriverInterface = InverteDriverManager.InverterDriverStaticInstance;
-                ActionManager.PositioningDrawerInstance.Initialize();  // 1024 is the default value
+            this.Inverter = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+            if (!this.Inverter.Initialize()) return;
+            this.PositioningDrawer = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
+            this.PositioningDrawer.SetInverterDriverInterface = this.Inverter;
+            this.PositioningDrawer.Initialize();  // 1024 is the default value
 
-                ActionManager.DrawerWeightDetectionInstance = new DrawerWeightDetection();
-                ActionManager.DrawerWeightDetectionInstance.SetPositioningDrawerInterface = ActionManager.PositioningDrawerInstance;
-                ActionManager.DrawerWeightDetectionInstance.Initialize();
+            this.DrawerWeightDetection = (DrawerWeightDetection)this.Container.Resolve<IDrawerWeightDetection>();
+            this.DrawerWeightDetection.SetPositioningDrawerInterface = this.PositioningDrawer;
+            this.DrawerWeightDetection.Initialize();
 
-                ActionManager.ConverterInstance = new Converter();
-                ActionManager.ConverterInstance.ManageResolution = 1024;
-            }
+            this.CalibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
+
+            this.converter = (Converter)this.Container.Resolve<IConverter>();
+            this.converter.ManageResolution = 1024;
         }
 
         private string Validate(string propertyName)
@@ -159,8 +154,10 @@ namespace Ferretto.VW.VWApp
                         validationMessage = "Error";
                     }
                     break;
-            }
 
+                default:
+                    break;
+            }
             return validationMessage;
         }
 

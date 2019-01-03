@@ -25,7 +25,6 @@ namespace Ferretto.VW.InstallationApp
         public SSGateView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.SSGateVMInstance;
         }
 
         #endregion Constructors
