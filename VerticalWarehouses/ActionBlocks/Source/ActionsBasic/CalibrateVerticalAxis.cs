@@ -177,9 +177,9 @@ namespace Ferretto.VW.ActionBlocks
 
             switch (type)
             {
-                case ValueDataType.Int16:
+                case ValueDataType.UInt16:
                     {
-                        var value = Convert.ToInt16(eventArgs.Value);
+                        var value = Convert.ToUInt16(eventArgs.Value);
                         statusWord = new byte[sizeof(short)];
                         statusWord = BitConverter.GetBytes(value);
 
@@ -196,7 +196,7 @@ namespace Ferretto.VW.ActionBlocks
 
                 default:
                     {
-                        // In the case the var is not Int16 or Int32, we take into account 0 as default value
+                        // In the case the var is not UInt16 or Int32, we take into account 0 as default value
                         statusWord = new byte[1];
                         statusWord = BitConverter.GetBytes(0);
 
