@@ -191,6 +191,8 @@ namespace Ferretto.VW.ActionBlocks
         /// </summary>
         public ushort MaxAnalogIc => this.maxAnalogIc;
 
+        Int16 IPositioningDrawer.MaxAnalogIc => throw new NotImplementedException();
+
         public InverterDriver.InverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
@@ -598,7 +600,7 @@ namespace Ferretto.VW.ActionBlocks
             this.positioningStep = this.positioningDrawerSteps[this.i];
 
             // local scratches
-            short value = 0x0000; byte[] bytes;
+            ushort value = 0x0000; byte[] bytes;
             var error_Message = "";
             byte dataSetIdx = 0x00;
 
