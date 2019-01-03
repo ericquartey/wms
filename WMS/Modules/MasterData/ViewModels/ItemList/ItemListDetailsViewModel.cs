@@ -104,7 +104,7 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.TakeSnapshot(this.itemList);
 
-                this.EventService.Invoke(new ModelChangedEvent<Item>(this.itemList.Id));
+                this.EventService.Invoke(new ModelChangedEvent<ItemList>(this.itemList.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
             }
         }
@@ -186,7 +186,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteShowDetailsListRowCommand()
         {
-            //TODO
+            this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS, this.SelectedItemListRow.Id);
         }
 
         private async Task Initialize()
