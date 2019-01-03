@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Ferretto.VW.CustomControls.Skins"
+                    xmlns:sys="clr-namespace:System;assembly=mscorlib">
+
+    <sys:Double x:Key="VWAPP_CustomControlLoggedUser_FontSize_Normal">18</sys:Double>
+    <FontFamily x:Key="VWAPP_CustomControlLoggedUser_FontFamily_Normal">pack://application:,,,/Fonts/#HelveticaNeue-LightCond.otf</FontFamily>
+    <SolidColorBrush x:Key="VWAPP_CustomControlLoggedUser_Foreground_Normal"
+                     Color="{DynamicResource ColorFerrettoPureWhite}" />
+
+</ResourceDictionary>

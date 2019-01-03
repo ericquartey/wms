@@ -7,7 +7,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class Gate1ControlViewModel : BindableBase, IViewModel
+    public class Gate1ControlViewModel : BindableBase, IViewModel, IGate1ControlViewModel
     {
         #region Methods
 

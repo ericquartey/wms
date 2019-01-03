@@ -139,8 +139,7 @@
     <value>Compartment's height cannot be more than Tray's height</value>
   </data>
   <data name="CompartmentOverlaps" xml:space="preserve">
-    <value>New Compartment's size are overlaps with another compartment.</value>
-    <comment>Err</comment>
+    <value>Compartment's size/position overlaps with other compartments.</value>
   </data>
   <data name="CompartmentSizeHMore" xml:space="preserve">
     <value>Compartment's size cannote be more than Tray's height.</value>
@@ -221,7 +220,7 @@
     <value>No Changes found.</value>
   </data>
   <data name="LoadingUnitOverlappingCompartment" xml:space="preserve">
-    <value>Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments.</value>
+    <value>Unable to add the specified compartment (id={0}) to the loading unit (id={1}) because it overlaps with one or more existing compartments.</value>
   </data>
   <data name="BusyIndicatorStyleNotFound" xml:space="preserve">
     <value>Style '{0}' for '{1}' not found.</value>
@@ -231,5 +230,35 @@
   </data>
   <data name="NotAddDB" xml:space="preserve">
     <value>Not add {0} to database.</value>
+  </data>
+  <data name="CompartmentSizeIsNotSpecified" xml:space="preserve">
+    <value>Compartment size is not specified.</value>
+  </data>
+  <data name="CompartmentStockGreaterThanMaxCapacity" xml:space="preserve">
+    <value>Item stock in the compartment cannot be greater that compartment's maximum capacity.</value>
+  </data>
+  <data name="CompartmentXPositionIsNotSpecified" xml:space="preserve">
+    <value>Compartment's X position is not specified.</value>
+  </data>
+  <data name="CompartmentYPositionIsNotSpecified" xml:space="preserve">
+    <value>Compartment's Y position is not specified.</value>
+  </data>
+  <data name="CompartmentBulkMustHaveAtLeastOneColumn" xml:space="preserve">
+    <value>Addition of a bulk of compartments must have at least one column.</value>
+  </data>
+  <data name="CompartmentBulkMustHaveAtLeastOneRow" xml:space="preserve">
+    <value>Addition of a bulk of compartments must have at least one row.</value>
+  </data>
+  <data name="CompartmentPositionCannotBeNegative" xml:space="preserve">
+    <value>Compartment position cannot be negative.</value>
+  </data>
+  <data name="CompartmentSetCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>Specified set of compartments cannot be inserted in the loading unit.</value>
+  </data>
+  <data name="CompartmentSizeMustBeStrictlyPositive" xml:space="preserve">
+    <value>Compartment size must be strictly positive.</value>
+  </data>
+  <data name="CompartmentCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>Error adding new compartment because it overlaps with other compartments or it crosses the tray's boundaries.</value>
   </data>
 </root>

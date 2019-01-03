@@ -17,14 +17,21 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
         private IDataSource<Compartment> compartmentsDataSource;
-        private ItemDetails item;
+
         private bool itemHasCompartments;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private object selectedCompartment;
+
         private ICommand withdrawCommand;
 
         #endregion Fields
@@ -62,22 +69,6 @@ namespace Ferretto.WMS.Modules.MasterData
             }
         }
 
-        public ItemDetails Item
-        {
-            get => this.item;
-            set
-            {
-                if (!this.SetProperty(ref this.item, value))
-                {
-                    return;
-                }
-
-                this.TakeSnapshot(this.item);
-
-                this.RefreshData();
-            }
-        }
-
         public bool ItemHasCompartments
         {
             get => this.itemHasCompartments;
@@ -102,10 +93,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void RefreshData()
+        public override void RefreshData()
         {
-            this.CompartmentsDataSource = this.item != null
-                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.item.Id))
+            this.CompartmentsDataSource = this.Model != null
+                ? new DataSource<Compartment>(() => this.compartmentProvider.GetByItemId(this.Model.Id))
                 : null;
 
             this.EvaluateCanExecuteCommands();
@@ -125,20 +116,25 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.itemProvider.Save(this.Item);
+            this.IsBusy = true;
+
+            var modifiedRowCount = this.itemProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
-                this.TakeSnapshot(this.Item);
+                this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Item.Id));
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
             }
+
+            this.IsBusy = false;
         }
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
             base.OnAppear();
+
+            await this.LoadData();
         }
 
         protected override void OnDispose()
@@ -151,19 +147,23 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private bool CanExecuteWithdraw()
         {
-            return this.Item?.TotalAvailable > 0;
+            return this.Model?.TotalAvailable > 0;
         }
 
         private void ExecuteWithdraw()
         {
+            this.IsBusy = true;
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.WITHDRAWDIALOG,
                 new
                 {
-                    Id = this.Item.Id
+                    Id = this.Model.Id
                 }
             );
+
+            this.IsBusy = false;
         }
 
         private void Initialize()
@@ -180,7 +180,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     }
                     else
                     {
-                        this.Item = null;
+                        this.Model = null;
                     }
                 },
                 this.Token,
@@ -190,11 +190,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
+            this.IsBusy = true;
+
             if (this.Data is int modelId)
             {
-                this.Item = await this.itemProvider.GetById(modelId);
+                this.Model = await this.itemProvider.GetById(modelId);
                 this.ItemHasCompartments = this.itemProvider.HasAnyCompartments(modelId);
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

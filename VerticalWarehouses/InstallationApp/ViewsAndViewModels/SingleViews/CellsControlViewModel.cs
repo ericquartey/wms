@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class CellsControlViewModel : BindableBase, IViewModel
+    public class CellsControlViewModel : BindableBase, IViewModel, ICellsControlViewModel
     {
         #region Methods
 

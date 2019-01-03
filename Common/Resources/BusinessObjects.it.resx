@@ -558,11 +558,11 @@
   <data name="ItemImage" xml:space="preserve">
     <value>Immagine</value>
   </data>
-  <data name="BulkCompartmentColumn" xml:space="preserve">
-    <value>Colonna</value>
+  <data name="BulkCompartmentColumns" xml:space="preserve">
+    <value>Colonne</value>
   </data>
-  <data name="BulkCompartmentRow" xml:space="preserve">
-    <value>Riga</value>
+  <data name="BulkCompartmentRows" xml:space="preserve">
+    <value>Righe</value>
   </data>
   <data name="ItemListAreaName" xml:space="preserve">
     <value>Area</value>

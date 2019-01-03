@@ -67,10 +67,6 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemListExecuteDialogView, ItemListExecuteDialogViewModel>();
             this.NavigationService.Register<ItemListRowExecuteDialogView, ItemListRowExecuteDialogViewModel>();
 
-            this.NavigationService.Register<InputAddCompartmentView, InputAddCompartmentViewModel>();
-            this.NavigationService.Register<InputBulkAddCompartmentView, InputBulkAddCompartmentViewModel>();
-            this.NavigationService.Register<InputEditCompartmentView, InputEditCompartmentViewModel>();
-
             this.NavigationService.Register<ItemListsView, ItemListsViewModel>();
             this.NavigationService.Register<ItemListDetailsView, ItemListDetailsViewModel>();
 

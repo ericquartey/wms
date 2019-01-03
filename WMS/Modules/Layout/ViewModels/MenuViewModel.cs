@@ -6,6 +6,8 @@ namespace Ferretto.WMS.Modules.Layout
 {
     public class MenuViewModel : BaseNavigationViewModel
     {
+        private readonly ObservableCollection<NavMenuItem> menuItems = new ObservableCollection<NavMenuItem>();
+
         #region Constructors
 
         public MenuViewModel()
@@ -17,7 +19,7 @@ namespace Ferretto.WMS.Modules.Layout
 
         #region Properties
 
-        public ObservableCollection<NavMenuItem> Items { get; set; }
+        public ObservableCollection<NavMenuItem> Items { get => this.menuItems; }
 
         #endregion Properties
 
@@ -25,7 +27,6 @@ namespace Ferretto.WMS.Modules.Layout
 
         private void Inizialize()
         {
-            this.Items = new ObservableCollection<NavMenuItem>();
             var menu = new AppMenu();
             foreach (var item in menu.Menu.Items)
             {

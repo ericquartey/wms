@@ -5,6 +5,7 @@
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource ErrorMessageColorBrush}" />
         <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="TextWrapping" Value="WrapWithOverflow" />
     </Style>
 
 </ResourceDictionary>

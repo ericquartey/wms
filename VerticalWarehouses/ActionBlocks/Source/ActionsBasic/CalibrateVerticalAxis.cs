@@ -7,7 +7,7 @@ using NLog;
 namespace Ferretto.VW.ActionBlocks
 {
     // On [EndedEventHandler] delegate for Calibrate Vertical Axis routine
-    public delegate void CalibrateVerticalAixsEndedEventHandler(bool result);
+    public delegate void CalibrateVerticalAxisEndedEventHandler(bool result);
 
     // On [ErrorEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateVerticalAxisErrorEventHandler(CalibrationStatus ErrorDescription);
@@ -24,7 +24,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", "2", "3", "4", "5", "6a" };
+        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", "2", "3", "4", "5", "6" };
 
         private string calibrateOperation;
 
@@ -59,7 +59,7 @@ namespace Ferretto.VW.ActionBlocks
         #region Events
 
         // [Ended] event
-        public event CalibrateVerticalAixsEndedEventHandler ThrowEndEvent;
+        public event CalibrateVerticalAxisEndedEventHandler ThrowEndEvent;
 
         // [Error] event
         public event CalibrateVerticalAxisErrorEventHandler ThrowErrorEvent;
@@ -179,7 +179,7 @@ namespace Ferretto.VW.ActionBlocks
             {
                 case ValueDataType.Int16:
                     {
-                        var value = Convert.ToInt16(eventArgs.Value);
+                        var value = Convert.ToUInt16(eventArgs.Value);
                         statusWord = new byte[sizeof(short)];
                         statusWord = BitConverter.GetBytes(value);
 
@@ -255,7 +255,7 @@ namespace Ferretto.VW.ActionBlocks
                         break;
                     }
 
-                case "6a":
+                case "6":
                     {
                         // 0x1n37
                         // Filter
@@ -315,10 +315,10 @@ namespace Ferretto.VW.ActionBlocks
 
             if (this.calibrateVerticalAxisSteps.Length > this.i)
             {
-                logger.Log(LogLevel.Debug, "Calibrate Operation = " + this.calibrateOperation);
+                logger.Log(LogLevel.Debug, "Calibrate Vertical Operation = " + this.calibrateOperation);
 
                 // In the case of Command Engine we have to check the StatusWord
-                if (this.calibrateOperation == "1" || this.calibrateOperation == "3" || this.calibrateOperation == "4" || this.calibrateOperation == "5" || this.calibrateOperation == "6a")
+                if (this.calibrateOperation == "1" || this.calibrateOperation == "3" || this.calibrateOperation == "4" || this.calibrateOperation == "5" || this.calibrateOperation == "6")
                 {
                     this.paramID = ParameterID.STATUS_WORD_PARAM;
                     this.inverterDriver.SendRequest(this.paramID, this.systemIndex, this.dataSetIndex);
@@ -391,9 +391,9 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "2":
                     {
-                        this.dataSetIndex = 0x05;
+                        this.dataSetIndex = 0x01; // The DataSet to set the Operating Mode for Vertical Homing is 1, 2 for the Horizontal
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
-                        this.valParam = 6; // 0000 0110
+                        this.valParam = 6; // 0000 0110 per Homeing Verticale
                         break;
                     }
 
@@ -421,7 +421,7 @@ namespace Ferretto.VW.ActionBlocks
                         break;
                     }
 
-                case "6a":
+                case "6":
                     {
                         // Just wait...
                         Thread.Sleep(DELAY_TIME);

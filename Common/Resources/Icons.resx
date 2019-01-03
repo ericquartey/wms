@@ -397,10 +397,6 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/navigation/ic_check_black_18dp.png </value>
     <comment>@Invariant</comment>
   </data>
-  <data name="PairingFree" xml:space="preserve">
-    <value></value>
-    <comment>@Invariant</comment>
-  </data>
   <data name="ItemListViewTypeInventory" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/inv.png</value>
     <comment>@Invariant</comment>

@@ -2,25 +2,31 @@ using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
-using Ferretto.Common.Controls.Interfaces;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
 
 namespace Ferretto.WMS.Modules.MasterData
 {
-    public class CellDetailsViewModel : DetailsViewModel<CellDetails>, IRefreshDataEntityViewModel
+    public class CellDetailsViewModel : DetailsViewModel<CellDetails>
     {
         #region Fields
 
         private readonly ICellProvider cellProvider = ServiceLocator.Current.GetInstance<ICellProvider>();
+
         private readonly ILoadingUnitProvider loadingUnitsProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
-        private CellDetails cell;
+
         private bool cellHasLoadingUnits;
+
         private IDataSource<LoadingUnitDetails> loadingUnitsDataSource;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private object selectedLoadingUnit;
 
         #endregion Fields
@@ -35,22 +41,6 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
-
-        public CellDetails Cell
-        {
-            get => this.cell;
-            set
-            {
-                if (!this.SetProperty(ref this.cell, value))
-                {
-                    return;
-                }
-
-                this.TakeSnapshot(this.cell);
-
-                this.RefreshData();
-            }
-        }
 
         public bool CellHasLoadingUnits
         {
@@ -94,10 +84,10 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        public void RefreshData()
+        public override void RefreshData()
         {
-            this.LoadingUnitsDataSource = this.cell != null
-                ? new DataSource<LoadingUnitDetails>(() => this.loadingUnitsProvider.GetByCellId(this.cell.Id))
+            this.LoadingUnitsDataSource = this.Model != null
+                ? new DataSource<LoadingUnitDetails>(() => this.loadingUnitsProvider.GetByCellId(this.Model.Id))
                 : null;
         }
 
@@ -108,14 +98,18 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.cellProvider.Save(this.cell);
+            this.IsBusy = true;
+
+            var modifiedRowCount = this.cellProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
-                this.TakeSnapshot(this.cell);
+                this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<Cell>(this.cell.Id));
+                this.EventService.Invoke(new ModelChangedEvent<Cell>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.CellSavedSuccessfully));
             }
+
+            this.IsBusy = false;
         }
 
         protected override async void OnAppear()
@@ -146,7 +140,7 @@ namespace Ferretto.WMS.Modules.MasterData
                     }
                     else
                     {
-                        this.Cell = null;
+                        this.Model = null;
                     }
                 },
                 this.Token,
@@ -156,11 +150,15 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
+            this.IsBusy = true;
+
             if (this.Data is int modelId)
             {
-                this.Cell = await this.cellProvider.GetById(modelId);
+                this.Model = await this.cellProvider.GetById(modelId);
                 this.CellHasLoadingUnits = this.cellProvider.HasAnyLoadingUnits(modelId);
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

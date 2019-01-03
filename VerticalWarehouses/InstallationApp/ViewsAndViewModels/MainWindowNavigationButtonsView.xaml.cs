@@ -19,7 +19,6 @@ namespace Ferretto.VW.InstallationApp
         public MainWindowNavigationButtonsView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.MainWindowNavigationButtonsVMInstance;
             this.NavigationButtonScrollViewer.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(this.CheckVerticalOffset), true);
         }
 
@@ -60,6 +59,7 @@ namespace Ferretto.VW.InstallationApp
         private void UpScroll_Click(Object sender, RoutedEventArgs e)
         {
             this.NavigationButtonScrollViewer.LineUp();
+            //TODO: scroll up and down nav button height
         }
 
         #endregion Methods

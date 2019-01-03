@@ -6,9 +6,11 @@
                  xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
                  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                  xmlns:myType="clr-namespace:Ferretto.VW.Utils.Source;assembly=Ferretto.VW.Utils"
+                 xmlns:prism="http://prismlibrary.com/"
                  xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                  Width="1024"
                  Height="620"
+                 prism:ViewModelLocator.AutoWireViewModel="True"
                  mc:Ignorable="d">
     <DockPanel>
         <Grid>
@@ -17,7 +19,7 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80" />
+                <RowDefinition Height="120" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"

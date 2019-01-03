@@ -2,14 +2,54 @@
 
 namespace Ferretto.VW.MathLib
 {
-    public class Converter
+    public class Converter : IConverter
     {
-        decimal resolution;
+        #region Fields
+
+        private decimal resolution;
+
+        #endregion Fields
+
+        #region Properties
 
         public decimal ManageResolution
         {
             set => this.resolution = value;
             get => this.resolution;
+        }
+
+        #endregion Properties
+
+        #region Methods
+
+        // Conversion from mm/s^2 acceleration to pulse/s^2 acceleration
+        public int FromMMS2ToPulseS2(decimal mms2Acceleration)
+        {
+            decimal pulseAccelerationDecimal;
+            int pulseAccelerationInt;
+            decimal converted;
+
+            pulseAccelerationDecimal = mms2Acceleration * resolution;
+            converted = Math.Round(pulseAccelerationDecimal, 0);
+
+            pulseAccelerationInt = (int)converted;
+
+            return pulseAccelerationInt;
+        }
+
+        // Conversion from mm/s speed to pulse/s speed
+        public int FromMMSToPulseS(decimal mmsSpeed)
+        {
+            decimal pulseSpeedDecimal;
+            int pulseSpeedInt;
+            decimal converted;
+
+            pulseSpeedDecimal = mmsSpeed * resolution;
+            converted = Math.Round(pulseSpeedDecimal, 0);
+
+            pulseSpeedInt = (int)converted;
+
+            return pulseSpeedInt;
         }
 
         // Conversion from mm to pulse
@@ -28,34 +68,24 @@ namespace Ferretto.VW.MathLib
             return pulseDistanceInt;
         }
 
-        // Conversion from mm/s speed to pulse/s speed
-        public int FromMMSToPulseS(decimal mmsSpeed)
+        // Conversion from pulse/s^2 acceleration to mm/s^2 acceleration
+        public decimal FromPulseS2ToMMS2(int pulseSpeedS2)
         {
-            decimal pulseSpeedDecimal;
-            int pulseSpeedInt;
-            decimal converted;
+            decimal mmSpeedDecimalS2;
 
-            pulseSpeedDecimal = mmsSpeed * resolution;
-            converted = Math.Round(pulseSpeedDecimal, 0);
+            mmSpeedDecimalS2 = pulseSpeedS2 / resolution;
 
-            pulseSpeedInt = (int)converted;
-
-            return pulseSpeedInt;
+            return Math.Round(mmSpeedDecimalS2, 4);
         }
 
-        // Conversion from mm/s^2 acceleration to pulse/s^2 acceleration
-        public int FromMMS2ToPulseS2(decimal mms2Acceleration)
+        // Conversion from pulse/s speed to mm/s speed
+        public decimal FromPulseSToMMS(int pulseSpeedS)
         {
-            decimal pulseAccelerationDecimal;
-            int pulseAccelerationInt;
-            decimal converted;
+            decimal mmSpeedDecimalS;
 
-            pulseAccelerationDecimal = mms2Acceleration * resolution;
-            converted = Math.Round(pulseAccelerationDecimal, 0);
+            mmSpeedDecimalS = pulseSpeedS / resolution;
 
-            pulseAccelerationInt = (int)converted;
-
-            return pulseAccelerationInt;
+            return Math.Round(mmSpeedDecimalS, 4);
         }
 
         // Conversion from pulse to mm
@@ -69,24 +99,6 @@ namespace Ferretto.VW.MathLib
             return Math.Round(mmDistanceDecimal, 4);
         }
 
-        // Conversion from pulse/s speed to mm/s speed
-        public decimal FromPulseSToMMS(int pulseSpeedS)
-        {
-            decimal mmSpeedDecimalS;
-
-            mmSpeedDecimalS = pulseSpeedS / resolution;
-
-            return Math.Round(mmSpeedDecimalS, 4);
-        }
-
-        // Conversion from pulse/s^2 acceleration to mm/s^2 acceleration
-        public decimal FromPulseS2ToMMS2(int pulseSpeedS2)
-        {
-            decimal mmSpeedDecimalS2;
-
-            mmSpeedDecimalS2 = pulseSpeedS2 / resolution;
-
-            return Math.Round(mmSpeedDecimalS2, 4);
-        }
+        #endregion Methods
     }
 }

@@ -81,11 +81,13 @@ namespace Ferretto.Common.BusinessModels
                 if (this.modifiedProperties.Contains(e.PropertyName) == false)
                 {
                     this.modifiedProperties.Add(e.PropertyName);
+                    NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was modified.");
                 }
             }
             else if (this.modifiedProperties.Contains(e.PropertyName))
             {
                 this.modifiedProperties.Remove(e.PropertyName);
+                NLog.LogManager.GetCurrentClassLogger().Trace($"Property '{this.instance.GetType().Name}.{e.PropertyName}' was reset to initial value.");
             }
 
             this.IsModified = this.modifiedProperties.Count > 0;

@@ -12,7 +12,6 @@ namespace Ferretto.VW.InstallationApp
         public CellsControlView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.CellsControlVMInstance;
         }
 
         #endregion Constructors

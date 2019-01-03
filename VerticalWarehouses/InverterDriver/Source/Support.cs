@@ -7,6 +7,7 @@ namespace Ferretto.VW.InverterDriver
     {
         PositioningDrawer,
         CalibrateVerticalAxis,
+        CalibrateHorizontalAxis,
     }
 
     /// <summary>
