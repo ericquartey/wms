@@ -78,6 +78,12 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.calibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
+        }
+
         public void ExitFromViewMethod()
         {
             throw new NotImplementedException();
@@ -122,9 +128,10 @@ namespace Ferretto.VW.InstallationApp
             }
         }
 
-        private async void ExecuteStartButtonCommand()
+        private void ExecuteStartButtonCommand()
         {
             this.calibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
+            this.calibrateVerticalAxis.Initialize();
             if (this.calibrateVerticalAxis != null)
             {
                 int m = 5;
@@ -134,12 +141,11 @@ namespace Ferretto.VW.InstallationApp
 
                 this.EnableStartButton = false;
                 this.IsStopButtonActive = true;
-                await Task.Delay(2000);
 
                 this.calibrateVerticalAxis.ThrowEndEvent += this.Calibration;
                 this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
                 this.calibrateVerticalAxis.SetVAxisOrigin(m, ofs, vFast, vCreep);
-                this.NoteString = "Homing Done.";
+                // this.NoteString = "Homing Done.";
             }
         }
 

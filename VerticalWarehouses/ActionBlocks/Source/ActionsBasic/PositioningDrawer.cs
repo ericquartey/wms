@@ -207,7 +207,7 @@ namespace Ferretto.VW.ActionBlocks
             this.cmdWord.Set(BIT_ANALOGSAMPLING, true);
 
             var bytes = BitArrayToByteArray(this.cmdWord);
-            var value = BitConverter.ToInt16(bytes, 0);
+            var value = BitConverter.ToUInt16(bytes, 0);
 
             this.valParam = value;
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, this.valParam);
@@ -424,7 +424,7 @@ namespace Ferretto.VW.ActionBlocks
 
             this.cmdWord.Set(BIT_HALT, true);
             var bytes = BitArrayToByteArray(this.cmdWord);
-            var value = BitConverter.ToInt16(bytes, 0);
+            var value = BitConverter.ToUInt16(bytes, 0);
 
             this.valParam = value;
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, this.valParam);
@@ -504,7 +504,7 @@ namespace Ferretto.VW.ActionBlocks
             }
 
             var bytes = BitArrayToByteArray(this.cmdWord);
-            var value = BitConverter.ToInt16(bytes, 0);
+            var value = BitConverter.ToUInt16(bytes, 0);
 
             this.valParam = value;
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, this.valParam);

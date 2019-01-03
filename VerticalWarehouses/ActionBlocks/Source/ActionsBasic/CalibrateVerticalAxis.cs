@@ -24,7 +24,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", "2", "3", "4", "5", "6" };
+        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", /*"2",*/ "3", "4", "5", "6" };
 
         private string calibrateOperation;
 

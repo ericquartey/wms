@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Ferretto.VW.InverterDriver;
+using Microsoft.Practices.Unity;
 using Prism.Modularity;
 
 namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
@@ -19,6 +20,8 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
             var positioningDrawerInstance = new PositioningDrawer();
             var calibrateVerticalAxisInstance = new CalibrateVerticalAxis();
             var drawerWeightDetection = new DrawerWeightDetection();
+
+            calibrateVerticalAxisInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
 
             this.Container.RegisterInstance<IPositioningDrawer>(positioningDrawerInstance);
             this.Container.RegisterInstance<ICalibrateVerticalAxis>(calibrateVerticalAxisInstance);
