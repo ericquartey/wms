@@ -328,7 +328,7 @@ namespace Ferretto.Common.BusinessModels
 
                         if (this.XPosition.HasValue == false)
                         {
-                            return "Compartment position must be specified.";
+                            return Errors.CompartmentXPositionIsNotSpecified;
                         }
 
                         break;
@@ -341,7 +341,7 @@ namespace Ferretto.Common.BusinessModels
 
                         if (this.YPosition.HasValue == false)
                         {
-                            return "Compartment position must be specified.";
+                            return Errors.CompartmentYPositionIsNotSpecified;
                         }
                         break;
 
@@ -353,7 +353,7 @@ namespace Ferretto.Common.BusinessModels
 
                         if (this.Width.HasValue == false)
                         {
-                            return "Compartment size must be specified.";
+                            return Errors.CompartmentSizeIsNotSpecified;
                         }
 
                         break;
@@ -366,21 +366,21 @@ namespace Ferretto.Common.BusinessModels
 
                         if (this.Height.HasValue == false)
                         {
-                            return "Compartment size must be specified.";
+                            return Errors.CompartmentSizeIsNotSpecified;
                         }
                         break;
 
                     case nameof(this.MaxCapacity):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
                         {
-                            return "Item stock in the compartment cannot be greater that compartment's maximum capacity.";
+                            return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
                         break;
 
                     case nameof(this.Stock):
                         if (this.maxCapacity.HasValue && this.maxCapacity.Value < this.stock)
                         {
-                            return "Item stock in the compartment cannot be greater that compartment's maximum capacity.";
+                            return Errors.CompartmentStockGreaterThanMaxCapacity;
                         }
                         break;
                 }

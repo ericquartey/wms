@@ -124,6 +124,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Addition of a bulk of compartments must have at least one column..
+        /// </summary>
+        public static string CompartmentBulkMustHaveAtLeastOneColumn {
+            get {
+                return ResourceManager.GetString("CompartmentBulkMustHaveAtLeastOneColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Addition of a bulk of compartments must have at least one row..
+        /// </summary>
+        public static string CompartmentBulkMustHaveAtLeastOneRow {
+            get {
+                return ResourceManager.GetString("CompartmentBulkMustHaveAtLeastOneRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s Height cannot be equal or less than 0..
         /// </summary>
         public static string CompartmentHeightLess {
@@ -151,6 +169,24 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment position cannot be negative..
+        /// </summary>
+        public static string CompartmentPositionCannotBeNegative {
+            get {
+                return ResourceManager.GetString("CompartmentPositionCannotBeNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specified set of compartments cannot be inserted in the loading unit..
+        /// </summary>
+        public static string CompartmentSetCannotBeInsertedInLoadingUnit {
+            get {
+                return ResourceManager.GetString("CompartmentSetCannotBeInsertedInLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s size cannote be more than Tray&apos;s height..
         /// </summary>
         public static string CompartmentSizeHMore {
@@ -165,6 +201,15 @@ namespace Ferretto.Common.Resources {
         public static string CompartmentSizeIsNotSpecified {
             get {
                 return ResourceManager.GetString("CompartmentSizeIsNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment size must be strictly positive..
+        /// </summary>
+        public static string CompartmentSizeMustBeStrictlyPositive {
+            get {
+                return ResourceManager.GetString("CompartmentSizeMustBeStrictlyPositive", resourceCulture);
             }
         }
         

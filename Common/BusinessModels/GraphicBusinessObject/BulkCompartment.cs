@@ -13,11 +13,17 @@ namespace Ferretto.Common.BusinessModels
         private const int MinGridSize = 1;
 
         private int columns = MinGridSize;
+
         private int? height;
+
         private int loadingUnitId;
+
         private int rows = MinGridSize;
+
         private int? width;
+
         private int? xPosition;
+
         private int? yPosition;
 
         #endregion Fields
@@ -132,12 +138,12 @@ namespace Ferretto.Common.BusinessModels
                     case nameof(this.XPosition):
                         if (this.XPosition < 0)
                         {
-                            return "X Position cannot be negative.";
+                            return Errors.CompartmentPositionCannotBeNegative;
                         }
 
                         if (this.CanAddToLoadingUnit == false)
                         {
-                            return "The specified area cannot be inserted in the loading unit.";
+                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
                         }
 
                         break;
@@ -145,12 +151,12 @@ namespace Ferretto.Common.BusinessModels
                     case nameof(this.YPosition):
                         if (this.YPosition < 0)
                         {
-                            return "Y Position cannot be negative.";
+                            return Errors.CompartmentPositionCannotBeNegative;
                         }
 
                         if (this.CanAddToLoadingUnit == false)
                         {
-                            return "The specified area cannot be inserted in the loading unit.";
+                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
                         }
 
                         break;
@@ -158,12 +164,12 @@ namespace Ferretto.Common.BusinessModels
                     case nameof(this.Width):
                         if (this.Width <= 0)
                         {
-                            return "Width must be strinctly positive.";
+                            return Errors.CompartmentSizeMustBeStrictlyPositive;
                         }
 
                         if (this.CanAddToLoadingUnit == false)
                         {
-                            return "The specified area cannot be inserted in the loading unit.";
+                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
                         }
 
                         break;
@@ -171,12 +177,12 @@ namespace Ferretto.Common.BusinessModels
                     case nameof(this.Height):
                         if (this.Height <= 0)
                         {
-                            return "Height must be strinctly positive.";
+                            return Errors.CompartmentSizeMustBeStrictlyPositive;
                         }
 
                         if (this.CanAddToLoadingUnit == false)
                         {
-                            return "The specified area cannot be inserted in the loading unit.";
+                            return Errors.CompartmentSetCannotBeInsertedInLoadingUnit;
                         }
 
                         break;
@@ -184,14 +190,14 @@ namespace Ferretto.Common.BusinessModels
                     case nameof(this.Rows):
                         if (this.Rows < MinGridSize)
                         {
-                            return "A minimum of 1 row needs to be specified.";
+                            return Errors.CompartmentBulkMustHaveAtLeastOneRow;
                         }
                         break;
 
                     case nameof(this.Columns):
                         if (this.Columns < MinGridSize)
                         {
-                            return "A minimum of 1 column needs to be specified.";
+                            return Errors.CompartmentBulkMustHaveAtLeastOneColumn;
                         }
                         break;
 

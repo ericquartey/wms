@@ -231,4 +231,19 @@
   <data name="CompartmentYPositionIsNotSpecified" xml:space="preserve">
     <value>La posizione Y dello scomparto non è specificata.</value>
   </data>
+  <data name="CompartmentPositionCannotBeNegative" xml:space="preserve">
+    <value>La posizione dello scomparto non può essere negativa.</value>
+  </data>
+  <data name="CompartmentSizeMustBeStrictlyPositive" xml:space="preserve">
+    <value>La dimensione dello scomparto deve essere strettamente positiva.</value>
+  </data>
+  <data name="CompartmentSetCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>L'insieme di scomparti specificato non può essere inserito nella unità di carico.</value>
+  </data>
+  <data name="CompartmentBulkMustHaveAtLeastOneColumn" xml:space="preserve">
+    <value>L'aggiunta di un insieme di scomparti deve avere almeno una riga.</value>
+  </data>
+  <data name="CompartmentBulkMustHaveAtLeastOneRow" xml:space="preserve">
+    <value>L'aggiunta di un insieme di scomparti deve avere almeno una colonna.</value>
+  </data>
 </root>
