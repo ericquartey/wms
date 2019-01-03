@@ -46,7 +46,6 @@
                     <ColumnDefinition Width="155" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
                     <RowDefinition Height="auto"
                                    MinHeight="16" />
                     <RowDefinition Height="auto" />
@@ -54,13 +53,9 @@
                     <RowDefinition Height="auto" />
                 </Grid.RowDefinitions>
 
-                <Label Grid.Column="0"
-                       Grid.ColumnSpan="3"
-                       HorizontalAlignment="Left"
-                       Content="Compartment Details" />
 
                 <TextBlock x:Name="ErrorText"
-                           Grid.Row="1"
+                           Grid.Row="0"
                            Grid.ColumnSpan="3"
                            Width="200"
                            MinWidth="270"
@@ -73,44 +68,44 @@
 
 
                 <wms:SpinEdit x:Name="WidthText"
-                              Grid.Row="2"
+                              Grid.Row="1"
                               Grid.Column="0"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Width, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="HeightText"
-                              Grid.Row="2"
+                              Grid.Row="1"
                               Grid.Column="2"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Height, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="PositionXText"
-                              Grid.Row="3"
+                              Grid.Row="2"
                               Grid.Column="0"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.XPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="PositionYText"
-                              Grid.Row="3"
+                              Grid.Row="2"
                               Grid.Column="2"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.YPosition, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
 
                 <wms:SpinEdit x:Name="RowText"
-                              Grid.Row="4"
+                              Grid.Row="3"
                               Grid.Column="0"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Row, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
                 <wms:SpinEdit x:Name="ColumnText"
-                              Grid.Row="4"
+                              Grid.Row="3"
                               Grid.Column="2"
-                              AllowNullInput="False"
                               HorizontalAlignment="Stretch"
+                              AllowNullInput="False"
                               EditValue="{Binding SelectedBulkCompartmentTray.Column, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
             </Grid>
         </GroupBox>

@@ -146,10 +146,10 @@
                                               ToggleSwitchHeight="20"
                                               ToggleSwitchWidth="30" />
                             <TextBlock x:Name="TitleLabel"
-                                     Margin="40,0,0,0"                                     
-                                     FontSize="14.666"
-                                     FontWeight="SemiBold"
-                                     Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
+                                       Margin="40,0,0,0"
+                                       FontSize="14.666"
+                                       FontWeight="SemiBold"
+                                       Text="{x:Static res:MasterData.ShipmentUnitInformation}" />
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel IsEnabled="{Binding IsChecked, ElementName=toggleSwitch}">
@@ -166,12 +166,12 @@
 
                             <wms:TextBox Grid.Row="1"
                                          Margin="0,0,20,0"
-                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         EditValue="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="2"
                                          Margin="0,0,20,0"
-                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         EditValue="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
                 </GroupBox>
@@ -203,9 +203,6 @@
                           Grid.ColumnSpan="4">
                     <GroupBox.Header>
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25" />
-                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
                                 <ColumnDefinition Width="4*" />
@@ -223,6 +220,7 @@
 
                             <wms:ActionBar Grid.Row="0"
                                            Grid.ColumnSpan="4"
+                                           Height="28"
                                            HorizontalAlignment="Right"
                                            Style="{DynamicResource ActionBarNotCustomizable}">
 
@@ -250,8 +248,8 @@
                         <wms:WmsGridControl MinHeight="62"
                                             MaxWidth="2000"
                                             MaxHeight="2000"
-                                            SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}"
-                                            ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}">
+                                            ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}"
+                                            SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}">
                             <!--TODO wms:WmsGridControl.View>
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
@@ -277,6 +275,8 @@
                                                 FieldName="DispatchedQuantity" />
                                 <dxg:GridColumn Width="120*"
                                                 FieldName="ItemListRowStatus" />
+                                <dxg:GridColumn Width="120*"
+                                                FieldName="MaterialStatusDescription" />
                                 <dxg:GridColumn Width="150*"
                                                 FieldName="CreationDate" />
                             </wms:WmsGridControl.Columns>

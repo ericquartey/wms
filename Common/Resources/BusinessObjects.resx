@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!--
-    Microsoft ResX Schema
-
+  <!-- 
+    Microsoft ResX Schema 
+    
     Version 2.0
-
-    The primary goals of this format is to allow a simple XML format
-    that is mostly human readable. The generation and parsing of the
-    various data types are done through the TypeConverter classes
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
     associated with the data types.
-
+    
     Example:
-
+    
     ... ado.net/XML headers & schema ...
     <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
@@ -26,36 +26,36 @@
         <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
         <comment>This is a comment</comment>
     </data>
-
-    There are any number of "resheader" rows that contain simple
+                
+    There are any number of "resheader" rows that contain simple 
     name/value pairs.
-
-    Each data row contains a name, and value. The row also contains a
-    type or mimetype. Type corresponds to a .NET class that support
-    text/value conversion through the TypeConverter architecture.
-    Classes that don't support this are serialized and stored with the
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
     mimetype set.
-
-    The mimetype is used for serialized objects, and tells the
-    ResXResourceReader how to depersist the object. This is currently not
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
     extensible. For a given mimetype the value must be set accordingly:
-
-    Note - application/x-microsoft.net.object.binary.base64 is the format
-    that the ResXResourceWriter will generate, however the reader can
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
     read any of the formats listed below.
-
+    
     mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
-
+    
     mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with
+    value   : The object must be serialized with 
             : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
             : and then encoded with base64 encoding.
 
     mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array
+    value   : The object must be serialized into a byte array 
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
@@ -202,7 +202,7 @@
     <comment>Compartment - Lot</comment>
   </data>
   <data name="CompartmentMaxCapacity" xml:space="preserve">
-    <value>Max Capacity</value>
+    <value>Max Capacity [pieces]</value>
     <comment>Compartment - Max Capacity</comment>
   </data>
   <data name="CompartmentIsItemPairingFixed" xml:space="preserve">
@@ -210,11 +210,11 @@
     <comment>Compartment - Fixed Pairing</comment>
   </data>
   <data name="CompartmentReservedForPick" xml:space="preserve">
-    <value>Reserved for Pick</value>
+    <value>Reserved for Pick [pieces]</value>
     <comment>Compartment - Reserved for Pick</comment>
   </data>
   <data name="CompartmentReservedToStore" xml:space="preserve">
-    <value>Reserved to Store</value>
+    <value>Reserved to Store [pieces]</value>
     <comment>Compartment - Reserved To Store</comment>
   </data>
   <data name="CompartmentStatus" xml:space="preserve">
@@ -222,7 +222,7 @@
     <comment>Compartment - Status</comment>
   </data>
   <data name="CompartmentStock" xml:space="preserve">
-    <value>Stock</value>
+    <value>Stock [pieces]</value>
     <comment>Compartment - Stock</comment>
   </data>
   <data name="CompartmentSub1" xml:space="preserve">
@@ -234,7 +234,7 @@
     <comment>Compartment - Sub 2</comment>
   </data>
   <data name="CompartmentType" xml:space="preserve">
-    <value>Compartment Type</value>
+    <value>Compartment Type [mm] x [mm]</value>
     <comment>Compartment Type</comment>
   </data>
   <data name="CompartmentTypeDescription" xml:space="preserve">
@@ -302,7 +302,7 @@
     <comment>Allowed Item In Compartment - Max Capacity</comment>
   </data>
   <data name="ItemInventoryTolerance" xml:space="preserve">
-    <value>Inventory Tolerance</value>
+    <value>Inventory Tolerance [pieces]</value>
     <comment>Item - Last Inventory Date</comment>
   </data>
   <data name="ItemLastInventoryDate" xml:space="preserve">
@@ -330,7 +330,7 @@
     <comment>Item - Notes</comment>
   </data>
   <data name="ItemPickTolerance" xml:space="preserve">
-    <value>Pick Tolerance</value>
+    <value>Pick Tolerance [pieces]</value>
     <comment>Item - Pick Tolerance</comment>
   </data>
   <data name="ItemReorderPoint" xml:space="preserve">
@@ -354,7 +354,7 @@
     <comment>Item - Stock (calculated)</comment>
   </data>
   <data name="ItemStoreTolerance" xml:space="preserve">
-    <value>Store Tolerance</value>
+    <value>Store Tolerance [pieces]</value>
     <comment>Item - Store Tolerance</comment>
   </data>
   <data name="ItemWidth" xml:space="preserve">
@@ -859,9 +859,9 @@
     <value>Dispatched Quantity</value>
     <comment>List Row - Dispatched Quantity</comment>
   </data>
-  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
-    <value>Run Immediately</value>
-    <comment>List Execution Request - Run Immediately</comment>
+  <data name="ItemListExecutionRequestSchedule" xml:space="preserve">
+    <value>Schedule</value>
+    <comment>List Execution Request - Schedule</comment>
   </data>
   <data name="ItemListRowStatusWaiting" xml:space="preserve">
     <value>Waiting</value>
@@ -894,5 +894,56 @@
   <data name="ItemListTypeInventory" xml:space="preserve">
     <value>Inventory</value>
     <comment>Item List Type - Inventory</comment>
+  </data>
+  <data name="MonoReference" xml:space="preserve">
+    <value>Mono Reference</value>
+  </data>
+  <data name="PluriReference" xml:space="preserve">
+    <value>Multi Reference</value>
+  </data>
+  <data name="SideBack" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="SideFront" xml:space="preserve">
+    <value>Front</value>
+  </data>
+  <data name="SideLeft" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="SideRight" xml:space="preserve">
+    <value>Right</value>
+  </data>
+  <data name="ItemManagementTypeFIFO" xml:space="preserve">
+    <value>FIFO</value>
+  </data>
+  <data name="ItemManagementTypeVolume" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="ItemListRowCompletionDate" xml:space="preserve">
+    <value>Completion Date</value>
+  </data>
+  <data name="ItemListRowExecutionDate" xml:space="preserve">
+    <value>Execution Date</value>
+  </data>
+  <data name="ItemListRowLastModificationDate" xml:space="preserve">
+    <value>Last Modification Date</value>
+  </data>
+  <data name="ItemListRowLot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="ItemListRowRegistrationNumber" xml:space="preserve">
+    <value>Registration Number</value>
+  </data>
+  <data name="ItemListRowSub1" xml:space="preserve">
+    <value>Sub 1</value>
+  </data>
+  <data name="ItemListRowSub2" xml:space="preserve">
+    <value>Sub 2</value>
+  </data>
+  <data name="CompletionDate" xml:space="preserve">
+    <value>Completion Date</value>
+  </data>
+  <data name="LastExecutionDate" xml:space="preserve">
+    <value>Last Execution Date</value>
   </data>
 </root>
