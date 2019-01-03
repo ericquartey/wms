@@ -430,6 +430,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Information.
+        /// </summary>
+        public static string GeneralInformation {
+            get {
+                return ResourceManager.GetString("GeneralInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to All.
         /// </summary>
         public static string ItemAll {
@@ -552,6 +561,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListRows {
             get {
                 return ResourceManager.GetString("ItemListRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item list row saved sucessfully.
+        /// </summary>
+        public static string ItemListRowSavedSuccessfully {
+            get {
+                return ResourceManager.GetString("ItemListRowSavedSuccessfully", resourceCulture);
             }
         }
         
@@ -966,6 +984,15 @@ namespace Ferretto.Common.Resources {
         public static string RunItemWithdraw {
             get {
                 return ResourceManager.GetString("RunItemWithdraw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Schedule Information.
+        /// </summary>
+        public static string ScheduleInformation {
+            get {
+                return ResourceManager.GetString("ScheduleInformation", resourceCulture);
             }
         }
         

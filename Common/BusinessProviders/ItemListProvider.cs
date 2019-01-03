@@ -195,12 +195,11 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
             var dataContext = this.dataContext.Current;
-
-            lock (this.dataContext)
+            lock (dataContext)
             {
-                var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
+                var existingModel = dataContext.ItemLists.Find(model.Id);
 
-                this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
                 return dataContext.SaveChanges();
             }

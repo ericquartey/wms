@@ -37,16 +37,16 @@
                 </Grid.ColumnDefinitions>
 
                 <wms:InfoText Grid.Column="0"
-                              Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListCode}" />
+                              Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListRowCode}" />
                 <wms:InfoText Grid.Row="1"
                               Grid.Column="0"
-                              Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListDescription}" />
+                              Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListRowDescription}" />
                 <wms:InfoText Grid.Row="0"
                               Grid.Column="1"
                               Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListType}" />
                 <wms:InfoText Grid.Row="1"
                               Grid.Column="1"
-                              Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListStatus}"
+                              Content="{Binding ExecutionRequest.ItemListRowDetails.ItemListRowStatus}"
                               IsPillVisible="True" />
             </Grid>
         </GroupBox>

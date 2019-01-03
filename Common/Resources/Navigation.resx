@@ -240,4 +240,7 @@
   <data name="PutLists" xml:space="preserve">
     <value>Put Lists</value>
   </data>
+  <data name="ListRowDetails" xml:space="preserve">
+    <value>Details of Row List</value>
+  </data>
 </root>

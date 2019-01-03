@@ -475,4 +475,14 @@
   <data name="ItemListRows" xml:space="preserve">
     <value>List Rows</value>
   </data>
+  <data name="GeneralInformation" xml:space="preserve">
+    <value>General Information</value>
+  </data>
+  <data name="ScheduleInformation" xml:space="preserve">
+    <value>Schedule Information</value>
+  </data>
+  <data name="ItemListRowSavedSuccessfully" xml:space="preserve">
+    <value>Item list row saved sucessfully</value>
+    <comment>Notification - item saved</comment>
+  </data>
 </root>

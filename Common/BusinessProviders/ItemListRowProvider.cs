@@ -43,11 +43,11 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public async Task<OperationResult> ExecuteImmediately(int listId, int areaId, int bayId)
+        public async Task<OperationResult> ExecuteImmediately(int listRowId, int areaId, int bayId)
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListId = listId, AreaId = areaId, BayId = bayId });
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListRowId = listRowId, AreaId = areaId, BayId = bayId });
 
                 return new OperationResult(true);
             }
@@ -77,16 +77,32 @@ namespace Ferretto.Common.BusinessProviders
                     Id = lr.Id,
                     Code = lr.Code,
                     RowPriority = lr.Priority,
-                    ItemDescription = lr.Item.Description,
+                    ItemId = lr.Item.Id,
                     RequiredQuantity = lr.RequiredQuantity,
                     DispatchedQuantity = lr.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)lr.Status,
+                    ItemDescription = lr.Item.Description,
                     CreationDate = lr.CreationDate,
-                    ItemListCode = lr.ItemList.Code,
-                    ItemListDescription = lr.ItemList.Description,
+                    ItemListRowCode = lr.ItemList.Code,
+                    ItemListRowDescription = lr.ItemList.Description,
                     ItemListType = (ItemListType)lr.ItemList.ItemListType,
                     ItemListStatus = (ItemListStatus)lr.ItemList.Status,
+                    CompletionDate = lr.CompletionDate,
+                    LastExecutionDate = lr.LastExecutionDate,
+                    LastModificationDate = lr.LastModificationDate,
+                    Lot = lr.Lot,
+                    RegistrationNumber = lr.RegistrationNumber,
+                    Sub1 = lr.Sub1,
+                    Sub2 = lr.Sub2,
+                    PackageTypeId = lr.PackageTypeId,
+                    MaterialStatusId = lr.MaterialStatusId
                 }).SingleAsync();
+
+            itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+            itemListRowDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
+            itemListRowDetails.ItemListTypeChoices = ((ItemListType[])
+                Enum.GetValues(typeof(ItemListType)))
+                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
 
             return itemListRowDetails;
         }
@@ -115,14 +131,26 @@ namespace Ferretto.Common.BusinessProviders
 
         public int Save(ItemListRowDetails model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                var existingModel = dataContext.ItemListRows.Find(model.Id);
+
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+                return dataContext.SaveChanges();
+            }
         }
 
-        public async Task<OperationResult> ScheduleForExecution(int listId, int areaId)
+        public async Task<OperationResult> ScheduleForExecution(int listRowId, int areaId)
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListId = listId, AreaId = areaId });
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListRowId = listRowId, AreaId = areaId });
 
                 return new OperationResult(true);
             }

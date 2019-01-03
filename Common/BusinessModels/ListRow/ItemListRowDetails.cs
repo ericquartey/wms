@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Text;
 using Ferretto.Common.Resources;
 
@@ -15,11 +16,14 @@ namespace Ferretto.Common.BusinessModels
         private DateTime creationDate;
         private int dispatchedQuantity;
         private string itemDescription;
-        private string itemListCode;
-        private string itemListDescription;
+        private int itemId;
+        private string itemListRowCode;
+        private string itemListRowDescription;
         private ItemListRowStatus itemListRowStatus;
         private ItemListStatus itemListStatus;
         private ItemListType itemListType;
+        private IEnumerable<Enumeration> itemListTypeChoices;
+        private string itemListTypeDescription;
         private DateTime? lastExecutionDate;
         private DateTime? lastModificationDate;
         private string lot;
@@ -40,11 +44,8 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 
-        [Display(Name = nameof(BusinessObjects.CompletionDate), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.CompletionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? CompletionDate { get => this.completionDate; set => this.SetProperty(ref this.completionDate, value); }
-
-        [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
-        public DateTime CompletionDate { get => this.completionDate; set => this.SetProperty(ref this.completionDate, value); }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
         public DateTime CreationDate { get => this.creationDate; set => this.SetProperty(ref this.creationDate, value); }
@@ -54,6 +55,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get => this.itemDescription; set => this.SetProperty(ref this.itemDescription, value); }
+
+        [Display(Name = nameof(BusinessObjects.ItemListRowItemDescription), ResourceType = typeof(BusinessObjects))]
+        public int ItemId { get => this.itemId; set => this.SetProperty(ref this.itemId, value); }
 
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string ItemListRowCode { get => this.itemListRowCode; set => this.SetProperty(ref this.itemListRowCode, value); }
@@ -70,7 +74,21 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
-        [Display(Name = nameof(BusinessObjects.LastExecutionDate), ResourceType = typeof(General))]
+        public IEnumerable<Enumeration> ItemListTypeChoices
+        {
+            get => this.itemListTypeChoices;
+            set
+            {
+                if (this.SetProperty(ref this.itemListTypeChoices, value))
+                {
+                    this.SetItemListDescription();
+                }
+            }
+        }
+
+        public string ItemListTypeDescription { get => this.itemListTypeDescription; set => this.SetProperty(ref this.itemListTypeDescription, value); }
+
+        [Display(Name = nameof(BusinessObjects.LastExecutionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastExecutionDate { get => this.lastExecutionDate; set => this.SetProperty(ref this.lastExecutionDate, value); }
 
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
@@ -85,6 +103,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.materialStatusChoices, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.MaterialStatus), ResourceType = typeof(BusinessObjects))]
         public int? MaterialStatusId { get => this.materialStatusId; set => this.SetProperty(ref this.materialStatusId, value); }
 
         public IEnumerable<Enumeration> PackageTypeChoices
@@ -93,6 +112,7 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.packageTypeChoices, value);
         }
 
+        [Display(Name = nameof(BusinessObjects.PackageType), ResourceType = typeof(BusinessObjects))]
         public int? PackageTypeId { get => this.packageTypeId; set => this.SetProperty(ref this.packageTypeId, value); }
 
         [Display(Name = nameof(BusinessObjects.ItemListRowRegistrationNumber), ResourceType = typeof(BusinessObjects))]
@@ -111,5 +131,14 @@ namespace Ferretto.Common.BusinessModels
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
         #endregion Properties
+
+        #region Methods
+
+        private void SetItemListDescription()
+        {
+            this.ItemListTypeDescription = this.ItemListTypeChoices?.SingleOrDefault(c => c.Id == (int)this.ItemListType)?.Description;
+        }
+
+        #endregion Methods
     }
 }

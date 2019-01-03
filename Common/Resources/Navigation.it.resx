@@ -240,4 +240,7 @@
   <data name="PutLists" xml:space="preserve">
     <value>Liste di Versamento</value>
   </data>
+  <data name="ListRowDetails" xml:space="preserve">
+    <value>Dettagli della riga lista</value>
+  </data>
 </root>
