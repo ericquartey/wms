@@ -246,4 +246,7 @@
   <data name="CompartmentBulkMustHaveAtLeastOneRow" xml:space="preserve">
     <value>L'aggiunta di un insieme di scomparti deve avere almeno una colonna.</value>
   </data>
+  <data name="CompartmentCannotBeInsertedInLoadingUnit" xml:space="preserve">
+    <value>Errore durante l'aggiunta dello scomparto perchè si sovrappone ad altri scomparti o rimane fuori dai bordi del cassetto.</value>
+  </data>
 </root>
