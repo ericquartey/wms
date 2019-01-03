@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Ferretto.Common.Modules.BLL.Models;
 using Microsoft.Practices.ServiceLocation;
@@ -19,12 +20,19 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
         private ItemListRowDetails itemListRow;
+
         private IDataSource<Item> itemsDataSource;
+
         private ICommand listRowExecuteCommand;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
 
         #endregion Fields
@@ -43,18 +51,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ItemListRowDetails ItemListRow
         {
             get => this.itemListRow;
-            set
-            {
-                if (!this.SetProperty(ref this.itemListRow, value))
-                {
-                    return;
-                }
-
-                this.TakeSnapshot(this.ItemListRow);
-
-                //TODO
-                //this.RefreshData();
-            }
+            set => this.SetProperty(ref this.itemListRow, value);
         }
 
         public IDataSource<Item> ItemsDataSource
@@ -82,7 +79,7 @@ namespace Ferretto.WMS.Modules.MasterData
             var modifiedRowCount = this.itemListRowProvider.Save(this.itemListRow);
             if (modifiedRowCount > 0)
             {
-                this.TakeSnapshot(this.itemListRow);
+                this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new ModelChangedEvent<ItemListRow>(this.itemListRow.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListRowSavedSuccessfully));

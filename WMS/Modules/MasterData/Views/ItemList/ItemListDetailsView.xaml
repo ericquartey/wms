@@ -26,7 +26,7 @@
             <Binding Source="{x:Static res:Title.ItemListDetailsView}" />
             <Binding Path="Model.ItemListType"
                      TargetNullValue="" />
-            <Binding Path="ItemList.Code"
+            <Binding Path="Model.Code"
                      TargetNullValue="" />
         </MultiBinding>
     </wms:WmsView.SubTitle>
