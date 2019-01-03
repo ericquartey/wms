@@ -13,16 +13,11 @@
                    ResizeMode="NoResize"
                    SizeToContent="Height"
                    mc:Ignorable="d">
-    <wms:WmsDialogView.Foreground>
-        <SolidColorBrush Color="white" />
-    </wms:WmsDialogView.Foreground>
 
-
-    <Grid Margin="20,10"
-          IsEnabled="{Binding IsEnabled}">
+    <Grid IsEnabled="{Binding IsEnabled}">
         <Grid.Background>
             <ImageBrush ImageSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/splash.png"
-                        Opacity="0.99" />
+                        Opacity="0.5" />
         </Grid.Background>
 
         <Grid.RowDefinitions>
@@ -45,7 +40,6 @@
                HorizontalAlignment="Left"
                Focusable="False"
                Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo_narrow.png" />
-        <!--  Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo_narrow.png" />  -->
 
         <StackPanel Grid.Row="1"
                     Grid.Column="2"
@@ -53,18 +47,15 @@
                     HorizontalAlignment="Stretch"
                     Orientation="Vertical">
 
-            <TextBlock Background="Gray"
-                       Focusable="False"
+            <TextBlock Focusable="False"
                        FontSize="16"
                        FontWeight="Bold"
                        Text="{x:Static res:Layout.UserLogin}" />
 
             <wms:TextBox Name="LoginTB"
                          EditValue="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         Foreground="White"
                          MaxLength="20" />
             <wms:PasswordBox EditValue="{Binding User.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             Foreground="White"
                              MaxLength="20" />
         </StackPanel>
 
