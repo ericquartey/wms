@@ -16,11 +16,11 @@ namespace Ferretto.VW.ActionBlocks
     {
         #region Fields
 
-        private const int DELAY_TIME = 500;
+        private const int DELAY_TIME = 250;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] calibrateHorizontalAxisSteps = new string[] { "1", /*"2",*/ "3", "4", "5", "6" };
+        private readonly string[] calibrateHorizontalAxisSteps = new string[] { "1", /*"2",*/ "3", "4", "5", "6" }; // Step 2 commented because it writes the parameter on EPROM and we can write on EPROM a limited number of times
 
         private string calibrateOperation;
 
@@ -219,7 +219,6 @@ namespace Ferretto.VW.ActionBlocks
                 case "1":
                     {
                         // 0x1650
-                        // if (statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
                         if (statusWordBA01[4] && statusWordBA01[6])
                         {
                             statusWordValue = true;
@@ -236,8 +235,7 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "3":
                     {
-                        // 0x01631
-                        // if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[3] && statusWordBA01[4] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
+                        // 0x1631
                         if (statusWordBA01[0] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -247,8 +245,7 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "4":
                     {
-                        // 51 Dec = 0x1633
-                        // if (statusWordBA01[0] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
+                        // 0x1633
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -258,8 +255,7 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "5":
                     {
-                        // Filter: 0x1637
-                        // if (statusWordBA01[0] && statusWordBA01[2] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
+                        // Filter: 0xnn37 - 1637
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5])
                         {
                             statusWordValue = true;
@@ -269,10 +265,8 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "6":
                     {
-                        // 0x1637
-                        // Filter
-                        // if (statusWordBA01[0] && statusWordBA01[2] && statusWordBA01[5] && statusWordBA01[6] && statusWordBA01[9] && statusWordBA01[10])
-                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[12])
+                        // Filter: 0x1n37 - 1637
+                        if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[9] && statusWordBA01[10] && statusWordBA01[12])
                         {
                             statusWordValue = true;
                         }
@@ -306,14 +300,8 @@ namespace Ferretto.VW.ActionBlocks
             }
             else
             {
-                // Just wait...
-                Thread.Sleep(DELAY_TIME);
-
                 // New request to read the status Word
                 var idExitStatus = this.inverterDriver.SendRequest(this.paramID, this.systemIndex, this.dataSetIndex);
-
-                // Just wait...
-                Thread.Sleep(DELAY_TIME);
 
                 this.checkExistStatus(idExitStatus);
             }
@@ -361,54 +349,55 @@ namespace Ferretto.VW.ActionBlocks
             switch (this.calibrateOperation)
             {
                 // 2) Homing mode sequence
-                case "1":
+                case "1": // Disable Voltage
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = 0x8000; // 1000 0000 0000 0000
+                        this.valParam = 0x8000; // 1000 0000 0000 0000 - 32768
                         break;
                     }
 
-                case "2":
+                case "2": // Homing
                     {
-                        this.dataSetIndex = 0x02; // The DataSet to set the Operating Mode for Vertical Homing is 1, 2 for the Horizontal Homing
+                        this.dataSetIndex = 0x02; // The DataSet to set the Operating Mode for Horizontal Homing is 1, 2 for the Horizontal Homing
                         this.paramID = ParameterID.SET_OPERATING_MODE_PARAM;
                         this.valParam = 0x0001; // 0000 0000 0000 0001 per Homing Orizzontale
                         break;
                     }
 
-                case "3":
+                case "3": // Shut Down
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = 0x8006; // 1000 0000 0000 0110
+                        this.valParam = 0x8006; // 1000 0000 0000 0110 - 32774
                         break;
                     }
 
-                case "4":
+                case "4": // Switch On
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = 0x8007; // 1000 0000 0000 0111
+                        this.valParam = 0x8007; // 1000 0000 0000 0111 - 32775
                         break;
                     }
 
-                case "5":
+                case "5": // Enable Operation
                     {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = 0x800F; // 1000 0000 0000 1111
-                        break;
-                    }
+                        this.valParam = 0x800F; // 1000 0000 0000 1111 - 32783
 
-                case "6":
-                    {
                         // Just wait...
                         Thread.Sleep(DELAY_TIME);
 
+                        break;
+                    }
+
+                case "6": // Enable Operation and Starting Home
+                    {
                         this.dataSetIndex = 0x05;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
-                        this.valParam = 0x801F; // 1000 0000 0001 1111
+                        this.valParam = 0x801F; // 1000 0000 0001 1111 - 32799
                         break;
                     }
 

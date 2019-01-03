@@ -452,6 +452,7 @@ namespace Ferretto.VW.InverterDriver
                     switch (this.CurrentActionType)
                     {
                         case ActionType.CalibrateVerticalAxis:
+                        case ActionType.CalibrateHorizontalAxis:
                             {
                                 if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_CalibrateVerticalAxis?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
                                 if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
@@ -844,7 +845,7 @@ namespace Ferretto.VW.InverterDriver
                         this.RequestList.RemoveAt(0);
                     }
 
-                    //logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
+                    logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
                 }
                 else
                 {
