@@ -201,4 +201,8 @@
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Unable to save changes.</value>
   </data>
+  <data name="SearchLabel" xml:space="preserve">
+    <value />
+    <comment>@invariant</comment>
+  </data>
 </root>
