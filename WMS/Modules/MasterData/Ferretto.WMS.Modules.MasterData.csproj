@@ -33,7 +33,10 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Remove="Views\ItemListRow\ItemListRowDetailsView.xaml" />
+    <None Update="Views\ItemListRow\ItemListRowDetailsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
+
 
 </Project>
