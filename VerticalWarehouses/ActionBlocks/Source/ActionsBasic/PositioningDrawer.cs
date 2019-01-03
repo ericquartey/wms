@@ -19,64 +19,116 @@ namespace Ferretto.VW.ActionBlocks
         #region Fields
 
         public IUnityContainer Container;
+
         public Converter Converter;
+
         private const int BIT_ABS_REL = 6;
+
         private const int BIT_ANALOGSAMPLING = 13;
+
         private const int BIT_CHANGE_ON_SET_POINT = 9;
+
         private const int BIT_CHANGE_SET_IMMEDIATELY = 5;
+
         private const int BIT_ENABLE_OPERATION = 3;
+
         private const int BIT_ENABLE_VOLTAGE = 1;
+
         private const int BIT_FAULT = 3;
+
         private const int BIT_FAULT_RESET = 7;
+
         private const int BIT_FOLLOWING_ERROR = 13;
+
         private const int BIT_HALT = 8;
+
         private const int BIT_INTERNAL_LIMIT_ACTIVE = 11;
+
         private const int BIT_NEW_SET_POINT = 4;
+
         private const int BIT_OPERATION_ENABLED = 2;
+
         private const int BIT_QUICK_STOP = 2;
+
         private const int BIT_QUICK_STOP_STATUS = 5;
+
         private const int BIT_READY_ON_SWITCH_ON = 0;
+
         private const int BIT_REMOTE = 9;
+
         private const int BIT_SET_POINT_ACK = 12;
+
         private const int BIT_SWITCH_ON = 0;
+
         private const int BIT_SWITCH_ON_DISABLED = 6;
+
         private const int BIT_SWITCHED_ON = 1;
+
         private const int BIT_TARGET_REACHED = 10;
+
         private const int BIT_VOLTAGE_ENABLED = 4;
+
         private const int BIT_WARNING = 7;
+
         private const byte DATASET_FOR_CONTROL = 0x05;
+
         private const int DELAY_TIME = 350;
+
         private const int N_BITS_16 = 16;
+
         private const int TIME_OUT = 100;
 
         private static readonly object lockObj = new object();
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4", "5", "6a" };
+
         private bool absolute_movement;
+
         private float acc;
+
         private bool bInitialShaftPosition;
+
         private bool bStoppedOk;
+
         private BitArray cmdWord;
+
         private int currentPosition;
+
         private byte dataSetIndex = 0x00;
+
         private float dec;
+
         private bool enableReadMaxAnalogIc;
+
         private bool enableRetrivialCurrentPositionMode;
+
         private AutoResetEvent eventForTerminate;
+
         private int i = 0;
+
         private int initialPosition;
+
         private InverterDriver.InverterDriver inverterDriver;
-        private short maxAnalogIc;
+
+        private ushort maxAnalogIc;
+
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
         // At this time we take into account only the code code 6a
         private string positioningStep;
 
         private RegisteredWaitHandle regLoopUpdateCurrentPositionThread;
+
         private BitArray statusWord;
+
         private byte systemIndex = 0x00;
+
         private object valParam = "";
+
         private float vMax;
+
         private int x;
 
         #endregion Fields
@@ -137,7 +189,9 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Get the maximum Analog Ic (absorption current).
         /// </summary>
-        public short MaxAnalogIc => this.maxAnalogIc;
+        public ushort MaxAnalogIc => this.maxAnalogIc;
+
+        Int16 IPositioningDrawer.MaxAnalogIc => throw new NotImplementedException();
 
         public InverterDriver.InverterDriver SetInverterDriverInterface
         {
@@ -175,7 +229,7 @@ namespace Ferretto.VW.ActionBlocks
             this.inverterDriver.Enable_Update_Current_Position_Vertical_Shaft_Mode = this.enableRetrivialCurrentPositionMode;
             this.inverterDriver.Get_Status_Word_Enable = true;
 
-            this.create_thread();
+            this.Create_thread();
 
             this.dataSetIndex = 0x05;  // it is related to the used motor (vertical --> DATASET 1; horizontal --> DATASET 2)
 
@@ -213,7 +267,7 @@ namespace Ferretto.VW.ActionBlocks
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, this.valParam);
 
             this.bStoppedOk = true; this.i = 0;
-            this.destroy_thread();
+            this.Destroy_thread();
         }
 
         public void Terminate()
@@ -236,7 +290,7 @@ namespace Ferretto.VW.ActionBlocks
             return ret;
         }
 
-        private bool checkTransitionState()
+        private bool CheckTransitionState()
         {
             var bStateTransitionAllowed = false;
             var error_Message = "";
@@ -297,10 +351,10 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Create the main automation thread to execute a single positioning.
         /// </summary>
-        private void create_thread()
+        private void Create_thread()
         {
             this.eventForTerminate = new AutoResetEvent(false);
-            this.regLoopUpdateCurrentPositionThread = ThreadPool.RegisterWaitForSingleObject(this.eventForTerminate, this.onMainAutomationThread, null, TIME_OUT, false);
+            this.regLoopUpdateCurrentPositionThread = ThreadPool.RegisterWaitForSingleObject(this.eventForTerminate, this.OnMainAutomationThread, null, TIME_OUT, false);
         }
 
         private void CtrExistStatus(InverterDriverExitStatus idStatus)
@@ -344,7 +398,7 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// Release the main automation thread for single positioning.
         /// </summary>
-        private void destroy_thread()
+        private void Destroy_thread()
         {
             this.regLoopUpdateCurrentPositionThread?.Unregister(this.eventForTerminate);
         }
@@ -394,7 +448,7 @@ namespace Ferretto.VW.ActionBlocks
             if (paramID == ParameterID.ANALOG_IC_PARAM && this.enableReadMaxAnalogIc)
             {
                 // Cache the ANALOG_IC_PARAM value
-                this.maxAnalogIc = Convert.ToInt16(eventArgs.Value);
+                this.maxAnalogIc = Convert.ToUInt16(eventArgs.Value);
 
                 // Notify the end procedure
                 ThrowEndEvent?.Invoke(true);
@@ -433,7 +487,7 @@ namespace Ferretto.VW.ActionBlocks
         /// <summary>
         /// True, if target position is reached
         /// </summary>
-        private bool isTargetReached()
+        private bool IsTargetReached()
         {
             var endReached = (this.i == this.positioningDrawerSteps.Length) && this.statusWord.Get(BIT_TARGET_REACHED);
             return endReached;
@@ -443,7 +497,7 @@ namespace Ferretto.VW.ActionBlocks
         /// Main automation to execute a single positioning.
         /// Send command to inverter driver in order to control the vertical motor.
         /// </summary>
-        private void onMainAutomationThread(object data, bool bTimeOut)
+        private void OnMainAutomationThread(object data, bool bTimeOut)
         {
             if (bTimeOut)
             {
@@ -455,7 +509,7 @@ namespace Ferretto.VW.ActionBlocks
                 }
 
                 // check if a new state must be executed (based on value of statusWord)
-                if (this.checkTransitionState())
+                if (this.CheckTransitionState())
                 {
                     this.i++;
                     if (this.i < this.positioningDrawerSteps.Length)
@@ -464,7 +518,7 @@ namespace Ferretto.VW.ActionBlocks
                     }
                     else
                     {
-                        if (this.isTargetReached())
+                        if (this.IsTargetReached())
                         {
                             // Target reached
                             if (!this.enableReadMaxAnalogIc)
@@ -546,7 +600,7 @@ namespace Ferretto.VW.ActionBlocks
             this.positioningStep = this.positioningDrawerSteps[this.i];
 
             // local scratches
-            short value = 0x0000; byte[] bytes;
+            ushort value = 0x0000; byte[] bytes;
             var error_Message = "";
             byte dataSetIdx = 0x00;
 
@@ -608,7 +662,7 @@ namespace Ferretto.VW.ActionBlocks
                         this.cmdWord.SetAll(false);
 
                         bytes = BitArrayToByteArray(this.cmdWord);
-                        value = BitConverter.ToInt16(bytes, 0);
+                        value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
                         idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
@@ -638,7 +692,7 @@ namespace Ferretto.VW.ActionBlocks
                         this.cmdWord.Set(BIT_QUICK_STOP, true);
 
                         bytes = BitArrayToByteArray(this.cmdWord);
-                        value = BitConverter.ToInt16(bytes, 0);
+                        value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
                         idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
@@ -655,7 +709,7 @@ namespace Ferretto.VW.ActionBlocks
                         this.cmdWord.Set(BIT_SWITCH_ON, true);
 
                         bytes = BitArrayToByteArray(this.cmdWord);
-                        value = BitConverter.ToInt16(bytes, 0);
+                        value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
                         idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
@@ -672,7 +726,7 @@ namespace Ferretto.VW.ActionBlocks
                         this.cmdWord.Set(BIT_ENABLE_OPERATION, true);
 
                         bytes = BitArrayToByteArray(this.cmdWord);
-                        value = BitConverter.ToInt16(bytes, 0);
+                        value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
                         idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
@@ -705,7 +759,7 @@ namespace Ferretto.VW.ActionBlocks
                         }
 
                         bytes = BitArrayToByteArray(this.cmdWord);
-                        value = BitConverter.ToInt16(bytes, 0);
+                        value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
                         idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
