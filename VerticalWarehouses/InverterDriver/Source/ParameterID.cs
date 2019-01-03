@@ -52,7 +52,7 @@
 
             switch (p)
             {
-                case ParameterID.CONTROL_WORD_PARAM: type = ValueDataType.Int16; break;
+                case ParameterID.CONTROL_WORD_PARAM: type = ValueDataType.UInt16; break;
                 case ParameterID.HOMING_CREEP_SPEED_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.HOMING_FAST_SPEED_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.HOMING_MODE_PARAM: type = ValueDataType.Int16; break;
@@ -62,10 +62,10 @@
                 case ParameterID.POSITION_TARGET_POSITION_PARAM: type = ValueDataType.Int32; break;
                 case ParameterID.POSITION_TARGET_SPEED_PARAM: type = ValueDataType.Float; break;
                 case ParameterID.SET_OPERATING_MODE_PARAM: type = ValueDataType.Int16; break;
-                case ParameterID.STATUS_WORD_PARAM: type = ValueDataType.Int16; break;
+                case ParameterID.STATUS_WORD_PARAM: type = ValueDataType.UInt16; break;
                 case ParameterID.STATUS_DIGITAL_SIGNALS: type = ValueDataType.Int16; break;
                 case ParameterID.ACTUAL_POSITION_SHAFT: type = ValueDataType.Int32; break;
-                case ParameterID.CONTROL_MODE_PARAM: type = ValueDataType.Int16; break;
+                case ParameterID.CONTROL_MODE_PARAM: type = ValueDataType.UInt16; break;
                 case ParameterID.ANALOG_IC_PARAM: type = ValueDataType.Int16; break;
             }
 
