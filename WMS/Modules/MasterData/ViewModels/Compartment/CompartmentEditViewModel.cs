@@ -18,10 +18,13 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
+
         private readonly ILoadingUnitProvider loadingUnitProvider = ServiceLocator.Current.GetInstance<ILoadingUnitProvider>();
 
         private ICommand deleteCommand;
+
         private IDataSource<Item> itemsDataSource;
 
         #endregion Fields
@@ -66,6 +69,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
+            this.IsBusy = true;
+
             var affectedRowsCount = this.compartmentProvider.Save(this.Model);
             if (affectedRowsCount > 0)
             {
@@ -80,6 +85,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
             }
+
+            this.IsBusy = false;
         }
 
         private bool CanExecuteDeleteCommand()
@@ -89,6 +96,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task ExecuteDeleteCommand()
         {
+            this.IsBusy = true;
+
             var result = this.DialogService.ShowMessage(
                 DesktopApp.AreYouSureToDeleteCompartment,
                 DesktopApp.ConfirmOperation,
@@ -97,8 +106,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
             if (result == DialogResult.Yes)
             {
-                this.IsBusy = true;
-
                 var loadingUnit = this.Model.LoadingUnit;
                 var affectedRowsCount = await this.compartmentProvider.DeleteAsync(this.Model.Id);
                 if (affectedRowsCount > 0)
@@ -115,9 +122,9 @@ namespace Ferretto.WMS.Modules.MasterData
                 {
                     this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
                 }
-
-                this.IsBusy = false;
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

@@ -15,6 +15,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly ICompartmentProvider compartmentProvider = ServiceLocator.Current.GetInstance<ICompartmentProvider>();
+
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
 
         private IDataSource<Item> itemsDataSource;
@@ -52,6 +53,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void ExecuteSaveCommand()
         {
+            this.IsBusy = true;
             this.IsValidationEnabled = true;
 
             if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
@@ -75,6 +77,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

@@ -35,6 +35,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async void ExecuteSaveCommand()
         {
+            this.IsBusy = true;
             this.IsValidationEnabled = true;
 
             if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
@@ -60,6 +61,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.EventService.Invoke(new StatusEventArgs(result.Description, StatusType.Error));
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods
