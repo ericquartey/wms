@@ -4,6 +4,7 @@ using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
 using Prism.Commands;
+using Ferretto.VW.MathLib;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
@@ -19,7 +20,10 @@ namespace Ferretto.VW.InstallationApp
         private ICommand acceptButtonCommand;
         private ICommand cancelButtonCommand;
         private IUnityContainer container;
+        private Converter converter;
         private string currentResolution;
+
+        private DataManager data;
 
         // Temporary assigned to constant value, they will become variable with new funcionalities
         private float dec = 1;
@@ -43,6 +47,7 @@ namespace Ferretto.VW.InstallationApp
         // Temporary assigned to constant value, they will become variable with new funcionalities
         private bool operation;
 
+        private PositioningDrawer positioningDrawer;
         private string repositionLenght;
         private decimal resolution;
         private ICommand setPositionButtonCommand;
@@ -60,18 +65,6 @@ namespace Ferretto.VW.InstallationApp
         // Temporary assigned to constant value, they will become variable with new funcionalities
         public ResolutionCalibrationVerticalAxisViewModel()
         {
-            bool conversionResolution;
-
-            this.CurrentResolution = ActionManager.ConverterInstance?.ManageResolution.ToString("##.##");
-            this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
-            this.RepositionLenght = this.defaultMovement.ToString();
-
-            conversionResolution = decimal.TryParse(this.CurrentResolution, out this.resolution);
-
-            if (!conversionResolution)
-            {
-                this.NoteString = "Wrong resolution";
-            }
         }
 
         #endregion Constructors
@@ -120,16 +113,32 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            ((ResolutionCalibrationVerticalAxisViewModel)this.container.Resolve<IResolutionCalibrationVerticalAxisViewModel>()).UnSubscribeMethodFromEvent();
-            if (ActionManager.PositioningDrawerInstance != null)
+            this.UnSubscribeMethodFromEvent();
+            if (this.positioningDrawer != null)
             {
-                ActionManager.PositioningDrawerInstance.Stop();
+                this.positioningDrawer.Stop();
             }
         }
 
         public void InitializeViewModel(IUnityContainer _container)
         {
             this.container = _container;
+            bool conversionResolution;
+
+            this.positioningDrawer = (PositioningDrawer)this.container.Resolve<IPositioningDrawer>();
+            this.converter = (Converter)this.container.Resolve<IConverter>();
+            this.data = (DataManager)this.container.Resolve<IDataManager>();
+
+            this.CurrentResolution = this.converter.ManageResolution.ToString("##.##");
+            this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
+            this.RepositionLenght = this.defaultMovement.ToString();
+
+            conversionResolution = decimal.TryParse(this.CurrentResolution, out this.resolution);
+
+            if (!conversionResolution)
+            {
+                this.NoteString = "Wrong resolution";
+            }
         }
 
         public void PositioningDone(bool result)
@@ -169,17 +178,17 @@ namespace Ferretto.VW.InstallationApp
 
         public void SubscribeMethodToEvent()
         {
-            if (ActionManager.PositioningDrawerInstance != null)
+            if (this.positioningDrawer != null)
             {
-                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+                this.positioningDrawer.ThrowEndEvent += this.PositioningDone;
             }
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            if (ActionManager.PositioningDrawerInstance != null)
+            if (this.positioningDrawer != null)
             {
-                ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+                this.positioningDrawer.ThrowEndEvent -= this.PositioningDone;
             }
         }
 
@@ -187,12 +196,12 @@ namespace Ferretto.VW.InstallationApp
         {
             this.CurrentResolution = this.NewResolution;
             this.NoteString = Common.Resources.InstallationApp.ResolutionModified;
-            var ii = DataManager.CurrentData.InstallationInfo;
+            var ii = this.data.InstallationInfo;
             ii.Belt_Burnishing = true;
-            DataManager.CurrentData.InstallationInfo = ii;
+            this.data.InstallationInfo = ii;
 
             decimal.TryParse(this.NewResolution, out var resolutionDec);
-            ActionManager.ConverterInstance.ManageResolution = resolutionDec;
+            this.converter.ManageResolution = resolutionDec;
         }
 
         private void CalculateNewResolutionMethod()
@@ -219,9 +228,9 @@ namespace Ferretto.VW.InstallationApp
             this.IsMoveButtonActive = false;
             this.IsSetPositionButtonActive = true;
 
-            if (ActionManager.PositioningDrawerInstance != null)
+            if (this.positioningDrawer != null)
             {
-                ActionManager.PositioningDrawerInstance.Stop();
+                this.positioningDrawer.Stop();
             }
         }
 
@@ -277,9 +286,9 @@ namespace Ferretto.VW.InstallationApp
                 this.x = repositionLenghtDec + this.desiredInitialPositionDec;
                 this.IsMoveButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.MovingToDesiredPosition;
-                ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
-                ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
-                ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
+                this.positioningDrawer.ThrowEndEvent += this.PositioningDone;
+                this.positioningDrawer.AbsoluteMovement = true;
+                this.positioningDrawer.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
             }
             else
             {
@@ -296,10 +305,10 @@ namespace Ferretto.VW.InstallationApp
                 this.x = this.desiredInitialPositionDec;
                 this.IsSetPositionButtonActive = false;
                 this.NoteString = Common.Resources.InstallationApp.SettingInitialPosition;
-                if (ActionManager.PositioningDrawerInstance != null)
+                if (this.positioningDrawer != null)
                 {
-                    ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
-                    ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
+                    this.positioningDrawer.AbsoluteMovement = true;
+                    this.positioningDrawer.MoveAlongVerticalAxisToPoint(this.x, this.vMax, this.acc, this.dec, this.w, this.offset);
                 }
             }
             // End changes for the initial positioning

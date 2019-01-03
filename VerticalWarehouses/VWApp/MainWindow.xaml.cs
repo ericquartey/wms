@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using Ferretto.VW.ActionBlocks;
-using Ferretto.VW.InverterDriver.Source;
+using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.VWApp
 {
@@ -12,7 +12,6 @@ namespace Ferretto.VW.VWApp
         public MainWindow()
         {
             this.InitializeComponent();
-            this.DataContext = new MainWindowViewModel();
         }
 
         #endregion Constructors
@@ -21,10 +20,10 @@ namespace Ferretto.VW.VWApp
 
         protected override void OnClosed(EventArgs e)
         {
-            ActionManager.DrawerWeightDetectionInstance?.Terminate();
-            ActionManager.PositioningDrawerInstance?.Terminate();
-            ActionManager.CalibrateVerticalAxisInstance?.Terminate();
-            InverteDriverManager.InverterDriverStaticInstance?.Terminate();
+            ((MainWindowViewModel)this.DataContext).DrawerWeightDetection?.Terminate();
+            ((MainWindowViewModel)this.DataContext).PositioningDrawer?.Terminate();
+            ((MainWindowViewModel)this.DataContext).CalibrateVerticalAxis?.Terminate();
+            ((MainWindowViewModel)this.DataContext).Inverter?.Terminate();
             Application.Current.Shutdown();
             base.OnClosed(e);
         }

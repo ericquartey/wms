@@ -14,14 +14,6 @@ namespace Ferretto.VW.InstallationApp
         public Gate1ControlView()
         {
             this.InitializeComponent();
-            if (DataManager.CurrentData.GeneralInfo.Type_Bay1 == 1)
-            {
-                this.SensorRegionContentControl.Content = new CustomControls.Controls.CustomGateControlSensorsTwoPositions();
-            }
-            else if (DataManager.CurrentData.GeneralInfo.Type_Bay1 == 2)
-            {
-                this.SensorRegionContentControl.Content = new CustomControls.Controls.CustomGateControlSensorsThreePositions();
-            }
         }
 
         #endregion Constructors

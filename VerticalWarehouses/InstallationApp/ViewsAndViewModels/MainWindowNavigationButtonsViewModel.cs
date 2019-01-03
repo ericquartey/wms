@@ -2,6 +2,7 @@
 using Ferretto.VW.Utils.Source;
 using Ferretto.VW.Navigation;
 using System;
+using Microsoft.Practices.Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -9,6 +10,8 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        public IUnityContainer Container;
+        public DataManager data;
         private bool isBeltBurnishingButtonActive;
         private bool isCellsControlButtonActive;
         private bool isCellsPanelControlButtonActive;
@@ -30,7 +33,6 @@ namespace Ferretto.VW.InstallationApp
 
         public MainWindowNavigationButtonsViewModel()
         {
-            this.UpdateDataFromDataManager();
             NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
             NavigationService.GoToViewEventHandler += this.SetAllNavigationButtonDisabled;
             NavigationService.ExitViewEventHandler += this.UpdateDataFromDataManager;
@@ -72,6 +74,13 @@ namespace Ferretto.VW.InstallationApp
 
         #region Methods
 
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.data = (DataManager)this.Container.Resolve<IDataManager>();
+            this.UpdateDataFromDataManager();
+        }
+
         public void SetAllNavigationButtonDisabled()
         {
             this.IsBeltBurnishingButtonActive = false;
@@ -99,8 +108,8 @@ namespace Ferretto.VW.InstallationApp
             this.IsLowSpeedMovementsTestButtonActive = true;
             this.IsGateControlButtonActive = true;
             this.IsOriginVerticalAxisButtonActive = true;
-            this.IsBeltBurnishingButtonActive = DataManager.CurrentData.InstallationInfo.Belt_Burnishing;
-            this.IsSetYResolutionButtonActive = DataManager.CurrentData.InstallationInfo.Set_Y_Resolution;
+            this.IsBeltBurnishingButtonActive = this.data.InstallationInfo.Belt_Burnishing;
+            this.IsSetYResolutionButtonActive = this.data.InstallationInfo.Set_Y_Resolution;
             this.IsGateHeightControlButtonActive = true; //TODO: Reference value missing in InstallationInfo file
             this.IsWeightControlButtonActive = true; //TODO: Reference value missing in InstallationInfo file
             this.IsVerticalOffsetCalibrationButtonActive = true; //TODO: Reference value missing in InstallationInfo file

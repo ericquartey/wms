@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -11,7 +12,9 @@ namespace Ferretto.VW.InstallationApp
     {
         #region Fields
 
+        public IUnityContainer Container;
         private int acceptableWeightTolerance;
+        private DrawerWeightDetection drawerWeightDetection;
         private bool executeWeightRun;
         private ICommand exitFromViewCommand;
         private int feedRate;
@@ -67,33 +70,40 @@ namespace Ferretto.VW.InstallationApp
         public void ExitFromViewMethod()
         {
             // Ensure to stop the movement
-            ActionManager.DrawerWeightDetectionInstance.Stop();
+            this.drawerWeightDetection.Stop();
             // Unsubscribe methods
             this.UnSubscribeMethodFromEvent();
         }
 
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.drawerWeightDetection = (DrawerWeightDetection)this.Container.Resolve<IDrawerWeightDetection>();
+        }
+
         public void SubscribeMethodToEvent()
         {
-            if (ActionManager.DrawerWeightDetectionInstance != null)
+            this.drawerWeightDetection = (DrawerWeightDetection)this.Container.Resolve<IDrawerWeightDetection>();
+            if (this.drawerWeightDetection != null)
             {
-                ActionManager.DrawerWeightDetectionInstance.EndEvent += this.WeightDetectionDone;
-                ActionManager.DrawerWeightDetectionInstance.ErrorEvent += this.WeightDetectionError;
+                this.drawerWeightDetection.EndEvent += this.WeightDetectionDone;
+                this.drawerWeightDetection.ErrorEvent += this.WeightDetectionError;
             }
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            if (ActionManager.DrawerWeightDetectionInstance != null)
+            if (this.drawerWeightDetection != null)
             {
-                ActionManager.DrawerWeightDetectionInstance.ErrorEvent -= this.WeightDetectionError;
-                ActionManager.DrawerWeightDetectionInstance.EndEvent -= this.WeightDetectionDone;
+                this.drawerWeightDetection.ErrorEvent -= this.WeightDetectionError;
+                this.drawerWeightDetection.EndEvent -= this.WeightDetectionDone;
             }
         }
 
-        private void createWaitThreadForRestorePosition()
+        private void CreateWaitThreadForRestorePosition()
         {
             this.raiseRestorePositionEvent = new AutoResetEvent(false);
-            this.regWaitForRestorePositionThread = ThreadPool.RegisterWaitForSingleObject(this.raiseRestorePositionEvent, this.onManageRestorePosition, null, -1, false);
+            this.regWaitForRestorePositionThread = ThreadPool.RegisterWaitForSingleObject(this.raiseRestorePositionEvent, this.OnManageRestorePosition, null, -1, false);
         }
 
         private void DestroyWaitThreadForRestorePosition()
@@ -101,14 +111,14 @@ namespace Ferretto.VW.InstallationApp
             this.regWaitForRestorePositionThread?.Unregister(this.raiseRestorePositionEvent);
         }
 
-        private void onManageRestorePosition(object data, bool bTimeOut)
+        private void OnManageRestorePosition(object data, bool bTimeOut)
         {
             if (bTimeOut)
             {
             }
             else
             {
-                ActionManager.DrawerWeightDetectionInstance.RestorePosition();
+                this.drawerWeightDetection.RestorePosition();
             }
         }
 
@@ -116,10 +126,10 @@ namespace Ferretto.VW.InstallationApp
         {
             this.executeWeightRun = false;
 
-            this.createWaitThreadForRestorePosition();
+            this.CreateWaitThreadForRestorePosition();
 
             // Perform the routine to weight
-            ActionManager.DrawerWeightDetectionInstance.Run(this.TestRun, this.FeedRate, 1.0f, 1.0f);
+            this.drawerWeightDetection.Run(this.TestRun, this.FeedRate, 1.0f, 1.0f);
 
             this.IsSetStopButtonActive = true;
             this.IsSetBeginButtonActive = false;
@@ -130,7 +140,7 @@ namespace Ferretto.VW.InstallationApp
             this.DestroyWaitThreadForRestorePosition();
 
             // Stop to movement
-            ActionManager.DrawerWeightDetectionInstance.Stop();
+            this.drawerWeightDetection.Stop();
         }
 
         private void WeightDetectionDone(Boolean result)
@@ -138,7 +148,7 @@ namespace Ferretto.VW.InstallationApp
             if (!this.executeWeightRun)
             {
                 // display the weight
-                this.MesuredWeight = (int)ActionManager.DrawerWeightDetectionInstance.Weight;
+                this.MesuredWeight = (int)this.drawerWeightDetection.Weight;
 
                 // check tolerance
                 if (this.InsertedWeight != 0)

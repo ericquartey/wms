@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Ferretto.VW.Utils.Source;
-using Ferretto.VW.InverterDriver.Source;
+using Ferretto.VW.InverterDriver;
 
 namespace Ferretto.VW.InstallationApp
 {

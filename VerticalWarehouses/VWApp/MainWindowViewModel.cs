@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.InstallationApp;
-using Ferretto.VW.InverterDriver.Source;
 using Ferretto.VW.MathLib;
 using Ferretto.VW.Utils.Source;
 using Microsoft.Practices.Unity;
@@ -18,9 +17,15 @@ namespace Ferretto.VW.VWApp
     {
         #region Fields
 
+        public CalibrateVerticalAxis CalibrateVerticalAxis;
         public IUnityContainer Container;
-        private readonly bool installationCompleted;
+        public DataManager Data;
+        public DrawerWeightDetection DrawerWeightDetection;
+        public InverterDriver.InverterDriver Inverter;
+        public PositioningDrawer PositioningDrawer;
         private ICommand changeSkin;
+        private Converter converter;
+        private bool installationCompleted;
         private ICommand loginButtonCommand;
         private string loginErrorMessage;
         private string machineModel;
@@ -35,9 +40,6 @@ namespace Ferretto.VW.VWApp
 
         public MainWindowViewModel()
         {
-            this.installationCompleted = ((DataManager)this.Container.Resolve<IDataManager>()).InstallationInfo.Machine_Ok;
-            this.machineModel = ((DataManager)this.Container.Resolve<IDataManager>()).GeneralInfo.Model;
-            this.serialNumber = ((DataManager)this.Container.Resolve<IDataManager>()).GeneralInfo.Serial;
         }
 
         #endregion Constructors
@@ -71,6 +73,15 @@ namespace Ferretto.VW.VWApp
         #endregion Indexers
 
         #region Methods
+
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.Data = (DataManager)this.Container.Resolve<IDataManager>();
+            this.installationCompleted = this.Data.InstallationInfo.Machine_Ok;
+            this.machineModel = this.Data.GeneralInfo.Model;
+            this.serialNumber = this.Data.GeneralInfo.Serial;
+        }
 
         private bool CheckInputCorrectness(string user, string password)
         {
@@ -116,20 +127,20 @@ namespace Ferretto.VW.VWApp
 
         private void InitializeInverterConnection()
         {
-            var inverter = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
-            if (inverter.Initialize())
-            {
-                var positioning = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
-                positioning.SetInverterDriverInterface = inverter;
-                positioning.Initialize();  // 1024 is the default value
+            this.Inverter = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+            if (!this.Inverter.Initialize()) return;
+            this.PositioningDrawer = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
+            this.PositioningDrawer.SetInverterDriverInterface = this.Inverter;
+            this.PositioningDrawer.Initialize();  // 1024 is the default value
 
-                var drawerWeight = (DrawerWeightDetection)this.Container.Resolve<IDrawerWeightDetection>();
-                drawerWeight.SetPositioningDrawerInterface = positioning;
-                drawerWeight.Initialize();
+            this.DrawerWeightDetection = (DrawerWeightDetection)this.Container.Resolve<IDrawerWeightDetection>();
+            this.DrawerWeightDetection.SetPositioningDrawerInterface = this.PositioningDrawer;
+            this.DrawerWeightDetection.Initialize();
 
-                var converter = (Converter)this.Container.Resolve<IConverter>();
-                converter.ManageResolution = 1024;
-            }
+            this.CalibrateVerticalAxis = (CalibrateVerticalAxis)this.Container.Resolve<ICalibrateVerticalAxis>();
+
+            this.converter = (Converter)this.Container.Resolve<IConverter>();
+            this.converter.ManageResolution = 1024;
         }
 
         private string Validate(string propertyName)
@@ -142,6 +153,9 @@ namespace Ferretto.VW.VWApp
                     {
                         validationMessage = "Error";
                     }
+                    break;
+
+                default:
                     break;
             }
             return validationMessage;

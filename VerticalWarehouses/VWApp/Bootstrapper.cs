@@ -9,6 +9,7 @@ using Ferretto.VW.InverterDriver;
 using Prism.Mvvm;
 using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.MathLib;
+using Ferretto.VW.ActionBlocks.Source.ActionsBasic;
 
 namespace Ferretto.VW.VWApp
 {
@@ -25,6 +26,7 @@ namespace Ferretto.VW.VWApp
         {
             var catalog = (ModuleCatalog)this.ModuleCatalog;
             catalog.AddModule(typeof(InstallationAppModule));
+            catalog.AddModule(typeof(ActionsModule));
         }
 
         protected override void ConfigureViewModelLocator()
@@ -65,10 +67,10 @@ namespace Ferretto.VW.VWApp
         {
             NavigationService.InitializeEvents();
             NavigationService.ChangeSkinToDarkEventHandler += (Application.Current as App).ChangeSkin;
-            this.InitializeMainWindow();
             this.InitializeData();
             this.InitializeInverter();
             this.InitializeActions();
+            this.InitializeMainWindow();
 
             return (MainWindow)this.Container.Resolve<IMainWindow>();
         }
@@ -111,6 +113,9 @@ namespace Ferretto.VW.VWApp
         private void InitializeMainWindow()
         {
             var MainWindowVInstance = new MainWindow();
+            var MainWindowVMInstance = new MainWindowViewModel();
+            MainWindowVMInstance.InitializeViewModel(this.Container);
+            MainWindowVInstance.DataContext = MainWindowVMInstance;
             this.Container.RegisterInstance<IMainWindow>(MainWindowVInstance);
         }
 
