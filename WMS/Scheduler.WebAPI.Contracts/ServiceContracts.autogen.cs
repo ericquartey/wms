@@ -446,7 +446,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
     {
         private int _areaId;
         private int? _bayId;
-        private int _listId;
+        private int _listRowId;
     
         [Newtonsoft.Json.JsonProperty("areaId", Required = Newtonsoft.Json.Required.Always)]
         public int AreaId
@@ -476,15 +476,15 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
             }
         }
     
-        [Newtonsoft.Json.JsonProperty("listId", Required = Newtonsoft.Json.Required.Always)]
-        public int ListId
+        [Newtonsoft.Json.JsonProperty("listRowId", Required = Newtonsoft.Json.Required.Always)]
+        public int ListRowId
         {
-            get { return _listId; }
+            get { return _listRowId; }
             set 
             {
-                if (_listId != value)
+                if (_listRowId != value)
                 {
-                    _listId = value; 
+                    _listRowId = value; 
                     RaisePropertyChanged();
                 }
             }
@@ -519,6 +519,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
         private int _dispatchedQuantity;
         private string _itemDescription;
         private ItemListRowStatus _itemListRowStatus;
+        private string _materialStatusDescription;
         private int _requiredQuantity;
         private int _rowPriority;
     
@@ -588,6 +589,20 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Contracts
                 if (_itemListRowStatus != value)
                 {
                     _itemListRowStatus = value; 
+                    RaisePropertyChanged();
+                }
+            }
+        }
+    
+        [Newtonsoft.Json.JsonProperty("materialStatusDescription", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string MaterialStatusDescription
+        {
+            get { return _materialStatusDescription; }
+            set 
+            {
+                if (_materialStatusDescription != value)
+                {
+                    _materialStatusDescription = value; 
                     RaisePropertyChanged();
                 }
             }
