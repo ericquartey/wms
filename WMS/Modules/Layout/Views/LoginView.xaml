@@ -6,7 +6,7 @@
                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                    Title="{x:Static res:DesktopApp.Application_Title}"
-                   Width="500"
+                   Width="450"
                    d:DesignHeight="600"
                    d:DesignWidth="700"
                    FocusedStart="LoginTB"
@@ -36,7 +36,7 @@
         <Image Grid.Row="1"
                Width="134"
                Height="140"
-               Margin="20,0,0,0"
+               Margin="35,0,0,0"
                HorizontalAlignment="Left"
                Focusable="False"
                Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo_narrow.png" />
