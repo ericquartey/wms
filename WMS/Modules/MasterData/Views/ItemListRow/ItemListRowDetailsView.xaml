@@ -144,7 +144,7 @@
                                         Margin="0,0,20,0"
                                         DisplayMember="Description"
                                         EditValue="{Binding ItemListRow.ItemId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                        ItemsSource="{Binding AllowedItemsDataSource, Mode=OneWay}"
+                                        ItemsSource="{Binding ItemsDataSource, Mode=OneWay}"
                                         PopupWidth="500"
                                         ValueMember="Id">
                             <wms:LookUpEdit.PopupContentTemplate>

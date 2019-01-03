@@ -10,8 +10,6 @@ namespace Ferretto.Common.BusinessProviders
 
         IQueryable<AllowedItemInCompartment> GetAllowedByCompartmentId(int compartmentId);
 
-        IQueryable<AllowedItemInList> GetAllowedByList();
-
         IQueryable<Item> GetWithAClass();
 
         int GetWithAClassCount();

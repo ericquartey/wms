@@ -20,8 +20,8 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-        private IDataSource<AllowedItemInList> allowedItemsDataSource;
         private ItemListRowDetails itemListRow;
+        private IDataSource<Item> itemsDataSource;
         private ICommand listRowExecuteCommand;
         private object modelChangedEventSubscription;
         private object modelRefreshSubscription;
@@ -40,12 +40,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Properties
 
-        public IDataSource<AllowedItemInList> AllowedItemsDataSource
-        {
-            get => this.allowedItemsDataSource;
-            set => this.SetProperty(ref this.allowedItemsDataSource, value);
-        }
-
         public ItemListRowDetails ItemListRow
         {
             get => this.itemListRow;
@@ -61,6 +55,12 @@ namespace Ferretto.WMS.Modules.MasterData
                 //TODO
                 //this.RefreshData();
             }
+        }
+
+        public IDataSource<Item> ItemsDataSource
+        {
+            get => this.itemsDataSource;
+            set => this.SetProperty(ref this.itemsDataSource, value);
         }
 
         public ICommand ListRowExecuteCommand => this.listRowExecuteCommand ??
@@ -153,8 +153,8 @@ namespace Ferretto.WMS.Modules.MasterData
             {
                 this.ItemListRow = await this.itemListRowProvider.GetById(modelId);
 
-                this.AllowedItemsDataSource = this.itemListRow != null
-                ? new DataSource<AllowedItemInList>(() => this.itemProvider.GetAllowedByList())
+                this.ItemsDataSource = this.itemListRow != null
+                ? new DataSource<Item>(() => this.itemProvider.GetAll())
                 : null;
             }
         }
