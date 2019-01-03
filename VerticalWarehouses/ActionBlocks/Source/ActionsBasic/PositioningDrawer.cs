@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Threading;
 using Ferretto.VW.InverterDriver;
+using Ferretto.VW.MathLib;
+using Microsoft.Practices.Unity;
 using NLog;
 
 namespace Ferretto.VW.ActionBlocks
@@ -16,6 +18,8 @@ namespace Ferretto.VW.ActionBlocks
     {
         #region Fields
 
+        public IUnityContainer Container;
+        public Converter Converter;
         private const int BIT_ABS_REL = 6;
         private const int BIT_ANALOGSAMPLING = 13;
         private const int BIT_CHANGE_ON_SET_POINT = 9;
@@ -41,7 +45,7 @@ namespace Ferretto.VW.ActionBlocks
         private const int BIT_VOLTAGE_ENABLED = 4;
         private const int BIT_WARNING = 7;
         private const byte DATASET_FOR_CONTROL = 0x05;
-        private const int DELAY_TIME = 350;             // Delay time: 250 msec
+        private const int DELAY_TIME = 350;
         private const int N_BITS_16 = 16;
         private const int TIME_OUT = 100;
 
@@ -159,6 +163,12 @@ namespace Ferretto.VW.ActionBlocks
             }
         }
 
+        public void InitializeAction(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.Converter = (Converter)this.Container.Resolve<IConverter>();
+        }
+
         public void MoveAlongVerticalAxisToPoint(decimal x, float vMax, float acc, float dec, float w, short offset)
         {
             // Enable the update current vertical shaft position
@@ -171,7 +181,7 @@ namespace Ferretto.VW.ActionBlocks
 
             // Assign the parameters
             // Convert x from Decimal [mm] to [Pulse]
-            this.x = ActionManager.ConverterInstance.FromMMToPulse(x);
+            this.x = this.Converter.FromMMToPulse(x);
             this.vMax = vMax;
             this.acc = acc;
             this.dec = dec;

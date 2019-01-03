@@ -142,20 +142,20 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Column.
+        ///   Looks up a localized string similar to Columns.
         /// </summary>
-        public static string BulkCompartmentColumn {
+        public static string BulkCompartmentColumns {
             get {
-                return ResourceManager.GetString("BulkCompartmentColumn", resourceCulture);
+                return ResourceManager.GetString("BulkCompartmentColumns", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Row.
+        ///   Looks up a localized string similar to Rows.
         /// </summary>
-        public static string BulkCompartmentRow {
+        public static string BulkCompartmentRows {
             get {
-                return ResourceManager.GetString("BulkCompartmentRow", resourceCulture);
+                return ResourceManager.GetString("BulkCompartmentRows", resourceCulture);
             }
         }
         
@@ -732,6 +732,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemListExecutionRequestBay {
             get {
                 return ResourceManager.GetString("ItemListExecutionRequestBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run Immediately.
+        /// </summary>
+        public static string ItemListExecutionRequestRunImmediately {
+            get {
+                return ResourceManager.GetString("ItemListExecutionRequestRunImmediately", resourceCulture);
             }
         }
         

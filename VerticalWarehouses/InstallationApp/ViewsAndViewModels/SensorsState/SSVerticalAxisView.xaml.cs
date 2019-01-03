@@ -26,7 +26,6 @@ namespace Ferretto.VW.InstallationApp
         public SSVerticalAxisView()
         {
             this.InitializeComponent();
-            this.DataContext = ViewModels.SSVerticalAxisVMInstance;
         }
 
         #endregion Constructors

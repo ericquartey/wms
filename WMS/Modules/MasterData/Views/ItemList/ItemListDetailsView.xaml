@@ -24,7 +24,7 @@
     <wms:WmsView.SubTitle>
         <MultiBinding Converter="{StaticResource SFC}">
             <Binding Source="{x:Static res:Title.ItemListDetailsView}" />
-            <Binding Path="ItemList.ItemListType"
+            <Binding Path="Model.ItemListType"
                      TargetNullValue="" />
             <Binding Path="ItemList.Code"
                      TargetNullValue="" />
@@ -104,11 +104,11 @@
                         <wms:TextBox Grid.Row="0"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Path=ItemList.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="0"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Path=ItemList.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <Grid Grid.Row="0"
                               Grid.Column="1">
                             <Grid.ColumnDefinitions>
@@ -117,7 +117,7 @@
                             </Grid.ColumnDefinitions>
                             <wms:ComboBox Grid.Column="0"
                                           Margin="0,0,20,0"
-                                          EditValue="{Binding Path=ItemList.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding Path=Model.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
                                 <dxmvvm:Interaction.Behaviors>
                                     <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListType}"
@@ -127,13 +127,13 @@
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
                                           AllowNullInput="False"
-                                          EditValue="{Binding Path=ItemList.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          EditValue="{Binding Path=Model.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           MinValue="1" />
                         </Grid>
                         <wms:TextBox Grid.Row="1"
                                      Grid.Column="1"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Path=ItemList.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.Job, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
 
                     </Grid>
@@ -146,7 +146,7 @@
                             <dxe:ToggleSwitch x:Name="toggleSwitch"
                                               HorizontalAlignment="Left"
                                               VerticalAlignment="Center"
-                                              IsChecked="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsChecked="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               Template="{DynamicResource WmsToggleSwitch}"
                                               ToggleSwitchHeight="20"
                                               ToggleSwitchWidth="30" />
@@ -171,12 +171,12 @@
 
                             <wms:TextBox Grid.Row="1"
                                          Margin="0,0,20,0"
-                                         EditValue="{Binding Path=ItemList.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=Model.ShipmentUnitCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <wms:TextBox Grid.Row="2"
                                          Margin="0,0,20,0"
-                                         EditValue="{Binding Path=ItemList.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         IsEnabled="{Binding Path=ItemList.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                         EditValue="{Binding Path=Model.ShipmentUnitDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         IsEnabled="{Binding Path=Model.ShipmentUnitAssociated, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </Grid>
                     </StackPanel>
                 </GroupBox>
@@ -196,10 +196,10 @@
                         </Grid.RowDefinitions>
                         <wms:TextBox Grid.Row="0"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Path=ItemList.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.CustomerOrderCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         <wms:TextBox Grid.Row="1"
                                      Margin="0,0,20,0"
-                                     EditValue="{Binding Path=ItemList.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                     EditValue="{Binding Path=Model.CustomerOrderDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </Grid>
 
                 </GroupBox>
@@ -253,7 +253,7 @@
                         <wms:WmsGridControl MinHeight="62"
                                             MaxWidth="2000"
                                             MaxHeight="2000"
-                                            ItemsSource="{Binding ItemList.ItemListRows, Mode=OneWay}"
+                                            ItemsSource="{Binding Model.ItemListRows, Mode=OneWay}"
                                             SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}">
                             <wms:WmsGridControl.View>
                                 <dxg:TableView>
@@ -314,7 +314,7 @@
                               Margin="20,0"
                               Header="{x:Static res:MasterData.ExecutionDetails}">
                         <wms:WmsEnumIndicator EnumType="{x:Type models:ItemListStatus}"
-                                              EnumValue="{Binding ItemList.ItemListStatus}"
+                                              EnumValue="{Binding Model.ItemListStatus}"
                                               IconSize="48"
                                               ShowText="True" />
                     </GroupBox>
@@ -324,16 +324,16 @@
                         <StackPanel Orientation="Vertical">
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.CreationDate}" />
+                                          Content="{Binding Path=Model.CreationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.LastModificationDate}" />
+                                          Content="{Binding Path=Model.LastModificationDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.FirstExecutionDate}" />
+                                          Content="{Binding Path=Model.FirstExecutionDate}" />
                             <wms:InfoText HorizontalAlignment="Left"
                                           HorizontalContentAlignment="Left"
-                                          Content="{Binding Path=ItemList.ExecutionEndDate}" />
+                                          Content="{Binding Path=Model.ExecutionEndDate}" />
                         </StackPanel>
 
                     </GroupBox>

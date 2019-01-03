@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSBaysViewModel : BindableBase, IViewModel
+    public class SSBaysViewModel : BindableBase, IViewModel, ISSBaysViewModel
     {
         #region Fields
 

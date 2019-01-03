@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSVariousInputsViewModel : BindableBase, IViewModel
+    public class SSVariousInputsViewModel : BindableBase, IViewModel, ISSVariousInputsViewModel
     {
         #region Fields
 

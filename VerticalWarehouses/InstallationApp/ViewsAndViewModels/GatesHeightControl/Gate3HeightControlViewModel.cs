@@ -3,7 +3,7 @@ using System;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class Gate3HeightControlViewModel : BindableBase, IViewModel
+    public class Gate3HeightControlViewModel : BindableBase, IViewModel, IGate3HeightControlViewModel
     {
         #region Fields
 

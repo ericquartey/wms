@@ -223,6 +223,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment deleted successfully.
+        /// </summary>
+        public static string CompartmentDeletedSuccessfully {
+            get {
+                return ResourceManager.GetString("CompartmentDeletedSuccessfully", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This compartment has no allowed items..
         /// </summary>
         public static string CompartmentHasNoAllowedItems {

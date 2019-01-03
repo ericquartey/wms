@@ -12,7 +12,9 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService;
 
         #endregion Fields
@@ -47,7 +49,12 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListRowId = listRowId, AreaId = areaId, BayId = bayId });
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest
+                {
+                    ListRowId = listRowId,
+                    AreaId = areaId,
+                    BayId = bayId
+                });
 
                 return new OperationResult(true);
             }
@@ -150,7 +157,11 @@ namespace Ferretto.Common.BusinessProviders
         {
             try
             {
-                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest { ListRowId = listRowId, AreaId = areaId });
+                await this.itemListRowService.ExecuteAsync(new WMS.Scheduler.WebAPI.Contracts.ListRowExecutionRequest
+                {
+                    ListRowId = listRowId,
+                    AreaId = areaId
+                });
 
                 return new OperationResult(true);
             }

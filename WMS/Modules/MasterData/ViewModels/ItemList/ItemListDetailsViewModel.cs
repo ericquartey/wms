@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.BusinessProviders;
+using Ferretto.Common.Controls;
 using Ferretto.Common.Controls.Services;
 using Microsoft.Practices.ServiceLocation;
 using Prism.Commands;
@@ -15,15 +15,23 @@ namespace Ferretto.WMS.Modules.MasterData
         #region Fields
 
         private readonly IItemListProvider itemListProvider = ServiceLocator.Current.GetInstance<IItemListProvider>();
+
         private ICommand addListRowCommand;
-        private ItemListDetails itemList;
+
         private IEnumerable<ItemListRow> itemListRowDataSource;
+
         private ICommand listExecuteCommand;
+
         private ICommand listRowExecuteCommand;
+
         private object modelChangedEventSubscription;
+
         private object modelRefreshSubscription;
+
         private object modelSelectionChangedSubscription;
+
         private ItemListRow selectedItemListRow;
+
         private ICommand showDetailsListRowCommand;
 
         #endregion Fields
@@ -44,23 +52,6 @@ namespace Ferretto.WMS.Modules.MasterData
                        this.CanExecuteAddListRowCommand)
              .ObservesProperty(() => this.SelectedItemListRow));
 
-        public ItemListDetails ItemList
-        {
-            get => this.itemList;
-            set
-            {
-                if (!this.SetProperty(ref this.itemList, value))
-                {
-                    return;
-                }
-
-                this.TakeSnapshot(this.ItemList);
-
-                //TODO
-                //this.RefreshData();
-            }
-        }
-
         public IEnumerable<ItemListRow> ItemListRowDataSource
         {
             get => this.itemListRowDataSource;
@@ -70,7 +61,7 @@ namespace Ferretto.WMS.Modules.MasterData
         public ICommand ListExecuteCommand => this.listExecuteCommand ??
                                    (this.listExecuteCommand = new DelegateCommand(this.ExecuteListCommand,
                        this.CanExecuteListCommand)
-             .ObservesProperty(() => this.ItemList));
+             .ObservesProperty(() => this.Model));
 
         public ICommand ListRowExecuteCommand => this.listRowExecuteCommand ??
                                    (this.listRowExecuteCommand = new DelegateCommand(this.ExecuteListRowCommand,
@@ -92,6 +83,11 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
+        public override void RefreshData()
+        {
+            // TODO: implement method
+        }
+
         protected override async Task ExecuteRevertCommand()
         {
             await this.LoadData();
@@ -99,32 +95,33 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override void ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.itemListProvider.Save(this.itemList);
+            var modifiedRowCount = this.itemListProvider.Save(this.Model);
             if (modifiedRowCount > 0)
             {
-                this.TakeSnapshot(this.itemList);
+                this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<ItemList>(this.itemList.Id));
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
                 this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
             }
         }
 
         protected override async void OnAppear()
         {
-            await this.LoadData();
             base.OnAppear();
+
+            await this.LoadData();
         }
 
-        private Boolean CanExecuteAddListRowCommand()
+        private bool CanExecuteAddListRowCommand()
         {
-            return this.ItemList != null && this.itemList.ItemListStatus == ItemListStatus.Completed;
+            return this.Model != null && this.Model.ItemListStatus == ItemListStatus.Completed;
         }
 
         private bool CanExecuteListCommand()
         {
-            if (this.ItemList != null)
+            if (this.Model != null)
             {
-                var status = this.ItemList.ItemListStatus;
+                var status = this.Model.ItemListStatus;
                 if (status == ItemListStatus.Incomplete
                     || status == ItemListStatus.Suspended
                     || status == ItemListStatus.Waiting)
@@ -157,23 +154,33 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private void ExecuteAddListRowCommand()
         {
+            this.IsBusy = true;
+
             //TODO
+
+            this.IsBusy = false;
         }
 
         private void ExecuteListCommand()
         {
+            this.IsBusy = true;
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.EXECUTELISTDIALOG,
                 new
                 {
-                    Id = this.ItemList.Id
+                    Id = this.Model.Id
                 }
             );
+
+            this.IsBusy = false;
         }
 
         private void ExecuteListRowCommand()
         {
+            this.IsBusy = true;
+
             this.NavigationService.Appear(
                 nameof(MasterData),
                 Common.Utils.Modules.MasterData.EXECUTELISTROWDIALOG,
@@ -182,6 +189,8 @@ namespace Ferretto.WMS.Modules.MasterData
                     Id = this.SelectedItemListRow.Id
                 }
             );
+
+            this.IsBusy = false;
         }
 
         private void ExecuteShowDetailsListRowCommand()
@@ -189,7 +198,7 @@ namespace Ferretto.WMS.Modules.MasterData
             this.HistoryViewService.Appear(nameof(Modules.MasterData), Common.Utils.Modules.MasterData.ITEMLISTROWDETAILS, this.SelectedItemListRow.Id);
         }
 
-        private async Task Initialize()
+        private async void Initialize()
         {
             await this.LoadData();
 
@@ -197,16 +206,16 @@ namespace Ferretto.WMS.Modules.MasterData
             this.modelChangedEventSubscription = this.EventService.Subscribe<ModelChangedEvent<ItemList>>(async eventArgs => { await this.LoadData(); });
             this.modelSelectionChangedSubscription =
                 this.EventService.Subscribe<ModelSelectionChangedEvent<ItemList>>(
-                    eventArgs =>
+                    async eventArgs =>
                     {
                         if (eventArgs.ModelId.HasValue)
                         {
                             this.Data = eventArgs.ModelId.Value;
-                            this.LoadData();
+                            await this.LoadData();
                         }
                         else
                         {
-                            this.ItemList = null;
+                            this.Model = null;
                         }
                     },
                     this.Token,
@@ -216,10 +225,14 @@ namespace Ferretto.WMS.Modules.MasterData
 
         private async Task LoadData()
         {
+            this.IsBusy = true;
+
             if ((this.Data is int modelId))
             {
-                this.ItemList = await this.itemListProvider.GetById(modelId);
+                this.Model = await this.itemListProvider.GetById(modelId);
             }
+
+            this.IsBusy = false;
         }
 
         #endregion Methods

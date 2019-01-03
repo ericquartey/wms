@@ -705,11 +705,11 @@
     <value>Image</value>
     <comment>Item - Image</comment>
   </data>
-  <data name="BulkCompartmentColumn" xml:space="preserve">
-    <value>Column</value>
+  <data name="BulkCompartmentColumns" xml:space="preserve">
+    <value>Columns</value>
   </data>
-  <data name="BulkCompartmentRow" xml:space="preserve">
-    <value>Row</value>
+  <data name="BulkCompartmentRows" xml:space="preserve">
+    <value>Rows</value>
   </data>
   <data name="ItemListAreaName" xml:space="preserve">
     <value>Area</value>
@@ -945,5 +945,8 @@
   </data>
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Last Execution Date</value>
+  </data>
+  <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
+    <value>Run Immediately</value>
   </data>
 </root>

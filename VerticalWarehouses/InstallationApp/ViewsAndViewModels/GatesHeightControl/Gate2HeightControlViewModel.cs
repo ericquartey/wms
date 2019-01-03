@@ -3,7 +3,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class Gate2HeightControlViewModel : BindableBase, IViewModel
+    public class Gate2HeightControlViewModel : BindableBase, IViewModel, IGate2HeightControlViewModel
     {
         #region Fields
 

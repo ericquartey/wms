@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Windows.Input;
 using Ferretto.VW.ActionBlocks;
+using Microsoft.Practices.Unity;
 using Prism.Commands;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class VerticalOffsetCalibrationViewModel : BindableBase, IViewModel
+    public class VerticalOffsetCalibrationViewModel : BindableBase, IViewModel, IVerticalOffsetCalibrationViewModel
     {
         #region Fields
 
+        public IUnityContainer Container;
         private readonly float acc = 1;
 
         private readonly float dec = 1;
+
         private readonly short offset = 1;
         private readonly float vMax = 1;
+
         private readonly float w = 1;
 
         private string correctOffset;
@@ -28,6 +32,7 @@ namespace Ferretto.VW.InstallationApp
         private bool isStepUpButtonActive = false;
         private string noteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
         private short offsetValue;
+        private PositioningDrawer positioningDrawerInstance;
         private string referenceCellHeight;
         private string referenceCellNumber;
         private ICommand setPositionButtonCommand;
@@ -98,6 +103,12 @@ namespace Ferretto.VW.InstallationApp
             this.UnSubscribeMethodFromEvent();
         }
 
+        public void InitializeViewModel(IUnityContainer _container)
+        {
+            this.Container = _container;
+            this.positioningDrawerInstance = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
+        }
+
         public void PositioningDone(bool result)
         {
             var message = "";
@@ -113,7 +124,7 @@ namespace Ferretto.VW.InstallationApp
             }
 
             this.NoteString = message;
-            ActionManager.PositioningDrawerInstance.Stop();
+            this.positioningDrawerInstance.Stop();
 
             this.IsStepUpButtonActive = true;
             this.IsStepDownButtonActive = true;
@@ -127,40 +138,46 @@ namespace Ferretto.VW.InstallationApp
             this.isSetPositionButtonActive = false;
             this.NoteString = Common.Resources.InstallationApp.VerticalOffsetCalibration;
 
-            ActionManager.PositioningDrawerInstance.AbsoluteMovement = true;
-            ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
+            this.positioningDrawerInstance.AbsoluteMovement = true;
+            this.positioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
         }
 
         public void StepDownButtonCommandMethod()
         {
             short.TryParse(this.StepValue, out var x);
 
-            ActionManager.PositioningDrawerInstance.AbsoluteMovement = false;
-            ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint((short)(-1 * x), this.vMax, this.acc, this.dec, this.w, this.offset);
+            this.positioningDrawerInstance.AbsoluteMovement = false;
+            this.positioningDrawerInstance.MoveAlongVerticalAxisToPoint(-x, this.vMax, this.acc, this.dec, this.w, this.offset);
 
-            this.CurrentOffset = this.CurrentOffset + (short)(-1 * x);
+            this.CurrentOffset -= x;
         }
 
         public void StepUpButtonCommandMethod()
         {
             short.TryParse(this.StepValue, out var x);
 
-            ActionManager.PositioningDrawerInstance.AbsoluteMovement = false;
-            ActionManager.PositioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
+            this.positioningDrawerInstance.AbsoluteMovement = false;
+            this.positioningDrawerInstance.MoveAlongVerticalAxisToPoint(x, this.vMax, this.acc, this.dec, this.w, this.offset);
 
-            this.CurrentOffset = this.CurrentOffset + x;
+            this.CurrentOffset += x;
         }
 
         public void SubscribeMethodToEvent()
         {
-            ActionManager.PositioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
-            ActionManager.PositioningDrawerInstance.ThrowErrorEvent += this.PositioningError;
+            if (this.positioningDrawerInstance != null)
+            {
+                this.positioningDrawerInstance.ThrowEndEvent += this.PositioningDone;
+                this.positioningDrawerInstance.ThrowErrorEvent += this.PositioningError;
+            }
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            ActionManager.PositioningDrawerInstance.ThrowErrorEvent -= this.PositioningError;
-            ActionManager.PositioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+            if (this.positioningDrawerInstance != null)
+            {
+                this.positioningDrawerInstance.ThrowErrorEvent -= this.PositioningError;
+                this.positioningDrawerInstance.ThrowEndEvent -= this.PositioningDone;
+            }
         }
 
         private void PositioningError(String error_Message)

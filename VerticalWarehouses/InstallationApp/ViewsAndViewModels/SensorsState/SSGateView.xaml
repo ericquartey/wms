@@ -5,9 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.InstallationApp"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:prism="http://prismlibrary.com/"
              xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
              Width="1024"
              Height="620"
+             prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d">
     <DockPanel>
         <Grid>
@@ -16,7 +18,7 @@
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="80" />
+                <RowDefinition Height="120" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0"
@@ -32,17 +34,17 @@
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto" />
-                    <RowDefinition Height="20" />
+                    <RowDefinition Height="50" />
                     <RowDefinition Height="auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="2"
                             Grid.Column="0">
-                    <custom:CustomSensorControl Margin="10"
+                    <custom:CustomSensorControl Margin="0,20"
                                                 LabelText="{x:Static res:InstallationApp.GateSensorA}"
                                                 SensorState="{Binding GateSensorA, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource VWAPP_CustomSensorControlStyle}" />
-                    <custom:CustomSensorControl Margin="10"
+                    <custom:CustomSensorControl Margin="0,20"
                                                 LabelText="{x:Static res:InstallationApp.GateSensorB}"
                                                 SensorState="{Binding GateSensorB, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 Style="{StaticResource VWAPP_CustomSensorControlStyle}" />

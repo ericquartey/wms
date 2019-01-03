@@ -6,7 +6,7 @@
                    xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
                    xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
                    Title="{x:Static res:DesktopApp.Application_Title}"
-                   Width="364"
+                   Width="500"
                    d:DesignHeight="600"
                    d:DesignWidth="700"
                    FocusedStart="LoginTB"
@@ -14,34 +14,44 @@
                    SizeToContent="Height"
                    mc:Ignorable="d">
 
+    <Grid IsEnabled="{Binding IsEnabled}">
+        <Grid.Background>
+            <ImageBrush ImageSource="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/splash.png"
+                        Opacity="0.5" />
+        </Grid.Background>
 
-    <Grid Margin="20,10"
-          IsEnabled="{Binding IsEnabled}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="180" />
+            <ColumnDefinition Width="80" />
+            <ColumnDefinition Width="200" />
         </Grid.ColumnDefinitions>
 
-        <Image Grid.Row="0"
+        <Image Grid.Row="1"
                Width="134"
                Height="140"
+               Margin="20,0,0,0"
                HorizontalAlignment="Left"
                Focusable="False"
                Source="pack://application:,,,/Ferretto.WMS.App.Themes;component/Images/FGLogo_narrow.png" />
 
-        <StackPanel Grid.Column="1"
+        <StackPanel Grid.Row="1"
+                    Grid.Column="2"
                     Margin="20,0,0,0"
                     HorizontalAlignment="Stretch"
                     Orientation="Vertical">
+
             <TextBlock Focusable="False"
                        FontSize="16"
                        FontWeight="Bold"
                        Text="{x:Static res:Layout.UserLogin}" />
+
             <wms:TextBox Name="LoginTB"
                          EditValue="{Binding User.Login, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          MaxLength="20" />
@@ -49,7 +59,7 @@
                              MaxLength="20" />
         </StackPanel>
 
-        <TextBlock Grid.Row="2"
+        <TextBlock Grid.Row="3"
                    Grid.Column="0"
                    Margin="5,0,0,0"
                    HorizontalAlignment="Stretch"
@@ -57,8 +67,8 @@
                    Style="{DynamicResource TextBlockErrorMessageStyle}"
                    Text="{Binding ValidationError}" />
 
-        <wms:BusyIndicator Grid.Row="2"
-                           Grid.Column="1"
+        <wms:BusyIndicator Grid.Row="3"
+                           Grid.Column="2"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Center"
                            BusyHorizontalAlignment="Center"
@@ -67,6 +77,7 @@
                            ShowMode="CircleMin">
             <wms:ActionBar Name="LoginAB"
                            HorizontalContentAlignment="Right"
+                           Background="Transparent"
                            Style="{DynamicResource ActionBarNotCustomizable}">
                 <wms:ActionBarItem Command="{Binding LoginCommand, Delay=25}"
                                    Content="{Binding LoginCheck}"

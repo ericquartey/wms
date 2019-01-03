@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Windows;
 using DevExpress.Mvvm.UI;
 using Ferretto.Common.Controls.Interfaces;
@@ -25,18 +26,9 @@ namespace Ferretto.Common.Controls
                 return null;
             }
 
-            var splits = fieldName.Split('.');
-            for (var i = 0; i < splits.Length - 1; i++)
-            {
-                type = type.GetProperty(splits[i]).PropertyType;
-            }
-            var property = type.GetProperty(splits[splits.Length - 1]);
+            var property = GetProperty(type, fieldName);
             if (property == null)
             {
-                NLog.LogManager
-                   .GetCurrentClassLogger()
-                   .Warn(string.Format("Cannot determine label value because property '{0}' is not available on model type '{1}'.", fieldName, type));
-
                 return $"[{fieldName}]";
             }
 
@@ -89,6 +81,35 @@ namespace Ferretto.Common.Controls
                     elemToFocus.Focus();
                 }
             }
+        }
+
+        private static PropertyInfo GetProperty(Type type, string fieldName)
+        {
+            var splits = fieldName.Split('.');
+            for (var i = 0; i < splits.Length - 1; i++)
+            {
+                var propertyName = splits[i];
+                var p = type.GetProperty(propertyName);
+                if (p == null)
+                {
+                    NLog.LogManager
+                       .GetCurrentClassLogger()
+                       .Warn(string.Format("Cannot determine label value because property '{0}' is not available on model type '{1}'.", propertyName, type));
+
+                    return null;
+                }
+                type = p.PropertyType;
+            }
+
+            var property = type.GetProperty(splits[splits.Length - 1]);
+            if (property == null)
+            {
+                NLog.LogManager
+                   .GetCurrentClassLogger()
+                   .Warn(string.Format("Cannot determine label value because property '{0}' is not available on model type '{1}'.", fieldName, type));
+            }
+
+            return property;
         }
 
         #endregion Methods

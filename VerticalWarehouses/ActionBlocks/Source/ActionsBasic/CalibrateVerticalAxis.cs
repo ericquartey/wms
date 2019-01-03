@@ -7,7 +7,7 @@ using NLog;
 namespace Ferretto.VW.ActionBlocks
 {
     // On [EndedEventHandler] delegate for Calibrate Vertical Axis routine
-    public delegate void CalibrateVerticalAixsEndedEventHandler(bool result);
+    public delegate void CalibrateVerticalAxisEndedEventHandler(bool result);
 
     // On [ErrorEventHandler] delegate for Calibrate Vertical Axis routine
     public delegate void CalibrateVerticalAxisErrorEventHandler(CalibrationStatus ErrorDescription);
@@ -59,7 +59,7 @@ namespace Ferretto.VW.ActionBlocks
         #region Events
 
         // [Ended] event
-        public event CalibrateVerticalAixsEndedEventHandler ThrowEndEvent;
+        public event CalibrateVerticalAxisEndedEventHandler ThrowEndEvent;
 
         // [Error] event
         public event CalibrateVerticalAxisErrorEventHandler ThrowErrorEvent;

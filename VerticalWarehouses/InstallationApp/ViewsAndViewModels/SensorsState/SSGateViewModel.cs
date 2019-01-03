@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.InstallationApp
 {
-    public class SSGateViewModel : BindableBase, IViewModel
+    public class SSGateViewModel : BindableBase, IViewModel, ISSGateViewModel
     {
         #region Fields
 

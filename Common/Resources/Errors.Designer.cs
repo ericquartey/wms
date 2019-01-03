@@ -124,6 +124,33 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Addition of a bulk of compartments must have at least one column..
+        /// </summary>
+        public static string CompartmentBulkMustHaveAtLeastOneColumn {
+            get {
+                return ResourceManager.GetString("CompartmentBulkMustHaveAtLeastOneColumn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Addition of a bulk of compartments must have at least one row..
+        /// </summary>
+        public static string CompartmentBulkMustHaveAtLeastOneRow {
+            get {
+                return ResourceManager.GetString("CompartmentBulkMustHaveAtLeastOneRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error adding new compartment because it overlaps with other compartments or it crosses the tray&apos;s boundaries..
+        /// </summary>
+        public static string CompartmentCannotBeInsertedInLoadingUnit {
+            get {
+                return ResourceManager.GetString("CompartmentCannotBeInsertedInLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s Height cannot be equal or less than 0..
         /// </summary>
         public static string CompartmentHeightLess {
@@ -142,11 +169,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to New Compartment&apos;s size are overlaps with another compartment..
+        ///   Looks up a localized string similar to Compartment&apos;s size/position overlaps with other compartments..
         /// </summary>
         public static string CompartmentOverlaps {
             get {
                 return ResourceManager.GetString("CompartmentOverlaps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment position cannot be negative..
+        /// </summary>
+        public static string CompartmentPositionCannotBeNegative {
+            get {
+                return ResourceManager.GetString("CompartmentPositionCannotBeNegative", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specified set of compartments cannot be inserted in the loading unit..
+        /// </summary>
+        public static string CompartmentSetCannotBeInsertedInLoadingUnit {
+            get {
+                return ResourceManager.GetString("CompartmentSetCannotBeInsertedInLoadingUnit", resourceCulture);
             }
         }
         
@@ -160,11 +205,38 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment size is not specified..
+        /// </summary>
+        public static string CompartmentSizeIsNotSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentSizeIsNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment size must be strictly positive..
+        /// </summary>
+        public static string CompartmentSizeMustBeStrictlyPositive {
+            get {
+                return ResourceManager.GetString("CompartmentSizeMustBeStrictlyPositive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Compartment&apos;s size cannote be more than Tray&apos;s width,.
         /// </summary>
         public static string CompartmentSizeWMore {
             get {
                 return ResourceManager.GetString("CompartmentSizeWMore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Item stock in the compartment cannot be greater that compartment&apos;s maximum capacity..
+        /// </summary>
+        public static string CompartmentStockGreaterThanMaxCapacity {
+            get {
+                return ResourceManager.GetString("CompartmentStockGreaterThanMaxCapacity", resourceCulture);
             }
         }
         
@@ -196,11 +268,29 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s X position is not specified..
+        /// </summary>
+        public static string CompartmentXPositionIsNotSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentXPositionIsNotSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to YPosition cannot be more than Tray&apos;s height.
         /// </summary>
         public static string CompartmentYPosition {
             get {
                 return ResourceManager.GetString("CompartmentYPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Compartment&apos;s Y position is not specified..
+        /// </summary>
+        public static string CompartmentYPositionIsNotSpecified {
+            get {
+                return ResourceManager.GetString("CompartmentYPositionIsNotSpecified", resourceCulture);
             }
         }
         
@@ -295,7 +385,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to add the specified compartment to the loading unit with id={0} because it overlaps with one or more existing compartments..
+        ///   Looks up a localized string similar to Unable to add the specified compartment (id={0}) to the loading unit (id={1}) because it overlaps with one or more existing compartments..
         /// </summary>
         public static string LoadingUnitOverlappingCompartment {
             get {

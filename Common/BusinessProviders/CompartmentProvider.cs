@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -25,7 +26,9 @@ namespace Ferretto.Common.BusinessProviders
            compartment => compartment.MaterialStatusId == 3;
 
         private readonly CompartmentTypeProvider compartmentTypeProvider;
-        private readonly IDatabaseContextService dataContext;
+
+        private readonly IDatabaseContextService dataContextService;
+
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -33,11 +36,11 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public CompartmentProvider(
-            IDatabaseContextService context,
+            IDatabaseContextService dataContextService,
             EnumerationProvider enumerationProvider,
             CompartmentTypeProvider compartmentTypeProvider)
         {
-            this.dataContext = context;
+            this.dataContextService = dataContextService;
             this.enumerationProvider = enumerationProvider;
             this.compartmentTypeProvider = compartmentTypeProvider;
         }
@@ -52,17 +55,22 @@ namespace Ferretto.Common.BusinessProviders
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            //TODO: use Transaction
+            // TODO: add transaction management
 
             try
             {
-                var dataContext = this.dataContext.Current;
+                var dataContext = this.dataContextService.Current;
 
-                var typeId = await this.compartmentTypeProvider.Add(new CompartmentType
+                var result = await this.compartmentTypeProvider.Add(new CompartmentType
                 {
                     Width = model.Width,
                     Height = model.Height
                 }, model.ItemId, model.MaxCapacity);
+
+                if (result.Success == false)
+                {
+                    return result;
+                }
 
                 var entry = dataContext.Compartments.Add(new DataModels.Compartment
                 {
@@ -71,7 +79,7 @@ namespace Ferretto.Common.BusinessProviders
                     XPosition = model.XPosition,
                     YPosition = model.YPosition,
                     LoadingUnitId = model.LoadingUnitId,
-                    CompartmentTypeId = typeId.EntityId.Value,
+                    CompartmentTypeId = result.EntityId.Value,
                     IsItemPairingFixed = model.IsItemPairingFixed,
                     Stock = model.Stock,
                     ReservedForPick = model.ReservedForPick,
@@ -87,6 +95,8 @@ namespace Ferretto.Common.BusinessProviders
                     model.Id = entry.Entity.Id;
                 }
 
+                model.LoadingUnit?.Compartments.Add(model);
+
                 return new OperationResult(true);
             }
             catch (Exception ex)
@@ -95,23 +105,49 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
+        public async Task<OperationResult> AddRange(IEnumerable<ICompartment> compartments)
+        {
+            if (compartments == null)
+            {
+                throw new ArgumentNullException(nameof(compartments));
+            }
+
+            // TODO: add transaction management
+            foreach (var compartment in compartments.Cast<CompartmentDetails>())
+            {
+                var result = await this.Add(compartment);
+                if (result.Success == false)
+                {
+                    return result;
+                }
+            }
+
+            return new OperationResult(true);
+        }
+
         public int Delete(int id)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            var task = this.DeleteAsync(id);
+            task.RunSynchronously();
+
+            return task.Result;
+        }
+
+        public async Task<int> DeleteAsync(int id)
+        {
+            var dataContext = this.dataContextService.Current;
+
+            var existingModel = dataContext.Compartments.Find(id);
+            if (existingModel != null)
             {
-                var existingModel = dataContext.Compartments.Find(id);
-                if (existingModel != null)
-                {
-                    dataContext.Remove(existingModel);
-                }
-                return dataContext.SaveChanges();
+                dataContext.Remove(existingModel);
             }
+            return await dataContext.SaveChangesAsync();
         }
 
         public IQueryable<Compartment> GetAll()
         {
-            return this.dataContext.Current.Compartments
+            return this.dataContextService.Current.Compartments
                .Include(c => c.LoadingUnit)
                .Include(c => c.MaterialStatus)
                .Include(c => c.Item)
@@ -138,7 +174,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
             lock (dataContext)
             {
                 return dataContext.Compartments.Count();
@@ -147,7 +183,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public async Task<CompartmentDetails> GetById(int id)
         {
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
 
             var compartmentDetails = await dataContext.Compartments
                .Where(c => c.Id == id)
@@ -208,7 +244,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Compartment> GetByItemId(int id)
         {
-            return this.dataContext.Current.Compartments
+            return this.dataContextService.Current.Compartments
                 .Where(c => c.ItemId == id)
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.CompartmentStatus)
@@ -233,7 +269,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<CompartmentDetails> GetByLoadingUnitId(int id)
         {
-            return this.dataContext.Current.Compartments
+            return this.dataContextService.Current.Compartments
                 .Where(c => c.LoadingUnitId == id)
                 .Include(c => c.LoadingUnit)
                 .ThenInclude(l => l.LoadingUnitType)
@@ -279,28 +315,25 @@ namespace Ferretto.Common.BusinessProviders
                 .AsNoTracking();
         }
 
-        public CompartmentDetails GetNewCompartmentDetails()
+        public CompartmentDetails GetNew()
         {
-            var compartmentDetails = new CompartmentDetails();
-
-            compartmentDetails.CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses();
-            compartmentDetails.CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes();
-            compartmentDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
-            compartmentDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
-
-            compartmentDetails.MaterialStatusId = compartmentDetails.MaterialStatusChoices.FirstOrDefault()?.Id;
-
-            return compartmentDetails;
+            return new CompartmentDetails
+            {
+                CompartmentStatusChoices = this.enumerationProvider.GetAllCompartmentStatuses(),
+                CompartmentTypeChoices = this.enumerationProvider.GetAllCompartmentTypes(),
+                MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses(),
+                PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes()
+            };
         }
 
         public IQueryable<Compartment> GetWithStatusAvailable()
         {
-            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusAvailableFilter);
+            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusAvailableFilter);
         }
 
-        public Int32 GetWithStatusAvailableCount()
+        public int GetWithStatusAvailableCount()
         {
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
             lock (dataContext)
             {
                 return dataContext.Compartments.AsNoTracking().Count(StatusAvailableFilter);
@@ -309,12 +342,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Compartment> GetWithStatusAwaiting()
         {
-            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusAwaitingFilter);
+            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusAwaitingFilter);
         }
 
-        public Int32 GetWithStatusAwaitingCount()
+        public int GetWithStatusAwaitingCount()
         {
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
             lock (dataContext)
             {
                 return dataContext.Compartments.AsNoTracking().Count(StatusAwaitingFilter);
@@ -323,12 +356,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Compartment> GetWithStatusBlocked()
         {
-            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusBlockedFilter);
+            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusBlockedFilter);
         }
 
-        public Int32 GetWithStatusBlockedCount()
+        public int GetWithStatusBlockedCount()
         {
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
             lock (dataContext)
             {
                 return dataContext.Compartments.AsNoTracking().Count(StatusBlockedFilter);
@@ -337,12 +370,12 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<Compartment> GetWithStatusExpired()
         {
-            return GetAllCompartmentsWithAggregations(this.dataContext.Current, StatusExpiredFilter);
+            return GetAllCompartmentsWithAggregations(this.dataContextService.Current, StatusExpiredFilter);
         }
 
-        public Int32 GetWithStatusExpiredCount()
+        public int GetWithStatusExpiredCount()
         {
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
             lock (dataContext)
             {
                 return dataContext.Compartments.AsNoTracking().Count(StatusExpiredFilter);
@@ -351,7 +384,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyAllowedItem(int modelId)
         {
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
             lock (dataContext)
             {
                 return dataContext.Compartments
@@ -371,7 +404,7 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
+            var dataContext = this.dataContextService.Current;
             lock (dataContext)
             {
                 var existingModel = dataContext.Compartments.Find(model.Id);

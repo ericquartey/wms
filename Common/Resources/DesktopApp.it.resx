@@ -177,4 +177,10 @@
   <data name="AreYouSureToLeaveThePage" xml:space="preserve">
     <value>Uscendo da questa pagina, tutte le modifiche verranno perse. Sei sicuro di voler proseguire?</value>
   </data>
+  <data name="AreYouSureToDeleteCompartment" xml:space="preserve">
+    <value>Sei sicuro di voler eliminare questo scomparto?</value>
+  </data>
+  <data name="UnableToSaveChanges" xml:space="preserve">
+    <value>Impossibile salvare le modifiche.</value>
+  </data>
 </root>
