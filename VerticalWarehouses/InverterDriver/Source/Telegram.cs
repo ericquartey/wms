@@ -51,6 +51,7 @@ namespace Ferretto.VW.InverterDriver
             {
                 case ValueDataType.Byte: nBytesPayLoad = 1; break;
                 case ValueDataType.Int16: nBytesPayLoad = 2; break;
+                case ValueDataType.UInt16: nBytesPayLoad = 2; break;
                 case ValueDataType.Int32: nBytesPayLoad = 4; break;
                 case ValueDataType.Float: nBytesPayLoad = 4; break;
                 case ValueDataType.Double: nBytesPayLoad = 8; break;
@@ -115,7 +116,16 @@ namespace Ferretto.VW.InverterDriver
                 Array.Copy(ans_Write_data_Int16, 0, WritePacket, 6, 2);
                     break;
 
-             case ValueDataType.Int32:
+             case ValueDataType.UInt16:
+
+                var ans_Write_data_UInt16 = new byte[2];
+                var parameterNo_Write_data_UInt16 = new byte[sizeof(ushort)];
+                parameterNo_Write_data_UInt16 = BitConverter.GetBytes(Convert.ToUInt16(value));
+                parameterNo_Write_data_UInt16.CopyTo(ans_Write_data_UInt16, 0);
+                Array.Copy(ans_Write_data_UInt16, 0, WritePacket, 6, 2);
+                    break;
+
+                case ValueDataType.Int32:
             
                 var ans_Write_data_Int32 = new byte[4];
                 var parameterNo_Write_data_Int32 = new byte[sizeof(Int32)];
@@ -183,12 +193,12 @@ namespace Ferretto.VW.InverterDriver
             }
             if (nBytesPayLoad == 2)
             {
-                type = ValueDataType.Int16;
+                type = ValueDataType.UInt16;
 
                 var value = new byte[2];
                 Array.Copy(telegram, 6, value, 0, 2);
                 value.Reverse();
-                RetValueFromParse = BitConverter.ToInt16(value, 0);
+                RetValueFromParse = BitConverter.ToUInt16(value, 0);
             }
             if (nBytesPayLoad == 4)
             {
