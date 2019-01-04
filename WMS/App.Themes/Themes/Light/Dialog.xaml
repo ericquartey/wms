@@ -147,12 +147,14 @@
                             <Button x:Name="PART_YesButton"
                                     MinWidth="65"
                                     Margin="6,0,0,0"
-                                    Content="{dx:DXMessageBoxStringId StringId=Yes}" />
+                                    Content="{dx:DXMessageBoxStringId StringId=Yes}"
+                                    Style="{StaticResource ButtonMessageUIStyle}" />
                             <Button x:Name="PART_NoButton"
                                     Grid.Column="1"
                                     MinWidth="65"
                                     Margin="6,0,0,0"
-                                    Content="{dx:DXMessageBoxStringId StringId=No}" />
+                                    Content="{dx:DXMessageBoxStringId StringId=No}"
+                                    Style="{StaticResource ButtonMessageUIStyle}" />
                         </Grid>
                         <Grid x:Name="yesNoCancelGrid"
                               Visibility="Collapsed">
@@ -164,17 +166,20 @@
                             <Button x:Name="PART_YesButton1"
                                     MinWidth="65"
                                     Margin="6,0,0,0"
-                                    Content="{dx:DXMessageBoxStringId StringId=Yes}" />
+                                    Content="{dx:DXMessageBoxStringId StringId=Yes}"
+                                    Style="{StaticResource ButtonMessageUIStyle}" />
                             <Button x:Name="PART_NoButton1"
                                     Grid.Column="1"
                                     MinWidth="65"
                                     Margin="6,0,0,0"
-                                    Content="{dx:DXMessageBoxStringId StringId=No}" />
+                                    Content="{dx:DXMessageBoxStringId StringId=No}"
+                                    Style="{StaticResource ButtonMessageUIStyle}" />
                             <Button x:Name="PART_CancelButton1"
                                     Grid.Column="2"
                                     MinWidth="65"
                                     Margin="6,0,0,0"
-                                    Content="{dx:DXMessageBoxStringId StringId=Cancel}" />
+                                    Content="{dx:DXMessageBoxStringId StringId=Cancel}"
+                                    Style="{StaticResource ButtonMessageUIStyle}" />
                         </Grid>
                     </Grid>
                 </Grid>
