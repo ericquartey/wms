@@ -80,21 +80,20 @@ namespace Ferretto.Common.BusinessProviders
                 .Distinct();
         }
 
-        public int Save(Area model)
+        public async Task<int> SaveAsync(Area model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
+
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var existingModel = dataContext.Areas.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            var existingModel = dataContext.Areas.Find(model.Id);
 
-                return dataContext.SaveChanges();
-            }
+            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            return await dataContext.SaveChangesAsync();
         }
 
         private static IQueryable<Area> GetAllAreasWithFilter(DatabaseContext context,

@@ -93,9 +93,9 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadData();
         }
 
-        protected override void ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
-            var modifiedRowCount = this.itemListProvider.Save(this.Model);
+            var modifiedRowCount = await this.itemListProvider.SaveAsync(this.Model);
             if (modifiedRowCount > 0)
             {
                 this.TakeModelSnapshot();

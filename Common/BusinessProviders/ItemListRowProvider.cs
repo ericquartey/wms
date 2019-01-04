@@ -120,7 +120,7 @@ namespace Ferretto.Common.BusinessProviders
             return itemListRows;
         }
 
-        public int Save(ItemListRowDetails model)
+        public Task<int> SaveAsync(ItemListRowDetails model)
         {
             throw new NotImplementedException();
         }

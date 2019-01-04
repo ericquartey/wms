@@ -121,11 +121,11 @@ namespace Ferretto.WMS.Modules.MasterData
             await this.LoadData();
         }
 
-        protected override void ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
             this.IsBusy = true;
 
-            var modifiedRowCount = this.loadingUnitProvider.Save(this.Model);
+            var modifiedRowCount = await this.loadingUnitProvider.SaveAsync(this.Model);
             if (modifiedRowCount > 0)
             {
                 this.TakeModelSnapshot();

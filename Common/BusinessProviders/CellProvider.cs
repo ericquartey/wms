@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -22,6 +22,7 @@ cell => cell.CellStatusId == 1;
                    cell => cell.CellStatusId == 3;
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -178,7 +179,7 @@ cell => cell.CellStatusId == 1;
             }
         }
 
-        public int Save(CellDetails model)
+        public async Task<int> SaveAsync(CellDetails model)
         {
             if (model == null)
             {
@@ -186,14 +187,12 @@ cell => cell.CellStatusId == 1;
             }
 
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var existingModel = dataContext.Cells.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            var existingModel = dataContext.Cells.Find(model.Id);
 
-                return dataContext.SaveChanges();
-            }
+            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            return await dataContext.SaveChangesAsync();
         }
 
         private static IQueryable<Cell> GetAllCellsWithFilter(DatabaseContext context, Expression<Func<DataModels.Cell, bool>> whereFunc = null)

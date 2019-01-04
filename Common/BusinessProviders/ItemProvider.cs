@@ -19,7 +19,9 @@ namespace Ferretto.Common.BusinessProviders
             item => item.ManagementType == DataModels.ItemManagementType.FIFO;
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemsService itemsService;
 
         #endregion Fields
@@ -208,7 +210,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public int Save(ItemDetails model)
+        public async Task<int> SaveAsync(ItemDetails model)
         {
             if (model == null)
             {
@@ -216,14 +218,12 @@ namespace Ferretto.Common.BusinessProviders
             }
 
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var existingModel = dataContext.Items.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            var existingModel = dataContext.Items.Find(model.Id);
 
-                return dataContext.SaveChanges();
-            }
+            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            return await dataContext.SaveChangesAsync();
         }
 
         public async Task<OperationResult> WithdrawAsync(ItemWithdraw itemWithdraw)

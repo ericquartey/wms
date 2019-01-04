@@ -25,6 +25,7 @@ namespace Ferretto.Common.BusinessProviders
             m => m.Model.Contains("VARIANT-XS");
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -128,7 +129,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public int Save(MachineDetails model)
+        public async Task<int> SaveAsync(MachineDetails model)
         {
             if (model == null)
             {
@@ -136,14 +137,12 @@ namespace Ferretto.Common.BusinessProviders
             }
 
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var existingModel = dataContext.Machines.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            var existingModel = dataContext.Machines.Find(model.Id);
 
-                return dataContext.SaveChanges();
-            }
+            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            return await dataContext.SaveChangesAsync();
         }
 
         private static IQueryable<Machine> GetAllMachinesWithFilter(DatabaseContext context, Expression<Func<DataModels.Machine, bool>> whereFunc = null)

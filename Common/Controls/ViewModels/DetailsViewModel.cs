@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
@@ -146,7 +146,7 @@ namespace Ferretto.Common.Controls
 
         protected abstract Task ExecuteRevertCommand();
 
-        protected abstract void ExecuteSaveCommand();
+        protected abstract Task ExecuteSaveCommand();
 
         protected override void OnDispose()
         {

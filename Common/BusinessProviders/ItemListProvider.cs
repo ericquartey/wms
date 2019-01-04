@@ -22,7 +22,9 @@ namespace Ferretto.Common.BusinessProviders
             list => (char)list.ItemListType == (char)(ItemListType.Put);
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly ItemListRowProvider itemListRowProvider;
+
         private readonly WMS.Scheduler.WebAPI.Contracts.IItemListsService itemListService;
 
         #endregion Fields
@@ -188,22 +190,20 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
         }
 
-        public int Save(ItemListDetails model)
+        public async Task<int> SaveAsync(ItemListDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
+
             var dataContext = this.dataContext.Current;
 
-            lock (this.dataContext)
-            {
-                var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
+            var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
 
-                this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
+            this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
-            }
+            return await dataContext.SaveChangesAsync();
         }
 
         public async Task<OperationResult> ScheduleForExecution(int listId, int areaId)

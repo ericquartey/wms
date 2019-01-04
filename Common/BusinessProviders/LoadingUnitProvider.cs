@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -28,8 +28,11 @@ namespace Ferretto.Common.BusinessProviders
             lu => lu.LoadingUnitStatusId == "U";//STATUS Used
 
         private readonly ICellProvider cellProvider;
+
         private readonly ICompartmentProvider compartmentProvider;
+
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -282,7 +285,7 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public int Save(LoadingUnitDetails model)
+        public async Task<int> SaveAsync(LoadingUnitDetails model)
         {
             if (model == null)
             {
@@ -290,20 +293,18 @@ namespace Ferretto.Common.BusinessProviders
             }
 
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
+
+            var existingModel = dataContext.LoadingUnits.Find(model.Id);
+
+            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            foreach (var compartment in model.Compartments)
             {
-                var existingModel = dataContext.LoadingUnits.Find(model.Id);
-
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-                foreach (var compartment in model.Compartments)
-                {
-                    var existingCompartment = dataContext.Compartments.Find(compartment.Id);
-                    dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
-                }
-
-                return dataContext.SaveChanges();
+                var existingCompartment = dataContext.Compartments.Find(compartment.Id);
+                dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
             }
+
+            return await dataContext.SaveChangesAsync();
         }
 
         private static IQueryable<LoadingUnit> GetAllLoadingUnitsWithAggregations(DatabaseContext context, Expression<Func<DataModels.LoadingUnit, bool>> whereFunc = null)

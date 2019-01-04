@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -51,15 +51,16 @@ namespace Ferretto.WMS.Modules.MasterData
             throw new NotImplementedException();
         }
 
-        protected override async void ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
-            this.IsBusy = true;
             this.IsValidationEnabled = true;
 
             if (string.IsNullOrWhiteSpace(this.Model.Error) == false)
             {
                 return;
             }
+
+            this.IsBusy = true;
 
             var result = await this.compartmentProvider.Add(this.Model);
             if (result.Success)

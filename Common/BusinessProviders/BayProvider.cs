@@ -90,21 +90,20 @@ namespace Ferretto.Common.BusinessProviders
                    .SingleAsync();
         }
 
-        public int Save(Bay model)
+        public async Task<int> SaveAsync(Bay model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
+
             var dataContext = this.dataContext.Current;
-            lock (dataContext)
-            {
-                var existingModel = dataContext.Bays.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+            var existingModel = dataContext.Bays.Find(model.Id);
 
-                return dataContext.SaveChanges();
-            }
+            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+            return await dataContext.SaveChangesAsync();
         }
 
         private static IQueryable<Bay> GetAllBaysWithFilter(DatabaseContext context,

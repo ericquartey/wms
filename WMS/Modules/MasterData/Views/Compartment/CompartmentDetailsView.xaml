@@ -29,7 +29,7 @@
         <wms:ActionBar Margin="10,10,10,0"
                        HorizontalAlignment="Right"
                        Style="{DynamicResource ActionBarNotCustomizable}">
-            <wms:ActionBarItem Command="{Binding SaveCommand}"
+            <wms:ActionBarItem Command="{Binding SaveCommand, IsAsync=True}"
                                Content="{x:Static res:General.Save}"
                                CustomGlyphSize="24,24"
                                Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_save_black_24dp.png"

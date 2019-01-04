@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -113,7 +113,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public int Save(CompartmentType model)
+        public Task<int> SaveAsync(CompartmentType model)
         {
             throw new NotImplementedException();
         }

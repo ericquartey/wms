@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -377,7 +377,7 @@ namespace Ferretto.Common.BusinessProviders
                 .Any();
         }
 
-        public int Save(CompartmentDetails model)
+        public async Task<int> SaveAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -406,7 +406,7 @@ namespace Ferretto.Common.BusinessProviders
                 &&
                 compartmentType.Width == model.Height;
 
-            return dataContext.SaveChanges();
+            return await dataContext.SaveChangesAsync();
         }
 
         private static IQueryable<Compartment> GetAllCompartmentsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Compartment, bool>> whereFunc = null)
