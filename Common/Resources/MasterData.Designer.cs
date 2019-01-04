@@ -700,6 +700,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This list has no rows..
+        /// </summary>
+        public static string ItemListWithNoRows {
+            get {
+                return ResourceManager.GetString("ItemListWithNoRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Item saved sucessfully.
         /// </summary>
         public static string ItemSavedSuccessfully {

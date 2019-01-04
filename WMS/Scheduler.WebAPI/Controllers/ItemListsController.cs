@@ -157,11 +157,7 @@ namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
                     list.ItemListStatusChoices = ((ItemListStatus[])Enum.GetValues(typeof(ItemListStatus)))
                         .Select(i => new Enumeration((int)i, i.ToString()))
                         .ToList();
-
-                    list.ItemListTypeChoices = ((ItemListType[])Enum.GetValues(typeof(ItemListType)))
-                        .Select(i => new Enumeration((int)i, i.ToString()))
-                        .ToList();
-
+                    
                     return this.Ok(list);
                 }
             }

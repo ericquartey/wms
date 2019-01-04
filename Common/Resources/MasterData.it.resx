@@ -452,4 +452,7 @@
     <value>Riga lista salvata con successo</value>
     <comment>Notification - item saved</comment>
   </data>
+  <data name="ItemListWithNoRows" xml:space="preserve">
+    <value>Questa Lista non ha righe.</value>
+  </data>
 </root>

@@ -488,4 +488,7 @@
     <value>Item list row saved sucessfully</value>
     <comment>Notification - item saved</comment>
   </data>
+  <data name="ItemListWithNoRows" xml:space="preserve">
+    <value>This list has no rows.</value>
+  </data>
 </root>
