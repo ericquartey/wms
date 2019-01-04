@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -55,7 +55,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(LoadingUnitDetails model)
+        public Task<OperationResult> AddAsync(LoadingUnitDetails model)
         {
             throw new NotImplementedException();
         }
@@ -211,7 +211,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaManualFilter);
         }
 
-        public Int32 GetWithAreaManualCount()
+        public int GetWithAreaManualCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -225,7 +225,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaVertimagFilter);
         }
 
-        public Int32 GetWithAreaVertimagCount()
+        public int GetWithAreaVertimagCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -239,7 +239,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusAvailableFilter);
         }
 
-        public Int32 GetWithStatusAvailableCount()
+        public int GetWithStatusAvailableCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -253,7 +253,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusBlockedFilter);
         }
 
-        public Int32 GetWithStatusBlockedCount()
+        public int GetWithStatusBlockedCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -267,7 +267,7 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusUsedFilter);
         }
 
-        public Int32 GetWithStatusUsedCount()
+        public int GetWithStatusUsedCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)

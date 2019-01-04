@@ -29,7 +29,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> Add(CompartmentType model, int? itemId, int? maxCapacity)
+        public async Task<OperationResult> AddAsync(CompartmentType model, int? itemId, int? maxCapacity)
         {
             //TODO: Task 823
             if (model == null)
@@ -88,9 +88,9 @@ namespace Ferretto.Common.BusinessProviders
             return new OperationResult(true, entityId: compartmentTypeId);
         }
 
-        public Task<OperationResult> Add(CompartmentType model)
+        public Task<OperationResult> AddAsync(CompartmentType model)
         {
-            return this.Add(model, null, null);
+            return this.AddAsync(model, null, null);
         }
 
         public int Delete(int id)

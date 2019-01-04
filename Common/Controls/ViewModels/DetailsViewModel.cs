@@ -91,10 +91,14 @@ namespace Ferretto.Common.Controls
         }
 
         public ICommand RevertCommand => this.revertCommand ??
-                    (this.revertCommand = new DelegateCommand(async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true), this.CanExecuteRevertCommand));
+            (this.revertCommand = new DelegateCommand(
+                async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true),
+                this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
-                                       (this.saveCommand = new DelegateCommand(this.ExecuteSaveCommand, this.CanExecuteSaveCommand));
+            (this.saveCommand = new DelegateCommand(
+                async () => await this.ExecuteSaveCommand().ConfigureAwait(true),
+                this.CanExecuteSaveCommand));
 
         #endregion Properties
 

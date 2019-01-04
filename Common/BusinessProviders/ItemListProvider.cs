@@ -45,7 +45,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(ItemListDetails model)
+        public Task<OperationResult> AddAsync(ItemListDetails model)
         {
             throw new NotImplementedException();
         }

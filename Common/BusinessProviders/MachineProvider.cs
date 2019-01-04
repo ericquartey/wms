@@ -44,7 +44,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(MachineDetails model)
+        public Task<OperationResult> AddAsync(MachineDetails model)
         {
             throw new NotImplementedException();
         }

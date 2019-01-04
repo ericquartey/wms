@@ -49,7 +49,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> Add(CompartmentDetails model)
+        public async Task<OperationResult> AddAsync(CompartmentDetails model)
         {
             if (model == null)
             {
@@ -61,7 +61,7 @@ namespace Ferretto.Common.BusinessProviders
             {
                 var dataContext = this.dataContextService.Current;
 
-                var result = await this.compartmentTypeProvider.Add(new CompartmentType
+                var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
                 {
                     Width = model.Width,
                     Height = model.Height
@@ -113,7 +113,7 @@ namespace Ferretto.Common.BusinessProviders
             // TODO: add transaction management
             foreach (var compartment in compartments.Cast<CompartmentDetails>())
             {
-                var result = await this.Add(compartment);
+                var result = await this.AddAsync(compartment);
                 if (result.Success == false)
                 {
                     return result;
@@ -384,11 +384,11 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var result = this.compartmentTypeProvider.Add(new CompartmentType
+            var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
             {
                 Width = model.Width,
                 Height = model.Height
-            }, model.ItemId, model.MaxCapacity).Result;
+            }, model.ItemId, model.MaxCapacity);
 
             if (result.Success == false)
             {

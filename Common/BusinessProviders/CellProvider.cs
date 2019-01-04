@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -41,7 +41,7 @@ cell => cell.CellStatusId == 1;
 
         #region Methods
 
-        public Task<OperationResult> Add(CellDetails model)
+        public Task<OperationResult> AddAsync(CellDetails model)
         {
             throw new NotImplementedException();
         }
@@ -133,7 +133,7 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, ClassAFilter);
         }
 
-        public Int32 GetWithClassACount()
+        public int GetWithClassACount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -147,7 +147,7 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, StatusEmptyFilter);
         }
 
-        public Int32 GetWithStatusEmptyCount()
+        public int GetWithStatusEmptyCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)
@@ -161,7 +161,7 @@ cell => cell.CellStatusId == 1;
             return GetAllCellsWithFilter(this.dataContext.Current, StatusFullFilter);
         }
 
-        public Int32 GetWithStatusFullCount()
+        public int GetWithStatusFullCount()
         {
             var dataContext = this.dataContext.Current;
             lock (dataContext)

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 
 namespace Ferretto.Common.BusinessProviders
@@ -10,7 +7,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Methods
 
-        Task<OperationResult> Add(CompartmentType model, int? itemId = null, int? maxCapacity = null);
+        Task<OperationResult> AddAsync(CompartmentType model, int? itemId = null, int? maxCapacity = null);
 
         #endregion Methods
     }

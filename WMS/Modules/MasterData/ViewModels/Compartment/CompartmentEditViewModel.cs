@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -67,11 +67,11 @@ namespace Ferretto.WMS.Modules.MasterData
             return null;
         }
 
-        protected override void ExecuteSaveCommand()
+        protected override async Task ExecuteSaveCommand()
         {
             this.IsBusy = true;
 
-            var affectedRowsCount = this.compartmentProvider.Save(this.Model);
+            var affectedRowsCount = await this.compartmentProvider.SaveAsync(this.Model);
             if (affectedRowsCount > 0)
             {
                 this.TakeModelSnapshot();

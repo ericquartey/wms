@@ -26,12 +26,13 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public async Task<OperationResult> Add(ItemCompartmentType model)
+        public async Task<OperationResult> AddAsync(ItemCompartmentType model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
+
             try
             {
                 var dataContext = this.dataContext.Current;

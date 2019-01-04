@@ -27,7 +27,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(Bay model)
+        public Task<OperationResult> AddAsync(Bay model)
         {
             throw new NotImplementedException();
         }
