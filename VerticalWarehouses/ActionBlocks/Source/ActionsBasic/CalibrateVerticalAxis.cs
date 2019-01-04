@@ -100,7 +100,7 @@ namespace Ferretto.VW.ActionBlocks
             this.ofs = ofs;
             this.vFast = vFast;
             this.vCreep = vCreep;
-            this.i = 0; // Necessary to start the Vertical Homing more times
+            this.i = 0;
             this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
             // Start the routine
             this.stepExecution();

@@ -82,6 +82,7 @@ namespace Ferretto.VW.ActionBlocks
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        // From this time the codes 6a, 6b, 6c and 6d in the documentation become the code 6
         private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4", "5", "6" };
 
         private bool absolute_movement;
@@ -116,7 +117,6 @@ namespace Ferretto.VW.ActionBlocks
 
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
-        // At this time we take into account only the code code 6
         private string positioningStep;
 
         private RegisteredWaitHandle regLoopUpdateCurrentPositionThread;

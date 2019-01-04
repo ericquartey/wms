@@ -410,7 +410,7 @@ namespace Ferretto.VW.InverterDriver
                             {
                                 lock (lockObj)
                                 {
-                                    var retValueShort = Convert.ToUInt16(this.retParameterValue); // Verificare
+                                    var retValueShort = Convert.ToUInt16(this.retParameterValue);
 
                                     var arraybytes = BitConverter.GetBytes(retValueShort);
                                     var bit_array = new BitArray(arraybytes);
