@@ -20,11 +20,11 @@ namespace Ferretto.VW.ActionBlocks
     {
         #region Fields
 
-        private const int DELAY_TIME = 500;             // Delay time: 250 msec
+        private const int DELAY_TIME = 500;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", /*"2",*/ "3", "4", "5", "6" };
+        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", /*"2",*/ "3", "4", "5", "6" }; // Step 2 temporary commented
 
         private string calibrateOperation;
 
@@ -100,7 +100,7 @@ namespace Ferretto.VW.ActionBlocks
             this.ofs = ofs;
             this.vFast = vFast;
             this.vCreep = vCreep;
-
+            this.i = 0; // Necessary to start the Vertical Homing more times
             this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
             // Start the routine
             this.stepExecution();

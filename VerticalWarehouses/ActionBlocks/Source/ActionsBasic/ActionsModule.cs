@@ -22,6 +22,7 @@ namespace Ferretto.VW.ActionBlocks.Source.ActionsBasic
             var drawerWeightDetection = new DrawerWeightDetection();
 
             calibrateVerticalAxisInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
+            positioningDrawerInstance.SetInverterDriverInterface = (InverterDriver.InverterDriver)this.Container.Resolve<IInverterDriver>();
 
             this.Container.RegisterInstance<IPositioningDrawer>(positioningDrawerInstance);
             this.Container.RegisterInstance<ICalibrateVerticalAxis>(calibrateVerticalAxisInstance);

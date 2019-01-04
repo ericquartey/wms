@@ -86,17 +86,25 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            throw new NotImplementedException();
+            this.UnSubscribeMethodFromEvent();
+
+            // throw new NotImplementedException();
         }
 
         public void SubscribeMethodToEvent()
         {
-            throw new NotImplementedException();
+            if (calibrateVerticalAxis!=null)
+                this.calibrateVerticalAxis.ThrowEndEvent += this.Calibration;
+
+            //throw new NotImplementedException();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            throw new NotImplementedException();
+            if (calibrateVerticalAxis != null)
+                this.calibrateVerticalAxis.ThrowEndEvent -= this.Calibration;
+
+            //throw new NotImplementedException();
         }
 
         private void Calibration(bool result)
@@ -145,7 +153,6 @@ namespace Ferretto.VW.InstallationApp
                 this.calibrateVerticalAxis.ThrowEndEvent += this.Calibration;
                 this.NoteString = Common.Resources.InstallationApp.VerticalAxisCalibrating;
                 this.calibrateVerticalAxis.SetVAxisOrigin(m, ofs, vFast, vCreep);
-                // this.NoteString = "Homing Done.";
             }
         }
 
