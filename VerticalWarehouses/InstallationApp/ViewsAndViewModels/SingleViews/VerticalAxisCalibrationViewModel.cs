@@ -86,25 +86,17 @@ namespace Ferretto.VW.InstallationApp
 
         public void ExitFromViewMethod()
         {
-            this.UnSubscribeMethodFromEvent();
-
-            // throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void SubscribeMethodToEvent()
         {
-            if (calibrateVerticalAxis!=null)
-                this.calibrateVerticalAxis.ThrowEndEvent += this.Calibration;
-
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public void UnSubscribeMethodFromEvent()
         {
-            if (calibrateVerticalAxis != null)
-                this.calibrateVerticalAxis.ThrowEndEvent -= this.Calibration;
-
-            //throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         private void Calibration(bool result)

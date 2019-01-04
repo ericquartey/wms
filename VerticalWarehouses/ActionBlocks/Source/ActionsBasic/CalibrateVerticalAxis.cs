@@ -257,8 +257,7 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "6":
                     {
-                        // 0x1n37
-                        // Filter
+                        // Filter: 0x1n37
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[12])
                         {
                             statusWordValue = true;
