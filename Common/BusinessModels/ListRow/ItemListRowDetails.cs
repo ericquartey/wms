@@ -136,6 +136,13 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowSub2), ResourceType = typeof(BusinessObjects))]
         public string Sub2 { get => this.sub2; set => this.SetProperty(ref this.sub2, value); }
 
+        public bool CanBeExecuted
+        {
+            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
+                    || this.itemListRowStatus == ItemListRowStatus.Suspended
+                    || this.itemListRowStatus == ItemListRowStatus.Waiting;
+        }
+
         #endregion Properties
     }
 }

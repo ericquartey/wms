@@ -20,7 +20,6 @@ namespace Ferretto.Common.BusinessModels
         private IEnumerable<ItemListRow> itemListRows;
         private ItemListStatus itemListStatus;
         private ItemListType itemListType;
-        private IEnumerable<Enumeration> itemListTypeChoices;
         private string itemListTypeDescription;
         private string job;
         private int priority;
@@ -66,7 +65,7 @@ namespace Ferretto.Common.BusinessModels
             get => this.customerOrderDescription;
             set => this.SetProperty(ref this.customerOrderDescription, value);
         }
-
+        
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
         public string Description
         {
@@ -112,12 +111,6 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.itemListType, value);
         }
 
-        public IEnumerable<Enumeration> ItemListTypeChoices
-        {
-            get => this.itemListTypeChoices;
-            set => this.SetProperty(ref this.itemListTypeChoices, value);
-        }
-
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public string ItemListTypeDescription
         {
@@ -161,6 +154,18 @@ namespace Ferretto.Common.BusinessModels
         {
             get => this.shipmentUnitDescription;
             set => this.SetProperty(ref this.shipmentUnitDescription, value);
+        }
+
+        public bool CanAddNewRow
+        {
+            get => this.itemListStatus != ItemListStatus.Completed;
+        }
+
+        public bool CanBeExecuted
+        {
+            get => this.itemListStatus == ItemListStatus.Incomplete
+                    || this.itemListStatus == ItemListStatus.Suspended
+                    || this.itemListStatus == ItemListStatus.Waiting;
         }
 
         #endregion Properties
