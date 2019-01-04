@@ -29,8 +29,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="80" />
-            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="180" />
         </Grid.ColumnDefinitions>
 
         <Image Grid.Row="1"
