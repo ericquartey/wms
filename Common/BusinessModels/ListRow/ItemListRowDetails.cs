@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
@@ -40,7 +39,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.Code), ResourceType = typeof(General))]
         public string Code { get => this.code; set => this.SetProperty(ref this.code, value); }
 
-        [Display(Name = nameof(BusinessObjects.CompletionDate), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.CompletionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? CompletionDate { get => this.completionDate; set => this.SetProperty(ref this.completionDate, value); }
 
         [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
@@ -67,7 +66,7 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public ItemListType ItemListType { get => this.itemListType; set => this.SetProperty(ref this.itemListType, value); }
 
-        [Display(Name = nameof(BusinessObjects.LastExecutionDate), ResourceType = typeof(General))]
+        [Display(Name = nameof(BusinessObjects.LastExecutionDate), ResourceType = typeof(BusinessObjects))]
         public DateTime? LastExecutionDate { get => this.lastExecutionDate; set => this.SetProperty(ref this.lastExecutionDate, value); }
 
         [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
