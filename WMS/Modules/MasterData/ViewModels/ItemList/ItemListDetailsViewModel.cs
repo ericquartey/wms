@@ -68,7 +68,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand ListRowExecuteCommand => this.listRowExecuteCommand ??
                                    (this.listRowExecuteCommand = new DelegateCommand(this.ExecuteListRowCommand,
-                       this.CanExecuteListRowCommand));
+                       this.CanExecuteListRowCommand).ObservesProperty(() => this.SelectedItemListRow));
 
         public ItemListRow SelectedItemListRow
         {
@@ -78,7 +78,7 @@ namespace Ferretto.WMS.Modules.MasterData
 
         public ICommand ShowDetailsListRowCommand => this.showDetailsListRowCommand ??
                   (this.showDetailsListRowCommand = new DelegateCommand(this.ExecuteShowDetailsListRowCommand,
-                       this.CanExecuteShowDetailsListRowCommand));
+                       this.CanExecuteShowDetailsListRowCommand).ObservesProperty(() => this.SelectedItemListRow));
 
         #endregion Properties
 
