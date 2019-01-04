@@ -280,7 +280,7 @@
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="0"
                                       Margin="0,0,20,0"
-                                      EditValue="{Binding Compartment.Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       MinValue="1" />
                         <wms:SpinEdit Grid.Row="0"
                                       Grid.Column="1"

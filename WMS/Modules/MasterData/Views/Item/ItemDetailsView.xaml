@@ -220,7 +220,7 @@
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Model.Id, Mode=OneWay}"
                                                                       StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                                       StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                         </i:EventTrigger>
