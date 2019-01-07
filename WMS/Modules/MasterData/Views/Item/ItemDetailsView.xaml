@@ -17,7 +17,7 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              EnableHistoryView="True"
-             SubTitle="{Binding Item.Code, StringFormat={x:Static res:Title.ItemDetailsView}}"
+             SubTitle="{Binding Model.Code, StringFormat={x:Static res:Title.ItemDetailsView}}"
              mc:Ignorable="d">
 
     <Grid HorizontalAlignment="Stretch"
@@ -95,6 +95,7 @@
                                       ItemsSource="{Binding Path=Model.ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
+                                     MaxHeight="155"
                                      Margin="20,0,0,0"
                                      VerticalContentAlignment="Stretch"
                                      EditValue="{Binding Path=Model.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
@@ -220,7 +221,7 @@
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
-                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentCompartment.Id, Mode=OneWay}"
+                                            <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.Model.Id, Mode=OneWay}"
                                                                       StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
                                                                       StartViewName="{x:Static modules:MasterData.COMPARTMENTDETAILS}" />
                                         </i:EventTrigger>

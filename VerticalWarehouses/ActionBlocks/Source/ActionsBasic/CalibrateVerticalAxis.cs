@@ -20,11 +20,11 @@ namespace Ferretto.VW.ActionBlocks
     {
         #region Fields
 
-        private const int DELAY_TIME = 500;             // Delay time: 250 msec
+        private const int DELAY_TIME = 500;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", "2", "3", "4", "5", "6" };
+        private readonly string[] calibrateVerticalAxisSteps = new string[] { /* "1.1", "1.2", "1.3", "1.4", */ "1", /*"2",*/ "3", "4", "5", "6" }; // Step 2 temporary commented
 
         private string calibrateOperation;
 
@@ -100,7 +100,7 @@ namespace Ferretto.VW.ActionBlocks
             this.ofs = ofs;
             this.vFast = vFast;
             this.vCreep = vCreep;
-
+            this.i = 0;
             this.inverterDriver.CurrentActionType = ActionType.CalibrateVerticalAxis;
             // Start the routine
             this.stepExecution();
@@ -177,7 +177,7 @@ namespace Ferretto.VW.ActionBlocks
 
             switch (type)
             {
-                case ValueDataType.Int16:
+                case ValueDataType.UInt16:
                     {
                         var value = Convert.ToUInt16(eventArgs.Value);
                         statusWord = new byte[sizeof(short)];
@@ -196,7 +196,7 @@ namespace Ferretto.VW.ActionBlocks
 
                 default:
                     {
-                        // In the case the var is not Int16 or Int32, we take into account 0 as default value
+                        // In the case the var is not UInt16 or Int32, we take into account 0 as default value
                         statusWord = new byte[1];
                         statusWord = BitConverter.GetBytes(0);
 
@@ -257,8 +257,7 @@ namespace Ferretto.VW.ActionBlocks
 
                 case "6":
                     {
-                        // 0x1n37
-                        // Filter
+                        // Filter: 0x1n37
                         if (statusWordBA01[0] && statusWordBA01[1] && statusWordBA01[2] && statusWordBA01[4] && statusWordBA01[5] && statusWordBA01[12])
                         {
                             statusWordValue = true;

@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.RemoteIODriver;
+using Ferretto.VW.Utils.Source;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Ferretto.VW.RemoteIODriver.Source;
-using Ferretto.VW.Utils.Source;
 
 namespace BackgroundService
 {
@@ -54,7 +51,7 @@ namespace BackgroundService
         {
             while (true)
             {
-                var tmp = new SensorsStates(rm.ReadData().ToArray());
+                var tmp = new SensorsStates(rm.Inputs.ToArray());
                 if (this.LastSensorsStates.Sensor1 == tmp.Sensor1 &&
                 this.LastSensorsStates.Sensor2 == tmp.Sensor2 &&
                 this.LastSensorsStates.Sensor3 == tmp.Sensor3 &&
