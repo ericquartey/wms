@@ -40,54 +40,56 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                var dataContext = this.dataContext.Current;
-                var compartmentType = dataContext.CompartmentTypes
-                    .SingleOrDefault(ct =>
-                        (ct.Width == model.Width && ct.Height == model.Height)
-                        ||
-                        (ct.Width == model.Height && ct.Height == model.Width));
-
-                if (compartmentType == null)
+                using (var dataContext = this.dataContext.Current)
                 {
-                    var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
-                    {
-                        Height = model.Height,
-                        Width = model.Width
-                    });
+                    var compartmentType = dataContext.CompartmentTypes
+                        .SingleOrDefault(ct =>
+                            (ct.Width == model.Width && ct.Height == model.Height)
+                            ||
+                            (ct.Width == model.Height && ct.Height == model.Width));
 
-                    var changedEntitiesCount = await dataContext.SaveChangesAsync();
-                    if (changedEntitiesCount > 0)
+                    if (compartmentType == null)
                     {
-                        compartmentType = entry.Entity;
-                        model.Id = entry.Entity.Id;
-                    }
-                    else
-                    {
-                        return new OperationResult(false);
-                    }
-                }
-
-                if (itemId.HasValue)
-                {
-                    var result = await this.itemCompartmentTypeProvider.AddAsync(
-                        new ItemCompartmentType
+                        var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
                         {
-                            ItemId = itemId.Value,
-                            MaxCapacity = maxCapacity,
-                            CompartmentTypeId = compartmentType.Id
+                            Height = model.Height,
+                            Width = model.Width
                         });
 
-                    if (result.Success)
-                    {
-                        await dataContext.SaveChangesAsync();
+                        var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                        if (changedEntitiesCount > 0)
+                        {
+                            compartmentType = entry.Entity;
+                            model.Id = entry.Entity.Id;
+                        }
+                        else
+                        {
+                            return new OperationResult(false);
+                        }
                     }
-                    else
-                    {
-                        return new OperationResult(false);
-                    }
-                }
 
-                return new OperationResult(true, entityId: compartmentType.Id);
+                    if (itemId.HasValue)
+                    {
+                        var result = await this.itemCompartmentTypeProvider.AddAsync(
+                            new ItemCompartmentType
+                            {
+                                ItemId = itemId.Value,
+                                MaxCapacity = maxCapacity,
+                                CompartmentTypeId = compartmentType.Id
+                            });
+
+                        if (result.Success)
+                        {
+                            await dataContext.SaveChangesAsync();
+                        }
+                        else
+                        {
+                            return new OperationResult(false);
+                        }
+                    }
+
+                    return new OperationResult(true, entityId: compartmentType.Id);
+                }
             }
             catch (Exception ex)
             {
