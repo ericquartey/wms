@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -278,26 +278,36 @@ namespace Ferretto.Common.BusinessProviders
             }
         }
 
-        public async Task<int> SaveAsync(LoadingUnitDetails model)
+        public async Task<OperationResult> SaveAsync(LoadingUnitDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-
-            var existingModel = dataContext.LoadingUnits.Find(model.Id);
-
-            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            foreach (var compartment in model.Compartments)
+            try
             {
-                var existingCompartment = dataContext.Compartments.Find(compartment.Id);
-                dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
-            }
+                using (var dataContext = this.dataContext.Current)
+                {
+                    var existingModel = dataContext.LoadingUnits.Find(model.Id);
 
-            return await dataContext.SaveChangesAsync();
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+                    foreach (var compartment in model.Compartments)
+                    {
+                        var existingCompartment = dataContext.Compartments.Find(compartment.Id);
+                        dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
+                    }
+
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
         }
 
         private static IQueryable<LoadingUnit> GetAllLoadingUnitsWithAggregations(DatabaseContext context, Expression<Func<DataModels.LoadingUnit, bool>> whereFunc = null)
