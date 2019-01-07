@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.Controls.Interfaces;
@@ -92,12 +92,12 @@ namespace Ferretto.Common.Controls
 
         public ICommand RevertCommand => this.revertCommand ??
             (this.revertCommand = new DelegateCommand(
-                async () => await this.ExecuteRevertWithPrompt().ConfigureAwait(true),
+                async () => await this.ExecuteRevertWithPrompt(),
                 this.CanExecuteRevertCommand));
 
         public ICommand SaveCommand => this.saveCommand ??
             (this.saveCommand = new DelegateCommand(
-                async () => await this.ExecuteSaveCommand().ConfigureAwait(true),
+                async () => await this.ExecuteSaveCommand(),
                 this.CanExecuteSaveCommand));
 
         #endregion Properties
@@ -152,6 +152,11 @@ namespace Ferretto.Common.Controls
 
         protected abstract Task ExecuteSaveCommand();
 
+        protected virtual void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            this.EvaluateCanExecuteCommands();
+        }
+
         protected override void OnDispose()
         {
             base.OnDispose();
@@ -181,11 +186,6 @@ namespace Ferretto.Common.Controls
             {
                 await this.ExecuteRevertCommand();
             }
-        }
-
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            this.EvaluateCanExecuteCommands();
         }
 
         #endregion Methods
