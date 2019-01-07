@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:dxt="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -19,16 +20,22 @@
              mc:Ignorable="d">
     <wms:WmsView.Resources>
         <wms:StringFormatConverter x:Key="SFC" />
+        <wms:DisplayNameConverter x:Key="DNC" />
     </wms:WmsView.Resources>
     <wms:WmsView.SubTitle>
         <MultiBinding Converter="{StaticResource SFC}">
             <Binding Source="{x:Static res:Title.ItemListDetailsView}" />
-            <Binding Path="ItemList.ItemListTypeDescription"
+            <Binding Converter="{StaticResource DNC}"
+                     ConverterParameter="{x:Type models:ItemListType}"
+                     Path="Model.ItemListType"
                      TargetNullValue="" />
-            <Binding Path="ItemList.Code"
+            <Binding Path="Model.Code"
                      TargetNullValue="" />
         </MultiBinding>
     </wms:WmsView.SubTitle>
+
+
+
     <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
 
@@ -117,8 +124,12 @@
                             <wms:ComboBox Grid.Column="0"
                                           Margin="0,0,20,0"
                                           EditValue="{Binding Path=Model.ItemListType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          ItemsSource="{Binding Path=Model.ItemListTypeChoices}"
-                                          SelectedItem="Pick" />
+                                          ItemTemplate="{DynamicResource ComboBoxEditTranslation}">
+                                <dxmvvm:Interaction.Behaviors>
+                                    <dxmvvm:EnumItemsSourceBehavior EnumType="{x:Type models:ItemListType}"
+                                                                    SortMode="DisplayName" />
+                                </dxmvvm:Interaction.Behaviors>
+                            </wms:ComboBox>
                             <wms:SpinEdit Grid.Column="1"
                                           Margin="0,0,20,0"
                                           AllowNullInput="False"
@@ -245,22 +256,25 @@
                         </Grid>
                     </GroupBox.Header>
                     <StackPanel Margin="0,10,0,0">
+                        <TextBlock Text="{x:Static res:MasterData.ItemListWithNoRows}"
+                                   Visibility="{Binding ListHasRows, Converter={StaticResource BTVIC}}" />
                         <wms:WmsGridControl MinHeight="62"
                                             MaxWidth="2000"
                                             MaxHeight="2000"
                                             ItemsSource="{Binding Model.ItemListRows, Mode=OneWay}"
-                                            SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}">
-                            <!--TODO wms:WmsGridControl.View>
+                                            SelectedBusinessObject="{Binding SelectedItemListRow, Mode=TwoWay}"
+                                            Visibility="{Binding ListHasRows, Converter={StaticResource BTVC}}">
+                            <wms:WmsGridControl.View>
                                 <dxg:TableView>
                                     <i:Interaction.Triggers>
                                         <i:EventTrigger EventName="RowDoubleClick">
                                             <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.SelectedItemListRow.Id, Mode=OneWay}"
-                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}" />
-                                            < StartViewName="{x:Static modules:MasterData.EDITITEMLISTROW}">
+                                                                      StartModuleName="{wms:NameOf Type={x:Type modules:MasterData}}"
+                                                                      StartViewName="{x:Static modules:MasterData.ITEMLISTROWDETAILS}" />
                                         </i:EventTrigger>
                                     </i:Interaction.Triggers>
                                 </dxg:TableView>
-                            </-->
+                            </wms:WmsGridControl.View>
 
                             <wms:WmsGridControl.Columns>
                                 <dxg:GridColumn Width="100*"

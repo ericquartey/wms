@@ -84,16 +84,29 @@ namespace Ferretto.Common.BusinessProviders
                     Id = lr.Id,
                     Code = lr.Code,
                     RowPriority = lr.Priority,
-                    ItemDescription = lr.Item.Description,
+                    ItemId = lr.Item.Id,
                     RequiredQuantity = lr.RequiredQuantity,
                     DispatchedQuantity = lr.DispatchedQuantity,
                     ItemListRowStatus = (ItemListRowStatus)lr.Status,
+                    ItemDescription = lr.Item.Description,
                     CreationDate = lr.CreationDate,
                     ItemListCode = lr.ItemList.Code,
                     ItemListDescription = lr.ItemList.Description,
                     ItemListType = (ItemListType)lr.ItemList.ItemListType,
                     ItemListStatus = (ItemListStatus)lr.ItemList.Status,
+                    CompletionDate = lr.CompletionDate,
+                    LastExecutionDate = lr.LastExecutionDate,
+                    LastModificationDate = lr.LastModificationDate,
+                    Lot = lr.Lot,
+                    RegistrationNumber = lr.RegistrationNumber,
+                    Sub1 = lr.Sub1,
+                    Sub2 = lr.Sub2,
+                    PackageTypeId = lr.PackageTypeId,
+                    MaterialStatusId = lr.MaterialStatusId
                 }).SingleAsync();
+
+            itemListRowDetails.MaterialStatusChoices = this.enumerationProvider.GetAllMaterialStatuses();
+            itemListRowDetails.PackageTypeChoices = this.enumerationProvider.GetAllPackageTypes();
 
             return itemListRowDetails;
         }
@@ -122,7 +135,19 @@ namespace Ferretto.Common.BusinessProviders
 
         public Task<OperationResult> SaveAsync(ItemListRowDetails model)
         {
-            throw new NotImplementedException();
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            var dataContext = this.dataContext.Current;
+            lock (dataContext)
+            {
+                var existingModel = dataContext.ItemListRows.Find(model.Id);
+
+                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+                return dataContext.SaveChanges();
+            }
         }
 
         public async Task<OperationResult> ScheduleForExecution(int listRowId, int areaId)

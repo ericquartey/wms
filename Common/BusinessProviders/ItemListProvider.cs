@@ -110,7 +110,7 @@ namespace Ferretto.Common.BusinessProviders
                    Description = l.Description,
                    Priority = l.Priority,
                    ItemListStatus = (ItemListStatus)l.Status,
-                   ItemListType = (int)((ItemListType)l.ItemListType),
+                   ItemListType = (ItemListType)l.ItemListType,
                    ItemListItemsCount = l.ItemListRows.Sum(row => row.RequiredQuantity),
                    CreationDate = l.CreationDate,
                    Job = l.Job,
@@ -121,16 +121,13 @@ namespace Ferretto.Common.BusinessProviders
                    ShipmentUnitDescription = l.ShipmentUnitDescription,
                    LastModificationDate = l.LastModificationDate,
                    FirstExecutionDate = l.FirstExecutionDate,
-                   ExecutionEndDate = l.ExecutionEndDate,
+                   ExecutionEndDate = l.ExecutionEndDate
                }).SingleAsync();
 
             itemListDetails.ItemListStatusChoices = ((ItemListStatus[])
                 Enum.GetValues(typeof(ItemListStatus)))
                 .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-            itemListDetails.ItemListTypeChoices = ((ItemListType[])
-                Enum.GetValues(typeof(ItemListType)))
-                .Select(i => new Enumeration((int)i, i.ToString())).ToList();
-
+            
             itemListDetails.ItemListRows = this.itemListRowProvider.GetByItemListId(id);
 
             return itemListDetails;

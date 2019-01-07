@@ -19,8 +19,7 @@ namespace Ferretto.Common.BusinessModels
         private int itemListItemsCount;
         private IEnumerable<ItemListRow> itemListRows;
         private ItemListStatus itemListStatus;
-        private int itemListType;
-        private IEnumerable<Enumeration> itemListTypeChoices;
+        private ItemListType itemListType;
         private string itemListTypeDescription;
         private string job;
         private int priority;
@@ -66,7 +65,7 @@ namespace Ferretto.Common.BusinessModels
             get => this.customerOrderDescription;
             set => this.SetProperty(ref this.customerOrderDescription, value);
         }
-
+        
         [Display(Name = nameof(General.Description), ResourceType = typeof(General))]
         public string Description
         {
@@ -106,28 +105,10 @@ namespace Ferretto.Common.BusinessModels
         public IEnumerable<Enumeration> ItemListStatusChoices { get; set; }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
-        public int ItemListType
+        public ItemListType ItemListType
         {
             get => this.itemListType;
-            set
-            {
-                if (this.SetProperty(ref this.itemListType, value))
-                {
-                    this.SetItemListDescription();
-                }
-            }
-        }
-
-        public IEnumerable<Enumeration> ItemListTypeChoices
-        {
-            get => this.itemListTypeChoices;
-            set
-            {
-                if (this.SetProperty(ref this.itemListTypeChoices, value))
-                {
-                    this.SetItemListDescription();
-                }
-            }
+            set => this.SetProperty(ref this.itemListType, value);
         }
 
         [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
@@ -175,15 +156,18 @@ namespace Ferretto.Common.BusinessModels
             set => this.SetProperty(ref this.shipmentUnitDescription, value);
         }
 
-        #endregion Properties
-
-        #region Methods
-
-        private void SetItemListDescription()
+        public bool CanAddNewRow
         {
-            this.ItemListTypeDescription = this.ItemListTypeChoices?.SingleOrDefault(c => c.Id == this.ItemListType)?.Description;
+            get => this.itemListStatus != ItemListStatus.Completed;
         }
 
-        #endregion Methods
+        public bool CanBeExecuted
+        {
+            get => this.itemListStatus == ItemListStatus.Incomplete
+                    || this.itemListStatus == ItemListStatus.Suspended
+                    || this.itemListStatus == ItemListStatus.Waiting;
+        }
+
+        #endregion Properties
     }
 }
