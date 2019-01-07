@@ -71,8 +71,8 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var affectedRowsCount = await this.compartmentProvider.SaveAsync(this.Model);
-            if (affectedRowsCount > 0)
+            var result = await this.compartmentProvider.SaveAsync(this.Model);
+            if (result.Success)
             {
                 this.TakeModelSnapshot();
 
@@ -83,7 +83,7 @@ namespace Ferretto.WMS.Modules.MasterData
             }
             else
             {
-                this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;
@@ -120,7 +120,7 @@ namespace Ferretto.WMS.Modules.MasterData
                 }
                 else
                 {
-                    this.EventService.Invoke(new StatusEventArgs(DesktopApp.UnableToSaveChanges, StatusType.Error));
+                    this.EventService.Invoke(new StatusEventArgs(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
                 }
             }
 

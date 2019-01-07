@@ -118,13 +118,17 @@ namespace Ferretto.WMS.Modules.MasterData
         {
             this.IsBusy = true;
 
-            var modifiedRowCount = await this.itemProvider.SaveAsync(this.Model);
-            if (modifiedRowCount > 0)
+            var result = await this.itemProvider.SaveAsync(this.Model);
+            if (result.Success)
             {
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemSavedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
 
             this.IsBusy = false;

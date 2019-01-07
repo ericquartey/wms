@@ -95,13 +95,17 @@ namespace Ferretto.WMS.Modules.MasterData
 
         protected override async Task ExecuteSaveCommand()
         {
-            var modifiedRowCount = await this.itemListProvider.SaveAsync(this.Model);
-            if (modifiedRowCount > 0)
+            var result = await this.itemListProvider.SaveAsync(this.Model);
+            if (result.Success)
             {
                 this.TakeModelSnapshot();
 
                 this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully, StatusType.Success));
+            }
+            else
+            {
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
             }
         }
 
