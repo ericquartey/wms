@@ -4,14 +4,16 @@ using Ferretto.Common.EF;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.Common.EF.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20190103142345_Remove_Columns_Width_Height_MaxCapacity_From_Table_Compartments")]
+    partial class Remove_Columns_Width_Height_MaxCapacity_From_Table_Compartments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -399,8 +401,6 @@ namespace Ferretto.Common.EF.Migrations
                     b.Property<int?>("FifoTime");
 
                     b.Property<DateTime?>("FirstStoreDate");
-
-                    b.Property<bool>("HasRotation");
 
                     b.Property<DateTime?>("InventoryDate");
 
