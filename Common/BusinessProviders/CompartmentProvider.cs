@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -311,6 +311,22 @@ namespace Ferretto.Common.BusinessProviders
                     LoadingUnitHasCompartments = c.LoadingUnit.LoadingUnitType.HasCompartments
                 })
                 .AsNoTracking();
+        }
+
+        public async Task<int?> GetMaxCapacityAsync(int? width, int? height, int itemId)
+        {
+            var compartmentType = await this.dataContextService.Current.ItemsCompartmentTypes.Include(ict => ict.CompartmentType)
+                .SingleOrDefaultAsync(ict =>
+                    ict.ItemId == itemId
+                    &&
+                    (
+                        (ict.CompartmentType.Width == width && ict.CompartmentType.Height == height)
+                        ||
+                        (ict.CompartmentType.Width == height && ict.CompartmentType.Height == width)
+                    )
+                );
+
+            return compartmentType?.MaxCapacity;
         }
 
         public CompartmentDetails GetNew()

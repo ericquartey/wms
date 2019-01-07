@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
@@ -11,6 +11,7 @@ namespace Ferretto.Common.BusinessProviders
         #region Fields
 
         private readonly IDatabaseContextService dataContext;
+
         private readonly ItemCompartmentTypeProvider itemCompartmentTypeProvider;
 
         #endregion Fields
@@ -37,55 +38,63 @@ namespace Ferretto.Common.BusinessProviders
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-            var existing = dataContext.CompartmentTypes.SingleOrDefault(ct =>
-            (ct.Width == model.Width && ct.Height == model.Height)
-            ||
-            (ct.Width == model.Height && ct.Height == model.Width));
-
-            var compartmentTypeId = -1;
-            if (existing == null)
+            try
             {
-                var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
-                {
-                    Height = model.Height,
-                    Width = model.Width
-                });
+                var dataContext = this.dataContext.Current;
+                var compartmentType = dataContext.CompartmentTypes
+                    .SingleOrDefault(ct =>
+                        (ct.Width == model.Width && ct.Height == model.Height)
+                        ||
+                        (ct.Width == model.Height && ct.Height == model.Width));
 
-                var changedEntitiesCount = await dataContext.SaveChangesAsync();
-                if (changedEntitiesCount > 0)
+                if (compartmentType == null)
                 {
-                    model.Id = entry.Entity.Id;
-                    compartmentTypeId = model.Id;
+                    var entry = dataContext.CompartmentTypes.Add(new DataModels.CompartmentType
+                    {
+                        Height = model.Height,
+                        Width = model.Width
+                    });
+
+                    var changedEntitiesCount = await dataContext.SaveChangesAsync();
+                    if (changedEntitiesCount > 0)
+                    {
+                        compartmentType = entry.Entity;
+                        model.Id = entry.Entity.Id;
+                    }
+                    else
+                    {
+                        return new OperationResult(
+                            false,
+                            description: string.Format(Resources.Errors.NotAddDB, nameof(CompartmentType)));
+                    }
                 }
-                else
+
+                if (itemId.HasValue)
                 {
-                    return new OperationResult(false, description: string.Format(Resources.Errors.NotAddDB, nameof(CompartmentType)));
+                    var result = await this.itemCompartmentTypeProvider.AddAsync(
+                        new ItemCompartmentType
+                        {
+                            ItemId = itemId.Value,
+                            MaxCapacity = maxCapacity,
+                            CompartmentTypeId = compartmentType.Id
+                        });
+
+                    if (result.Success)
+                    {
+                        await dataContext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        return new OperationResult(false);
+                    }
                 }
+
+                return new OperationResult(true, entityId: compartmentType.Id);
             }
-            else
+            catch (Exception ex)
             {
-                compartmentTypeId = existing.Id;
+                return new OperationResult(false, description: ex.Message);
             }
-
-            //Add Association ItemCompartmentType
-            if (itemId.HasValue)
-            {
-                var itemCompartmentTypeId = await this.itemCompartmentTypeProvider.Add(new ItemCompartmentType
-                {
-                    ItemId = itemId.Value,
-                    MaxCapacity = maxCapacity,
-                    CompartmentTypeId = compartmentTypeId
-                });
-
-                var addItemCompartmentTypeCount = await dataContext.SaveChangesAsync();
-                if (addItemCompartmentTypeCount < 1)
-                {
-                    //TODO
-                }
-            }
-
-            return new OperationResult(true, entityId: compartmentTypeId);
         }
 
         public Task<OperationResult> AddAsync(CompartmentType model)
@@ -113,7 +122,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Task<int> SaveAsync(CompartmentType model)
+        public Task<OperationResult> SaveAsync(CompartmentType model)
         {
             throw new NotImplementedException();
         }
