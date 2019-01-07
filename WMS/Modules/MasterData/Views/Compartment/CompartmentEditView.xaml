@@ -141,6 +141,7 @@
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.Stock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEnabled="{Binding ItemIdHasValue}"
                                   MinValue="0" />
                     <wms:SpinEdit x:Name="CapacityText"
                                   Grid.Row="3"
@@ -148,18 +149,21 @@
                                   HorizontalAlignment="Stretch"
                                   AllowNullInput="False"
                                   EditValue="{Binding Model.MaxCapacity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEnabled="{Binding ItemIdHasValue}"
                                   MinValue="1" />
 
                     <wms:ComboBox x:Name="MaterialStatus"
                                   Grid.Row="4"
                                   Grid.Column="0"
                                   EditValue="{Binding Path=Model.MaterialStatusId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  IsEnabled="{Binding ItemIdHasValue}"
                                   ItemsSource="{Binding Path=Model.MaterialStatusChoices}" />
 
                     <wms:WmsCheckEdit Grid.Row="4"
                                       Grid.Column="2"
                                       Content="{x:Static res:BusinessObjects.PairingFixed}"
-                                      IsChecked="{Binding Path=Model.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                      IsChecked="{Binding Path=Model.IsItemPairingFixed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      IsEnabled="{Binding ItemIdHasValue}" />
 
                     <dxa:AccordionControl Grid.Row="5"
                                           Grid.ColumnSpan="3"
@@ -167,6 +171,7 @@
                                           Background="Transparent"
                                           BorderThickness="0"
                                           IsCollapseButtonVisible="False"
+                                          IsEnabled="{Binding ItemIdHasValue}"
                                           RootItemExpandButtonPosition="Left">
                         <wms:AccordionItem FontSize="12"
                                            FontWeight="Normal"
