@@ -11,7 +11,7 @@ namespace Ferretto.Common.BusinessProviders
     {
         #region Fields
 
-        private readonly IDatabaseContextService dataContext;
+        private readonly IDatabaseContextService dataContextService;
 
         private readonly EnumerationProvider enumerationProvider;
 
@@ -22,11 +22,11 @@ namespace Ferretto.Common.BusinessProviders
         #region Constructors
 
         public ItemListRowProvider(
-            IDatabaseContextService dataContext,
+            IDatabaseContextService dataContextService,
             EnumerationProvider enumerationProvider,
             WMS.Scheduler.WebAPI.Contracts.IItemListRowsService itemListRowService)
         {
-            this.dataContext = dataContext;
+            this.dataContextService = dataContextService;
             this.enumerationProvider = enumerationProvider;
             this.itemListRowService = itemListRowService;
         }
@@ -76,7 +76,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public async Task<ItemListRowDetails> GetById(int id)
         {
-            var itemListRowDetails = await this.dataContext.Current.ItemListRows
+            var itemListRowDetails = await this.dataContextService.Current.ItemListRows
                 .Include(lr => lr.ItemList)
                 .Where(lr => lr.Id == id)
                 .Select(lr => new ItemListRowDetails
@@ -113,7 +113,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public IQueryable<ItemListRow> GetByItemListId(int id)
         {
-            var itemListRows = this.dataContext.Current.ItemListRows
+            var itemListRows = this.dataContextService.Current.ItemListRows
                 .Include(l => l.MaterialStatus)
                 .Include(l => l.Item)
                 .Where(l => l.ItemListId == id)
@@ -133,20 +133,28 @@ namespace Ferretto.Common.BusinessProviders
             return itemListRows;
         }
 
-        public Task<OperationResult> SaveAsync(ItemListRowDetails model)
+        public async Task<OperationResult> SaveAsync(ItemListRowDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                var existingModel = dataContext.ItemListRows.Find(model.Id);
+                using (var dataContext = this.dataContextService.Current)
+                {
+                    var existingModel = dataContext.ItemListRows.Find(model.Id);
 
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-                return dataContext.SaveChanges();
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
