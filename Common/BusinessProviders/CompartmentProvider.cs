@@ -402,22 +402,23 @@ namespace Ferretto.Common.BusinessProviders
 
             try
             {
-                var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
-                {
-                    Width = model.Width,
-                    Height = model.Height
-                }, model.ItemId, model.MaxCapacity);
-
-                if (result.Success == false)
-                {
-                    return result;
-                }
-
                 using (var dataContext = this.dataContextService.Current)
                 {
-                    var compartmentType = dataContext.CompartmentTypes.Find(result.EntityId);
-                    var existingModel = dataContext.Compartments.Find(model.Id);
+                    var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
+                    {
+                        Width = model.Width,
+                        Height = model.Height
+                    }, model.ItemId, model.MaxCapacity);
 
+                    if (result.Success == false)
+                    {
+                        return result;
+                    }
+
+                    var compartmentType = dataContext.CompartmentTypes.Find(result.EntityId);
+                    model.CompartmentTypeId = compartmentType.Id;
+
+                    var existingModel = dataContext.Compartments.Find(model.Id);
                     dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
                     existingModel.HasRotation =
