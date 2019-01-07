@@ -190,20 +190,30 @@ namespace Ferretto.Common.BusinessProviders
             return this.dataContext.Current.ItemLists.AsNoTracking().Count(TypePutFilter);
         }
 
-        public async Task<int> SaveAsync(ItemListDetails model)
+        public async Task<OperationResult> SaveAsync(ItemListDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
+            try
+            {
+                using (var dataContext = this.dataContext.Current)
+                {
+                    var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
 
-            var existingModel = this.dataContext.Current.ItemLists.Find(model.Id);
+                    this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
 
-            this.dataContext.Current.Entry(existingModel).CurrentValues.SetValues(model);
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
 
-            return await dataContext.SaveChangesAsync();
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
         }
 
         public async Task<OperationResult> ScheduleForExecution(int listId, int areaId)

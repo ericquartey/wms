@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -80,20 +80,30 @@ namespace Ferretto.Common.BusinessProviders
                 .Distinct();
         }
 
-        public async Task<int> SaveAsync(Area model)
+        public async Task<OperationResult> SaveAsync(Area model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
+            try
+            {
+                using (var dataContext = this.dataContext.Current)
+                {
+                    var existingModel = dataContext.Areas.Find(model.Id);
 
-            var existingModel = dataContext.Areas.Find(model.Id);
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
 
-            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
 
-            return await dataContext.SaveChangesAsync();
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
         }
 
         private static IQueryable<Area> GetAllAreasWithFilter(DatabaseContext context,

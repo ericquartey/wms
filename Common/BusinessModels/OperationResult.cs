@@ -1,8 +1,13 @@
-﻿namespace Ferretto.Common.BusinessModels
+﻿using System;
+
+namespace Ferretto.Common.BusinessModels
 {
     public class OperationResult
     {
         #region Constructors
+
+        public OperationResult(Exception ex, int? entityId = null) : this(false, entityId, ex.Message)
+        { }
 
         public OperationResult(bool success, int? entityId = null, string description = null)
         {

@@ -21,7 +21,7 @@ namespace Ferretto.Common.BusinessProviders
 
         Task<TDetailsModel> GetById(int id);
 
-        Task<int> SaveAsync(TDetailsModel model);
+        Task<OperationResult> SaveAsync(TDetailsModel model);
 
         #endregion Methods
     }

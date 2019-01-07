@@ -39,7 +39,7 @@ namespace Ferretto.Common.BusinessProviders
             return string.Empty;
         }
 
-        public Task<int> SaveAsync(User model)
+        public Task<OperationResult> SaveAsync(User model)
         {
             throw new NotImplementedException();
         }

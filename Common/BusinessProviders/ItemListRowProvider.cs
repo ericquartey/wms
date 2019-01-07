@@ -60,7 +60,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 
@@ -120,7 +120,7 @@ namespace Ferretto.Common.BusinessProviders
             return itemListRows;
         }
 
-        public Task<int> SaveAsync(ItemListRowDetails model)
+        public Task<OperationResult> SaveAsync(ItemListRowDetails model)
         {
             throw new NotImplementedException();
         }
@@ -139,7 +139,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 

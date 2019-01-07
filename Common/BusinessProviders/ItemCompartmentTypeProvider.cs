@@ -84,7 +84,7 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
-        public Task<int> SaveAsync(ItemCompartmentType model)
+        public Task<OperationResult> SaveAsync(ItemCompartmentType model)
         {
             throw new NotImplementedException();
         }

@@ -377,36 +377,47 @@ namespace Ferretto.Common.BusinessProviders
                 .Any();
         }
 
-        public async Task<int> SaveAsync(CompartmentDetails model)
+        public async Task<OperationResult> SaveAsync(CompartmentDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
+            try
             {
-                Width = model.Width,
-                Height = model.Height
-            }, model.ItemId, model.MaxCapacity);
+                var result = await this.compartmentTypeProvider.AddAsync(new CompartmentType
+                {
+                    Width = model.Width,
+                    Height = model.Height
+                }, model.ItemId, model.MaxCapacity);
 
-            if (result.Success == false)
-            {
-                return 0;
+                if (result.Success == false)
+                {
+                    return result;
+                }
+
+                using (var dataContext = this.dataContextService.Current)
+                {
+                    var compartmentType = dataContext.CompartmentTypes.Find(result.EntityId);
+                    var existingModel = dataContext.Compartments.Find(model.Id);
+
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+                    existingModel.HasRotation =
+                        compartmentType.Height == model.Width
+                        &&
+                        compartmentType.Width == model.Height;
+
+                    await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(true);
+                }
             }
-
-            var dataContext = this.dataContextService.Current;
-            var compartmentType = dataContext.CompartmentTypes.Find(result.EntityId);
-            var existingModel = dataContext.Compartments.Find(model.Id);
-
-            dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-            existingModel.HasRotation =
-                compartmentType.Height == model.Width
-                &&
-                compartmentType.Width == model.Height;
-
-            return await dataContext.SaveChangesAsync();
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
+            }
         }
 
         private static IQueryable<Compartment> GetAllCompartmentsWithAggregations(DatabaseContext context, Expression<Func<DataModels.Compartment, bool>> whereFunc = null)
