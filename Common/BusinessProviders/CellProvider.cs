@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -58,8 +58,7 @@ cell => cell.CellStatusId == 1;
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count();
             }
@@ -135,8 +134,7 @@ cell => cell.CellStatusId == 1;
 
         public int GetWithClassACount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count(ClassAFilter);
             }
@@ -149,8 +147,7 @@ cell => cell.CellStatusId == 1;
 
         public int GetWithStatusEmptyCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count(StatusEmptyFilter);
             }
@@ -163,8 +160,7 @@ cell => cell.CellStatusId == 1;
 
         public int GetWithStatusFullCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Cells.AsNoTracking().Count(StatusFullFilter);
             }
@@ -172,8 +168,7 @@ cell => cell.CellStatusId == 1;
 
         public bool HasAnyLoadingUnits(int cellId)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Any(l => l.CellId == cellId);
             }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -91,8 +91,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.Count();
             }
@@ -213,8 +212,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithAreaManualCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(AreaManualFilter);
             }
@@ -227,8 +225,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithAreaVertimagCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(AreaVertimagFilter);
             }
@@ -241,8 +238,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusAvailableCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(StatusAvailableFilter);
             }
@@ -255,8 +251,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusBlockedCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(StatusBlockedFilter);
             }
@@ -269,8 +264,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusUsedCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(StatusUsedFilter);
             }
@@ -278,8 +272,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyCompartments(int loadingUnitId)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
             }

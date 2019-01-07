@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -61,8 +61,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Machines.AsNoTracking().Count();
             }
@@ -75,8 +74,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllTrasloCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Machines.AsNoTracking().Where(TrasloFilter).Count();
             }
@@ -89,8 +87,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllVertimagCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Machines.AsNoTracking().Where(VertimagFilter).Count();
             }
@@ -103,8 +100,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllVertimagModelMCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Machines.AsNoTracking().Where(VertimagModelMFilter).Count();
             }
@@ -117,8 +113,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllVertimagModelXSCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Machines.AsNoTracking().Where(VertimagModelXSFilter).Count();
             }
