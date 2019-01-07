@@ -198,9 +198,6 @@
   <data name="AreYouSureToDeleteCompartment" xml:space="preserve">
     <value>Are you sure you want to delete this compartment?</value>
   </data>
-  <data name="UnableToSaveChanges" xml:space="preserve">
-    <value>Unable to save changes.</value>
-  </data>
   <data name="SearchLabel" xml:space="preserve">
     <value />
     <comment>@invariant</comment>
