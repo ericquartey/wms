@@ -45,6 +45,12 @@ namespace Ferretto.Common.BusinessModels
         [Display(Name = nameof(BusinessObjects.ItemListRowPriority), ResourceType = typeof(BusinessObjects))]
         public int RowPriority { get => this.rowPriority; set => this.SetProperty(ref this.rowPriority, value); }
 
+        public bool CanBeExecuted
+        {
+            get => this.itemListRowStatus == ItemListRowStatus.Incomplete
+                    || this.itemListRowStatus == ItemListRowStatus.Suspended
+                    || this.itemListRowStatus == ItemListRowStatus.Waiting;
+        }
         #endregion Properties
     }
 }

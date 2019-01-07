@@ -70,6 +70,8 @@ namespace Ferretto.WMS.Modules.MasterData
             this.NavigationService.Register<ItemListsView, ItemListsViewModel>();
             this.NavigationService.Register<ItemListDetailsView, ItemListDetailsViewModel>();
 
+            this.NavigationService.Register<ItemListRowDetailsView, ItemListRowDetailsViewModel>();
+
 #if DEBUG
             SplashScreenService.SetMessage(Common.Resources.DesktopApp.CheckingDatabaseStructure);
 

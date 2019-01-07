@@ -129,6 +129,9 @@
   <data name="ItemListDetailsView" xml:space="preserve">
     <value>{0} List: {1}</value>
   </data>
+  <data name="ItemListRowDetailsView" xml:space="preserve">
+    <value>{0} Row List: {1}</value>
+  </data>
   <data name="LoadingUnitDetailsView" xml:space="preserve">
     <value>Loading Unit Details : {0}</value>
   </data>

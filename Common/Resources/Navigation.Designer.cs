@@ -259,6 +259,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Details of Row List.
+        /// </summary>
+        public static string ListRowDetails {
+            get {
+                return ResourceManager.GetString("ListRowDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to List Row Statuses.
         /// </summary>
         public static string ListRowStatuses {

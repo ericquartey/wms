@@ -97,6 +97,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} Row List: {1}.
+        /// </summary>
+        public static string ItemListRowDetailsView {
+            get {
+                return ResourceManager.GetString("ItemListRowDetailsView", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Loading Unit Details : {0}.
         /// </summary>
         public static string LoadingUnitDetailsView {

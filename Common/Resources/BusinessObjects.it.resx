@@ -766,4 +766,7 @@
   <data name="LastExecutionDate" xml:space="preserve">
     <value>Data Ultima Esecuzione</value>
   </data>
+  <data name="ItemListRowLot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
 </root>
