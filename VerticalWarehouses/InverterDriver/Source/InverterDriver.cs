@@ -346,8 +346,8 @@ namespace Ferretto.VW.InverterDriver
 
             // Create the base requests array (for internal requests)
             this.BaseRequestArray = new Request[3];
-            this.BaseRequestArray[0] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_DIGITAL_SIGNALS, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
-            this.BaseRequestArray[1] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, null);
+            this.BaseRequestArray[0] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_DIGITAL_SIGNALS, RequestSource.Internal, 0x00, 0x05, ValueDataType.UInt16, null);
+            this.BaseRequestArray[1] = new Request(TypeOfRequest.SendRequest, ParameterID.STATUS_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.UInt16, null);
             this.BaseRequestArray[2] = new Request(TypeOfRequest.SendRequest, ParameterID.ACTUAL_POSITION_SHAFT, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int32, null);
 
             this.getStatusWordValue = false;
@@ -398,7 +398,7 @@ namespace Ferretto.VW.InverterDriver
                             {
                                 lock (lockObj)
                                 {
-                                    var retValueShort = Convert.ToInt16(this.retParameterValue);
+                                    var retValueShort = Convert.ToUInt16(this.retParameterValue);
                                     var arraybytes = BitConverter.GetBytes(retValueShort);
                                     this.StatusWord = new BitArray(arraybytes);
                                 }
@@ -410,7 +410,7 @@ namespace Ferretto.VW.InverterDriver
                             {
                                 lock (lockObj)
                                 {
-                                    var retValueShort = Convert.ToInt16(this.retParameterValue);
+                                    var retValueShort = Convert.ToUInt16(this.retParameterValue);
 
                                     var arraybytes = BitConverter.GetBytes(retValueShort);
                                     var bit_array = new BitArray(arraybytes);
@@ -452,6 +452,7 @@ namespace Ferretto.VW.InverterDriver
                     switch (this.CurrentActionType)
                     {
                         case ActionType.CalibrateVerticalAxis:
+                        case ActionType.CalibrateHorizontalAxis:
                             {
                                 if (this.currentRequest.Type == TypeOfRequest.SendRequest && this.currentRequest.Source == RequestSource.External) { EnquiryTelegramDone_CalibrateVerticalAxis?.Invoke(this, new EnquiryTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
                                 if (this.currentRequest.Type == TypeOfRequest.SettingRequest && this.currentRequest.Source == RequestSource.External) { SelectTelegramDone_CalibrateVerticalAxis?.Invoke(this, new SelectTelegramDoneEventArgs(this.currentRequest.ParameterID, this.retParameterValue, this.currentRequest.DataType)); }
@@ -526,7 +527,7 @@ namespace Ferretto.VW.InverterDriver
             BitArray bitArrayCtrlTmp = null;
             if (paramID == ParameterID.CONTROL_WORD_PARAM)
             {
-                var retValueShort = Convert.ToInt16(value);
+                var retValueShort = Convert.ToUInt16(value);
                 var arraybytes = BitConverter.GetBytes(retValueShort);
                 bitArrayCtrlTmp = new BitArray(arraybytes);
             }
@@ -825,8 +826,9 @@ namespace Ferretto.VW.InverterDriver
                 this.TimeSendingHeartBeatPacket = t;
 
                 var bytes = BitArrayToByteArray(this.CtrlWord);
-                var value = BitConverter.ToInt16(bytes, 0);
-                this.currentRequest = new Request(TypeOfRequest.SettingRequest, ParameterID.CONTROL_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.Int16, value);
+                //var value = BitConverter.ToInt16(bytes, 0);
+                var value = BitConverter.ToUInt16(bytes, 0);
+                this.currentRequest = new Request(TypeOfRequest.SettingRequest, ParameterID.CONTROL_WORD_PARAM, RequestSource.Internal, 0x00, 0x05, ValueDataType.UInt16, value);
                 this.CtrlWord.Set(HEARTBIT, !this.CtrlWord.Get(HEARTBIT));
 
                 //logger.Log(LogLevel.Debug, String.Format("Send HeartBeat. Time elapsed: {0}", offsetTime_HeartBeat));
@@ -843,7 +845,7 @@ namespace Ferretto.VW.InverterDriver
                         this.RequestList.RemoveAt(0);
                     }
 
-                    //logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
+                    logger.Log(LogLevel.Debug, String.Format("Send External Request Size of List: {0} Time elapsed: {1}", this.RequestList.Count, offsetTime_ms));
                 }
                 else
                 {

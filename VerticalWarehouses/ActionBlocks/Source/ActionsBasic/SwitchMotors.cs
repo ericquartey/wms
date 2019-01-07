@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
 using Ferretto.VW.InverterDriver;
-using Ferretto.VW.RemoteIODriver.Source;
+using Ferretto.VW.RemoteIODriver;
 
 namespace Ferretto.VW.ActionBlocks
 {
@@ -12,73 +9,112 @@ namespace Ferretto.VW.ActionBlocks
     {
         #region Fields
 
+        private const int ENCODER_CRADLE = 2;  // 1
+
+        private const int ENCODER_ELEVATOR = 1;  // 0
+
         private const int N_DIGITAL_OUTPUT_LINES = 5;
-        private const int ENCODER_ELEVATOR = 0;
-        private const int ENCODER_CRADLE = 1;
-        private byte systemIndex = 0x00;
+
         private byte dataSetIndex = 0x05;
-        private RemoteIO remoteIO;
-        private InverterDriver.InverterDriver inverterDriver;
+
+        private InverterDriver.InverterDriver inverterDriver; // class instance
+
+        private IRemoteIO remoteIO; // interface
+
+        private byte systemIndex = 0x00;
 
         #endregion Fields
 
         #region Properties
 
-        public RemoteIO SetRemoteIOInterface
-        {
-
-            set => this.remoteIO = value;
-        }
-
+        /// <summary>
+        /// Set the inverter driver interface.
+        /// </summary>
         public InverterDriver.InverterDriver SetInverterDriverInterface
         {
             set => this.inverterDriver = value;
         }
 
+        /// <summary>
+        /// Set the remoteIO interface.
+        /// </summary>
+        public IRemoteIO SetRemoteIOInterface
+        {
+            set => this.remoteIO = value;
+        }
+
         #endregion Properties
 
-        #region Method
+        #region Methods
 
+        /// <summary>
+        /// Initialize.
+        /// </summary>
         public void Initialize()
         {
-           
+            // TODO Add your implementation code here
         }
 
+        /// <summary>
+        /// Switch from horizontal to vertical engine control.
+        /// Use the same inverter to handle the the elevator and the cradle.
+        /// </summary>
         public void SwitchHorizToVert()
         {
-            var DigitalOutput = new bool[N_DIGITAL_OUTPUT_LINES];
-            for (int i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
+            var DigitalOutput = new List<bool>();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
             {
-                DigitalOutput[i] = false;
+                DigitalOutput.Add(false);
             }
-            this.remoteIO.WriteData(DigitalOutput);
-            DigitalOutput[ENCODER_ELEVATOR] = true;
-            this.remoteIO.WriteData(DigitalOutput);
+            this.remoteIO.Outputs = DigitalOutput;
+            Thread.Sleep(250);
+
+            DigitalOutput.Clear();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
+            {
+                DigitalOutput.Add((i == ENCODER_ELEVATOR) ? true : false);
+            }
+            this.remoteIO.Outputs = DigitalOutput;
+            Thread.Sleep(250);
+
             var value = (ushort)0x0000;
             this.inverterDriver.SettingRequest(ParameterID.CONTROL_WORD_PARAM, this.systemIndex, this.dataSetIndex, value);
-
         }
 
+        /// <summary>
+        /// Switch from vertical to horizontal engine control.
+        /// Use the same inverter to handle the the elevator and the cradle.
+        /// </summary>
         public void SwitchVertToHoriz()
         {
-            var DigitalOutput = new bool[N_DIGITAL_OUTPUT_LINES];
-            for(int i=0; i < N_DIGITAL_OUTPUT_LINES; i++)
+            var DigitalOutput = new List<bool>();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
             {
-                DigitalOutput[i] = false;
+                DigitalOutput.Add(false);
             }
-            this.remoteIO.WriteData(DigitalOutput);
-            DigitalOutput[ENCODER_CRADLE] = true;
-            this.remoteIO.WriteData(DigitalOutput);
+            this.remoteIO.Outputs = DigitalOutput;
+            Thread.Sleep(250);
+
+            DigitalOutput.Clear();
+            for (var i = 0; i < N_DIGITAL_OUTPUT_LINES; i++)
+            {
+                DigitalOutput.Add((i == ENCODER_CRADLE) ? true : false);
+            }
+            this.remoteIO.Outputs = DigitalOutput;
+            Thread.Sleep(250);
+
             var value = (ushort)0x8000;
             this.inverterDriver.SettingRequest(ParameterID.CONTROL_WORD_PARAM, this.systemIndex, this.dataSetIndex, value);
-
         }
 
+        /// <summary>
+        /// Terminate.
+        /// </summary>
         public void Terminate()
         {
-
+            // TODO Add your implementation code here
         }
 
-        #endregion Method
+        #endregion Methods
     }
 }

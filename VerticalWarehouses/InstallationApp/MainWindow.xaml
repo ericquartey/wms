@@ -9,7 +9,7 @@
         Width="1024"
         Height="768"
         ResizeMode="NoResize"
-        WindowState="Maximized"
+
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         mc:Ignorable="d">

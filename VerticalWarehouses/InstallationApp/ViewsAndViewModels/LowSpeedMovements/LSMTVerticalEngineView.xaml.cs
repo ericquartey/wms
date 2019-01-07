@@ -1,7 +1,5 @@
 ﻿using System.Windows.Input;
-using Ferretto.VW.ActionBlocks;
 using Ferretto.VW.Utils.Source;
-using Microsoft.Practices.Unity;
 
 namespace Ferretto.VW.InstallationApp
 {
@@ -10,7 +8,6 @@ namespace Ferretto.VW.InstallationApp
     /// </summary>
     public partial class LSMTVerticalEngineView : BaseView
     {
-
         #region Constructors
 
         public LSMTVerticalEngineView()

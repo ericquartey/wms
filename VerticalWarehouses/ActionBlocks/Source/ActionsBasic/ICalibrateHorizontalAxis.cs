@@ -1,42 +1,39 @@
-﻿using Ferretto.VW.RemoteIODriver;
 
 namespace Ferretto.VW.ActionBlocks
 {
-    public interface ISwitchMotors
+    /// <summary>
+    /// Interface for Calibrate Horizontal Axis routine.
+    /// </summary>
+    public interface ICalibrateHorizontalAxis
     {
         #region Properties
 
         /// <summary>
-        /// Set the inverter driver interface.
+        /// Set inverter driver.
         /// </summary>
         InverterDriver.InverterDriver SetInverterDriverInterface { set; }
-
-        /// <summary>
-        /// Set the remoteIO interface.
-        /// </summary>
-        IRemoteIO SetRemoteIOInterface { set; }
 
         #endregion Properties
 
         #region Methods
 
         /// <summary>
-        /// Initialize.
+        /// Initialize the Calibrate Horizontal Axis routine.
         /// </summary>
         void Initialize();
 
         /// <summary>
-        /// Switch from horizontal to vertical engine control.
+        /// Start Calibrate Horizontal Axis routine.
         /// </summary>
-        void SwitchHorizToVert();
+        void SetHAxisOrigin(int m, short ofs, short vFast, short vCreep);
 
         /// <summary>
-        /// Switch from vertical to horizontal engine control.
+        /// Stop the routine.
         /// </summary>
-        void SwitchVertToHoriz();
+        bool StopInverter();
 
         /// <summary>
-        /// Terminate.
+        /// Terminate the Calibrate Horizontal Axis routine.
         /// </summary>
         void Terminate();
 
