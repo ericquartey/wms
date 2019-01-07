@@ -19,7 +19,8 @@ namespace Ferretto.VW.InstallationApp
         private float acc = 1;
         private ICommand acceptButtonCommand;
         private ICommand cancelButtonCommand;
-        private IUnityContainer container;
+        // private IUnityContainer container;
+        public IUnityContainer Container;
         private Converter converter;
         private string currentResolution;
 
@@ -122,12 +123,12 @@ namespace Ferretto.VW.InstallationApp
 
         public void InitializeViewModel(IUnityContainer _container)
         {
-            this.container = _container;
+            this.Container = _container;
             bool conversionResolution;
 
-            this.positioningDrawer = (PositioningDrawer)this.container.Resolve<IPositioningDrawer>();
-            this.converter = (Converter)this.container.Resolve<IConverter>();
-            this.data = (DataManager)this.container.Resolve<IDataManager>();
+            this.positioningDrawer = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
+            this.converter = (Converter)this.Container.Resolve<IConverter>();
+            this.data = (DataManager)this.Container.Resolve<IDataManager>();
 
             this.CurrentResolution = this.converter.ManageResolution.ToString("##.##");
             this.DesiredInitialPosition = this.defaultInitialPosition.ToString();
@@ -299,7 +300,12 @@ namespace Ferretto.VW.InstallationApp
 
         private void SetPositionButtonMethod()
         {
-            if (decimal.TryParse(this.desiredInitialPosition, out this.desiredInitialPositionDec))
+            this.positioningDrawer = (PositioningDrawer)this.Container.Resolve<IPositioningDrawer>();
+            this.positioningDrawer.Initialize();
+            bool conversionDesiredInitialPosition = decimal.TryParse(this.desiredInitialPosition, out this.desiredInitialPositionDec);
+            this.SubscribeMethodToEvent();
+
+            if (conversionDesiredInitialPosition)
             {
                 this.operation = true;
                 this.x = this.desiredInitialPositionDec;

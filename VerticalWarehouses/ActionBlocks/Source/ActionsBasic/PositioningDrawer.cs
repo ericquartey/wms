@@ -82,7 +82,8 @@ namespace Ferretto.VW.ActionBlocks
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4", "5", "6a" };
+        // From this time the codes 6a, 6b, 6c and 6d in the documentation become the code 6
+        private readonly string[] positioningDrawerSteps = new string[] { "1.1", /*"1.2", "1.3", "1.4", "2.1", */ "1", "2", "3", "4", "5", "6" };
 
         private bool absolute_movement;
 
@@ -116,7 +117,6 @@ namespace Ferretto.VW.ActionBlocks
 
         private ParameterID paramID = ParameterID.POSITION_TARGET_POSITION_PARAM;
 
-        // At this time we take into account only the code code 6a
         private string positioningStep;
 
         private RegisteredWaitHandle regLoopUpdateCurrentPositionThread;
@@ -266,7 +266,8 @@ namespace Ferretto.VW.ActionBlocks
             this.valParam = value;
             var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, DATASET_FOR_CONTROL, this.valParam);
 
-            this.bStoppedOk = true; this.i = 0;
+            this.bStoppedOk = true;
+            this.i = 0;
             this.Destroy_thread();
         }
 
@@ -329,10 +330,8 @@ namespace Ferretto.VW.ActionBlocks
                         break;
                     }
 
-                case "6a":
-                case "6b":
-                case "6c":
-                case "6d":
+                // Filter: 0x1n37
+                case "6":
                     {
                         bStateTransitionAllowed = this.statusWord.Get(BIT_TARGET_REACHED);
                         break;
@@ -578,7 +577,7 @@ namespace Ferretto.VW.ActionBlocks
             if (this.positioningDrawerSteps.Length > this.i)
             {
                 // In the case of Command Engine we have to check the StatusWord
-                if (this.positioningStep == "1" || this.positioningStep == "3" || this.positioningStep == "4" || this.positioningStep == "5" || this.positioningStep == "6a" || this.positioningStep == "6b" || this.positioningStep == "6c" || this.positioningStep == "6d")
+                if (this.positioningStep == "1" || this.positioningStep == "3" || this.positioningStep == "4" || this.positioningStep == "5" || this.positioningStep == "6")
                 {
                     // The retrivial of status word is performed internally by the inverter driver
                 }
@@ -596,10 +595,9 @@ namespace Ferretto.VW.ActionBlocks
 
         private void stepExecution()
         {
-            var idExitStatus = InverterDriverExitStatus.Success;
             this.positioningStep = this.positioningDrawerSteps[this.i];
 
-            // local scratches
+            // Local scratches
             ushort value = 0x0000; byte[] bytes;
             var error_Message = "";
             byte dataSetIdx = 0x00;
@@ -614,7 +612,6 @@ namespace Ferretto.VW.ActionBlocks
                         dataSetIdx = this.dataSetIndex;
                         this.valParam = (int)this.x;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -625,7 +622,6 @@ namespace Ferretto.VW.ActionBlocks
                         dataSetIdx = this.dataSetIndex;
                         this.valParam = (int)this.vMax;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -636,7 +632,6 @@ namespace Ferretto.VW.ActionBlocks
                         dataSetIdx = this.dataSetIndex;
                         this.valParam = (int)this.acc;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -647,7 +642,6 @@ namespace Ferretto.VW.ActionBlocks
                         dataSetIdx = this.dataSetIndex;
                         this.valParam = (int)this.dec;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -665,7 +659,6 @@ namespace Ferretto.VW.ActionBlocks
                         value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -677,7 +670,6 @@ namespace Ferretto.VW.ActionBlocks
                         dataSetIdx = DATASET_FOR_CONTROL;
                         this.valParam = (short)0x01;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -695,7 +687,6 @@ namespace Ferretto.VW.ActionBlocks
                         value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -712,7 +703,6 @@ namespace Ferretto.VW.ActionBlocks
                         value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -729,12 +719,11 @@ namespace Ferretto.VW.ActionBlocks
                         value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
                 // Operation Enabled
-                case "6a":
+                case "6":
                     {
                         //x this.dataSetIndex = 0x01;
                         this.paramID = ParameterID.CONTROL_WORD_PARAM;
@@ -762,7 +751,6 @@ namespace Ferretto.VW.ActionBlocks
                         value = BitConverter.ToUInt16(bytes, 0);
                         this.valParam = value;
 
-                        idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
                         break;
                     }
 
@@ -775,6 +763,8 @@ namespace Ferretto.VW.ActionBlocks
                         break;
                     }
             }
+
+            var idExitStatus = this.inverterDriver.SettingRequest(this.paramID, this.systemIndex, dataSetIdx, this.valParam);
 
             this.CtrExistStatus(idExitStatus);
         }

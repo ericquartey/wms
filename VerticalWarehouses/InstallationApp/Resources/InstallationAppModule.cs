@@ -91,6 +91,7 @@ namespace Ferretto.VW.InstallationApp
             InstallationStateVMInstance.InitializeViewModel(this.container);
             MainWindowNavigationButtonsVMInstance.InitializeViewModel(this.container);
             WeightControlVMInstance.InitializeViewModel(this.container);
+            VerticalAxisCalibrationVMInstance.InitializeViewModel(this.container);
         }
 
         #endregion Constructors

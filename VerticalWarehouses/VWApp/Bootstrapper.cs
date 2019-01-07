@@ -103,6 +103,7 @@ namespace Ferretto.VW.VWApp
         private void InitializeInverter()
         {
             var inverter = new InverterDriver.InverterDriver();
+            inverter.Initialize();
             this.Container.RegisterInstance<IInverterDriver>(inverter);
         }
 
