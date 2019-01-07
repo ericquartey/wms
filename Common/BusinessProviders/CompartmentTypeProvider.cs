@@ -63,9 +63,7 @@ namespace Ferretto.Common.BusinessProviders
                     }
                     else
                     {
-                        return new OperationResult(
-                            false,
-                            description: string.Format(Resources.Errors.NotAddDB, nameof(CompartmentType)));
+                        return new OperationResult(false);
                     }
                 }
 
@@ -93,7 +91,7 @@ namespace Ferretto.Common.BusinessProviders
             }
             catch (Exception ex)
             {
-                return new OperationResult(false, description: ex.Message);
+                return new OperationResult(ex);
             }
         }
 
