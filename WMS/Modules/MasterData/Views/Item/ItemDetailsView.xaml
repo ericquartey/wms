@@ -95,6 +95,7 @@
                                       ItemsSource="{Binding Path=Model.ItemCategoryChoices}" />
                         <wms:TextBox Grid.RowSpan="3"
                                      Grid.Column="1"
+                                     MaxHeight="155"
                                      Margin="20,0,0,0"
                                      VerticalContentAlignment="Stretch"
                                      EditValue="{Binding Path=Model.Note, Mode=TwoWay, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"
