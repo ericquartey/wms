@@ -261,9 +261,35 @@ namespace Ferretto.Common.Modules.BLL.Services
 
                     return listFilters.Cast<IFilterDataSource<TModel>>();
 
+                case Scheduler.MISSIONS:
+                    var missionProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
+                    var missionCountProvider = ServiceLocator.Current.GetInstance<IMissionProvider>();
+
+                    return new List<FilterDataSource<Mission>>
+                    {
+                        new FilterDataSource<Mission>(
+                            "MissionViewAll",
+                            Resources.Scheduler.MissionAll,
+                            () => missionProvider.GetAll(),
+                            () => missionCountProvider.GetAllCount()),
+
+                        new FilterDataSource<Mission>(
+                            "MissionViewStatusCompleted",
+                            Resources.Scheduler.MissionStatusCompleted,
+                            () => missionProvider.GetWithStatusCompleted(),
+                            () => missionCountProvider.GetWithStatusCompletedCount()),
+
+                        new FilterDataSource<Mission>(
+                            "MissionViewStatusNew",
+                            Resources.Scheduler.MissionStatusNew,
+                            () => missionProvider.GetWithStatusNew(),
+                            () => missionCountProvider.GetWithStatusNewCount())
+                    }.Cast<IFilterDataSource<TModel>>();
+
                 default:
                     return new List<IFilterDataSource<TModel>>();
             }
+
 #pragma warning restore IDE0009
         }
 
