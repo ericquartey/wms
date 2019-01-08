@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App", "WMS\App\Ferretto.WMS.App.csproj", "{69935FFE-3DC9-47C4-9192-D925D043C137}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App", "WMS\App\App\Ferretto.WMS.App.csproj", "{69935FFE-3DC9-47C4-9192-D925D043C137}"
 	ProjectSection(ProjectDependencies) = postProject
 		{9D9ECC03-073A-43F7-BED8-568CF67AB8AD} = {9D9ECC03-073A-43F7-BED8-568CF67AB8AD}
 		{C32FD908-0388-4096-AF68-43BBEDB58725} = {C32FD908-0388-4096-AF68-43BBEDB58725}
@@ -12,7 +12,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App", "WMS\App
 		{0D3E44FD-B369-4B85-AEBE-17A754D71C8D} = {0D3E44FD-B369-4B85-AEBE-17A754D71C8D}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Themes", "WMS\App.Themes\Ferretto.WMS.App.Themes.csproj", "{9377DBC4-ED82-46D9-90B1-9F7DF787E5E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Themes", "WMS\App\App.Themes\Ferretto.WMS.App.Themes.csproj", "{9377DBC4-ED82-46D9-90B1-9F7DF787E5E1}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C361D00D-E5D7-4FBD-ADEC-B965C34FFDD7} = {C361D00D-E5D7-4FBD-ADEC-B965C34FFDD7}
 	EndProjectSection
@@ -43,7 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WMS", "WMS", "{C6AB2AE0-C10
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.Common.BLL.Tests", "Common\BLL.Tests\Ferretto.Common.BLL.Tests.csproj", "{8FEEFE83-4022-476D-BD8A-C2E5321C5B91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Tests", "WMS\App.Tests\Ferretto.WMS.App.Tests.csproj", "{87A5A291-C598-4E40-A381-F23084160D1B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.WMS.App.Tests", "WMS\App\App.Tests\Ferretto.WMS.App.Tests.csproj", "{87A5A291-C598-4E40-A381-F23084160D1B}"
 	ProjectSection(ProjectDependencies) = postProject
 		{69935FFE-3DC9-47C4-9192-D925D043C137} = {69935FFE-3DC9-47C4-9192-D925D043C137}
 	EndProjectSection
