@@ -498,7 +498,7 @@
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-europe-50.png</value>
   </data>
   <data name="MissionViewStatusCompleted" xml:space="preserve">
-    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png</value>
+    <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-tick-box-50.png</value>
   </data>
   <data name="MissionViewStatusNew" xml:space="preserve">
     <value>pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-new-50.png</value>

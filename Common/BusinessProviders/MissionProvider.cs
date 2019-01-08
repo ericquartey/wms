@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.Common.BusinessModels;
 using Ferretto.Common.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace Ferretto.Common.BusinessProviders
 {
@@ -52,24 +53,20 @@ namespace Ferretto.Common.BusinessProviders
         public IQueryable<Mission> GetAll()
         {
             return this.dataContextService.Current.Missions
+                .Include(m => m.Item)
+                .Include(m => m.ItemList)
+                .Include(m => m.ItemListRow)
+                .Include(m => m.LoadingUnit)
                 .Select(m => new Mission
                 {
-                    BayId = m.BayId,
-                    CellId = m.CellId,
-                    CompartmentId = m.CompartmentId,
-                    ItemId = m.ItemId,
-                    ItemListId = m.ItemListId,
-                    ItemListRowId = m.ItemListRowId,
-                    LoadingUnitId = m.LoadingUnitId,
-                    MaterialStatusId = m.MaterialStatusId,
-                    PackageTypeId = m.PackageTypeId,
-                    Lot = m.Lot,
+                    BayDescription = m.Bay.Description,
+                    ItemDescription = m.Item.Description,
+                    ItemListDescription = m.ItemList.Description,
+                    ItemListRowDescription = m.ItemListRow.Code,
+                    LoadingUnitDescription = m.LoadingUnit.Code,
                     Priority = m.Priority,
-                    RegistrationNumber = m.RegistrationNumber,
                     RequiredQuantity = m.RequiredQuantity,
                     Status = (MissionStatus)m.Status,
-                    Sub1 = m.Sub1,
-                    Sub2 = m.Sub2,
                     Type = (MissionType)m.Type
                 });
         }
@@ -94,7 +91,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusCompletedCount()
         {
-            return this.dataContextService.Current.Missions./**AsNoTracking().*/Count(StatusCompletedFilter);
+            return this.dataContextService.Current.Missions.AsNoTracking().Count(StatusCompletedFilter);
         }
 
         public IQueryable<Mission> GetWithStatusNew()
@@ -104,7 +101,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetWithStatusNewCount()
         {
-            return this.dataContextService.Current.Missions./**AsNoTracking().*/Count(StatusNewFilter);
+            return this.dataContextService.Current.Missions.AsNoTracking().Count(StatusNewFilter);
         }
 
         public int Save(MissionDetails model)
@@ -120,24 +117,16 @@ namespace Ferretto.Common.BusinessProviders
              .Where(actualWhereFunc)
              .Select(m => new Mission
              {
-                 BayId = m.BayId,
-                 CellId = m.CellId,
-                 CompartmentId = m.CompartmentId,
-                 ItemId = m.ItemId,
-                 ItemListId = m.ItemListId,
-                 ItemListRowId = m.ItemListRowId,
-                 LoadingUnitId = m.LoadingUnitId,
-                 MaterialStatusId = m.MaterialStatusId,
-                 PackageTypeId = m.PackageTypeId,
-                 Lot = m.Lot,
+                 BayDescription = m.Bay.Description,
+                 ItemDescription = m.Item.Description,
+                 ItemListDescription = m.ItemList.Description,
+                 ItemListRowDescription = m.ItemListRow.Code,
+                 LoadingUnitDescription = m.LoadingUnit.Code,
                  Priority = m.Priority,
-                 RegistrationNumber = m.RegistrationNumber,
                  RequiredQuantity = m.RequiredQuantity,
                  Status = (MissionStatus)m.Status,
-                 Sub1 = m.Sub1,
-                 Sub2 = m.Sub2,
                  Type = (MissionType)m.Type
-             });//.AsNoTracking();
+             }).AsNoTracking();
         }
 
         #endregion Methods

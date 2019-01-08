@@ -799,4 +799,13 @@
   <data name="MissionTypeReplace" xml:space="preserve">
     <value>Rimpiazzo</value>
   </data>
+  <data name="Item" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="ItemList" xml:space="preserve">
+    <value>Liste</value>
+  </data>
+  <data name="Bay" xml:space="preserve">
+    <value>Baia</value>
+  </data>
 </root>

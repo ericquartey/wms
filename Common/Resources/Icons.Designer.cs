@@ -763,7 +763,7 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Material/action/ic_check_circle_black_48dp.png.
+        ///   Looks up a localized string similar to pack://application:,,,/Ferretto.WMS.App.Themes;component/Icons/Ferretto/Logistics/icons8-tick-box-50.png.
         /// </summary>
         public static string MissionViewStatusCompleted {
             get {

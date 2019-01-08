@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
+using Ferretto.Common.Resources;
 
 namespace Ferretto.Common.BusinessModels
 {
@@ -8,19 +10,24 @@ namespace Ferretto.Common.BusinessModels
     {
         #region Properties
 
-        public int? BayId { get; set; }
+        [Display(Name = nameof(BusinessObjects.Bay), ResourceType = typeof(BusinessObjects))]
+        public string BayDescription { get; set; }
 
         public int? CellId { get; set; }
 
         public int? CompartmentId { get; set; }
 
-        public int? ItemId { get; set; }
+        [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
+        public string ItemDescription { get; set; }
 
-        public int? ItemListId { get; set; }
+        [Display(Name = nameof(BusinessObjects.ItemList), ResourceType = typeof(BusinessObjects))]
+        public string ItemListDescription { get; set; }
 
-        public int? ItemListRowId { get; set; }
+        [Display(Name = nameof(MasterData.ItemListRows), ResourceType = typeof(MasterData))]
+        public string ItemListRowDescription { get; set; }
 
-        public int? LoadingUnitId { get; set; }
+        [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
+        public string LoadingUnitDescription { get; set; }
 
         public string Lot { get; set; }
 
@@ -32,14 +39,17 @@ namespace Ferretto.Common.BusinessModels
 
         public string RegistrationNumber { get; set; }
 
+        [Display(Name = nameof(General.Quantity), ResourceType = typeof(General))]
         public int RequiredQuantity { get; set; }
 
+        [Display(Name = nameof(General.Status), ResourceType = typeof(General))]
         public MissionStatus Status { get; set; } = MissionStatus.New;
 
         public string Sub1 { get; set; }
 
         public string Sub2 { get; set; }
 
+        [Display(Name = nameof(General.Type), ResourceType = typeof(General))]
         public MissionType Type { get; set; }
 
         #endregion Properties

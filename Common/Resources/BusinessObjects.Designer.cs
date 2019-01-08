@@ -115,6 +115,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bay.
+        /// </summary>
+        public static string Bay {
+            get {
+                return ResourceManager.GetString("Bay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string BayDescription {
@@ -529,6 +538,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Item.
+        /// </summary>
+        public static string Item {
+            get {
+                return ResourceManager.GetString("Item", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Available.
         /// </summary>
         public static string ItemAvailable {
@@ -678,6 +696,15 @@ namespace Ferretto.Common.Resources {
         public static string ItemLength {
             get {
                 return ResourceManager.GetString("ItemLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to List.
+        /// </summary>
+        public static string ItemList {
+            get {
+                return ResourceManager.GetString("ItemList", resourceCulture);
             }
         }
         

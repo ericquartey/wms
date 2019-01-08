@@ -69,19 +69,12 @@
                     <dxg:TableView SearchPanelHorizontalAlignment="Right"
                                    ShowFilterPanelMode="ShowAlways"
                                    ShowSearchPanelMode="Always">
-                        <!--<i:Interaction.Triggers>
-                            <i:EventTrigger EventName="RowDoubleClick">
-                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
-                                                          StartModuleName="{wms:NameOf Type={x:Type modules:Scheduler}}"
-                                                          StartViewName="{x:Static modules:Scheduler.MISSIONDETAILS}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>-->
                     </dxg:TableView>
 
                 </wms:WmsGridControl.View>
 
                 <wms:WmsGridControl.Columns>
-                    <dxg:GridColumn Width="200*"
+                    <dxg:GridColumn Width="120*"
                                     FieldName="Status">
                         <dxg:GridColumn.CellTemplate>
                             <DataTemplate>
@@ -89,7 +82,7 @@
                                     <wms:WmsEnumIndicator Margin="5,0,0,0"
                                                           VerticalAlignment="Center"
                                                           EnumType="{x:Type models:MissionStatus}"
-                                                          EnumValue="{Binding Data.MissionStatus}"
+                                                          EnumValue="{Binding Data.Status}"
                                                           HideIcon="True"
                                                           IconSize="8"
                                                           ShowText="True" />
@@ -98,39 +91,21 @@
                             </DataTemplate>
                         </dxg:GridColumn.CellTemplate>
                     </dxg:GridColumn>
-                    <dxg:GridColumn Width="180*"
-                                    FieldName="BayId" />
-                    <dxg:GridColumn Width="200*"
-                                    FieldName="CellId" />
-                    <dxg:GridColumn Width="400*"
-                                    FieldName="CompartmentId" />
                     <dxg:GridColumn Width="140*"
-                                    FieldName="ItemId" />
+                                    FieldName="BayDescription" />
+                    <dxg:GridColumn Width="370*"
+                                    FieldName="ItemDescription" />
                     <dxg:GridColumn Width="200*"
-                                    FieldName="ItemListId" />
+                                    FieldName="ItemListDescription" />
                     <dxg:GridColumn Width="190*"
-                                    FieldName="ItemListRowId" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="LoadingUnitId" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="Lot" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="MaterialStatusId" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="PackageTypeId" />
-                    <dxg:GridColumn Width="190*"
+                                    FieldName="ItemListRowDescription" />
+                    <dxg:GridColumn Width="140*"
+                                    FieldName="LoadingUnitDescription" />
+                    <dxg:GridColumn Width="90*"
                                     FieldName="Priority" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="RegistrationNumber" />
-                    <dxg:GridColumn Width="190*"
+                    <dxg:GridColumn Width="90*"
                                     FieldName="RequiredQuantity" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="Status" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="Sub1" />
-                    <dxg:GridColumn Width="190*"
-                                    FieldName="Sub2" />
-                    <dxg:GridColumn Width="190*"
+                    <dxg:GridColumn Width="120*"
                                     FieldName="Type" />
                     
 
