@@ -1,11 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.WebAPI.Models
 {
-    public class ItemList
+    public class ItemList : Model<int>
     {
-        #region Properties
-
-        public int Id { get; set; }
-
-        #endregion Properties
     }
 }

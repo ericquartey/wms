@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Ferretto.Common.EF;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace Ferretto.WMS.Data.WebAPI.Models
@@ -30,6 +31,10 @@ namespace Ferretto.WMS.Data.WebAPI.Models
         #endregion Constructors
 
         #region Properties
+
+        public IEnumerable<ItemCategory> ItemCategories => this.GetValue(this.RetrieveItemCategories);
+
+        public IEnumerable<AbcClass> ItemClasses => this.GetValue(this.RetrieveItemClasses);
 
         public IEnumerable<Item> Items => this.GetValue(this.RetrieveItems);
 
@@ -60,16 +65,88 @@ namespace Ferretto.WMS.Data.WebAPI.Models
             return cacheEntry;
         }
 
+        private IEnumerable<ItemCategory> RetrieveItemCategories()
+        {
+            return this.dataContext.ItemCategories
+            .Select(c =>
+                new ItemCategory
+                {
+                    Id = c.Id,
+                    Description = c.Description
+                })
+            .ToArray();
+        }
+
+        private IEnumerable<AbcClass> RetrieveItemClasses()
+        {
+            return this.dataContext.AbcClasses
+            .Select(c =>
+                new AbcClass
+                {
+                    Id = c.Id,
+                    Description = c.Description
+                })
+            .ToArray();
+        }
+
         private IEnumerable<Item> RetrieveItems()
         {
             return this.dataContext.Items
-                .Select(i =>
-                    new Item
-                    {
-                        Id = i.Id,
-                        Code = i.Code
-                    })
-                .ToArray();
+                .AsNoTracking()
+                    .Include(i => i.AbcClass)
+                    .Include(i => i.ItemCategory)
+                    .GroupJoin(
+                        this.dataContext.Compartments
+                            .AsNoTracking()
+                            .Where(c => c.ItemId != null)
+                            .GroupBy(c => c.ItemId)
+                            .Select(j => new
+                            {
+                                ItemId = j.Key,
+                                TotalStock = j.Sum(x => x.Stock),
+                                TotalReservedForPick = j.Sum(x => x.ReservedForPick),
+                                TotalReservedToStore = j.Sum(x => x.ReservedToStore)
+                            }),
+                        i => i.Id,
+                        c => c.ItemId,
+                        (i, c) => new
+                        {
+                            Item = i,
+                            CompartmentsAggregation = c
+                        })
+                    .SelectMany(
+                        temp => temp.CompartmentsAggregation.DefaultIfEmpty(),
+                        (a, b) => new Item
+                        {
+                            ItemCategories = this.ItemCategories,
+                            AbcClasses = this.ItemClasses,
+                            Id = a.Item.Id,
+                            AbcClassId = a.Item.AbcClassId,
+                            AverageWeight = a.Item.AverageWeight,
+                            CreationDate = a.Item.CreationDate,
+                            FifoTimePick = a.Item.FifoTimePick,
+                            FifoTimeStore = a.Item.FifoTimeStore,
+                            Height = a.Item.Height,
+                            InventoryDate = a.Item.InventoryDate,
+                            InventoryTolerance = a.Item.InventoryTolerance,
+                            ManagementType = (ItemManagementType)a.Item.ManagementType,
+                            LastModificationDate = a.Item.LastModificationDate,
+                            LastPickDate = a.Item.LastPickDate,
+                            LastStoreDate = a.Item.LastStoreDate,
+                            Length = a.Item.Length,
+                            MeasureUnitDescription = a.Item.MeasureUnit.Description,
+                            PickTolerance = a.Item.PickTolerance,
+                            ReorderPoint = a.Item.ReorderPoint,
+                            ReorderQuantity = a.Item.ReorderQuantity,
+                            StoreTolerance = a.Item.StoreTolerance,
+                            Width = a.Item.Width,
+                            Code = a.Item.Code,
+                            Description = a.Item.Description,
+                            TotalReservedForPick = b != null ? b.TotalReservedForPick : 0,
+                            TotalReservedToStore = b != null ? b.TotalReservedToStore : 0,
+                            TotalStock = b != null ? b.TotalStock : 0
+                        }
+                    ).ToArray();
         }
 
         private IEnumerable<ItemList> RetrieveLists()

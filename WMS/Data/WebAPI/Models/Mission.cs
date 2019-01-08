@@ -1,11 +1,6 @@
 ﻿namespace Ferretto.WMS.Data.WebAPI.Models
 {
-    public class Mission
+    public class Mission : Model<int>
     {
-        #region Properties
-
-        public int Id { get; set; }
-
-        #endregion Properties
     }
 }
