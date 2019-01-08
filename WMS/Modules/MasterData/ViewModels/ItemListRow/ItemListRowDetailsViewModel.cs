@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.BLL.Interfaces;
 using Ferretto.Common.BusinessModels;
@@ -22,7 +18,6 @@ namespace Ferretto.WMS.Modules.MasterData
         private readonly IItemListRowProvider itemListRowProvider = ServiceLocator.Current.GetInstance<IItemListRowProvider>();
 
         private readonly IItemProvider itemProvider = ServiceLocator.Current.GetInstance<IItemProvider>();
-
 
         private IDataSource<Item> itemsDataSource;
 
@@ -46,7 +41,7 @@ namespace Ferretto.WMS.Modules.MasterData
         #endregion Constructors
 
         #region Properties
-        
+
         public IDataSource<Item> ItemsDataSource
         {
             get => this.itemsDataSource;
@@ -61,10 +56,6 @@ namespace Ferretto.WMS.Modules.MasterData
 
         #region Methods
 
-        protected override async Task ExecuteRevertCommand()
-        {
-            await this.LoadData();
-        }
         protected override void EvaluateCanExecuteCommands()
         {
             base.EvaluateCanExecuteCommands();
@@ -72,18 +63,28 @@ namespace Ferretto.WMS.Modules.MasterData
             ((DelegateCommand)this.ListRowExecuteCommand)?.RaiseCanExecuteChanged();
         }
 
-        protected override void ExecuteSaveCommand()
+        protected override async Task ExecuteRevertCommand()
+        {
+            await this.LoadData();
+        }
+
+        protected override async Task ExecuteSaveCommand()
         {
             this.IsBusy = true;
 
-            var modifiedRowCount = this.itemListRowProvider.Save(this.Model);
-            if (modifiedRowCount > 0)
+            var result = await this.itemListRowProvider.SaveAsync(this.Model);
+            if (result.Success)
             {
                 this.TakeModelSnapshot();
 
-                this.EventService.Invoke(new ModelChangedEvent<ItemListRow>(this.Model.Id));
-                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListRowSavedSuccessfully));
+                this.EventService.Invoke(new ModelChangedEvent<Item>(this.Model.Id));
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.MasterData.ItemListSavedSuccessfully));
             }
+            else
+            {
+                this.EventService.Invoke(new StatusEventArgs(Common.Resources.Errors.UnableToSaveChanges, StatusType.Error));
+            }
+
             this.IsBusy = false;
         }
 

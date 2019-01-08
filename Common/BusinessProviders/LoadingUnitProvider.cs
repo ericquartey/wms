@@ -28,8 +28,11 @@ namespace Ferretto.Common.BusinessProviders
             lu => lu.LoadingUnitStatusId == "U";//STATUS Used
 
         private readonly ICellProvider cellProvider;
+
         private readonly ICompartmentProvider compartmentProvider;
+
         private readonly IDatabaseContextService dataContext;
+
         private readonly EnumerationProvider enumerationProvider;
 
         #endregion Fields
@@ -52,7 +55,7 @@ namespace Ferretto.Common.BusinessProviders
 
         #region Methods
 
-        public Task<OperationResult> Add(LoadingUnitDetails model)
+        public Task<OperationResult> AddAsync(LoadingUnitDetails model)
         {
             throw new NotImplementedException();
         }
@@ -88,8 +91,7 @@ namespace Ferretto.Common.BusinessProviders
 
         public int GetAllCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.Count();
             }
@@ -208,10 +210,9 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaManualFilter);
         }
 
-        public Int32 GetWithAreaManualCount()
+        public int GetWithAreaManualCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(AreaManualFilter);
             }
@@ -222,10 +223,9 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, AreaVertimagFilter);
         }
 
-        public Int32 GetWithAreaVertimagCount()
+        public int GetWithAreaVertimagCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(AreaVertimagFilter);
             }
@@ -236,10 +236,9 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusAvailableFilter);
         }
 
-        public Int32 GetWithStatusAvailableCount()
+        public int GetWithStatusAvailableCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(StatusAvailableFilter);
             }
@@ -250,10 +249,9 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusBlockedFilter);
         }
 
-        public Int32 GetWithStatusBlockedCount()
+        public int GetWithStatusBlockedCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(StatusBlockedFilter);
             }
@@ -264,10 +262,9 @@ namespace Ferretto.Common.BusinessProviders
             return GetAllLoadingUnitsWithAggregations(this.dataContext.Current, StatusUsedFilter);
         }
 
-        public Int32 GetWithStatusUsedCount()
+        public int GetWithStatusUsedCount()
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.LoadingUnits.AsNoTracking().Count(StatusUsedFilter);
             }
@@ -275,34 +272,41 @@ namespace Ferretto.Common.BusinessProviders
 
         public bool HasAnyCompartments(int loadingUnitId)
         {
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            using (var dataContext = this.dataContext.Current)
             {
                 return dataContext.Compartments.AsNoTracking().Any(l => l.LoadingUnitId == loadingUnitId);
             }
         }
 
-        public int Save(LoadingUnitDetails model)
+        public async Task<OperationResult> SaveAsync(LoadingUnitDetails model)
         {
             if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var dataContext = this.dataContext.Current;
-            lock (dataContext)
+            try
             {
-                var existingModel = dataContext.LoadingUnits.Find(model.Id);
-
-                dataContext.Entry(existingModel).CurrentValues.SetValues(model);
-
-                foreach (var compartment in model.Compartments)
+                using (var dataContext = this.dataContext.Current)
                 {
-                    var existingCompartment = dataContext.Compartments.Find(compartment.Id);
-                    dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
-                }
+                    var existingModel = dataContext.LoadingUnits.Find(model.Id);
 
-                return dataContext.SaveChanges();
+                    dataContext.Entry(existingModel).CurrentValues.SetValues(model);
+
+                    foreach (var compartment in model.Compartments)
+                    {
+                        var existingCompartment = dataContext.Compartments.Find(compartment.Id);
+                        dataContext.Entry(existingCompartment).CurrentValues.SetValues(compartment);
+                    }
+
+                    var changedEntityCount = await dataContext.SaveChangesAsync();
+
+                    return new OperationResult(changedEntityCount > 0);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new OperationResult(ex);
             }
         }
 
