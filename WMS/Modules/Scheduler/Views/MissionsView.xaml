@@ -1,0 +1,148 @@
+<wms:WmsView x:Class="Ferretto.WMS.Modules.Scheduler.MissionsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:models="clr-namespace:Ferretto.Common.BusinessModels;assembly=Ferretto.Common.BusinessModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:modules="clr-namespace:Ferretto.Common.Utils.Modules;assembly=Ferretto.Common.Utils"
+             xmlns:res="clr-namespace:Ferretto.Common.Resources;assembly=Ferretto.Common.Resources"
+             xmlns:wms="clr-namespace:Ferretto.Common.Controls;assembly=Ferretto.Common.Controls"
+             Title="{x:Static res:Navigation.Missions}"
+             MinHeight="300"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             EnableHistoryView="True"
+             mc:Ignorable="d">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <wms:Expander x:Name="FiltersExpander"
+                      Grid.Column="0"
+                      VerticalAlignment="Stretch"
+                      VerticalContentAlignment="Stretch"
+                      ExpandDirection="Left"
+                      IsExpanded="True">
+            <Grid>
+                <wms:TileBar ItemsSource="{Binding Filters}"
+                             SelectedItem="{Binding SelectedFilter, Mode=OneWayToSource}" />
+            </Grid>
+        </wms:Expander>
+
+        <Grid Grid.Column="1">
+
+            <wms:ActionBar HorizontalAlignment="Left"
+                           Style="{DynamicResource ActionBarOverlayedWithGrid}">
+                <wms:ActionBarItem Command="{Binding }"
+                                   Content="{x:Static res:General.ShowDetails}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/action/ic_info_outline_black_24dp.png"
+                                   GlyphSize="Custom" />
+                <wms:ActionBarItem Content="{x:Static res:General.Add}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/content/ic_add_circle_outline_black_24dp.png"
+                                   GlyphSize="Custom" />
+                <wms:ActionBarItem Command="{Binding }"
+                                   Content="{x:Static res:MasterData.ListExecute}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/av/ic_play_arrow_black_24dp.png"
+                                   GlyphSize="Custom" />
+                <wms:ActionBarItem Content="{x:Static res:General.Refresh}"
+                                   CustomGlyphSize="24,24"
+                                   Glyph="pack://application:,,,/Ferretto.WMS.App.Themes;component/icons/material/navigation/ic_refresh_black_24dp.png"
+                                   GlyphSize="Custom" />
+            </wms:ActionBar>
+
+            <wms:WmsGridControl x:Name="MainGridControl"
+                                MaxWidth="2000"
+                                MaxHeight="5000"
+                                Margin="3"
+                                CurrentItem="{Binding SelectedItem, Mode=TwoWay}"
+                                ItemsSource="{Binding SelectedFilterDataSource, Mode=OneWay}"
+                                ShowBorder="False">
+                <wms:WmsGridControl.View>
+                    <dxg:TableView SearchPanelHorizontalAlignment="Right"
+                                   ShowFilterPanelMode="ShowAlways"
+                                   ShowSearchPanelMode="Always">
+                        <!--<i:Interaction.Triggers>
+                            <i:EventTrigger EventName="RowDoubleClick">
+                                <wms:WmsHistoryViewAppear Id="{Binding RelativeSource={RelativeSource AncestorType={x:Type wms:WmsView}}, Path=DataContext.CurrentItem.Id, Mode=OneWay}"
+                                                          StartModuleName="{wms:NameOf Type={x:Type modules:Scheduler}}"
+                                                          StartViewName="{x:Static modules:Scheduler.MISSIONDETAILS}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>-->
+                    </dxg:TableView>
+
+                </wms:WmsGridControl.View>
+
+                <wms:WmsGridControl.Columns>
+                    <dxg:GridColumn Width="200*"
+                                    FieldName="Status">
+                        <dxg:GridColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <wms:WmsEnumIndicator Margin="5,0,0,0"
+                                                          VerticalAlignment="Center"
+                                                          EnumType="{x:Type models:MissionStatus}"
+                                                          EnumValue="{Binding Data.MissionStatus}"
+                                                          HideIcon="True"
+                                                          IconSize="8"
+                                                          ShowText="True" />
+
+                                </StackPanel>
+                            </DataTemplate>
+                        </dxg:GridColumn.CellTemplate>
+                    </dxg:GridColumn>
+                    <dxg:GridColumn Width="180*"
+                                    FieldName="BayId" />
+                    <dxg:GridColumn Width="200*"
+                                    FieldName="CellId" />
+                    <dxg:GridColumn Width="400*"
+                                    FieldName="CompartmentId" />
+                    <dxg:GridColumn Width="140*"
+                                    FieldName="ItemId" />
+                    <dxg:GridColumn Width="200*"
+                                    FieldName="ItemListId" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="ItemListRowId" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="LoadingUnitId" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="Lot" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="MaterialStatusId" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="PackageTypeId" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="Priority" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="RegistrationNumber" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="RequiredQuantity" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="Status" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="Sub1" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="Sub2" />
+                    <dxg:GridColumn Width="190*"
+                                    FieldName="Type" />
+                    
+
+                </wms:WmsGridControl.Columns>
+
+                <wms:WmsGridControl.SortInfo>
+                    <dxg:GridSortInfo FieldName="ItemListStatus"
+                                      SortOrder="Descending" />
+                </wms:WmsGridControl.SortInfo>
+
+            </wms:WmsGridControl>
+        </Grid>
+
+    </Grid>
+</wms:WmsView>
