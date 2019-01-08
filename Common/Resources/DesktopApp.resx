@@ -201,4 +201,8 @@
   <data name="UnableToSaveChanges" xml:space="preserve">
     <value>Unable to save changes.</value>
   </data>
+  <data name="InitializingSchedulerModule" xml:space="preserve">
+    <value>Initializing Scheduler module ...</value>
+    <comment>Splash screen message</comment>
+  </data>
 </root>

@@ -949,4 +949,37 @@
   <data name="ItemListExecutionRequestRunImmediately" xml:space="preserve">
     <value>Run Immediately</value>
   </data>
+  <data name="MissionStatusNew" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="MissionStatusWaiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="MissionStatusExecuting" xml:space="preserve">
+    <value>Executing</value>
+  </data>
+  <data name="MissionStatusCompleted" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="MissionStatusError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="MissionTypeBypass" xml:space="preserve">
+    <value>Bypass</value>
+  </data>
+  <data name="MissionTypeInventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="MissionTypePick" xml:space="preserve">
+    <value>Pick</value>
+  </data>
+  <data name="MissionTypePut" xml:space="preserve">
+    <value>Put</value>
+  </data>
+  <data name="MissionTypeReorder" xml:space="preserve">
+    <value>Reorder</value>
+  </data>
+  <data name="MissionTypeReplace" xml:space="preserve">
+    <value>Replace</value>
+  </data>
 </root>
