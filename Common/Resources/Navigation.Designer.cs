@@ -394,6 +394,15 @@ namespace Ferretto.Common.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missions.
+        /// </summary>
+        public static string Missions {
+            get {
+                return ResourceManager.GetString("Missions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Others.
         /// </summary>
         public static string Others {
@@ -426,6 +435,24 @@ namespace Ferretto.Common.Resources {
         public static string PutLists {
             get {
                 return ResourceManager.GetString("PutLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requests.
+        /// </summary>
+        public static string Requests {
+            get {
+                return ResourceManager.GetString("Requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheduler.
+        /// </summary>
+        public static string Scheduler {
+            get {
+                return ResourceManager.GetString("Scheduler", resourceCulture);
             }
         }
         
