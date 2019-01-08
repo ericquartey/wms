@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Ferretto.WMS.Scheduler.WebAPI.Controllers
+namespace Ferretto.WMS.Data.WebAPI.Controllers
 {
     public static class ControllerExtensions
     {
