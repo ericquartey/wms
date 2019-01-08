@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scheduler.Core\Ferretto.WMS.Scheduler.Core.csproj" />
+    <ProjectReference Include="..\Core\Ferretto.WMS.Scheduler.Core.csproj" />
   </ItemGroup>
 
   <Target Name="NSwag" BeforeTargets="Clean" Condition=" '$(Configuration)' == 'debug' and '$(TargetFramework)' == 'netstandard2.0' ">
