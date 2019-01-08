@@ -45,6 +45,11 @@ namespace Ferretto.Common.BusinessProviders
             throw new NotImplementedException();
         }
 
+        public Task<OperationResult> AddAsync(MissionDetails model)
+        {
+            throw new NotImplementedException();
+        }
+
         public int Delete(int id)
         {
             throw new NotImplementedException();
@@ -105,6 +110,11 @@ namespace Ferretto.Common.BusinessProviders
         }
 
         public int Save(MissionDetails model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<OperationResult> SaveAsync(MissionDetails model)
         {
             throw new NotImplementedException();
         }

@@ -17,6 +17,9 @@ namespace Ferretto.Common.BusinessModels
 
         public int? CompartmentId { get; set; }
 
+        [Display(Name = nameof(General.CreationDate), ResourceType = typeof(General))]
+        public DateTime CreationDate { get; set; }
+
         [Display(Name = nameof(BusinessObjects.Item), ResourceType = typeof(BusinessObjects))]
         public string ItemDescription { get; set; }
 
@@ -25,6 +28,9 @@ namespace Ferretto.Common.BusinessModels
 
         [Display(Name = nameof(MasterData.ItemListRows), ResourceType = typeof(MasterData))]
         public string ItemListRowDescription { get; set; }
+
+        [Display(Name = nameof(General.LastModificationDate), ResourceType = typeof(General))]
+        public DateTime? LastModificationDate { get; set; }
 
         [Display(Name = nameof(BusinessObjects.LoadingUnit), ResourceType = typeof(BusinessObjects))]
         public string LoadingUnitDescription { get; set; }
